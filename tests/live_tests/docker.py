@@ -175,6 +175,18 @@ class DockerInstance(BGPSpeakerInstance):
                 for mount in self.get_mounts():
                     with open(mount["var_path"], "r") as f:
                         print(f.read())
+                process = subprocess.Popen(
+                    cmd.split(),
+                    stdin=None,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE
+                )
+                stdout, stderr = process.communicate()
+                print("STDOUT:")
+                print(stdout)
+                print("STDERR:")
+                print(stderr)
+
                 raise InstanceError(
                     "Can't run detached instance: {}\n"
                     "cmd:\n"
