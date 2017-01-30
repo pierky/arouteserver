@@ -19,7 +19,7 @@ from ...bird import BIRDInstanceIPv6
 class MaxPrefixScenario_BIRDIPv6(MaxPrefixScenario):
     __test__ = True
 
-    SHORT_DESCR = "BIRD, max-prefix, IPv6"
+    SHORT_DESCR = "Live test, BIRD, max-prefix, IPv6"
     RS_INSTANCE_CLASS = BIRDInstanceIPv6
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
     IP_VER = 6

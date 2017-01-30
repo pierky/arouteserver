@@ -19,7 +19,7 @@ from ...bird import BIRDInstanceIPv6
 class TagASSetScenario_BIRDIPv6(TagASSetScenario):
     __test__ = True
 
-    SHORT_DESCR = "BIRD, tag prefix/origin in AS-SET, IPv6"
+    SHORT_DESCR = "Live test, BIRD, tag prefix/origin in AS-SET, IPv6"
     RS_INSTANCE_CLASS = BIRDInstanceIPv6
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
     IP_VER = 6
