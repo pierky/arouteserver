@@ -38,7 +38,7 @@ class LiveScenario(ARouteServerTestCase):
     R_SET = {}
     INSTANCES = []
 
-    DEBUG = False
+    DEBUG = True
     DO_NOT_STOP_INSTANCES = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
