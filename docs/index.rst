@@ -79,7 +79,7 @@ Features
   - **GTSM** (Generalized TTL Security Mechanism - `RFC5082`_);
   - **ADD-PATH** capability (`RFC7911`_).
 
-A comprehensive list of features can be found within the comments of the distributed configuration file on GitHub.
+A comprehensive list of features can be found within the comments of the distributed configuration file on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`_.
 
 More feature are already planned: see the :doc:`FUTUREWORK` section for more details.
 
