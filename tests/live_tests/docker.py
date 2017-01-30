@@ -149,7 +149,7 @@ class DockerInstance(BGPSpeakerInstance):
 
             cmd = ('{docker} run --rm '
                    '--net={net_name} {ip_arg}={ip} '
-                   '--hostname={name} --name={prefix}{name} '
+                   '--name={prefix}{name} '
                    '{mounts} {image} {start_cmd}'.format(
                         docker=self.DOCKER_PATH,
                         net_name=self.DOCKER_NETWORK_NAME,
