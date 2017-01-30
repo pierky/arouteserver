@@ -15,6 +15,8 @@ Example: in a configuration where blackhole filtering is enabled, an instance of
                               next_hop="192.0.2.66",
                               std_comms=["65535:666"], lrg_comms=[])
 
+Travis CI log file contains the latest live tests results: https://travis-ci.org/pierky/arouteserver/
+
 How to run live tests
 ---------------------
 
