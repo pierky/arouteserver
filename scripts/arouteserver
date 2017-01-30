@@ -18,11 +18,12 @@
 import argparse
 import logging
 from logging.config import fileConfig
+import os
 import sys
 
 from pierky.arouteserver.builder import BIRDConfigBuilder
 from pierky.arouteserver.config.program import program_config
-from pierky.arouteserver.errors import ARouteServerError
+from pierky.arouteserver.errors import ARouteServerError, MissingFileError
 from pierky.arouteserver.version import __version__, COPYRIGHT_YEAR
 
 def main():
@@ -34,6 +35,15 @@ def main():
         epilog="Copyright (c) {} - Pier Carlo Chiodi - "
                "https://pierky.com".format(COPYRIGHT_YEAR)
     )
+
+    parser.add_argument(
+        "--setup",
+        help="Perform the setup of the system by copying "
+             "configuration files and templates in the proper "
+             "directories. Confirmation before each action will "
+             "be asked.",
+        action="store_true",
+        dest="setup")
 
     parser.add_argument(
         "--cfg",
@@ -126,6 +136,8 @@ def main():
     logging_setted_up = False
 
     def setup_logging(path):
+        if not os.path.exists(path):
+            raise MissingFileError(path)
         try:
             fileConfig(path)
             return True
@@ -141,6 +153,10 @@ def main():
             return False
         logging_setted_up = True
 
+    # Setup?
+    if args.setup:
+        return program_config.setup()
+
     if args.cfg_program:
         program_config.load(args.cfg_program)
 
@@ -148,12 +164,18 @@ def main():
     # program's config file.
 
     if not logging_setted_up:
-        if program_config.cfg["logging_config_file"]:
-            if not setup_logging(program_config.cfg["logging_config_file"]):
+        log_ini_path = program_config.get_cfg_file_path("logging_config_file")
+        if log_ini_path:
+            if not setup_logging(log_ini_path):
                 return False
 
     # Config builder setup
 
+    def get_cfg_path(arg_name):
+        args_dict = vars(args)
+        if arg_name in args_dict and args_dict[arg_name]:
+            return args_dict[arg_name]
+        return program_config.get_cfg_file_path(arg_name)
     def get_cfg_val(arg_name):
         args_dict = vars(args)
         if arg_name in args_dict and args_dict[arg_name]:
@@ -161,20 +183,26 @@ def main():
         return program_config.cfg[arg_name]
 
     cfg_builder_params = {
-        "cfg_general": get_cfg_val("cfg_general"),
-        "cfg_clients": get_cfg_val("cfg_clients"),
-        "cfg_bogons": get_cfg_val("cfg_bogons"),
-        "cache_dir": get_cfg_val("cache_dir"),
-        "template_dir": get_cfg_val("template_dir"),
+        "cfg_general": get_cfg_path("cfg_general"),
+        "cfg_clients": get_cfg_path("cfg_clients"),
+        "cfg_bogons": get_cfg_path("cfg_bogons"),
+        "cache_dir": get_cfg_path("cache_dir"),
+        "template_dir": get_cfg_path("template_dir"),
         "template_name": get_cfg_val("template_name"),
         "ip_ver": args.ip_ver,
     }
 
+    template_sub_dir = None
     if args.speaker == "BIRD":
         builder_class = BIRDConfigBuilder
+        template_sub_dir = "bird"
     else:
         raise ARouteServerError(
             "Unknown BGP speaker implementation: {}".format(args.speaker)
+        )
+    if template_sub_dir:
+        cfg_builder_params["template_dir"] = os.path.join(
+            cfg_builder_params["template_dir"], template_sub_dir
         )
 
     try:

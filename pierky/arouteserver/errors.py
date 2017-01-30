@@ -60,3 +60,12 @@ class PeeringDBNoInfoError(ARouteServerError):
 
 class BuilderError(ARouteServerError):
     pass
+
+class ResourceNotFoundError(ARouteServerError):
+
+    def __init__(self, err):
+        ARouteServerError.__init__(self)
+        self.err = err
+
+    def __str__(self):
+        return "Resource not found: {}".format(self.err)

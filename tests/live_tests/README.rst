@@ -20,7 +20,9 @@ Travis CI log file contains the latest live tests results: https://travis-ci.org
 How to run live tests
 ---------------------
 
-#. Build the Docker image (or pull it from `Dockerhub <https://hub.docker.com/r/pierky/bird/>`_):
+To run live tests the full repository must have been cloned locally and Docker must have been installed.
+
+1. Build the Docker image (or pull it from `Dockerhub <https://hub.docker.com/r/pierky/bird/>`_):
 
    .. code:: bash
 
@@ -32,7 +34,7 @@ How to run live tests
       # pull the image from Dockerhub
       docker pull pierky/bird:1.6.3
 
-#. Run the Python testunit using ``nose``
+2. Run the Python testunit using ``nose``:
 
    .. code:: bash
 

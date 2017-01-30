@@ -2,7 +2,7 @@ ARouteServer
 ============
 |Documentation| |Build Status|
 
-A Python tool to automatically build (and test) configurations for BGP route servers.
+A Python tool to automatically build (and test) feature-rich configurations for BGP route servers.
 
 How it works
 ------------
@@ -80,11 +80,10 @@ Features
   - **GTSM** (Generalized TTL Security Mechanism - `RFC5082`_);
   - **ADD-PATH** capability (`RFC7911`_).
 
-A comprehensive list of features can be found within the comments of the distributed configuration file on GitHub.
+A comprehensive list of features can be found within the comments of the distributed configuration file on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`_.
 
 More feature are already planned: see the `Future work <https://arouteserver.readthedocs.io/en/latest/FUTUREWORK.html>`_ section for more details.
 
-.. _Path hiding: https://tools.ietf.org/html/rfc7947#section-2.3.1
 .. _RFC7947: https://tools.ietf.org/html/rfc7947
 .. _RFC7948: https://tools.ietf.org/html/rfc7948
 .. _RFC5082: https://tools.ietf.org/html/rfc5082

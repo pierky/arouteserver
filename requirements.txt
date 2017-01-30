@@ -1,5 +1,5 @@
-ipaddr
-Jinja2
-mock
-nose
-PyYAML
+ipaddr>=2.1.11
+Jinja2>=2.9.4
+mock>=2.0.0
+nose>=1.3.7
+PyYAML>=3.12

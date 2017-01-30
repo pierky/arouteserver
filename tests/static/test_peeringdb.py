@@ -40,4 +40,3 @@ class TestPeeringDBInfo(unittest.TestCase):
         """PeeringDB network: missing data"""
         with self.assertRaises(PeeringDBNoInfoError):
             net = PeeringDBNet(2)
-            print(net)

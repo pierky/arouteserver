@@ -1,7 +1,7 @@
 ARouteServer
 ============
 
-A Python tool to automatically build (and test) configurations for BGP route servers.
+A Python tool to automatically build (and test) feature-rich configurations for BGP route servers.
 
 How it works
 ------------
@@ -36,7 +36,9 @@ How it works
 
 #. `Jinja2`_ built-in templates are used to render the final route server's configuration file.
 
-   Currently, only **BIRD** is supported.
+   .. note::
+   
+        Currently, only **BIRD** is supported.
 
 **Validation** and testing is performed using the built-in **live tests** framework: `Docker`_ instances are used to simulate several scenarios, and more custom scenarios can be built on the basis of the user's needs. More details on the :doc:`LIVETESTS` section.
 
@@ -83,7 +85,6 @@ A comprehensive list of features can be found within the comments of the distrib
 
 More feature are already planned: see the :doc:`FUTUREWORK` section for more details.
 
-.. _Path hiding: https://tools.ietf.org/html/rfc7947#section-2.3.1
 .. _RFC7947: https://tools.ietf.org/html/rfc7947
 .. _RFC7948: https://tools.ietf.org/html/rfc7948
 .. _RFC5082: https://tools.ietf.org/html/rfc5082

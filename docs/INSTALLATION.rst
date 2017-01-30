@@ -20,32 +20,35 @@ Installation
 
   More: ``virtualenv`` `installation <https://virtualenv.pypa.io/en/latest/installation.html>`_ and `usage <https://virtualenv.pypa.io/en/latest/userguide.html>`_.
 
-2. Clone the GitHub repository locally:
+2. Install the program.
+   
+        - If you plan to run :doc:`Live tests <LIVETESTS>`, to build your own scenarios or to contribute to the project, clone the GitHub repository locally and install dependencies:
+
+        .. code:: bash
+
+            # from within the previously created arouteserver directory
+            git clone https://github.com/pierky/arouteserver.git ./
+            export PYTHONPATH="`pwd`"
+            pip install -r requirements.txt
+
+
+        - If you plan to just use the program to build configurations, you can install it using ``pip``:
+
+        .. code:: bash
+
+           pip install arouteserver
+
+3. Setup your system layout (confirmation will be asked before each action):
 
   .. code:: bash
 
-    # from within the previously created arouteserver directory
-    git clone https://github.com/pierky/arouteserver.git ./
-    export PYTHONPATH="`pwd`"
+    # if you installed from GitHub
+    ./scripts/arouteserver --setup
 
-3. Install dependencies:
+    # if you used pip
+    arouteserver --setup
 
-  .. code:: bash
-
-    pip install -r requirements.txt
-
-4. Setup the default directory layout:
-
-  .. code:: bash
-
-    mkdir /etc/arouteserver
-    cp config.d/* /etc/arouteserver
-    mkdir /etc/arouteserver/templates
-    cp templates/bird/* /etc/arouteserver/templates
-
-    # this is the cache directory
-    mkdir /var/lib/arouteserver
-
+  The program will ask to create some directories (under ``/etc/arouteserver`` by detault) and to copy some files there.
   These paths can be changed by editing the ``arouteserver.yml`` program configuration file or by using command line arguments. More information in the :doc:`configuration section <CONFIG>`.
 
 External programs
