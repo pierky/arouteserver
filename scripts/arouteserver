@@ -1,0 +1,203 @@
+#!/usr/bin/env python
+
+# Copyright (C) 2017 Pier Carlo Chiodi
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+import argparse
+import logging
+from logging.config import fileConfig
+import sys
+
+from pierky.arouteserver.builder import BIRDConfigBuilder
+from pierky.arouteserver.config.program import program_config
+from pierky.arouteserver.errors import ARouteServerError
+from pierky.arouteserver.version import __version__, COPYRIGHT_YEAR
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="A Router Server v{}: a tool to automatically "
+                    "build route servers configuration.".format(
+                        __version__
+                    ),
+        epilog="Copyright (c) {} - Pier Carlo Chiodi - "
+               "https://pierky.com".format(COPYRIGHT_YEAR)
+    )
+
+    parser.add_argument(
+        "--cfg",
+        help="ARouteServer configuration file.",
+        metavar="FILE",
+        dest="cfg_program")
+
+    parser.add_argument(
+        "--speaker",
+        help="The BGP speaker target implementation for "
+             "the configuration that will be built.",
+        dest="speaker",
+        choices=["BIRD"],
+        default="BIRD")
+
+    group = parser.add_argument_group(
+        title="Route server configuration",
+        description="The following arguments override those provided "
+                    "in the program's configuration file."
+    )
+
+    group.add_argument(
+        "--general",
+        help="General route server configuration file.",
+        metavar="FILE",
+        dest="cfg_general")
+
+    group.add_argument(
+        "--clients",
+        help="Route server clients configuration file.",
+        metavar="FILE",
+        dest="cfg_clients")
+
+    group.add_argument(
+        "--bogons",
+        help="Bogons configuration file.",
+        metavar="FILE",
+        dest="cfg_bogons")
+
+    group = parser.add_argument_group(
+        title="Rendering",
+        description="The following arguments override those provided "
+                    "in the program's configuration file."
+    )
+
+    group.add_argument(
+        "--template-dir",
+        help="Directory where Jinja2 files are stored.",
+        metavar="DIR",
+        dest="template_dir")
+
+    group.add_argument(
+        "--template-file-name",
+        help="Main Jinja2 template file name.",
+        metavar="NAME",
+        dest="template_name")
+
+    group.add_argument(
+        "--ip-ver",
+        help="IP version. "
+             "Default: both IPv4 and IPv6",
+        default=None,
+        choices=[4, 6],
+        type=int,
+        dest="ip_ver")
+
+    group = parser.add_argument_group(
+        title="Program configuration",
+        description="The following arguments override those provided "
+                    "in the program's configuration file."
+    )
+
+    group.add_argument(
+        "--cache-dir",
+        help="Cache directory.",
+        metavar="DIR",
+        dest="cache_dir")
+
+    group.add_argument(
+        "--logging-config-file",
+        help="Logging configuration file, in Python fileConfig() format ("
+             "https://docs.python.org/2/library/logging.config.html"
+             "#configuration-file-format)",
+        dest="logging_config_file")
+
+    args = parser.parse_args()
+
+    # Logging setup: command line arg wins over program's config file.
+
+    logging_setted_up = False
+
+    def setup_logging(path):
+        try:
+            fileConfig(path)
+            return True
+        except Exception as e:
+            logging.error(
+                "Error processing the logging configuration file "
+                "{}: {}".format(path, str(e))
+            )
+            return False
+
+    if args.logging_config_file:
+        if not setup_logging(args.logging_config_file):
+            return False
+        logging_setted_up = True
+
+    if args.cfg_program:
+        program_config.load(args.cfg_program)
+
+    # Logging setup: if no command line arg given, use the path from
+    # program's config file.
+
+    if not logging_setted_up:
+        if program_config.cfg["logging_config_file"]:
+            if not setup_logging(program_config.cfg["logging_config_file"]):
+                return False
+
+    # Config builder setup
+
+    def get_cfg_val(arg_name):
+        args_dict = vars(args)
+        if arg_name in args_dict and args_dict[arg_name]:
+            return args_dict[arg_name]
+        return program_config.cfg[arg_name]
+
+    cfg_builder_params = {
+        "cfg_general": get_cfg_val("cfg_general"),
+        "cfg_clients": get_cfg_val("cfg_clients"),
+        "cfg_bogons": get_cfg_val("cfg_bogons"),
+        "cache_dir": get_cfg_val("cache_dir"),
+        "template_dir": get_cfg_val("template_dir"),
+        "template_name": get_cfg_val("template_name"),
+        "ip_ver": args.ip_ver,
+    }
+
+    if args.speaker == "BIRD":
+        builder_class = BIRDConfigBuilder
+    else:
+        raise ARouteServerError(
+            "Unknown BGP speaker implementation: {}".format(args.speaker)
+        )
+
+    try:
+        builder = BIRDConfigBuilder(**cfg_builder_params)
+        print(builder.render_template())
+    except ARouteServerError as e:
+        if str(e):
+            logging.error(str(e))
+        return False
+
+    return True
+
+try:
+    if main():
+        sys.exit(0)
+    else:
+        sys.exit(1)
+except ARouteServerError as e:
+    if str(e):
+        logging.error("Error: {}".format(str(e)))
+    sys.exit(1)
+except Exception as e:
+    logging.error(
+        "An unexpected error occurred: {}".format(str(e)),
+        exc_info=True)
+    sys.exit(1)

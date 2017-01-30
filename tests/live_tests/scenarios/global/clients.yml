@@ -1,0 +1,57 @@
+clients:
+        - as: 1
+          ip:
+          - "99.0.2.11"
+          - "2001:db8:1:1::11"
+          description: "AS1_1 client"
+          cfg:
+                filtering:
+                        rpsl:
+                                as_sets:
+                                - "AS-AS1"
+                                - "AS-AS1_CUSTOMERS"
+        - as: 1
+          ip:
+          - "99.0.2.12"
+          - "2001:db8:1:1::12"
+          description: "AS1_2 client"
+          cfg:
+                filtering:
+                        next_hop_policy: "same-as"
+                        rpsl:
+                                as_sets:
+                                - "AS-AS1"
+                                - "AS-AS1_CUSTOMERS"
+                blackhole_filtering:
+                        announce_to_client: False
+        - as: 2
+          ip:
+          - "99.0.2.21"
+          - "2001:db8:1:1::21"
+          description: "AS2_1 client"
+          cfg:
+                filtering:
+                        rpsl:
+                                as_sets:
+                                - "AS-AS2"
+                                - "AS-AS2_CUSTOMERS"
+        - as: 3
+          ip:
+          - "99.0.2.31"
+          - "2001:db8:1:1::31"
+          description: "AS3_1 client"
+          cfg:
+                prepend_rs_as: True
+                passive: False
+                add_path: True
+                filtering:
+                        rpsl:
+                                enforce_origin_in_as_set: False
+                                enforce_prefix_in_as_set: False
+                        black_list_pref:
+                                - prefix: "3.0.1.0"
+                                  length: 24
+                                  comment: "bad network"
+                                - prefix: "2a03:0:1::"
+                                  length: 48
+                                  comment: "bad network"

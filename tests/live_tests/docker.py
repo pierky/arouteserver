@@ -1,0 +1,206 @@
+# Copyright (C) 2017 Pier Carlo Chiodi
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+import os
+import re
+import subprocess
+import time
+
+from instances import InstanceError, BGPSpeakerInstance
+
+class DockerInstance(BGPSpeakerInstance):
+
+    DOCKER_PATH = "docker"
+    DOCKER_INSTANCE_PREFIX = "ars_"
+    DOCKER_NETWORK_NAME = "arouteserver"
+    DOCKER_NETWORK_SUBNET_IPv4 = "99.0.2.0/24"
+    DOCKER_NETWORK_SUBNET_IPv6 = "2001:db8:1:1::/64"
+
+    def __init__(self, name, ip, mount=[], **kwargs):
+        super(DockerInstance, self).__init__(name, ip)
+        self.mount = mount
+        self.image = self.DOCKER_IMAGE
+
+    @classmethod
+    def _run(cls, cmd, detached=False):
+        try:
+            if detached:
+                dev_null = open(os.devnull, "w")
+                process = subprocess.Popen(
+                    cmd.split(),
+                    stdin=None,
+                    stdout=dev_null,
+                    stderr=dev_null
+                )
+                return None
+            else:
+                stdout = subprocess.check_output(cmd.split())
+                return stdout
+        except subprocess.CalledProcessError as e:
+            raise InstanceError(
+                "Error executing the following command:\n"
+                "{}".format(cmd)
+            )
+
+    @classmethod
+    def _instance_is_running(cls, name):
+        cmd = '{docker} ps -f name={prefix}{name} --format="{{{{.ID}}}}"'.format(
+            docker=cls.DOCKER_PATH,
+            prefix=cls.DOCKER_INSTANCE_PREFIX, name=name
+        )
+        res = cls._run(cmd)
+        if not res:
+            return False
+        else:
+            return True
+
+    @classmethod
+    def _setup_networking(cls):
+        network_details = None
+        try:
+            network_details = cls._run("{} network inspect {}".format(
+                cls.DOCKER_PATH,
+                cls.DOCKER_NETWORK_NAME)
+            )
+        except:
+            # network does not exist
+            pass
+
+        if network_details is not None:
+            if cls.DOCKER_NETWORK_SUBNET_IPv4 not in network_details:
+                raise InstanceError(
+                    "Docker network '{}' exists but is on a wrong IPv4 subnet.".format(
+                        cls.DOCKER_NETWORK_NAME
+                    )
+                )
+            if cls.DOCKER_NETWORK_SUBNET_IPv6 not in network_details:
+                raise InstanceError(
+                    "Docker network '{}' exists but is on a wrong IPv6 subnet.".format(
+                        cls.DOCKER_NETWORK_NAME
+                    )
+                )
+            return
+
+        try:
+            cls._run("{} network create --ipv6 --subnet={} --subnet={} {}".format(
+                cls.DOCKER_PATH,
+                cls.DOCKER_NETWORK_SUBNET_IPv4,
+                cls.DOCKER_NETWORK_SUBNET_IPv6,
+                cls.DOCKER_NETWORK_NAME
+            ))
+        except Exception as e:
+            raise InstanceError(
+                "Error while creating Docker network '{}': {}.".format(
+                    cls.DOCKER_NETWORK_NAME, str(e)
+                )
+            )
+
+    def get_mounts(self):
+        for mount in self.mount:
+            res = {}
+            res["host"] = mount[0]
+            res["container"] = mount[1]
+            res["host_filename"] = os.path.split(mount[0])[1]
+            res["var_path"] = "{}/{}".format(self.var_dir,
+                                             res["host_filename"])
+            yield res
+
+    def update_mounts(self):
+        return
+        for mount in self.get_mounts():
+            if mount["var_path"] != mount["host"]:
+                with open(mount["var_path"], "w") as dst:
+                    with open(mount["host"], "r") as src:
+                        dst.write(src.read())
+
+    def remount(self):
+        if not self.mount:
+            return True
+
+        if not self.is_running():
+            raise InstanceNotRunning(self.name)
+
+        self.update_mounts()
+        return True
+
+    def is_running(self):
+        return self._instance_is_running(self.name)
+
+    def _get_start_cmd(self):
+        raise NotImplementedError()
+
+    def start(self):
+        self._setup_networking()
+
+        if not self.is_running():
+            self.update_mounts()
+
+            cmd = ('{docker} run --rm '
+                   '--net={net_name} {ip_arg}={ip} '
+                   '--hostname={name} --name={prefix}{name} '
+                   '{mounts} {image} {start_cmd}'.format(
+                        docker=self.DOCKER_PATH,
+                        net_name=self.DOCKER_NETWORK_NAME,
+                        ip_arg="--ip6" if ":" in self.ip else "--ip",
+                        ip=self.ip,
+                        name=self.name,
+                        prefix=self.DOCKER_INSTANCE_PREFIX,
+                        mounts=" ".join([
+                            "-v{host}:{container}".format(
+                                host=mount["var_path"],
+                                container=mount["container"]
+                            )
+                            for mount in self.get_mounts()
+                        ]),
+                        image=self.image,
+                        start_cmd=self._get_start_cmd()
+                    )
+            )
+
+            res = self._run(cmd, detached=True)
+            time.sleep(3)
+            if not self.is_running():
+                raise InstanceError(
+                    "Can't run detached instance: {}\n"
+                    "cmd:\n"
+                    "{}".format(self.name, cmd)
+                )
+        else:
+            raise InstanceError("Instance '{}' already running.".format(self.name))
+
+    def stop(self):
+        if not self.is_running():
+            return
+
+        cmd = '{docker} stop --time=2 {prefix}{name}'.format(
+            docker=self.DOCKER_PATH,
+            prefix=self.DOCKER_INSTANCE_PREFIX,
+            name=self.name
+        )
+        res = self._run(cmd)
+        return res
+
+    def run_cmd(self, args):
+        if not self.is_running():
+            raise InstanceNotRunning(self.name)
+
+        cmd = '{docker} exec -it {prefix}{name} {args}'.format(
+            docker=self.DOCKER_PATH,
+            prefix=self.DOCKER_INSTANCE_PREFIX,
+            name=self.name,
+            args=" ".join(args) if isinstance(args, list) else args
+        )
+        res = self._run(cmd)
+        return res

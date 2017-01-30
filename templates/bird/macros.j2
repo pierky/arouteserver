@@ -1,0 +1,84 @@
+{% macro write_prefix_list(prefix_list) %}
+
+{% if prefix_list %}
+{% for entry in prefix_list if entry.prefix is current_ipver %}
+		# {{ entry.comment }}
+		{{ entry.prefix }}/{{ entry.length -}}
+		{%- if not entry.exact -%}
+		{{ "{" }}
+		{%- 	if entry.ge -%}
+		{{ 		entry.ge }}
+		{%- 	else -%}
+		{{		entry.length }}
+		{%- 	endif -%}
+		{{ "," }}
+		{%- 	if entry.le -%}
+		{{ 		entry.le }}
+		{%- 	else -%}
+		{{		entry.max_length }}
+		{%- 	endif -%}
+		{{ "}" }}
+		{%- endif %}
+		{% if not loop.last %}, {% endif %}
+{% if not loop.last %}
+
+
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endmacro %}
+
+{% macro write_community(comm, replace_peer_as=False) %}
+{{- "(" -}}
+{% for part in comm.split(":") %}
+{% if part == "peer_as" and replace_peer_as %}{{ "*" }}{% else %}{{ part }}{% endif %}{% if not loop.last %}, {% endif %}
+{% endfor %}
+{{- ")" -}}
+{% endmacro %}
+
+{% macro del_communities(comm, replace_peer_as=False) %}
+{% if comm %}
+{%	if comm.std %}
+        bgp_community.delete([{{ write_community(comm.std, replace_peer_as) }}]);
+{%	endif %}
+{%	if comm.lrg %}
+        bgp_large_community.delete([{{ write_community(comm.lrg, replace_peer_as) }}]);
+{%	endif %}
+{%	if comm.ext %}
+        bgp_ext_community.delete([{{ write_community(comm.ext, replace_peer_as) }}]);
+{%	endif %}
+{% endif %}
+{% endmacro %}
+
+{% macro add_communities(comm) %}
+
+{% if comm %}
+{%	if comm.std %}
+		bgp_community.add({{ write_community(comm.std) }});
+{%	endif %}
+{%	if comm.lrg %}
+		bgp_large_community.add({{ write_community(comm.lrg) }});
+{% 	endif %}
+{%	if comm.ext %}
+		bgp_ext_community.add({{ write_community(comm.ext) }});
+{% 	endif %}
+{% endif %}
+{% endmacro %}
+
+{% macro match_communities(comm, if_match) %}
+
+{% if comm %}
+{%	if comm.std %}
+	if {{ write_community(comm.std) }} ~ bgp_community then
+		{{ if_match }}
+{%	endif %}
+{%	if comm.lrg %}
+	if {{ write_community(comm.lrg) }} ~ bgp_large_community then
+		{{ if_match }}
+{% 	endif %}
+{%	if comm.ext %}
+	if {{ write_community(comm.ext) }} ~ bgp_ext_community then
+		{{ if_match }}
+{% 	endif %}
+{% endif %}
+{% endmacro %}

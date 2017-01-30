@@ -1,0 +1,5 @@
+ipaddr
+Jinja2
+mock
+nose
+PyYAML

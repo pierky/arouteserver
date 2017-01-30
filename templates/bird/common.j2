@@ -1,0 +1,150 @@
+{% from 'macros.j2' import write_prefix_list %}
+{% from 'macros.j2' import del_communities %}
+{% from 'macros.j2' import match_communities %}
+# ---------------------------------------------------------
+# BOGONS
+
+# This function returns True if 'net' is a bogon prefix
+# or falls within a bogon prefix.
+function prefix_is_bogon()
+prefix set bogons;
+{
+	bogons = [
+	{{- write_prefix_list(bogons) }}
+	];
+
+	if net ~ bogons then return true;
+	return false;
+}
+
+# This function returns True if 'net' falls within a
+# prefix contained in the global blacklist (for example,
+# local networks)
+function prefix_is_in_global_blacklist()
+prefix set global_blacklist;
+{
+	{% if cfg.filtering.global_black_list_pref %}
+	global_blacklist = [
+	{{- write_prefix_list(cfg.filtering.global_black_list_pref) }}
+	];
+
+	if net ~ global_blacklist then return true;
+	{% else %}
+	# No prefixes configured under the cfg.filtering.global_black_list_pref section.
+	{% endif %}
+	return false;
+}
+
+# This function returns True if the length of 'net' prefix
+# falls within the range 'min'-'max' (included).
+function prefix_len_is_valid (int pref_len_min; int pref_len_max) {
+	if net.len < pref_len_min then return false;
+	if net.len > pref_len_max then return false;
+	return true;
+}
+
+# This function returns True if the AS_PATH contains one or
+# more private/reserved ASN.
+function as_path_contains_invalid_asn() 
+int set invalid_asns;
+{
+	# http://www.iana.org/assignments/as-numbers/as-numbers.xhtml
+	invalid_asns = [
+		# 16-bit
+		0,			# Reserved. RFC7607
+		23456,			# AS_TRANS. RFC6793
+		64496..64511,		# Reserved for use in documentation and sample code. RFC5398
+		64512..65534,		# Reserved for Private Use. RFC6996
+		65535,			# Reserved. RFC7300
+
+		# 32-bit
+		65536..65551,		# Reserved for use in documentation and sample code. RFC5398
+		65552..131071,		# Reserved.
+		4200000000..4294967294, # Reserved for Private Use. [RFC6996]
+		4294967295		# Reserved. RFC7300
+	];
+	return bgp_path ~ invalid_asns;
+}
+
+# This function scrubs BGP communities used by the route server
+# for signaling purpose toward its clients. (RFC7454, Section 11)
+# It must be applied on prefixes entering the route server.
+function scrub_communities_in() {
+{% for name in ("origin_present_in_as_set", "origin_not_present_in_as_set", "prefix_present_in_as_set", "prefix_not_present_in_as_set", "roa_valid", "roa_invalid", "roa_unknown" ) %}
+	# {{ name }}
+{{ del_communities(cfg.communities[name]) }}
+{% endfor %}
+}
+
+# This function scrubs BGP communities used by clients to instruct
+# the route server to perform some actions.
+# It must be applied on prefixes leaving the route server.
+function scrub_communities_out() {
+{% for name in ("blackholing", "do_not_announce_to_any", "prepend_once_to_any", "prepend_twice_to_any", "prepend_thrice_to_any") %}
+	# {{ name }}
+{{ del_communities(cfg.communities[name]) }}
+{% endfor %}
+{% for name in ("do_not_announce_to_peer", "announce_to_peer") %}
+	# {{ name }}
+{{ del_communities(cfg.communities[name], True) }}
+{% endfor %}
+}
+
+# This function verifies if the prefix is tagged with one of
+# the blackhole filtering communities.
+function is_blackhole_filtering_request() {
+{% if ( ip_ver == 4 and cfg.blackhole_filtering.policy_ipv4 ) or
+	( ip_ver == 6 and cfg.blackhole_filtering.policy_ipv6 ) %}
+	if (65535, 666) ~ bgp_community then return true;
+{{ match_communities(cfg.communities.blackholing, "return true;") }}
+{% endif %}
+	return false;
+}
+
+# This function must be applied to outgoing prefixes.
+# It applies the blackhole filtering policy to the current prefix.
+function apply_blackhole_filtering_policy() {
+{% if ip_ver == 4 and cfg.blackhole_filtering.policy_ipv4 == "propagate-unchanged" %}
+	# Configured policy: propagate-unchanged
+	{{ del_communities(cfg.communities.blackholing) }}
+	bgp_community.add((65535, 666));
+{% elif ip_ver == 4 and cfg.blackhole_filtering.policy_ipv4 == "rewrite-next-hop" %}
+	# Configured policy: rewrite-next-hop
+	{{ del_communities(cfg.communities.blackholing) }}
+	bgp_community.add((65535, 666));
+	bgp_next_hop = {{ cfg.blackhole_filtering.rewrite_next_hop_ipv4 }};
+{% elif ip_ver == 6 and cfg.blackhole_filtering.policy_ipv6 == "propagate-unchanged" %}
+	# Configured policy: propagate-unchanged
+	{{ del_communities(cfg.communities.blackholing) }}
+	bgp_community.add((65535, 666));
+{% elif ip_ver == 6 and cfg.blackhole_filtering.policy_ipv6 == "rewrite-next-hop" %}
+	# Configured policy: rewrite-next-hop
+	{{ del_communities(cfg.communities.blackholing) }}
+	bgp_community.add((65535, 666));
+	bgp_next_hop = {{ cfg.blackhole_filtering.rewrite_next_hop_ipv6 }};
+{% else %}
+	reject "blackhole filtering requested but no policy given - REJECTING ", net;
+{% endif %}
+}
+
+# This function verifies if the current prefix can be announced to
+# the given client on the basis of the attached control BGP
+# communities.
+function prefix_can_be_announced_to(int peer_as) {
+{% if cfg.control_communities %}
+	{{ match_communities(cfg.communities.do_not_announce_to_peer, "return false;") }}
+	{{ match_communities(cfg.communities.announce_to_peer, "return true;") }}
+	{{ match_communities(cfg.communities.do_not_announce_to_any, "return false;") }}
+{% endif %}
+	return true;
+}
+
+# This function verifies if the current prefix matches one of the
+# control communities in charge of prepending client's ASN.
+function apply_prepend(int peer_as) {
+{% if cfg.control_communities %}
+	{{ match_communities(cfg.communities.prepend_once_to_any, "{ bgp_path.prepend(bgp_path.first); return true; }") }}
+	{{ match_communities(cfg.communities.prepend_twice_to_any, "{ bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); return true; }") }}
+	{{ match_communities(cfg.communities.prepend_thrice_to_any, "{ bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); return true; }") }}
+{% endif %}
+}

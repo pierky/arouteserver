@@ -1,0 +1,16 @@
+{% if ip_ver == 4 %}
+{% set max_pref_length = 32 %}
+{% else %}
+{% set max_pref_length = 128 %}
+{% endif %}
+
+{% include "header.j2" %}
+
+
+{% include "common.j2" %}
+
+
+{% include "rpki.j2" %}
+
+
+{% include "clients.j2" %}

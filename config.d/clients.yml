@@ -1,0 +1,84 @@
+clients:
+    # Client's ASN.
+  - as: 111
+
+    # Client's IP address(es).
+    # For clients with multiple IP addresses (dual-stack clients
+    # for example) a list of addresses can be provided here:
+    # ip:
+    #   - "192.0.2.11"
+    #   - "2001:db8:1:1::11"
+    ip: "192.0.2.11"
+
+    # A brief description.
+    #description: ""
+
+    # The following configuration statements are optional.
+    # Settings provided here override those provided in the
+    # general configuration on a client-by-client basis.
+    #
+    # Please pay attention to the following client specific
+    # settings:
+    #
+    # - filtering.black_list_pref
+    # - filtering.rpsl.as_sets
+    #
+    # Please refer to the general configuration file for more
+    # details.
+
+    cfg:
+      #prepend_rs_as: False
+
+      #passive: True
+
+      #gtsm: False
+
+      #add_path: False
+
+      filtering:
+
+        #next_hop_policy: "strict"
+
+        #ipv4_pref_len:
+        #  min: 8
+        #  max: 24
+        #ipv6_pref_len:
+        #  min: 12
+        #  max: 48
+
+        # List of prefixes that are unconditionally rejected
+        # for this client.
+        black_list_pref:
+          #- prefix:
+          #  length:
+          #  comment: ""
+
+        #max_as_path_len: 32
+
+        #reject_invalid_as_in_as_path: True
+
+        rpsl:
+
+          # Client's AS-SET(s) can be set here.
+          as_sets:
+          #- "NAME1"
+          #- "NAME2"
+
+          #enforce_origin_in_as_set: True
+          #enforce_prefix_in_as_set: True
+
+        max_prefix:
+          #action: "shutdown"
+          #peering_db: True
+
+          #limit_ipv4: 170000
+          #limit_ipv6:  12000
+
+      blackhole_filtering:
+        #announce_to_client: True
+
+  - as: 222
+
+    # Client's IP address.
+    ip: "192.0.2.222"
+

@@ -1,0 +1,22 @@
+cfg:
+        rs_as: 999
+        router_id: "99.0.2.2"
+        gtsm: False
+        filtering:
+                rpsl:
+                        tag_as_set: True
+                        enforce_origin_in_as_set: False
+                        enforce_prefix_in_as_set: False
+        communities:
+                prefix_present_in_as_set:
+                        std: "rs_as:64512"
+                        lrg: "rs_as:0:64512"
+                prefix_not_present_in_as_set:
+                        std: "rs_as:64513"
+                        lrg: "rs_as:0:64513"
+                origin_present_in_as_set:
+                        std: "rs_as:64514"
+                        lrg: "rs_as:0:64514"
+                origin_not_present_in_as_set:
+                        std: "rs_as:64515"
+                        lrg: "rs_as:0:64515"

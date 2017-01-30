@@ -1,0 +1,50 @@
+router id 99.0.2.31;
+
+log "/var/log/bird.log" all;
+log syslog all;
+debug protocols all;
+
+protocol device { }
+
+protocol static own_prefixes {
+	route {{ data.AS3_blacklist1 }} reject;
+        route {{ data.AS3_cc_AS1only }} reject;
+	route {{ data.AS3_cc_not_AS1 }} reject;
+	route {{ data.AS3_cc_none }} reject;
+	route {{ data.AS3_prepend1any }} reject;
+	route {{ data.AS3_prepend2any }} reject;
+	route {{ data.AS3_prepend3any }} reject;
+}
+
+filter to_rs {
+	if net = {{ data.AS3_cc_AS1only }} then {
+		bgp_community.add((999,1));
+		bgp_community.add((0,999));
+	}
+	if net = {{ data.AS3_cc_not_AS1 }} then {
+		bgp_community.add((0,1));
+	}
+	if net = {{ data.AS3_cc_none }} then {
+		bgp_community.add((0,999));
+	}
+	if net = {{ data.AS3_prepend1any }} then {
+		bgp_community.add((999,65501));
+	}
+	if net = {{ data.AS3_prepend2any }} then {
+		bgp_community.add((999,65502));
+	}
+	if net = {{ data.AS3_prepend3any }} then {
+		bgp_community.add((999,65503));
+	}
+	accept;
+}
+protocol bgp the_rs {
+	local as 3;
+	neighbor {{ data.rs_IPAddress }} as 999;
+	passive on;
+	add paths rx;
+	import all;
+	export filter to_rs;
+	connect delay time 1;
+	connect retry time 1;
+}

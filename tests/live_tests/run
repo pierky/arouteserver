@@ -1,0 +1,30 @@
+#!/bin/bash
+
+function instance_is_running() {
+        # $1 instance name
+        # ret:
+        #       0 is running
+        #       1 is NOT running
+
+        ID=`docker ps -f name=ars_$1 --format="{{.ID}}"`
+
+        if [ -n "$ID" ]; then
+                return 0
+        else
+                return 1
+        fi
+}
+
+INSTANCE_NAME="$1"
+
+shift
+
+instance_is_running "$INSTANCE_NAME"
+
+if [ $? -eq 0 ]; then
+	# instance already running
+	docker exec -it ars_$INSTANCE_NAME "$@"
+else
+	echo "Instance not running."
+fi
+

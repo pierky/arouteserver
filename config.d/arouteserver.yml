@@ -1,0 +1,29 @@
+# Logging configuration file, in Python fileConfig() format
+# (https://docs.python.org/2/library/logging.config.html
+#  #configuration-file-format)
+logging_config_file: "/etc/arouteserver/log.ini"
+
+# Route server's general configuration file.
+cfg_general: "/etc/arouteserver/general.yml"
+
+# Clients configuration file.
+cfg_clients: "/etc/arouteserver/clients.yml"
+
+# Bogon prefixes configuration file.
+cfg_bogons: "/etc/arouteserver/bogons.yml"
+
+# Directory where Jinja2 templates are stored.
+template_dir: "/etc/arouteserver/templates"
+
+# Main file used to render the configuration.
+template_name: "main.j2"
+
+# Directory where cached data are stored.
+cache_dir: "/var/lib/arouteserver"
+
+# Path to the 'bgpq3' external program.
+bgpq3_path: "bgpq3"
+
+# Cache expiry time, in seconds.
+cache_expiry_time: 43200
+

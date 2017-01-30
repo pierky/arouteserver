@@ -1,0 +1,243 @@
+{% from 'macros.j2' import write_prefix_list %}
+{% from 'macros.j2' import add_communities %}
+
+{% macro write_max_pref_action(action) %}
+{% if action == "shutdown" %}disable
+{% elif action == "restart" %}restart
+{% elif action == "block" %}block
+{% else %}warn
+{% endif %}
+{% endmacro %}
+# ---------------------------------------------------------
+# MEMBERS
+
+{% for client in clients if client.ip is current_ipver %}
+
+{# {% if client.cfg.filtering.rpsl.enforce_origin_in_as_set or client.cfg.filtering.rpsl.enforce_prefixi_in_as_set or cfg.filtering.rpsl.tag_as_set %} #}
+
+# AS-SET for {{ client.id }}
+function origin_as_is_in_{{ client.id }}_as_set()
+int set {{ client.id }}_as_set;
+{
+{%	if client.cfg.filtering.rpsl.as_set_asns %}
+	{{ client.id }}_as_set = [
+	{%+ for asn in client.cfg.filtering.rpsl.as_set_asns %}{{ asn }}{% if not loop.last %}, {% endif %}{% endfor %}
+
+	];
+	return bgp_path.last ~ {{ client.id }}_as_set;
+{%	else %}
+	return false;
+{%	endif %}
+}
+
+# R-SET for {{ client.id }}
+function prefix_is_in_{{ client.id }}_as_set()
+prefix set {{ client.id }}_r_set;
+{
+{%	if client.cfg.filtering.rpsl.as_set_prefixes %}
+	{{ client.id }}_r_set = [
+	{{- write_prefix_list(client.cfg.filtering.rpsl.as_set_prefixes) }}
+
+	];
+	return net ~ {{ client.id }}_r_set;
+{%	else %}
+	return false;
+{%	endif %}
+}
+{# {% endif %} #}
+
+function next_hop_is_valid_for_{{ client.id }}()
+{
+	# Checks if NEXT_HOP is one of those allowed for prefixes announced by {{ client.id }}
+	{% if client.cfg.filtering.next_hop_policy == "strict" %}
+	if bgp_next_hop = {{ client.ip }} then return true;
+	{% else %}
+	{% for as, same_as_clients in clients|groupby("as") if as == client.as %}
+	{% for same_as_client in same_as_clients if same_as_client.ip is current_ipver %}
+	if bgp_next_hop = {{ same_as_client.ip }} then return true;	# {{ same_as_client.id }}
+	{% endfor %}
+	{% endfor %}
+	{% endif %}
+	return false;
+}
+
+{% if client.cfg.filtering.black_list_pref %}
+function prefix_is_in_{{ client.id }}_blacklist()
+prefix set {{ client.id }}_blacklist;
+{
+	{{ client.id }}_blacklist = [
+	{{- write_prefix_list(client.cfg.filtering.black_list_pref) }}
+	];
+	return net ~ {{ client.id }}_blacklist;
+}
+{% endif %}
+
+filter receive_from_{{ client.id }} {
+	if !(source = RTS_BGP ) then
+		reject "source != RTS_BGP - REJECTING ", net;
+
+	scrub_communities_in();
+
+	# NEXT_HOP
+	if !next_hop_is_valid_for_{{ client.id }}() then
+		reject "NEXT_HOP [", bgp_next_hop, "] not allowed - REJECTING ", net;
+
+	# AS_PATH: length
+	if bgp_path.len > {{ cfg.filtering.max_as_path_len }} then
+		reject "AS_PATH len [", bgp_path.len ,"] longer than {{ cfg.filtering.max_as_path_len }} - REJECTING ", net;
+
+	# AS_PATH: left-most ASN
+	if bgp_path.first != {{ client.as }} then
+		reject "invalid left-most ASN [", bgp_path.first, "] - REJECTING ", net;
+
+	{% if client.cfg.filtering.reject_invalid_as_in_as_path %}
+	# AS_PATH: invalid ASNs
+	if as_path_contains_invalid_asn() then
+		reject "AS_PATH [", bgp_path ,"] contains invalid ASN - REJECTING ", net;
+	{% endif %}
+
+	{% if client.cfg.filtering.rpsl.enforce_origin_in_as_set or cfg.filtering.rpsl.tag_as_set %}
+	# AS_PATH: enforce origin via AS-SET (or tag)
+	if !origin_as_is_in_{{ client.id }}_as_set() then {
+	{%	if client.cfg.filtering.rpsl.enforce_origin_in_as_set %}
+		reject "origin ASN [", bgp_path.last, "] not in allowed as-sets - REJECTING ", net;
+	{%	else %}
+	{%		if cfg.communities.origin_not_present_in_as_set %}
+		{{ add_communities(cfg.communities.origin_not_present_in_as_set) }}
+	{%		else %}
+		print "'tag_as_set' is True but 'origin_not_present_in_as_set' community is not given";
+	{%		endif %}
+	{%	endif %}
+	{%	if cfg.filtering.rpsl.tag_as_set and cfg.communities.origin_present_in_as_set %}
+	} else {
+	{{	add_communities(cfg.communities.origin_present_in_as_set) }}
+	{%	endif %}
+	}
+	{% endif %}
+
+	# Prefix: global blacklist
+	if prefix_is_in_global_blacklist() then
+		reject "prefix is in global blacklist - REJECTING ", net;
+
+	{% if client.cfg.filtering.black_list_pref %}
+	# Prefix: client's blacklist
+	if prefix_is_in_{{ client.id }}_blacklist() then
+		reject "prefix is in client's blacklist - REJECTING ", net;
+	{% endif %}
+
+	# Prefix: bogon
+	if prefix_is_bogon() then
+		reject "prefix is bogon - REJECTING ", net;
+
+	{% if client.cfg.filtering.rpsl.enforce_prefix_in_as_set or cfg.filtering.rpsl.tag_as_set %}
+	# Prefix: enforce prefix via AS-SET (or tag)
+	if !prefix_is_in_{{ client.id }}_as_set() then {
+	{%	if client.cfg.filtering.rpsl.enforce_prefix_in_as_set %}
+		reject "prefix not in client's r_set - REJECTING ", net;
+	{%	else %}
+	{%		if cfg.communities.prefix_not_present_in_as_set %}
+		{{ add_communities(cfg.communities.prefix_not_present_in_as_set) }}
+	{%		else %}
+		print "'tag_as_set' is True but 'prefix_not_present_in_as_set' community is not given";
+	{%		endif %}
+	{%	endif %}
+	{%	if cfg.filtering.rpsl.tag_as_set and cfg.communities.prefix_present_in_as_set %}
+	} else {
+	{{	add_communities(cfg.communities.prefix_present_in_as_set) }}
+	{%	endif %}
+	}
+	{% endif %}
+
+	# Blackhole request?
+	if is_blackhole_filtering_request() then {
+		accept "blackhole filtering request from {{ client.id }} - ACCEPTING ", net;
+	} else {
+		# Prefix: length
+		{% if ip_ver == 4 %}
+		{% set min_pref_len = client.cfg.filtering.ipv4_pref_len.min %}
+		{% set max_pref_len = client.cfg.filtering.ipv4_pref_len.max %}
+		{% else %}
+		{% set min_pref_len = client.cfg.filtering.ipv6_pref_len.min %}
+		{% set max_pref_len = client.cfg.filtering.ipv6_pref_len.max %}
+		{% endif %}
+		if !prefix_len_is_valid({{ min_pref_len }}, {{ max_pref_len }}) then
+			reject "prefix len [", net.len, "] not in {{ min_pref_len }}-{{ max_pref_len }} - REJECTING ", net;
+	}
+
+	accept;
+}
+
+filter announce_to_{{ client.id }} {
+	# Blackhole request?
+	if is_blackhole_filtering_request() then {
+	{% if not client.cfg.blackhole_filtering.announce_to_client %}
+		reject "client {{ client.id }} not enabled to receive blackhole prefixes - NOT ANNOUNCING ", net, " TO {{ client.id}}";
+	{% else %}
+		apply_blackhole_filtering_policy();
+	{% endif %}
+	}
+
+	# BGP control communities
+	if !prefix_can_be_announced_to({{ client.as }}) then
+		reject "prefix didn't pass control communities checks - NOT ANNOUNCING ", net, " TO {{ client.id }}";
+
+	apply_prepend({{ client.as }});
+
+	{% if client.cfg.prepend_rs_as %}
+	# {{ client.id }} has been configured with 'prepend_rs_as'
+	bgp_path.prepend({{ cfg.rs_as }});
+	{% endif %}
+
+	scrub_communities_out();
+
+	accept;
+}
+
+protocol bgp {{ client.id }} {
+	{% if client.description %}
+	description "{{ client.description }}";
+	{% endif %}
+
+	local as {{ cfg.rs_as }};
+	neighbor {{ client.ip }} as {{ client.as }};
+	rs client;
+
+	{% if client.cfg.passive %}
+	passive on;
+	{% else %}
+	passive off;
+	{% endif -%}
+
+	{% if client.cfg.gtsm %}
+	ttl security on;
+	{% else %}
+	ttl security off;
+	{% endif -%}
+
+	{% if client.cfg.add_path %}
+	add paths tx;
+	{% endif %}
+
+	{% if cfg.path_hiding %}
+	secondary;
+	{% endif %}
+
+	{% if client.cfg.filtering.max_prefix.action %}
+	{%	if ip_ver == 4 and client.cfg.filtering.max_prefix.limit_ipv4 %}
+	{%		set max_pref_limit = client.cfg.filtering.max_prefix.limit_ipv4 %}
+	{% 	elif ip_ver == 6 and client.cfg.filtering.max_prefix.limit_ipv6 %}
+	{%      	set max_pref_limit = client.cfg.filtering.max_prefix.limit_ipv6 %}
+	{% 	else %}
+	{%		set max_pref_limit = 0 %}
+	{% 	endif %}
+	{% 	if max_pref_limit > 0 %}
+	import limit {{ max_pref_limit }} action {{ write_max_pref_action(client.cfg.filtering.max_prefix.action) }};
+	{% 	endif %}
+	{% endif %}
+
+	import keep filtered on;
+	import filter receive_from_{{ client.id }};
+	export filter announce_to_{{ client.id }};
+}
+
+{% endfor -%}

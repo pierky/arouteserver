@@ -1,0 +1,41 @@
+router id 99.0.2.51;
+
+log "/var/log/bird.log" all;
+log syslog all;
+debug protocols all;
+
+protocol device { }
+
+protocol static own_prefixes 
+{
+	route {{ data.AS5_pref_ok_origin_ok1 }} reject;
+	route {{ data.AS5_pref_ko_origin_ok1 }} reject;
+	route {{ data.AS3_pref_ok_origin_ko3 }} reject;
+	route {{ data.AS3_pref_ko_origin_ko1 }} reject;
+}
+
+function fake_AS3() {
+	# build an AS_PATH == " 3", so that the
+	# origin ASN (3) is not included in AS5's AS-SET
+	# and the prefix is marked with the
+	# not_present_in_as_set community.
+	bgp_path.delete(5);
+	bgp_path.prepend(3);
+	bgp_path.prepend(5);
+}
+filter outgoing {
+	if net = {{ data.AS3_pref_ok_origin_ko3 }} then fake_AS3();
+	if net = {{ data.AS3_pref_ko_origin_ko1 }} then fake_AS3();
+	accept;
+}
+
+protocol bgp the_rs {
+	local as 5;
+	neighbor {{ data.rs_IPAddress }} as 999;
+	next hop self;
+	import all;
+	export filter outgoing;
+	connect delay time 1;
+	connect retry time 1;
+}
+

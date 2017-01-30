@@ -1,0 +1,55 @@
+router id 99.0.2.21;
+
+log "/var/log/bird.log" all;
+log syslog all;
+debug protocols all;
+
+protocol device { }
+
+protocol static own_prefixes {
+        route {{ data.AS2_good1 }} reject;
+	route {{ data.AS2_good2 }} reject;
+}
+
+protocol static bh_prefixes {
+	route {{ data.AS2_blackhole1 }} reject;
+	route {{ data.AS2_blackhole2 }} reject;
+	route {{ data.AS2_blackhole3 }} reject;
+}
+
+filter to_rs {
+	if net = {{ data.AS2_blackhole1 }} then
+		bgp_community.add((65535,666));
+
+	if net = {{ data.AS2_blackhole2 }} then
+		bgp_community.add((65534,0));
+
+	if net = {{ data.AS2_blackhole3 }} then
+		bgp_large_community.add((65534,0,0));
+	accept;
+}
+
+filter to_AS101 {
+	if proto = "own_prefixes" then accept;
+	reject;
+}
+
+protocol bgp the_rs {
+	local as 2;
+	neighbor {{ data.rs_IPAddress }} as 999;
+	next hop self;
+	import all;
+	export filter to_rs;
+	connect delay time 1;
+	connect retry time 1;
+}
+
+protocol bgp AS101 {
+	local as 2;
+	neighbor {{ data.AS101_IPAddress }} as 101;
+	import all;
+	export filter to_AS101;
+	connect delay time 1;
+	connect retry time 1;
+}
+

@@ -1,0 +1,7 @@
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+  blackhole_filtering:
+    policy_ipv4: "propagate-unchanged"
+    policy_ipv6: "propagate-unchanged"
+

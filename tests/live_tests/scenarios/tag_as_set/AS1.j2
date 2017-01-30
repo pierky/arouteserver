@@ -1,0 +1,17 @@
+router id 99.0.2.11;
+
+log "/var/log/bird.log" all;
+log syslog all;
+debug protocols all;
+
+protocol device { }
+protocol bgp the_rs {
+
+	local as 1;
+	neighbor {{ data.rs_IPAddress }} as 999;
+	next hop self;
+	import all;
+	export all;
+	connect delay time 1;
+	connect retry time 1;
+}

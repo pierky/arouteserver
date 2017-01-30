@@ -1,0 +1,7 @@
+#!/bin/bash
+
+INSTANCE_NAME="$1"
+
+shift
+
+./run $INSTANCE_NAME birdcl "$@"

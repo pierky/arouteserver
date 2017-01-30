@@ -1,0 +1,12 @@
+router id {{ cfg.router_id }};
+define rs_as = {{ cfg.rs_as }};
+
+log "/var/log/bird.log" all;
+log syslog all;
+debug protocols all;
+
+protocol device {};
+
+{% if cfg.path_hiding -%}
+table master sorted;
+{%- endif %}

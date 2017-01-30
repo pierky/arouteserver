@@ -1,0 +1,23 @@
+clients:
+        - as: 1
+          ip:
+          - "99.0.2.11"
+          - "2001:db8:1:1::11"
+          cfg:
+                filtering:
+                        max_prefix:
+                                peering_db: False
+        - as: 2
+          ip:
+          - "99.0.2.21"
+          - "2001:db8:1:1::21"
+          cfg:
+        - as: 3
+          ip:
+          - "99.0.2.31"
+          - "2001:db8:1:1::31"
+          cfg:
+                filtering:
+                        max_prefix:
+                                limit_ipv4: 2 
+                                limit_ipv6: 2 

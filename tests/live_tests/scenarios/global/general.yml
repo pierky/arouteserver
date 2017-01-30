@@ -1,0 +1,59 @@
+cfg:
+        rs_as: 999
+        router_id: "99.0.2.2"
+        gtsm: False
+        path_hiding: True
+        filtering:
+                ipv6_pref_len:
+                  min: 17
+                  max: 48
+                next_hop_policy: "strict"
+                global_black_list_pref:
+                - prefix: "99.0.2.0"
+                  length: 24
+                  comment: "Local network"
+                - prefix: "2001:db8::"
+                  length: 32
+                  comment: "Local network"
+                max_as_path_len: 6
+                rpsl:
+                        tag_as_set: False
+        blackhole_filtering:
+                policy_ipv4: "rewrite-next-hop"
+                rewrite_next_hop_ipv4: "192.0.2.66"
+                policy_ipv6: "rewrite-next-hop"
+                rewrite_next_hop_ipv6: "2001:db8:1:1::66"
+        communities:
+                blackholing:
+                        std: "65534:0"
+                        lrg: "65534:0:0"
+                origin_present_in_as_set:
+                        std: "65530:1"
+                        lrg: "rs_as:65530:1"
+                origin_not_present_in_as_set:
+                        std: "65530:0"
+                        lrg: "rs_as:65530:0"
+                do_not_announce_to_peer:
+                        std: "0:peer_as"
+                        ext: "rt:0:peer_as"
+                        lrg: "rs_as:0:peer_as"
+                announce_to_peer:
+                        std: "rs_as:peer_as"
+                        ext: "rt:rs_as:peer_as"
+                        lrg: "rs_as:rs_as:peer_as"
+                do_not_announce_to_any:
+                        std: "0:rs_as"
+                        ext: "rt:0:rs_as"
+                        lrg: "rs_as:0:rs_as"
+                prepend_once_to_any:
+                        std: "rs_as:65501"
+                        ext: "rt:rs_as:65501"
+                        lrg: "rs_as:65501:rs_as"
+                prepend_twice_to_any:
+                        std: "rs_as:65502"
+                        ext: "rt:rs_as:65502"
+                        lrg: "rs_as:65502:rs_as"
+                prepend_thrice_to_any:
+                        std: "rs_as:65503"
+                        ext: "rt:rs_as:65503"
+                        lrg: "rs_as:65503:rs_as"

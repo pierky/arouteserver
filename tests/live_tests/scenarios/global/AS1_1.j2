@@ -1,0 +1,62 @@
+router id 192.0.2.11;
+
+log "/var/log/bird.log" all;
+log syslog all;
+debug protocols all;
+
+protocol device { }
+
+protocol static own_prefixes {
+        route {{ data.AS1_good1 }} reject;
+	route {{ data.AS1_good2 }} reject;
+}
+protocol static bad_prefixes {
+	route {{ data.bogon1 }} reject;
+	route {{ data.local1 }} reject;
+	route {{ data.pref_len1 }} reject; 
+	route {{ data.peer_as1 }} reject;
+	route {{ data.invalid_asn1 }} reject;
+	route {{ data.aspath_len1 }} reject;
+}
+
+filter to_the_rs {
+	if net = {{ data.peer_as1 }} then
+		bgp_path.prepend(2);
+	if net = {{ data.invalid_asn1 }} then {
+		bgp_path.prepend(65536);
+		bgp_path.prepend(1);
+	}
+	if net = {{ data.aspath_len1 }} then {
+		bgp_path.prepend(2);
+		bgp_path.prepend(2);
+		bgp_path.prepend(2);
+		bgp_path.prepend(2);
+		bgp_path.prepend(2);
+		bgp_path.prepend(2);
+		bgp_path.prepend(1);
+	}
+	accept;
+}
+
+filter to_as101 {
+	if proto = "own_prefixes" then accept;
+	reject;
+}
+
+protocol bgp the_rs {
+	local as 1;
+	neighbor {{ data.rs_IPAddress }} as 999;
+	next hop self;
+	import all;
+	export filter to_the_rs;
+	connect delay time 1;
+	connect retry time 1;
+}
+protocol bgp AS101 {
+	local as 1;
+	neighbor {{ data.AS101_IPAddress }} as 101;
+	import all;
+	export filter to_as101;
+	connect delay time 1;
+	connect retry time 1;
+}

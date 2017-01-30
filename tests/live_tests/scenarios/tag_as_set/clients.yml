@@ -1,0 +1,38 @@
+clients:
+        - as: 1
+          ip:
+          - "99.0.2.11"
+          - "2001:db8:1:1::11"
+          description: "AS1_1 client"
+        - as: 2
+          ip:
+          - "99.0.2.21"
+          - "2001:db8:1:1::21"
+          description: "AS2_1 client"
+          cfg:
+                filtering:
+                        rpsl:
+                                as_sets:
+                                - "AS-AS2"
+        - as: 4
+          ip:
+          - "99.0.2.41"
+          - "2001:db8:1:1::41"
+          description: "AS4_1 client"
+          cfg:
+                filtering:
+                        rpsl:
+                                enforce_origin_in_as_set: True
+                                as_sets:
+                                - "AS-AS4"
+        - as: 5
+          ip:
+          - "99.0.2.51"
+          - "2001:db8:1:1::51"
+          description: "AS5_1 client"
+          cfg:
+                filtering:
+                        rpsl:
+                                enforce_prefix_in_as_set: True
+                                as_sets:
+                                - "AS-AS5"

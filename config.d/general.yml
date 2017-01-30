@@ -1,0 +1,442 @@
+cfg:
+  # The route server AS number.
+  rs_as: 999
+
+  # The route server's router ID.
+  router_id: "192.0.2.2"
+
+  # Prepend the route server's AS number to the AS_PATH of prefixes
+  # that it announces to clients.
+  # https://tools.ietf.org/html/rfc7947#section-2.2.2.1
+  #
+  # Can be overwritten on a client-by-client basis.
+  #
+  # Default: False
+  prepend_rs_as: False
+
+  # Path-hiding mitigation technique: if True, enable path
+  # hiding mitigation. (https://tools.ietf.org/html/rfc7947#section-2.3.1)
+  # BIRD: the 'secondary' option is used.
+  #   "Usually, if an export filter rejects a selected route, no
+  #   other route is propagated for that network. This option
+  #   allows to try the next route in order until one that is
+  #   accepted is found or all routes for that network are rejected."
+  #   (http://bird.network.cz/?get_doc&f=bird-6.html#bgp-secondary)
+  #
+  # Default: True
+  path_hiding: True
+
+  # Configure passive sessions.
+  #
+  # Can be overwritten on a client-by-client basis.
+  #
+  # Default: True
+  passive: True
+
+  # Use GTSM (Generalized TTL Security Mechanism).
+  # https://tools.ietf.org/html/rfc5082
+  #
+  # Can be overwritten on a client-by-client basis.
+  #
+  # Default: False
+  gtsm: False
+
+  # Use ADD-PATH (RFC7911).
+  # The router server will be configure as "able to send multiple
+  # paths to its peer".
+  #
+  # Can be overwritten on a client-by-client basis.
+  #
+  # Default: False
+  add_path: False
+
+  filtering:
+    # NEXT_HOP checks:
+    # - strict: "check that the BGP NEXT_HOP attribute for BGP
+    #   routes received from a route server client matches the
+    #   interface address of the client."
+    # - same-as: permit next-hop rewriting for the same AS; this
+    #   "allows an organization with multiple connections into an
+    #   IXP configured with different IP addresses to direct traffic
+    #   off the IXP infrastructure through any of their connections
+    #   for traffic engineering or other purposes."
+    # https://tools.ietf.org/html/rfc7948#section-4.8
+    #
+    # Can be overwritten on a client-by-client basis.
+    #
+    # Default: strict
+    next_hop_policy: "strict"
+
+    # Min and max prefix length for IPv4 and IPv6 prefixes accepted
+    # by the route server. Boundaries are inclusive.
+    #
+    # Can be overwritten on a client-by-client basis.
+    #
+    # Default: 8-24 for IPv4, 12-48 for IPv6
+    ipv4_pref_len:
+      min: 8
+      max: 24
+    ipv6_pref_len:
+      min: 12
+      max: 48
+
+    # List of prefixes that are unconditionally rejected.
+    # For example: local networks.
+    #
+    # Default: none
+    global_black_list_pref:
+      #- prefix: ""
+      #  length:
+      #  comment: "Local network"
+
+    # Max length of AS_PATH attribute.
+    #
+    # Can be overwritten on a client-by-client basis.
+    #
+    # Default: 32
+    max_as_path_len: 32
+
+    # Reject prefixes which carry private/invalid AS numbers in
+    # their AS_PATH.
+    #
+    # Can be overwritten on a client-by-client basis.
+    #
+    # Default: True
+    reject_invalid_as_in_as_path: True
+
+    rpsl:
+      # With regards of the following two options, if no AS-SET
+      # is given in the clients configuration file only the ASN
+      # of the announcing client is expanded and used to gather
+      # authorized origin ASNs and prefixes.
+
+      # Accept only prefixes whose origin ASN is registered in
+      # the expanded AS-SET of the announcing client.
+      #
+      # Can be overwritten on a client-by-client basis.
+      #
+      # Default: True
+      enforce_origin_in_as_set: True
+
+      # Accept only prefixes which are present in the expanded
+      # AS-SET of the announcing client.
+      #
+      # Can be overwritten on a client-by-client basis.
+      #
+      # Default: True
+      enforce_prefix_in_as_set: True
+
+      # Tag prefixes which are (not) present in a client's AS-SET.
+      # If a client's 'enforce_[origin|prefix]in_as_set' is True
+      # then unauthorized prefixes are rejected and not tagged.
+      # BGP communities used to tag these prefixes are
+      # '[origin|prefix]_(not_)present_in_as_set'.
+      #
+      # Default: True
+      tag_as_set: True
+
+    # NOT IMPLEMENTED YET
+    rpki:
+      # Enable RPKI ROAs checking for received prefixes.
+      # Prefixes announced by the route server to the clients are
+      # tagged with BGP communities 'roa_valid', 'roa_invalid' and
+      # 'roa_unknown'.
+      # If 'reject_invalid' is True, INVALID prefixes are rejected.
+      enabled: True
+
+      # Following configuration statements are taken into account
+      # only if rpki.enabled = True.
+
+      # RPKI ROAs source:
+      # - rtrsub: use 'rtrsub'.
+      #   (https://github.com/job/rtrsub)
+      # - rtrlib: use 'rtrlib' and 'bird-rtrlib-cli'.
+      #   (https://github.com/rtrlib/bird-rtrlib-cli)
+      data_source: "rtrsub"
+
+      # When an INVALID prefix is received reject it.
+      # If this is False, INVALID prefixes are accepted and simply
+      # announced to clients after being tagged with the 'roa_invalid'
+      # BGP community.
+      reject_invalid: True
+
+    max_prefix:
+      # If 'action' is not given, no max-prefix enforcement
+      # will be implemented.
+      #
+      # Action to be taken when the limit is hit by clients:
+      # - 'shutdown': the BGP session is disabled.
+      # - 'restart': the BGP session is restarted.
+      # - 'block': new routes are discarded.
+      # - 'warning': log a warning message.
+      #
+      # Can be overwritten on a client-by-client basis.
+      #
+      # Default: none
+      #action: "shutdown"
+
+      # Dynamically adjust max-prefix limit of each client on the
+      # basis of the following criteria, in priority order:
+      #
+      # - client's 'limit_ipv[4|6]' configuration statement, if
+      #   given;
+      # - client's ASN PeeringDB record, if enabled by the
+      #   'peering_db' option;
+      # - general limit set in 'general_limit_ipv[4|6]', if given.
+      #
+      # In the end, if no limit is found for a given AF or if
+      # it is 0, no max-prefix limit is configured fot the
+      # specific client.
+
+      # Used to set client's max-pref limit if 'limit_ipv[4|6]'
+      # option is not given for the specific client.
+      #
+      # Can be overwritten on a client-by-client basis.
+      #
+      # Default: True
+      peering_db: True
+
+      # Used to set client's max-pref limit if 'limit_ipv[4|6]'
+      # option is not given for the specific client and if the
+      # PeeringDB option is disabled or a PeeringDB record can't
+      # be found.
+      #
+      # Default: 170000 for IPv4 and 12000 for IPv6
+      #general_limit_ipv4: 170000
+      #general_limit_ipv6:  12000
+
+  blackhole_filtering:
+    # Destination-based blackholing policy: if a policy is given,
+    # accept prefixes of any length if they are tagged with the
+    # 'blackholing' BGP community and if they are "covered by an
+    # equal or shorter prefix that the neighboring network is
+    # authorized to advertise."
+    # (https://tools.ietf.org/html/rfc7999#section-3.3).
+
+    # How to treat prefixes subject to blackhole filtering.
+    #
+    # If no policy is provided here then blackhole filtering is
+    # not implemented in the route server.
+    #
+    # Options:
+    # - propagate-unchanged: the prefix is accepted and propagated
+    #   to clients unchanged. If missing, the BLACKHOLE well-known
+    #   community 65535:666 is added. Other local 'blackholing'
+    #   communities are scrubbed.
+    #   It's up to the receiving client to accept the prefix and to
+    #   discard traffic toward it.
+    # - rewrite-next-hop: same behaviour of 'propagate-unchanged'
+    #   option; in addition, the route server rewrites the NEXT_HOP
+    #   attribute of the advertised prefix to the address of the
+    #   blackhole next-hop (BN). BN should have a unique MAC
+    #   address determined by ARP/NDP used to filter L2 frames
+    #   entering clients ports on the basis of their destination
+    #   MAC address.
+    #
+    # Default: none
+    #policy_ipv4:
+    #policy_ipv6:
+
+    # IP addresses of BN used for 'rewrite-next-hop' option:
+    #
+    # Default: none
+    #rewrite_next_hop_ipv4: ""
+    #rewrite_next_hop_ipv6: ""
+
+    # How tagged prefixes should be propagated to clients.
+    # This configuration statement works together with the same
+    # client-level 'blackhole_filtering.announce_to_client' option.
+    # If here 'announce_to_client' is True, tagged prefixes
+    # are announced to clients unless they have their
+    # 'announce_to_client' option explicitly set to False.
+    # If here 'announce_to_client' is False, tagged prefixes
+    # are announced to clients only if they have the
+    # 'announce_to_client' option explicitly set to True.
+    #
+    # Can be overwritten on a client-by-client basis.
+    #
+    # Default: True
+    announce_to_client: True
+
+  # Allow clients to control outbound routing policies using BGP
+  # communities. See 'communities' section below.
+  #
+  # Default: True
+  control_communities: True
+  
+  communities:
+    # For each community name below, Standard, Large and Extended
+    # BGP Communities can be provided in the 'std', 'lrg' and 'ext'
+    # statements respectively.
+    # The 'rs_as' macro is replaced with the route server ASN given
+    # in cfg.rs_as.
+    # The 'peer_as' macro, where allowed, is replaced with the ASN
+    # of the client the prefix is announced to.
+
+    # Prefix/origin AS present in client's AS-SET.
+    #
+    # If 'tag_as_set' = True, prefixes that are (not) part of an
+    # AS-SET or whose origin ASN is (not) part of an AS-SET are 
+    # tagged with the following BGP communities, provided that they
+    # are set below.
+    #
+    # The following communities are scrubbed from inbound prefixes.
+    #
+    # Syntax:
+    # - std: x:y
+    # - lrg: x:y:z
+    # - ext: [rt|ro]:x:y
+    # The 'rs_as' macro can be used here.
+    prefix_present_in_as_set:
+      #std:
+      #lrg:
+      #ext:
+    prefix_not_present_in_as_set:
+      #std:
+      #lrg:
+      #ext:
+    origin_present_in_as_set:
+      #std:
+      #lrg:
+      #ext:
+    origin_not_present_in_as_set:
+      #std:
+      #lrg:
+      #ext:
+
+    # RPKI status.
+    #
+    # If rpki.enable = True, VALID, INVALID and UNKNOWN prefixes
+    # are tagged with the following BGP communities, provided that
+    # they are set below.
+    #
+    # The following communities are scrubbed from inbound prefixes.
+    #
+    # Syntax:
+    # - std: x:y
+    # - lrg: x:y:z
+    # - ext: [rt|ro]:x:y
+    # The 'rs_as' macro can be used here.
+    roa_valid:
+      #std:
+      #lrg:
+      #ext:
+    roa_invalid:
+      #std:
+      #lrg:
+      #ext:
+    roa_unknown:
+      #std:
+      #lrg:
+      #ext:
+ 
+    # Blackhole filtering.
+    #
+    # If a policy is given in 'blackhole_filtering', it is applied to
+    # prefixes tagged with one of the following communities:
+    # - the BLACKHOLE well-known community 65535:666, that is always
+    #   implemented if a 'blackhole_filtering' policy is given
+    #   (https://tools.ietf.org/html/rfc7999#section-5)
+    # - one of the following 'blackholing' Standard, Large or
+    #   Extended BGP communities.
+    #
+    # The following community is scrubbed from outbound prefixes.
+    #
+    # Syntax:
+    # - std: x:y
+    # - lrg: x:y:z
+    # - ext: [rt|ro]:x:y
+    # The 'rs_as' macro can be used here.
+    blackholing:
+      #std:
+      #lrg:
+      #ext:
+ 
+    # Control communities
+    # 
+    # The following communities are used only if the
+    # 'control_communities' option is True.
+    #
+    # Prefixes that are tagged with the following community are not
+    # announced to any client, unless they are also tagged with the
+    # 'announce_to_peer' communities: in this case, such prefixes are
+    # announced only to the clients whose ASN matches the value given
+    # in the 'announce_to_peer' communities.
+    #
+    # The following community is scrubbed from outbound prefixes.
+    #
+    # Syntax:
+    # - std: x:y
+    # - lrg: x:y:z
+    # - ext: [rt|ro]:x:y
+    # The 'rs_as' macro can be used here.
+    do_not_announce_to_any:
+      #std:
+      #lrg:
+      #ext:
+
+    # Prefixes that are tagged with the following community are not
+    # announced to clients whose ASN matches the value given in the
+    # community itself.
+    # If a prefix is tagged with the two conflicting communities
+    # 'do_not_announce_to_peer' and 'announce_to_peer', the prefix
+    # is not advertised to the peer.
+    #
+    # The following community is scrubbed from outbound prefixes.
+    #
+    # Fixed values:
+    # - std: 0:peer_as
+    # - lrg: rs_as:0:peer_as
+    # - ext: [rt|ro]:0:peer_as
+    do_not_announce_to_peer:
+      #std:
+      #lrg:
+      #ext:
+
+    # Prefixes that are tagged with the following community are
+    # announced to clients whose ASN matches the value given in the
+    # community itself even if they are tagged with the
+    # 'do_not_announce_to_any' community.
+    # If a prefix is tagged with the two conflicting communities
+    # 'do_not_announce_to_peer' and 'announce_to_peer', the prefix
+    # is not advertised to the peer.
+    #
+    # The following community is scrubbed from outbound prefixes.
+    #
+    # Fixed values:
+    # - std: rs_as:peer_as
+    # - lrg: rs_as:rs_as:peer_as
+    # - ext: [rt|ro]:rs_as:peer_as
+    announce_to_peer:
+      #std:
+      #lrg:
+      #ext:
+
+    # Prefixes that are tagged with the following communities are
+    # propagated to all the clients with an AS_PATH prepended one,
+    # twice or thrice with the announcing client's ASN.
+    #
+    # The following community is scrubbed from outbound prefixes.
+    #
+    # Syntax:
+    # - std: x:y
+    # - lrg: x:y:z
+    # - ext: [rt|ro]:x:y
+    # The 'rs_as' macro can be used here.
+    do_not_announce_to_any:
+      #std:
+      #lrg:
+      #ext:
+    prepend_once_to_any:
+      #std:
+      #lrg:
+      #ext:
+    prepend_twice_to_any:
+      #std:
+      #lrg:
+      #ext:
+    prepend_thrice_to_any:
+      #std:
+      #lrg:
+      #ext:
+
