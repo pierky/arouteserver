@@ -11,11 +11,15 @@ Short term
 - Live tests: provide a skeleton to ease building of new live test scenarios.
 - Packaging and better installation process
 - Add options for bgpq3 (sources)
+- Examples: provide examples of route server configurations
+- Doc: Contributing section
+- Templates: textual representation of configurations
 
 Mid term
 --------
 
 - Doc: better documentation
+- Doc: schema of data that can be used within J2 templates
 - New feature: tier-1 list
 
 Long term
