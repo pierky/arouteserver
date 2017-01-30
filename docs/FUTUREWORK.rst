@@ -10,6 +10,7 @@ Short term
 - Live tests: path hiding mitigation live test
 - Live tests: provide a skeleton to ease building of new live test scenarios.
 - Packaging and better installation process
+- Add options for bgpq3 (sources)
 
 Mid term
 --------
