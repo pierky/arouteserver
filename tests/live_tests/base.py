@@ -155,7 +155,7 @@ class LiveScenario(ARouteServerTestCase):
 
     @classmethod
     def _setUpClass(cls):
-        print("Setting instances up...")
+        print("{}: setting instances up...".format(cls.SHORT_DESCR))
 
         cls.mock_rpsl()
         cls._setup_instances()
@@ -182,7 +182,7 @@ class LiveScenario(ARouteServerTestCase):
         if cls.DO_NOT_STOP_INSTANCES:
             cls.debug("Skipping instances stopping")
             return
-        print("Stopping instances...")
+        print("{}: stopping instances...".format(cls.SHORT_DESCR))
         for instance in cls.INSTANCES:
             cls.debug("Stopping instance '{}'...".format(instance.name))
             instance.stop()

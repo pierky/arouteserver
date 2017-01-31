@@ -13,7 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
+
 from ...base import LiveScenario
+from ....mock_peeringdb import mock_peering_db
 
 class RichConfigExampleScenario(LiveScenario):
     __test__ = False
