@@ -1,3 +1,50 @@
+# The 'asns' section can be used to provide some AS-level options
+# that are shared among all the clients from the same AS.
+#
+# The whole section is optional.
+asns:
+  # The AS in the format "AS<ASN>".
+  AS3333:
+
+    # AS's authorized AS-SET(s) can be set here.
+    #
+    # If the client's configuration does not provide any AS-SET
+    # and prefixes/origin enforcing is used then the following
+    # AS-SETs are used.
+    #
+    # Example:
+    #   asns:
+    #     AS1:
+    #       as_sets:
+    #         - "AS-AS1"
+    #     AS2:
+    #       as_sets:
+    #         - "AS-AS2"
+    #   clients:
+    #     - asn: 1
+    #       ip: "192.0.2.11"
+    #       cfg:
+    #         filtering:
+    #           rpsl:
+    #             as_sets:
+    #               - "AS-AS1-CUSTOMERS"
+    #    - asn: 2
+    #      ip: "192.0.2.22"
+    #
+    # This configuration leads to:
+    # - AS-AS1-CUSTOMERS to be used for AS1 client, because client
+    #   level 'as_sets' has higher priority over AS-level;
+    # - AS-AS2 to be used for AS2 client, because no 'as_sets' are
+    #   given for that client.
+    as_sets:
+      #- "NAME1"
+      #- "NAME2"
+
+  AS10745:
+    as_sets:
+      #- "NAME3"
+
+# This is the list of all the route server's clients.
 clients:
     # Client's ASN.
   - asn: 3333
@@ -60,9 +107,11 @@ clients:
         rpsl:
 
           # Client's AS-SET(s) can be set here.
+          # If not AS-SETs are provided here, those from the 'asns'
+          # section will be used.
           as_sets:
-          #- "NAME1"
-          #- "NAME2"
+            #- "NAME1"
+            #- "NAME2"
 
           #enforce_origin_in_as_set: True
           #enforce_prefix_in_as_set: True

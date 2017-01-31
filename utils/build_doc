@@ -8,6 +8,7 @@ fi
 DOCS_DIR="`pwd`/docs"
 
 echo "Building Live scenarios TOC"
+rm $DOCS_DIR/LIVETESTS_SCENARIOS_*.rst
 
 echo ".. toctree::" > $DOCS_DIR/LIVETESTS_SCENARIOS.rst
 echo "   :maxdepth: 1" >> $DOCS_DIR/LIVETESTS_SCENARIOS.rst

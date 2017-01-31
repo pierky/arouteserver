@@ -13,38 +13,31 @@
 
 {% for client in clients if client.ip is current_ipver %}
 
-{# {% if client.cfg.filtering.rpsl.enforce_origin_in_as_set or client.cfg.filtering.rpsl.enforce_prefixi_in_as_set or cfg.filtering.rpsl.tag_as_set %} #}
-
 # AS-SET for {{ client.id }}
-function origin_as_is_in_{{ client.id }}_as_set()
-int set {{ client.id }}_as_set;
-{
-{%	if client.cfg.filtering.rpsl.as_set_asns %}
-	{{ client.id }}_as_set = [
-	{%+ for asn in client.cfg.filtering.rpsl.as_set_asns %}{{ asn }}{% if not loop.last %}, {% endif %}{% endfor %}
-
-	];
-	return bgp_path.last ~ {{ client.id }}_as_set;
+function origin_as_is_in_{{ client.id }}_as_set() {
+{% if client.cfg.filtering.rpsl.as_set_ids %}
+{%	for as_set_id in client.cfg.filtering.rpsl.as_set_ids %}
+	if bgp_path.last ~ AS_SET_{{ as_set_id }}_asns then
+		return true;
+{%	endfor %}
+	return false;
 {%	else %}
 	return false;
-{%	endif %}
+{% endif %}
 }
 
 # R-SET for {{ client.id }}
-function prefix_is_in_{{ client.id }}_as_set()
-prefix set {{ client.id }}_r_set;
-{
-{%	if client.cfg.filtering.rpsl.as_set_prefixes %}
-	{{ client.id }}_r_set = [
-	{{- write_prefix_list(client.cfg.filtering.rpsl.as_set_prefixes) }}
-
-	];
-	return net ~ {{ client.id }}_r_set;
+function prefix_is_in_{{ client.id }}_as_set() {
+{% if client.cfg.filtering.rpsl.as_set_ids %}
+{%	for as_set_id in client.cfg.filtering.rpsl.as_set_ids %}
+	if net ~ AS_SET_{{ as_set_id }}_prefixes then
+		return true;
+{%	endfor %}
+	return false;
 {%	else %}
 	return false;
-{%	endif %}
+{% endif %}
 }
-{# {% endif %} #}
 
 function next_hop_is_valid_for_{{ client.id }}()
 {

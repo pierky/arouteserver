@@ -106,7 +106,8 @@ cfg:
 
     rpsl:
       # With regards of the following two options, if no AS-SET
-      # is given in the clients configuration file only the ASN
+      # is given in the clients configuration file for the
+      # specific client nor for its AS, then only the ASN
       # of the announcing client is expanded and used to gather
       # authorized origin ASNs and prefixes.
 

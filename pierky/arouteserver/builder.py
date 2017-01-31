@@ -16,11 +16,13 @@
 import ipaddr
 import logging
 import os
+import re
 
 from jinja2 import Environment, FileSystemLoader
 
 from .config.general import ConfigParserGeneral
 from .config.bogons import ConfigParserBogons
+from .config.asns import ConfigParserASNS
 from .config.clients import ConfigParserClients
 from .errors import MissingDirError, MissingFileError, BuilderError, \
                     ARouteServerError, PeeringDBError, PeeringDBNoInfoError, \
@@ -107,6 +109,9 @@ class ConfigBuilder(object):
         self.cfg_bogons = self._get_cfg(kwargs.get("cfg_bogons"),
                                         ConfigParserBogons,
                                         "bogons")
+        self.cfg_asns = self._get_cfg(kwargs.get("cfg_clients"),
+                                         ConfigParserASNS,
+                                         "asns")
         self.cfg_clients = self._get_cfg(kwargs.get("cfg_clients"),
                                          ConfigParserClients,
                                          "clients",
@@ -116,7 +121,7 @@ class ConfigBuilder(object):
 
         self.enrich_config()
 
-    def enrich_config_rpsl_as_set(self, client_id, as_sets, dest_list):
+    def enrich_config_rpsl_as_set(self, dest_descr, as_sets, dest_list):
         errors = False
         for as_set in as_sets:
             try:
@@ -133,14 +138,14 @@ class ConfigBuilder(object):
                 errors = True
                 logging.error(
                     "Error while retrieving as_set {} for {}: {}".format(
-                        as_set, client_id, str(e)
+                        as_set, dest_descr, str(e)
                     )
                 )
 
         if errors:
             raise BuilderError()
 
-    def enrich_config_rpsl_r_set(self, client_id, as_sets, dest_list):
+    def enrich_config_rpsl_r_set(self, dest_descr, as_sets, dest_list):
         errors = False
         ip_versions = [self.ip_ver] if self.ip_ver else [4, 6]
         for as_set in as_sets:
@@ -160,57 +165,104 @@ class ConfigBuilder(object):
                     logging.error(
                         "Error while retrieving r_set "
                         "{} for {} IPv{}: {}".format(
-                            as_set, client_id, ip_ver, str(e)
+                            as_set, dest_descr, ip_ver, str(e)
                         )
                     )
 
         if errors:
             raise BuilderError()
 
-    def enrich_config_rpsl(self, client):
-        client_rpsl = client["cfg"]["filtering"]["rpsl"]
-        if not client_rpsl["enforce_origin_in_as_set"] and \
-            not client_rpsl["enforce_prefix_in_as_set"] and \
-            not self.cfg_general["filtering"]["rpsl"]["tag_as_set"]:
-
-            return
-
-        client["cfg"]["filtering"]["rpsl"]["as_set_asns"] = []
-        client["cfg"]["filtering"]["rpsl"]["as_set_prefixes"] = []
-
-        if client["cfg"]["filtering"]["rpsl"]["as_sets"]:
-            as_sets = client["cfg"]["filtering"]["rpsl"]["as_sets"]
-        else:
-            as_sets = ["AS{}".format(client["asn"])]
-
+    def enrich_config_rpsl(self):
+        self.as_sets = {}
         errors = False
-        try:
-            self.enrich_config_rpsl_as_set(
-                client["id"],
-                as_sets,
-                client["cfg"]["filtering"]["rpsl"]["as_set_asns"]
-            )
-        except ARouteServerError as e:
-            errors = True
-            logging.error(
-                "One or more errors occurred while expanding client's "
-                "AS-SETs to obtain the list of allowed origin ASNs; "
-                "client ID: {}".format(client["id"])
+
+        def normalize_as_set(s):
+            return re.sub("[^a-zA-Z0-9_]", "_", s)
+
+        def get_as_set_id_by_name(name):
+            for as_set_id in self.as_sets:
+                if self.as_sets[as_set_id]["as_set"] == name:
+                    return as_set_id
+            return None
+
+        def add_as_set(as_set, used_by):
+            existing = get_as_set_id_by_name(as_set)
+            if existing:
+                self.as_sets[existing]["used_by"].append(used_by)
+                return existing
+
+            new_as_set_id = normalize_as_set(as_set)
+            self.as_sets[new_as_set_id] = {
+                "as_set": as_set,
+                "asns": [],
+                "prefixes": [],
+                "used_by": [used_by]
+            }
+            return new_as_set_id
+
+        for asn in self.cfg_asns.cfg["asns"]:
+            self.cfg_asns[asn]["as_set_ids"] = []
+
+            if not self.cfg_asns[asn]["as_sets"]:
+                continue
+
+            for as_set in self.cfg_asns[asn]["as_sets"]:
+                self.cfg_asns[asn]["as_set_ids"].append(
+                    add_as_set(as_set, asn)
+                )
+
+        for client in self.cfg_clients.cfg["clients"]:
+            client_rpsl = client["cfg"]["filtering"]["rpsl"]
+            client_rpsl["as_set_ids"] = []
+
+            if not client_rpsl["enforce_origin_in_as_set"] and \
+                not client_rpsl["enforce_prefix_in_as_set"] and \
+                not self.cfg_general["filtering"]["rpsl"]["tag_as_set"]:
+                    continue
+
+
+            if client_rpsl["as_sets"]:
+                for as_set in client_rpsl["as_sets"]:
+                    client_rpsl["as_set_ids"].append(
+                        add_as_set(as_set, "client {}".format(client["id"]))
+                    )
+                continue
+
+            asn = "AS{}".format(client["asn"])
+            if asn in self.cfg_asns.cfg["asns"] and \
+                self.cfg_asns.cfg["asns"][asn]["as_sets"]:
+                for as_set in self.cfg_asns.cfg["asns"][asn]["as_sets"]:
+                    client_rpsl["as_set_ids"].append(
+                        get_as_set_id_by_name(as_set)
+                    )
+                continue
+
+            client_rpsl["as_set_ids"].append(
+                add_as_set("AS{}".format(client["asn"]),
+                           "client {}".format(client["id"]))
             )
 
-        try:
-            self.enrich_config_rpsl_r_set(
-                client["id"],
-                as_sets,
-                client["cfg"]["filtering"]["rpsl"]["as_set_prefixes"]
-            )
-        except ARouteServerError as e:
-            errors = True
-            logging.error(
-                "One or more errors occurred while expanding client's "
-                "AS-SETs to obtain the list of allowed prefixes; "
-                "client ID: {}".format(client["id"])
-            )
+        for as_set_id in self.as_sets:
+            try:
+                self.enrich_config_rpsl_as_set(
+                    ", ".join(self.as_sets[as_set_id]["used_by"]),
+                    [self.as_sets[as_set_id]["as_set"]],
+                    self.as_sets[as_set_id]["asns"]
+                )
+            except ARouteServerError as e:
+                errors = True
+                if str(e):
+                    logging.error(str(e))
+            try:
+                self.enrich_config_rpsl_r_set(
+                    ", ".join(self.as_sets[as_set_id]["used_by"]),
+                    [self.as_sets[as_set_id]["as_set"]],
+                    self.as_sets[as_set_id]["prefixes"]
+                )
+            except ARouteServerError as e:
+                errors = True
+                if str(e):
+                    logging.error(str(e))
 
         if errors:
             raise BuilderError()
@@ -276,15 +328,16 @@ class ConfigBuilder(object):
             )
             client["id"] = client_id
 
-            # RPSL info
-            try:
-                self.enrich_config_rpsl(client)
-            except ARouteServerError as e:
-                errors = True
-                if str(e):
-                    logging.error(str(e))
+        # RPSL info.
+        try:
+            self.enrich_config_rpsl()
+        except ARouteServerError as e:
+            errors = True
+            if str(e):
+                logging.error(str(e))
 
-            # PeerindDB info
+        # PeerindDB info
+        for client in self.cfg_clients.cfg["clients"]:
             try:
                 self.enrich_config_peeringdb(client)
             except ARouteServerError as e:
@@ -301,6 +354,8 @@ class ConfigBuilder(object):
         data["cfg"] = self.cfg_general
         data["bogons"] = self.cfg_bogons
         data["clients"] = self.cfg_clients
+        data["asns"] = self.cfg_asns
+        data["as_sets"] = self.as_sets
 
         def current_ipver(ip):
             if self.ip_ver is None:

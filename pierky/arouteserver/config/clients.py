@@ -32,6 +32,8 @@ class ConfigParserClients(ConfigParserBase):
     def parse(self):
         if "clients" not in self.cfg:
             raise ConfigError("Missing top 'clients' statement.")
+        if "asns" in self.cfg:
+            del self.cfg["asns"]
 
         errors = False
 

@@ -1,24 +1,23 @@
+asns:
+        AS2:
+                as_sets:
+                - "AS-AS2"
 clients:
         - asn: 1
           ip:
           - "99.0.2.11"
           - "2001:db8:1:1::11"
-          description: "AS1_1 client"
+          description: "AS1_1 client, no AS-SET"
         - asn: 2
           ip:
           - "99.0.2.21"
           - "2001:db8:1:1::21"
-          description: "AS2_1 client"
-          cfg:
-                filtering:
-                        rpsl:
-                                as_sets:
-                                - "AS-AS2"
+          description: "AS2_1 client, AS-SET from AS2 configuration"
         - asn: 4
           ip:
           - "99.0.2.41"
           - "2001:db8:1:1::41"
-          description: "AS4_1 client"
+          description: "AS4_1 client, AS-SET configured at client level"
           cfg:
                 filtering:
                         rpsl:
