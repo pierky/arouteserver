@@ -15,7 +15,7 @@
 
 from ...base import LiveScenario
 
-class DefaultConfigScenario(LiveScenario):
+class RichConfigExampleScenario(LiveScenario):
     __test__ = False
 
     MODULE_PATH = __file__

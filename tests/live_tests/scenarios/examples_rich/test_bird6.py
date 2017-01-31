@@ -13,10 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .base import DefaultConfigScenario
+from .base import RichConfigExampleScenario
 from ...bird import BIRDInstanceIPv6
 
-class TagASSetScenario_BIRDIPv6(DefaultConfigScenario):
+class RichConfigExampleScenario_BIRDIPv6(RichConfigExampleScenario):
     __test__ = True
 
     SHORT_DESCR = "Live test, BIRD, examples, rich config, IPv6"

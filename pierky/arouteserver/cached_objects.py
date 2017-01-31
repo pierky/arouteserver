@@ -83,6 +83,8 @@ class CachedObject(object):
 
         if self.raw_data:
             try:
+                if not os.path.exists(os.path.dirname(file_path)):
+                    os.makedirs(os.path.dirname(file_path))
                 with open(file_path, "w") as f:
                     json.dump(cache_data, f)
             except Exception as e:
