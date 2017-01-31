@@ -19,12 +19,12 @@ import os
 
 from jinja2 import Environment, FileSystemLoader
 
-from .errors import MissingDirError, MissingFileError, BuilderError, \
-                    ARouteServerError, PeeringDBError, PeeringDBNoInfoError, \
-                    MissingArgumentError
 from .config.general import ConfigParserGeneral
 from .config.bogons import ConfigParserBogons
 from .config.clients import ConfigParserClients
+from .errors import MissingDirError, MissingFileError, BuilderError, \
+                    ARouteServerError, PeeringDBError, PeeringDBNoInfoError, \
+                    MissingArgumentError
 from .rpsl import ASSet, RSet
 from .peering_db import PeeringDBNet
 
@@ -81,6 +81,10 @@ class ConfigBuilder(object):
             "cache_dir", kwargs.get("cache_dir")
         )
 
+        self.cache_expiry = kwargs.get("cache_expiry")
+
+        self.bgpq3_path = kwargs.get("bgpq3_path")
+
         try:
             with open(os.path.join(self.cache_dir, "write_test"), "w") as f:
                 f.write("OK")
@@ -116,7 +120,10 @@ class ConfigBuilder(object):
         errors = False
         for as_set in as_sets:
             try:
-                asns = ASSet(as_set, cache_dir=self.cache_dir).asns
+                asns = ASSet(as_set,
+                             bgpq3_path=self.bgpq3_path,
+                             cache_dir=self.cache_dir,
+                             cache_expiry=self.cache_expiry).asns
                 if not asns:
                     raise BuilderError("it's empty")
                 dest_list.extend(
@@ -140,7 +147,9 @@ class ConfigBuilder(object):
             for ip_ver in ip_versions:
                 try:
                     prefixes = RSet(as_set, ip_ver,
-                                    cache_dir=self.cache_dir).prefixes
+                                    bgpq3_path=self.bgpq3_path,
+                                    cache_dir=self.cache_dir,
+                                    cache_expiry=self.cache_expiry).prefixes
                     if not prefixes:
                         raise BuilderError("it's empty")
                     dest_list.extend(
@@ -227,7 +236,9 @@ class ConfigBuilder(object):
             return
         
         try:
-            net = PeeringDBNet(client["as"])
+            net = PeeringDBNet(client["as"],
+                               cache_dir=self.cache_dir,
+                               cache_expiry=self.cache_expiry)
             client_max_prefix["limit_ipv4"] = net.info_prefixes4 or general_limit_ipv4
             client_max_prefix["limit_ipv6"] = net.info_prefixes6 or general_limit_ipv6
 

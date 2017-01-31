@@ -28,4 +28,4 @@
 #bgpq3_path: "bgpq3"
 
 # Cache expiry time, in seconds.
-#cache_expiry_time: 43200
+#cache_expiry: 43200

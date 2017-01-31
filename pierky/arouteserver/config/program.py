@@ -19,6 +19,7 @@ import os
 import sys
 import yaml
 
+from ..cached_objects import CachedObject
 from ..resources import get_config_dir, get_templates_dir
 from ..errors import ConfigError, ARouteServerError
 
@@ -41,9 +42,9 @@ class ConfigParserProgram(object):
         "template_name": "main.j2",
 
         "cache_dir": "/var/lib/arouteserver",
+        "cache_expiry": CachedObject.DEFAULT_EXPIRY,
 
         "bgpq3_path": "bgpq3",
-        "cache_expiry_time": 43200
     }
 
     def __init__(self):
@@ -131,7 +132,8 @@ class ConfigParserProgram(object):
             )
 
             if os.path.exists(d):
-                sys.stdout.write("already exists: do you want to overwrite it [yes/NO]: ")
+                sys.stdout.write("already exists: "
+                                 "do you want to overwrite it [yes/NO]: ")
                 try:
                     yes_no = raw_input()
                 except:

@@ -21,6 +21,7 @@ import time
 
 from docker import InstanceError
 from ..base import ARouteServerTestCase
+from ..mock_peeringdb import mock_peering_db
 
 from pierky.arouteserver.builder import BIRDConfigBuilder
 from pierky.arouteserver.config.validators import ValidatorPrefixListEntry
@@ -157,6 +158,7 @@ class LiveScenario(ARouteServerTestCase):
     def _setUpClass(cls):
         print("{}: setting instances up...".format(cls.SHORT_DESCR))
 
+        mock_peering_db(cls._get_module_dir() + "/peeringdb_data")
         cls.mock_rpsl()
         cls._setup_instances()
         try:

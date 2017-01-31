@@ -20,12 +20,16 @@ import subprocess
 import time
 
 from .cached_objects import CachedObject
-from .config.program import program_config
 from .config.validators import ValidatorPrefixListEntry
 from .errors import RPSLToolsError
 
 
 class RPSLTools(CachedObject):
+
+    def __init__(self, *args, **kwargs):
+        CachedObject.__init__(self, *args, **kwargs)
+        self.bgpq3_path = kwargs.get("bgpq3_path")
+
     pass
 
 class ASSet(RPSLTools):
@@ -42,7 +46,7 @@ class ASSet(RPSLTools):
         return "{}-as_set.json".format(self.object_name)
 
     def _get_data(self):
-        cmd = [program_config.cfg["bgpq3_path"]]
+        cmd = [self.bgpq3_path]
         cmd += ["-3"]
         cmd += ["-j"]
         cmd += ["-f", "1"]
@@ -86,7 +90,7 @@ class RSet(RPSLTools):
         return "{}-r_set-ipv{}.json".format(self.object_name, self.ip_ver)
 
     def _get_data(self):
-        cmd = [program_config.cfg["bgpq3_path"]]
+        cmd = [self.bgpq3_path]
         cmd += ["-3"]
         cmd += ["-4"] if self.ip_ver == 4 else ["-6"]
         cmd += ["-A"]

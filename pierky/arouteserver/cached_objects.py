@@ -17,16 +17,20 @@ import json
 import os
 import time
 
-from config.program import program_config
 from .errors import CachedObjectsError
 
 
 class CachedObject(object):
 
+    DEFAULT_EXPIRY = 43200
+
     def __init__(self, **kwargs):
-        self.cache_dir = kwargs.get("cache_dir",
-                                    program_config.get_cfg_file_path("cache_dir"))
-        self.cache_expiry_time = program_config.cfg["cache_expiry_time"]
+        self.cache_dir = kwargs.get("cache_dir", "var")
+        if not self.cache_dir:
+            raise CachedObjectsError("Missing cache directory")
+
+        self.cache_expiry_time = kwargs.get("cache_expiry",
+                                            self.DEFAULT_EXPIRY)
         self.raw_data = None
 
     def _get_object_filename(self):

@@ -13,10 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-
 from ...base import LiveScenario
-from ....mock_peeringdb import mock_peering_db
 
 class RichConfigExampleScenario(LiveScenario):
     __test__ = False
@@ -38,11 +35,6 @@ class RichConfigExampleScenario(LiveScenario):
             "AS3333_allowed_prefixes"
         ],
     }
-
-    @classmethod
-    def setUpClass(cls):
-        mock_peering_db(os.path.dirname(__file__) + "/peeringdb_data")
-        super(RichConfigExampleScenario, cls).setUpClass()
 
     @classmethod
     def _setup_instances(cls):

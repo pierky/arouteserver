@@ -16,7 +16,6 @@
 import os
 
 from ...base import LiveScenario
-from ....mock_peeringdb import mock_peering_db
 
 class MaxPrefixScenario(LiveScenario):
     __test__ = False
@@ -25,11 +24,6 @@ class MaxPrefixScenario(LiveScenario):
     RS_INSTANCE_CLASS = None
     CLIENT_INSTANCE_CLASS = None
     IP_VER = None
-
-    @classmethod
-    def setUpClass(cls):
-        mock_peering_db(os.path.dirname(__file__) + "/peeringdb_data")
-        super(MaxPrefixScenario, cls).setUpClass()
 
     @classmethod
     def _setup_instances(cls):
