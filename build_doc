@@ -1,0 +1,20 @@
+CMD="./scripts/arouteserver --cfg dist/etc/arouteserver.yml --general config.d/general.yml --clients config.d/clients.yml"
+
+echo "Building example: default, IPv4"
+$CMD --ip-ver 4 > examples/default/bird4.conf
+
+echo "Building example: default, IPv6"
+$CMD --ip-ver 6 > examples/default/bird6.conf
+
+CMD="./scripts/arouteserver --cfg dist/etc/arouteserver.yml --general examples/rich/general.yml --clients examples/rich/clients.yml"
+
+echo "Building example: rich, IPv4"
+$CMD --ip-ver 4 > examples/rich/bird4.conf
+
+echo "Building example: rich, IPv6"
+$CMD --ip-ver 6 > examples/rich/bird6.conf
+
+cd docs
+make html
+python -m SimpleHTTPServer 8000
+cd ..
