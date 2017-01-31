@@ -24,7 +24,8 @@ from .errors import CachedObjectsError
 class CachedObject(object):
 
     def __init__(self, **kwargs):
-        self.cache_dir = kwargs.get("cache_dir", "var")
+        self.cache_dir = kwargs.get("cache_dir",
+                                    program_config.get_cfg_file_path("cache_dir"))
         self.cache_expiry_time = program_config.cfg["cache_expiry_time"]
         self.raw_data = None
 
