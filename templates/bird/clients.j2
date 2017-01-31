@@ -102,13 +102,13 @@ filter receive_from_{{ client.id }} {
 	{%	if client.cfg.filtering.rpsl.enforce_origin_in_as_set %}
 		reject "origin ASN [", bgp_path.last, "] not in allowed as-sets - REJECTING ", net;
 	{%	else %}
-	{%		if cfg.communities.origin_not_present_in_as_set %}
+	{%		if cfg.communities.origin_not_present_in_as_set|community_is_set %}
 		{{ add_communities(cfg.communities.origin_not_present_in_as_set) }}
 	{%		else %}
 		print "'tag_as_set' is True but 'origin_not_present_in_as_set' community is not given";
 	{%		endif %}
 	{%	endif %}
-	{%	if cfg.filtering.rpsl.tag_as_set and cfg.communities.origin_present_in_as_set %}
+	{%	if cfg.filtering.rpsl.tag_as_set and cfg.communities.origin_present_in_as_set|community_is_set %}
 	} else {
 	{{	add_communities(cfg.communities.origin_present_in_as_set) }}
 	{%	endif %}
@@ -135,13 +135,13 @@ filter receive_from_{{ client.id }} {
 	{%	if client.cfg.filtering.rpsl.enforce_prefix_in_as_set %}
 		reject "prefix not in client's r_set - REJECTING ", net;
 	{%	else %}
-	{%		if cfg.communities.prefix_not_present_in_as_set %}
+	{%		if cfg.communities.prefix_not_present_in_as_set|community_is_set %}
 		{{ add_communities(cfg.communities.prefix_not_present_in_as_set) }}
 	{%		else %}
 		print "'tag_as_set' is True but 'prefix_not_present_in_as_set' community is not given";
 	{%		endif %}
 	{%	endif %}
-	{%	if cfg.filtering.rpsl.tag_as_set and cfg.communities.prefix_present_in_as_set %}
+	{%	if cfg.filtering.rpsl.tag_as_set and cfg.communities.prefix_present_in_as_set|community_is_set %}
 	} else {
 	{{	add_communities(cfg.communities.prefix_present_in_as_set) }}
 	{%	endif %}

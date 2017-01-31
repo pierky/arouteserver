@@ -71,8 +71,10 @@ int set invalid_asns;
 # It must be applied on prefixes entering the route server.
 function scrub_communities_in() {
 {% for name in ("origin_present_in_as_set", "origin_not_present_in_as_set", "prefix_present_in_as_set", "prefix_not_present_in_as_set", "roa_valid", "roa_invalid", "roa_unknown" ) %}
+{% if cfg.communities[name]|community_is_set %}
 	# {{ name }}
 {{ del_communities(cfg.communities[name]) }}
+{% endif %}
 {% endfor %}
 }
 
@@ -81,12 +83,16 @@ function scrub_communities_in() {
 # It must be applied on prefixes leaving the route server.
 function scrub_communities_out() {
 {% for name in ("blackholing", "do_not_announce_to_any", "prepend_once_to_any", "prepend_twice_to_any", "prepend_thrice_to_any") %}
+{% if cfg.communities[name]|community_is_set %}
 	# {{ name }}
 {{ del_communities(cfg.communities[name]) }}
+{% endif %}
 {% endfor %}
 {% for name in ("do_not_announce_to_peer", "announce_to_peer") %}
+{% if cfg.communities[name]|community_is_set %}
 	# {{ name }}
 {{ del_communities(cfg.communities[name], True) }}
+{% endif %}
 {% endfor %}
 }
 
@@ -132,9 +138,15 @@ function apply_blackhole_filtering_policy() {
 # communities.
 function prefix_can_be_announced_to(int peer_as) {
 {% if cfg.control_communities %}
+	{% if cfg.communities.do_not_announce_to_peer|community_is_set %}
 	{{ match_communities(cfg.communities.do_not_announce_to_peer, "return false;") }}
+	{% endif %}
+	{% if cfg.communities.announce_to_peer|community_is_set %}
 	{{ match_communities(cfg.communities.announce_to_peer, "return true;") }}
+	{% endif %}
+	{% if cfg.communities.do_not_announce_to_any|community_is_set %}
 	{{ match_communities(cfg.communities.do_not_announce_to_any, "return false;") }}
+	{% endif %}
 {% endif %}
 	return true;
 }
@@ -143,8 +155,14 @@ function prefix_can_be_announced_to(int peer_as) {
 # control communities in charge of prepending client's ASN.
 function apply_prepend(int peer_as) {
 {% if cfg.control_communities %}
+	{% if cfg.communities.prepend_once_to_any|community_is_set %}
 	{{ match_communities(cfg.communities.prepend_once_to_any, "{ bgp_path.prepend(bgp_path.first); return true; }") }}
+	{% endif %}
+	{% if cfg.communities.prepend_twice_to_any|community_is_set %}
 	{{ match_communities(cfg.communities.prepend_twice_to_any, "{ bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); return true; }") }}
+	{% endif %}
+	{% if cfg.communities.prepend_thrice_to_any|community_is_set %}
 	{{ match_communities(cfg.communities.prepend_thrice_to_any, "{ bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); return true; }") }}
+	{% endif %}
 {% endif %}
 }

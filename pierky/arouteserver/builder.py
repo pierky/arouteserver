@@ -296,12 +296,20 @@ class ConfigBuilder(object):
                 return True
             return ipaddr.IPAddress(ip).version == self.ip_ver
 
+        def community_is_set(comm):
+            if not comm:
+                return False
+            if not comm["std"] and not comm["lrg"] and not comm["ext"]:
+                return False
+            return True
+
         env = Environment(
             loader=FileSystemLoader(self.template_dir),
             trim_blocks=True,
             lstrip_blocks=True
         )
         env.tests["current_ipver"] = current_ipver
+        env.filters["community_is_set"] = community_is_set
 
         tpl = env.get_template(self.template_name)
         return tpl.render(data)
