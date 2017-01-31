@@ -1,10 +1,10 @@
 clients:
-        - as: 1
+        - asn: 1
           ip:
           - "99.0.2.11"
           - "2001:db8:1:1::11"
           description: "AS1_1 client"
-        - as: 2
+        - asn: 2
           ip:
           - "99.0.2.21"
           - "2001:db8:1:1::21"
@@ -14,7 +14,7 @@ clients:
                         rpsl:
                                 as_sets:
                                 - "AS-AS2"
-        - as: 4
+        - asn: 4
           ip:
           - "99.0.2.41"
           - "2001:db8:1:1::41"
@@ -25,7 +25,7 @@ clients:
                                 enforce_origin_in_as_set: True
                                 as_sets:
                                 - "AS-AS4"
-        - as: 5
+        - asn: 5
           ip:
           - "99.0.2.51"
           - "2001:db8:1:1::51"

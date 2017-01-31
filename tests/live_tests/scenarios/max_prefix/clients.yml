@@ -1,5 +1,5 @@
 clients:
-        - as: 1
+        - asn: 1
           ip:
           - "99.0.2.11"
           - "2001:db8:1:1::11"
@@ -7,12 +7,12 @@ clients:
                 filtering:
                         max_prefix:
                                 peering_db: False
-        - as: 2
+        - asn: 2
           ip:
           - "99.0.2.21"
           - "2001:db8:1:1::21"
           cfg:
-        - as: 3
+        - asn: 3
           ip:
           - "99.0.2.31"
           - "2001:db8:1:1::31"

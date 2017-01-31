@@ -41,8 +41,8 @@ class TestConfigParserClients(TestConfigParserBase):
     def test_as(self):
         """{}: AS number"""
         for v in (-1, 0, "test"):
-            self.cfg[0]["as"] = v
-            self._contains_err("Error parsing 'as' at 'clients' level - Invalid ASN: {}.".format(v))
+            self.cfg[0]["asn"] = v
+            self._contains_err("Error parsing 'asn' at 'clients' level - Invalid ASN: {}.".format(v))
 
     def test_ip(self):
         """{}: IP address"""
@@ -63,11 +63,11 @@ class TestConfigParserClients(TestConfigParserBase):
         """{}: clients with multiple IP addresses"""
         clients_config = [
             "clients:",
-            "  - as: 111",
+            "  - asn: 111",
             "    ip:",
             "      - '192.0.2.11'",
             "      - '2001:db8:1:1::11'",
-            "  - as: 222",
+            "  - asn: 222",
             "    ip:",
             "      - '192.0.2.21'",
             "      - '2001:db8:1:1::21'",
@@ -88,11 +88,11 @@ class TestConfigParserClients(TestConfigParserBase):
         # Duplicate address.
         clients_config = [
             "clients:",
-            "  - as: 111",
+            "  - asn: 111",
             "    ip:",
             "      - '192.0.2.11'",
             "      - '2001:db8:1:1::11'",
-            "  - as: 222",
+            "  - asn: 222",
             "    ip:",
             "      - '192.0.2.11'",
             "      - '2001:db8:1:1::21'",
@@ -115,9 +115,9 @@ class TestConfigParserClients(TestConfigParserBase):
         self.cfg = ConfigParserClients(general_cfg=general)
         self.cfg._load_from_yaml("\n".join([
             "clients:",
-            "  - as: 111",
+            "  - asn: 111",
             "    ip: 192.0.2.11",
-            "  - as: 222",
+            "  - asn: 222",
             "    ip: 192.0.2.21",
             "    cfg:",
             "      passive: False",
@@ -186,16 +186,16 @@ class TestConfigParserClients(TestConfigParserBase):
         """{}: inherit from general cfg - blackhole filtering"""
         clients_config = [
             "clients:",
-            "  - as: 111",
+            "  - asn: 111",
             "    ip: 192.0.2.11",
             "    cfg:",
             "      blackhole_filtering:",             
-            "  - as: 222",
+            "  - asn: 222",
             "    ip: 192.0.2.21",
             "    cfg:",
             "      blackhole_filtering:",
             "        announce_to_client: True",
-            "  - as: 333",
+            "  - asn: 333",
             "    ip: 192.0.2.31",
             "    cfg:",
             "      blackhole_filtering:",

@@ -52,7 +52,7 @@ function next_hop_is_valid_for_{{ client.id }}()
 	{% if client.cfg.filtering.next_hop_policy == "strict" %}
 	if bgp_next_hop = {{ client.ip }} then return true;
 	{% else %}
-	{% for as, same_as_clients in clients|groupby("as") if as == client.as %}
+	{% for asn, same_as_clients in clients|groupby("asn") if asn == client.asn %}
 	{% for same_as_client in same_as_clients if same_as_client.ip is current_ipver %}
 	if bgp_next_hop = {{ same_as_client.ip }} then return true;	# {{ same_as_client.id }}
 	{% endfor %}
@@ -87,7 +87,7 @@ filter receive_from_{{ client.id }} {
 		reject "AS_PATH len [", bgp_path.len ,"] longer than {{ cfg.filtering.max_as_path_len }} - REJECTING ", net;
 
 	# AS_PATH: left-most ASN
-	if bgp_path.first != {{ client.as }} then
+	if bgp_path.first != {{ client.asn }} then
 		reject "invalid left-most ASN [", bgp_path.first, "] - REJECTING ", net;
 
 	{% if client.cfg.filtering.reject_invalid_as_in_as_path %}
@@ -178,10 +178,10 @@ filter announce_to_{{ client.id }} {
 	}
 
 	# BGP control communities
-	if !prefix_can_be_announced_to({{ client.as }}) then
+	if !prefix_can_be_announced_to({{ client.asn }}) then
 		reject "prefix didn't pass control communities checks - NOT ANNOUNCING ", net, " TO {{ client.id }}";
 
-	apply_prepend({{ client.as }});
+	apply_prepend({{ client.asn }});
 
 	{% if client.cfg.prepend_rs_as %}
 	# {{ client.id }} has been configured with 'prepend_rs_as'
@@ -199,7 +199,7 @@ protocol bgp {{ client.id }} {
 	{% endif %}
 
 	local as {{ cfg.rs_as }};
-	neighbor {{ client.ip }} as {{ client.as }};
+	neighbor {{ client.ip }} as {{ client.asn }};
 	rs client;
 
 	{% if client.cfg.passive %}

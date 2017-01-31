@@ -18,7 +18,7 @@ How it works
    .. code:: yaml
 
       clients:
-        - as: 111
+        - asn: 111
           ip:
           - "192.0.2.11"
           - "2001:db8:1:1::11"

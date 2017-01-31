@@ -1,6 +1,6 @@
 clients:
     # Client's ASN.
-  - as: 3333
+  - asn: 3333
 
     # Client's IP address(es).
     # For clients with multiple IP addresses (dual-stack clients
@@ -77,7 +77,7 @@ clients:
       blackhole_filtering:
         #announce_to_client: True
 
-  - as: 10745
+  - asn: 10745
 
     # Client's IP address.
     ip:

@@ -1,5 +1,5 @@
 clients:
-        - as: 1
+        - asn: 1
           ip:
           - "99.0.2.11"
           - "2001:db8:1:1::11"
@@ -10,7 +10,7 @@ clients:
                                 as_sets:
                                 - "AS-AS1"
                                 - "AS-AS1_CUSTOMERS"
-        - as: 1
+        - asn: 1
           ip:
           - "99.0.2.12"
           - "2001:db8:1:1::12"
@@ -24,7 +24,7 @@ clients:
                                 - "AS-AS1_CUSTOMERS"
                 blackhole_filtering:
                         announce_to_client: False
-        - as: 2
+        - asn: 2
           ip:
           - "99.0.2.21"
           - "2001:db8:1:1::21"
@@ -35,7 +35,7 @@ clients:
                                 as_sets:
                                 - "AS-AS2"
                                 - "AS-AS2_CUSTOMERS"
-        - as: 3
+        - asn: 3
           ip:
           - "99.0.2.31"
           - "2001:db8:1:1::31"

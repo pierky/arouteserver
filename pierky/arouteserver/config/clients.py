@@ -36,7 +36,7 @@ class ConfigParserClients(ConfigParserBase):
         errors = False
 
         schema = {
-            "as": ValidatorASN(),
+            "asn": ValidatorASN(),
             "ip": ValidatorIPAddr(),
             "description": ValidatorText(mandatory=False),
             "cfg": {

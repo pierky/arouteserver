@@ -31,12 +31,12 @@ Route server's general configuration and policies are outlined in the ``general.
 .. code:: yaml
 
    clients:
-     - as: 11
+     - asn: 11
        ip: "192.0.2.11"
-     - as: 22
+     - asn: 22
        ip: "192.0.2.22"
        passive: False
-     - as: 33
+     - asn: 33
        ip: "192.0.2.33"
        passive: False
        gtsm: False

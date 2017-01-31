@@ -181,7 +181,7 @@ class ConfigBuilder(object):
         if client["cfg"]["filtering"]["rpsl"]["as_sets"]:
             as_sets = client["cfg"]["filtering"]["rpsl"]["as_sets"]
         else:
-            as_sets = ["AS{}".format(client["as"])]
+            as_sets = ["AS{}".format(client["asn"])]
 
         errors = False
         try:
@@ -236,7 +236,7 @@ class ConfigBuilder(object):
             return
         
         try:
-            net = PeeringDBNet(client["as"],
+            net = PeeringDBNet(client["asn"],
                                cache_dir=self.cache_dir,
                                cache_expiry=self.cache_expiry)
             client_max_prefix["limit_ipv4"] = net.info_prefixes4 or general_limit_ipv4
@@ -249,7 +249,7 @@ class ConfigBuilder(object):
             raise BuilderError(
                 "An error occurred while retrieving info from PeeringDB "
                 "for ASN {}: {}".format(
-                    client["as"], str(e) or "error unknown"
+                    client["asn"], str(e) or "error unknown"
                 )
             )
 
@@ -261,7 +261,7 @@ class ConfigBuilder(object):
 
         for client in self.cfg_clients.cfg["clients"]:
             # Unique ASNs
-            asn = "AS{}".format(client["as"])
+            asn = "AS{}".format(client["asn"])
             if asn in clients_asns:
                 clients_asns[asn] += 1
             else:
