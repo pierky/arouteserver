@@ -1,9 +1,3 @@
-ARouteServer
-============
-|Documentation| |Build Status|
-
-A Python tool to automatically build (and test) feature-rich configurations for BGP route servers.
-
 How it works
 ------------
 
@@ -88,32 +82,3 @@ More feature are already planned: see the `Future work <https://arouteserver.rea
 .. _RFC7948: https://tools.ietf.org/html/rfc7948
 .. _RFC5082: https://tools.ietf.org/html/rfc5082
 .. _RFC7911: https://tools.ietf.org/html/rfc7911
-
-Full documentation
-------------------
-
-Full documentation can be found on ReadTheDocs: https://arouteserver.readthedocs.org/
-
-Status
-------
-
-**Highly experimental**!
-
-Bug? Issues?
-------------
-
-But also suggestions? New ideas?
-
-Please create an issue on GitHub at https://github.com/pierky/arouteserver/issues
-
-Author
-------
-
-Pier Carlo Chiodi - https://pierky.com
-
-Blog: https://blog.pierky.com Twitter: `@pierky <https://twitter.com/pierky>`_
-
-.. |Documentation| image:: https://readthedocs.org/projects/arouteserver/badge/?version=latest
-    :target: https://arouteserver.readthedocs.org/en/latest/?badge=latest
-.. |Build Status| image:: https://travis-ci.org/pierky/arouteserver.svg?branch=master
-    :target: https://travis-ci.org/pierky/arouteserver

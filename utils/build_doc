@@ -1,0 +1,34 @@
+#!/bin/bash
+
+if [ ! -e "setup.py" ]; then
+	echo "The script must be executed from within the repository's root directory."
+	exit
+fi
+
+CFG_FILE="var/arouteserver.yml"
+
+CMD="./scripts/arouteserver --cfg $CFG_FILE --general config.d/general.yml --clients config.d/clients.yml"
+
+echo "Building example: default, IPv4"
+$CMD --ip-ver 4 > examples/default/bird4.conf
+
+echo "Building example: default, IPv6"
+$CMD --ip-ver 6 > examples/default/bird6.conf
+
+CMD="./scripts/arouteserver --cfg $CFG_FILE --general examples/rich/general.yml --clients examples/rich/clients.yml"
+
+echo "Building example: rich, IPv4"
+$CMD --ip-ver 4 > examples/rich/bird4.conf
+
+echo "Building example: rich, IPv6"
+$CMD --ip-ver 6 > examples/rich/bird6.conf
+
+cat docs/README_header.rst > README.rst
+cat docs/FEATURES.rst >> README.rst
+cat docs/README_footer.rst >> README.rst
+
+cd docs
+make html
+cd _build/html/
+python -m SimpleHTTPServer 8000
+cd ../../../
