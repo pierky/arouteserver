@@ -19,7 +19,7 @@ from ...bird import BIRDInstanceIPv6
 class BasicScenario_BIRDIPv6(BasicScenario):
     __test__ = True
 
-    SHORT_DESCR = "Live test, BIRD, basic scenario, IPv6"
+    SHORT_DESCR = "Live test, BIRD, global scenario, IPv6"
     RS_INSTANCE_CLASS = BIRDInstanceIPv6
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
     IP_VER = 6

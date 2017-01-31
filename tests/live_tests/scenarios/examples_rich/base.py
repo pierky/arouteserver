@@ -37,6 +37,11 @@ class RichConfigExampleScenario(LiveScenario):
     }
 
     @classmethod
+    def setUpClass(cls):
+        mock_peering_db(os.path.dirname(__file__) + "/peeringdb_data")
+        super(RichConfigExampleScenario, cls).setUpClass()
+
+    @classmethod
     def _setup_instances(cls):
         cls.INSTANCES = [
             cls.RS_INSTANCE_CLASS(
