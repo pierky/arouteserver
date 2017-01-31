@@ -5,6 +5,26 @@ if [ ! -e "setup.py" ]; then
 	exit
 fi
 
+DOCS_DIR="`pwd`/docs"
+
+echo "Building Live scenarios TOC"
+
+echo ".. toctree::" > $DOCS_DIR/LIVETESTS_SCENARIOS.rst
+echo "   :maxdepth: 1" >> $DOCS_DIR/LIVETESTS_SCENARIOS.rst
+echo "" >> $DOCS_DIR/LIVETESTS_SCENARIOS.rst
+
+cd tests/live_tests/scenarios/
+for d in */; do
+	SCENARIO_NAME=`basename $d`
+	if [ -e "$SCENARIO_NAME/README.rst" ]; then
+		echo ".. include:: ../tests/live_tests/scenarios/$SCENARIO_NAME/README.rst" > $DOCS_DIR/LIVETESTS_SCENARIOS_$SCENARIO_NAME.rst
+		echo "   LIVETESTS_SCENARIOS_$SCENARIO_NAME" >> $DOCS_DIR/LIVETESTS_SCENARIOS.rst
+	fi
+done
+
+cd $DOCS_DIR
+cd ..
+
 CFG_FILE="var/arouteserver.yml"
 
 CMD="./scripts/arouteserver --cfg $CFG_FILE --general config.d/general.yml --clients config.d/clients.yml"
@@ -23,11 +43,14 @@ $CMD --ip-ver 4 > examples/rich/bird4.conf
 echo "Building example: rich, IPv6"
 $CMD --ip-ver 6 > examples/rich/bird6.conf
 
-cat docs/README_header.rst > README.rst
-cat docs/FEATURES.rst >> README.rst
-cat docs/README_footer.rst >> README.rst
+echo "Building README.rst"
 
-cd docs
+cat $DOCS_DIR/README_header.rst > README.rst
+cat $DOCS_DIR/FEATURES.rst >> README.rst
+cat $DOCS_DIR/README_footer.rst >> README.rst
+
+
+cd $DOCS_DIR
 make html
 cd _build/html/
 python -m SimpleHTTPServer 8000
