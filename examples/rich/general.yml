@@ -1,0 +1,93 @@
+cfg:
+  rs_as: 999
+
+  router_id: "192.0.2.2"
+
+  prepend_rs_as: False
+
+  path_hiding: True
+
+  passive: True
+
+  gtsm: True
+
+  add_path: True
+
+  filtering:
+    next_hop_policy: "same-as"
+
+    ipv4_pref_len:
+      min: 8
+      max: 24
+    ipv6_pref_len:
+      min: 12
+      max: 48
+
+    global_black_list_pref:
+      - prefix: "192.0.2.0"
+        length: 24
+        comment: "Local network"
+      - prefix: "2001:db8:1:1::"
+        length: 64
+        comment: "Local network"
+
+    max_as_path_len: 32
+
+    reject_invalid_as_in_as_path: True
+
+    rpsl:
+      enforce_origin_in_as_set: True
+
+      enforce_prefix_in_as_set: True
+
+      tag_as_set: True
+
+    max_prefix:
+      action: "shutdown"
+      peering_db: True
+
+  blackhole_filtering:
+    policy_ipv4: "rewrite-next-hop"
+    policy_ipv6: "rewrite-next-hop"
+
+    rewrite_next_hop_ipv4: "192.0.2.66"
+    rewrite_next_hop_ipv6: "2001:db8:1:1::66"
+
+    announce_to_client: True
+
+  control_communities: True
+  
+  communities:
+    blackholing:
+      std: "65534:0"
+      lrg: "65534:0:0"
+    origin_present_in_as_set:
+      std: "65530:1"
+      lrg: "rs_as:65530:1"
+    origin_not_present_in_as_set:
+      std: "65530:0"
+      lrg: "rs_as:65530:0"
+    do_not_announce_to_peer:
+      std: "0:peer_as"
+      ext: "rt:0:peer_as"
+      lrg: "rs_as:0:peer_as"
+    announce_to_peer:
+      std: "rs_as:peer_as"
+      ext: "rt:rs_as:peer_as"
+      lrg: "rs_as:rs_as:peer_as"
+    do_not_announce_to_any:
+      std: "0:rs_as"
+      ext: "rt:0:rs_as"
+      lrg: "rs_as:0:rs_as"
+    prepend_once_to_any:
+      std: "rs_as:65501"
+      ext: "rt:rs_as:65501"
+      lrg: "rs_as:65501:rs_as"
+    prepend_twice_to_any:
+      std: "rs_as:65502"
+      ext: "rt:rs_as:65502"
+      lrg: "rs_as:65502:rs_as"
+    prepend_thrice_to_any:
+      std: "rs_as:65503"
+      ext: "rt:rs_as:65503"
+      lrg: "rs_as:65503:rs_as"

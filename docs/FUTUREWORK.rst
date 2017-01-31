@@ -10,7 +10,6 @@ Short term
 - Live tests: path hiding mitigation live test
 - Live tests: provide a skeleton to ease building of new live test scenarios.
 - Add options for bgpq3 (sources)
-- Examples: provide examples of route server configurations
 - Doc: Contributing section
 - Templates: textual representation of configurations
 

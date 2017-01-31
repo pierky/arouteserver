@@ -2,10 +2,10 @@
 {% from 'macros.j2' import add_communities %}
 
 {% macro write_max_pref_action(action) %}
-{% if action == "shutdown" %}disable
-{% elif action == "restart" %}restart
-{% elif action == "block" %}block
-{% else %}warn
+{% if action == "shutdown" %}disable;
+{% elif action == "restart" %}restart;
+{% elif action == "block" %}block;
+{% else %}warn;
 {% endif %}
 {% endmacro %}
 # ---------------------------------------------------------
@@ -231,7 +231,7 @@ protocol bgp {{ client.id }} {
 	{%		set max_pref_limit = 0 %}
 	{% 	endif %}
 	{% 	if max_pref_limit > 0 %}
-	import limit {{ max_pref_limit }} action {{ write_max_pref_action(client.cfg.filtering.max_prefix.action) }};
+	import limit {{ max_pref_limit }} action {{ write_max_pref_action(client.cfg.filtering.max_prefix.action) }}
 	{% 	endif %}
 	{% endif %}
 

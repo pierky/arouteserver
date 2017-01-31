@@ -38,7 +38,7 @@ class LiveScenario(ARouteServerTestCase):
     R_SET = {}
     INSTANCES = []
 
-    DEBUG = True
+    DEBUG = False
     DO_NOT_STOP_INSTANCES = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
@@ -85,7 +85,9 @@ class LiveScenario(ARouteServerTestCase):
         return cfg_file_path
 
     @classmethod
-    def _build_rs_cfg(cls, tpl_dir_name, tpl_name, out_file_name):
+    def _build_rs_cfg(cls, tpl_dir_name, tpl_name, out_file_name,
+                      cfg_general="general.yml", cfg_bogons="bogons.yml",
+                      cfg_clients="clients.yml"):
         cls.debug("Building config from {}/{} - IPv{}".format(tpl_dir_name, tpl_name, cls.IP_VER))
 
         var_dir = cls._create_var_dir()
@@ -94,9 +96,9 @@ class LiveScenario(ARouteServerTestCase):
             template_dir="{}/{}".format(cls._get_module_dir(), tpl_dir_name),
             template_name=tpl_name,
             cache_dir=var_dir,
-            cfg_general="{}/general.yml".format(cls._get_module_dir()),
-            cfg_bogons="{}/bogons.yml".format(cls._get_module_dir()),
-            cfg_clients="{}/clients.yml".format(cls._get_module_dir()),
+            cfg_general="{}/{}".format(cls._get_module_dir(), cfg_general),
+            cfg_bogons="{}/{}".format(cls._get_module_dir(), cfg_bogons),
+            cfg_clients="{}/{}".format(cls._get_module_dir(), cfg_clients),
             ip_ver=cls.IP_VER
         )
 

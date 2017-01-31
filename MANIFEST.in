@@ -11,3 +11,5 @@ recursive-include tests *.json
 recursive-include tests *.yml
 recursive-include tests *.j2
 recursive-include tests Dockerfile.*
+recursive-include examples *.conf
+recursive-include examples *.yml
