@@ -1,6 +1,11 @@
 Change log
 ==========
 
+v0.1.0a3
+--------
+
+- Fix some cache issues.
+
 v0.1.0a2
 --------
 
