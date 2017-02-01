@@ -117,7 +117,7 @@ class PathHidingScenario(LiveScenario):
         self.session_is_up(self.AS1, self.AS101)
         self.session_is_up(self.AS2, self.AS101)
 
-    def test_030_rs_receive_route_from_AS1_and_AS2(self):
+    def test_030_rs_receives_route_from_AS1_and_AS2(self):
         """{}: rs should receive prefix from both AS1 and AS2"""
         self.receive_route_from(self.rs, self.DATA["AS101_pref_ok1"], self.AS1,
                                 as_path="1 101")
@@ -143,11 +143,19 @@ class PathHidingScenario_MitigationOn(PathHidingScenario):
 
     CFG_GENERAL = "general_on.yml"
 
-    def test_040_AS3_prefix_from_AS2(self):
-        """{}: AS3 receives prefix with sub-optimal path via AS2"""
-        self.receive_route_from(self.AS3, self.DATA["AS101_pref_ok1"], self.rs,
-                                as_path="2 101 101 101 101", next_hop=self.AS2,
-                                std_comms=[])
+    def test_040_AS3_and_AS4_prefix_via_AS2(self):
+        """{}: AS3 and AS4 receive prefix with sub-optimal path via AS2"""
+        for inst in (self.AS3, self.AS4):
+            self.receive_route_from(inst, self.DATA["AS101_pref_ok1"], self.rs,
+                                    as_path="2 101 101 101 101", next_hop=self.AS2,
+                                    std_comms=[])
+
+    def test_041_AS3_and_AS4_no_prefix_via_AS1(self):
+        """{}: AS3 and AS4 don't receive prefix via AS1"""
+        for inst in (self.AS3, self.AS4):
+            with self.assertRaises(AssertionError):
+                self.receive_route_from(inst, self.DATA["AS101_pref_ok1"], self.rs,
+                                        next_hop=self.AS1)
 
 class PathHidingScenario_MitigationOff(PathHidingScenario):
     __test__ = False
@@ -159,8 +167,8 @@ class PathHidingScenario_MitigationOff(PathHidingScenario):
         with self.assertRaises(AssertionError):
             self.receive_route_from(self.AS3, self.DATA["AS101_pref_ok1"])
 
-    def test_051_AS4_receive_via_AS2_because_of_ADD_PATH(self):
-        """{}: AS4 receives the prefix via AS2 because it uses ADD-PATH"""
+    def test_051_AS4_receives_prefix_via_AS2_because_of_ADD_PATH(self):
+        """{}: AS4 receives the prefix via AS2 because of ADD-PATH"""
         self.receive_route_from(self.AS4, self.DATA["AS101_pref_ok1"], self.rs,
                                 as_path="2 101 101 101 101", next_hop=self.AS2,
                                 std_comms=[])
