@@ -160,6 +160,12 @@ class ConfigParserGeneral(ConfigParserBase):
                 logging.error(str(e))
             raise ConfigError()
 
+        if not self.cfg["cfg"]["filtering"].get("global_black_list_pref"):
+            logging.warning("The 'filtering.global_black_list_pref' option is "
+                            "missing or empty. It is strongly suggested to "
+                            "provide at least the list of local IPv4/IPv6 "
+                            "networks here.")
+
         # If blackhole filtering policy = "rewrite-next-hop", then
         # blackhole next-hops must be provided.
         for ip_ver in (4, 6):
