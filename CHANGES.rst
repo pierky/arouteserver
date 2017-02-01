@@ -1,6 +1,17 @@
 Change log
 ==========
 
+v0.1.0a4
+--------
+
+- Fix issue with GTSM default value.
+- Add default route to bogons.
+- Better as-sets handling and cache handling.
+- Config syntax change: clients 'as' -> 'asn'.
+- AS-SETs at AS-level.
+- Live tests: path hiding mitigation scenario.
+- Improvements in templates.
+
 v0.1.0a3
 --------
 
