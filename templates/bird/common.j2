@@ -101,7 +101,8 @@ function scrub_communities_out() {
 function is_blackhole_filtering_request() {
 {% if ( ip_ver == 4 and cfg.blackhole_filtering.policy_ipv4 ) or
 	( ip_ver == 6 and cfg.blackhole_filtering.policy_ipv6 ) %}
-	if (65535, 666) ~ bgp_community then return true;
+	if (65535, 666) ~ bgp_community then
+		return true;
 {{ match_communities(cfg.communities.blackholing, "return true;") }}
 {% endif %}
 	return false;
@@ -112,20 +113,16 @@ function is_blackhole_filtering_request() {
 function apply_blackhole_filtering_policy() {
 {% if ip_ver == 4 and cfg.blackhole_filtering.policy_ipv4 == "propagate-unchanged" %}
 	# Configured policy: propagate-unchanged
-	{{ del_communities(cfg.communities.blackholing) }}
 	bgp_community.add((65535, 666));
 {% elif ip_ver == 4 and cfg.blackhole_filtering.policy_ipv4 == "rewrite-next-hop" %}
 	# Configured policy: rewrite-next-hop
-	{{ del_communities(cfg.communities.blackholing) }}
 	bgp_community.add((65535, 666));
 	bgp_next_hop = {{ cfg.blackhole_filtering.rewrite_next_hop_ipv4 }};
 {% elif ip_ver == 6 and cfg.blackhole_filtering.policy_ipv6 == "propagate-unchanged" %}
 	# Configured policy: propagate-unchanged
-	{{ del_communities(cfg.communities.blackholing) }}
 	bgp_community.add((65535, 666));
 {% elif ip_ver == 6 and cfg.blackhole_filtering.policy_ipv6 == "rewrite-next-hop" %}
 	# Configured policy: rewrite-next-hop
-	{{ del_communities(cfg.communities.blackholing) }}
 	bgp_community.add((65535, 666));
 	bgp_next_hop = {{ cfg.blackhole_filtering.rewrite_next_hop_ipv6 }};
 {% else %}

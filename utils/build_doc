@@ -46,9 +46,9 @@ $CMD --ip-ver 6 > examples/rich/bird6.conf
 
 echo "Building README.rst"
 
-cat $DOCS_DIR/README_header.rst > README.rst
+cat $DOCS_DIR/README_header.txt > README.rst
 cat $DOCS_DIR/FEATURES.rst >> README.rst
-cat $DOCS_DIR/README_footer.rst >> README.rst
+cat $DOCS_DIR/README_footer.txt >> README.rst
 
 
 cd $DOCS_DIR

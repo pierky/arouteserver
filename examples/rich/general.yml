@@ -60,7 +60,7 @@ cfg:
   communities:
     blackholing:
       std: "65534:0"
-      lrg: "65534:0:0"
+      lrg: "rs_as:666:0"
     origin_present_in_as_set:
       std: "65530:1"
       lrg: "rs_as:65530:1"
