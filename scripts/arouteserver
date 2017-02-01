@@ -20,13 +20,42 @@ import logging
 from logging.config import fileConfig
 import os
 import sys
+import yaml
 
 from pierky.arouteserver.builder import BIRDConfigBuilder
+from pierky.arouteserver.peering_db import clients_from_peeringdb
 from pierky.arouteserver.config.program import program_config
 from pierky.arouteserver.errors import ARouteServerError, MissingFileError
 from pierky.arouteserver.version import __version__, COPYRIGHT_YEAR
 
 def main():
+    def add_common_args(dest):
+        dest.add_argument(
+            "--cfg",
+            help="ARouteServer configuration file.",
+            metavar="FILE",
+            dest="cfg_program")
+
+
+        group = dest.add_argument_group(
+            title="Program configuration",
+            description="The following arguments override those provided "
+                        "in the program's configuration file."
+        )
+
+        group.add_argument(
+            "--cache-dir",
+            help="Cache directory.",
+            metavar="DIR",
+            dest="cache_dir")
+
+        group.add_argument(
+            "--logging-config-file",
+            help="Logging configuration file, in Python fileConfig() format ("
+                "https://docs.python.org/2/library/logging.config.html"
+                "#configuration-file-format)",
+            dest="logging_config_file")
+
     parser = argparse.ArgumentParser(
         description="A Router Server v{}: a tool to automatically "
                     "build route servers configuration.".format(
@@ -36,30 +65,32 @@ def main():
                "https://pierky.com".format(COPYRIGHT_YEAR)
     )
 
-    parser.add_argument(
-        "--setup",
+    subparsers = parser.add_subparsers(
+        title="commands",
+        help="Run 'arouteserver <command> -h' for more details.",
+        dest="command")
+    subparsers.required = True
+
+    sub_parser = subparsers.add_parser(
+        "setup",
         help="Perform the setup of the system by copying "
              "configuration files and templates in the proper "
              "directories. Confirmation before each action will "
-             "be asked.",
-        action="store_true",
-        dest="setup")
+             "be asked.")
 
-    parser.add_argument(
-        "--cfg",
-        help="ARouteServer configuration file.",
-        metavar="FILE",
-        dest="cfg_program")
+    sub_parser = subparsers.add_parser(
+        "build",
+        help="Build route server configuration.")
 
-    parser.add_argument(
+    sub_parser.add_argument(
         "--speaker",
         help="The BGP speaker target implementation for "
-             "the configuration that will be built.",
+            "the configuration that will be built.",
         dest="speaker",
         choices=["BIRD"],
         default="BIRD")
 
-    group = parser.add_argument_group(
+    group = sub_parser.add_argument_group(
         title="Route server configuration",
         description="The following arguments override those provided "
                     "in the program's configuration file."
@@ -83,7 +114,7 @@ def main():
         metavar="FILE",
         dest="cfg_bogons")
 
-    group = parser.add_argument_group(
+    group = sub_parser.add_argument_group(
         title="Rendering",
         description="The following arguments override those provided "
                     "in the program's configuration file."
@@ -104,32 +135,32 @@ def main():
     group.add_argument(
         "--ip-ver",
         help="IP version. "
-             "Default: both IPv4 and IPv6",
+            "Default: both IPv4 and IPv6",
         default=None,
         choices=[4, 6],
         type=int,
         dest="ip_ver")
 
-    group = parser.add_argument_group(
-        title="Program configuration",
-        description="The following arguments override those provided "
-                    "in the program's configuration file."
-    )
 
-    group.add_argument(
-        "--cache-dir",
-        help="Cache directory.",
-        metavar="DIR",
-        dest="cache_dir")
+    add_common_args(sub_parser)
 
-    group.add_argument(
-        "--logging-config-file",
-        help="Logging configuration file, in Python fileConfig() format ("
-             "https://docs.python.org/2/library/logging.config.html"
-             "#configuration-file-format)",
-        dest="logging_config_file")
+    sub_parser = subparsers.add_parser(
+        "clients-from-peeringdb",
+        help="Build a list of clients and their AS-SET on the basis "
+             "of PeeringDB records.")
+
+    sub_parser.add_argument(
+        "netixlanid",
+        type=int,
+        help="PeeringDB NetIX LAN ID.")
+
+    add_common_args(sub_parser)
 
     args = parser.parse_args()
+
+    # Setup?
+    if args.command == "setup":
+        return program_config.setup()
 
     # Logging setup: command line arg wins over program's config file.
 
@@ -153,10 +184,6 @@ def main():
             return False
         logging_setted_up = True
 
-    # Setup?
-    if args.setup:
-        return program_config.setup()
-
     if args.cfg_program:
         program_config.load(args.cfg_program)
 
@@ -169,8 +196,6 @@ def main():
             if not setup_logging(log_ini_path):
                 return False
 
-    # Config builder setup
-
     def get_cfg_path(arg_name):
         args_dict = vars(args)
         if arg_name in args_dict and args_dict[arg_name]:
@@ -182,38 +207,49 @@ def main():
             return args_dict[arg_name]
         return program_config.cfg[arg_name]
 
-    cfg_builder_params = {
-        "cfg_general": get_cfg_path("cfg_general"),
-        "cfg_clients": get_cfg_path("cfg_clients"),
-        "cfg_bogons": get_cfg_path("cfg_bogons"),
-        "cache_dir": get_cfg_path("cache_dir"),
-        "cache_expiry": get_cfg_val("cache_expiry"),
-        "bgpq3_path": get_cfg_val("bgpq3_path"),
-        "template_dir": get_cfg_path("template_dir"),
-        "template_name": get_cfg_val("template_name"),
-        "ip_ver": args.ip_ver,
-    }
+    if args.command == "build":
+        # Config builder setup
 
-    template_sub_dir = None
-    if args.speaker == "BIRD":
-        builder_class = BIRDConfigBuilder
-        template_sub_dir = "bird"
-    else:
-        raise ARouteServerError(
-            "Unknown BGP speaker implementation: {}".format(args.speaker)
-        )
-    if template_sub_dir:
-        cfg_builder_params["template_dir"] = os.path.join(
-            cfg_builder_params["template_dir"], template_sub_dir
-        )
 
-    try:
-        builder = BIRDConfigBuilder(**cfg_builder_params)
-        print(builder.render_template())
-    except ARouteServerError as e:
-        if str(e):
-            logging.error(str(e))
-        return False
+        cfg_builder_params = {
+            "cfg_general": get_cfg_path("cfg_general"),
+            "cfg_clients": get_cfg_path("cfg_clients"),
+            "cfg_bogons": get_cfg_path("cfg_bogons"),
+            "cache_dir": get_cfg_path("cache_dir"),
+            "cache_expiry": get_cfg_val("cache_expiry"),
+            "bgpq3_path": get_cfg_val("bgpq3_path"),
+            "template_dir": get_cfg_path("template_dir"),
+            "template_name": get_cfg_val("template_name"),
+            "ip_ver": args.ip_ver,
+        }
+
+        template_sub_dir = None
+        if args.speaker == "BIRD":
+            builder_class = BIRDConfigBuilder
+            template_sub_dir = "bird"
+        else:
+            raise ARouteServerError(
+                "Unknown BGP speaker implementation: {}".format(args.speaker)
+            )
+        if template_sub_dir:
+            cfg_builder_params["template_dir"] = os.path.join(
+                cfg_builder_params["template_dir"], template_sub_dir
+            )
+
+        try:
+            builder = BIRDConfigBuilder(**cfg_builder_params)
+            print(builder.render_template())
+        except ARouteServerError as e:
+            if str(e):
+                logging.error(str(e))
+            return False
+
+    if args.command == "clients-from-peeringdb":
+        data = clients_from_peeringdb(
+            args.netixlanid,
+            get_cfg_path("cache_dir")
+        )
+        yaml.dump(data, sys.stdout, default_flow_style=False)
 
     return True
 

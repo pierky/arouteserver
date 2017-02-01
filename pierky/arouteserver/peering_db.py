@@ -68,6 +68,7 @@ class PeeringDBNet(PeeringDBInfo):
     
         self.info_prefixes4 = self.raw_data.get("info_prefixes4", None)
         self.info_prefixes6 = self.raw_data.get("info_prefixes6", None)
+        self.irr_as_set = self.raw_data.get("irr_as_set", None)
 
     def _get_object_filename(self):
         return "peeringdb_net_{}.json".format(self.asn)
@@ -85,3 +86,77 @@ class PeeringDBNet(PeeringDBInfo):
             raise PeeringDBNoInfoError("No data for this nextwork")
 
         return data["data"][0]
+
+class PeeringDBNetIXLan(PeeringDBInfo):
+
+    PEERINGDB_URL = "https://www.peeringdb.com/api/netixlan?ixlan_id={ixlanid}"
+
+    def __init__(self, ixlanid, **kwargs):
+        PeeringDBInfo.__init__(self, **kwargs)
+        self.ixlanid = ixlanid
+        self.load_data()
+
+    def _get_object_filename(self):
+        return "peeringdb_ixlanid_{}.json".format(self.ixlanid)
+
+    def _get_peeringdb_url(self):
+        return self.PEERINGDB_URL.format(ixlanid=self.ixlanid)
+
+    def _get_data(self):
+        data = self._get_data_from_peeringdb()
+        if not "data" in data:
+            raise PeeringDBNoInfoError("Missing 'data'")
+        if not isinstance(data["data"], list):
+            raise PeeringDBNoInfoError("Unexpected format: 'data' is not a list")
+        if len(data["data"]) == 0:
+            raise PeeringDBNoInfoError("No data for this nextwork")
+
+        return data["data"]
+
+def clients_from_peeringdb(netixlanid, cache_dir):
+    clients = []
+
+    netixlans = PeeringDBNetIXLan(netixlanid, cache_dir=cache_dir).raw_data
+    for netixlan in netixlans:
+        if netixlan["is_rs_peer"] is True:
+            client = {
+                "asn": netixlan["asn"],
+                "ip": [],
+            }
+            for ipver in ("ipaddr4", "ipaddr6"):
+                if netixlan[ipver]:
+                    client["ip"].append(netixlan[ipver].encode("ascii", "ignore"))
+            clients.append(client)
+
+    asns = {}
+
+    for client in clients:
+        asn = client["asn"]
+        net = PeeringDBNet(asn)
+
+        irr_as_sets = net.irr_as_set
+        if not irr_as_sets:
+            continue
+
+        if "/" in irr_as_sets:
+            irr_as_sets = irr_as_sets.split("/")
+        else:
+            irr_as_sets = [irr_as_sets]
+
+        key = "AS{}".format(asn)
+        if key not in asns:
+            asns[key] = {
+                "as_sets": []
+            }
+
+        for irr_as_set in irr_as_sets:
+            irr_as_set = irr_as_set.strip()
+            if irr_as_set not in asns[key]["as_sets"]:
+                asns[key]["as_sets"].append(irr_as_set.encode("ascii", "ignore"))
+
+    data = {
+        "asns": asns,
+        "clients": clients
+    }
+
+    return data

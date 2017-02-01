@@ -43,10 +43,11 @@ Installation
   .. code:: bash
 
     # if you installed from GitHub
-    ./scripts/arouteserver --setup
+    export PYTHONPATH="`pwd`"
+    ./scripts/arouteserver setup
 
     # if you used pip
-    arouteserver --setup
+    arouteserver setup
 
   The program will ask to create some directories (under ``/etc/arouteserver`` by detault) and to copy some files there.
   These paths can be changed by editing the ``arouteserver.yml`` program configuration file or by using command line arguments. More information in the :doc:`configuration section <CONFIG>`.
