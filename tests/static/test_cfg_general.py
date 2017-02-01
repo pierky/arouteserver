@@ -406,7 +406,7 @@ class TestConfigParserGeneric(TestConfigParserBase):
         self.assertEqual(self.cfg["prepend_rs_as"], False)
         self.assertEqual(self.cfg["path_hiding"], True)
         self.assertEqual(self.cfg["passive"], True)
-        self.assertEqual(self.cfg["gtsm"], True)
+        self.assertEqual(self.cfg["gtsm"], False)
         self.assertEqual(self.cfg["add_path"], False)
         self.assertEqual(self.cfg["filtering"]["next_hop_policy"], "strict")
         self.assertEqual(self.cfg["filtering"]["ipv4_pref_len"]["min"], 8)

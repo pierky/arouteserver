@@ -38,7 +38,7 @@ class ConfigParserGeneral(ConfigParserBase):
                 "prepend_rs_as": ValidatorBool(default=False),                      # Done
                 "path_hiding": ValidatorBool(default=True),                         # Done, not tested
                 "passive": ValidatorBool(default=True),                             # Done
-                "gtsm": ValidatorBool(default=True),
+                "gtsm": ValidatorBool(default=False),
                 "add_path": ValidatorBool(default=False),                           # Done
                 "filtering": {
                     "next_hop_policy": ValidatorOption("next_hop_policy",
