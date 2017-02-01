@@ -125,4 +125,5 @@ Built to group as many tests as possible in a single scenario.
   AS101_other_s_comm    101.0.4.0/24            add 888:0, NOT scrubbed by rs
   AS101_other_l_comm    101.0.5.0/24            add 888:0:0, NOT scrubbed by rs
   AS101_bad_good_comms  101.0.6.0/24            add 65530:1,999:65530:1,777:0,777:0:0, 65530 are scrubbed by rs, 777:** are kept
+  AS101_transitfree_1   101.0.7.0/24 [101 174]  fail as_path_contains_transit_free_asn
   ====================  ============ ========== ==================================================================================

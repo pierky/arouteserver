@@ -51,6 +51,7 @@ Features
   - minimum and maximum IPv4/IPv6 **prefix length**;
   - maximum **AS_PATH length**;
   - reject **invalid AS_PATHs** (containing private/invalid ASNs);
+  - reject AS_PATHs containing **transit-free** ASNs;
   - reject **bogons**;
   - prefixes and origin ASNs enforcing via **RPSL/IRRdb AS-SETs** (`RFC7948`_ `section 4.6.2 <https://tools.ietf.org/html/rfc7948#section-4.6.2>`_);
   - **max-prefix limit** based on global or client-specific values or on **PeeringDB** data.

@@ -62,7 +62,7 @@ class ValidatorUInt(ConfigParserValidator):
 
     def _validate(self, v):
         if isinstance(v, str):
-            if v.isdigit():
+            if v.strip().isdigit():
                 return int(v)
             else:
                 raise ConfigError()
@@ -93,6 +93,26 @@ class ValidatorASN(ConfigParserValidator):
             return asn
         except ConfigError:
             raise ConfigError("Invalid ASN: {}".format(v))
+
+class ValidatorASNList(ConfigParserValidator):
+
+    def _validate(self, v):
+        if isinstance(v, str):
+            parts = v.split(",")
+        elif isinstance(v, list):
+            parts = v
+        elif isinstance(v, int):
+            return [ValidatorASN().validate(v)]
+        else:
+            raise ConfigError(
+                "Invalid format: must be a list or a "
+                "comma-separated list of ASNs"
+            )
+
+        asns = []
+        for part in parts:
+            asns.append(ValidatorASN().validate(part))
+        return asns
 
 class ValidatorIPAddr(ConfigParserValidator):
 

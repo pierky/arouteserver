@@ -65,6 +65,10 @@ class LiveScenario(ARouteServerTestCase):
         return var_dir
 
     @classmethod
+    def _do_not_stop_instances(cls):
+        return cls.DO_NOT_STOP_INSTANCES or "REUSE_INSTANCES" in os.environ
+
+    @classmethod
     def _build_other_cfg(cls, tpl_name):
         cls.debug("Building config from {}/{} - IPv{}".format(
             cls._get_module_dir(), tpl_name, cls.IP_VER))
@@ -165,7 +169,7 @@ class LiveScenario(ARouteServerTestCase):
             for instance in cls.INSTANCES:
                 instance.set_var_dir("{}/var".format(cls._get_module_dir()))
 
-                if cls.DO_NOT_STOP_INSTANCES and instance.is_running():
+                if cls._do_not_stop_instances() and instance.is_running():
                     cls.debug("Instance '{}' already running, reloading config".format(instance.name))
                     instance.remount()
                     if not instance.reload_config():
@@ -181,7 +185,7 @@ class LiveScenario(ARouteServerTestCase):
     def _tearDownClass(cls):
         mock.patch.stopall()
 
-        if cls.DO_NOT_STOP_INSTANCES:
+        if cls._do_not_stop_instances():
             cls.debug("Skipping instances stopping")
             return
         print("{}: stopping instances...".format(cls.SHORT_DESCR))

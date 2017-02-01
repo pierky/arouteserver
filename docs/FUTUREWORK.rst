@@ -17,7 +17,6 @@ Mid term
 
 - Doc: better documentation
 - Doc: schema of data that can be used within J2 templates
-- New feature: tier-1 list
 
 Long term
 ---------

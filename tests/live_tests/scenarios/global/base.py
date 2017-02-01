@@ -203,6 +203,12 @@ class BasicScenario(LiveScenario):
         self.receive_route_from(self.rs, self.DATA["invalid_asn1"], self.AS1_1, as_path="1 65536 1", next_hop=self.AS1_1, filtered=True)
         self.log_contains(self.rs, "AS_PATH [(path 1 65536 1)] contains invalid ASN - REJECTING " + self.DATA["invalid_asn1"])
 
+    def test_040_bad_prefixes_received_by_rs_transitfree_as_path(self):
+        """{}: bad prefixes received by rs: transit-free ASN in AS-PATH"""
+
+        self.receive_route_from(self.rs, self.DATA["AS101_transitfree_1"], self.AS1_1, as_path="1 101 174", next_hop=self.AS1_1, filtered=True)
+        self.log_contains(self.rs, "AS_PATH [(path 1 101 174)] contains transit-free ASN - REJECTING " + self.DATA["AS101_transitfree_1"])
+
     def test_040_bad_prefixes_received_by_rs_aspath_len(self):
         """{}: bad prefixes received by rs: AS_PATH len"""
 

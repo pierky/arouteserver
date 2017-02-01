@@ -104,6 +104,27 @@ cfg:
     # Default: True
     reject_invalid_as_in_as_path: True
 
+    transit_free:
+      # Transit-free networks' ASNs should appear in AS_PATH only
+      # in the left-most position.
+      #
+      # If a policy is given here, it is applied to prefixes whose
+      # AS_PATH contains one of the following ASN in any position
+      # different from the first:
+      #
+      # - reject: the prefix is discarded.
+      # - warning: a warning is logged.
+      #
+      # Default: none
+      #action: "reject"
+
+      # Comma separated list of ASNs which are considered
+      # transit-free. Used only if and 'action' is provided.
+      asns: >
+        174, 209, 286, 701, 1239, 1299, 2828, 2914,
+        3257, 3320, 3356, 3549, 5511, 6453, 6461,
+        6762, 6830, 7018, 12956
+
     rpsl:
       # With regards of the following two options, if no AS-SET
       # is given in the clients configuration file for the

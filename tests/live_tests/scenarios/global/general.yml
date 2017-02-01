@@ -16,6 +16,9 @@ cfg:
                   length: 32
                   comment: "Local network"
                 max_as_path_len: 6
+                transit_free:
+                  action: "reject"
+                  asns: 174, 3
                 rpsl:
                         tag_as_set: False
         blackhole_filtering:

@@ -15,6 +15,7 @@ protocol static own_prefixes {
 	route {{ data.AS101_other_l_comm }} reject;
 	route {{ data.AS101_bad_good_comms }} reject;
 	route {{ data.AS102_no_asset }} reject;
+	route {{ data.AS101_transitfree_1 }} reject;
 }
 
 filter outgoing {
@@ -42,6 +43,11 @@ filter outgoing {
 		bgp_large_community.add((999,65530,1));
 		bgp_community.add((777,0));
 		bgp_large_community.add((777,0,0));
+	}
+	if net = {{ data.AS101_transitfree_1 }} then {
+		bgp_path.delete(101);
+		bgp_path.prepend(174);
+		bgp_path.prepend(101);
 	}
 	accept;
 }

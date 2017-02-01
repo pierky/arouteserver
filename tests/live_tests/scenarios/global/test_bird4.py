@@ -69,5 +69,7 @@ class BasicScenario_BIRDIPv4(BasicScenario):
         "AS101_other_l_comm":       "101.0.5.0/24",
         "AS101_bad_good_comms":     "101.0.6.0/24",
         "AS101_no_rset":            "101.1.0.0/24",
+        "AS101_transitfree_1":      "101.0.7.0/24",
+
         "AS102_no_asset":           "102.0.1.0/24",
     }

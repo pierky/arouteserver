@@ -89,6 +89,15 @@ filter receive_from_{{ client.id }} {
 		reject "AS_PATH [", bgp_path ,"] contains invalid ASN - REJECTING ", net;
 	{% endif %}
 
+	{% if cfg.filtering.transit_free.action %}
+	if as_path_contains_transit_free_asn() then
+	{%	if cfg.filtering.transit_free.action == "reject" %}
+		reject "AS_PATH [", bgp_path ,"] contains transit-free ASN - REJECTING ", net;
+	{%	else %}
+		print "AS_PATH [", bgp_path ,"] contains transit-free ASN - REJECTING ", net;
+	{%	endif %}
+	{% endif %}
+
 	{% if client.cfg.filtering.rpsl.enforce_origin_in_as_set or cfg.filtering.rpsl.tag_as_set %}
 	# AS_PATH: enforce origin via AS-SET (or tag)
 	if !origin_as_is_in_{{ client.id }}_as_set() then {

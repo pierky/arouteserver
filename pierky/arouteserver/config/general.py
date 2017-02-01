@@ -55,6 +55,13 @@ class ConfigParserGeneral(ConfigParserBase):
                     ),                                                              # Done
                     "max_as_path_len": ValidatorMaxASPathLen(default=32),           # Done
                     "reject_invalid_as_in_as_path": ValidatorBool(default=True),    # Done
+                    "transit_free": {
+                        "action": ValidatorOption("action",
+                                                  ("reject", "warning"),
+                                                  mandatory=False,
+                                                  default="reject"),
+                        "asns": ValidatorASNList(mandatory=False)
+                    },
                     "rpsl": {
                         "enforce_origin_in_as_set": ValidatorBool(default=True),    # Done
                         "enforce_prefix_in_as_set": ValidatorBool(default=True),    # Done
@@ -151,6 +158,7 @@ class ConfigParserGeneral(ConfigParserBase):
             errors = True
             if str(e):
                 logging.error(str(e))
+            raise ConfigError()
 
         # If blackhole filtering policy = "rewrite-next-hop", then
         # blackhole next-hops must be provided.

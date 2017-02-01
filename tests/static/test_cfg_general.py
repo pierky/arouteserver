@@ -394,6 +394,49 @@ class TestConfigParserGeneric(TestConfigParserBase):
         self.assertEqual(self.cfg["filtering"]["max_prefix"]["general_limit_ipv6"], 12000)
         self._test_optional(self.cfg["filtering"]["max_prefix"], "general_limit_ipv6")
 
+    def test_transit_free_action(self):
+        """Generic config parser: transit free, action"""
+        self.assertEqual(self.cfg["filtering"]["transit_free"]["action"], None)
+        self._test_option(self.cfg["filtering"]["transit_free"], "action", ("reject", "warning"))
+        self._test_optional(self.cfg["filtering"]["transit_free"], "action")
+
+    def test_transit_free_asns(self):
+        """Generic config parser: transit free, ASNs list"""
+        self.assertEqual(self.cfg["filtering"]["transit_free"]["asns"], [174, 209, 286, 701, 1239, 1299, 2828, 2914, 3257, 3320, 3356, 3549, 5511, 6453, 6461, 6762, 6830, 7018, 12956])
+        self._test_optional(self.cfg["filtering"]["transit_free"], "asns")
+
+        cfg = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  filtering:",
+            "    transit_free:",
+        ]
+        self.load_config(yaml="\n".join(cfg + [
+            "      action: reject"
+        ]))
+        self._contains_err()
+        self.assertEqual(self.cfg["filtering"]["transit_free"]["action"], "reject")
+
+        self.load_config(yaml="\n".join(cfg + [
+            "      action: test"
+        ]))
+        self._contains_err("Error parsing 'action' at 'cfg.filtering.transit_free' level - Invalid option for 'action':")
+
+        self.load_config(yaml="\n".join(cfg + [
+            "      action: reject",
+            "      asns: '1, 2, 3, 4'"
+        ]))
+        self._contains_err()
+        self.assertEqual(self.cfg["filtering"]["transit_free"]["action"], "reject")
+        self.assertEqual(self.cfg["filtering"]["transit_free"]["asns"], [1,2,3,4])
+
+        self.load_config(yaml="\n".join(cfg + [
+            "      action: reject",
+            "      asns: '1, 2, 3, 4a'"
+        ]))
+        self._contains_err("Error parsing 'asns' at 'cfg.filtering.transit_free' level - Invalid ASN:  4a.")
+
     def test_default_values(self):
         """Generic config parser: minimal config"""
         self.load_config(yaml="cfg:\n"
@@ -415,6 +458,8 @@ class TestConfigParserGeneric(TestConfigParserBase):
         self.assertEqual(self.cfg["filtering"]["ipv6_pref_len"]["max"], 48)
         self.assertEqual(self.cfg["filtering"]["max_as_path_len"], 32)
         self.assertEqual(self.cfg["filtering"]["reject_invalid_as_in_as_path"], True)
+        self.assertEqual(self.cfg["filtering"]["transit_free"]["action"], None)
+        self.assertEqual(self.cfg["filtering"]["transit_free"]["asns"], None)
         self.assertEqual(self.cfg["filtering"]["rpsl"]["tag_as_set"], True)
         self.assertEqual(self.cfg["filtering"]["rpsl"]["enforce_origin_in_as_set"], True)
         self.assertEqual(self.cfg["filtering"]["rpsl"]["enforce_prefix_in_as_set"], True)
