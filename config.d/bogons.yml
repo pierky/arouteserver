@@ -1,5 +1,9 @@
 bogons:
   - prefix: "0.0.0.0"
+    length: 0
+    comment: "Default route"
+    exact: True
+  - prefix: "0.0.0.0"
     length: 8
     comment: "IANA - Local Identification"
   - prefix: "10.0.0.0"
@@ -44,6 +48,10 @@ bogons:
   - prefix: "164.138.24.80"
     length: 29
     comment: "Tilaa OOB"
+  - prefix: "::"
+    length: 0
+    comment: "Default route"
+    exact: True
   - prefix: "0000::"
     length: 8
     comment: "loopback, unspecified, v4-mapped"
