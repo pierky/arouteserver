@@ -7,7 +7,6 @@ Short term
 - New feature: RPKI filtering/tagging (based on `rtrsub`_ and/or `rtrlib`_)
 - New feature: selective prepending via BGP communities
 - New feature: Custom informative BGP communities
-- Live tests: path hiding mitigation live test
 - Live tests: provide a skeleton to ease building of new live test scenarios.
 - Add options for bgpq3 (sources)
 - Doc: Contributing section

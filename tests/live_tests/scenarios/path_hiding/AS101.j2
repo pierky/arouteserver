@@ -1,0 +1,41 @@
+router id 99.0.2.101;
+
+log "/var/log/bird.log" all;
+log syslog all;
+debug protocols all;
+
+protocol device { }
+
+protocol static own_prefixes 
+{
+	route {{ data.AS101_pref_ok1 }} reject;
+}
+
+filter to_AS1 {
+	accept;
+}
+filter to_AS2 {
+	if net = {{ data.AS101_pref_ok1 }} then {
+		bgp_path.prepend(101);
+		bgp_path.prepend(101);
+		bgp_path.prepend(101);
+	}
+	accept;
+}
+protocol bgp AS1 {
+	local as 101;
+	neighbor {{ data.AS1_IPAddress }} as 1;
+	import all;
+	export filter to_AS1;
+	connect delay time 1;
+	connect retry time 1;
+}
+protocol bgp AS2 {
+	local as 101;
+	neighbor {{ data.AS2_IPAddress }} as 2;
+	import all;
+	export filter to_AS2;
+	connect delay time 1;
+	connect retry time 1;
+}
+

@@ -75,16 +75,27 @@ class BIRDInstance(DockerInstance):
         for proto in self.protocols_status:
             if self.protocols_status[proto]["ip"] == other_inst.ip:
                 return self.protocols_status[proto]["is_up"]
-        raise Exception("Can't get BGP session status for {}".format(other_inst.name))
+        raise Exception(
+            "Can't get BGP session status for {} on {} "
+            "(looking for {})".format(other_inst.name, self.name, other_inst.ip))
 
-    def get_routes(self, prefix, include_filtered=False):
+    def get_routes(self, prefix, include_filtered=False, only_best=False):
+        if include_filtered and only_best:
+            raise Exception("Can't set both include_filtered and only_best")
+
         self._get_protocols_status()
         routes = []
 
         regex = "[ ]+via ([0-9\.\:a-f]+)[^\[]+\[([^\s]+)[^\n]+"
 
-        for filtered in ["", "filtered"] if include_filtered else [""]:
-            cmd = "show route {} all {}".format(prefix, filtered)
+        options = [""]
+        if include_filtered:
+            options.append("filtered")
+        if only_best:
+            options.append("primary")
+
+        for option in options:
+            cmd = "show route {} all {}".format(prefix, option)
             out = self._birdcl(cmd)
             match = re.search("^[0-9\.\:a-f]+/[0-9]+{}".format(regex), out, re.MULTILINE)
             if match:
@@ -96,7 +107,7 @@ class BIRDInstance(DockerInstance):
                     match = re.search(regex, line)
                     if match:
                         if route:
-                            route["filtered"] = filtered == "filtered"
+                            route["filtered"] = option == "filtered"
                             routes.append(Route(**route))
                             route = {}
                         route["prefix"] = prefix
@@ -110,7 +121,7 @@ class BIRDInstance(DockerInstance):
                             route["std_comms"] = line.split(": ")[1].strip()
                         if "BGP.large_community:" in line:
                             route["lrg_comms"] = line.split(": ")[1].strip()
-                route["filtered"] = filtered == "filtered"
+                route["filtered"] = option == "filtered"
                 routes.append(Route(**route))
         return routes
 

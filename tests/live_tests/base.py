@@ -53,7 +53,7 @@ class LiveScenario(ARouteServerTestCase):
         for instance in cls.INSTANCES:
             if instance.name == name:
                 return instance
-        return None
+        raise Exception("Instance not found: {}".format(name))
 
     @classmethod
     def _create_var_dir(cls):
@@ -197,8 +197,10 @@ class LiveScenario(ARouteServerTestCase):
 
     def receive_route_from(self, inst, prefix, other_inst=None, as_path=None,
                            next_hop=None, std_comms=None, lrg_comms=None,
-                           ext_comms=None, filtered=None):
-        routes = inst.get_routes(prefix, include_filtered=filtered is not None)
+                           ext_comms=None, filtered=None, only_best=None):
+        routes = inst.get_routes(prefix,
+                                 include_filtered=filtered if filtered is not None else False,
+                                 only_best=only_best if only_best is not None else False)
 
         next_hop_ip = None
         if next_hop:

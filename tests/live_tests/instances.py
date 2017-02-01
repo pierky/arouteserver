@@ -52,7 +52,7 @@ class BGPSpeakerInstance(object):
     def bgp_session_is_up(self, other_inst, force_update=False):
         raise NotImplementedError()
 
-    def get_routes(self, prefix, include_filtered=False):
+    def get_routes(self, prefix, include_filtered=False, only_best=False):
         raise NotImplementedError()
 
     def log_contains(self, s):

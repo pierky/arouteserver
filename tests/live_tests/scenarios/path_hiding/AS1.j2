@@ -1,0 +1,33 @@
+router id 99.0.2.11;
+
+log "/var/log/bird.log" all;
+log syslog all;
+debug protocols all;
+
+protocol device { }
+
+filter to_the_rs {
+	if net = {{ data.AS101_pref_ok1 }} then {
+		bgp_community.add((0,3));
+		bgp_community.add((0,4));
+	}
+	accept;
+}
+
+protocol bgp the_rs {
+	local as 1;
+	neighbor {{ data.rs_IPAddress }} as 999;
+	next hop self;
+	import none;
+	export filter to_the_rs;
+	connect delay time 1;
+	connect retry time 1;
+}
+protocol bgp AS101 {
+	local as 1;
+	neighbor {{ data.AS101_IPAddress }} as 101;
+	import all;
+	export all;
+	connect delay time 1;
+	connect retry time 1;
+}

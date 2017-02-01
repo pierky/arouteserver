@@ -1,0 +1,13 @@
+cfg:
+        rs_as: 999
+        router_id: "99.0.2.2"
+        path_hiding: True
+        add_path: True
+        filtering:
+                rpsl:
+                        enforce_origin_in_as_set: False
+                        enforce_prefix_in_as_set: False
+                        tag_as_set: False
+        communities:
+                do_not_announce_to_peer:
+                        std: "0:peer_as"
