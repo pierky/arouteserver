@@ -5,9 +5,13 @@ if [ ! -e "setup.py" ]; then
 	exit
 fi
 
+ROOT="`pwd`"
+
 DOCS_DIR="`pwd`/docs"
 
-echo "Building Live scenarios TOC"
+# ----------------------------------------------------
+
+echo "Building Live tests scenarios TOC"
 rm $DOCS_DIR/LIVETESTS_SCENARIOS_*.rst
 
 echo ".. toctree::" > $DOCS_DIR/LIVETESTS_SCENARIOS.rst
@@ -23,8 +27,33 @@ for d in */; do
 	fi
 done
 
-cd $DOCS_DIR
-cd ..
+cd $ROOT
+
+# ----------------------------------------------------
+
+echo "Building examples"
+rm $DOCS_DIR/EXAMPLES.rst
+
+echo "Examples of configurations" > $DOCS_DIR/EXAMPLES.rst
+echo "==========================" >> $DOCS_DIR/EXAMPLES.rst
+echo "" >> $DOCS_DIR/EXAMPLES.rst
+
+cd examples
+for d in */; do
+	EXAMPLE_NAME=`basename $d`
+	if [ -e "$EXAMPLE_NAME/README.rst" ]; then
+		cat $d/README.rst >> $DOCS_DIR/EXAMPLES.rst
+		echo "" >> $DOCS_DIR/EXAMPLES.rst
+		echo "https://github.com/pierky/arouteserver/blob/master/examples/$EXAMPLE_NAME" >> $DOCS_DIR/EXAMPLES.rst
+		echo "" >> $DOCS_DIR/EXAMPLES.rst
+	fi
+done
+
+cd $ROOT
+
+# ----------------------------------------------------
+
+echo "Generating examples configurations"
 
 CFG_FILE="var/arouteserver.yml"
 
@@ -44,15 +73,21 @@ $CMD --ip-ver 4 -o examples/rich/bird4.conf
 echo "Building example: rich, IPv6"
 $CMD --ip-ver 6 -o examples/rich/bird6.conf
 
+# ----------------------------------------------------
+
 echo "Building README.rst"
 
 cat $DOCS_DIR/README_header.txt > README.rst
 cat $DOCS_DIR/FEATURES.rst >> README.rst
 cat $DOCS_DIR/README_footer.txt >> README.rst
 
+# ----------------------------------------------------
 
+echo "Publishing docs via HTTP"
+
+echo "cd $DOCS_DIR ; make html ; cd _build/html/ ; python -m SimpleHTTPServer 8000 ; cd $ROOT"
 cd $DOCS_DIR
 make html
 cd _build/html/
 python -m SimpleHTTPServer 8000
-cd ../../../
+cd $ROOT

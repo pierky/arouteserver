@@ -157,13 +157,16 @@ function apply_blackhole_filtering_policy() {
 function prefix_can_be_announced_to(int peer_as) {
 {% if cfg.control_communities %}
 	{% if cfg.communities.do_not_announce_to_peer|community_is_set %}
-	{{ match_communities(cfg.communities.do_not_announce_to_peer, "return false;") }}
+	# do_not_announce_to_peer
+	{{- match_communities(cfg.communities.do_not_announce_to_peer, "return false;") }}
 	{% endif %}
 	{% if cfg.communities.announce_to_peer|community_is_set %}
-	{{ match_communities(cfg.communities.announce_to_peer, "return true;") }}
+	# announce_to_peer
+	{{- match_communities(cfg.communities.announce_to_peer, "return true;") }}
 	{% endif %}
 	{% if cfg.communities.do_not_announce_to_any|community_is_set %}
-	{{ match_communities(cfg.communities.do_not_announce_to_any, "return false;") }}
+	# do_not_announce_to_any
+	{{- match_communities(cfg.communities.do_not_announce_to_any, "return false;") }}
 	{% endif %}
 {% endif %}
 	return true;
