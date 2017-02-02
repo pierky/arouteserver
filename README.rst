@@ -98,7 +98,7 @@ Full documentation can be found on ReadTheDocs: https://arouteserver.readthedocs
 Status
 ------
 
-**Highly experimental**!
+**Highly experimental**! Please consider it as a toy, far from being production ready. Looking for advices and testers.
 
 Bug? Issues?
 ------------
