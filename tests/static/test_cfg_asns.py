@@ -19,12 +19,9 @@ import yaml
 
 from .cfg_base import TestConfigParserBase 
 from pierky.arouteserver.config.asns import ConfigParserASNS
-from pierky.arouteserver.config.clients import ConfigParserClients
-from pierky.arouteserver.config.general import ConfigParserGeneral
-from pierky.arouteserver.errors import ConfigError
 
 
-class TestConfigParserClients(TestConfigParserBase):
+class TestConfigParserASNs(TestConfigParserBase):
 
     FILE_PATH = "config.d/clients.yml"
     CONFIG_PARSER_CLASS = ConfigParserASNS

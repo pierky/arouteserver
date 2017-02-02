@@ -23,26 +23,27 @@ from pierky.arouteserver.config.general import ConfigParserGeneral
 from pierky.arouteserver.errors import ConfigError
 
 
-class TestConfigParserGeneric(TestConfigParserBase):
+class TestConfigParserGeneral(TestConfigParserBase):
 
     FILE_PATH = "config.d/general.yml"
     CONFIG_PARSER_CLASS = ConfigParserGeneral
+    SHORT_DESCR = "General config parser"
 
     VALID_STD_COMMS = ("65535:666", "1:1", "0:0", "1:0", "65535:65535", "rs_as:1")
     VALID_LRG_COMMS = ("65535:666:0", "1:1:1", "0:0:0", "1:0:65535", "4294967295:4294967295:4294967295", "rs_as:1:2")
     VALID_EXT_COMMS = ("rt:1:0", "rt:65535:666", "ro:65535:666", "rt:rs_as:3")
 
     def test_valid_cfg(self):
-        """Generic config parser: valid configuration"""
+        """{}: valid configuration"""
         self._contains_err()
 
     def test_unknown_statement(self):
-        """Generic config parser: unknown statement"""
+        """{}: unknown statement"""
         self.cfg["test"] = "test"
         self._contains_err("Unknown statement at 'cfg' level: 'test'.")
 
     def test_rs_as(self):
-        """Generic config parser: rs_as"""
+        """{}: rs_as"""
         self.assertEqual(self.cfg["rs_as"], 999)
         for asn in (-1, 0, "test"):
             self.cfg["rs_as"] = asn
@@ -55,7 +56,7 @@ class TestConfigParserGeneric(TestConfigParserBase):
         self._test_mandatory(self.cfg, "rs_as")
 
     def test_router_id(self):
-        """Generic config parser: router_id"""
+        """{}: router_id"""
         self.assertEqual(self.cfg["router_id"], "192.0.2.2")
         for v in ("1.0.0.1", "10.0.0.1"):
             self.cfg["router_id"] = v
@@ -66,42 +67,42 @@ class TestConfigParserGeneric(TestConfigParserBase):
         self._test_mandatory(self.cfg, "router_id")
 
     def test_prepend_rs_as(self):
-        """Generic config parser: prepend_rs_as"""
+        """{}: prepend_rs_as"""
         self.assertEqual(self.cfg["prepend_rs_as"], False)
         self._test_bool_val(self.cfg, "prepend_rs_as")
         self._test_mandatory(self.cfg, "prepend_rs_as", has_default=True)
 
     def test_path_hiding(self):
-        """Generic config parser: path_hiding"""
+        """{}: path_hiding"""
         self._test_bool_val(self.cfg, "path_hiding")
         self._test_optional(self.cfg, "path_hiding")
 
     def test_passive(self):
-        """Generic config parser: passive"""
+        """{}: passive"""
         self.assertEqual(self.cfg["passive"], True)
         self._test_bool_val(self.cfg, "passive")
         self._test_mandatory(self.cfg, "passive", has_default=True)
 
     def test_gtsm(self):
-        """Generic config parser: gtsm"""
+        """{}: gtsm"""
         self.assertEqual(self.cfg["gtsm"], False)
         self._test_bool_val(self.cfg, "gtsm")
         self._test_mandatory(self.cfg, "gtsm", has_default=True)
 
     def test_add_path(self):
-        """Generic config parser: add_path"""
+        """{}: add_path"""
         self.assertEqual(self.cfg["add_path"], False)
         self._test_bool_val(self.cfg, "add_path")
         self._test_mandatory(self.cfg, "add_path", has_default=True)
 
     def test_next_hop_policy(self):
-        """Generic config parser: next_hop_policy"""
+        """{}: next_hop_policy"""
         self.assertEqual(self.cfg["filtering"]["next_hop_policy"], "strict")
         self._test_option(self.cfg["filtering"], "next_hop_policy", ("strict", "same-as"))
         self._test_mandatory(self.cfg["filtering"], "next_hop_policy", has_default=True)
 
     def test_ipv4_pref_len(self):
-        """Generic config parser: ipv4_pref_len"""
+        """{}: ipv4_pref_len"""
         self.assertEqual(self.cfg["filtering"]["ipv4_pref_len"]["min"], 8)
         self.assertEqual(self.cfg["filtering"]["ipv4_pref_len"]["max"], 24)
         self.cfg["filtering"]["ipv4_pref_len"]["max"] = 32
@@ -120,7 +121,7 @@ class TestConfigParserGeneric(TestConfigParserBase):
             self._contains_err("Error parsing 'ipv4_pref_len' at 'cfg.filtering' level - In the IPv4 min/max length, the value of 'min' must be <= the value of 'max'.")
 
     def test_ipv6_pref_len(self):
-        """Generic config parser: ipv6_pref_len"""
+        """{}: ipv6_pref_len"""
         self.assertEqual(self.cfg["filtering"]["ipv6_pref_len"]["min"], 12)
         self.assertEqual(self.cfg["filtering"]["ipv6_pref_len"]["max"], 48)
         self.cfg["filtering"]["ipv6_pref_len"]["max"] = 128
@@ -139,7 +140,7 @@ class TestConfigParserGeneric(TestConfigParserBase):
             self._contains_err("Error parsing 'ipv6_pref_len' at 'cfg.filtering' level - In the IPv6 min/max length, the value of 'min' must be <= the value of 'max'.")
 
     def test_global_black_list_pref(self):
-        """Generic config parser: global_black_list_pref"""
+        """{}: global_black_list_pref"""
 
         self.cfg._load_from_yaml(
             "cfg:\n"
@@ -167,7 +168,7 @@ class TestConfigParserGeneric(TestConfigParserBase):
         self._test_optional(self.cfg["filtering"], "global_black_list_pref")
 
     def test_max_as_path_len(self):
-        """Generic config parser: max_as_path_len"""
+        """{}: max_as_path_len"""
         self.assertEqual(self.cfg["filtering"]["max_as_path_len"], 32)
         for v in (0, 65):
             self.cfg["filtering"]["max_as_path_len"] = v
@@ -178,54 +179,54 @@ class TestConfigParserGeneric(TestConfigParserBase):
         self._test_mandatory(self.cfg["filtering"], "max_as_path_len", has_default=True)
 
     def test_reject_invalid_as_in_as_path(self):
-        """Generic config parser: reject_invalid_as_in_as_path"""
+        """{}: reject_invalid_as_in_as_path"""
         self.assertEqual(self.cfg["filtering"]["reject_invalid_as_in_as_path"], True)
         self._test_bool_val(self.cfg["filtering"], "reject_invalid_as_in_as_path")
         self._test_mandatory(self.cfg["filtering"], "reject_invalid_as_in_as_path", has_default=True)
 
     def test_tag_as_set(self):
-        """Generic config parser: tag_as_set"""
+        """{}: tag_as_set"""
         self.assertEqual(self.cfg["filtering"]["rpsl"]["tag_as_set"], True)
         self._test_bool_val(self.cfg["filtering"]["rpsl"], "tag_as_set")
         self._test_mandatory(self.cfg["filtering"]["rpsl"], "tag_as_set", has_default=True)
 
     def test_enforce_origin_in_as_set(self):
-        """Generic config parser: enforce_origin_in_as_set"""
+        """{}: enforce_origin_in_as_set"""
         self.assertEqual(self.cfg["filtering"]["rpsl"]["enforce_origin_in_as_set"], True)
         self._test_bool_val(self.cfg["filtering"]["rpsl"], "enforce_origin_in_as_set")
         self._test_mandatory(self.cfg["filtering"]["rpsl"], "enforce_origin_in_as_set", has_default=True)
 
     def test_enforce_prefix_in_as_set(self):
-        """Generic config parser: enforce_prefix_in_as_set"""
+        """{}: enforce_prefix_in_as_set"""
         self.assertEqual(self.cfg["filtering"]["rpsl"]["enforce_prefix_in_as_set"], True)
         self._test_bool_val(self.cfg["filtering"]["rpsl"], "enforce_prefix_in_as_set")
         self._test_mandatory(self.cfg["filtering"]["rpsl"], "enforce_prefix_in_as_set", has_default=True)
 
     def test_rpki_enabled(self):
-        """Generic config parser: rpki, enabled"""
+        """{}: rpki, enabled"""
         self.assertEqual(self.cfg["filtering"]["rpki"]["enabled"], True)
         self._test_bool_val(self.cfg["filtering"]["rpki"], "enabled")
         self._test_mandatory(self.cfg["filtering"]["rpki"], "enabled", has_default=True)
 
     def test_rpki_data_source(self):
-        """Generic config parser: rpki, data_source"""
+        """{}: rpki, data_source"""
         self.assertEqual(self.cfg["filtering"]["rpki"]["data_source"], "rtrsub")
         self._test_option(self.cfg["filtering"]["rpki"], "data_source", ("rtrsub", "rtrlib"))
         self._test_optional(self.cfg["filtering"]["rpki"], "data_source")
 
     def test_rpki_reject_invalid(self):
-        """Generic config parser: rpki, reject_invalid"""
+        """{}: rpki, reject_invalid"""
         self.assertEqual(self.cfg["filtering"]["rpki"]["reject_invalid"], True)
         self._test_bool_val(self.cfg["filtering"]["rpki"], "reject_invalid")
         self._test_optional(self.cfg["filtering"]["rpki"], "reject_invalid")
 
     def test_blackhole_announce_to_client(self):
-        """Generic config parser: blackhole_filtering, announce_to_client"""
+        """{}: blackhole_filtering, announce_to_client"""
         self.assertEqual(self.cfg["blackhole_filtering"]["announce_to_client"], True)
         self._test_bool_val(self.cfg["blackhole_filtering"], "announce_to_client")
 
     def test_blackhole_filtering_policy_ipv4(self):
-        """Generic config parser: blackhole_filtering, policy_ipv4"""
+        """{}: blackhole_filtering, policy_ipv4"""
         self.load_config(file_name="{}/test_cfg_general_blackhole_filtering.yml".format(os.path.dirname(__file__)))
         self.assertEqual(self.cfg["blackhole_filtering"]["policy_ipv4"], "propagate-unchanged")
 
@@ -240,7 +241,7 @@ class TestConfigParserGeneric(TestConfigParserBase):
         self._contains_err("Since blackhole_filtering.policy_ipv4 is 'rewrite_next_hop', an IPv4 address must be provided in 'rewrite_next_hop_ipv4'.")
 
     def test_blackhole_filtering_policy_ipv6(self):
-        """Generic config parser: blackhole_filtering, policy_ipv6"""
+        """{}: blackhole_filtering, policy_ipv6"""
         self.load_config(file_name="{}/test_cfg_general_blackhole_filtering.yml".format(os.path.dirname(__file__)))
         self.assertEqual(self.cfg["blackhole_filtering"]["policy_ipv6"], "propagate-unchanged")
 
@@ -255,7 +256,7 @@ class TestConfigParserGeneric(TestConfigParserBase):
         self._contains_err("Since blackhole_filtering.policy_ipv6 is 'rewrite_next_hop', an IPv6 address must be provided in 'rewrite_next_hop_ipv6'.")
 
     def test_blackhole_filtering_ipv4(self):
-        """Generic config parser: blackhole_filtering, rewrite_next_hop, ipv4"""
+        """{}: blackhole_filtering, rewrite_next_hop, ipv4"""
         self.load_config(file_name="{}/test_cfg_general_blackhole_filtering.yml".format(os.path.dirname(__file__)))
         for ip in ("127.0.0.1", "192.168.0.1", "192.0.2.1", "12.34.56.78"):
             self.cfg["blackhole_filtering"]["rewrite_next_hop_ipv4"] = ip
@@ -266,7 +267,7 @@ class TestConfigParserGeneric(TestConfigParserBase):
         self._test_optional(self.cfg["blackhole_filtering"], "rewrite_next_hop_ipv4")
 
     def test_blackhole_filtering_ipv6(self):
-        """Generic config parser: blackhole_filtering, rewrite_next_hop, ipv6"""
+        """{}: blackhole_filtering, rewrite_next_hop, ipv6"""
         self.load_config(file_name="{}/test_cfg_general_blackhole_filtering.yml".format(os.path.dirname(__file__)))
         for ip in ("fe80::1", "2001:DB8::1"):
             self.cfg["blackhole_filtering"]["rewrite_next_hop_ipv6"] = ip
@@ -277,13 +278,13 @@ class TestConfigParserGeneric(TestConfigParserBase):
         self._test_optional(self.cfg["blackhole_filtering"], "rewrite_next_hop_ipv6")
 
     def test_control_communities(self):
-        """Generic config parser: control_communities"""
+        """{}: control_communities"""
         self.assertEqual(self.cfg["control_communities"], True)
         self._test_bool_val(self.cfg, "control_communities")
         self._test_mandatory(self.cfg, "control_communities", has_default=True)
 
     def test_communities_std(self):
-        """Generic config parser: standard BGP communities"""
+        """{}: standard BGP communities"""
 
 
         self.cfg["communities"]["blackholing"] = {}
@@ -300,7 +301,7 @@ class TestConfigParserGeneric(TestConfigParserBase):
         self._test_optional(self.cfg["communities"]["blackholing"], "std")
 
     def test_communities_lrg(self):
-        """Generic config parser: large BGP communities"""
+        """{}: large BGP communities"""
 
         for c in self.VALID_LRG_COMMS:
             self.cfg["communities"]["blackholing"]["lrg"] = c
@@ -315,7 +316,7 @@ class TestConfigParserGeneric(TestConfigParserBase):
         self._test_optional(self.cfg["communities"]["blackholing"], "lrg")
 
     def test_communities_ext(self):
-        """Generic config parser: extended BGP communities"""
+        """{}: extended BGP communities"""
 
         for c in self.VALID_EXT_COMMS:
             self.cfg["communities"]["blackholing"]["ext"] = c
@@ -329,7 +330,7 @@ class TestConfigParserGeneric(TestConfigParserBase):
         self._test_optional(self.cfg["communities"]["blackholing"], "ext")
 
     def test_fixed_values_communities(self):
-        """Generic config parser: communities with fixed values"""
+        """{}: communities with fixed values"""
 
         for comm in ("announce_to_peer", "do_not_announce_to_peer"):
             for c in self.VALID_STD_COMMS:
@@ -347,7 +348,7 @@ class TestConfigParserGeneric(TestConfigParserBase):
             self.cfg.parse()
 
     def test_duplicate_communities(self):
-        """Generic config parser: duplicate communities"""
+        """{}: duplicate communities"""
         tpl = [
             "cfg:",
             "  rs_as: 999",
@@ -373,35 +374,35 @@ class TestConfigParserGeneric(TestConfigParserBase):
         self._contains_err("The 'prefix_not_present_in_as_set.lrg' community's value (999:2:2) has already been used for another community.")
 
     def test_max_pref_action(self):
-        """Generic config parser: max_prefix action"""
+        """{}: max_prefix action"""
         self.assertEqual(self.cfg["filtering"]["max_prefix"]["action"], None)
         self._test_option(self.cfg["filtering"]["max_prefix"], "action", ("shutdown", "restart", "block", "warning"))
         self._test_optional(self.cfg["filtering"]["max_prefix"], "action")
 
     def test_max_pref_peeringdb(self):
-        """Generic config parser: max_prefix PeeringDB"""
+        """{}: max_prefix PeeringDB"""
         self.assertEqual(self.cfg["filtering"]["max_prefix"]["peering_db"], True)
         self._test_bool_val(self.cfg["filtering"]["max_prefix"], "peering_db")
         self._test_optional(self.cfg["filtering"]["max_prefix"], "peering_db")
 
     def test_max_pref_general_limit_ipv4(self):
-        """Generic config parser: max_prefix general_limit_ipv4"""
+        """{}: max_prefix general_limit_ipv4"""
         self.assertEqual(self.cfg["filtering"]["max_prefix"]["general_limit_ipv4"], 170000)
         self._test_optional(self.cfg["filtering"]["max_prefix"], "general_limit_ipv4")
 
     def test_max_pref_general_limit_ipv6(self):
-        """Generic config parser: max_prefix general_limit_ipv6"""
+        """{}: max_prefix general_limit_ipv6"""
         self.assertEqual(self.cfg["filtering"]["max_prefix"]["general_limit_ipv6"], 12000)
         self._test_optional(self.cfg["filtering"]["max_prefix"], "general_limit_ipv6")
 
     def test_transit_free_action(self):
-        """Generic config parser: transit free, action"""
+        """{}: transit free, action"""
         self.assertEqual(self.cfg["filtering"]["transit_free"]["action"], None)
         self._test_option(self.cfg["filtering"]["transit_free"], "action", ("reject", "warning"))
         self._test_optional(self.cfg["filtering"]["transit_free"], "action")
 
     def test_transit_free_asns(self):
-        """Generic config parser: transit free, ASNs list"""
+        """{}: transit free, ASNs list"""
         self.assertEqual(self.cfg["filtering"]["transit_free"]["asns"], [174, 209, 286, 701, 1239, 1299, 2828, 2914, 3257, 3320, 3356, 3549, 5511, 6453, 6461, 6762, 6830, 7018, 12956])
         self._test_optional(self.cfg["filtering"]["transit_free"], "asns")
 
@@ -438,7 +439,7 @@ class TestConfigParserGeneric(TestConfigParserBase):
         self._contains_err("Error parsing 'asns' at 'cfg.filtering.transit_free' level - Invalid ASN:  4a.")
 
     def test_default_values(self):
-        """Generic config parser: minimal config"""
+        """{}: minimal config"""
         self.load_config(yaml="cfg:\n"
             "  rs_as: 999\n"
             "  router_id: 192.0.2.2"

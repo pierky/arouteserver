@@ -14,14 +14,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import json
 import unittest
-import mock
 
 from ..mock_peeringdb import mock_peering_db
-from pierky.arouteserver.cached_objects import CachedObject
-from pierky.arouteserver.peering_db import PeeringDBInfo, PeeringDBNet
-from pierky.arouteserver.errors import PeeringDBError, PeeringDBNoInfoError 
+from pierky.arouteserver.peering_db import PeeringDBNet
+from pierky.arouteserver.errors import PeeringDBNoInfoError 
 
 
 class TestPeeringDBInfo(unittest.TestCase):

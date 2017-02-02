@@ -21,42 +21,43 @@ class TestConfigParserBogons(TestConfigParserBase):
 
     FILE_PATH = "config.d/bogons.yml"
     CONFIG_PARSER_CLASS = ConfigParserBogons
+    SHORT_DESCR = "Bogons config parser"
 
     def test_valid_cfg(self):
-        """Bogons config parser: valid configuration"""
+        """{}: valid configuration"""
         self._contains_err()
 
     def test_unknown_statement(self):
-        """Bogons config parser: unknown statement"""
+        """{}: unknown statement"""
         self.cfg[0]["test"] = 1
         self._contains_err("Error in bogon definition: Unknown statement 'test' in prefix list entry definition.")
 
     def test_missing_statement(self):
-        """Bogons config parser: missing statement"""
+        """{}: missing statement"""
         del self.cfg[0]["prefix"]
         self._contains_err("Error in bogon definition: Missing 'prefix' in prefix list entry.")
         self.cfg[0]["prefix"] = "192.168.0.0"
         self._contains_err()
 
     def test_invalid_ipv4_id(self):
-        """Bogons config parser: invalid IPv4 prefix ID"""
+        """{}: invalid IPv4 prefix ID"""
         self.cfg[0]["prefix"] = "1000.0.0.1"
         self._contains_err("Error in bogon definition: Invalid prefix ID: 1000.0.0.1.")
 
     def test_invalid_len_ipv4(self):
-        """Bogons config parser: invalid IPv4 prefix len"""
+        """{}: invalid IPv4 prefix len"""
         self.cfg[0]["prefix"] = "192.0.2.0"
         for l in (-1, 33):
             self.cfg[0]["length"] = l
             self._contains_err("Invalid prefix length: {}".format(l))
 
     def test_invalid_ipv6_id(self):
-        """Bogons config parser: invalid IPv6 prefix ID"""
+        """{}: invalid IPv6 prefix ID"""
         self.cfg[0]["prefix"] = "fe80::1Z"
         self._contains_err("Invalid prefix ID: fe80::1Z")
 
     def test_invalid_len_ipv6(self):
-        """Bogons config parser: invalid IPv6 prefix len"""
+        """{}: invalid IPv6 prefix len"""
         self.cfg[0]["prefix"] = "fe80::1"
         for l in (-1, 129):
             self.cfg[0]["length"] = l

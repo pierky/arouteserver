@@ -20,7 +20,6 @@ import yaml
 from .cfg_base import TestConfigParserBase 
 from pierky.arouteserver.config.clients import ConfigParserClients
 from pierky.arouteserver.config.general import ConfigParserGeneral
-from pierky.arouteserver.errors import ConfigError
 
 
 class TestConfigParserClients(TestConfigParserBase):
