@@ -98,12 +98,24 @@ class ConfigParserClients(ConfigParserBase):
 
         # Clients' config validation
         for client in self.cfg["clients"]:
+            client_descr = ""
+            if "asn" in client:
+                client_descr += "AS{}".format(client["asn"])
+            if "ip" in client:
+                client_descr += " " + client["ip"]
+            if not client_descr:
+                client_descr = "unknown client"
+
             try:
                 ConfigParserBase.validate(schema, client, "clients")
             except ARouteServerError as e:
+                err_msg = ("One or more errors occurred while processing "
+                           "the client configuration for "
+                           "'{}'".format(client_descr))
                 if str(e):
-                    logging.error(str(e))
-                errors = True
+                    err_msg += ": " + str(e)
+                logging.error(err_msg)
+                raise ConfigError()
 
         def inherit_from_general_cfg(dest, src, schema):
             for k in schema:

@@ -55,8 +55,11 @@ class ConfigParserASNS(ConfigParserBase):
             try:
                 ConfigParserBase.validate(schema, self.cfg["asns"][asn], "asns")
             except ARouteServerError as e:
+                err_msg = ("One or more errors occurred while processing "
+                           "the 'asns' configuration for '{}'".format(asn))
                 if str(e):
-                    logging.error(str(e))
+                    err_msg += ": " + str(e)
+                logging.error(err_msg)
                 errors = True
 
         if errors:
