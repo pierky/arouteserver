@@ -25,14 +25,12 @@ class CaptureLog(logging.Handler):
 
     def reset_messages(self):
         self.msgs = []
-        self.messages = {'debug': [], 'info': [], 'warning': [], 'error': [],
-                         'critical': []}
 
     def emit(self, record):
         self.acquire()
         try:
-            self.msgs.append(record.getMessage())
-            self.messages[record.levelname.lower()].append(record.getMessage())
+            if record.levelname.lower() == "error":
+                self.msgs.append(record.getMessage())
         finally:
             self.release()
     
