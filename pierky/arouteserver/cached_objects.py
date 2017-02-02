@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import json
+import logging
 import os
 import time
 
@@ -49,6 +50,9 @@ class CachedObject(object):
             with open(file_path, "r") as f:
                 data = json.load(f)
         except:
+            logging.error(
+                "Error while reading data from cache: {}".format(file_path)
+            )
             return False
 
         if not "ts" in data:
@@ -69,6 +73,7 @@ class CachedObject(object):
 
     def load_data(self):
         if self.load_data_from_cache():
+            logging.debug("Cache hit: {}".format(self._get_object_filepath()))
             return
 
         self.raw_data = self._get_data()

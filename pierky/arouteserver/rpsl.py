@@ -16,6 +16,7 @@
 import ipaddr
 import json
 import os
+import logging
 import subprocess
 import time
 
@@ -37,6 +38,10 @@ class ASSet(RPSLTools):
     def __init__(self, object_name, **kwargs):
         RPSLTools.__init__(self, **kwargs)
         self.object_name = object_name
+
+        logging.debug("Getting origin ASNs for "
+                      "{} from IRRdb".format(self.object_name))
+
         self.load_data()
     
         # list of int
@@ -81,6 +86,10 @@ class RSet(RPSLTools):
         self.object_name = object_name
         assert ip_ver in (4, 6)
         self.ip_ver = ip_ver
+
+        logging.debug("Getting prefixes for {} IPv{} "
+                      "from IRRdb".format(self.object_name, self.ip_ver))
+
         self.load_data()
 
         # list of dict as returned by ValidatorPrefixListEntry

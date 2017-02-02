@@ -17,6 +17,7 @@ import ipaddr
 import logging
 import os
 import re
+import time
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -117,9 +118,19 @@ class ConfigBuilder(object):
                                          "clients",
                                          general_cfg=self.cfg_general)
 
+        logging.info("Started processing configuration "
+                     "for {}".format(self.template_path))
+
+        start_time = int(time.time())
+
         self.validate_flavor_specific_configuration()
 
         self.enrich_config()
+
+        stop_time = int(time.time())
+
+        logging.info("Configuration processing completed after "
+                     "{} seconds.".format(stop_time - start_time))
 
     def enrich_config_rpsl_as_set(self, dest_descr, as_sets, dest_list):
         errors = False
@@ -220,7 +231,6 @@ class ConfigBuilder(object):
                 not self.cfg_general["filtering"]["rpsl"]["tag_as_set"]:
                     continue
 
-
             if client_rpsl["as_sets"]:
                 for as_set in client_rpsl["as_sets"]:
                     client_rpsl["as_set_ids"].append(
@@ -236,6 +246,11 @@ class ConfigBuilder(object):
                         get_as_set_id_by_name(as_set)
                     )
                 continue
+
+            logging.warning("No AS-SET provided for the '{}' client. "
+                            "Only AS{} will be expanded.".format(
+                                client["id"], client["asn"]
+                            ))
 
             client_rpsl["as_set_ids"].append(
                 add_as_set("AS{}".format(client["asn"]),
@@ -296,6 +311,9 @@ class ConfigBuilder(object):
 
         except PeeringDBNoInfoError:
             # No data found on PeeringDB.
+            logging.debug("No data found on PeeringDB "
+                          "for AS{} while looking for "
+                          "max-prefix limit.".format(client["asn"]))
             pass
         except PeeringDBError as e:
             raise BuilderError(

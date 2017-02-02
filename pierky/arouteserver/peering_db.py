@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 import json
 import subprocess
 try:
@@ -57,51 +58,6 @@ class PeeringDBInfo(CachedObject):
                 )
             )
 
-class PeeringDBNet(PeeringDBInfo):
-
-    PEERINGDB_URL = "https://www.peeringdb.com/api/net?asn={asn}"
-
-    def __init__(self, asn, **kwargs):
-        PeeringDBInfo.__init__(self, **kwargs)
-        self.asn = asn
-        self.load_data()
-    
-        self.info_prefixes4 = self.raw_data.get("info_prefixes4", None)
-        self.info_prefixes6 = self.raw_data.get("info_prefixes6", None)
-        self.irr_as_set = self.raw_data.get("irr_as_set", None)
-
-    def _get_object_filename(self):
-        return "peeringdb_net_{}.json".format(self.asn)
-
-    def _get_peeringdb_url(self):
-        return self.PEERINGDB_URL.format(asn=self.asn)
-
-    def _get_data(self):
-        data = self._get_data_from_peeringdb()
-        if not "data" in data:
-            raise PeeringDBNoInfoError("Missing 'data'")
-        if not isinstance(data["data"], list):
-            raise PeeringDBNoInfoError("Unexpected format: 'data' is not a list")
-        if len(data["data"]) == 0:
-            raise PeeringDBNoInfoError("No data for this nextwork")
-
-        return data["data"][0]
-
-class PeeringDBNetIXLan(PeeringDBInfo):
-
-    PEERINGDB_URL = "https://www.peeringdb.com/api/netixlan?ixlan_id={ixlanid}"
-
-    def __init__(self, ixlanid, **kwargs):
-        PeeringDBInfo.__init__(self, **kwargs)
-        self.ixlanid = ixlanid
-        self.load_data()
-
-    def _get_object_filename(self):
-        return "peeringdb_ixlanid_{}.json".format(self.ixlanid)
-
-    def _get_peeringdb_url(self):
-        return self.PEERINGDB_URL.format(ixlanid=self.ixlanid)
-
     def _get_data(self):
         data = self._get_data_from_peeringdb()
         if not "data" in data:
@@ -112,6 +68,47 @@ class PeeringDBNetIXLan(PeeringDBInfo):
             raise PeeringDBNoInfoError("No data for this nextwork")
 
         return data["data"]
+
+class PeeringDBNet(PeeringDBInfo):
+
+    PEERINGDB_URL = "https://www.peeringdb.com/api/net?asn={asn}"
+
+    def __init__(self, asn, **kwargs):
+        PeeringDBInfo.__init__(self, **kwargs)
+        self.asn = asn
+
+        logging.debug("Getting data from PeeringDB: net {}".format(self.asn))
+
+        self.load_data()
+    
+        self.info_prefixes4 = self.raw_data[0].get("info_prefixes4", None)
+        self.info_prefixes6 = self.raw_data[0].get("info_prefixes6", None)
+        self.irr_as_set = self.raw_data[0].get("irr_as_set", None)
+
+    def _get_object_filename(self):
+        return "peeringdb_net_{}.json".format(self.asn)
+
+    def _get_peeringdb_url(self):
+        return self.PEERINGDB_URL.format(asn=self.asn)
+
+class PeeringDBNetIXLan(PeeringDBInfo):
+
+    PEERINGDB_URL = "https://www.peeringdb.com/api/netixlan?ixlan_id={ixlanid}"
+
+    def __init__(self, ixlanid, **kwargs):
+        PeeringDBInfo.__init__(self, **kwargs)
+        self.ixlanid = ixlanid
+
+        logging.debug("Getting data from PeeringDB: Net IX LAN {}".format(self.ixlanid))
+
+        self.load_data()
+
+    def _get_object_filename(self):
+        return "peeringdb_ixlanid_{}.json".format(self.ixlanid)
+
+    def _get_peeringdb_url(self):
+        return self.PEERINGDB_URL.format(ixlanid=self.ixlanid)
+
 
 def clients_from_peeringdb(netixlanid, cache_dir):
     clients = []

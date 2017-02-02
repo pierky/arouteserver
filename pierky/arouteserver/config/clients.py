@@ -84,6 +84,8 @@ class ConfigParserClients(ConfigParserBase):
             }
         }
 
+        # Split configurations with more than one IP address into
+        # multiple clients
         for client in self.cfg["clients"]:
             if "ip" in client:
                 if isinstance(client["ip"], list):
@@ -94,6 +96,7 @@ class ConfigParserClients(ConfigParserBase):
                     client["to_be_removed"] = True
         self.cfg["clients"] = [c for c in self.cfg["clients"] if "to_be_removed" not in c]
 
+        # Clients' config validation
         for client in self.cfg["clients"]:
             try:
                 ConfigParserBase.validate(schema, client, "clients")
