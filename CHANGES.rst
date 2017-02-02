@@ -1,6 +1,13 @@
 Change log
 ==========
 
+v0.1.0a5
+--------
+
+- New feature: transit-free ASNs filtering.
+- Program command line: subcommands + ``clients-from-peeringdb``.
+- More logging and some warning.
+
 v0.1.0a4
 --------
 
