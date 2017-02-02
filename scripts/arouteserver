@@ -276,6 +276,11 @@ except ARouteServerError as e:
     sys.exit(1)
 except Exception as e:
     logging.error(
-        "An unexpected error occurred: {}".format(str(e)),
+        "An unexpected error occurred: {}\n"
+        "\n"
+        "Please consider reporting it here, "
+        "including the following traceback and some "
+        "hints on how to reproduce it: "
+        "https://github.com/pierky/arouteserver/issues\n\n".format(str(e)),
         exc_info=True)
     sys.exit(1)
