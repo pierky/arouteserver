@@ -59,7 +59,7 @@ function prefix_is_in_{{ client.id }}_blacklist()
 prefix set {{ client.id }}_blacklist;
 {
 	{{ client.id }}_blacklist = [
-	{{- write_prefix_list(client.cfg.filtering.black_list_pref) }}
+{{ write_prefix_list(client.cfg.filtering.black_list_pref) }}
 	];
 	return net ~ {{ client.id }}_blacklist;
 }

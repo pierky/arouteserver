@@ -132,85 +132,89 @@ class ConfigBuilder(object):
         logging.info("Configuration processing completed after "
                      "{} seconds.".format(stop_time - start_time))
 
-    def enrich_config_rpsl_as_set(self, dest_descr, as_sets, dest_list):
+    def enrich_config_rpsl_as_set(self, dest_descr, as_set, dest_list):
         errors = False
-        for as_set in as_sets:
-            try:
-                asns = ASSet(as_set,
-                             bgpq3_path=self.bgpq3_path,
-                             cache_dir=self.cache_dir,
-                             cache_expiry=self.cache_expiry).asns
-                if not asns:
-                    raise BuilderError("it's empty")
-                dest_list.extend(
-                    [asn for asn in asns if asn not in dest_list]
+        try:
+            asns = ASSet(as_set,
+                            bgpq3_path=self.bgpq3_path,
+                            cache_dir=self.cache_dir,
+                            cache_expiry=self.cache_expiry).asns
+            if not asns:
+                raise BuilderError("it's empty")
+            dest_list.extend(
+                [asn for asn in asns if asn not in dest_list]
+            )
+        except ARouteServerError as e:
+            errors = True
+            logging.error(
+                "Error while retrieving as_set {} for {}: {}".format(
+                    as_set, dest_descr, str(e)
                 )
-            except ARouteServerError as e:
-                errors = True
-                logging.error(
-                    "Error while retrieving as_set {} for {}: {}".format(
-                        as_set, dest_descr, str(e)
-                    )
-                )
+            )
 
         if errors:
             raise BuilderError()
 
-    def enrich_config_rpsl_r_set(self, dest_descr, as_sets, dest_list):
+    def enrich_config_rpsl_r_set(self, dest_descr, as_set, dest_list):
         errors = False
         ip_versions = [self.ip_ver] if self.ip_ver else [4, 6]
-        for as_set in as_sets:
-            for ip_ver in ip_versions:
-                try:
-                    prefixes = RSet(as_set, ip_ver,
-                                    bgpq3_path=self.bgpq3_path,
-                                    cache_dir=self.cache_dir,
-                                    cache_expiry=self.cache_expiry).prefixes
-                    if not prefixes:
-                        raise BuilderError("it's empty")
-                    dest_list.extend(
-                        prefixes
+        for ip_ver in ip_versions:
+            try:
+                prefixes = RSet(as_set, ip_ver,
+                                bgpq3_path=self.bgpq3_path,
+                                cache_dir=self.cache_dir,
+                                cache_expiry=self.cache_expiry).prefixes
+                if not prefixes:
+                    raise BuilderError("it's empty")
+                dest_list.extend(
+                    prefixes
+                )
+            except ARouteServerError as e:
+                errors = True
+                logging.error(
+                    "Error while retrieving r_set "
+                    "{} for {} IPv{}: {}".format(
+                        as_set, dest_descr, ip_ver, str(e)
                     )
-                except ARouteServerError as e:
-                    errors = True
-                    logging.error(
-                        "Error while retrieving r_set "
-                        "{} for {} IPv{}: {}".format(
-                            as_set, dest_descr, ip_ver, str(e)
-                        )
-                    )
+                )
 
         if errors:
             raise BuilderError()
 
     def enrich_config_rpsl(self):
-        self.as_sets = {}
+        self.as_sets = []
         errors = False
 
-        def normalize_as_set(s):
+        def normalize_as_set_id(s):
             return re.sub("[^a-zA-Z0-9_]", "_", s)
 
-        def get_as_set_id_by_name(name):
-            for as_set_id in self.as_sets:
-                if self.as_sets[as_set_id]["as_set"] == name:
-                    return as_set_id
+        def get_as_set_by_name(name, used_by_client=None):
+            for as_set in self.as_sets:
+                if as_set["name"] == name:
+                    if used_by_client:
+                        as_set["used_by"].append(used_by_client)
+                    return as_set
             return None
 
-        def add_as_set(as_set, used_by):
-            existing = get_as_set_id_by_name(as_set)
+        def use_as_set(as_set_name, used_by_client=None):
+            # Returns: id of the added/existing as_set
+            existing = get_as_set_by_name(as_set_name)
             if existing:
-                self.as_sets[existing]["used_by"].append(used_by)
-                return existing
+                if used_by_client:
+                    existing["used_by"].append(used_by_client)
+                return existing["id"]
 
-            new_as_set_id = normalize_as_set(as_set)
-            self.as_sets[new_as_set_id] = {
-                "as_set": as_set,
+            new_as_set_id = normalize_as_set_id(as_set_name)
+            self.as_sets.append({
+                "id": new_as_set_id,
+                "name": as_set_name,
                 "asns": [],
                 "prefixes": [],
-                "used_by": [used_by]
-            }
+                "used_by": [used_by_client] if used_by_client else []
+            })
             return new_as_set_id
 
+        # Add to as_sets all the AS-SETs reported in the 'asns' section.
         for asn in self.cfg_asns.cfg["asns"]:
             self.cfg_asns[asn]["as_set_ids"] = []
 
@@ -219,9 +223,10 @@ class ConfigBuilder(object):
 
             for as_set in self.cfg_asns[asn]["as_sets"]:
                 self.cfg_asns[asn]["as_set_ids"].append(
-                    add_as_set(as_set, asn)
+                    use_as_set(as_set)
                 )
 
+        # Add to as_sets all the AS-SETs reported in the 'clients' section.
         for client in self.cfg_clients.cfg["clients"]:
             client_rpsl = client["cfg"]["filtering"]["rpsl"]
             client_rpsl["as_set_ids"] = []
@@ -229,51 +234,62 @@ class ConfigBuilder(object):
             if not client_rpsl["enforce_origin_in_as_set"] and \
                 not client_rpsl["enforce_prefix_in_as_set"] and \
                 not self.cfg_general["filtering"]["rpsl"]["tag_as_set"]:
+                    # Client does not require AS-SETs info to be gathered.
                     continue
 
             if client_rpsl["as_sets"]:
+                # Client has its own specific set of AS-SETs.
                 for as_set in client_rpsl["as_sets"]:
                     client_rpsl["as_set_ids"].append(
-                        add_as_set(as_set, "client {}".format(client["id"]))
+                        use_as_set(as_set, "client {}".format(client["id"]))
                     )
                 continue
 
+            # Client needs AS-SETs info but has not its own set of AS-SETs.
+
+            # If client's ASN is configured in the 'asns' section and has
+            # one or more AS-SETs, the client configuration will be based
+            # on those.
             asn = "AS{}".format(client["asn"])
             if asn in self.cfg_asns.cfg["asns"] and \
                 self.cfg_asns.cfg["asns"][asn]["as_sets"]:
                 for as_set in self.cfg_asns.cfg["asns"][asn]["as_sets"]:
                     client_rpsl["as_set_ids"].append(
-                        get_as_set_id_by_name(as_set)
+                        use_as_set(as_set, "client {}".format(client["id"]))
                     )
                 continue
 
+            # No AS-SETs found for the client's ASN in the 'asns' section.
             logging.warning("No AS-SET provided for the '{}' client. "
                             "Only AS{} will be expanded.".format(
                                 client["id"], client["asn"]
                             ))
 
             client_rpsl["as_set_ids"].append(
-                add_as_set("AS{}".format(client["asn"]),
+                use_as_set("AS{}".format(client["asn"]),
                            "client {}".format(client["id"]))
             )
 
-        for as_set_id in self.as_sets:
+        # Removing unreferenced AS-SETs.
+        for as_set in self.as_sets:
+            if not as_set["used_by"]:
+                logging.debug("Removing unreferenced AS-SET: "
+                              "{}".format(as_set["name"]))
+        self.as_sets = [as_set for as_set in self.as_sets if as_set["used_by"]]
+
+        # Gathering info.
+        for as_set in self.as_sets:
+            used_by = ", ".join(as_set["used_by"])
             try:
-                self.enrich_config_rpsl_as_set(
-                    ", ".join(self.as_sets[as_set_id]["used_by"]),
-                    [self.as_sets[as_set_id]["as_set"]],
-                    self.as_sets[as_set_id]["asns"]
-                )
+                self.enrich_config_rpsl_as_set(used_by, as_set["name"],
+                                               as_set["asns"])
             except ARouteServerError as e:
                 errors = True
                 if str(e):
                     logging.error(str(e))
             try:
-                self.enrich_config_rpsl_r_set(
-                    ", ".join(self.as_sets[as_set_id]["used_by"]),
-                    [self.as_sets[as_set_id]["as_set"]],
-                    self.as_sets[as_set_id]["prefixes"]
-                )
+                self.enrich_config_rpsl_r_set(used_by, as_set["name"],
+                                              as_set["prefixes"])
             except ARouteServerError as e:
                 errors = True
                 if str(e):

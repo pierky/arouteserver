@@ -10,7 +10,7 @@ function prefix_is_bogon()
 prefix set bogons;
 {
 	bogons = [
-	{{- write_prefix_list(bogons) }}
+{{ write_prefix_list(bogons) }}
 	];
 
 	if net ~ bogons then return true;
@@ -23,15 +23,15 @@ prefix set bogons;
 function prefix_is_in_global_blacklist()
 prefix set global_blacklist;
 {
-	{% if cfg.filtering.global_black_list_pref %}
+{% if cfg.filtering.global_black_list_pref %}
 	global_blacklist = [
-	{{- write_prefix_list(cfg.filtering.global_black_list_pref) }}
+{{ write_prefix_list(cfg.filtering.global_black_list_pref) }}
 	];
 
 	if net ~ global_blacklist then return true;
-	{% else %}
+{% else %}
 	# No prefixes configured under the cfg.filtering.global_black_list_pref section.
-	{% endif %}
+{% endif %}
 	return false;
 }
 
