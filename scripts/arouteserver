@@ -36,7 +36,6 @@ def main():
             metavar="FILE",
             dest="cfg_program")
 
-
         group = dest.add_argument_group(
             title="Program configuration",
             description="The following arguments override those provided "
@@ -81,6 +80,13 @@ def main():
     sub_parser = subparsers.add_parser(
         "build",
         help="Build route server configuration.")
+
+    sub_parser.add_argument(
+        "-o", "--output",
+        type=argparse.FileType('w'),
+        help="Output file. Default: stdout.",
+        default=sys.stdout,
+        dest="output_file")
 
     sub_parser.add_argument(
         "--speaker",
@@ -147,6 +153,13 @@ def main():
         "clients-from-peeringdb",
         help="Build a list of clients and their AS-SET on the basis "
              "of PeeringDB records.")
+
+    sub_parser.add_argument(
+        "-o", "--output",
+        type=argparse.FileType('w'),
+        help="Output file. Default: stdout.",
+        default=sys.stdout,
+        dest="output_file")
 
     sub_parser.add_argument(
         "netixlanid",
@@ -237,7 +250,7 @@ def main():
 
         try:
             builder = BIRDConfigBuilder(**cfg_builder_params)
-            print(builder.render_template())
+            args.output_file.write(builder.render_template())
         except ARouteServerError as e:
             if str(e):
                 logging.error(str(e))
@@ -248,7 +261,7 @@ def main():
             args.netixlanid,
             get_cfg_path("cache_dir")
         )
-        yaml.dump(data, sys.stdout, default_flow_style=False)
+        yaml.dump(data, args.output_file, default_flow_style=False)
 
     return True
 

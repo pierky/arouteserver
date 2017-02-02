@@ -31,18 +31,18 @@ CFG_FILE="var/arouteserver.yml"
 CMD="./scripts/arouteserver build --cfg $CFG_FILE --general config.d/general.yml --clients config.d/clients.yml --bogons config.d/bogons.yml"
 
 echo "Building example: default, IPv4"
-$CMD --ip-ver 4 > examples/default/bird4.conf
+$CMD --ip-ver 4 -o examples/default/bird4.conf
 
 echo "Building example: default, IPv6"
-$CMD --ip-ver 6 > examples/default/bird6.conf
+$CMD --ip-ver 6 -o examples/default/bird6.conf
 
 CMD="./scripts/arouteserver build --cfg $CFG_FILE --general examples/rich/general.yml --clients examples/rich/clients.yml --bogons config.d/bogons.yml"
 
 echo "Building example: rich, IPv4"
-$CMD --ip-ver 4 > examples/rich/bird4.conf
+$CMD --ip-ver 4 -o examples/rich/bird4.conf
 
 echo "Building example: rich, IPv6"
-$CMD --ip-ver 6 > examples/rich/bird6.conf
+$CMD --ip-ver 6 -o examples/rich/bird6.conf
 
 echo "Building README.rst"
 

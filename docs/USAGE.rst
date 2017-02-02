@@ -7,12 +7,12 @@ The script can be executed via command-line:
 
     # if cloned from GitHub, from the repository's root directory:
     export PYTHONPATH="`pwd`"
-    ./scripts/arouteserver build --ip-ver 4
+    ./scripts/arouteserver build --ip-ver 4 -o /etc/bird/bird4.conf
 
     # if installed using pip:
-    arouteserver build --ipver-4
+    arouteserver build --ipver-4 -o /etc/bird/bird4.conf
 
-It produces the route server configuration and prints it on stdout.
+It produces the route server configuration and saves it on ``/etc/bird/bird4.conf``.
 
 Almost useless commands
 -----------------------
