@@ -117,6 +117,12 @@ filter receive_from_{{ client.id }} {
 	}
 	{% endif %}
 
+	{% if ip_ver == 6 %}
+	# Prefix: only IPv6 Global Unicast space allowed
+	if net !~ [2000::/3+] then
+		reject "prefix is not in IPv6 Global Unicast space - REJECTING ", net;
+	{% endif %}
+
 	# Prefix: global blacklist
 	if prefix_is_in_global_blacklist() then
 		reject "prefix is in global blacklist - REJECTING ", net;

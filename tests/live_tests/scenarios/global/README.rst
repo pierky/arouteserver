@@ -140,4 +140,5 @@ Built to group as many tests as possible in a single scenario.
   AS101_roa_invalid1    101.0.9.0/24                roa check fail (roa n. 2, bad origin ASN), rejected
   AS101_roa_badlen      101.0.128.0/24              roa check fail (roa n. 3, bad length), rejected
   AS101_roa_blackhole   101.0.128.1/32              65535:666, pass because blackhole filtering request
+  AS101_no_ipv6_gl_uni  8000:1::/32                 fail IPv6 global unicast space check
   ====================  ==============   ========== ==================================================================================

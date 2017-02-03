@@ -77,4 +77,5 @@ class BasicScenario_BIRDIPv6(BasicScenario):
         "AS101_roa_blackhole":      "3101:0:8000::1/128",
 
         "AS102_no_asset":           "3102:0:1::/48",
+        "AS101_no_ipv6_gl_uni":     "8000:1::/32",
     }

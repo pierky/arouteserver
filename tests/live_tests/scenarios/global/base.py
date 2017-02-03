@@ -247,6 +247,13 @@ class BasicScenario(LiveScenario):
         self.receive_route_from(self.rs, self.DATA["AS102_no_asset"], self.AS2, as_path="2 101 102", next_hop=self.AS2, filtered=True)
         self.log_contains(self.rs, "origin ASN [102] not in allowed as-sets - REJECTING " + self.DATA["AS102_no_asset"])
 
+    def test_040_bad_prefix_not_ipv6_global_unicat(self):
+        """{}: bad prefixes received by rs: not IPv6 global unicast space"""
+        if self.IP_VER == 4:
+            return
+        self.receive_route_from(self.rs, self.DATA["AS101_no_ipv6_gl_uni"], filtered=True)
+        self.log_contains(self.rs, "prefix is not in IPv6 Global Unicast space - REJECTING " + self.DATA["AS101_no_ipv6_gl_uni"])
+
     def test_041_bad_prefixes_not_received_by_clients(self):
         """{}: bad prefixes not received by clients"""
         for prefix in (self.DATA["bogon1"],
