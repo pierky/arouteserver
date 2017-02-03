@@ -74,6 +74,7 @@ class BasicScenario_BIRDIPv4(BasicScenario):
         "AS101_roa_valid1":         "101.0.8.0/24",
         "AS101_roa_invalid1":       "101.0.9.0/24",
         "AS101_roa_badlen":         "101.0.128.0/24",
+        "AS101_roa_blackhole":      "101.0.128.1/32",
 
         "AS102_no_asset":           "102.0.1.0/24",
     }

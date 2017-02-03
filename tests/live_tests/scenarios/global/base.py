@@ -299,6 +299,19 @@ class BasicScenario(LiveScenario):
             with self.assertRaises(AssertionError):
                 self.receive_route_from(self.AS3, self.DATA[pref_id])
 
+    def test_045_blackhole_with_roa(self):
+        """{}: RPKI, blackhole request for a covered prefix"""
+        self.receive_route_from(self.rs, self.DATA["AS101_roa_blackhole"], self.AS1_1, as_path="1 101",
+                                std_comms=["65535:666"], lrg_comms=[])
+        self.receive_route_from(self.rs, self.DATA["AS101_roa_blackhole"], self.AS2, as_path="2 101",
+                                std_comms=["65535:666"], lrg_comms=[])
+        for inst in (self.AS1_1, self.AS2):
+            self.log_contains(self.rs, "blackhole filtering request from {{inst}} - ACCEPTING {}".format(
+                self.DATA["AS101_roa_blackhole"]), {"inst": inst})
+        self.receive_route_from(self.AS3, self.DATA["AS101_roa_blackhole"], self.rs,
+                                next_hop=self.DATA["blackhole_IP"],
+                                std_comms=["65535:666"], lrg_comms=[])
+
     def test_050_prefixes_from_AS101_received_by_its_upstreams(self):
         """{}: prefixes from AS101 received by its upstreams"""
         self.receive_route_from(self.AS1_1, self.DATA["AS101_good1"], self.AS101)

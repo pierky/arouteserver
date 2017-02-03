@@ -138,5 +138,6 @@ Built to group as many tests as possible in a single scenario.
   AS101_transitfree_1   101.0.7.0/24     [101 174]  fail as_path_contains_transit_free_asn
   AS101_roa_valid1      101.0.8.0/24                roa check ok (roa n. 1), tagged with 64512:1 / 999:64512:1
   AS101_roa_invalid1    101.0.9.0/24                roa check fail (roa n. 2, bad origin ASN), rejected
-  AS101_roa_badlen      101.0.128.0/22              roa check fail (roa n. 3, bad length), rejected
+  AS101_roa_badlen      101.0.128.0/24              roa check fail (roa n. 3, bad length), rejected
+  AS101_roa_blackhole   101.0.128.1/32              65535:666, pass because blackhole filtering request
   ====================  ==============   ========== ==================================================================================

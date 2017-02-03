@@ -19,6 +19,7 @@ protocol static own_prefixes {
 	route {{ data.AS101_roa_valid1 }} reject;
 	route {{ data.AS101_roa_invalid1 }} reject;
 	route {{ data.AS101_roa_badlen }} reject;
+	route {{ data.AS101_roa_blackhole }} reject;
 }
 
 filter outgoing {
@@ -52,6 +53,8 @@ filter outgoing {
 		bgp_path.prepend(174);
 		bgp_path.prepend(101);
 	}
+	if net = {{ data.AS101_roa_blackhole }} then
+		bgp_community.add((65535,666));
 	accept;
 }
 protocol bgp AS1_1 {
