@@ -127,6 +127,7 @@ class ConfigParserGeneral(ConfigParserBase):
             }
 
         # Add communities with fixed values to the schema.
+        communities_with_peer_as = []
         for comm, fixed_values in [
             ("do_not_announce_to_peer",
                 ("0:peer_as",
@@ -138,6 +139,8 @@ class ConfigParserGeneral(ConfigParserBase):
                  "rs_as:rs_as:peer_as",
                  ["rt:rs_as:peer_as", "ro:rs_as:peer_as"])
             )]:
+            communities_with_peer_as.append(comm)
+
             schema["cfg"]["communities"][comm] = {
                 "std": ValidatorCommunityStd(rs_as_macro, mandatory=False,
                                             fixed_values=fixed_values[0],
@@ -150,6 +153,18 @@ class ConfigParserGeneral(ConfigParserBase):
                                             allow_peer_as_macro=True)
             }
 
+        inbound_communities = ["blackholing", "do_not_announce_to_any",
+                               "do_not_announce_to_peer", "announce_to_peer",
+                               "prepend_once_to_any", "prepend_twice_to_any",
+                               "prepend_thrice_to_any"]
+        outbound_communities = ["origin_present_in_as_set",
+                                "origin_not_present_in_as_set",
+                                "prefix_present_in_as_set",
+                                "prefix_not_present_in_as_set",
+                                "roa_valid", "roa_invalid", "roa_unknown"]
+        assert sorted(inbound_communities + outbound_communities) == \
+                sorted(schema["cfg"]["communities"].keys())
+
         try:
             ConfigParserBase.validate(schema, self.cfg)
         except ARouteServerError as e:
@@ -158,6 +173,7 @@ class ConfigParserGeneral(ConfigParserBase):
                 logging.error(str(e))
             raise ConfigError()
 
+        # Warning: missing global black list.
         if not self.cfg["cfg"]["filtering"].get("global_black_list_pref"):
             logging.warning("The 'filtering.global_black_list_pref' option is "
                             "missing or empty. It is strongly suggested to "
@@ -200,44 +216,88 @@ class ConfigParserGeneral(ConfigParserBase):
                     else:
                         unique_communities.append(comm[fmt])
 
-        ## Overlapping communities?
-        ##TODO: improve! When peer_as matches a value in the
-        ## range 64512..65534 / 4200000000..4294967294 it
-        ## should be fine, because a peer's ASN can't be in that
-        ## range. It should be tuned on the communities scrubbing
-        ## functions on BIRD templates too.
-        #for comm_tag1 in communities:
-        #    comm1 = communities[comm_tag1]
-        #    for fmt in ("std", "lrg", "ext"):
-        #        if fmt != "std":
-        #            continue
-        #        if not comm1[fmt]:
-        #            continue
-        #        comm1_val = comm1[fmt]
-        #        for comm_tag2 in communities:
-        #            if comm_tag2 == comm_tag1:
-        #                continue
-        #            comm2 = communities[comm_tag2]
-        #            if fmt not in comm2:
-        #                continue
-        #            if not comm2[fmt]:
-        #                continue
-        #            comm2_val = comm2[fmt]
+        # Overlapping communities?
+        #TODO: improve! When peer_as matches a value in the
+        # range 64512..65534 / 4200000000..4294967294 it
+        # should be fine, because a peer's ASN can't be in that
+        # range. It should be tuned on the communities scrubbing
+        # functions on BIRD templates too.
 
-        #            comm1_parts = comm1_val.split(":")
-        #            comm2_parts = comm2_val.split(":")
-        #            part_idx = 0
-        #            for part_idx in range(len(comm1_parts)):
-        #                part1 = comm1_parts[part_idx]
-        #                part2 = comm2_parts[part_idx]
-        #                if part1 == "peer_as" or part2 == "peer_as":
-        #                    err_msg = ("Community {comm_tag1} and {comm_tag2} "
-        #                               "overlap: {comm1_val} / {comm2_val}.".format(
-        #                                   comm_tag1=comm_tag1, comm_tag2=comm_tag2,
-        #                                   comm1_val=comm1_val, comm2_val=comm2_val))
-        #                    logging.error(err_msg)
-        #                    errors = True
-        #                if part1 != part2:
-        #                    break
+        def communities_overlap(communities, comm1_tag, comm2_tag,
+                                allow_private_asns=False):
+            comm1 = communities[comm1_tag]
+            comm2 = communities[comm2_tag]
+            rs_as = self.cfg["cfg"]["rs_as"]
+
+            err_msg = ("Community '{comm1_tag}' and '{comm2_tag}' "
+                       "overlap: {comm1_val} / {comm2_val}.")
+
+            for fmt in ("std", "lrg", "ext"):
+                if not comm1[fmt]:
+                    continue
+                if not comm2[fmt]:
+                    continue
+                comm1_val = comm1[fmt]
+                comm2_val = comm2[fmt]
+                comm1_parts = comm1_val.split(":")
+                comm2_parts = comm2_val.split(":")
+                part_idx = 0
+                for part_idx in range(len(comm1_parts)):
+                    part1 = comm1_parts[part_idx]
+                    part2 = comm2_parts[part_idx]
+                    try:
+                        not_peer_as = None
+                        if part1 == "peer_as":
+                            not_peer_as = int(part2)
+                        if part2 == "peer_as":
+                            not_peer_as = int(part1)
+                        if not_peer_as is not None:
+                            if not_peer_as == rs_as:
+                                continue
+                            if not_peer_as == 0:
+                                continue
+                            if allow_private_asns:
+                                if not_peer_as >= 64512 and not_peer_as <= 65534:
+                                    continue
+                                if not_peer_as >= 4200000000 and not_peer_as <= 4294967294:
+                                    continue
+                            raise ConfigError()
+                    except ConfigError:
+                        raise ConfigError(err_msg.format(
+                            comm1_tag=comm1_tag, comm2_tag=comm2_tag,
+                            comm1_val=comm1_val, comm2_val=comm2_val)
+                        )
+                    if part1 != part2:
+                        break
+
+        for comm1_tag in inbound_communities:
+            for comm2_tag in outbound_communities:
+                if comm1_tag == comm2_tag:
+                    continue
+                try:
+                    communities_overlap(
+                        communities, comm1_tag, comm2_tag
+                    )
+                except ConfigError as e:
+                    errors = True
+                    logging.error(str(e) + " " +
+                        "Inbound communities and outbound communities "
+                        "can't have overlapping values, otherwise they "
+                        "might be scrubbed.")
+
+        for comm1_tag in inbound_communities:
+            for comm2_tag in inbound_communities:
+                if comm1_tag == comm2_tag:
+                    continue
+                try:
+                    communities_overlap(
+                        communities, comm1_tag, comm2_tag, allow_private_asns=True
+                    )
+                except ConfigError as e:
+                    errors = True
+                    logging.error(str(e) + " " +
+                        "Inbound communities can't have overlapping values, "
+                        "otherwise they meaning could be uncertain.")
+
         if errors:
             raise ConfigError()

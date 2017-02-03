@@ -166,6 +166,10 @@ class LiveScenario(ARouteServerTestCase):
         mock_peering_db(cls._get_module_dir() + "/peeringdb_data")
         cls.mock_rpsl()
         cls._setup_instances()
+
+        if "BUILD_ONLY" in os.environ:
+            return
+
         try:
             for instance in cls.INSTANCES:
                 instance.set_var_dir("{}/var".format(cls._get_module_dir()))
@@ -186,6 +190,9 @@ class LiveScenario(ARouteServerTestCase):
     def _tearDownClass(cls):
         mock.patch.stopall()
 
+        if "BUILD_ONLY" in os.environ:
+            return
+
         if cls._do_not_stop_instances():
             cls.debug("Skipping instances stopping")
             return
@@ -198,6 +205,9 @@ class LiveScenario(ARouteServerTestCase):
         raise NotImplementedError()
 
     def _setUp(self):
+        if "BUILD_ONLY" in os.environ:
+            self.skipTest("Build only")
+
         self.set_instance_variables()
 
     def receive_route_from(self, inst, prefix, other_inst=None, as_path=None,

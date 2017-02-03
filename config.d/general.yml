@@ -438,17 +438,13 @@ cfg:
     # propagated to all the clients with an AS_PATH prepended one,
     # twice or thrice with the announcing client's ASN.
     #
-    # The following community is scrubbed from outbound prefixes.
+    # The following communities are scrubbed from outbound prefixes.
     #
     # Syntax:
     # - std: x:y
     # - lrg: x:y:z
     # - ext: [rt|ro]:x:y
     # The 'rs_as' macro can be used here.
-    do_not_announce_to_any:
-      #std:
-      #lrg:
-      #ext:
     prepend_once_to_any:
       #std:
       #lrg:

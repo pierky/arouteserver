@@ -367,6 +367,43 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.load_config(yaml="\n".join(yaml_lines))
         self._contains_err("The 'prefix_not_present_in_as_set.lrg' community's value (999:2:2) has already been used for another community.")
 
+    def test_overlapping_communities(self):
+        """{}: overlapping communities"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  communities:"
+        ]
+        yaml_lines = tpl + [
+            "    prefix_not_present_in_as_set:",
+            "      std: '0:1'",
+            "    do_not_announce_to_peer:",
+            "      std: '0:peer_as'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err("Community 'do_not_announce_to_peer' and 'prefix_not_present_in_as_set' overlap: 0:peer_as / 0:1. Inbound communities and outbound communities can't have overlapping values, otherwise they might be scrubbed.")
+
+        yaml_lines = tpl + [
+            "    blackholing:",
+            "      std: '0:666'",
+            "    do_not_announce_to_peer:",
+            "      std: '0:peer_as'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err("Community 'do_not_announce_to_peer' and 'blackholing' overlap: 0:peer_as / 0:666. Inbound communities can't have overlapping values, otherwise they meaning could be uncertain.")
+
+        # Same as above, but with a private ASN in the last part of
+        # blackholing community.
+        yaml_lines = tpl + [
+            "    blackholing:",
+            "      std: '0:65501'",
+            "    do_not_announce_to_peer:",
+            "      std: '0:peer_as'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err()
+
     def test_max_pref_action(self):
         """{}: max_prefix action"""
         self.assertEqual(self.cfg["filtering"]["max_prefix"]["action"], None)
