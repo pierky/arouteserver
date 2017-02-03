@@ -391,7 +391,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "      std: '0:peer_as'"
         ]
         self.load_config(yaml="\n".join(yaml_lines))
-        self._contains_err("Community 'do_not_announce_to_peer' and 'blackholing' overlap: 0:peer_as / 0:666. Inbound communities can't have overlapping values, otherwise they meaning could be uncertain.")
+        self._contains_err("Community 'do_not_announce_to_peer' and 'blackholing' overlap: 0:peer_as / 0:666. Inbound communities can't have overlapping values, otherwise their meaning could be uncertain.")
 
         # Same as above, but with a private ASN in the last part of
         # blackholing community.

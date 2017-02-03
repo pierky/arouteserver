@@ -297,7 +297,7 @@ class ConfigParserGeneral(ConfigParserBase):
                     errors = True
                     logging.error(str(e) + " " +
                         "Inbound communities can't have overlapping values, "
-                        "otherwise they meaning could be uncertain.")
+                        "otherwise their meaning could be uncertain.")
 
         if errors:
             raise ConfigError()
