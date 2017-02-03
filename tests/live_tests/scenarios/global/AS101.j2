@@ -16,6 +16,9 @@ protocol static own_prefixes {
 	route {{ data.AS101_bad_good_comms }} reject;
 	route {{ data.AS102_no_asset }} reject;
 	route {{ data.AS101_transitfree_1 }} reject;
+	route {{ data.AS101_roa_valid1 }} reject;
+	route {{ data.AS101_roa_invalid1 }} reject;
+	route {{ data.AS101_roa_badlen }} reject;
 }
 
 filter outgoing {

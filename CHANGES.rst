@@ -1,6 +1,11 @@
 Change log
 ==========
 
+v0.1.0a6
+--------
+
+- New feature: RPKI-based filtering/tagging.
+  
 v0.1.0a5
 --------
 

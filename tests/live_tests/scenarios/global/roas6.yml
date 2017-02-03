@@ -1,0 +1,14 @@
+roas:
+  - prefix:
+      prefix: "3101:0:8::"
+      length: 48
+    asn: 101
+  - prefix:
+      prefix: "3101:0:9::"
+      length: 48
+    asn: 102
+  - prefix:
+      prefix: "3101:0:8000::"
+      length: 33
+      le: 34
+    asn: 101

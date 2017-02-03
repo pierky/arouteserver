@@ -154,6 +154,11 @@ filter receive_from_{{ client.id }} {
 	if is_blackhole_filtering_request() then {
 		accept "blackhole filtering request from {{ client.id }} - ACCEPTING ", net;
 	} else {
+		{% if cfg.filtering.rpki.enabled %}
+		if !prefix_passes_rpki_validation() then
+			reject "RPKI, prefix is INVALID - REJECTING ", net;
+		{% endif %}
+
 		# Prefix: length
 		{% if ip_ver == 4 %}
 		{% set min_pref_len = client.cfg.filtering.ipv4_pref_len.min %}

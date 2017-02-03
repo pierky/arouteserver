@@ -111,19 +111,32 @@ Built to group as many tests as possible in a single scenario.
 
   - Not a route server client, it only peers with AS1_1, AS1_2 and AS2 on 99.0.2.101.
 
+  - RPKI ROAs:
+
+    == ==============  ====  ======
+    ID Prefix          Max   ASN
+    == ==============  ====  ======
+    1  101.0.8.0/24          101
+    2  101.0.9.0/24          102
+    3  101.0.128.0/20  23    101
+    == ==============  ====  ======
+
   Annouced prefixes:
 
-  ====================  ============ ========== ==================================================================================
-  Prefix ID             Prefix       AS_PATH    Expected result
-  ====================  ============ ========== ==================================================================================
-  AS101_good1           101.0.1.0/24            fail next_hop_is_valid_for_AS1_2 (for the prefix announce by AS101 to AS1_2)
-  AS101_no_rset         101.1.0.0/24            fail prefix_is_in_AS1_1_r_set and prefix_is_in_AS2_1_r_set
-  AS102_no_asset        102.0.1.0/24 [101 102]  fail origin_as_in_AS1_1_as_set and origin_as_in_AS2_1_as_set
+  ====================  ==============   ========== ==================================================================================
+  Prefix ID             Prefix           AS_PATH    Expected result
+  ====================  ==============   ========== ==================================================================================
+  AS101_good1           101.0.1.0/24                fail next_hop_is_valid_for_AS1_2 (for the prefix announce by AS101 to AS1_2)
+  AS101_no_rset         101.1.0.0/24                fail prefix_is_in_AS1_1_r_set and prefix_is_in_AS2_1_r_set
+  AS102_no_asset        102.0.1.0/24     [101 102]  fail origin_as_in_AS1_1_as_set and origin_as_in_AS2_1_as_set
 
-  AS101_bad_std_comm    101.0.2.0/24            add 65530:0, scrubbed by rs
-  AS101_bad_lrg_comm    101.0.3.0/24            add 999:65530:0, scrubbed by rs
-  AS101_other_s_comm    101.0.4.0/24            add 888:0, NOT scrubbed by rs
-  AS101_other_l_comm    101.0.5.0/24            add 888:0:0, NOT scrubbed by rs
-  AS101_bad_good_comms  101.0.6.0/24            add 65530:1,999:65530:1,777:0,777:0:0, 65530 are scrubbed by rs, 777:** are kept
-  AS101_transitfree_1   101.0.7.0/24 [101 174]  fail as_path_contains_transit_free_asn
-  ====================  ============ ========== ==================================================================================
+  AS101_bad_std_comm    101.0.2.0/24                add 65530:0, scrubbed by rs
+  AS101_bad_lrg_comm    101.0.3.0/24                add 999:65530:0, scrubbed by rs
+  AS101_other_s_comm    101.0.4.0/24                add 888:0, NOT scrubbed by rs
+  AS101_other_l_comm    101.0.5.0/24                add 888:0:0, NOT scrubbed by rs
+  AS101_bad_good_comms  101.0.6.0/24                add 65530:1,999:65530:1,777:0,777:0:0, 65530 are scrubbed by rs, 777:** are kept
+  AS101_transitfree_1   101.0.7.0/24     [101 174]  fail as_path_contains_transit_free_asn
+  AS101_roa_valid1      101.0.8.0/24                roa check ok (roa n. 1), tagged with 64512:1 / 999:64512:1
+  AS101_roa_invalid1    101.0.9.0/24                roa check fail (roa n. 2, bad origin ASN), rejected
+  AS101_roa_badlen      101.0.128.0/22              roa check fail (roa n. 3, bad length), rejected
+  ====================  ==============   ========== ==================================================================================

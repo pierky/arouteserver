@@ -71,5 +71,9 @@ class BasicScenario_BIRDIPv6(BasicScenario):
         "AS101_no_rset":            "3101:1::/48",
         "AS101_transitfree_1":      "3101:0:7::/48",
 
+        "AS101_roa_valid1":         "3101:0:8::/48",
+        "AS101_roa_invalid1":       "3101:0:9::/48",
+        "AS101_roa_badlen":         "3101:0:8000::/48",
+
         "AS102_no_asset":           "3102:0:1::/48",
     }

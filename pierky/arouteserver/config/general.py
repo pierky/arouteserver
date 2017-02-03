@@ -69,10 +69,8 @@ class ConfigParserGeneral(ConfigParserBase):
                     },
                     "rpki": {
                         "enabled": ValidatorBool(default=False),                    # MISSING
-                        "data_source": ValidatorOption("data_source",
-                                                       ("rtrsub", "rtrlib"),
-                                                       mandatory=False),            # MISSING
-                        "reject_invalid": ValidatorBool(mandatory=False),           # MISSING
+                        "reject_invalid": ValidatorBool(mandatory=True,
+                                                        default=True),              # MISSING
                     },
                     "max_prefix": {                                                 # MISSING
                         "peering_db": ValidatorBool(default=True),
@@ -202,5 +200,44 @@ class ConfigParserGeneral(ConfigParserBase):
                     else:
                         unique_communities.append(comm[fmt])
 
+        ## Overlapping communities?
+        ##TODO: improve! When peer_as matches a value in the
+        ## range 64512..65534 / 4200000000..4294967294 it
+        ## should be fine, because a peer's ASN can't be in that
+        ## range. It should be tuned on the communities scrubbing
+        ## functions on BIRD templates too.
+        #for comm_tag1 in communities:
+        #    comm1 = communities[comm_tag1]
+        #    for fmt in ("std", "lrg", "ext"):
+        #        if fmt != "std":
+        #            continue
+        #        if not comm1[fmt]:
+        #            continue
+        #        comm1_val = comm1[fmt]
+        #        for comm_tag2 in communities:
+        #            if comm_tag2 == comm_tag1:
+        #                continue
+        #            comm2 = communities[comm_tag2]
+        #            if fmt not in comm2:
+        #                continue
+        #            if not comm2[fmt]:
+        #                continue
+        #            comm2_val = comm2[fmt]
+
+        #            comm1_parts = comm1_val.split(":")
+        #            comm2_parts = comm2_val.split(":")
+        #            part_idx = 0
+        #            for part_idx in range(len(comm1_parts)):
+        #                part1 = comm1_parts[part_idx]
+        #                part2 = comm2_parts[part_idx]
+        #                if part1 == "peer_as" or part2 == "peer_as":
+        #                    err_msg = ("Community {comm_tag1} and {comm_tag2} "
+        #                               "overlap: {comm1_val} / {comm2_val}.".format(
+        #                                   comm_tag1=comm_tag1, comm_tag2=comm_tag2,
+        #                                   comm1_val=comm1_val, comm2_val=comm2_val))
+        #                    logging.error(err_msg)
+        #                    errors = True
+        #                if part1 != part2:
+        #                    break
         if errors:
             raise ConfigError()

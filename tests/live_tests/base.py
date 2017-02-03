@@ -92,7 +92,7 @@ class LiveScenario(ARouteServerTestCase):
     @classmethod
     def _build_rs_cfg(cls, tpl_dir_name, tpl_name, out_file_name,
                       cfg_general="general.yml", cfg_bogons="bogons.yml",
-                      cfg_clients="clients.yml"):
+                      cfg_clients="clients.yml", cfg_roas=None):
         cls.debug("Building config from {}/{} - IPv{}".format(tpl_dir_name, tpl_name, cls.IP_VER))
 
         var_dir = cls._create_var_dir()
@@ -104,6 +104,7 @@ class LiveScenario(ARouteServerTestCase):
             cfg_general="{}/{}".format(cls._get_module_dir(), cfg_general),
             cfg_bogons="{}/{}".format(cls._get_module_dir(), cfg_bogons),
             cfg_clients="{}/{}".format(cls._get_module_dir(), cfg_clients),
+            cfg_roas="{}/{}".format(cls._get_module_dir(), cfg_roas) if cfg_roas else None,
             ip_ver=cls.IP_VER
         )
 

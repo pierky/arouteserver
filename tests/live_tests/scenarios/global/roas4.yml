@@ -1,0 +1,14 @@
+roas:
+  - prefix:
+      prefix: 101.0.8.0
+      length: 24
+    asn: 101
+  - prefix:
+      prefix: 101.0.9.0
+      length: 24
+    asn: 102
+  - prefix:
+      prefix: 101.0.128.0
+      length: 20
+      le: 23
+    asn: 101

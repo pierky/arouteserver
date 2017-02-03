@@ -204,15 +204,9 @@ class TestConfigParserGeneral(TestConfigParserBase):
 
     def test_rpki_enabled(self):
         """{}: rpki, enabled"""
-        self.assertEqual(self.cfg["filtering"]["rpki"]["enabled"], True)
+        self.assertEqual(self.cfg["filtering"]["rpki"]["enabled"], False)
         self._test_bool_val(self.cfg["filtering"]["rpki"], "enabled")
         self._test_mandatory(self.cfg["filtering"]["rpki"], "enabled", has_default=True)
-
-    def test_rpki_data_source(self):
-        """{}: rpki, data_source"""
-        self.assertEqual(self.cfg["filtering"]["rpki"]["data_source"], "rtrsub")
-        self._test_option(self.cfg["filtering"]["rpki"], "data_source", ("rtrsub", "rtrlib"))
-        self._test_optional(self.cfg["filtering"]["rpki"], "data_source")
 
     def test_rpki_reject_invalid(self):
         """{}: rpki, reject_invalid"""
@@ -465,6 +459,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.assertEqual(self.cfg["filtering"]["rpsl"]["enforce_origin_in_as_set"], True)
         self.assertEqual(self.cfg["filtering"]["rpsl"]["enforce_prefix_in_as_set"], True)
         self.assertEqual(self.cfg["filtering"]["rpki"]["enabled"], False)
+        self.assertEqual(self.cfg["filtering"]["rpki"]["reject_invalid"], True)
         self.assertEqual(self.cfg["filtering"]["max_prefix"]["action"], None)
         self.assertEqual(self.cfg["filtering"]["max_prefix"]["peering_db"], True)
         self.assertEqual(self.cfg["filtering"]["max_prefix"]["general_limit_ipv4"], 170000)

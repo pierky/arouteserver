@@ -1,4 +1,20 @@
 # ---------------------------------------------------------
 # RPKI
 
-roa table RPKI {};
+{% if cfg.filtering.rpki.enabled %}
+roa table RPKI {
+{% if roas %}
+{%	for roa in roas if roa.prefix.prefix is current_ipver %}
+	roa {{ roa.prefix.prefix }}/{{ roa.prefix.length -}}
+{%		if roa.prefix.le %}
+ max {{ roa.prefix.le -}}
+{%		else %}
+ max {{ roa.prefix.length -}}
+{%		endif %}
+ as {{ roa.asn }};
+{%	endfor %}
+{% endif %}
+};
+{% else %}
+# RPKI not enabled at 'cfg.filtering.rpki.enabled'
+{% endif %}

@@ -25,10 +25,12 @@ from .config.general import ConfigParserGeneral
 from .config.bogons import ConfigParserBogons
 from .config.asns import ConfigParserASNS
 from .config.clients import ConfigParserClients
+from .config.roa import ConfigParserROAEntries
 from .errors import MissingDirError, MissingFileError, BuilderError, \
                     ARouteServerError, PeeringDBError, PeeringDBNoInfoError, \
                     MissingArgumentError
 from .rpsl import ASSet, RSet
+from .cached_objects import CachedObject
 from .peering_db import PeeringDBNet
 
 
@@ -65,13 +67,17 @@ class ConfigBuilder(object):
             raise MissingDirError(path)
         return path
 
-    def __init__(self, **kwargs):
+    def __init__(self, template_dir=None, template_name=None,
+                 cache_dir=None, cache_expiry=CachedObject.DEFAULT_EXPIRY,
+                 bgpq3_path="bgpq3", ip_ver=None,
+                 cfg_general=None, cfg_bogons=None, cfg_clients=None,
+                 cfg_roas=None):
 
         self.template_dir = self._check_is_dir(
-            "template_dir", kwargs.get("template_dir")
+            "template_dir", template_dir
         )
 
-        self.template_name = kwargs.get("template_name")
+        self.template_name = template_name
         if not self.template_name:
             raise MissingArgumentError("template_name")
 
@@ -81,12 +87,12 @@ class ConfigBuilder(object):
             raise MissingFileError(self.template_path)
 
         self.cache_dir = self._check_is_dir(
-            "cache_dir", kwargs.get("cache_dir")
+            "cache_dir", cache_dir
         )
 
-        self.cache_expiry = kwargs.get("cache_expiry")
+        self.cache_expiry = cache_expiry
 
-        self.bgpq3_path = kwargs.get("bgpq3_path")
+        self.bgpq3_path = bgpq3_path
 
         try:
             with open(os.path.join(self.cache_dir, "write_test"), "w") as f:
@@ -98,25 +104,29 @@ class ConfigBuilder(object):
                 )
             )
 
-        self.ip_ver = kwargs.get("ip_ver", None)
+        self.ip_ver = ip_ver
         if self.ip_ver is not None:
             self.ip_ver = int(self.ip_ver)
             if self.ip_ver not in (4, 6):
                 raise BuilderError("Invalid IP version: {}".format(ip_ver))
 
-        self.cfg_general = self._get_cfg(kwargs.get("cfg_general"),
+        self.cfg_general = self._get_cfg(cfg_general,
                                          ConfigParserGeneral,
                                          "general")
-        self.cfg_bogons = self._get_cfg(kwargs.get("cfg_bogons"),
+        self.cfg_bogons = self._get_cfg(cfg_bogons,
                                         ConfigParserBogons,
                                         "bogons")
-        self.cfg_asns = self._get_cfg(kwargs.get("cfg_clients"),
+        self.cfg_asns = self._get_cfg(cfg_clients,
                                          ConfigParserASNS,
                                          "asns")
-        self.cfg_clients = self._get_cfg(kwargs.get("cfg_clients"),
+        self.cfg_clients = self._get_cfg(cfg_clients,
                                          ConfigParserClients,
                                          "clients",
                                          general_cfg=self.cfg_general)
+        if cfg_roas:
+            self.cfg_roas = self._get_cfg(cfg_roas, ConfigParserROAEntries, "roas")
+        else:
+            self.cfg_roas = None
 
         logging.info("Started processing configuration "
                      "for {}".format(self.template_path))
@@ -390,6 +400,7 @@ class ConfigBuilder(object):
         data["clients"] = self.cfg_clients
         data["asns"] = self.cfg_asns
         data["as_sets"] = self.as_sets
+        data["roas"] = self.cfg_roas
 
         def current_ipver(ip):
             if self.ip_ver is None:

@@ -74,3 +74,24 @@ ARouteServer uses the following external programs:
 - `Docker <https://www.docker.com/>`_ is used to perform :doc:`live validation <LIVETESTS>` of configurations.
 
   To install it, please refer to its `official guide <https://www.docker.com/products/overview>`_.
+
+- `rtrlib <https://github.com/rtrlib>`_ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`_; indirectly ARouteServer needs these tools to load RPKI data into BIRD.
+
+  To install them:
+
+  .. code:: bash
+
+    curl -o rtrlib.zip -L https://github.com/rtrlib/rtrlib/archive/v0.3.6.zip
+    unzip rtrlib.zip
+    
+    cd rtrlib-0.3.6 && \
+        cmake -D CMAKE_BUILD_TYPE=Release . && \
+        make && \
+        make install
+    
+    curl -o bird-rtrlib-cli.zip -L https://github.com/rtrlib/bird-rtrlib-cli/archive/v0.1.1.zip
+    unzip bird-rtrlib-cli.zip
+    
+    cd bird-rtrlib-cli-0.1.1 && \
+        cmake . && \
+        make

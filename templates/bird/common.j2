@@ -1,6 +1,7 @@
 {% from 'macros.j2' import write_prefix_list %}
 {% from 'macros.j2' import del_communities %}
 {% from 'macros.j2' import match_communities %}
+{% from 'macros.j2' import add_communities %}
 # ---------------------------------------------------------
 # BOGONS
 
@@ -91,7 +92,9 @@ int set transit_free_asns;
 # for signaling purpose toward its clients. (RFC7454, Section 11)
 # It must be applied on prefixes entering the route server.
 function scrub_communities_in() {
-{% for name in ("origin_present_in_as_set", "origin_not_present_in_as_set", "prefix_present_in_as_set", "prefix_not_present_in_as_set", "roa_valid", "roa_invalid", "roa_unknown" ) %}
+{% for name in ("origin_present_in_as_set", "origin_not_present_in_as_set",
+		"prefix_present_in_as_set", "prefix_not_present_in_as_set",
+		"roa_valid", "roa_invalid", "roa_unknown" ) %}
 {% if cfg.communities[name]|community_is_set %}
 	# {{ name }}
 {{ del_communities(cfg.communities[name]) }}
@@ -187,3 +190,37 @@ function apply_prepend(int peer_as) {
 	{% endif %}
 {% endif %}
 }
+
+{% if cfg.filtering.rpki.enabled %}
+function add_rpki_community(string comm_name) {
+	if comm_name = "valid" then {
+{% if cfg.communities.roa_valid|community_is_set %}
+{{ add_communities(cfg.communities.roa_valid) }}
+{% endif %}
+	}
+	if comm_name = "unknown" then {
+{% if cfg.communities.roa_unknown|community_is_set %}
+{{ add_communities(cfg.communities.roa_unknown) }}
+{% endif %}
+	}
+	if comm_name = "invalid" then {
+{% if cfg.communities.roa_invalid|community_is_set %}
+{{ add_communities(cfg.communities.roa_invalid) }}
+{% endif %}
+	}
+}
+
+# This functions performs RPKI validation of the current
+# prefix and adds the informative communities.
+# If the prefix is INVALID and the 'rpki.reject_invalid'
+# option is True the functions return false; otherwise it
+# returns true.
+function prefix_passes_rpki_validation () {
+	case roa_check(RPKI) {
+		ROA_VALID: add_rpki_community("valid");
+		ROA_UNKNOWN: add_rpki_community("unknown");
+		ROA_INVALID: add_rpki_community("invalid");{% if cfg.filtering.rpki.enabled and cfg.filtering.rpki.reject_invalid %} return false;{% endif %}
+	}
+	return true;
+}
+{% endif %}

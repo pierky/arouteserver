@@ -53,7 +53,8 @@ class BasicScenario(LiveScenario):
                 cls.DATA["rs_IPAddress"],
                 [
                     (
-                        cls._build_rs_cfg("bird", "main.j2", "rs.conf"),
+                        cls._build_rs_cfg("bird", "main.j2", "rs.conf",
+                                          cfg_roas="roas{}.yml".format(cls.IP_VER)),
                         "/etc/bird/bird.conf"
                     )
                 ],
@@ -265,6 +266,38 @@ class BasicScenario(LiveScenario):
                        self.DATA["AS102_no_asset"]):
             with self.assertRaises(AssertionError):
                 self.receive_route_from(self.AS3, prefix)
+
+    def test_045_rpki_valid_prefix(self):
+        """{}: RPKI, valid prefix received by rs"""
+        self.receive_route_from(self.rs, self.DATA["AS101_roa_valid1"], self.AS1_1, as_path="1 101",
+                                std_comms=["64512:1"], lrg_comms=["999:64512:1"])
+        self.receive_route_from(self.rs, self.DATA["AS101_roa_valid1"], self.AS2, as_path="2 101",
+                                std_comms=["64512:1"], lrg_comms=["999:64512:1"])
+
+    def test_045_rpki_invalid_prefix_asn(self):
+        """{}: RPKI, invalid prefix (bad ASN) received by rs"""
+        self.receive_route_from(self.rs, self.DATA["AS101_roa_invalid1"], self.AS1_1, as_path="1 101",
+                                std_comms=["64512:2"], lrg_comms=["999:64512:2"], filtered=True)
+        self.receive_route_from(self.rs, self.DATA["AS101_roa_invalid1"], self.AS2, as_path="2 101",
+                                std_comms=["64512:2"], lrg_comms=["999:64512:2"], filtered=True)
+
+    def test_045_rpki_invalid_prefix_length(self):
+        """{}: RPKI, invalid prefix (bad length) received by rs"""
+        self.receive_route_from(self.rs, self.DATA["AS101_roa_badlen"], self.AS1_1, as_path="1 101",
+                                std_comms=["64512:2"], lrg_comms=["999:64512:2"], filtered=True)
+        self.receive_route_from(self.rs, self.DATA["AS101_roa_badlen"], self.AS2, as_path="2 101",
+                                std_comms=["64512:2"], lrg_comms=["999:64512:2"], filtered=True)
+
+    def test_045_rpki_valid_prefix_propagated_to_clients(self):
+        """{}: RPKI, valid prefix propagated to clients"""
+        self.receive_route_from(self.AS3, self.DATA["AS101_roa_valid1"], self.rs,
+                                std_comms=["64512:1"], lrg_comms=["999:64512:1"])
+
+    def test_045_rpki_invalid_prefixes_not_propagated_to_clients(self):
+        """{}: RPKI, invalid prefix (bad ASN) not propagated to clients"""
+        for pref_id in ("AS101_roa_invalid1", "AS101_roa_badlen"):
+            with self.assertRaises(AssertionError):
+                self.receive_route_from(self.AS3, self.DATA[pref_id])
 
     def test_050_prefixes_from_AS101_received_by_its_upstreams(self):
         """{}: prefixes from AS101 received by its upstreams"""

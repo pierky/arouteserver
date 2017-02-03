@@ -157,29 +157,29 @@ cfg:
       # Default: True
       tag_as_set: True
 
-    # NOT IMPLEMENTED YET
     rpki:
-      # Enable RPKI ROAs checking for received prefixes.
+      # BIRD: to load ROA entries into BIRD an external tool must
+      # be used: rtrlib (https://github.com/rtrlib/bird-rtrlib-cli).
+      # The name of the table where send the ROAs to is 'RPKI'.
+      #
+      # Enable RPKI ROAs validation for prefixes received from
+      # clients.
       # Prefixes announced by the route server to the clients are
       # tagged with BGP communities 'roa_valid', 'roa_invalid' and
-      # 'roa_unknown'.
+      # 'roa_unknown' (provided that they are configured within the
+      # 'communities' section below).
       # If 'reject_invalid' is True, INVALID prefixes are rejected.
-      enabled: True
+      #
+      # Default: False
+      enabled: False
 
-      # Following configuration statements are taken into account
-      # only if rpki.enabled = True.
-
-      # RPKI ROAs source:
-      # - rtrsub: use 'rtrsub'.
-      #   (https://github.com/job/rtrsub)
-      # - rtrlib: use 'rtrlib' and 'bird-rtrlib-cli'.
-      #   (https://github.com/rtrlib/bird-rtrlib-cli)
-      data_source: "rtrsub"
-
-      # When an INVALID prefix is received reject it.
+      # When an INVALID prefix is received, the route server rejects
+      # it.
       # If this is False, INVALID prefixes are accepted and simply
       # announced to clients after being tagged with the 'roa_invalid'
       # BGP community.
+      #
+      # Default: True
       reject_invalid: True
 
     max_prefix:
