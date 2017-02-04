@@ -98,6 +98,7 @@ cfg:
 
     # Reject prefixes which carry private/invalid AS numbers in
     # their AS_PATH.
+    # http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html
     #
     # Can be overwritten on a client-by-client basis.
     #
@@ -119,7 +120,7 @@ cfg:
       #action: "reject"
 
       # Comma separated list of ASNs which are considered
-      # transit-free. Used only if and 'action' is provided.
+      # transit-free. Used only if an 'action' is provided above.
       asns: >
         174, 209, 286, 701, 1239, 1299, 2828, 2914,
         3257, 3320, 3356, 3549, 5511, 6453, 6461,
@@ -131,6 +132,9 @@ cfg:
       # specific client nor for its AS, then only the ASN
       # of the announcing client is expanded and used to gather
       # authorized origin ASNs and prefixes.
+      #
+      # More details on the Configuration page on ReadTheDocs:
+      # https://arouteserver.readthedocs.io/en/latest/CONFIG.html
 
       # Accept only prefixes whose origin ASN is registered in
       # the expanded AS-SET of the announcing client.
@@ -164,6 +168,8 @@ cfg:
       #
       # Enable RPKI ROAs validation for prefixes received from
       # clients.
+      # https://tools.ietf.org/html/rfc6811
+      #
       # Prefixes announced by the route server to the clients are
       # tagged with BGP communities 'roa_valid', 'roa_invalid' and
       # 'roa_unknown' (provided that they are configured within the

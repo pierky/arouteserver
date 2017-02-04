@@ -95,3 +95,8 @@ ARouteServer uses the following external programs:
     cd bird-rtrlib-cli-0.1.1 && \
         cmake . && \
         make
+
+
+  More details: https://github.com/rtrlib/rtrlib/wiki/Installation
+
+  To configure bird-rtrlib-cli please refer to the `README <https://github.com/rtrlib/bird-rtrlib-cli>`_.

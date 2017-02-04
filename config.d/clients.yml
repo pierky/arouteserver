@@ -36,6 +36,9 @@ asns:
     #   level 'as_sets' has higher priority over AS-level;
     # - AS-AS2 to be used for AS2 client, because no 'as_sets' are
     #   given for that client.
+    #
+    # More details on the Configuration page on ReadTheDocs:
+    # https://arouteserver.readthedocs.io/en/latest/CONFIG.html
     as_sets:
       #- "NAME1"
       #- "NAME2"
@@ -109,6 +112,9 @@ clients:
           # Client's AS-SET(s) can be set here.
           # If not AS-SETs are provided here, those from the 'asns'
           # section will be used.
+          #
+          # More details on the Configuration page on ReadTheDocs:
+          # https://arouteserver.readthedocs.io/en/latest/CONFIG.html
           as_sets:
             #- "NAME1"
             #- "NAME2"

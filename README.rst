@@ -56,9 +56,9 @@ Features
   - **NEXT_HOP** enforcement (strict / same AS - `RFC7948`_ `section 4.8 <https://tools.ietf.org/html/rfc7948#section-4.8>`_);
   - minimum and maximum IPv4/IPv6 **prefix length**;
   - maximum **AS_PATH length**;
-  - reject **invalid AS_PATHs** (containing private/invalid ASNs);
+  - reject **invalid AS_PATHs** (containing `private/invalid ASNs <http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html>`_);
   - reject AS_PATHs containing **transit-free** ASNs;
-  - **RPKI**-based filtering/tagging;
+  - **RPKI**-based filtering/tagging `RFC6811`_;
   - reject **bogons**;
   - prefixes and origin ASNs enforcing via **RPSL/IRRdb AS-SETs** (`RFC7948`_ `section 4.6.2 <https://tools.ietf.org/html/rfc7948#section-4.6.2>`_);
   - **max-prefix limit** based on global or client-specific values or on **PeeringDB** data.
@@ -77,7 +77,7 @@ Features
 
 - Optional session features on a client-by-client basis:
 
-  - prepend route server ASN;
+  - prepend route server ASN `RFC7947`_ `section 2.2.2.1 <https://tools.ietf.org/html/rfc7947#section-2.2.2.1>`_;
   - active sessions;
   - **GTSM** (Generalized TTL Security Mechanism - `RFC5082`_);
   - **ADD-PATH** capability (`RFC7911`_).
@@ -90,6 +90,7 @@ More feature are already planned: see the `Future work <https://arouteserver.rea
 .. _RFC7948: https://tools.ietf.org/html/rfc7948
 .. _RFC5082: https://tools.ietf.org/html/rfc5082
 .. _RFC7911: https://tools.ietf.org/html/rfc7911
+.. _RFC6811: https://tools.ietf.org/html/rfc6811
 
 Full documentation
 ------------------
