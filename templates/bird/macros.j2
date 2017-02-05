@@ -71,8 +71,15 @@
 
 {% if comm %}
 {%	if comm.std %}
+{%		if "peer_as" in comm.std %}
+	if peer_as <= 65535 then {
+		if {{ write_community(comm.std) }} ~ bgp_community then
+			{{ if_match }}
+	}
+{%		else %}
 	if {{ write_community(comm.std) }} ~ bgp_community then
 		{{ if_match }}
+{%		endif %}
 {%	endif %}
 {%	if comm.lrg %}
 	if {{ write_community(comm.lrg) }} ~ bgp_large_community then

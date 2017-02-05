@@ -180,12 +180,15 @@ function prefix_can_be_announced_to(int peer_as) {
 function apply_prepend(int peer_as) {
 {% if cfg.control_communities %}
 	{% if cfg.communities.prepend_once_to_any|community_is_set %}
+	# prepend_once_to_any
 	{{ match_communities(cfg.communities.prepend_once_to_any, "{ bgp_path.prepend(bgp_path.first); return true; }") }}
 	{% endif %}
 	{% if cfg.communities.prepend_twice_to_any|community_is_set %}
+	# prepend_twice_to_any
 	{{ match_communities(cfg.communities.prepend_twice_to_any, "{ bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); return true; }") }}
 	{% endif %}
 	{% if cfg.communities.prepend_thrice_to_any|community_is_set %}
+	# prepend_thrice_to_any
 	{{ match_communities(cfg.communities.prepend_thrice_to_any, "{ bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); return true; }") }}
 	{% endif %}
 {% endif %}
