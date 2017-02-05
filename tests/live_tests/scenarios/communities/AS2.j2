@@ -1,0 +1,50 @@
+router id 192.0.2.22;
+
+log "/var/log/bird.log" all;
+log syslog all;
+debug protocols all;
+
+protocol device { }
+
+protocol static own_prefixes {
+	route {{ data.AS2_only_to_AS1_s }} reject;
+	route {{ data.AS2_only_to_AS1_e }} reject;
+	route {{ data.AS2_only_to_AS1_l }} reject;
+	route {{ data.AS2_only_to_AS131073_e }} reject;
+	route {{ data.AS2_only_to_AS131073_l }} reject;
+}
+
+filter to_the_rs {
+	if net = {{ data.AS2_only_to_AS1_s }} then {
+		bgp_community.add((0,999));
+		bgp_community.add((999,1));
+	}
+	if net = {{ data.AS2_only_to_AS1_e }} then {
+		bgp_ext_community.add((rt,0,999));
+		bgp_ext_community.add((rt,999,1));
+	}
+	if net = {{ data.AS2_only_to_AS1_l }} then {
+		bgp_large_community.add((999,0,999));
+		bgp_large_community.add((999,999,1));
+	}
+	if net = {{ data.AS2_only_to_AS131073_e }} then {
+		bgp_community.add((0,999));
+		bgp_ext_community.add((rt,999,131073));
+	}
+	if net = {{ data.AS2_only_to_AS131073_l }} then {
+		bgp_large_community.add((999,0,999));
+		bgp_large_community.add((999,999,131073));
+	}
+	accept;
+}
+
+
+protocol bgp the_rs {
+	local as 2;
+	neighbor {{ data.rs_IPAddress }} as 999;
+	import all;
+	export filter to_the_rs;
+	connect delay time 1;
+	connect retry time 1;
+}
+
