@@ -40,6 +40,9 @@ class ConfigParserGeneral(ConfigParserBase):
         "prepend_once_to_any": { "type": "inbound" },
         "prepend_twice_to_any": { "type": "inbound" },
         "prepend_thrice_to_any": { "type": "inbound" },
+        "prepend_once_to_peer": { "type": "inbound", "peer_as": True },
+        "prepend_twice_to_peer": { "type": "inbound", "peer_as": True },
+        "prepend_thrice_to_peer": { "type": "inbound", "peer_as": True },
     }
 
     def parse(self):

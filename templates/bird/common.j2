@@ -168,6 +168,19 @@ function prefix_can_be_announced_to(int peer_as) {
 # This function verifies if the current prefix matches one of the
 # control communities in charge of prepending client's ASN.
 function apply_prepend(int peer_as) {
+	{% if cfg.communities.prepend_once_to_peer|community_is_set %}
+	# prepend_once_to_peer
+	{{ match_communities(cfg.communities.prepend_once_to_peer, "{ bgp_path.prepend(bgp_path.first); return true; }") }}
+	{% endif %}
+	{% if cfg.communities.prepend_twice_to_peer|community_is_set %}
+	# prepend_twice_to_peer
+	{{ match_communities(cfg.communities.prepend_twice_to_peer, "{ bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); return true; }") }}
+	{% endif %}
+	{% if cfg.communities.prepend_thrice_to_peer|community_is_set %}
+	# prepend_thrice_to_peer
+	{{ match_communities(cfg.communities.prepend_thrice_to_peer, "{ bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); return true; }") }}
+	{% endif %}
+
 	{% if cfg.communities.prepend_once_to_any|community_is_set %}
 	# prepend_once_to_any
 	{{ match_communities(cfg.communities.prepend_once_to_any, "{ bgp_path.prepend(bgp_path.first); return true; }") }}

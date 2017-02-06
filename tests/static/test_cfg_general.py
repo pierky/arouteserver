@@ -320,7 +320,9 @@ class TestConfigParserGeneral(TestConfigParserBase):
     def test_mandatory_peer_as_communities(self):
         """{}: communities that need peer_as macro"""
 
-        for comm in ("announce_to_peer", "do_not_announce_to_peer"):
+        for comm in ("announce_to_peer", "do_not_announce_to_peer",
+                     "prepend_once_to_peer", "prepend_twice_to_peer",
+                     "prepend_thrice_to_peer"):
             for c in self.VALID_STD_COMMS:
                 self.cfg["communities"][comm]["std"] = c
                 self._contains_err("'peer_as' macro is mandatory in this community")
@@ -346,6 +348,18 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.cfg["communities"][comm]["std"] = "peer_as:rs_as"
         self._contains_err("'peer_as' macro can be used only in the last part of the value")
         self.cfg["communities"][comm]["std"] = None
+
+        self.cfg["communities"][comm]["lrg"] = "rs_as:rs_as:peer_as"
+        self._contains_err()
+        self.cfg["communities"][comm]["lrg"] = None
+
+        self.cfg["communities"][comm]["lrg"] = "peer_as:rs_as:0"
+        self._contains_err("'peer_as' macro can be used only in the last part of the value")
+        self.cfg["communities"][comm]["lrg"] = None
+
+        self.cfg["communities"][comm]["lrg"] = "rs_as:peer_as:0"
+        self._contains_err("'peer_as' macro can be used only in the last part of the value")
+        self.cfg["communities"][comm]["lrg"] = None
 
     def test_duplicate_communities(self):
         """{}: duplicate communities"""

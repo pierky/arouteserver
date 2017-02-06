@@ -414,6 +414,10 @@ cfg:
     # Prefixes that are tagged with the following communities are
     # propagated to all the clients with an AS_PATH prepended one,
     # twice or thrice with the announcing client's ASN.
+    # If a prefix is tagged with both a 'prepend_x_to_any' and a 
+    # 'prepend_x_to_peer' community, only the latter will be
+    # considered when announcing to the clients whose ASN match the
+    # one given in its value.
     #
     # The following communities are scrubbed from outbound prefixes.
     #
@@ -427,6 +431,33 @@ cfg:
       #lrg:
       #ext:
     prepend_thrice_to_any:
+      #std:
+      #lrg:
+      #ext:
+      #
+
+    # Prefixes that are tagged with the following communities are
+    # propagated to the clients whose ASN matches the one given in
+    # the community with an AS_PATH prepended one, twice or thrice
+    # with the announcing client's ASN.
+    # If a prefix is tagged with both a 'prepend_x_to_any' and a 
+    # 'prepend_x_to_peer' community, only the latter will be
+    # considered when announcing to the clients whose ASN match the
+    # one given in its value.
+    #
+    # The following communities are scrubbed from outbound prefixes.
+    #
+    # The 'rs_as' macro can be used here.
+    # The 'peer_as' macro must appear in the last part of values.
+    prepend_once_to_peer:
+      #std:
+      #lrg:
+      #ext:
+    prepend_twice_to_peer:
+      #std:
+      #lrg:
+      #ext:
+    prepend_thrice_to_peer:
       #std:
       #lrg:
       #ext:
