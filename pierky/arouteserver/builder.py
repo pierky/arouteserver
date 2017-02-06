@@ -349,6 +349,12 @@ class ConfigBuilder(object):
                 )
             )
 
+    def enrich_config_communities(self):
+        for comm_name in ConfigParserGeneral.COMMUNITIES_SCHEMA:
+            comm = ConfigParserGeneral.COMMUNITIES_SCHEMA[comm_name]
+            self.cfg_general["communities"][comm_name]["type"] = comm["type"]
+            self.cfg_general["communities"][comm_name]["peer_as"] = comm.get("peer_as", False)
+
     def enrich_config(self):
         errors = False
 
@@ -388,6 +394,9 @@ class ConfigBuilder(object):
                 errors = True
                 if str(e):
                     logging.error(str(e))
+
+        # Communities meta-data useful in J2 templates
+        self.enrich_config_communities()
 
         if errors:
             raise BuilderError()

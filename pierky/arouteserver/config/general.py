@@ -24,6 +24,24 @@ class ConfigParserGeneral(ConfigParserBase):
 
     ROOT = "cfg"
 
+    COMMUNITIES_SCHEMA = {
+        "origin_present_in_as_set": { "type": "outbound" },
+        "origin_not_present_in_as_set": { "type": "outbound" },
+        "prefix_present_in_as_set": { "type": "outbound" },
+        "prefix_not_present_in_as_set": { "type": "outbound" },
+        "roa_valid": { "type": "outbound" },
+        "roa_invalid": { "type": "outbound" },
+        "roa_unknown": { "type": "outbound" },
+
+        "blackholing": { "type": "inbound" },
+        "do_not_announce_to_any": { "type": "inbound" },
+        "do_not_announce_to_peer": { "type": "inbound", "peer_as": True },
+        "announce_to_peer": { "type": "inbound", "peer_as": True },
+        "prepend_once_to_any": { "type": "inbound" },
+        "prepend_twice_to_any": { "type": "inbound" },
+        "prepend_thrice_to_any": { "type": "inbound" },
+    }
+
     def parse(self):
         """
         Contents of cfg dict is updated/normalized by validators.
@@ -110,28 +128,8 @@ class ConfigParserGeneral(ConfigParserBase):
         else:
             rs_as_macro = None
 
-        communities = {
-            "origin_present_in_as_set": { "type": "outbound" },
-            "origin_not_present_in_as_set": { "type": "outbound" },
-            "prefix_present_in_as_set": { "type": "outbound" },
-            "prefix_not_present_in_as_set": { "type": "outbound" },
-            "roa_valid": { "type": "outbound" },
-            "roa_invalid": { "type": "outbound" },
-            "roa_unknown": { "type": "outbound" },
-
-            "blackholing": { "type": "inbound" },
-            "do_not_announce_to_any": { "type": "inbound" },
-            "do_not_announce_to_peer": { "type": "inbound", "peer_as": True },
-            "announce_to_peer": { "type": "inbound", "peer_as": True },
-            "prepend_once_to_any": { "type": "inbound" },
-            "prepend_twice_to_any": { "type": "inbound" },
-            "prepend_thrice_to_any": { "type": "inbound" },
-        }
-        inbound_communities = []
-        outbound_communities = []
-
-        for comm in communities:
-            peer_as = communities[comm].get("peer_as", False)
+        for comm in self.COMMUNITIES_SCHEMA:
+            peer_as = self.COMMUNITIES_SCHEMA[comm].get("peer_as", False)
 
             schema["cfg"]["communities"][comm] = {
                 "std": ValidatorCommunityStd(rs_as_macro, mandatory=False,
@@ -141,12 +139,6 @@ class ConfigParserGeneral(ConfigParserBase):
                 "ext": ValidatorCommunityExt(rs_as_macro, mandatory=False,
                                              peer_as_macro_needed=peer_as),
             }
-            if communities[comm]["type"] == "outbound":
-                outbound_communities.append(comm)
-            else:
-                inbound_communities.append(comm)
-        inbound_communities = sorted(inbound_communities)
-        outbound_communities = sorted(outbound_communities)
 
         try:
             ConfigParserBase.validate(schema, self.cfg)
@@ -155,11 +147,6 @@ class ConfigParserGeneral(ConfigParserBase):
             if str(e):
                 logging.error(str(e))
             raise ConfigError()
-
-        # Set community type and peer_as macro
-        for comm in self.cfg["cfg"]["communities"]:
-            self.cfg["cfg"]["communities"][comm]["type"] = communities[comm]["type"]
-            self.cfg["cfg"]["communities"][comm]["peer_as"] = communities[comm].get("peer_as", False)
 
         # Warning: missing global black list.
         if not self.cfg["cfg"]["filtering"].get("global_black_list_pref"):
@@ -256,6 +243,15 @@ class ConfigParserGeneral(ConfigParserBase):
                         )
                     if part1 != part2:
                         break
+
+        outbound_communities = sorted(
+            [c for c in self.COMMUNITIES_SCHEMA
+             if self.COMMUNITIES_SCHEMA[c]["type"] == "outbound"]
+        )
+        inbound_communities = sorted(
+            [c for c in self.COMMUNITIES_SCHEMA
+             if self.COMMUNITIES_SCHEMA[c]["type"] == "inbound"]
+        )
 
         for comm1_tag in inbound_communities:
             for comm2_tag in outbound_communities:
