@@ -4,7 +4,6 @@ Future work
 Short term
 ----------
 
-- New feature: selective prepending via BGP communities
 - New feature: custom informative BGP communities
 - Live tests: provide a skeleton to ease building of new live test scenarios.
 - Add options for bgpq3 (sources)

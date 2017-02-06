@@ -49,6 +49,10 @@ cfg:
 
       tag_as_set: True
 
+    rpki:
+      enabled: True
+      reject_invalid: True
+
     max_prefix:
       action: "shutdown"
       peering_db: True
@@ -72,6 +76,18 @@ cfg:
     origin_not_present_in_as_set:
       std: "65530:0"
       lrg: "rs_as:65530:0"
+    roa_valid:
+      std: "65530:2"
+      lrg: "rs_as:65530:2"
+      ext: "rt:65530:2"
+    roa_invalid:
+      std: "65530:3"
+      lrg: "rs_as:65530:3"
+      ext: "rt:65530:3"
+    roa_unknown:
+      std: "65530:4"
+      lrg: "rs_as:65530:4"
+      ext: "rt:65530:4"
     do_not_announce_to_peer:
       std: "0:peer_as"
       ext: "rt:0:peer_as"
@@ -85,14 +101,26 @@ cfg:
       ext: "rt:0:rs_as"
       lrg: "rs_as:0:rs_as"
     prepend_once_to_any:
-      std: "rs_as:65501"
-      ext: "rt:rs_as:65501"
+      std: "65501:rs_as"
+      ext: "rt:65501:rs_as"
       lrg: "rs_as:65501:rs_as"
     prepend_twice_to_any:
-      std: "rs_as:65502"
-      ext: "rt:rs_as:65502"
+      std: "65502:rs_as"
+      ext: "rt:65502:rs_as"
       lrg: "rs_as:65502:rs_as"
     prepend_thrice_to_any:
-      std: "rs_as:65503"
-      ext: "rt:rs_as:65503"
+      std: "65503:rs_as"
+      ext: "rt:65503:rs_as"
       lrg: "rs_as:65503:rs_as"
+    prepend_once_to_peer:
+      std: "65504:peer_as"
+      ext: "rt:65504:peer_as"
+      lrg: "rs_as:65504:peer_as"
+    prepend_twice_to_peer:
+      std: "65505:peer_as"
+      ext: "rt:65505:peer_as"
+      lrg: "rs_as:65505:peer_as"
+    prepend_thrice_to_peer:
+      std: "65506:peer_as"
+      ext: "rt:65506:peer_as"
+      lrg: "rs_as:65506:peer_as"

@@ -412,7 +412,7 @@ cfg:
       #ext:
 
     # Prefixes that are tagged with the following communities are
-    # propagated to all the clients with an AS_PATH prepended one,
+    # propagated to all the clients with an AS_PATH prepended once,
     # twice or thrice with the announcing client's ASN.
     # If a prefix is tagged with both a 'prepend_x_to_any' and a 
     # 'prepend_x_to_peer' community, only the latter will be
@@ -438,7 +438,7 @@ cfg:
 
     # Prefixes that are tagged with the following communities are
     # propagated to the clients whose ASN matches the one given in
-    # the community with an AS_PATH prepended one, twice or thrice
+    # the community with an AS_PATH prepended once, twice or thrice
     # with the announcing client's ASN.
     # If a prefix is tagged with both a 'prepend_x_to_any' and a 
     # 'prepend_x_to_peer' community, only the latter will be

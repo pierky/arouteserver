@@ -45,7 +45,7 @@ Features
 
 - **Path hiding** mitigation techniques (`RFC7947`_ `section 2.3.1 <https://tools.ietf.org/html/rfc7947#section-2.3.1>`_).
 
-- Filtering features on by default:
+- Filtering features (most enabled by default):
 
   - **NEXT_HOP** enforcement (strict / same AS - `RFC7948`_ `section 4.8 <https://tools.ietf.org/html/rfc7948#section-4.8>`_);
   - minimum and maximum IPv4/IPv6 **prefix length**;
@@ -66,12 +66,13 @@ Features
 - Control and informative communities:
 
   - prefix/origin ASN present/not present in **IRRDB data**;
+  - prefix **RPKI** status;
   - do (not) announce to any / **peer**;
-  - **prepend** to any.
+  - **prepend** to any / **peer**.
 
 - Optional session features on a client-by-client basis:
 
-  - prepend route server ASN `RFC7947`_ `section 2.2.2.1 <https://tools.ietf.org/html/rfc7947#section-2.2.2.1>`_;
+  - prepend route server ASN (`RFC7947`_ `section 2.2.2.1 <https://tools.ietf.org/html/rfc7947#section-2.2.2.1>`_);
   - active sessions;
   - **GTSM** (Generalized TTL Security Mechanism - `RFC5082`_);
   - **ADD-PATH** capability (`RFC7911`_).
