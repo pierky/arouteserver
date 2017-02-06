@@ -30,9 +30,9 @@ Details about some particular topics are reported below.
 Client-level options inheritance
 ********************************
 
-Clients, which are configured in the ``clients.yml`` file, inherit most of the options provided in the ``general.yml`` file, unless their own configuration sets specific values.
+Clients, which are configured in the ``clients.yml`` file, inherit most of their options from those provided in the ``general.yml`` file, unless their own configuration sets more specific values.
 
-Options that are inherited by clients and that can be overwritten by their configuration are marked in the ``general.yml`` template distributed with the project.
+Options that are inherited by clients and that can be overwritten by their configuration are highlighted in the ``general.yml`` template file that is distributed with the project.
 
 Example:
 
@@ -70,13 +70,13 @@ In this scenario, the route server's configuration will look like this:
 IRRDBs-based filtering
 **********************
 
-The ``filtering.rpsl`` section of the configuration files allows to use IRRDBs information to filter or tag prefixes entering the route server. Information are acquired using the external program `bgpq3 <https://github.com/snar/bgpq3>`_: installations details on :doc:`INSTALLATION` page.
+The ``filtering.rpsl`` section of the configuration files allows to use IRRDBs information to filter or to tag prefixes entering the route server. Information are acquired using the external program `bgpq3 <https://github.com/snar/bgpq3>`_: installations details on :doc:`INSTALLATION` page.
 
 One or more AS-SETs can be used to gather information about authorized origin ASNs and prefixes that a client can announce to the route server. AS-SETs can be set in the ``clients.yml`` file on a two levels basis:
 
 - within the ``asns`` section, one or more AS-SETs can be given for each ASN of the clients configured in the rest of the file;
 
-- for each client, one or more AS-SETs can be configured within the ``cfg.filtering.rpsl`` section.
+- for each client, one or more AS-SETs can be configured in the ``cfg.filtering.rpsl`` section.
 
 To gather information from the IRRDBs, at first the script uses the AS-SETs provided in the client-level configuration; if no AS-SETs are provided there, it looks to the ASN configuration. If no AS-SETs are found in both the client and the ASN configuration, only the ASN's autnum object will be used.
 
@@ -123,7 +123,7 @@ With this configuration, the following values will be used to run the bgpq3 prog
 RPKI-based filtering
 ********************
 
-RPKI-based validation of prefixes can be configured using the general ``filtering.rpki`` section. Depending on the configuration, prefixes can be rejected or tagged with BGP communities.
+RPKI-based validation of prefixes can be configured using the general ``filtering.rpki`` section. Depending on the ``reject_invalid`` configuration, prefixes can be rejected or tagged with BGP communities.
 
 To acquire RPKI data and load them into BIRD, a couple of external tools from the `rtrlib <http://rpki.realmv6.org/>`_ suite are used: `rtrlib <https://github.com/rtrlib>`_ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`_. One or more trusted local validating caches should be used to get and validate RPKI data before pushing them to BIRD. An overview is provided on the `rtrlib GitHub wiki <https://github.com/rtrlib/rtrlib/wiki/Background>`_, where also an `usage guide <https://github.com/rtrlib/rtrlib/wiki/Usage-of-the-RTRlib>`_ can be found.
 
