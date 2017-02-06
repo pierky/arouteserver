@@ -1,6 +1,13 @@
 Change log
 ==========
 
+v0.1.0a7
+--------
+
+- Improved communities configuration and handling.
+- Fix issue on standard communities matching against 32-bit ASNs.
+- Fix issue on IPv6 prefix validation.
+
 v0.1.0a6
 --------
 
