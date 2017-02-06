@@ -37,7 +37,6 @@ class MaxPrefixScenario(LiveScenario):
                         "/etc/bird/bird.conf"
                     )
                 ],
-                proto_name="the_rs"
             ),
             cls.CLIENT_INSTANCE_CLASS(
                 "AS1",
@@ -48,7 +47,6 @@ class MaxPrefixScenario(LiveScenario):
                         "/etc/bird/bird.conf"
                     )
                 ],
-                client_id="AS1_1"
             ),
             cls.CLIENT_INSTANCE_CLASS(
                 "AS2",
@@ -59,7 +57,6 @@ class MaxPrefixScenario(LiveScenario):
                         "/etc/bird/bird.conf"
                     )
                 ],
-                client_id="AS2_1"
             ),
             cls.CLIENT_INSTANCE_CLASS(
                 "AS3",
@@ -70,7 +67,6 @@ class MaxPrefixScenario(LiveScenario):
                         "/etc/bird/bird.conf"
                     )
                 ],
-                client_id="AS3_1"
             ),
         ]
 

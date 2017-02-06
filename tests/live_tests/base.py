@@ -69,6 +69,10 @@ class LiveScenario(ARouteServerTestCase):
         return cls.DO_NOT_STOP_INSTANCES or "REUSE_INSTANCES" in os.environ
 
     @classmethod
+    def _do_not_run_instances(cls):
+        return "BUILD_ONLY" in os.environ
+
+    @classmethod
     def _build_other_cfg(cls, tpl_name):
         cls.debug("Building config from {}/{} - IPv{}".format(
             cls._get_module_dir(), tpl_name, cls.IP_VER))
@@ -93,7 +97,9 @@ class LiveScenario(ARouteServerTestCase):
     def _build_rs_cfg(cls, tpl_dir_name, tpl_name, out_file_name,
                       cfg_general="general.yml", cfg_bogons="bogons.yml",
                       cfg_clients="clients.yml", cfg_roas=None):
-        cls.debug("Building config from {}/{} - IPv{}".format(tpl_dir_name, tpl_name, cls.IP_VER))
+        cls.debug("Building config from {}/{} - IPv{}".format(
+            tpl_dir_name, tpl_name, cls.IP_VER)
+        )
 
         var_dir = cls._create_var_dir()
 
@@ -167,7 +173,7 @@ class LiveScenario(ARouteServerTestCase):
         cls.mock_rpsl()
         cls._setup_instances()
 
-        if "BUILD_ONLY" in os.environ:
+        if cls._do_not_run_instances():
             return
 
         try:
@@ -176,7 +182,6 @@ class LiveScenario(ARouteServerTestCase):
 
                 if cls._do_not_stop_instances() and instance.is_running():
                     cls.debug("Instance '{}' already running, reloading config".format(instance.name))
-                    instance.remount()
                     if not instance.reload_config():
                         raise InstanceError("An error occurred while reloading '{}' configuration.".format(instance.name))
                     continue
@@ -190,13 +195,15 @@ class LiveScenario(ARouteServerTestCase):
     def _tearDownClass(cls):
         mock.patch.stopall()
 
-        if "BUILD_ONLY" in os.environ:
+        if cls._do_not_run_instances():
             return
 
         if cls._do_not_stop_instances():
             cls.debug("Skipping instances stopping")
             return
+
         print("{}: stopping instances...".format(cls.SHORT_DESCR))
+
         for instance in cls.INSTANCES:
             cls.debug("Stopping instance '{}'...".format(instance.name))
             instance.stop()
@@ -205,7 +212,7 @@ class LiveScenario(ARouteServerTestCase):
         raise NotImplementedError()
 
     def _setUp(self):
-        if "BUILD_ONLY" in os.environ:
+        if self._do_not_run_instances():
             self.skipTest("Build only")
 
         self.set_instance_variables()

@@ -58,7 +58,6 @@ class BasicScenario(LiveScenario):
                         "/etc/bird/bird.conf"
                     )
                 ],
-                proto_name="the_rs"
             ),
             # Run AS3 as soon as possible because it's configured with passive
             # session, so while other instance come up rs has more time to
@@ -72,7 +71,6 @@ class BasicScenario(LiveScenario):
                         "/etc/bird/bird.conf"
                     )
                 ],
-                client_id="AS3_1"
             ),
             cls.CLIENT_INSTANCE_CLASS(
                 "AS1_1",
@@ -83,7 +81,6 @@ class BasicScenario(LiveScenario):
                         "/etc/bird/bird.conf"
                     )
                 ],
-                client_id="AS1_1"
             ),
             cls.CLIENT_INSTANCE_CLASS(
                 "AS1_2",
@@ -94,7 +91,6 @@ class BasicScenario(LiveScenario):
                         "/etc/bird/bird.conf"
                     )
                 ],
-                client_id="AS1_2"
             ),
             cls.CLIENT_INSTANCE_CLASS(
                 "AS2",
@@ -105,7 +101,6 @@ class BasicScenario(LiveScenario):
                         "/etc/bird/bird.conf"
                     )
                 ],
-                client_id="AS2_1"
             ),
             cls.CLIENT_INSTANCE_CLASS(
                 "AS101",
@@ -116,7 +111,6 @@ class BasicScenario(LiveScenario):
                         "/etc/bird/bird.conf"
                     )
                 ],
-                proto_name="AS101"
             )
         ]
 
@@ -398,7 +392,6 @@ class BasicScenario(LiveScenario):
             self.receive_route_from(self.AS1_2, self.DATA["AS2_blackhole1"])
             self.receive_route_from(self.AS1_2, self.DATA["AS2_blackhole2"])
             self.receive_route_from(self.AS1_2, self.DATA["AS2_blackhole3"])
-        proto_name = self.rs.get_protocol_name_by_ip(self.AS1_2.ip)
         self.log_contains(self.rs, "client {{AS1_2}} not enabled to receive blackhole prefixes - NOT ANNOUNCING {pref} TO {{AS1_2}}".format(pref=self.DATA["AS2_blackhole1"]), {"AS1_2": self.AS1_2})
         self.log_contains(self.rs, "client {{AS1_2}} not enabled to receive blackhole prefixes - NOT ANNOUNCING {pref} TO {{AS1_2}}".format(pref=self.DATA["AS2_blackhole2"]), {"AS1_2": self.AS1_2})
         self.log_contains(self.rs, "client {{AS1_2}} not enabled to receive blackhole prefixes - NOT ANNOUNCING {pref} TO {{AS1_2}}".format(pref=self.DATA["AS2_blackhole3"]), {"AS1_2": self.AS1_2})

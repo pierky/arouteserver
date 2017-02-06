@@ -133,7 +133,6 @@ class BIRDInstance(DockerInstance):
             if self.protocols_status[proto]["ip"] == ip:
                 return proto
         raise Exception("{}: can't find protocolo name from ip {}".format(self.name, ip))
-        return None
 
     def log_contains(self, s):
         out = self.run_cmd("cat /var/log/bird.log")

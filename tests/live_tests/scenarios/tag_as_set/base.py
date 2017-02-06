@@ -56,7 +56,6 @@ class TagASSetScenario(LiveScenario):
                         "/etc/bird/bird.conf"
                     )
                 ],
-                proto_name="the_rs"
             ),
             cls.CLIENT_INSTANCE_CLASS(
                 "AS1",
@@ -67,7 +66,6 @@ class TagASSetScenario(LiveScenario):
                         "/etc/bird/bird.conf"
                     )
                 ],
-                client_id="AS1_1"
             ),
             cls.CLIENT_INSTANCE_CLASS(
                 "AS2",
@@ -78,7 +76,6 @@ class TagASSetScenario(LiveScenario):
                         "/etc/bird/bird.conf"
                     )
                 ],
-                client_id="AS2_1"
             ),
             cls.CLIENT_INSTANCE_CLASS(
                 "AS4",
@@ -89,7 +86,6 @@ class TagASSetScenario(LiveScenario):
                         "/etc/bird/bird.conf"
                     )
                 ],
-                client_id="AS4_1"
             ),
             cls.CLIENT_INSTANCE_CLASS(
                 "AS5",
@@ -100,7 +96,6 @@ class TagASSetScenario(LiveScenario):
                         "/etc/bird/bird.conf"
                     )
                 ],
-                client_id="AS5_1"
             ),
         ]
 

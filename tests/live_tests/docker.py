@@ -117,24 +117,6 @@ class DockerInstance(BGPSpeakerInstance):
                                              res["host_filename"])
             yield res
 
-    def update_mounts(self):
-        return
-        for mount in self.get_mounts():
-            if mount["var_path"] != mount["host"]:
-                with open(mount["var_path"], "w") as dst:
-                    with open(mount["host"], "r") as src:
-                        dst.write(src.read())
-
-    def remount(self):
-        if not self.mount:
-            return True
-
-        if not self.is_running():
-            raise InstanceNotRunning(self.name)
-
-        self.update_mounts()
-        return True
-
     def is_running(self):
         return self._instance_is_running(self.name)
 
@@ -145,7 +127,6 @@ class DockerInstance(BGPSpeakerInstance):
         self._setup_networking()
 
         if not self.is_running():
-            self.update_mounts()
 
             cmd = ('{docker} run --rm '
                    '--net={net_name} {ip_arg}={ip} '
@@ -172,9 +153,6 @@ class DockerInstance(BGPSpeakerInstance):
             res = self._run(cmd, detached=True)
             time.sleep(3)
             if not self.is_running():
-                #for mount in self.get_mounts():
-                #    with open(mount["var_path"], "r") as f:
-                #        print(f.read())
                 process = subprocess.Popen(
                     cmd.split(),
                     stdin=None,
