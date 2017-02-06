@@ -286,12 +286,6 @@ cfg:
     # Default: True
     announce_to_client: True
 
-  # Allow clients to control outbound routing policies using BGP
-  # communities. See 'communities' section below.
-  #
-  # Default: True
-  control_communities: True
-  
   communities:
     # For each community name below, Standard, Large and Extended
     # BGP Communities can be provided in the 'std', 'lrg' and 'ext'
@@ -370,9 +364,6 @@ cfg:
  
     # Control communities
     # 
-    # The following communities are used only if the
-    # 'control_communities' option is True.
-    #
     # Prefixes that are tagged with the following community are not
     # announced to any client, unless they are also tagged with the
     # 'announce_to_peer' communities: in this case, such prefixes are

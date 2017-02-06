@@ -271,12 +271,6 @@ class TestConfigParserGeneral(TestConfigParserBase):
             self._contains_err("Error parsing 'rewrite_next_hop_ipv6' at 'cfg.blackhole_filtering' level - Invalid IPv6 address: {}.".format(ip))
         self._test_optional(self.cfg["blackhole_filtering"], "rewrite_next_hop_ipv6")
 
-    def test_control_communities(self):
-        """{}: control_communities"""
-        self.assertEqual(self.cfg["control_communities"], True)
-        self._test_bool_val(self.cfg, "control_communities")
-        self._test_mandatory(self.cfg, "control_communities", has_default=True)
-
     def test_communities_std(self):
         """{}: standard BGP communities"""
 
@@ -524,5 +518,4 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.assertEqual(self.cfg["filtering"]["max_prefix"]["general_limit_ipv6"], 12000)
         self.assertEqual(self.cfg["blackhole_filtering"]["policy_ipv4"], None)
         self.assertEqual(self.cfg["blackhole_filtering"]["policy_ipv6"], None)
-        self.assertEqual(self.cfg["control_communities"], True)
 

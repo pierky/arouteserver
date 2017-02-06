@@ -61,8 +61,6 @@ cfg:
     rewrite_next_hop_ipv6: "2001:db8:1:1::66"
 
     announce_to_client: True
-
-  control_communities: True
   
   communities:
     blackholing:

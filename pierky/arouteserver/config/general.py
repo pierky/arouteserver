@@ -117,7 +117,6 @@ class ConfigParserGeneral(ConfigParserBase):
                     "rewrite_next_hop_ipv4": ValidatorIPv4Addr(mandatory=False),# Done
                     "rewrite_next_hop_ipv6": ValidatorIPv6Addr(mandatory=False),# Done, not tested
                 },
-                "control_communities": ValidatorBool(default=True),                 # Done
                 "communities": {
                 }
             }

@@ -150,7 +150,6 @@ function apply_blackhole_filtering_policy() {
 # the given client on the basis of the attached control BGP
 # communities.
 function prefix_can_be_announced_to(int peer_as) {
-{% if cfg.control_communities %}
 	{% if cfg.communities.do_not_announce_to_peer|community_is_set %}
 	# do_not_announce_to_peer
 	{{- match_communities(cfg.communities.do_not_announce_to_peer, "return false;") }}
@@ -163,14 +162,12 @@ function prefix_can_be_announced_to(int peer_as) {
 	# do_not_announce_to_any
 	{{- match_communities(cfg.communities.do_not_announce_to_any, "return false;") }}
 	{% endif %}
-{% endif %}
 	return true;
 }
 
 # This function verifies if the current prefix matches one of the
 # control communities in charge of prepending client's ASN.
 function apply_prepend(int peer_as) {
-{% if cfg.control_communities %}
 	{% if cfg.communities.prepend_once_to_any|community_is_set %}
 	# prepend_once_to_any
 	{{ match_communities(cfg.communities.prepend_once_to_any, "{ bgp_path.prepend(bgp_path.first); return true; }") }}
@@ -183,7 +180,6 @@ function apply_prepend(int peer_as) {
 	# prepend_thrice_to_any
 	{{ match_communities(cfg.communities.prepend_thrice_to_any, "{ bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); return true; }") }}
 	{% endif %}
-{% endif %}
 }
 
 {% if cfg.filtering.rpki.enabled %}
