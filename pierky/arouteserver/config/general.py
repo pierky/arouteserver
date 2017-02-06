@@ -246,14 +246,12 @@ class ConfigParserGeneral(ConfigParserBase):
                     if part1 != part2:
                         break
 
-        outbound_communities = sorted(
+        outbound_communities = \
             [c for c in self.COMMUNITIES_SCHEMA
              if self.COMMUNITIES_SCHEMA[c]["type"] == "outbound"]
-        )
-        inbound_communities = sorted(
+        inbound_communities = \
             [c for c in self.COMMUNITIES_SCHEMA
              if self.COMMUNITIES_SCHEMA[c]["type"] == "inbound"]
-        )
 
         for comm1_tag in inbound_communities:
             for comm2_tag in outbound_communities:

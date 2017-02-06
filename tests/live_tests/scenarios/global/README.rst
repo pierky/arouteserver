@@ -92,9 +92,9 @@ Built to group as many tests as possible in a single scenario.
 
     Announced prefixes:
 
-    ================   ============    ==========================================
+    =================  ============    ============================================
     Prefix ID          Prefix          Expected result
-    ================   ============    ==========================================
+    =================  ============    ============================================
     AS3_blacklist1     3.0.1.0/24      fail prefix_is_in_AS3_1_blacklist
 
     AS3_cc_AS1only     3.0.2.0/24      add 0:999 and 999:1, seen on AS1_1/_2 only
@@ -103,7 +103,11 @@ Built to group as many tests as possible in a single scenario.
     AS3_prepend1any    3.0.5.0/24      add 999:65501, AS_PATH 3, 3
     AS3_prepend2any    3.0.6.0/24      add 999:65502, AS_PATH 3, 3, 3
     AS3_prepend3any    3.0.7.0/24      add 999:65503, AS_PATH 3, 3, 3, 3
-    ================   ============    ==========================================
+    AS3_prepend1_AS1   3.0.8.0/24      add 65504:1, AS_PATH 3, 3 on AS1 clients
+    AS3_prepend2_AS2   3.0.9.0/24      add 65505:2, AS_PATH 3, 3, 3 on AS2 clients
+    AS3_prep3AS1_1any  3.0.10.0/24     add 65506:1, 999:65501, AS_PATH 3, 3, 3, 3
+                                       on AS1 clients, 3, 3 on AS2 clients
+    =================  ============    ============================================
 
 - **AS101**:
 

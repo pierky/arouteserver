@@ -451,6 +451,33 @@ class BasicScenario(LiveScenario):
             self.receive_route_from(inst, self.DATA["AS3_prepend3any"], self.rs, as_path="3 3 3 3",
                                     next_hop=self.AS3, std_comms=[], lrg_comms=[])
 
+    def test_082_control_communities_prepend1_AS1(self):
+        """{}: control communities, prepend once to AS1"""
+
+        for inst in (self.AS1_1, self.AS1_2):
+            self.receive_route_from(inst, self.DATA["AS3_prepend1_AS1"], self.rs, as_path="3 3",
+                                    next_hop=self.AS3, std_comms=[], lrg_comms=[])
+        self.receive_route_from(self.AS2, self.DATA["AS3_prepend1_AS1"], self.rs, as_path="3",
+                                next_hop=self.AS3, std_comms=[], lrg_comms=[])
+
+    def test_082_control_communities_prepend2_AS2(self):
+        """{}: control communities, prepend twice to AS2"""
+
+        self.receive_route_from(self.AS2, self.DATA["AS3_prepend2_AS2"], self.rs, as_path="3 3 3",
+                                next_hop=self.AS3, std_comms=[], lrg_comms=[])
+        for inst in (self.AS1_1, self.AS1_2):
+            self.receive_route_from(inst, self.DATA["AS3_prepend2_AS2"], self.rs, as_path="3",
+                                    next_hop=self.AS3, std_comms=[], lrg_comms=[])
+
+    def test_082_control_communities_prepend3_AS1_1_others(self):
+        """{}: control communities, prepend thrice to AS1, once to others"""
+
+        for inst in (self.AS1_1, self.AS1_2):
+            self.receive_route_from(inst, self.DATA["AS3_prep3AS1_1any"], self.rs, as_path="3 3 3 3",
+                                    next_hop=self.AS3, std_comms=[], lrg_comms=[])
+        self.receive_route_from(self.AS2, self.DATA["AS3_prep3AS1_1any"], self.rs, as_path="3 3",
+                                next_hop=self.AS3, std_comms=[], lrg_comms=[])
+
     def test_100_prefixes_received_by_clients_AS1_1(self):
         """{}: prefixes received by clients: AS1_1"""
         self.receive_route_from(self.AS1_1, self.DATA["AS2_good1"], self.rs, as_path="2", next_hop=self.AS2)

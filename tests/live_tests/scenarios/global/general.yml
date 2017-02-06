@@ -68,3 +68,16 @@ cfg:
                 roa_invalid:
                         std: "64512:2"
                         lrg: "rs_as:64512:2"
+                prepend_once_to_peer:
+                        std: "65504:peer_as"
+                        ext: "rt:65504:peer_as"
+                        lrg: "rs_as:65504:peer_as"
+                prepend_twice_to_peer:
+                        std: "65505:peer_as"
+                        ext: "rt:65505:peer_as"
+                        lrg: "rs_as:65505:peer_as"
+                prepend_thrice_to_peer:
+                        std: "65506:peer_as"
+                        ext: "rt:65506:peer_as"
+                        lrg: "rs_as:65506:peer_as"
+

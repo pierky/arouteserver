@@ -60,6 +60,9 @@ class BasicScenario_BIRDIPv6(BasicScenario):
         "AS3_prepend1any":          "2a03:0:5::/48",
         "AS3_prepend2any":          "2a03:0:6::/48",
         "AS3_prepend3any":          "2a03:0:7::/48",
+        "AS3_prepend1_AS1":         "2a03:0:8::/48",
+        "AS3_prepend2_AS2":         "2a03:0:9::/48",
+        "AS3_prep3AS1_1any":        "2a03:0:A::/48",
 
         "AS101_allowed_prefixes":   "3101:0::/32",
         "AS101_good1":              "3101:0:1::/48",
