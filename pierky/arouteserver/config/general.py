@@ -110,60 +110,43 @@ class ConfigParserGeneral(ConfigParserBase):
         else:
             rs_as_macro = None
 
-        # Add communities with no fixed values to the schema.
-        for comm in ["origin_present_in_as_set", "origin_not_present_in_as_set",
-                     "prefix_present_in_as_set", "prefix_not_present_in_as_set",
-                     "roa_valid", "roa_invalid", "roa_unknown",
-                     "blackholing",
-                     "do_not_announce_to_any",
-                     "prepend_once_to_any", "prepend_twice_to_any",
-                     "prepend_thrice_to_any"]:
+        communities = {
+            "origin_present_in_as_set": { "type": "outbound" },
+            "origin_not_present_in_as_set": { "type": "outbound" },
+            "prefix_present_in_as_set": { "type": "outbound" },
+            "prefix_not_present_in_as_set": { "type": "outbound" },
+            "roa_valid": { "type": "outbound" },
+            "roa_invalid": { "type": "outbound" },
+            "roa_unknown": { "type": "outbound" },
 
+            "blackholing": { "type": "inbound" },
+            "do_not_announce_to_any": { "type": "inbound" },
+            "do_not_announce_to_peer": { "type": "inbound", "peer_as": True },
+            "announce_to_peer": { "type": "inbound", "peer_as": True },
+            "prepend_once_to_any": { "type": "inbound" },
+            "prepend_twice_to_any": { "type": "inbound" },
+            "prepend_thrice_to_any": { "type": "inbound" },
+        }
+        inbound_communities = []
+        outbound_communities = []
 
-            schema["cfg"]["communities"][comm] = {
-                "std": ValidatorCommunityStd(rs_as_macro, mandatory=False),
-                "lrg": ValidatorCommunityLrg(rs_as_macro, mandatory=False),
-                "ext": ValidatorCommunityExt(rs_as_macro, mandatory=False),
-            }
-
-        # Add communities with fixed values to the schema.
-        communities_with_peer_as = []
-        for comm, fixed_values in [
-            ("do_not_announce_to_peer",
-                ("0:peer_as",
-                 "rs_as:0:peer_as",
-                 ["rt:0:peer_as", "ro:0:peer_as"])
-            ),
-            ("announce_to_peer",
-                ("rs_as:peer_as",
-                 "rs_as:rs_as:peer_as",
-                 ["rt:rs_as:peer_as", "ro:rs_as:peer_as"])
-            )]:
-            communities_with_peer_as.append(comm)
+        for comm in communities:
+            peer_as = communities[comm].get("peer_as", False)
 
             schema["cfg"]["communities"][comm] = {
                 "std": ValidatorCommunityStd(rs_as_macro, mandatory=False,
-                                            fixed_values=fixed_values[0],
-                                            allow_peer_as_macro=True),
+                                             peer_as_macro_needed=peer_as),
                 "lrg": ValidatorCommunityLrg(rs_as_macro, mandatory=False,
-                                            fixed_values=fixed_values[1],
-                                            allow_peer_as_macro=True),
+                                             peer_as_macro_needed=peer_as),
                 "ext": ValidatorCommunityExt(rs_as_macro, mandatory=False,
-                                            fixed_values=fixed_values[2],
-                                            allow_peer_as_macro=True)
+                                             peer_as_macro_needed=peer_as),
             }
-
-        inbound_communities = ["blackholing", "do_not_announce_to_any",
-                               "do_not_announce_to_peer", "announce_to_peer",
-                               "prepend_once_to_any", "prepend_twice_to_any",
-                               "prepend_thrice_to_any"]
-        outbound_communities = ["origin_present_in_as_set",
-                                "origin_not_present_in_as_set",
-                                "prefix_present_in_as_set",
-                                "prefix_not_present_in_as_set",
-                                "roa_valid", "roa_invalid", "roa_unknown"]
-        assert sorted(inbound_communities + outbound_communities) == \
-                sorted(schema["cfg"]["communities"].keys())
+            if communities[comm]["type"] == "outbound":
+                outbound_communities.append(comm)
+            else:
+                inbound_communities.append(comm)
+        inbound_communities = sorted(inbound_communities)
+        outbound_communities = sorted(outbound_communities)
 
         try:
             ConfigParserBase.validate(schema, self.cfg)
@@ -172,6 +155,11 @@ class ConfigParserGeneral(ConfigParserBase):
             if str(e):
                 logging.error(str(e))
             raise ConfigError()
+
+        # Set community type and peer_as macro
+        for comm in self.cfg["cfg"]["communities"]:
+            self.cfg["cfg"]["communities"][comm]["type"] = communities[comm]["type"]
+            self.cfg["cfg"]["communities"][comm]["peer_as"] = communities[comm].get("peer_as", False)
 
         # Warning: missing global black list.
         if not self.cfg["cfg"]["filtering"].get("global_black_list_pref"):
@@ -200,10 +188,9 @@ class ConfigParserGeneral(ConfigParserBase):
                     )
 
         # Duplicate communities?
-        communities = self.cfg["cfg"]["communities"]
         unique_communities = []
-        for comm_tag in communities:
-            comm = communities[comm_tag]
+        for comm_tag in self.cfg["cfg"]["communities"]:
+            comm = self.cfg["cfg"]["communities"][comm_tag]
             for fmt in ("std", "lrg", "ext"):
                 if comm[fmt]:
                     if comm[fmt] in unique_communities:
@@ -276,7 +263,7 @@ class ConfigParserGeneral(ConfigParserBase):
                     continue
                 try:
                     communities_overlap(
-                        communities, comm1_tag, comm2_tag
+                        self.cfg["cfg"]["communities"], comm1_tag, comm2_tag
                     )
                 except ConfigError as e:
                     errors = True
@@ -291,7 +278,8 @@ class ConfigParserGeneral(ConfigParserBase):
                     continue
                 try:
                     communities_overlap(
-                        communities, comm1_tag, comm2_tag, allow_private_asns=True
+                        self.cfg["cfg"]["communities"], comm1_tag, comm2_tag,
+                        allow_private_asns=True
                     )
                 except ConfigError as e:
                     errors = True

@@ -417,10 +417,7 @@ class ValidatorCommunity(ConfigParserValidator):
     def __init__(self, rs_as, **kwargs):
         ConfigParserValidator.__init__(self, **kwargs)
         self.rs_as = rs_as
-        self.fixed_values = kwargs.get("fixed_values", None)
-        if isinstance(self.fixed_values, str):
-            self.fixed_values = [self.fixed_values]
-        self.allow_peer_as_macro = kwargs.get("allow_peer_as_macro", False)
+        self.peer_as_macro_needed = kwargs.get("peer_as_macro_needed", False)
 
     def _expand_rs_as_macro(self, v):
         if "rs_as" in v:
@@ -435,25 +432,27 @@ class ValidatorCommunity(ConfigParserValidator):
             return v
 
     def _get_parts(self, val):
-        parts = val.split(":")
+        parts = map(str.strip, val.split(":"))
         if len(parts) != self.EXPECTED_PARTS_CNT:
             raise ConfigError()
+
+        # peer_as macro usage checks
+        peer_as_macro_found = False
+        for part_idx in range(len(parts)):
+            if parts[part_idx] != "peer_as":
+                continue
+            if self.peer_as_macro_needed:
+                peer_as_macro_found = True
+                if part_idx != len(parts) - 1:
+                    # peer_as macro allowed only in the last part
+                    raise ConfigError("'peer_as' macro can be used only "
+                                      "in the last part of the value")
+            else:
+                raise ConfigError("'peer_as' macro not allowed")
+        if self.peer_as_macro_needed and not peer_as_macro_found:
+            raise ConfigError("'peer_as' macro is mandatory in this "
+                              "community")
         return parts
-
-    def _check_fixed_values(self, v):
-        if not self.fixed_values:
-            return
-        if v not in self.fixed_values:
-            raise ConfigError(
-                "This community must have a fixed value: {}".format(
-                    " or ".join(self.fixed_values)
-                )
-            )
-
-    def validate(self, v):
-        if v:
-            self._check_fixed_values(v)
-        return ConfigParserValidator.validate(self, v)
 
 class ValidatorCommunityStd(ValidatorCommunity):
 
@@ -467,11 +466,8 @@ class ValidatorCommunityStd(ValidatorCommunity):
             parts = self._get_parts(val)
             for part in parts:
                 if part.strip() == "peer_as":
-                    if self.allow_peer_as_macro:
-                        validated_parts.append("peer_as")
-                        continue
-                    else:
-                        raise ConfigError("'peer_as' macro not allowed")
+                    validated_parts.append("peer_as")
+                    continue
                 part_val = ValidatorUInt().validate(part)
                 if part_val < 0 or part_val > 65535:
                     raise ConfigError()
@@ -484,7 +480,7 @@ class ValidatorCommunityStd(ValidatorCommunity):
                 "unsigned integer; the 'rs_as' macro "
                 "can be used to represent the route "
                 "server's ASN provided "
-                "that it is 16-bit ASN".format(
+                "that it is a 16-bit ASN".format(
                     v, " - {}".format(str(e)) if str(e) else ""
                 )
             )
@@ -501,11 +497,8 @@ class ValidatorCommunityLrg(ValidatorCommunity):
             parts = self._get_parts(val)
             for part in parts:
                 if part.strip() == "peer_as":
-                    if self.allow_peer_as_macro:
-                        validated_parts.append("peer_as")
-                        continue
-                    else:
-                        raise ConfigError("'peer_as' macro not allowed")
+                    validated_parts.append("peer_as")
+                    continue
                 part_val = ValidatorUInt().validate(part)
                 if part_val < 0 or part_val > 4294967295:
                     raise ConfigError()
@@ -538,11 +531,8 @@ class ValidatorCommunityExt(ValidatorCommunity):
             validated_parts.append(parts[0].strip().lower())
             for part in parts[1:]:
                 if part.strip() == "peer_as":
-                    if self.allow_peer_as_macro:
-                        validated_parts.append("peer_as")
-                        continue
-                    else:
-                        raise ConfigError("'peer_as' macro not allowed")
+                    validated_parts.append("peer_as")
+                    continue
                 part_val = ValidatorUInt().validate(part)
                 if part_val < 0 or part_val > 4294967295:
                     raise ConfigError()

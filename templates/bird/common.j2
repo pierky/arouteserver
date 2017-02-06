@@ -92,9 +92,7 @@ int set transit_free_asns;
 # for signaling purpose toward its clients. (RFC7454, Section 11)
 # It must be applied on prefixes entering the route server.
 function scrub_communities_in() {
-{% for name in ("origin_present_in_as_set", "origin_not_present_in_as_set",
-		"prefix_present_in_as_set", "prefix_not_present_in_as_set",
-		"roa_valid", "roa_invalid", "roa_unknown" ) %}
+{% for name in cfg.communities if cfg.communities[name].type == "outbound" %}
 {% if cfg.communities[name]|community_is_set %}
 	# {{ name }}
 {{ del_communities(cfg.communities[name]) }}
@@ -106,16 +104,10 @@ function scrub_communities_in() {
 # the route server to perform some actions.
 # It must be applied on prefixes leaving the route server.
 function scrub_communities_out() {
-{% for name in ("blackholing", "do_not_announce_to_any", "prepend_once_to_any", "prepend_twice_to_any", "prepend_thrice_to_any") %}
+{% for name in cfg.communities if cfg.communities[name].type == "inbound" %}
 {% if cfg.communities[name]|community_is_set %}
 	# {{ name }}
-{{ del_communities(cfg.communities[name]) }}
-{% endif %}
-{% endfor %}
-{% for name in ("do_not_announce_to_peer", "announce_to_peer") %}
-{% if cfg.communities[name]|community_is_set %}
-	# {{ name }}
-{{ del_communities(cfg.communities[name], True) }}
+{{ del_communities(cfg.communities[name], cfg.communities[name].peer_as) }}
 {% endif %}
 {% endfor %}
 }

@@ -323,23 +323,35 @@ class TestConfigParserGeneral(TestConfigParserBase):
             self._contains_err("'peer_as' macro not allowed")
         self._test_optional(self.cfg["communities"]["blackholing"], "ext")
 
-    def test_fixed_values_communities(self):
-        """{}: communities with fixed values"""
+    def test_mandatory_peer_as_communities(self):
+        """{}: communities that need peer_as macro"""
 
         for comm in ("announce_to_peer", "do_not_announce_to_peer"):
             for c in self.VALID_STD_COMMS:
                 self.cfg["communities"][comm]["std"] = c
-                self._contains_err("This community must have a fixed value:")
+                self._contains_err("'peer_as' macro is mandatory in this community")
+            self.cfg["communities"][comm]["std"] = None
             for c in self.VALID_LRG_COMMS:
                 self.cfg["communities"][comm]["lrg"] = c
-                self._contains_err("This community must have a fixed value:")
+                self._contains_err("'peer_as' macro is mandatory in this community")
+            self.cfg["communities"][comm]["lrg"] = None
             for c in self.VALID_EXT_COMMS:
                 self.cfg["communities"][comm]["ext"] = c
-                self._contains_err("This community must have a fixed value:")
-            self.cfg["communities"][comm]["std"] = None
-            self.cfg["communities"][comm]["lrg"] = None
+                self._contains_err("'peer_as' macro is mandatory in this community")
             self.cfg["communities"][comm]["ext"] = None
-            self.cfg.parse()
+
+    def test_peer_as_usage_in_communities(self):
+        """{}: peer_as macro usage in communities"""
+
+        comm = "announce_to_peer"
+
+        self.cfg["communities"][comm]["std"] = "rs_as:peer_as"
+        self._contains_err()
+        self.cfg["communities"][comm]["std"] = None
+
+        self.cfg["communities"][comm]["std"] = "peer_as:rs_as"
+        self._contains_err("'peer_as' macro can be used only in the last part of the value")
+        self.cfg["communities"][comm]["std"] = None
 
     def test_duplicate_communities(self):
         """{}: duplicate communities"""
@@ -403,6 +415,15 @@ class TestConfigParserGeneral(TestConfigParserBase):
         ]
         self.load_config(yaml="\n".join(yaml_lines))
         self._contains_err()
+
+        yaml_lines = tpl + [
+            "    blackholing:",
+            "      std: '666:666'",
+            "    do_not_announce_to_peer:",
+            "      std: '666:peer_as'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err("Community 'blackholing' and 'do_not_announce_to_peer' overlap: 666:666 / 666:peer_as. Inbound communities can't have overlapping values, otherwise their meaning could be uncertain.")
 
     def test_max_pref_action(self):
         """{}: max_prefix action"""

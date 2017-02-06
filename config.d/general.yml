@@ -310,10 +310,6 @@ cfg:
     #
     # The following communities are scrubbed from inbound prefixes.
     #
-    # Syntax:
-    # - std: x:y
-    # - lrg: x:y:z
-    # - ext: [rt|ro]:x:y
     # The 'rs_as' macro can be used here.
     prefix_present_in_as_set:
       #std:
@@ -340,10 +336,6 @@ cfg:
     #
     # The following communities are scrubbed from inbound prefixes.
     #
-    # Syntax:
-    # - std: x:y
-    # - lrg: x:y:z
-    # - ext: [rt|ro]:x:y
     # The 'rs_as' macro can be used here.
     roa_valid:
       #std:
@@ -370,10 +362,6 @@ cfg:
     #
     # The following community is scrubbed from outbound prefixes.
     #
-    # Syntax:
-    # - std: x:y
-    # - lrg: x:y:z
-    # - ext: [rt|ro]:x:y
     # The 'rs_as' macro can be used here.
     blackholing:
       #std:
@@ -393,10 +381,6 @@ cfg:
     #
     # The following community is scrubbed from outbound prefixes.
     #
-    # Syntax:
-    # - std: x:y
-    # - lrg: x:y:z
-    # - ext: [rt|ro]:x:y
     # The 'rs_as' macro can be used here.
     do_not_announce_to_any:
       #std:
@@ -412,10 +396,8 @@ cfg:
     #
     # The following community is scrubbed from outbound prefixes.
     #
-    # Fixed values:
-    # - std: 0:peer_as
-    # - lrg: rs_as:0:peer_as
-    # - ext: [rt|ro]:0:peer_as
+    # The 'rs_as' macro can be used here.
+    # The 'peer_as' macro must appear in the last part of values.
     do_not_announce_to_peer:
       #std:
       #lrg:
@@ -431,10 +413,8 @@ cfg:
     #
     # The following community is scrubbed from outbound prefixes.
     #
-    # Fixed values:
-    # - std: rs_as:peer_as
-    # - lrg: rs_as:rs_as:peer_as
-    # - ext: [rt|ro]:rs_as:peer_as
+    # The 'rs_as' macro can be used here.
+    # The 'peer_as' macro must appear in the last part of values.
     announce_to_peer:
       #std:
       #lrg:
@@ -446,10 +426,6 @@ cfg:
     #
     # The following communities are scrubbed from outbound prefixes.
     #
-    # Syntax:
-    # - std: x:y
-    # - lrg: x:y:z
-    # - ext: [rt|ro]:x:y
     # The 'rs_as' macro can be used here.
     prepend_once_to_any:
       #std:
