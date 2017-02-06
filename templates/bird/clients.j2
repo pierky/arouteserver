@@ -20,10 +20,8 @@ function origin_as_is_in_{{ client.id }}_as_set() {
 	if bgp_path.last ~ AS_SET_{{ as_set_id }}_asns then
 		return true;
 {%	endfor %}
-	return false;
-{%	else %}
-	return false;
 {% endif %}
+	return false;
 }
 
 # R-SET for {{ client.id }}
@@ -33,10 +31,8 @@ function prefix_is_in_{{ client.id }}_as_set() {
 	if net ~ AS_SET_{{ as_set_id }}_prefixes then
 		return true;
 {%	endfor %}
-	return false;
-{%	else %}
-	return false;
 {% endif %}
+	return false;
 }
 
 function next_hop_is_valid_for_{{ client.id }}()
