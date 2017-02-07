@@ -44,7 +44,7 @@ class RichConfigExampleScenario(LiveScenario):
                 cls.DATA["rs_IPAddress"],
                 [
                     (
-                        cls._build_rs_cfg("bird", "main.j2", "rs.conf"),
+                        cls.build_rs_cfg("bird", "main.j2", "rs.conf"),
                         "/etc/bird/bird.conf"
                     )
                 ],

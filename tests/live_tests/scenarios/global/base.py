@@ -53,7 +53,7 @@ class BasicScenario(LiveScenario):
                 cls.DATA["rs_IPAddress"],
                 [
                     (
-                        cls._build_rs_cfg("bird", "main.j2", "rs.conf",
+                        cls.build_rs_cfg("bird", "main.j2", "rs.conf",
                                           cfg_roas="roas{}.yml".format(cls.IP_VER)),
                         "/etc/bird/bird.conf"
                     )
@@ -67,7 +67,7 @@ class BasicScenario(LiveScenario):
                 cls.DATA["AS3_1_IPAddress"],
                 [
                     (
-                        cls._build_other_cfg("AS3.j2"),
+                        cls.build_other_cfg("AS3.j2"),
                         "/etc/bird/bird.conf"
                     )
                 ],
@@ -77,7 +77,7 @@ class BasicScenario(LiveScenario):
                 cls.DATA["AS1_1_IPAddress"],
                 [
                     (
-                        cls._build_other_cfg("AS1_1.j2"),
+                        cls.build_other_cfg("AS1_1.j2"),
                         "/etc/bird/bird.conf"
                     )
                 ],
@@ -87,7 +87,7 @@ class BasicScenario(LiveScenario):
                 cls.DATA["AS1_2_IPAddress"],
                 [
                     (
-                        cls._build_other_cfg("AS1_2.j2"),
+                        cls.build_other_cfg("AS1_2.j2"),
                         "/etc/bird/bird.conf"
                     )
                 ],
@@ -97,7 +97,7 @@ class BasicScenario(LiveScenario):
                 cls.DATA["AS2_1_IPAddress"],
                 [
                     (
-                        cls._build_other_cfg("AS2.j2"),
+                        cls.build_other_cfg("AS2.j2"),
                         "/etc/bird/bird.conf"
                     )
                 ],
@@ -107,7 +107,7 @@ class BasicScenario(LiveScenario):
                 cls.DATA["AS101_IPAddress"],
                 [
                     (
-                        cls._build_other_cfg("AS101.j2"),
+                        cls.build_other_cfg("AS101.j2"),
                         "/etc/bird/bird.conf"
                     )
                 ],

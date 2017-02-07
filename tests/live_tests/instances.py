@@ -26,6 +26,15 @@ class InstanceNotRunning(InstanceError):
         return "Instance '{}' is not running.".format(self.name)
 
 class BGPSpeakerInstance(object):
+    """This class abstracts a BGP speaker instance.
+
+    Currently, the ``start``, ``stop``, ``is_running`` and
+    ``run_cmd`` methods are implemented by the
+    :py:class:`DockerInstance <tests.live_tests.docker.DockerInstance>`
+    derived class, while the ``reload_config``, ``bgp_session_is_up``,
+    ``get_routes`` and ``log_contains`` by the DockerInstance-derived
+    :py:class:`BIRDInstance <tests.live_tests.bird.BIRDInstance>` class.
+    """
 
     def __init__(self, name, ip):
         self.name = name
@@ -50,15 +59,68 @@ class BGPSpeakerInstance(object):
         raise NotImplementedError()
 
     def bgp_session_is_up(self, other_inst, force_update=False):
+        """Check if a BGP session with ``other_inst`` is up.
+
+        :param other_inst: the
+          :py:class:`BGPSpeakerInstance <tests.live_tests.instances.BGPSpeakerInstance>`
+          instance that the current instance is expected to have a
+          running BGP session with.
+
+        :param bool force_update: if True, the instance must bypass
+          any caching mechanism used to keep the BGP sessions status.
+
+        :return: True if the current instance has a running BGP
+          session with ``other_inst``; False otherwise.
+        """
         raise NotImplementedError()
 
     def get_routes(self, prefix, include_filtered=False, only_best=False):
+        """Get a list of all the known routes for ``prefix``.
+
+        :param prefix: the IP prefix that returned routes
+          must match.
+
+        :param bool include_filtered: include filtered routes / rejected
+          prefixes in the result.
+
+        :param bool only_best: include only the best route toward
+          ``prefix``.
+
+        :return: list of :py:class:`Route <tests.live_tests.instances.Route>`
+          objects.
+        """
         raise NotImplementedError()
 
     def log_contains(self, s):
+        """Verifies if the BGP speaker's logs contain the expected message.
+
+        :param s string: the message that is expected to be found in
+          the BGP speaker's logs.
+
+        :return: True or False if the message is found or not.
+        """
         raise NotImplementedError()
 
 class Route(object):
+    """Details about a route.
+
+    Properties:
+
+    :param string prefix: the IPv4/IPv6 prefix.
+    :param string via: the IP address of the peer from which the
+      route has been received.
+    :param string as_path: the AS_PATH attribute of the route, in
+      the "<asn> <asn> <asn>..." format (example: "1 2 345").
+    :param string next_hop: the NEXT_HOP attribute of the route.
+    :param bool filtered: True if the route has been rejected/filtered.
+    :param list std_comms: list of standard BGP communities (strings in
+      the "x:y" format).
+    :param list lrg_comms: list of large BGP communities (strings in the
+      "x:y:z" format).
+    :param list ext_comms: list of extended BGP communities (strings in
+      the "[rt|ro]:x:y" format).
+    """
+
 
     @staticmethod
     def _parse_bgp_communities(communities):

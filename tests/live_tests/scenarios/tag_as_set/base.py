@@ -52,7 +52,7 @@ class TagASSetScenario(LiveScenario):
                 cls.DATA["rs_IPAddress"],
                 [
                     (
-                        cls._build_rs_cfg("bird", "main.j2", "rs.conf"),
+                        cls.build_rs_cfg("bird", "main.j2", "rs.conf"),
                         "/etc/bird/bird.conf"
                     )
                 ],
@@ -62,7 +62,7 @@ class TagASSetScenario(LiveScenario):
                 cls.DATA["AS1_1_IPAddress"],
                 [
                     (
-                        cls._build_other_cfg("AS1.j2"),
+                        cls.build_other_cfg("AS1.j2"),
                         "/etc/bird/bird.conf"
                     )
                 ],
@@ -72,7 +72,7 @@ class TagASSetScenario(LiveScenario):
                 cls.DATA["AS2_1_IPAddress"],
                 [
                     (
-                        cls._build_other_cfg("AS2.j2"),
+                        cls.build_other_cfg("AS2.j2"),
                         "/etc/bird/bird.conf"
                     )
                 ],
@@ -82,7 +82,7 @@ class TagASSetScenario(LiveScenario):
                 cls.DATA["AS4_1_IPAddress"],
                 [
                     (
-                        cls._build_other_cfg("AS4.j2"),
+                        cls.build_other_cfg("AS4.j2"),
                         "/etc/bird/bird.conf"
                     )
                 ],
@@ -92,7 +92,7 @@ class TagASSetScenario(LiveScenario):
                 cls.DATA["AS5_1_IPAddress"],
                 [
                     (
-                        cls._build_other_cfg("AS5.j2"),
+                        cls.build_other_cfg("AS5.j2"),
                         "/etc/bird/bird.conf"
                     )
                 ],
