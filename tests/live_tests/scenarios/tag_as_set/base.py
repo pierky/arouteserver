@@ -119,58 +119,58 @@ class TagASSetScenario(LiveScenario):
 
     def test_030_AS2_prefix_ok_origin_ok(self):
         """{}: AS2 prefix ok origin ok"""
-        self.receive_route_from(self.rs, self.DATA["AS2_pref_ok_origin_ok1"], self.AS2, as_path="2", next_hop=self.AS2,
-                                std_comms=["999:64512", "999:64514"], lrg_comms=["999:0:64512", "999:0:64514"])
+        self.receive_route(self.rs, self.DATA["AS2_pref_ok_origin_ok1"], self.AS2, as_path="2", next_hop=self.AS2,
+                           std_comms=["999:64512", "999:64514"], lrg_comms=["999:0:64512", "999:0:64514"])
 
     def test_030_AS2_prefix_ko_origin_ok(self):
         """{}: AS2 prefix ko origin ok"""
-        self.receive_route_from(self.rs, self.DATA["AS2_pref_ko_origin_ok1"], self.AS2, as_path="2", next_hop=self.AS2,
-                                std_comms=["999:64513", "999:64514"], lrg_comms=["999:0:64513", "999:0:64514"])
+        self.receive_route(self.rs, self.DATA["AS2_pref_ko_origin_ok1"], self.AS2, as_path="2", next_hop=self.AS2,
+                           std_comms=["999:64513", "999:64514"], lrg_comms=["999:0:64513", "999:0:64514"])
 
     def test_030_AS2_prefix_ok_origin_ko(self):
         """{}: AS2 prefix ok origin ko"""
-        self.receive_route_from(self.rs, self.DATA["AS3_pref_ok_origin_ko1"], self.AS2, as_path="2 3", next_hop=self.AS2,
-                                std_comms=["999:64512", "999:64515"], lrg_comms=["999:0:64512", "999:0:64515"])
+        self.receive_route(self.rs, self.DATA["AS3_pref_ok_origin_ko1"], self.AS2, as_path="2 3", next_hop=self.AS2,
+                           std_comms=["999:64512", "999:64515"], lrg_comms=["999:0:64512", "999:0:64515"])
 
     def test_030_AS2_prefix_ko_origin_ko(self):
         """{}: AS2 prefix ko origin ok"""
-        self.receive_route_from(self.rs, self.DATA["AS3_pref_ko_origin_ko1"], self.AS2, as_path="2 3", next_hop=self.AS2,
-                                std_comms=["999:64513", "999:64515"], lrg_comms=["999:0:64513", "999:0:64515"])
+        self.receive_route(self.rs, self.DATA["AS3_pref_ko_origin_ko1"], self.AS2, as_path="2 3", next_hop=self.AS2,
+                           std_comms=["999:64513", "999:64515"], lrg_comms=["999:0:64513", "999:0:64515"])
 
 
     def test_040_AS4_prefix_ok_origin_ok(self):
         """{}: AS4 prefix ok origin ok"""
-        self.receive_route_from(self.rs, self.DATA["AS4_pref_ok_origin_ok1"], self.AS4, as_path="4", next_hop=self.AS4,
-                                std_comms=["999:64512", "999:64514"], lrg_comms=["999:0:64512", "999:0:64514"])
+        self.receive_route(self.rs, self.DATA["AS4_pref_ok_origin_ok1"], self.AS4, as_path="4", next_hop=self.AS4,
+                           std_comms=["999:64512", "999:64514"], lrg_comms=["999:0:64512", "999:0:64514"])
 
     def test_040_AS4_prefix_ko_origin_ok(self):
         """{}: AS4 prefix ko origin ok"""
-        self.receive_route_from(self.rs, self.DATA["AS4_pref_ko_origin_ok1"], self.AS4, as_path="4", next_hop=self.AS4,
-                                std_comms=["999:64513", "999:64514"], lrg_comms=["999:0:64513", "999:0:64514"])
+        self.receive_route(self.rs, self.DATA["AS4_pref_ko_origin_ok1"], self.AS4, as_path="4", next_hop=self.AS4,
+                           std_comms=["999:64513", "999:64514"], lrg_comms=["999:0:64513", "999:0:64514"])
 
     def test_040_AS4_prefix_ok_origin_ko(self):
         """{}: AS4 prefix ok origin ko"""
-        self.receive_route_from(self.rs, self.DATA["AS3_pref_ok_origin_ko2"], self.AS4, as_path="4 3", next_hop=self.AS4, filtered=True)
+        self.receive_route(self.rs, self.DATA["AS3_pref_ok_origin_ko2"], self.AS4, as_path="4 3", next_hop=self.AS4, filtered=True)
 
     def test_040_AS4_prefix_ko_origin_ko(self):
         """{}: AS4 prefix ko origin ok"""
-        self.receive_route_from(self.rs, self.DATA["AS3_pref_ko_origin_ko1"], self.AS4, as_path="4 3", next_hop=self.AS4, filtered=True)
+        self.receive_route(self.rs, self.DATA["AS3_pref_ko_origin_ko1"], self.AS4, as_path="4 3", next_hop=self.AS4, filtered=True)
 
 
     def test_050_AS5_prefix_ok_origin_ok(self):
         """{}: AS5 prefix ok origin ok"""
-        self.receive_route_from(self.rs, self.DATA["AS5_pref_ok_origin_ok1"], self.AS5, as_path="5", next_hop=self.AS5,
-                                std_comms=["999:64512", "999:64514"], lrg_comms=["999:0:64512", "999:0:64514"])
+        self.receive_route(self.rs, self.DATA["AS5_pref_ok_origin_ok1"], self.AS5, as_path="5", next_hop=self.AS5,
+                           std_comms=["999:64512", "999:64514"], lrg_comms=["999:0:64512", "999:0:64514"])
 
     def test_050_AS5_prefix_ko_origin_ok(self):
         """{}: AS5 prefix ko origin ok"""
-        self.receive_route_from(self.rs, self.DATA["AS5_pref_ko_origin_ok1"], self.AS5, as_path="5", next_hop=self.AS5, filtered=True)
+        self.receive_route(self.rs, self.DATA["AS5_pref_ko_origin_ok1"], self.AS5, as_path="5", next_hop=self.AS5, filtered=True)
 
     def test_050_AS5_prefix_ok_origin_ko(self):
         """{}: AS5 prefix ok origin ko"""
-        self.receive_route_from(self.rs, self.DATA["AS3_pref_ok_origin_ko3"], self.AS5, as_path="5 3", next_hop=self.AS5,
-                                std_comms=["999:64512", "999:64515"], lrg_comms=["999:0:64512", "999:0:64515"])
+        self.receive_route(self.rs, self.DATA["AS3_pref_ok_origin_ko3"], self.AS5, as_path="5 3", next_hop=self.AS5,
+                           std_comms=["999:64512", "999:64515"], lrg_comms=["999:0:64512", "999:0:64515"])
 
     def test_050_AS5_prefix_ko_origin_ko(self):
         """{}: AS5 prefix ko origin ok"""
-        self.receive_route_from(self.rs, self.DATA["AS3_pref_ko_origin_ko1"], self.AS5, as_path="5 3", next_hop=self.AS5, filtered=True)
+        self.receive_route(self.rs, self.DATA["AS3_pref_ko_origin_ko1"], self.AS5, as_path="5 3", next_hop=self.AS5, filtered=True)

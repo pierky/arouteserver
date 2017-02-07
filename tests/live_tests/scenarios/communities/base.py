@@ -87,14 +87,14 @@ class BGPCommunitiesScenario(LiveScenario):
     def test_020_only_to_AS1_std(self):
         """{}: announce to AS1 only (std)"""
         pref = self.DATA["AS2_only_to_AS1_s"]
-        self.receive_route_from(self.rs, pref, self.AS2,
-                                std_comms=["0:999", "999:1"],
-                                ext_comms=[],
-                                lrg_comms=[])
-        self.receive_route_from(self.AS1, pref, self.rs,
-                                std_comms=[], ext_comms=[], lrg_comms=[])
+        self.receive_route(self.rs, pref, self.AS2,
+                           std_comms=["0:999", "999:1"],
+                           ext_comms=[],
+                           lrg_comms=[])
+        self.receive_route(self.AS1, pref, self.rs,
+                           std_comms=[], ext_comms=[], lrg_comms=[])
         with self.assertRaises(AssertionError):
-            self.receive_route_from(self.AS131073, pref)
+            self.receive_route(self.AS131073, pref)
         msg = ("prefix didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
         self.log_contains(self.rs, msg, {"inst": self.AS131073})
@@ -102,14 +102,14 @@ class BGPCommunitiesScenario(LiveScenario):
     def test_021_only_to_AS1_ext(self):
         """{}: announce to AS1 only (ext)"""
         pref = self.DATA["AS2_only_to_AS1_e"]
-        self.receive_route_from(self.rs, pref, self.AS2,
-                                std_comms=[],
-                                ext_comms=["rt:0:999", "rt:999:1"],
-                                lrg_comms=[])
-        self.receive_route_from(self.AS1, pref, self.rs,
-                                std_comms=[], ext_comms=[], lrg_comms=[])
+        self.receive_route(self.rs, pref, self.AS2,
+                           std_comms=[],
+                           ext_comms=["rt:0:999", "rt:999:1"],
+                           lrg_comms=[])
+        self.receive_route(self.AS1, pref, self.rs,
+                           std_comms=[], ext_comms=[], lrg_comms=[])
         with self.assertRaises(AssertionError):
-            self.receive_route_from(self.AS131073, pref)
+            self.receive_route(self.AS131073, pref)
         msg = ("prefix didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
         self.log_contains(self.rs, msg, {"inst": self.AS131073})
@@ -117,14 +117,14 @@ class BGPCommunitiesScenario(LiveScenario):
     def test_022_only_to_AS1_lrg(self):
         """{}: announce to AS1 only (lrg)"""
         pref = self.DATA["AS2_only_to_AS1_l"]
-        self.receive_route_from(self.rs, pref, self.AS2,
-                                std_comms=[],
-                                ext_comms=[],
-                                lrg_comms=["999:0:999", "999:999:1"])
-        self.receive_route_from(self.AS1, pref, self.rs,
-                                std_comms=[], ext_comms=[], lrg_comms=[])
+        self.receive_route(self.rs, pref, self.AS2,
+                           std_comms=[],
+                           ext_comms=[],
+                           lrg_comms=["999:0:999", "999:999:1"])
+        self.receive_route(self.AS1, pref, self.rs,
+                           std_comms=[], ext_comms=[], lrg_comms=[])
         with self.assertRaises(AssertionError):
-            self.receive_route_from(self.AS131073, pref)
+            self.receive_route(self.AS131073, pref)
         msg = ("prefix didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
         self.log_contains(self.rs, msg, {"inst": self.AS131073})
@@ -132,14 +132,14 @@ class BGPCommunitiesScenario(LiveScenario):
     def test_030_only_to_AS131073_ext(self):
         """{}: announce to AS131073 only (ext)"""
         pref = self.DATA["AS2_only_to_AS131073_e"]
-        self.receive_route_from(self.rs, pref, self.AS2,
-                                std_comms=["0:999"],
-                                ext_comms=["rt:999:131073"],
-                                lrg_comms=[])
-        self.receive_route_from(self.AS131073, pref, self.rs,
-                                std_comms=[], ext_comms=[], lrg_comms=[])
+        self.receive_route(self.rs, pref, self.AS2,
+                           std_comms=["0:999"],
+                           ext_comms=["rt:999:131073"],
+                           lrg_comms=[])
+        self.receive_route(self.AS131073, pref, self.rs,
+                           std_comms=[], ext_comms=[], lrg_comms=[])
         with self.assertRaises(AssertionError):
-            self.receive_route_from(self.AS1, pref)
+            self.receive_route(self.AS1, pref)
         msg = ("prefix didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
         self.log_contains(self.rs, msg, {"inst": self.AS1})
@@ -147,14 +147,14 @@ class BGPCommunitiesScenario(LiveScenario):
     def test_031_only_to_AS131073_lrg(self):
         """{}: announce to AS131073 only (lrg)"""
         pref = self.DATA["AS2_only_to_AS131073_l"]
-        self.receive_route_from(self.rs, pref, self.AS2,
-                                std_comms=[],
-                                ext_comms=[],
-                                lrg_comms=["999:0:999", "999:999:131073"])
-        self.receive_route_from(self.AS131073, pref, self.rs,
-                                std_comms=[], ext_comms=[], lrg_comms=[])
+        self.receive_route(self.rs, pref, self.AS2,
+                           std_comms=[],
+                           ext_comms=[],
+                           lrg_comms=["999:0:999", "999:999:131073"])
+        self.receive_route(self.AS131073, pref, self.rs,
+                           std_comms=[], ext_comms=[], lrg_comms=[])
         with self.assertRaises(AssertionError):
-            self.receive_route_from(self.AS1, pref)
+            self.receive_route(self.AS1, pref)
         msg = ("prefix didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
         self.log_contains(self.rs, msg, {"inst": self.AS1})

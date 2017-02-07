@@ -217,9 +217,9 @@ class LiveScenario(ARouteServerTestCase):
 
         self.set_instance_variables()
 
-    def receive_route_from(self, inst, prefix, other_inst=None, as_path=None,
-                           next_hop=None, std_comms=None, lrg_comms=None,
-                           ext_comms=None, filtered=None, only_best=None):
+    def receive_route(self, inst, prefix, other_inst=None, as_path=None,
+                      next_hop=None, std_comms=None, lrg_comms=None,
+                      ext_comms=None, filtered=None, only_best=None):
         routes = inst.get_routes(prefix,
                                  include_filtered=filtered if filtered is not None else False,
                                  only_best=only_best if only_best is not None else False)

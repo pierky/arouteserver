@@ -11,9 +11,9 @@ Example: in a configuration where blackhole filtering is enabled, an instance of
 
   def test_071_blackholed_prefixes_as_seen_by_enabled_clients(self):
     for inst in (self.AS2, self.AS3):
-      self.receive_route_from(inst, "203.0.113.1/32", self.rs,
-                              next_hop="192.0.2.66",
-                              std_comms=["65535:666"], lrg_comms=[])
+      self.receive_route(inst, "203.0.113.1/32", self.rs,
+                         next_hop="192.0.2.66",
+                         std_comms=["65535:666"], lrg_comms=[])
 
 Travis CI log file contains the latest live tests results: https://travis-ci.org/pierky/arouteserver/
 
