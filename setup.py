@@ -54,10 +54,10 @@ setup(
 
     packages=["pierky", "pierky.arouteserver"],
     namespace_packages=["pierky"],
-    data_files=[
-        ("/arouteserver/config.d", [os.path.join("config.d", f) for f in os.listdir("config.d")]),
-        ("/arouteserver/templates/bird", [os.path.join("templates/bird", f) for f in os.listdir("templates/bird")]),
-    ],
+    package_data={
+        "pierky.arouteserver": ["pierky/arouteserver/config.d/*",
+                                "pierky/arouteserver/templates/*"]
+    },
     include_package_data=True,
     
     license="GPLv3",

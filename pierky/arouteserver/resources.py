@@ -14,7 +14,8 @@
 # along with this program.  Ifnot, see <http://www.gnu.org/licenses/>.
 
 import os
-from pkg_resources import Requirement, resource_filename
+#from pkg_resources import Requirement, resource_filename
+import pkg_resources
 
 from errors import ResourceNotFoundError
 
@@ -24,9 +25,7 @@ def get_local_dir(dirname):
     if os.path.isdir(local_path):
         return local_path
 
-    pkg_path = resource_filename(
-        Requirement.parse("arouteserver"), "arouteserver/{}".format(dirname)
-    )
+    pkg_path = pkg_resources.resource_filename("pierky.arouteserver", dirname)
     if os.path.isdir(pkg_path):
         return pkg_path
 

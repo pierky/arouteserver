@@ -4,12 +4,7 @@ include CHANGES.rst
 include MANIFEST.in
 include requirements.txt
 recursive-include pierky *.py
-recursive-include config.d *.*
-recursive-include templates *.*
-recursive-include tests *.py
-recursive-include tests *.json
-recursive-include tests *.yml
-recursive-include tests *.j2
-recursive-include tests Dockerfile.*
-recursive-include examples *.conf
-recursive-include examples *.yml
+recursive-include pierky/arouteserver/config.d
+recursive-include pierky/arouteserver/config.d *
+recursive-include pierky/arouteserver/templates
+recursive-include pierky/arouteserver/templates *
