@@ -29,6 +29,87 @@ from pierky.arouteserver.rpsl import ASSet, RSet
 
 
 class LiveScenario(ARouteServerTestCase):
+    """An helper class to run tests of a given scenario.
+    
+    This class must be derived by scenario-specific classes that
+    must:
+
+    - set the ``MODULE_PATH`` attribute to ``__file__``, in order
+      to correctly locate files needed by the scenario.
+
+    - set the ``IP_VER`` attribute to the IP version used by
+      the scenario.
+
+    - fill the ``INSTANCES`` list with a list of 
+      :py:class:`BGPSpeakerInstance <tests.live_tests.instances.BGPSpeakerInstance>`
+      (or derived) instances representing all the BGP speakers involved in the
+      scenario.
+
+    - set the ``SHORT_DESCR`` with a short description of the
+      scenario; it will be used to print tests description in the
+      format "<SHORT_DESCR>: <test function docstring>".
+
+    - fill the ``DATA`` dictionary with IP prefixes IDs that
+      represent all the IP addresses used by the scenario; this
+      is useful to decouple real IP addresses from what they
+      represent or are used to and to have a single definition
+      of the tests functions and scenario configuration that can
+      be used for both IPv4 and IPv6 tests.
+
+      Example::
+
+        DATA = {
+            "rs_IPAddress": "99.0.2.2",
+            "AS1_IPAddress": "99.0.2.11",
+            "AS1_allowed_prefixes": "1.0.0.0/8",
+            "AS1_good_prefix": "1.0.1.0/24",
+            "AS101_prefixes": "101.0.0.0/8"
+        }
+
+    - optionally, if it's needed by the scenario, the derived classes
+      must also fill the ``AS_SET`` and ``R_SET`` dictionaries with
+      the expected content of any expanded AS-SETs used in RPSL
+      validation:
+
+      - ``AS_SET``'s items must be in the format
+        ``<AS_SET_name>: <list_of_authorized_origin_ASNs>``.
+
+      - ``R_SET``'s items must be in the format
+        ``<AS_SET_name>: <list_of_authorized_prefix_IDs>`` (where prefix
+        IDs are those reported in the ``DATA`` dictionary).
+
+      Example::
+
+        AS_SET = {
+            "AS-AS1": [1],
+            "AS-AS1_CUSTOMERS": [101],
+            "AS-AS2": [2],
+            "AS-AS2_CUSTOMERS": [101]
+        }
+        R_SET = {
+            "AS-AS1": [
+                "AS1_allowed_prefixes"
+            ],
+            "AS-AS1_CUSTOMERS": [
+                "AS101_prefixes"
+            ]
+        }
+
+    - implement the ``set_instance_variables`` method, used to set
+      local instance attributes for the instances used within the
+      tests functions.
+
+      Example::
+
+        def set_instance_variables(self):
+            self.AS1 = self._get_instance_by_name("AS1")
+            self.AS2 = self._get_instance_by_name("AS2")
+            self.AS131073 = self._get_instance_by_name("AS131073")
+            self.rs = self._get_instance_by_name("rs")
+
+    the `__test__` attribute to False to avoid this class to be
+    used directly by `nose`.
+    """
 
     MODULE_PATH = None
     SHORT_DESCR = ""
@@ -73,7 +154,23 @@ class LiveScenario(ARouteServerTestCase):
         return "BUILD_ONLY" in os.environ
 
     @classmethod
-    def _build_other_cfg(cls, tpl_name):
+    def build_other_cfg(cls, tpl_name):
+        """Builds configuration files for BGP speakers which are not the route server.
+
+        :param string tpl_name: the name of the Jinja2 template file
+          relative to the scenario directory.
+
+        :return: the path of the local rendered file.
+
+        To render the template, two attributes are used:
+
+        - ``ip_ver``, the IP version of the current scenario;
+
+        - ``data``, the scenario's ``DATA`` dictionary.
+
+        The resulting file is saved into the local ``var`` directory
+        and its absolute path is returned.
+        """
         cls.debug("Building config from {}/{} - IPv{}".format(
             cls._get_module_dir(), tpl_name, cls.IP_VER))
 
@@ -94,9 +191,31 @@ class LiveScenario(ARouteServerTestCase):
         return cfg_file_path
 
     @classmethod
-    def _build_rs_cfg(cls, tpl_dir_name, tpl_name, out_file_name,
+    def build_rs_cfg(cls, tpl_dir_name, tpl_name, out_file_name,
                       cfg_general="general.yml", cfg_bogons="bogons.yml",
                       cfg_clients="clients.yml", cfg_roas=None):
+        """Builds configuration file for the route server.
+
+        :param string tpl_dir_name: the directory where Jinja2
+          templates are located, relative to the current scenario.
+        :param string tpl_name: the name of the template to be
+          rendered.
+        :param string out_file_name: the name of the destination
+          file.
+        :param string cfg_general, cfg_bogons, cfg_clients: the
+          name of the 3 main files containing route server's
+          options and policies, clients definition and bogons
+          IP addresses. File names are relative to the scenario
+          directory.
+        :param string cfg_roas: name of the file containing
+          ROAs - used to populate fake RPKI table.
+
+        :return: the path of the local rendered file.
+
+        The resulting file is saved into the local ``var`` directory
+        and its absolute path is returned.
+        """
+
         cls.debug("Building config from {}/{} - IPv{}".format(
             tpl_dir_name, tpl_name, cls.IP_VER)
         )

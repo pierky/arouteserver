@@ -38,7 +38,7 @@ class PathHidingScenario(LiveScenario):
                 cls.DATA["rs_IPAddress"],
                 [
                     (
-                        cls._build_rs_cfg("bird", "main.j2", "rs.conf",
+                        cls.build_rs_cfg("bird", "main.j2", "rs.conf",
                                           cfg_general=cls.CFG_GENERAL),
                         "/etc/bird/bird.conf"
                     )
@@ -49,7 +49,7 @@ class PathHidingScenario(LiveScenario):
                 cls.DATA["AS1_IPAddress"],
                 [
                     (
-                        cls._build_other_cfg("AS1.j2"),
+                        cls.build_other_cfg("AS1.j2"),
                         "/etc/bird/bird.conf"
                     )
                 ]
@@ -59,7 +59,7 @@ class PathHidingScenario(LiveScenario):
                 cls.DATA["AS2_IPAddress"],
                 [
                     (
-                        cls._build_other_cfg("AS2.j2"),
+                        cls.build_other_cfg("AS2.j2"),
                         "/etc/bird/bird.conf"
                     )
                 ]
@@ -69,7 +69,7 @@ class PathHidingScenario(LiveScenario):
                 cls.DATA["AS3_IPAddress"],
                 [
                     (
-                        cls._build_other_cfg("AS3.j2"),
+                        cls.build_other_cfg("AS3.j2"),
                         "/etc/bird/bird.conf"
                     )
                 ]
@@ -79,7 +79,7 @@ class PathHidingScenario(LiveScenario):
                 cls.DATA["AS4_IPAddress"],
                 [
                     (
-                        cls._build_other_cfg("AS4.j2"),
+                        cls.build_other_cfg("AS4.j2"),
                         "/etc/bird/bird.conf"
                     )
                 ]
@@ -89,7 +89,7 @@ class PathHidingScenario(LiveScenario):
                 cls.DATA["AS101_IPAddress"],
                 [
                     (
-                        cls._build_other_cfg("AS101.j2"),
+                        cls.build_other_cfg("AS101.j2"),
                         "/etc/bird/bird.conf"
                     )
                 ]
