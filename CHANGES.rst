@@ -1,6 +1,12 @@
 Change log
 ==========
 
+v0.1.0a8
+--------
+
+- New feature: selective path prepending via BGP communities.
+- The ``control_communities`` general option has been removed: it was redundant.
+
 v0.1.0a7
 --------
 
