@@ -61,6 +61,13 @@ def main():
 
     ClientsFromPeeringDBCommand.add_arguments(sub_parser)
 
+    sub_parser = subparsers.add_parser(
+        "init-scenario",
+        help="Initialize a new live test scenario by copying "
+             "files from the skeleton example.")
+
+    InitScenarioCommand.add_arguments(sub_parser)
+
     args = parser.parse_args()
 
     if args.command == "setup":
@@ -69,6 +76,8 @@ def main():
         cmd_class = BuildCommand
     elif args.command == "clients-from-peeringdb":
         cmd_class = ClientsFromPeeringDBCommand
+    elif args.command == "init-scenario":
+        cmd_class = InitScenarioCommand
     else:
         raise NotImplementedError("Command unknown: {}".format(args.command))
 

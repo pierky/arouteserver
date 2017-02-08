@@ -14,7 +14,6 @@
 # along with this program.  Ifnot, see <http://www.gnu.org/licenses/>.
 
 import os
-#from pkg_resources import Requirement, resource_filename
 import pkg_resources
 
 from errors import ResourceNotFoundError
@@ -40,6 +39,9 @@ def get_config_dir():
 
 def get_templates_dir():
     return get_local_dir("templates")
+
+def get_live_test_skeleton_dir():
+    return get_local_dir("tests/live_tests/skeleton")
 
 def get_config_file(filename):
     config_dir = get_config_dir()

@@ -52,9 +52,17 @@ How to build custom scenarios
 
 WORK IN PROGRESS.
 
-An example is provided in the ``pierky/arouteserver/tests/live_tests/skeleton`` directory.
+A live test scenario skeleton is provided in the ``pierky/arouteserver/tests/live_tests/skeleton`` directory.
 
-1. Clone this directory in a new path:
+1. Initialize the new scenario into a new directory:
+
+   - using the ``init-scenario`` command:
+
+   .. code:: bash
+
+      arouteserver init-scenario ~/ars_scenarios/myscenario
+
+   - manually, by cloning the provided skeleton directory:
 
    .. code:: bash
 

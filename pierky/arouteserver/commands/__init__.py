@@ -16,9 +16,11 @@
 from build import BuildCommand
 from clients_from_peeringdb import ClientsFromPeeringDBCommand 
 from setup import SetupCommand
+from init_scenario import InitScenarioCommand
 
 __all__ = [
     "BuildCommand",
     "ClientsFromPeeringDBCommand",
     "SetupCommand",
+    "InitScenarioCommand",
 ]
