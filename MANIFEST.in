@@ -8,3 +8,7 @@ recursive-include pierky/arouteserver/config.d
 recursive-include pierky/arouteserver/config.d *
 recursive-include pierky/arouteserver/templates
 recursive-include pierky/arouteserver/templates *
+recursive-include pierky/arouteserver/tests/live_tests/skeleton/*.py
+recursive-include pierky/arouteserver/tests/live_tests/skeleton/*.j2
+recursive-include pierky/arouteserver/tests/live_tests/skeleton/*.yml
+recursive-include pierky/arouteserver/tests/live_tests/skeleton/*.rst

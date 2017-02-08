@@ -15,12 +15,12 @@ Example: in a configuration where blackhole filtering is enabled, an instance of
                          next_hop="192.0.2.66",
                          std_comms=["65535:666"], lrg_comms=[])
 
-Travis CI log file contains the latest live tests results: https://travis-ci.org/pierky/arouteserver/
+Travis CI log file contains the latest built-in live tests results: https://travis-ci.org/pierky/arouteserver/
 
-How to run live tests
----------------------
+How to run built-in live tests
+-------------------------------
 
-To run live tests the full repository must have been cloned locally and Docker must have been installed.
+To run built-in live tests, the full repository must be cloned locally and Docker must be present on the system.
 
 1. Build the Docker image (or pull it from `Dockerhub <https://hub.docker.com/r/pierky/bird/>`_):
 
@@ -31,7 +31,7 @@ To run live tests the full repository must have been cloned locally and Docker m
       # build the image from the Dockerfile
       docker build -t pierky/bird:1.6.3 -f dockerfiles/Dockerfile.bird .
 
-      # pull the image from Dockerhub
+      # or pull it from Dockerhub
       docker pull pierky/bird:1.6.3
 
 2. Run the Python testunit using ``nose``:
@@ -46,3 +46,36 @@ How it works
 Each directory in ``tests/live_tests/scenarios`` represents a scenario: the route server configuration is stored in the usual ``general.yml`` and ``clients.yml`` files, while other BGP speaker instances (route server clients and their peers) are configured through the ``ASxxx.j2`` files.
 These files are Jinja2 templates and are expanded by the Python code at runtime. Containers' configuration files are saved in the local ``var`` directory and are used to mount the BGP speaker configuration file (currenly, ``/etc/bird/bird.conf``).
 The unittest code sets up a Docker network (with name ``arouteserver``) used to attach instances and finally brings instances up. Regular unittest tests are now performed and can be used to match expectations to real results.
+
+How to build custom scenarios
+-----------------------------
+
+WORK IN PROGRESS.
+
+An example is provided in the ``pierky/arouteserver/tests/live_tests/skeleton`` directory.
+
+1. Clone this directory in a new path:
+
+   .. code:: bash
+
+      mkdir -p ~/ars_scenarios/myscenario
+      cp pierky/arouteserver/tests/live_tests/skeleton/* ~/ars_scenarios/myscenario
+
+2. Document the scenario, for example in the ``README.rst`` file.
+
+3. Put the ``general.yml``, ``clients.yml`` and ``bogons.yml`` configuration files you want to test in the new directory.
+
+4. Edit (or add) the configuration files for the other BGP speakers that are involved in the scenario (the skeleton contains two files, ``AS1.j2`` and ``AS2.j2``).
+   It is suggested to use prefix IDs instead of real IP addresses/prefixes in the configuration files and then configure those IDs in the ``test_xxx.py`` as reported below.
+
+5. Write your test functions in the ``base.py`` file.
+
+6. Edit IP version specific test files ``test_bird4.py`` and ``test_bird6.py`` and set the prefix ID / real IP addresses mapping schema in the ``DATA`` dictionary.
+
+7. Run the tests using ``nose``:
+
+   .. code:: bash
+
+      nosetests -vs ~/ars_scenarios/myscenario
+
+Details about the code behind the live tests can be found in the :doc:`LIVETESTS_CODEDOC` section.

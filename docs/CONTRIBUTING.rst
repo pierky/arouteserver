@@ -1,8 +1,5 @@
 Contributing
 ============
 
-.. automodule:: tests.live_tests.base
-   :members:
+:doc:`LIVETESTS_CODEDOC`
 
-.. automodule:: tests.live_tests.instances
-   :members:
