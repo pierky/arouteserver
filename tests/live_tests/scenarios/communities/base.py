@@ -93,7 +93,7 @@ class BGPCommunitiesScenario(LiveScenario):
                            lrg_comms=[])
         self.receive_route(self.AS1, pref, self.rs,
                            std_comms=[], ext_comms=[], lrg_comms=[])
-        with self.assertRaises(AssertionError):
+        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.AS131073, pref)
         msg = ("prefix didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
@@ -108,7 +108,7 @@ class BGPCommunitiesScenario(LiveScenario):
                            lrg_comms=[])
         self.receive_route(self.AS1, pref, self.rs,
                            std_comms=[], ext_comms=[], lrg_comms=[])
-        with self.assertRaises(AssertionError):
+        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.AS131073, pref)
         msg = ("prefix didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
@@ -123,7 +123,7 @@ class BGPCommunitiesScenario(LiveScenario):
                            lrg_comms=["999:0:999", "999:999:1"])
         self.receive_route(self.AS1, pref, self.rs,
                            std_comms=[], ext_comms=[], lrg_comms=[])
-        with self.assertRaises(AssertionError):
+        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.AS131073, pref)
         msg = ("prefix didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
@@ -138,7 +138,7 @@ class BGPCommunitiesScenario(LiveScenario):
                            lrg_comms=[])
         self.receive_route(self.AS131073, pref, self.rs,
                            std_comms=[], ext_comms=[], lrg_comms=[])
-        with self.assertRaises(AssertionError):
+        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.AS1, pref)
         msg = ("prefix didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
@@ -153,7 +153,7 @@ class BGPCommunitiesScenario(LiveScenario):
                            lrg_comms=["999:0:999", "999:999:131073"])
         self.receive_route(self.AS131073, pref, self.rs,
                            std_comms=[], ext_comms=[], lrg_comms=[])
-        with self.assertRaises(AssertionError):
+        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.AS1, pref)
         msg = ("prefix didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))

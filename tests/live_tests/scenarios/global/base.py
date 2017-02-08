@@ -149,13 +149,13 @@ class BasicScenario(LiveScenario):
         self.receive_route(self.rs, self.DATA["AS2_good2"], self.AS2)
 
         # rs should not receive prefixes with the following criteria
-        with self.assertRaises(AssertionError):
+        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.rs, self.DATA["AS1_good1"], self.AS2)
-        with self.assertRaises(AssertionError):
+        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.rs, self.DATA["AS1_good2"], self.AS2)
-        with self.assertRaises(AssertionError):
+        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.rs, self.DATA["AS2_good1"], self.AS1_1)
-        with self.assertRaises(AssertionError):
+        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.rs, self.DATA["AS2_good2"], self.AS1_1)
 
         # AS_PATH should match the expectations
@@ -257,7 +257,7 @@ class BasicScenario(LiveScenario):
                        self.DATA["invalid_asn1"],
                        self.DATA["aspath_len1"]):
             for inst in (self.AS2, self.AS3):
-                with self.assertRaises(AssertionError):
+                with self.assertRaisesRegexp(AssertionError, "Routes not found."):
                     self.receive_route(inst, prefix)
 
         # Among the clients, only AS3 is expected to not see the 
@@ -265,7 +265,7 @@ class BasicScenario(LiveScenario):
         # receive them on their session with AS101
         for prefix in (self.DATA["AS101_no_rset"],
                        self.DATA["AS102_no_asset"]):
-            with self.assertRaises(AssertionError):
+            with self.assertRaisesRegexp(AssertionError, "Routes not found."):
                 self.receive_route(self.AS3, prefix)
 
     def test_045_rpki_valid_prefix(self):
@@ -297,7 +297,7 @@ class BasicScenario(LiveScenario):
     def test_045_rpki_invalid_prefixes_not_propagated_to_clients(self):
         """{}: RPKI, invalid prefix (bad ASN) not propagated to clients"""
         for pref_id in ("AS101_roa_invalid1", "AS101_roa_badlen"):
-            with self.assertRaises(AssertionError):
+            with self.assertRaisesRegexp(AssertionError, "Routes not found."):
                 self.receive_route(self.AS3, self.DATA[pref_id])
 
     def test_045_blackhole_with_roa(self):
@@ -388,9 +388,11 @@ class BasicScenario(LiveScenario):
         """{}: blackholed prefixes not seen by not enabled clients"""
 
         # AS1_2 not enabled to receive blackholed prefixes
-        with self.assertRaises(AssertionError):
+        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.AS1_2, self.DATA["AS2_blackhole1"])
+        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.AS1_2, self.DATA["AS2_blackhole2"])
+        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.AS1_2, self.DATA["AS2_blackhole3"])
         self.log_contains(self.rs, "client {{AS1_2}} not enabled to receive blackhole prefixes - NOT ANNOUNCING {pref} TO {{AS1_2}}".format(pref=self.DATA["AS2_blackhole1"]), {"AS1_2": self.AS1_2})
         self.log_contains(self.rs, "client {{AS1_2}} not enabled to receive blackhole prefixes - NOT ANNOUNCING {pref} TO {{AS1_2}}".format(pref=self.DATA["AS2_blackhole2"]), {"AS1_2": self.AS1_2})
@@ -406,7 +408,7 @@ class BasicScenario(LiveScenario):
                            as_path="3", next_hop=self.AS3,
                            std_comms=[], lrg_comms=[])
 
-        with self.assertRaises(AssertionError):
+        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.AS2, self.DATA["AS3_cc_AS1only"])
         self.log_contains(self.rs, "prefix didn't pass control communities checks - NOT ANNOUNCING {} TO {{AS2}}".format(self.DATA["AS3_cc_AS1only"]), {"AS2": self.AS2})
 
@@ -418,7 +420,7 @@ class BasicScenario(LiveScenario):
                            std_comms=[], lrg_comms=[])
 
         for inst in (self.AS1_1, self.AS1_2):
-            with self.assertRaises(AssertionError):
+            with self.assertRaisesRegexp(AssertionError, "Routes not found."):
                 self.receive_route(inst, self.DATA["AS3_cc_not_AS1"])
             self.log_contains(self.rs, "prefix didn't pass control communities checks - NOT ANNOUNCING {} TO {{other_inst}}".format(self.DATA["AS3_cc_not_AS1"]), {"other_inst": inst})
 
@@ -426,7 +428,7 @@ class BasicScenario(LiveScenario):
         """{}: control communities, don't announce to any"""
 
         for inst in (self.AS1_1, self.AS1_2, self.AS2):
-            with self.assertRaises(AssertionError):
+            with self.assertRaisesRegexp(AssertionError, "Routes not found."):
                 self.receive_route(inst, self.DATA["AS3_cc_none"])
             self.log_contains(self.rs, "prefix didn't pass control communities checks - NOT ANNOUNCING {} TO {{other_inst}}".format(self.DATA["AS3_cc_none"]), {"other_inst": inst})
 

@@ -444,7 +444,8 @@ class LiveScenario(ARouteServerTestCase):
             if filtered is True:
                 criteria.append("filtered")
 
-            failure = "Looking for {prefix} on {inst} {criteria}:\n\t".format(
+            failure = "Routes not found.\n"
+            failure += "Looking for {prefix} on {inst} {criteria}:\n\t".format(
                 prefix=prefix,
                 inst=inst.name,
                 criteria=", ".join(criteria)
