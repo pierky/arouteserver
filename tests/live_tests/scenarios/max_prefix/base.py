@@ -15,7 +15,7 @@
 
 import os
 
-from ...base import LiveScenario
+from pierky.arouteserver.tests.live_tests.base import LiveScenario
 
 class MaxPrefixScenario(LiveScenario):
     __test__ = False

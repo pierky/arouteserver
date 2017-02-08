@@ -13,20 +13,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import DefaultConfigScenario
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
+from base import SkeletonScenario
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 
-class TagASSetScenario_BIRDIPv4(DefaultConfigScenario):
+class SkeletonScenario_BIRDIPv6(SkeletonScenario):
     __test__ = True
 
-    SHORT_DESCR = "Live test, BIRD, default config, IPv4"
-    RS_INSTANCE_CLASS = BIRDInstanceIPv4
-    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
-    IP_VER = 4
+    SHORT_DESCR = "Live test, BIRD, skeleton, IPv6"
+    RS_INSTANCE_CLASS = BIRDInstanceIPv6
+    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
+    IP_VER = 6
 
     DATA = {
-        "rs_IPAddress":                     "99.0.2.2",
+        "rs_IPAddress":             "2001:db8:1:1::2",
+        "AS1_IPAddress":            "2001:db8:1:1::11",
+        "AS2_IPAddress":            "2001:db8:1:1::22",
 
-        "AS10745_allowed_prefixes":         "199.43.0.0/24",
-        "AS3333_allowed_prefixes":          "193.0.0.0/21",
+        "AS2_prefix1":              "2a00:2::/32"
     }

@@ -15,26 +15,13 @@
 
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
 
-class DefaultConfigScenario(LiveScenario):
+class SkeletonScenario(LiveScenario):
     __test__ = False
 
     MODULE_PATH = __file__
     RS_INSTANCE_CLASS = None
     CLIENT_INSTANCE_CLASS = None
     IP_VER = None
-
-    AS_SET = {
-        "AS3333": [3333],
-        "AS10745": [10745],
-    }
-    R_SET = {
-        "AS10745": [
-            "AS10745_allowed_prefixes"
-        ],
-        "AS3333": [
-            "AS3333_allowed_prefixes"
-        ],
-    }
 
     @classmethod
     def _setup_instances(cls):
@@ -47,13 +34,43 @@ class DefaultConfigScenario(LiveScenario):
                         cls.build_rs_cfg("bird", "main.j2", "rs.conf"),
                         "/etc/bird/bird.conf"
                     )
-                ],
+                ]
+            ),
+            cls.CLIENT_INSTANCE_CLASS(
+                "AS1",
+                cls.DATA["AS1_IPAddress"],
+                [
+                    (
+                        cls.build_other_cfg("AS1.j2"),
+                        "/etc/bird/bird.conf"
+                    )
+                ]
+            ),
+            cls.CLIENT_INSTANCE_CLASS(
+                "AS2",
+                cls.DATA["AS2_IPAddress"],
+                [
+                    (
+                        cls.build_other_cfg("AS2.j2"),
+                        "/etc/bird/bird.conf"
+                    )
+                ]
             )
         ]
 
     def set_instance_variables(self):
+        self.AS1 = self._get_instance_by_name("AS1")
+        self.AS2 = self._get_instance_by_name("AS2")
         self.rs = self._get_instance_by_name("rs")
-        
+
     def test_010_setup(self):
         """{}: instances setup"""
         pass
+
+    def test_020_sessions_up(self):
+        """{}: sessions are up"""
+        self.session_is_up(self.rs, self.AS1)
+        self.session_is_up(self.rs, self.AS2)
+
+    def test_030_custom_test(self):
+        """{}: custom test"""

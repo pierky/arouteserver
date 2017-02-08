@@ -20,16 +20,16 @@ import os
 import time
 
 from docker import InstanceError
-from ..base import ARouteServerTestCase
-from ..mock_peeringdb import mock_peering_db
 
 from pierky.arouteserver.builder import BIRDConfigBuilder
 from pierky.arouteserver.config.validators import ValidatorPrefixListEntry
 from pierky.arouteserver.rpsl import ASSet, RSet
+from pierky.arouteserver.tests.base import ARouteServerTestCase
+from pierky.arouteserver.tests.mock_peeringdb import mock_peering_db
 
 
 class LiveScenario(ARouteServerTestCase):
-    """An helper class to run tests of a given scenario.
+    """An helper class to run tests for a given scenario.
     
     This class must be derived by scenario-specific classes that
     must:
@@ -41,7 +41,7 @@ class LiveScenario(ARouteServerTestCase):
       the scenario.
 
     - fill the ``INSTANCES`` list with a list of 
-      :py:class:`BGPSpeakerInstance <tests.live_tests.instances.BGPSpeakerInstance>`
+      :class:`BGPSpeakerInstance`
       (or derived) instances representing all the BGP speakers involved in the
       scenario.
 
@@ -107,8 +107,10 @@ class LiveScenario(ARouteServerTestCase):
             self.AS131073 = self._get_instance_by_name("AS131073")
             self.rs = self._get_instance_by_name("rs")
 
-    the `__test__` attribute to False to avoid this class to be
-    used directly by `nose`.
+    Set the ``__test__`` attribute of derived classes to False to avoid them
+    to be used directly by ``nose`` to run tests; only the specific IPv4/IPv6
+    class (the one where the ``DATA`` dictionary is set) must have
+    ``__test__`` == True.
     """
 
     MODULE_PATH = None
@@ -157,12 +159,14 @@ class LiveScenario(ARouteServerTestCase):
     def build_other_cfg(cls, tpl_name):
         """Builds configuration files for BGP speakers which are not the route server.
 
-        :param string tpl_name: the name of the Jinja2 template file
-          relative to the scenario directory.
+        Args:
+            tpl_name (str): the name of the Jinja2 template file
+                relative to the scenario directory.
 
-        :return: the path of the local rendered file.
+        Returns:
+            the path of the local rendered file.
 
-        To render the template, two attributes are used:
+        To render the template, two attributes are used and consumed by Jinja2:
 
         - ``ip_ver``, the IP version of the current scenario;
 
@@ -196,21 +200,27 @@ class LiveScenario(ARouteServerTestCase):
                       cfg_clients="clients.yml", cfg_roas=None):
         """Builds configuration file for the route server.
 
-        :param string tpl_dir_name: the directory where Jinja2
-          templates are located, relative to the current scenario.
-        :param string tpl_name: the name of the template to be
-          rendered.
-        :param string out_file_name: the name of the destination
-          file.
-        :param string cfg_general, cfg_bogons, cfg_clients: the
-          name of the 3 main files containing route server's
-          options and policies, clients definition and bogons
-          IP addresses. File names are relative to the scenario
-          directory.
-        :param string cfg_roas: name of the file containing
-          ROAs - used to populate fake RPKI table.
+        Args:
+            tpl_dir_name (str): the directory where Jinja2
+                templates are located, relative to the current scenario.
 
-        :return: the path of the local rendered file.
+            tpl_name (str): the name of the template to be
+                rendered.
+
+            out_file_name (str): the name of the destination
+                file.
+
+            cfg_general (str), cfg_bogons (str), cfg_clients (str): the
+                name of the 3 main files containing route server's
+                options and policies, clients definition and bogons
+                IP addresses. File names are relative to the scenario
+                directory.
+
+            cfg_roas (str): name of the file containing
+                ROAs - used to populate fake RPKI table.
+
+        Returns:
+            the path of the local rendered file.
 
         The resulting file is saved into the local ``var`` directory
         and its absolute path is returned.
@@ -339,6 +349,37 @@ class LiveScenario(ARouteServerTestCase):
     def receive_route(self, inst, prefix, other_inst=None, as_path=None,
                       next_hop=None, std_comms=None, lrg_comms=None,
                       ext_comms=None, filtered=None, only_best=None):
+        """Test if the BGP speaker receives the expected route(s).
+
+        If no routes matching the given criteria are found, the
+        ``TestCase.fail()`` method is called and the test fails.
+
+        Args:
+            inst: the :class:`BGPSpeakerInstance` instance where the routes
+                are searched on.
+
+            prefix (str): the IPv4/IPv6 prefix of the routes to search for.
+
+            other_inst: if given, only routes received from this
+                :class:`BGPSpeakerInstance` instance are considered.
+
+            as_path (str): if given, only routes with this AS_PATH are
+                considered.
+
+            next_hop: can be a string or a :class:`BGPSpeakerInstance`
+                instance; if given, only routes that have a NEXT_HOP
+                address matching this one are considered.
+
+            std_comms, lrg_comms, ext_comms (list): if given, only routes
+                that carry these BGP communities are considered. Use an
+                empty list ([]) to consider only routes with no BGP comms.
+
+            filtered (bool): if given, only routes that have been (not)
+                filtered are considered.
+
+            only_best (bool): if given, only best routes are considered.
+
+        """
         routes = inst.get_routes(prefix,
                                  include_filtered=filtered if filtered is not None else False,
                                  only_best=only_best if only_best is not None else False)
@@ -423,6 +464,37 @@ class LiveScenario(ARouteServerTestCase):
             self.fail(failure)
 
     def log_contains(self, inst, msg, instances={}):
+        """Test if the BGP speaker's log contains the expected message.
+
+        If no log entries are found, the ``TestCase.fail()`` method is
+        called and the test fails.
+
+        Args:
+
+            inst: the :class:`BGPSpeakerInstance` instance where the
+                expected message is searched on.
+
+            msg (str): the text that is expected to be found within
+                BGP speaker's log.
+
+            instances (dict): a dictionary of pairs
+                "<macro>: <BGPSpeakerInstance>" used to expand macros on
+                the *msg* argument. Macros are expanded using the BGP
+                speaker's specific client ID or protocol name.
+
+        Example
+        ---------
+
+        Given *self.rs* the instance of the route server, and *self.AS1* the
+        instance of one of its clients, the following code expands the "{AS1}"
+        macro using the BGP speaker specific name for the instance *self.AS1*
+        and then looks for it within the route server's log:
+
+            ``self.log_contains(self.rs, "{AS1} bad ASN", {"AS1": self.AS1})``
+
+        On BIRD, "{AS1}" will be expanded using the "protocol name" that BIRD
+        uses to identify the BGP session with AS1.
+        """
         expanded_msg = msg
 
         macros_dict = {}
@@ -440,6 +512,19 @@ class LiveScenario(ARouteServerTestCase):
             self.fail("Expected message not found on {} logs:\n\t{}".format(inst.name, expanded_msg))
 
     def session_is_up(self, inst_a, inst_b):
+        """Test if a BGP session between the two instances is up.
+
+        If a BGP session between the two instances is not up, the
+        ``TestCase.fail()`` method is called and the test fails.
+
+        Args:
+            inst_a: the :class:`BGPSpeakerInstance` instance where the
+                BGP session is looked for.
+
+            inst_b: the :class:`BGPSpeakerInstance` instance that *inst_a* is
+                expected to peer with.
+        """
+
         if inst_a.bgp_session_is_up(inst_b):
             return
         time.sleep(5)

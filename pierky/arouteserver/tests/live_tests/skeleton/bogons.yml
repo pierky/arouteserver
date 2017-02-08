@@ -1,0 +1,141 @@
+bogons:
+  - prefix: "0.0.0.0"
+    length: 0
+    comment: "Default route"
+    exact: True
+  - prefix: "0.0.0.0"
+    length: 8
+    comment: "IANA - Local Identification"
+  - prefix: "10.0.0.0"
+    length: 8
+    comment: "RFC 1918 - Private Use"
+  - prefix: "127.0.0.0"
+    length: 8
+    comment: "IANA - Loopback"
+  - prefix: "169.254.0.0"
+    length: 16
+    comment: "RFC 3927 - Link Local"
+  - prefix: "172.16.0.0"
+    length: 12
+    comment: "RFC 1918 - Private Use"
+  - prefix: "192.0.2.0"
+    length: 24
+    comment: "RFC 5737 - TEST-NET-1"
+  - prefix: "192.168.0.0"
+    length: 16
+    comment: "RFC 1918 - Private Use"
+  - prefix: "198.18.0.0"
+    length: 15
+    comment: "RFC 2544 - Network Interconnect Device Benchmark Testing"
+  - prefix: "198.51.100.0"
+    length: 24
+    comment: "RFC 5737 - TEST-NET-2"
+  - prefix: "203.0.113.0"
+    length: 24
+    comment: "RFC 5737 - TEST-NET-3"
+  - prefix: "224.0.0.0"
+    length: 3
+    comment: "RFC 5771 - Multcast (formerly Class D)"
+  - prefix: "100.64.0.0"
+    length: 10
+    comment: "RFC 6598 - Shared Address Space"
+  - prefix: "193.239.116.0"
+    length: 22
+    comment: "IXP: NL-IX Public Peering LAN"
+  - prefix: "80.249.208.0"
+    length: 21
+    comment: "IXP: AMS-IX Public Peering LAN"
+  - prefix: "164.138.24.80"
+    length: 29
+    comment: "Tilaa OOB"
+  - prefix: "::"
+    length: 0
+    comment: "Default route"
+    exact: True
+  - prefix: "0000::"
+    length: 8
+    comment: "loopback, unspecified, v4-mapped"
+  - prefix: "0064:ff9b::"
+    length: 96
+    comment: "RFC 6052 - IPv4-IPv6 Translation"
+  - prefix: "0100::"
+    length: 8
+    comment: "RFC 6666 - reserved for Discard-Only Address Block"
+  - prefix: "0200::"
+    length: 7
+    comment: "RFC 4048 - Reserved by IETF"
+  - prefix: "0400::"
+    length: 6
+    comment: "RFC 4291 - Reserved by IETF"
+  - prefix: "0800::"
+    length: 5
+    comment: "RFC 4291 - Reserved by IETF"
+  - prefix: "1000::"
+    length: 4
+    comment: "RFC 4291 - Reserved by IETF"
+  - prefix: "2001::"
+    length: 33
+    comment: "RFC 4380 - Teredo prefix"
+  - prefix: "2001:0:8000::"
+    length: 33
+    comment: "RFC 4380 - Teredo prefix"
+  - prefix: "2001:0002::"
+    length: 48
+    comment: "RFC 5180 - Benchmarking"
+  - prefix: "2001:0003::"
+    length: 32
+    comment: "RFC 7450 - Automatic Multicast Tunneling"
+  - prefix: "2001:10::"
+    length: 28
+    comment: "RFC 4843 - Deprecated ORCHID"
+  - prefix: "2001:20::"
+    length: 28
+    comment: "RFC 7343 - ORCHIDv2"
+  - prefix: "2001:db8::"
+    length: 32
+    comment: "RFC 3849 - NON-ROUTABLE range to be used for documentation purpose"
+  - prefix: "2002::"
+    length: 16
+    comment: "RFC 3068 - 6to4 prefix"
+  - prefix: "3ffe::"
+    length: 16
+    comment: "RFC 5156 - used for the 6bone but was returned"
+  - prefix: "4000::"
+    length: 3
+    comment: "RFC 4291 - Reserved by IETF"
+  - prefix: "5f00::"
+    length: 8
+    comment: "RFC 5156 - used for the 6bone but was returned"
+  - prefix: "6000::"
+    length: 3
+    comment: "RFC 4291 - Reserved by IETF"
+  - prefix: "8000::"
+    length: 3
+    comment: "RFC 4291 - Reserved by IETF"
+  - prefix: "a000::"
+    length: 3
+    comment: "RFC 4291 - Reserved by IETF"
+  - prefix: "c000::"
+    length: 3
+    comment: "RFC 4291 - Reserved by IETF"
+  - prefix: "e000::"
+    length: 4
+    comment: "RFC 4291 - Reserved by IETF"
+  - prefix: "f000::"
+    length: 5
+    comment: "RFC 4291 - Reserved by IETF"
+  - prefix: "f800::"
+    length: 6
+    comment: "RFC 4291 - Reserved by IETF"
+  - prefix: "fc00::"
+    length: 7
+    comment: "RFC 4193 - Unique Local Unicast"
+  - prefix: "fe80::"
+    length: 10
+    comment: "RFC 4291 - Link Local Unicast"
+  - prefix: "fec0::"
+    length: 10
+    comment: "RFC 4291 - Reserved by IETF"
+  - prefix: "ff00::"
+    length: 8
+    comment: "RFC 4291 - Multicast"

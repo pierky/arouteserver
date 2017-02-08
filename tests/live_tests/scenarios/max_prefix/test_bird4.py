@@ -13,8 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .base import MaxPrefixScenario
-from ...bird import BIRDInstanceIPv4
+from base import MaxPrefixScenario
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 
 class MaxPrefixScenario_BIRDIPv4(MaxPrefixScenario):
     __test__ = True

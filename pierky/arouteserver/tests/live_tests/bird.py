@@ -20,6 +20,12 @@ from instances import Route
 
 
 class BIRDInstance(DockerInstance):
+    """This class implements BIRD-specific methods.
+
+    This class is derived from :class:`DockerInstance`, that implements
+    some Docker-specific methods to start/stop the instance and to run
+    commands on it.
+    """
 
     DOCKER_IMAGE = "pierky/bird:1.6.3"
 
@@ -28,6 +34,11 @@ class BIRDInstance(DockerInstance):
         self.protocols_status = {}
 
     def reload_config(self):
+        """Reload BIRD configuration.
+
+        It runs the "[birdcl/birdcl6] configure" command to reload BIRD's
+        configuration.
+        """
         if not self.is_running():
             raise InstanceNotRunning(self.name)
 

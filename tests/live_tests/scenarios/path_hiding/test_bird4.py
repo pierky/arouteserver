@@ -13,9 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .base import PathHidingScenario_MitigationOn, \
-                  PathHidingScenario_MitigationOff
-from ...bird import BIRDInstanceIPv4
+from base import PathHidingScenario_MitigationOn, \
+                 PathHidingScenario_MitigationOff
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 
 class PathHidingScenario_BIRDIPv4(object):
     __test__ = False

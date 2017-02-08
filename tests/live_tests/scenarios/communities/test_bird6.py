@@ -13,8 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .base import BGPCommunitiesScenario
-from ...bird import BIRDInstanceIPv6
+from base import BGPCommunitiesScenario
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 
 class BGPCommunitiesScenario_BIRDIPv6(BGPCommunitiesScenario):
     __test__ = True

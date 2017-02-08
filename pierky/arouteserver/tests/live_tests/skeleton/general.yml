@@ -1,0 +1,24 @@
+cfg:
+        rs_as: 999
+        router_id: "99.0.2.2"
+        path_hiding: True
+        filtering:
+                rpsl:
+                        tag_as_set: False
+                        enforce_origin_in_as_set: False
+                        enforce_prefix_in_as_set: False
+                rpki:
+                        enabled: False
+        communities:
+                do_not_announce_to_peer:
+                        std: "0:peer_as"
+                        ext: "rt:0:peer_as"
+                        lrg: "rs_as:0:peer_as"
+                announce_to_peer:
+                        std: "rs_as:peer_as"
+                        ext: "rt:rs_as:peer_as"
+                        lrg: "rs_as:rs_as:peer_as"
+                do_not_announce_to_any:
+                        std: "0:rs_as"
+                        ext: "rt:0:rs_as"
+                        lrg: "rs_as:0:rs_as"

@@ -17,8 +17,8 @@ import os
 import json
 import mock
 
-from pierky.arouteserver.cached_objects import CachedObject
-from pierky.arouteserver.peering_db import PeeringDBInfo, PeeringDBNet
+from ..cached_objects import CachedObject
+from ..peering_db import PeeringDBInfo, PeeringDBNet
 
 
 def mock_peering_db(data_dir=None):

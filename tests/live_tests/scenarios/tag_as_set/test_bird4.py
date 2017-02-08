@@ -13,8 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .base import TagASSetScenario
-from ...bird import BIRDInstanceIPv4
+from base import TagASSetScenario
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 
 class TagASSetScenario_BIRDIPv4(TagASSetScenario):
     __test__ = True

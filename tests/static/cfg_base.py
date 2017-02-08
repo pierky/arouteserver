@@ -15,8 +15,8 @@
 
 import yaml
 
-from ..base import ARouteServerTestCase
 from pierky.arouteserver.errors import ConfigError, ARouteServerError
+from pierky.arouteserver.tests.base import ARouteServerTestCase
 
 
 class TestConfigParserBase(ARouteServerTestCase):
