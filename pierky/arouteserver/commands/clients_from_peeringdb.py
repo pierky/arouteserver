@@ -22,6 +22,10 @@ from ..peering_db import clients_from_peeringdb
 
 class ClientsFromPeeringDBCommand(ARouteServerCommand):
 
+    COMMAND_NAME = "clients-from-peeringdb"
+    COMMAND_HELP = ("Build a list of clients and their AS-SET on the basis "
+                    "of PeeringDB records.")
+
     @classmethod
     def add_arguments(cls, parser):
         super(ClientsFromPeeringDBCommand, cls).add_arguments(parser)

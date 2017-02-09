@@ -19,9 +19,11 @@ from ..config.program import program_config
 
 class SetupCommand(ARouteServerCommand):
 
-    @classmethod
-    def add_arguments(cls, parser):
-        pass
+    COMMAND_NAME = "setup"
+    COMMAND_HELP = ("Perform the setup of the system by copying "
+                    "configuration files and templates in the proper "
+                    "directories. Confirmation before each action will "
+                    "be asked.")
 
     def run(self):
         return program_config.setup()

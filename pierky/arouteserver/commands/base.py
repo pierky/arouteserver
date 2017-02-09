@@ -26,6 +26,13 @@ class ARouteServerCommand(object):
         self.args = args
 
     @classmethod
+    def attach_to_parser(cls, parser):
+        sub_parser = parser.add_parser(
+            cls.COMMAND_NAME,
+            help=cls.COMMAND_HELP)
+        cls.add_arguments(sub_parser)
+
+    @classmethod
     def add_arguments(cls, parser):
         pass
 

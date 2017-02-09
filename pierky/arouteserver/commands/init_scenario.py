@@ -22,6 +22,10 @@ from ..resources import get_live_test_skeleton_dir
 
 class InitScenarioCommand(ARouteServerCommand):
 
+    COMMAND_NAME = "init-scenario"
+    COMMAND_HELP = ("Initialize a new live test scenario by copying "
+                    "files from the skeleton example.")
+
     @classmethod
     def add_arguments(cls, parser):
         super(InitScenarioCommand, cls).add_arguments(parser)

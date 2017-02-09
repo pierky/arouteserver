@@ -24,6 +24,9 @@ from ..errors import ARouteServerError
 
 class BuildCommand(ARouteServerCommand):
 
+    COMMAND_NAME = "build"
+    COMMAND_HELP = "Build route server configuration."
+
     @classmethod
     def add_arguments(cls, parser):
         super(BuildCommand, cls).add_arguments(parser)
