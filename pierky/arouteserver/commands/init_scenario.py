@@ -92,4 +92,9 @@ class InitScenarioCommand(ARouteServerCommand):
                 )
 
         print("A new live test scenario has been initialized "
-              "in the {} directory.".format(dest_dir))
+              "in the {} directory.\n\nFor details: {}".format(
+                  dest_dir,
+                  "https://arouteserver.readthedocs.io/en/latest/LIVETESTS.html"
+                  "#how-to-build-custom-scenarios"
+              )
+        )

@@ -1,3 +1,5 @@
+.. DO NOT EDIT: this file is automatically created by /utils/build_doc 
+
 Examples of configurations
 ==========================
 
@@ -22,4 +24,3 @@ Configurations built using the files provided in the ``examples/rich`` directory
 - Control communities allow selective announcement control and prepending.
 
 https://github.com/pierky/arouteserver/blob/master/examples/rich
-

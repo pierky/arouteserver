@@ -1,13 +1,24 @@
 router id 192.0.2.22;
 
+# This is the path where Python classes look for
+# to search BIRD's log files.
 log "/var/log/bird.log" all;
 log syslog all;
 debug protocols all;
 
 protocol device { }
 
+# Prefixes announced by this BGP speaker to the route server.
+#
+# The Jinja2 'data' variable refers to the class 'DATA' attribute.
+#
+# IP prefixes are not configured directly here, only a reference
+# to their ID is given in order to maintain a single configuration
+# file that can be used for both the IPv4 and the IPv6 versions
+# of the scenario.
 protocol static own_prefixes {
 	route {{ data.AS2_prefix1 }} reject;
+	route {{ data.AS2_bogon1 }} reject;
 }
 
 protocol bgp the_rs {

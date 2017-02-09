@@ -47,43 +47,4 @@ Each directory in ``tests/live_tests/scenarios`` represents a scenario: the rout
 These files are Jinja2 templates and are expanded by the Python code at runtime. Containers' configuration files are saved in the local ``var`` directory and are used to mount the BGP speaker configuration file (currenly, ``/etc/bird/bird.conf``).
 The unittest code sets up a Docker network (with name ``arouteserver``) used to attach instances and finally brings instances up. Regular unittest tests are now performed and can be used to match expectations to real results.
 
-How to build custom scenarios
------------------------------
-
-WORK IN PROGRESS.
-
-A live test scenario skeleton is provided in the ``pierky/arouteserver/tests/live_tests/skeleton`` directory.
-
-1. Initialize the new scenario into a new directory:
-
-   - using the ``init-scenario`` command:
-
-   .. code:: bash
-
-      arouteserver init-scenario ~/ars_scenarios/myscenario
-
-   - manually, by cloning the provided skeleton directory:
-
-   .. code:: bash
-
-      mkdir -p ~/ars_scenarios/myscenario
-      cp pierky/arouteserver/tests/live_tests/skeleton/* ~/ars_scenarios/myscenario
-
-2. Document the scenario, for example in the ``README.rst`` file.
-
-3. Put the ``general.yml``, ``clients.yml`` and ``bogons.yml`` configuration files you want to test in the new directory.
-
-4. Edit (or add) the configuration files for the other BGP speakers that are involved in the scenario (the skeleton contains two files, ``AS1.j2`` and ``AS2.j2``).
-   It is suggested to use prefix IDs instead of real IP addresses/prefixes in the configuration files and then configure those IDs in the ``test_xxx.py`` as reported below.
-
-5. Write your test functions in the ``base.py`` file.
-
-6. Edit IP version specific test files ``test_bird4.py`` and ``test_bird6.py`` and set the prefix ID / real IP addresses mapping schema in the ``DATA`` dictionary.
-
-7. Run the tests using ``nose``:
-
-   .. code:: bash
-
-      nosetests -vs ~/ars_scenarios/myscenario
-
 Details about the code behind the live tests can be found in the :doc:`LIVETESTS_CODEDOC` section.

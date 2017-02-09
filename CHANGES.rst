@@ -1,6 +1,13 @@
 Change log
 ==========
 
+v0.1.0a9
+--------
+
+(not released yet)
+
+- New command to initialize a custom live test scenario: ``init-scenario``.
+
 v0.1.0a8
 --------
 

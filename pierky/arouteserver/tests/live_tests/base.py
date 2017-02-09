@@ -22,10 +22,12 @@ import time
 from docker import InstanceError
 
 from pierky.arouteserver.builder import BIRDConfigBuilder
+from pierky.arouteserver.cached_objects import CachedObject
 from pierky.arouteserver.config.validators import ValidatorPrefixListEntry
 from pierky.arouteserver.rpsl import ASSet, RSet
 from pierky.arouteserver.tests.base import ARouteServerTestCase
 from pierky.arouteserver.tests.mock_peeringdb import mock_peering_db
+from pierky.arouteserver.tests.live_tests.instances import BGPSpeakerInstance
 
 
 class LiveScenario(ARouteServerTestCase):
@@ -136,15 +138,13 @@ class LiveScenario(ARouteServerTestCase):
         for instance in cls.INSTANCES:
             if instance.name == name:
                 return instance
-        raise Exception("Instance not found: {}".format(name))
+        raise Exception("Instance not found: {}.".format(name))
 
     @classmethod
     def _create_var_dir(cls):
         var_dir = "{}/var".format(cls._get_module_dir())
-        try:
+        if not os.path.exists(var_dir):
             os.mkdir(var_dir)
-        except OSError:
-            pass
         return var_dir
 
     @classmethod
@@ -279,10 +279,18 @@ class LiveScenario(ARouteServerTestCase):
             if self.object_name in cls.AS_SET:
                 return cls.AS_SET[self.object_name]
 
+        def _mock_save_data_to_cache(self):
+            return
+
         mock_RPSLTools_load_data_from_cache = mock.patch.object(
             RSet, "load_data_from_cache"
         ).start()
         mock_RPSLTools_load_data_from_cache.side_effect = _mock_load_data_from_cache
+
+        mock_save_data_to_cache = mock.patch.object(
+            CachedObject, "save_data_to_cache", autospec=True
+        ).start()
+        mock_save_data_to_cache.side_effect = _mock_save_data_to_cache
 
         mock_ASSet__get_data = mock.patch.object(
             ASSet, "_get_data", autospec=True
@@ -303,6 +311,7 @@ class LiveScenario(ARouteServerTestCase):
         cls._setup_instances()
 
         if cls._do_not_run_instances():
+            cls.debug("Skipping starting instances")
             return
 
         try:
@@ -314,6 +323,7 @@ class LiveScenario(ARouteServerTestCase):
                     if not instance.reload_config():
                         raise InstanceError("An error occurred while reloading '{}' configuration.".format(instance.name))
                     continue
+
                 cls.debug("Starting instance '{}'...".format(instance.name))
                 instance.start()
         except:
@@ -325,10 +335,11 @@ class LiveScenario(ARouteServerTestCase):
         mock.patch.stopall()
 
         if cls._do_not_run_instances():
+            cls.debug("Skipping stopping instances")
             return
 
         if cls._do_not_stop_instances():
-            cls.debug("Skipping instances stopping")
+            cls.debug("Skipping stopping instances")
             return
 
         print("{}: stopping instances...".format(cls.SHORT_DESCR))
@@ -380,13 +391,64 @@ class LiveScenario(ARouteServerTestCase):
             only_best (bool): if given, only best routes are considered.
 
         """
-        routes = inst.get_routes(prefix,
-                                 include_filtered=filtered if filtered is not None else False,
-                                 only_best=only_best if only_best is not None else False)
+        assert isinstance(inst, BGPSpeakerInstance), \
+            "inst must be of class BGPSpeakerInstance"
+
+        try:
+            prefix_ip = ipaddr.IPNetwork(prefix)
+        except:
+            raise AssertionError("prefix must be a valid IPv4/IPv6 prefix")
+
+        if other_inst:
+            assert isinstance(other_inst, BGPSpeakerInstance), \
+                "other_inst must be of class BGPSpeakerInstance"
+
+        if as_path:
+            try:
+                if not isinstance(as_path, str):
+                    raise AssertionError()
+                for asn in as_path.split(" "):
+                    assert asn.strip().isdigit()
+            except:
+                raise AssertionError("as_path must be a string in the format "
+                                     "'<asn1> <asn2>' with <asnX> positive "
+                                     "integers")
 
         next_hop_ip = None
         if next_hop:
+            assert isinstance(next_hop, (str, BGPSpeakerInstance)), \
+                ("next_hop must be a string representing one IP address or "
+                 "a BGPSpeakerInstance object")
             next_hop_ip = next_hop if isinstance(next_hop, str) else next_hop.ip
+            try:
+                ip = ipaddr.IPAddress(next_hop_ip)
+            except:
+                raise AssertionError("Invalid next_hop IP address: {}".format(
+                    next_hop_ip
+                ))
+
+        if std_comms:
+            assert isinstance(std_comms, list), \
+                ("std_comms must be a list of strings representing "
+                 "BGP standard communities")
+
+        if ext_comms:
+            assert isinstance(ext_comms, list), \
+                ("ext_comms must be a list of strings representing "
+                 "BGP extended communities")
+
+        if lrg_comms:
+            assert isinstance(lrg_comms, list), \
+                ("lrg_comms must be a list of strings representing "
+                 "BGP large communities")
+
+
+        include_filtered = filtered if filtered is not None else False
+        best_only = only_best if only_best is not None else False
+
+        routes = inst.get_routes(prefix,
+                                 include_filtered=include_filtered,
+                                 only_best=best_only)
 
         errors = []
         if not routes:
@@ -400,7 +462,7 @@ class LiveScenario(ARouteServerTestCase):
                 if as_path and route.as_path != as_path:
                     errors.append("{{inst}} receives {{prefix}} with AS_PATH {as_path} and not with {{as_path}}.".format(as_path=route.as_path))
                     err = True
-                if next_hop and route.next_hop != next_hop_ip:
+                if next_hop_ip and route.next_hop != next_hop_ip:
                     errors.append("{{inst}} receives {{prefix}} with NEXT_HOP {next_hop} and not with {{next_hop_ip}}.".format(next_hop=route.next_hop))
                     err = True
                 if std_comms is not None and sorted(route.std_comms) != sorted(std_comms):

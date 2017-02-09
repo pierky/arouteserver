@@ -17,7 +17,9 @@ DOCS_DIR="`pwd`/docs"
 echo "Building Live tests scenarios TOC"
 rm $DOCS_DIR/LIVETESTS_SCENARIOS_*.rst
 
-echo ".. toctree::" > $DOCS_DIR/LIVETESTS_SCENARIOS.rst
+echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > $DOCS_DIR/LIVETESTS_SCENARIOS.rst
+echo "" >> $DOCS_DIR/LIVETESTS_SCENARIOS.rst
+echo ".. toctree::" >> $DOCS_DIR/LIVETESTS_SCENARIOS.rst
 echo "   :maxdepth: 1" >> $DOCS_DIR/LIVETESTS_SCENARIOS.rst
 echo "" >> $DOCS_DIR/LIVETESTS_SCENARIOS.rst
 
@@ -37,18 +39,19 @@ cd $ROOT
 echo "Building examples"
 rm $DOCS_DIR/EXAMPLES.rst
 
-echo "Examples of configurations" > $DOCS_DIR/EXAMPLES.rst
-echo "==========================" >> $DOCS_DIR/EXAMPLES.rst
+echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > $DOCS_DIR/EXAMPLES.rst
 echo "" >> $DOCS_DIR/EXAMPLES.rst
+echo "Examples of configurations" >> $DOCS_DIR/EXAMPLES.rst
+echo "==========================" >> $DOCS_DIR/EXAMPLES.rst
 
 cd examples
 for d in */; do
 	EXAMPLE_NAME=`basename $d`
 	if [ -e "$EXAMPLE_NAME/README.rst" ]; then
+		echo "" >> $DOCS_DIR/EXAMPLES.rst
 		cat $d/README.rst >> $DOCS_DIR/EXAMPLES.rst
 		echo "" >> $DOCS_DIR/EXAMPLES.rst
 		echo "https://github.com/pierky/arouteserver/blob/master/examples/$EXAMPLE_NAME" >> $DOCS_DIR/EXAMPLES.rst
-		echo "" >> $DOCS_DIR/EXAMPLES.rst
 	fi
 done
 
@@ -80,7 +83,9 @@ $CMD --ip-ver 6 -o examples/rich/bird6.conf
 
 echo "Building README.rst"
 
-cat $DOCS_DIR/README_header.txt > README.rst
+echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > README.rst
+echo "" >> README.rst
+cat $DOCS_DIR/README_header.txt >> README.rst
 cat $DOCS_DIR/FEATURES.rst >> README.rst
 cat $DOCS_DIR/README_footer.txt >> README.rst
 

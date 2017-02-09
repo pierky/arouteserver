@@ -17,6 +17,24 @@ from base import SkeletonScenario
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 
 class SkeletonScenario_BIRDIPv4(SkeletonScenario):
+    """BGP speaker specific and IP version specific derived class.
+
+    This class inherits all the test functions from the base class.
+    Here, only IP version specific attributes are set, such as the
+    prefix IDs / real IP prefixes mapping schema.
+
+    The prefix IDs reported within the ``DATA`` dictionary must be
+    used in the parent class' test functions to reference the real
+    IP addresses/prefixes used in the scenario. Also the other
+    BGP speakers' configuration templates must use these IDs.
+    For an example plase see the "AS2.j2" file.
+
+    The ``SHORT_DESCR`` attribute can be set with a brief description
+    of this scenario.
+    """
+
+    # Leave this to True in order to allow nose to use this class
+    # to run tests.
     __test__ = True
 
     SHORT_DESCR = "Live test, BIRD, skeleton, IPv4"
@@ -29,5 +47,6 @@ class SkeletonScenario_BIRDIPv4(SkeletonScenario):
         "AS1_IPAddress":            "99.0.2.11",
         "AS2_IPAddress":            "99.0.2.22",
 
-        "AS2_prefix1":              "2.0.1.0/24"
+        "AS2_prefix1":              "2.0.1.0/24",
+        "AS2_bogon1":               "192.168.2.0/24"
     }

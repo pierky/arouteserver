@@ -56,7 +56,9 @@ setup(
     namespace_packages=["pierky"],
     package_data={
         "pierky.arouteserver": ["pierky/arouteserver/config.d/*",
-                                "pierky/arouteserver/templates/*"]
+                                "pierky/arouteserver/templates/*",
+                                "pierky/arouteserver/tests/live_tests/skeleton/*.yml",
+                                "pierky/arouteserver/tests/live_tests/skeleton/*.j2"]
     },
     include_package_data=True,
     

@@ -1,3 +1,5 @@
+.. DO NOT EDIT: this file is automatically created by /utils/build_doc 
+
 .. toctree::
    :maxdepth: 1
 
