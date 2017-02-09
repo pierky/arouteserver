@@ -43,9 +43,9 @@ class SkeletonScenario_BIRDIPv4(SkeletonScenario):
     IP_VER = 4
 
     DATA = {
-        "rs_IPAddress":             "99.0.2.2",
-        "AS1_IPAddress":            "99.0.2.11",
-        "AS2_IPAddress":            "99.0.2.22",
+        "rs_IPAddress":             "192.0.2.2",
+        "AS1_IPAddress":            "192.0.2.11",
+        "AS2_IPAddress":            "192.0.2.22",
 
         "AS2_prefix1":              "2.0.1.0/24",
         "AS2_bogon1":               "192.168.2.0/24"

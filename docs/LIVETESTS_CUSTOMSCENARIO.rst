@@ -5,6 +5,8 @@ A live test scenario skeleton is provided in the ``pierky/arouteserver/tests/liv
 
 It seems to be a complex thing but actually most of the work is already done in the underlying Python classes and prepared in the skeleton.
 
+To configure the route server and its clients, please consider that the Docker network used by the framework is on 192.0.2.0/24 and 2001:db8:1:1::/64 subnets.
+
 1. Initialize the new scenario into a new directory:
 
    - using the ``init-scenario`` command:

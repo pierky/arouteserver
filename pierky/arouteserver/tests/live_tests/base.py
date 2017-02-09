@@ -61,8 +61,8 @@ class LiveScenario(ARouteServerTestCase):
       Example::
 
         DATA = {
-            "rs_IPAddress": "99.0.2.2",
-            "AS1_IPAddress": "99.0.2.11",
+            "rs_IPAddress": "192.0.2.2",
+            "AS1_IPAddress": "192.0.2.11",
             "AS1_allowed_prefixes": "1.0.0.0/8",
             "AS1_good_prefix": "1.0.1.0/24",
             "AS101_prefixes": "101.0.0.0/8"

@@ -25,9 +25,9 @@ class MaxPrefixScenario_BIRDIPv4(MaxPrefixScenario):
     IP_VER = 4
 
     DATA = {
-        "rs_IPAddress":     "99.0.2.2",
+        "rs_IPAddress":     "192.0.2.2",
 
-        "AS1_1_IPAddress":  "99.0.2.11",
+        "AS1_1_IPAddress":  "192.0.2.11",
 
         "AS1_pref1":        "1.0.1.0/24",
         "AS1_pref2":        "1.0.2.0/24",
@@ -35,14 +35,14 @@ class MaxPrefixScenario_BIRDIPv4(MaxPrefixScenario):
         "AS1_pref4":        "1.0.4.0/24",
         "AS1_pref5":        "1.0.5.0/24",
 
-        "AS2_1_IPAddress":  "99.0.2.21",
+        "AS2_1_IPAddress":  "192.0.2.21",
         "AS2_pref1":        "2.0.1.0/24",
         "AS2_pref2":        "2.0.2.0/24",
         "AS2_pref3":        "2.0.3.0/24",
         "AS2_pref4":        "2.0.4.0/24",
         "AS2_pref5":        "2.0.5.0/24",
 
-        "AS3_1_IPAddress":  "99.0.2.31",
+        "AS3_1_IPAddress":  "192.0.2.31",
         "AS3_pref1":        "3.0.1.0/24",
         "AS3_pref2":        "3.0.2.0/24",
         "AS3_pref3":        "3.0.3.0/24",

@@ -25,11 +25,11 @@ class TagASSetScenario_BIRDIPv4(TagASSetScenario):
     IP_VER = 4
 
     DATA = {
-        "rs_IPAddress":                     "99.0.2.2",
-        "AS1_1_IPAddress":                  "99.0.2.11",
-        "AS2_1_IPAddress":                  "99.0.2.21",
-        "AS4_1_IPAddress":                  "99.0.2.41",
-        "AS5_1_IPAddress":                  "99.0.2.51",
+        "rs_IPAddress":                     "192.0.2.2",
+        "AS1_1_IPAddress":                  "192.0.2.11",
+        "AS2_1_IPAddress":                  "192.0.2.21",
+        "AS4_1_IPAddress":                  "192.0.2.41",
+        "AS5_1_IPAddress":                  "192.0.2.51",
 
         "AS1_allowed_prefixes":             "1.0.0.0/16",
 

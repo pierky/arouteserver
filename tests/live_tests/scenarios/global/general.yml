@@ -1,6 +1,6 @@
 cfg:
         rs_as: 999
-        router_id: "99.0.2.2"
+        router_id: "192.0.2.2"
         gtsm: False
         path_hiding: True
         filtering:
@@ -9,7 +9,7 @@ cfg:
                   max: 48
                 next_hop_policy: "strict"
                 global_black_list_pref:
-                - prefix: "99.0.2.0"
+                - prefix: "192.0.2.0"
                   length: 24
                   comment: "Local network"
                 - prefix: "2001:db8::"

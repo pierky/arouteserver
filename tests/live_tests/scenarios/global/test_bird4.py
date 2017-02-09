@@ -25,14 +25,14 @@ class BasicScenario_BIRDIPv4(BasicScenario):
     IP_VER = 4
 
     DATA = {
-        "rs_IPAddress":             "99.0.2.2",
+        "rs_IPAddress":             "192.0.2.2",
         "blackhole_IP":             "192.0.2.66",
 
-        "AS3_1_IPAddress":          "99.0.2.31",
-        "AS1_1_IPAddress":          "99.0.2.11",
-        "AS1_2_IPAddress":          "99.0.2.12",
-        "AS2_1_IPAddress":          "99.0.2.21",
-        "AS101_IPAddress":          "99.0.2.101",
+        "AS3_1_IPAddress":          "192.0.2.31",
+        "AS1_1_IPAddress":          "192.0.2.11",
+        "AS1_2_IPAddress":          "192.0.2.12",
+        "AS2_1_IPAddress":          "192.0.2.21",
+        "AS101_IPAddress":          "192.0.2.101",
 
         "AS1_allowed_prefixes":     "1.0.0.0/8",
         "AS1_good1":                "1.0.1.0/24",
@@ -40,7 +40,7 @@ class BasicScenario_BIRDIPv4(BasicScenario):
         "AS1_good3":                "1.0.3.0/24",
 
         "bogon1":                   "10.0.0.0/24",
-        "local1":                   "99.0.2.0/24",
+        "local1":                   "192.0.2.0/24",
         "pref_len1":                "128.0.0.0/7",
         "peer_as1":                 "128.0.0.0/8",
         "invalid_asn1":             "128.0.0.0/9",

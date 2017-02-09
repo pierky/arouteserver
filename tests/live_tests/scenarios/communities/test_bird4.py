@@ -25,10 +25,10 @@ class BGPCommunitiesScenario_BIRDIPv4(BGPCommunitiesScenario):
     IP_VER = 4
 
     DATA = {
-        "rs_IPAddress":             "99.0.2.2",
-        "AS1_IPAddress":            "99.0.2.11",
-        "AS2_IPAddress":            "99.0.2.22",
-        "AS131073_IPAddress":       "99.0.2.33",
+        "rs_IPAddress":             "192.0.2.2",
+        "AS1_IPAddress":            "192.0.2.11",
+        "AS2_IPAddress":            "192.0.2.22",
+        "AS131073_IPAddress":       "192.0.2.33",
 
         "AS2_only_to_AS1_s":        "2.0.1.0/24",
         "AS2_only_to_AS1_e":        "2.0.2.0/24",

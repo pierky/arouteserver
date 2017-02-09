@@ -1,7 +1,7 @@
 clients:
         - asn: 1
           ip:
-          - "99.0.2.11"
+          - "192.0.2.11"
           - "2001:db8:1:1::11"
           description: "AS1_1 client"
           cfg:
@@ -12,7 +12,7 @@ clients:
                                 - "AS-AS1_CUSTOMERS"
         - asn: 1
           ip:
-          - "99.0.2.12"
+          - "192.0.2.12"
           - "2001:db8:1:1::12"
           description: "AS1_2 client"
           cfg:
@@ -26,7 +26,7 @@ clients:
                         announce_to_client: False
         - asn: 2
           ip:
-          - "99.0.2.21"
+          - "192.0.2.21"
           - "2001:db8:1:1::21"
           description: "AS2_1 client"
           cfg:
@@ -37,7 +37,7 @@ clients:
                                 - "AS-AS2_CUSTOMERS"
         - asn: 3
           ip:
-          - "99.0.2.31"
+          - "192.0.2.31"
           - "2001:db8:1:1::31"
           description: "AS3_1 client"
           cfg:

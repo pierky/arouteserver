@@ -25,12 +25,12 @@ class PathHidingScenario_BIRDIPv4(object):
     IP_VER = 4
 
     DATA = {
-        "rs_IPAddress":                   "99.0.2.2",
-        "AS1_IPAddress":                  "99.0.2.11",
-        "AS2_IPAddress":                  "99.0.2.21",
-        "AS3_IPAddress":                  "99.0.2.31",
-        "AS4_IPAddress":                  "99.0.2.41",
-        "AS101_IPAddress":                "99.0.2.101",
+        "rs_IPAddress":                   "192.0.2.2",
+        "AS1_IPAddress":                  "192.0.2.11",
+        "AS2_IPAddress":                  "192.0.2.21",
+        "AS3_IPAddress":                  "192.0.2.31",
+        "AS4_IPAddress":                  "192.0.2.41",
+        "AS101_IPAddress":                "192.0.2.101",
 
         "AS101_pref_ok1":                 "101.0.1.0/24",
     }

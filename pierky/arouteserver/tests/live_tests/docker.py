@@ -25,7 +25,7 @@ class DockerInstance(BGPSpeakerInstance):
     DOCKER_PATH = "docker"
     DOCKER_INSTANCE_PREFIX = "ars_"
     DOCKER_NETWORK_NAME = "arouteserver"
-    DOCKER_NETWORK_SUBNET_IPv4 = "99.0.2.0/24"
+    DOCKER_NETWORK_SUBNET_IPv4 = "192.0.2.0/24"
     DOCKER_NETWORK_SUBNET_IPv6 = "2001:db8:1:1::/64"
 
     def __init__(self, name, ip, mount=[], **kwargs):

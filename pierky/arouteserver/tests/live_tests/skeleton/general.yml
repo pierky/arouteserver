@@ -1,6 +1,6 @@
 cfg:
         rs_as: 999
-        router_id: "99.0.2.2"
+        router_id: "192.0.2.2"
         path_hiding: True
         filtering:
                 rpsl:

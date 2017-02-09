@@ -5,17 +5,17 @@ asns:
 clients:
         - asn: 1
           ip:
-          - "99.0.2.11"
+          - "192.0.2.11"
           - "2001:db8:1:1::11"
           description: "AS1_1 client, no AS-SET"
         - asn: 2
           ip:
-          - "99.0.2.21"
+          - "192.0.2.21"
           - "2001:db8:1:1::21"
           description: "AS2_1 client, AS-SET from AS2 configuration"
         - asn: 4
           ip:
-          - "99.0.2.41"
+          - "192.0.2.41"
           - "2001:db8:1:1::41"
           description: "AS4_1 client, AS-SET configured at client level"
           cfg:
@@ -26,7 +26,7 @@ clients:
                                 - "AS-AS4"
         - asn: 5
           ip:
-          - "99.0.2.51"
+          - "192.0.2.51"
           - "2001:db8:1:1::51"
           description: "AS5_1 client"
           cfg:

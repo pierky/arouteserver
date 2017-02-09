@@ -25,7 +25,7 @@ class TagASSetScenario_BIRDIPv4(DefaultConfigScenario):
     IP_VER = 4
 
     DATA = {
-        "rs_IPAddress":                     "99.0.2.2",
+        "rs_IPAddress":                     "192.0.2.2",
 
         "AS10745_allowed_prefixes":         "199.43.0.0/24",
         "AS3333_allowed_prefixes":          "193.0.0.0/21",

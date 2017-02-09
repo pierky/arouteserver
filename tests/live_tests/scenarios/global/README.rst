@@ -12,7 +12,7 @@ Built to group as many tests as possible in a single scenario.
 
   clients:
 
-  - AS1_1 (99.0.2.11)
+  - AS1_1 (192.0.2.11)
 
     - next-hop-self configured in AS1_1.conf
     - next_hop_policy: strict (inherited from general config)
@@ -26,14 +26,14 @@ Built to group as many tests as possible in a single scenario.
     AS1_good2      1.0.2.0/24                  pass
 
     bogon1         10.0.0.0/24                 fail prefix_is_bogon
-    local1         99.0.2.0/24                 fail prefix_is_in_global_blacklist
+    local1         192.0.2.0/24                fail prefix_is_in_global_blacklist
     pref_len1      128.0.0.0/7                 fail prefix_len_is_valid
     peer_as1       128.0.0.0/8   [2, 1]        fail bgp_path.first != peer_as
     invalid_asn1   128.0.0.0/9   [1, 65536 1]  fail as_path_contains_invalid_asn
     aspath_len1    128.0.0.0/10  [1, 2x6]      fail bgp_path.len > 6
     ============   ============  ============  ====================================
 
-  - AS1_2 (99.0.2.12)
+  - AS1_2 (192.0.2.12)
 
     - NO next-hop-self in AS1_2.conf (next-hop of AS101 used for AS101_good == 101.0.1.0/24)
     - next_hop_policy: same-as (from clients config)
@@ -57,7 +57,7 @@ Built to group as many tests as possible in a single scenario.
 
   clients:
 
-  - AS2 (99.0.2.21)
+  - AS2 (192.0.2.21)
 
     - next-hop-self configured in AS2.conf
     - next_hop_policy: strict (inherited from general config)
@@ -83,7 +83,7 @@ Built to group as many tests as possible in a single scenario.
 
   clients:
 
-  - AS3 (99.0.2.31)
+  - AS3 (192.0.2.31)
 
     - no enforcing of origin in AS-SET
     - no enforcing of prefix in AS-SET
@@ -114,7 +114,7 @@ Built to group as many tests as possible in a single scenario.
 
   clients:
 
-  - Not a route server client, it only peers with AS1_1, AS1_2 and AS2 on 99.0.2.101.
+  - Not a route server client, it only peers with AS1_1, AS1_2 and AS2 on 192.0.2.101.
 
   - RPKI ROAs:
 
