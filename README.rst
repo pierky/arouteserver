@@ -1,4 +1,4 @@
-.. DO NOT EDIT: this file is automatically created by /utils/build_doc 
+.. DO NOT EDIT: this file is automatically created by /utils/build_doc
 
 ARouteServer
 ============

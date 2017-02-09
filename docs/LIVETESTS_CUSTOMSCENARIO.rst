@@ -148,3 +148,52 @@ It seems to be a complex thing but actually most of the work is already done in 
       nosetests -vs ~/ars_scenarios/myscenario
 
 Details about the code behind the live tests can be found in the :doc:`LIVETESTS_CODEDOC` section.
+
+Debugging live tests scenarios
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To debug custom scenarios some utilities are provided:
+
+- the ``REUSE_INSTANCES`` environment variable can be set when executing nose to avoid Docker instances to be torn down at the end of a run.
+  When this environment variable is set, BGP speaker instances are started only the first time tests are executed, then are left up and running to allow debugging. When tests are executed again, the BGP speakers' configuration is rebuilt and reloaded. **Be careful**: this mode can be used only when running tests of the same scenario, otherwise Bad Things (tm) may happen.
+
+  Example:
+
+  .. code:: bash
+
+        REUSE_INSTANCES=1 nosetests -vs tests/live_tests/scenarios/global/test_bird4.py
+
+- once the BGP speaker instances are up (using the ``REUSE_INSTANCES`` environment variable seen above), they can be queried using standard Docker commands:
+
+  .. code:: bash
+
+        # list all the running Docker instances
+        docker ps
+        CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+        142f88379428        pierky/bird:1.6.3   "bird -c /etc/bird..."   18 minutes ago      Up 18 minutes       179/tcp             ars_AS101
+        26a9ec58dcf1        pierky/bird:1.6.3   "bird -c /etc/bird..."   18 minutes ago      Up 18 minutes       179/tcp             ars_AS2
+
+        # run 'birdcl show route' on ars_AS101
+        docker exec -it 142f88379428 birdcl show route
+
+
+  Some utilities are provided whitin the ``/utils`` directory to ease these tasks:
+
+  .. code:: bash
+
+        # execute the 'show route' command on the route server BIRD Docker instance
+        ./utils/birdcl rs show route
+
+        # print the log of the route server
+        ./utils/run rs cat /var/log/bird.log
+
+  The first argument ("rs" in the examples above) is the name of the instance as set in the ``_setup_instances()`` method.
+
+- the ``BUILD_ONLY`` environment variable can be set to skip all the tests and only build the involved BGP speakers' configurations.
+  Docker instances are not started in this mode.
+
+  Example:
+
+  .. code:: bash
+
+        BUILD_ONLY=1 nosetests -vs tests/live_tests/scenarios/global/test_bird4.py
