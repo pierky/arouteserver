@@ -133,7 +133,7 @@ class TagASSetScenario(LiveScenario):
                            std_comms=["999:64512", "999:64515"], lrg_comms=["999:0:64512", "999:0:64515"])
 
     def test_030_AS2_prefix_ko_origin_ko(self):
-        """{}: AS2 prefix ko origin ok"""
+        """{}: AS2 prefix ko origin ko"""
         self.receive_route(self.rs, self.DATA["AS3_pref_ko_origin_ko1"], self.AS2, as_path="2 3", next_hop=self.AS2,
                            std_comms=["999:64513", "999:64515"], lrg_comms=["999:0:64513", "999:0:64515"])
 
@@ -153,7 +153,7 @@ class TagASSetScenario(LiveScenario):
         self.receive_route(self.rs, self.DATA["AS3_pref_ok_origin_ko2"], self.AS4, as_path="4 3", next_hop=self.AS4, filtered=True)
 
     def test_040_AS4_prefix_ko_origin_ko(self):
-        """{}: AS4 prefix ko origin ok"""
+        """{}: AS4 prefix ko origin ko"""
         self.receive_route(self.rs, self.DATA["AS3_pref_ko_origin_ko1"], self.AS4, as_path="4 3", next_hop=self.AS4, filtered=True)
 
 
@@ -172,5 +172,5 @@ class TagASSetScenario(LiveScenario):
                            std_comms=["999:64512", "999:64515"], lrg_comms=["999:0:64512", "999:0:64515"])
 
     def test_050_AS5_prefix_ko_origin_ko(self):
-        """{}: AS5 prefix ko origin ok"""
+        """{}: AS5 prefix ko origin ko"""
         self.receive_route(self.rs, self.DATA["AS3_pref_ko_origin_ko1"], self.AS5, as_path="5 3", next_hop=self.AS5, filtered=True)
