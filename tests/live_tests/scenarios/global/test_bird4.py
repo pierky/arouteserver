@@ -80,4 +80,6 @@ class BasicScenario_BIRDIPv4(BasicScenario):
         "AS101_roa_blackhole":      "101.0.128.1/32",
 
         "AS102_no_asset":           "102.0.1.0/24",
+
+        "Default_route":            "0.0.0.0/0",
     }

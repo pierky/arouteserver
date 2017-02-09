@@ -81,4 +81,6 @@ class BasicScenario_BIRDIPv6(BasicScenario):
 
         "AS102_no_asset":           "3102:0:1::/48",
         "AS101_no_ipv6_gl_uni":     "8000:1::/32",
+
+        "Default_route":            "::/0",
     }

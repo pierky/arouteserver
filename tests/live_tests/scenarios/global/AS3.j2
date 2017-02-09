@@ -17,6 +17,7 @@ protocol static own_prefixes {
 	route {{ data.AS3_prepend1_AS1 }} reject;
 	route {{ data.AS3_prepend2_AS2 }} reject;
 	route {{ data.AS3_prep3AS1_1any }} reject;
+	route {{ data.Default_route }} reject;
 }
 
 filter to_rs {

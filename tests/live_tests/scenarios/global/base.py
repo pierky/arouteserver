@@ -248,6 +248,12 @@ class BasicScenario(LiveScenario):
         self.receive_route(self.rs, self.DATA["AS101_no_ipv6_gl_uni"], filtered=True)
         self.log_contains(self.rs, "prefix is not in IPv6 Global Unicast space - REJECTING " + self.DATA["AS101_no_ipv6_gl_uni"])
 
+    def test_040_default_rejected_by_rs(self):
+        """{}: bad prefixes received by rs: default route"""
+        self.receive_route(self.rs, self.DATA["Default_route"],
+                           other_inst=self.AS3, filtered=True)
+        self.log_contains(self.rs, "prefix is bogon - REJECTING " + self.DATA["Default_route"])
+
     def test_041_bad_prefixes_not_received_by_clients(self):
         """{}: bad prefixes not received by clients"""
         for prefix in (self.DATA["bogon1"],
