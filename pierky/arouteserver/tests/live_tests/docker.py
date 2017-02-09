@@ -51,7 +51,9 @@ class DockerInstance(BGPSpeakerInstance):
         except subprocess.CalledProcessError as e:
             raise InstanceError(
                 "Error executing the following command:\n"
-                "{}".format(cmd)
+                "\t{}\n"
+                "Output follows:\n\n"
+                "{}".format(cmd, e.output)
             )
 
     @classmethod
@@ -66,6 +68,17 @@ class DockerInstance(BGPSpeakerInstance):
         else:
             return True
 
+    def _docker_image_exists(self):
+        cmd = '{docker} images {image} --format="{{{{.Repository}}}}'.format(
+            docker=self.DOCKER_PATH,
+            image=self.image
+        )
+        res = self._run(cmd)
+        if res is None:
+            raise InstanceError("Can't get the list of Docker images")
+        else:
+            return len(res.strip()) > 0
+
     @classmethod
     def _setup_networking(cls):
         network_details = None
@@ -79,16 +92,20 @@ class DockerInstance(BGPSpeakerInstance):
             pass
 
         if network_details is not None:
-            if cls.DOCKER_NETWORK_SUBNET_IPv4 not in network_details:
+            try:
+                if cls.DOCKER_NETWORK_SUBNET_IPv4 not in network_details:
+                    raise InstanceError("IPv4")
+                if cls.DOCKER_NETWORK_SUBNET_IPv6 not in network_details:
+                    raise InstanceError("IPv6")
+            except InstanceError as e:
                 raise InstanceError(
-                    "Docker network '{}' exists but is on a wrong IPv4 subnet.".format(
-                        cls.DOCKER_NETWORK_NAME
-                    )
-                )
-            if cls.DOCKER_NETWORK_SUBNET_IPv6 not in network_details:
-                raise InstanceError(
-                    "Docker network '{}' exists but is on a wrong IPv6 subnet.".format(
-                        cls.DOCKER_NETWORK_NAME
+                    "The Docker network used by ARouteServer live tests "
+                    "('{net}') already exists but is on a "
+                    "wrong {v} subnet. Plase consider removing it "
+                    "with '{docker} network rm {net}'.".format(
+                        net=cls.DOCKER_NETWORK_NAME,
+                        v=str(e),
+                        docker=cls.DOCKER_PATH
                     )
                 )
             return
@@ -127,6 +144,15 @@ class DockerInstance(BGPSpeakerInstance):
         self._setup_networking()
 
         if not self.is_running():
+
+            if not self._docker_image_exists():
+                raise InstanceError(
+                    "Docker image '{image}' is not present on this system. "
+                    "Build it using "
+                    "'docker build -t {image} -f PATH_TO_DOCKERFILE .' "
+                    "or pull it from DockerHub using "
+                    "'docker pull {image}'.".format(image=self.image)
+                )
 
             cmd = ('{docker} run --rm '
                    '--net={net_name} {ip_arg}={ip} '
