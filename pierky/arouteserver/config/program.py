@@ -48,9 +48,13 @@ class ConfigParserProgram(object):
     }
 
     def __init__(self):
+        self._reset_to_default()
+
+    def _reset_to_default(self):
         self.cfg = deepcopy(self.DEFAULT)
 
     def load(self, path):
+        self._reset_to_default()
         try:
             with open(path, "r") as f:
                 cfg_from_file = yaml.load(f.read())
@@ -173,5 +177,18 @@ class ConfigParserProgram(object):
             return False
         if not process_dir(templates_dir, os.path.join(dest_dir, "templates")):
             return False
+
+        self.load("{}/arouteserver.yml".format(dest_dir))
+
+        print("")
+        print("Configuration complete!")
+        print("")
+        print("- edit the {} file to set your logging preferences".format(
+            self.get_cfg_file_path("logging_config_file")))
+        print("- configure route server's options and policies "
+              "in the {} file".format(
+                self.get_cfg_file_path("cfg_general")))
+        print("- configure route server clients in the {} file".format(
+            self.get_cfg_file_path("cfg_clients")))
 
 program_config = ConfigParserProgram()
