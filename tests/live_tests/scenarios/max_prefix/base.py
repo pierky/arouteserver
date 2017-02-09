@@ -123,7 +123,7 @@ class MaxPrefixScenario(LiveScenario):
         self.assertEqual(len(self._get_routes_from(2, include_filtered=True)), 5)
 
     def test_032_count_received_prefixes_AS3(self):
-        """{}: number of prefixes received by rs from AS1"""
+        """{}: number of prefixes received by rs from AS3"""
 
         self.assertEqual(len(self._get_routes_from(3)), 2)
         self.assertEqual(len(self._get_routes_from(3, include_filtered=True)), 5)
