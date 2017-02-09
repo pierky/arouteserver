@@ -6,7 +6,7 @@ The following files, by default located in ``/etc/arouteserver``, contain config
 - ``arouteserver.yml``: program's options and paths to other files are configured here.
   See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/arouteserver.yml>`_.
 
-- ``general.yml``: the route server's configuration options and policies.
+- ``general.yml``: this is the most important configuration file, where the route server's options and policies are configured.
   See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`_.
 
 - ``clients.yml``: the list of route server's clients and their options and policies.

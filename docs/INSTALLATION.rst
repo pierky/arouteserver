@@ -22,7 +22,7 @@ Installation
 
 2. Install the program.
    
-        - If you plan to run :doc:`Live tests <LIVETESTS>`, to build your own scenarios or to contribute to the project, clone the GitHub repository locally and install dependencies:
+        - If you plan to run built-in :doc:`Live tests <LIVETESTS>` on your own or to contribute to the project, clone the GitHub repository locally and install dependencies:
 
         .. code:: bash
 
@@ -32,7 +32,7 @@ Installation
             pip install -r requirements.txt
 
 
-        - If you plan to just use the program to build configurations, you can install it using ``pip``:
+        - If you plan to just use the program to build configurations or to run your own live tests scenarios, you can install it using ``pip``:
 
         .. code:: bash
 
@@ -49,7 +49,7 @@ Installation
     # if you used pip
     arouteserver setup
 
-  The program will ask to create some directories (under ``/etc/arouteserver`` by detault) and to copy some files there.
+  The program will ask you to create some directories (under ``/etc/arouteserver`` by detault) and to copy some files there.
   These paths can be changed by editing the ``arouteserver.yml`` program configuration file or by using command line arguments. More information in the :doc:`configuration section <CONFIG>`.
 
 External programs
@@ -57,7 +57,7 @@ External programs
 
 ARouteServer uses the following external programs:
 
-- `bgpq3 <https://github.com/snar/bgpq3>`_ is used to gather information about routing policies.
+- `bgpq3 <https://github.com/snar/bgpq3>`_ is used to gather information from IRRDBs.
   
   To install it:
 

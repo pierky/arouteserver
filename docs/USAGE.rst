@@ -14,8 +14,20 @@ The script can be executed via command-line:
 
 It produces the route server configuration and saves it on ``/etc/bird/bird4.conf``.
 
-Almost useless commands
------------------------
+Other commands
+--------------
+
+Initialize a custom live test scenario
+**************************************
+
+To setup a new live test scenario:
+
+.. code:: bash
+
+      arouteserver init-scenario ~/ars_scenarios/myscenario
+
+More details on :doc:`LIVETESTS_CUSTOMSCENARIO`.
+
 
 Create clients.yml file from PeeringDB records
 **********************************************
