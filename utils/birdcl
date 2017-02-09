@@ -1,0 +1,8 @@
+#!/bin/bash
+
+INSTANCE_NAME="$1"
+CURR_DIR=`dirname -- "$0"`
+
+shift
+
+$CURR_DIR/run $INSTANCE_NAME birdcl "$@"
