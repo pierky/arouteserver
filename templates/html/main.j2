@@ -15,12 +15,15 @@
 
 <h1><font color=red>WORK IN PROGRESS</font></h1>
 
+
+
 <h1>Configuration of route server {{ cfg.router_id }} at AS{{ cfg.rs_as }}</h1>
+
+
 
 <h2>BGP sessions default configuration</h2>
 
 <ul>
-
 <li><p><strong>{% if cfg.passive %}Passive{% else %}Active{% endif %}</strong> sessions are configured toward neighbors.</p></li>
 
 <li><p>GTSM (Generalized TTL Security Mechanism - <a href="//tools.ietf.org/html/rfc5082">RFC5082</a>) is <strong>{% if cfg.gtsm %}enabled{% else %}disabled{% endif %}</strong> on sessions toward the neighbors.</p></li>
@@ -30,12 +33,26 @@
 {% else %}
 <li><p><strong>ADD-PATH</strong> capability (<a href="//tools.ietf.org/html/rfc7911">RFC7911</a>) is <strong>not</strong> negotiaded by default.</p></li>
 {% endif %}
-
 </ul>
+
+
+
+<h2>Route server general behaviours</h2>
+
+<ul>
+<li><p>Route server ASN is <strong>{% if not cfg.prepend_rs_as %}not {% endif %}prepended</strong> to the AS_PATH of routes announced to clients (<a href="https://tools.ietf.org/html/rfc7947#section-2.2.2.1">RFC7947 section 2.2.2.1</a>).</p></li>
+
+<li><p>Route server <strong>does {% if not cfg.path_hiding %}not{% endif %} implement</strong> path-hiding mitigation techniques (<a href="https://tools.ietf.org/html/rfc7947#section-2.3.1">RFC7947 section 2.3.1</a>).</p></li>
+</ul>
+
+
 
 <h2>Default filtering policy</h2>
 
+
+
 <h3>NEXT_HOP attribute</h3>
+
 <ul>
 <li><p>The route server verifies that the NEXT_HOP attribute of routes received from a client matches the IP address of the client itself
 {% if cfg.filtering.next_hop_policy == "strict" %}
@@ -50,7 +67,10 @@ allows an organization with multiple connections into an IXP configured with dif
 </p></li>
 </ul>
 
+
+
 <h3>AS_PATH attribute</h3>
+
 <ul>
 <li><p>Prefixes whose AS_PATH is longer than {{ cfg.filtering.max_as_path_len }} ASNs are rejected.</p></li>
 
@@ -77,49 +97,55 @@ List of "transit-free" networks' ASNs:
 {% endif %}
 </ul>
 
+
+
 <h3>IRRDBs prefix/origin ASN enforcement</h3>
+
 <ul>
-	<li><p>
-		Origin ASN is
-		{% if not cfg.filtering.rpsl.enforce_origin_in_as_set %}
-		<strong>not enforced.</strong>
-		{% else %}
-		<strong>enforced</strong>. Prefixes whose origin ASN is not authorized by the client's AS-SET are rejected.
-		{% endif %}
-	</p></li>
+<li><p>
+Origin ASN is
+{% if not cfg.filtering.rpsl.enforce_origin_in_as_set %}
+<strong>not enforced.</strong>
+{% else %}
+<strong>enforced</strong>. Prefixes whose origin ASN is not authorized by the client's AS-SET are rejected.
+{% endif %}
+</p></li>
 
-	<li><p>Announced prefixes are
-		{% if not cfg.filtering.rpsl.enforce_prefix_in_as_set %}
-		<strong>not enforced</strong>
-		{% else %}
-		<strong>enforced</strong>. Prefixes that are not part of the client's AS-SET are rejected.
-		{% endif %}
-	</p></li>
+<li><p>Announced prefixes are
+{% if not cfg.filtering.rpsl.enforce_prefix_in_as_set %}
+<strong>not enforced</strong>
+{% else %}
+<strong>enforced</strong>. Prefixes that are not part of the client's AS-SET are rejected.
+{% endif %}
+</p></li>
 
-	{% if cfg.filtering.rpsl.tag_as_set %}
-	<li><p>
-	Prefix validation status is signalled to route server clients using the following BGP communities:
-	<table class="table">
-	<thead>
-	  <tr>
-	    <td>Status</td>
-	    <td>Standard</td>
-	    <td>Extended</td>
-	    <td>Large</td>
-	  <tr>
-	</thead>
-	<tbody>
-	  {{ write_communities_table_row(cfg.communities.prefix_present_in_as_set, "Prefix is included in client's AS-SET") }} 
-	  {{ write_communities_table_row(cfg.communities.prefix_not_present_in_as_set, "Prefix is NOT included in client's AS-SET") }} 
-	  {{ write_communities_table_row(cfg.communities.origin_present_in_as_set, "Origin ASN is included in client's AS-SET") }} 
-	  {{ write_communities_table_row(cfg.communities.origin_not_present_in_as_set, "Origin ASN is NOT included in client's AS-SET") }} 
-	</tbody>
-	</table>
-	</p></li>
-	{% endif %}
+{% if cfg.filtering.rpsl.tag_as_set %}
+<li><p>
+Prefix validation status is signalled to route server clients using the following BGP communities:
+<table class="table">
+<thead>
+  <tr>
+    <td>Status</td>
+    <td>Standard</td>
+    <td>Extended</td>
+    <td>Large</td>
+  <tr>
+</thead>
+<tbody>
+  {{ write_communities_table_row(cfg.communities.prefix_present_in_as_set, "Prefix is included in client's AS-SET") }} 
+  {{ write_communities_table_row(cfg.communities.prefix_not_present_in_as_set, "Prefix is NOT included in client's AS-SET") }} 
+  {{ write_communities_table_row(cfg.communities.origin_present_in_as_set, "Origin ASN is included in client's AS-SET") }} 
+  {{ write_communities_table_row(cfg.communities.origin_not_present_in_as_set, "Origin ASN is NOT included in client's AS-SET") }} 
+</tbody>
+</table>
+</p></li>
+{% endif %}
 </ul>
 
+
+
 <h3>RPKI validation</h3>
+
 <ul>
 
 <li><p><a href="https://tools.ietf.org/html/rfc6811">RPKI validation</a> of prefixes received by the route server is <strong>{% if cfg.filtering.rpki.enabled %}enabled{% else %}disabled{% endif %}</strong>.</p></li>
@@ -129,11 +155,11 @@ List of "transit-free" networks' ASNs:
 <li><p>When an INVALID prefix is received by the route server, <strong>it is rejected</strong>.</p></li>
 {%	endif %}
 <li><p>
-Prefix status is signalled to route server clients using the following BGP communities:
+Prefix validity state is signalled to route server clients using the following BGP communities:
 	<table class="table">
 	<thead>
 	  <tr>
-	    <td>Status</td>
+	    <td>Validity state</td>
 	    <td>Standard</td>
 	    <td>Extended</td>
 	    <td>Large</td>
@@ -150,6 +176,8 @@ Prefix status is signalled to route server clients using the following BGP commu
 </p></li>
 {% endif %}
 </ul>
+
+
 
 {% if cfg.filtering.max_prefix.action %}
 <h3>Max-pref limit</h3>
@@ -173,20 +201,103 @@ Prefix status is signalled to route server clients using the following BGP commu
 </ul>
 {% endif %}
 
+
+
 <h3>Min/max prefix length</h3>
-<p>
-Only prefixes whose length is in the following range are accepted by the route server:
-</p>
+
 <ul>
+<li>
+<p>Only prefixes whose length is in the following range are accepted by the route server:</p>
+	<ul>
 	<li>IPv4: {{ cfg.filtering.ipv4_pref_len.min }}-{{ cfg.filtering.ipv4_pref_len.max }}</li>
 	<li>IPv6: {{ cfg.filtering.ipv6_pref_len.min }}-{{ cfg.filtering.ipv6_pref_len.max }}</li>
+	</ul>
+</li>
 </ul>
+
+
 
 {% if cfg.filtering.global_black_list_pref %}
 <h3>Rejected prefixes</h3>
-<p>The following prefixes are unconditionally rejected:</p>
+
+<ul>
+<li><p>The following prefixes are unconditionally rejected:</p></li>
 {{ write_prefix_list(cfg.filtering.global_black_list_pref) }}
+</ul>
 {% endif %}
+
+
+
+{% if cfg.blackhole_filtering.policy_ipv4 or cfg.blackhole_filtering.policy_ipv6 %}
+<h2>Blackhole filtering</h2>
+
+<ul>
+<li><p>Blackhole filtering of more specific IP prefixes can be requested by tagging them with the following BGP communities:
+{% if cfg.communities.blackholing|community_is_set %}
+{%	for fmt in ("std", "ext", "lrg") %}
+{%		if cfg.communities.blackholing[fmt] %}
+{{ cfg.communities.blackholing[fmt] }}, 
+{%		endif %}
+{%	endfor %}
+{% endif %}
+65535:666 (<a href="https://tools.ietf.org/html/rfc7999#section-5">BLACKHOLE</a> well-known community)
+</p></li>
+
+<li><p>By default, prefixes are 
+{% if cfg.blackhole_filtering.announce_to_client %}
+propagated to all the clients unless they have been explicitly configured to not receive them.
+{% else %}
+not propagated to the clients unless they have been explicitly configured to receive them.
+{% endif %}
+</p></li>
+
+{% for af in (4, 6) %}
+{%	if af == 4 %}
+{%		set policy="policy_ipv4" %}
+{%		set bn="rewrite_next_hop_ipv4" %}
+{%	else %}
+{%		set policy="policy_ipv6" %}
+{%		set bn="rewrite_next_hop_ipv6" %}
+{%	endif %}
+{%	if cfg.blackhole_filtering[policy] == "propagate-unchanged" %}
+<li><p>IPv{{ af }} prefixes are propagated unchanged to clients.</p></li>
+{%	else %}
+<li><p>IPv{{ af }} prefixes are propagated to clients after their NEXT_HOP attribute has been rewritten to {{ cfg.blackhole_filtering[bn] }}.</p></li>
+{%	endif %}
+{% endfor %}
+{% endif %}
+
+<li><p>All the prefixes are announced to clients after being tagged with the BLACKHOLE well-known community.</p></li>
+
+</ul>
+
+
+
+<h2>Announcement control via BGP communities</h2>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <td>Function</td>
+      <td>Standard</td>
+      <td>Extended</td>
+      <td>Large</td>
+    </tr>
+  </thead>
+  <tbody>
+  {{ write_communities_table_row(cfg.communities.do_not_announce_to_any, "Do not announce to any client") }}
+  {{ write_communities_table_row(cfg.communities.announce_to_peer, "Announce to peer, even if tagged with the previous community") }}
+  {{ write_communities_table_row(cfg.communities.do_not_announce_to_peer, "Do not announce to peer") }}
+
+  {{ write_communities_table_row(cfg.communities.prepend_once_to_any, "Prepend the announcing ASN once to any") }}
+  {{ write_communities_table_row(cfg.communities.prepend_twice_to_any, "Prepend the announcing ASN twice to any") }}
+  {{ write_communities_table_row(cfg.communities.prepend_thrice_to_any, "Prepend the announcing ASN thrice to any") }}
+
+  {{ write_communities_table_row(cfg.communities.prepend_once_to_peer, "Prepend the announcing ASN once to peer") }}
+  {{ write_communities_table_row(cfg.communities.prepend_twice_to_peer, "Prepend the announcing ASN twice to peer") }}
+  {{ write_communities_table_row(cfg.communities.prepend_thrice_to_peer, "Prepend the announcing ASN thrice to peer") }}
+  </tbody>
+</table>
 
 <h1><font color=red>WORK IN PROGRESS</font></h1>
 
