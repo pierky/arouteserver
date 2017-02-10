@@ -1,0 +1,41 @@
+{% macro write_prefix_list(prefix_list) %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <td>Prefix</td>
+      <td>Length</td>
+      <td>Ge</td>
+      <td>Le</td>
+      <td>Comment</td>
+    </tr>
+  </thead>
+  <tbody>
+{% if prefix_list %}
+{%	for entry in prefix_list if entry.prefix is current_ipver %}
+    <tr>
+      <td>{{ entry.prefix }}</td>
+      <td>{{ entry.length }}</td>
+      {% if not entry.exact %}
+      <td>{{ entry.ge or entry.length }}</td>
+      <td>{{ entry.le or entry.max_length }}</td>
+      {% else %}
+      <td colspan=2>exact</td>
+      {% endif %}
+      <td>{{ entry.comment }}</td>
+    </tr>
+{%	endfor %}
+{% endif %}
+  </tbody>
+</table>
+{% endmacro %}
+
+{% macro write_communities_table_row(comm, function_descr) %}
+{% if comm|community_is_set %}
+  <tr>
+    <td>{{ function_descr }}</td>
+    <td>{{ comm.std }}</td>
+    <td>{{ comm.ext }}</td>
+    <td>{{ comm.lrg }}</td>
+  </tr>
+{% endif %}
+{% endmacro %}

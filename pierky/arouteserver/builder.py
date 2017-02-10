@@ -37,7 +37,7 @@ from .peering_db import PeeringDBNet
 class ConfigBuilder(object):
 
     def validate_flavor_specific_configuration(self):
-        raise NotImplementedError()
+        pass
 
     @staticmethod
     def _get_cfg(obj_or_path, cls, descr, **kwargs):
@@ -315,39 +315,45 @@ class ConfigBuilder(object):
             # no needs to know its max-pref limit.
             return
 
-        if client_max_prefix["limit_ipv{}".format(self.ip_ver)]:
-            # Client uses a specific limit:
-            # no needs to gather info from PeeringDB.
-            return
+        for ip_ver in (4, 6):
+            if self.ip_ver is not None and self.ip_ver != ip_ver:
+                continue
 
-        general_limit_ipv4 = self.cfg_general["filtering"]["max_prefix"]["general_limit_ipv4"]
-        general_limit_ipv6 = self.cfg_general["filtering"]["max_prefix"]["general_limit_ipv6"]
+            if client_max_prefix["limit_ipv{}".format(ip_ver)]:
+                # Client uses a specific limit:
+                # no needs to gather info from PeeringDB.
+                return
 
-        if not client_max_prefix["peering_db"]:
-            client_max_prefix["limit_ipv4"] = general_limit_ipv4
-            client_max_prefix["limit_ipv6"] = general_limit_ipv6
-            return
+            general_limit = self.cfg_general["filtering"]["max_prefix"]["general_limit_ipv{}".format(ip_ver)]
+
+            if not client_max_prefix["peering_db"]:
+                client_max_prefix["limit_ipv{}".format(ip_ver)] = general_limit
+                continue
         
-        try:
-            net = PeeringDBNet(client["asn"],
-                               cache_dir=self.cache_dir,
-                               cache_expiry=self.cache_expiry)
-            client_max_prefix["limit_ipv4"] = net.info_prefixes4 or general_limit_ipv4
-            client_max_prefix["limit_ipv6"] = net.info_prefixes6 or general_limit_ipv6
+            try:
+                net = PeeringDBNet(client["asn"],
+                                cache_dir=self.cache_dir,
+                                cache_expiry=self.cache_expiry)
+                if ip_ver == 4:
+                    peeringdb_limit = net.info_prefixes4
+                else:
+                    peeringdb_limit = net.info_prefixes6
 
-        except PeeringDBNoInfoError:
-            # No data found on PeeringDB.
-            logging.debug("No data found on PeeringDB "
-                          "for AS{} while looking for "
-                          "max-prefix limit.".format(client["asn"]))
-            pass
-        except PeeringDBError as e:
-            raise BuilderError(
-                "An error occurred while retrieving info from PeeringDB "
-                "for ASN {}: {}".format(
-                    client["asn"], str(e) or "error unknown"
+                client_max_prefix["limit_ipv{}".format(ip_ver)] = peeringdb_limit or general_limit
+
+            except PeeringDBNoInfoError:
+                # No data found on PeeringDB.
+                logging.debug("No data found on PeeringDB "
+                            "for AS{} while looking for "
+                            "max-prefix limit.".format(client["asn"]))
+                pass
+            except PeeringDBError as e:
+                raise BuilderError(
+                    "An error occurred while retrieving info from PeeringDB "
+                    "for ASN {}: {}".format(
+                        client["asn"], str(e) or "error unknown"
+                    )
                 )
-            )
 
     def enrich_config_communities(self):
         for comm_name in ConfigParserGeneral.COMMUNITIES_SCHEMA:

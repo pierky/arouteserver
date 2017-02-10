@@ -19,17 +19,14 @@ import os
 import sys
 
 from .base import ARouteServerCommand
-from ..builder import BIRDConfigBuilder
+from ..builder import ConfigBuilder, BIRDConfigBuilder
 from ..errors import ARouteServerError
 
-class BuildCommand(ARouteServerCommand):
-
-    COMMAND_NAME = "build"
-    COMMAND_HELP = "Build route server configuration."
+class TemplateRenderingCommands(ARouteServerCommand):
 
     @classmethod
     def add_arguments(cls, parser):
-        super(BuildCommand, cls).add_arguments(parser)
+        super(TemplateRenderingCommands, cls).add_arguments(parser)
 
         cls.add_program_config_arguments(parser)
 
@@ -39,14 +36,6 @@ class BuildCommand(ARouteServerCommand):
             help="Output file. Default: stdout.",
             default=sys.stdout,
             dest="output_file")
-
-        parser.add_argument(
-            "--speaker",
-            help="The BGP speaker target implementation for "
-                "the configuration that will be built.",
-            dest="speaker",
-            choices=["BIRD"],
-            default="BIRD")
 
         group = parser.add_argument_group(
             title="Route server configuration",
@@ -99,6 +88,12 @@ class BuildCommand(ARouteServerCommand):
             type=int,
             dest="ip_ver")
 
+    def _get_template_sub_dir(self):
+        raise NotImplementedError()
+
+    def _get_builder_class(self):
+        raise NotImplementedError()
+
     def run(self):
         if not self.setup():
             return False
@@ -117,21 +112,16 @@ class BuildCommand(ARouteServerCommand):
             "ip_ver": self.args.ip_ver,
         }
 
-        template_sub_dir = None
-        if self.args.speaker == "BIRD":
-            builder_class = BIRDConfigBuilder
-            template_sub_dir = "bird"
-        else:
-            raise ARouteServerError(
-                "Unknown BGP speaker implementation: {}".format(args.speaker)
-            )
+        builder_class = self._get_builder_class()
+        
+        template_sub_dir = self._get_template_sub_dir()
         if template_sub_dir:
             cfg_builder_params["template_dir"] = os.path.join(
                 cfg_builder_params["template_dir"], template_sub_dir
             )
 
         try:
-            builder = BIRDConfigBuilder(**cfg_builder_params)
+            builder = builder_class(**cfg_builder_params)
             self.args.output_file.write(builder.render_template())
         except ARouteServerError as e:
             if str(e):
@@ -139,3 +129,47 @@ class BuildCommand(ARouteServerCommand):
             return False
 
         return True
+
+class BuildCommand(TemplateRenderingCommands):
+
+    COMMAND_NAME = "build"
+    COMMAND_HELP = "Build route server configuration."
+
+    @classmethod
+    def add_arguments(cls, parser):
+        super(BuildCommand, cls).add_arguments(parser)
+
+        parser.add_argument(
+            "--speaker",
+            help="The BGP speaker target implementation for "
+                "the configuration that will be built.",
+            dest="speaker",
+            choices=["BIRD"],
+            default="BIRD")
+
+    def _get_builder_class(self):
+        if self.args.speaker == "BIRD":
+            return BIRDConfigBuilder
+        raise ARouteServerError(
+            "Unknown BGP speaker implementation: {}".format(self.args.speaker)
+        )
+
+    def _get_template_sub_dir(self):
+        if self.args.speaker == "BIRD":
+            return "bird"
+        raise ARouteServerError(
+            "Unknown BGP speaker implementation: {}".format(self.args.speaker)
+        )
+
+class HTMLCommand(TemplateRenderingCommands):
+
+    COMMAND_NAME = "html"
+    COMMAND_HELP = ("Build an HTML descriptive page containing the "
+                    "textual representation of the route server "
+                    "configuration.")
+
+    def _get_builder_class(self):
+        return ConfigBuilder
+
+    def _get_template_sub_dir(self):
+        return "html"

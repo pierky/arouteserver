@@ -1,0 +1,195 @@
+{% from 'macros.j2' import write_prefix_list %}
+{% from 'macros.j2' import write_communities_table_row %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+     content="width=device-width, initial-scale=1, user-scalable=yes">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+
+<h1><font color=red>WORK IN PROGRESS</font></h1>
+
+<h1>Configuration of route server {{ cfg.router_id }} at AS{{ cfg.rs_as }}</h1>
+
+<h2>BGP sessions default configuration</h2>
+
+<ul>
+
+<li><p><strong>{% if cfg.passive %}Passive{% else %}Active{% endif %}</strong> sessions are configured toward neighbors.</p></li>
+
+<li><p>GTSM (Generalized TTL Security Mechanism - <a href="//tools.ietf.org/html/rfc5082">RFC5082</a>) is <strong>{% if cfg.gtsm %}enabled{% else %}disabled{% endif %}</strong> on sessions toward the neighbors.</p></li>
+
+{% if cfg.add_path %}
+<li><p><strong>ADD-PATH</strong> capability (<a href="//tools.ietf.org/html/rfc7911">RFC7911</a>) is negotiaded by default; the route server is configured as "able to send multiple paths to its peer".</p></li>
+{% else %}
+<li><p><strong>ADD-PATH</strong> capability (<a href="//tools.ietf.org/html/rfc7911">RFC7911</a>) is <strong>not</strong> negotiaded by default.</p></li>
+{% endif %}
+
+</ul>
+
+<h2>Default filtering policy</h2>
+
+<h3>NEXT_HOP attribute</h3>
+<ul>
+<li><p>The route server verifies that the NEXT_HOP attribute of routes received from a client matches the IP address of the client itself
+{% if cfg.filtering.next_hop_policy == "strict" %}
+.
+{% else %}
+or one of the IP addresses of other clients from the same AS. This...
+<blockquote>
+allows an organization with multiple connections into an IXP configured with different IP addresses to direct traffic off the IXP infrastructure through any of their connections for traffic engineering or other purposes.
+(<a href="https://tools.ietf.org/html/rfc7948#section-4.8">RFC7948, section 4.8</a>)
+</blockquote>
+{% endif %}
+</p></li>
+</ul>
+
+<h3>AS_PATH attribute</h3>
+<ul>
+<li><p>Prefixes whose AS_PATH is longer than {{ cfg.filtering.max_as_path_len }} ASNs are rejected.</p></li>
+
+{% if cfg.filtering.reject_invalid_as_in_as_path %}
+<li><p>Prefixes whose AS_PATH contains <a href="http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html">private or invalid ASNs</a> are rejected.</p></li>
+{% endif %}
+
+{% if cfg.filtering.transit_free.action %}
+<li><p>
+Prefixes with an AS_PATH containing one or more of the following "transit-free" networks' ASNs
+{%	if cfg.filtering.transit_free.action == "reject" %}
+are rejected.
+{%	else %}
+produce a warning.
+{%	endif %}
+</p>
+<p>
+List of "transit-free" networks' ASNs:
+{%	for asn in cfg.filtering.transit_free.asns %}
+<a href="https://stat.ripe.net/AS{{ asn }}">{{ asn }}</a>{% if not loop.last %}, {% endif %}
+{%	endfor %}
+</p>
+</li>
+{% endif %}
+</ul>
+
+<h3>IRRDBs prefix/origin ASN enforcement</h3>
+<ul>
+	<li><p>
+		Origin ASN is
+		{% if not cfg.filtering.rpsl.enforce_origin_in_as_set %}
+		<strong>not enforced.</strong>
+		{% else %}
+		<strong>enforced</strong>. Prefixes whose origin ASN is not authorized by the client's AS-SET are rejected.
+		{% endif %}
+	</p></li>
+
+	<li><p>Announced prefixes are
+		{% if not cfg.filtering.rpsl.enforce_prefix_in_as_set %}
+		<strong>not enforced</strong>
+		{% else %}
+		<strong>enforced</strong>. Prefixes that are not part of the client's AS-SET are rejected.
+		{% endif %}
+	</p></li>
+
+	{% if cfg.filtering.rpsl.tag_as_set %}
+	<li><p>
+	Prefix validation status is signalled to route server clients using the following BGP communities:
+	<table class="table">
+	<thead>
+	  <tr>
+	    <td>Status</td>
+	    <td>Standard</td>
+	    <td>Extended</td>
+	    <td>Large</td>
+	  <tr>
+	</thead>
+	<tbody>
+	  {{ write_communities_table_row(cfg.communities.prefix_present_in_as_set, "Prefix is included in client's AS-SET") }} 
+	  {{ write_communities_table_row(cfg.communities.prefix_not_present_in_as_set, "Prefix is NOT included in client's AS-SET") }} 
+	  {{ write_communities_table_row(cfg.communities.origin_present_in_as_set, "Origin ASN is included in client's AS-SET") }} 
+	  {{ write_communities_table_row(cfg.communities.origin_not_present_in_as_set, "Origin ASN is NOT included in client's AS-SET") }} 
+	</tbody>
+	</table>
+	</p></li>
+	{% endif %}
+</ul>
+
+<h3>RPKI validation</h3>
+<ul>
+
+<li><p><a href="https://tools.ietf.org/html/rfc6811">RPKI validation</a> of prefixes received by the route server is <strong>{% if cfg.filtering.rpki.enabled %}enabled{% else %}disabled{% endif %}</strong>.</p></li>
+
+{% if cfg.filtering.rpki.enabled %}
+{%	if cfg.filtering.rpki.reject_invalid %}
+<li><p>When an INVALID prefix is received by the route server, <strong>it is rejected</strong>.</p></li>
+{%	endif %}
+<li><p>
+Prefix status is signalled to route server clients using the following BGP communities:
+	<table class="table">
+	<thead>
+	  <tr>
+	    <td>Status</td>
+	    <td>Standard</td>
+	    <td>Extended</td>
+	    <td>Large</td>
+	  <tr>
+	</thead>
+	<tbody>
+{%	if not cfg.filtering.rpki.reject_invalid %}
+	  {{ write_communities_table_row(cfg.communities.roa_invalid, "INVALID") }}
+{%	endif %}
+	  {{ write_communities_table_row(cfg.communities.roa_valid, "VALID") }}
+	  {{ write_communities_table_row(cfg.communities.roa_unknown, "UNKNOWN") }}
+	</tbody>
+	</table>
+</p></li>
+{% endif %}
+</ul>
+
+{% if cfg.filtering.max_prefix.action %}
+<h3>Max-pref limit</h3>
+<ul>
+	<li><p>A max-prefix limit is enforced; when it triggers, 
+{%	if cfg.filtering.max_prefix.action == "shutdown" %} 
+	the session with the announcing client is <strong>shutdown</strong>.
+{%	elif cfg.filtering.max_prefix.action == "restart" %}
+	the session with the announcing client is <strong>restart</strong>.
+{%	elif cfg.filtering.max_prefix.action == "block" %}
+	new routes from the announcing client are <strong>discarded</strong>.
+{%	else %}
+	a warning is logged.
+{%	endif %}
+	</p></li>
+
+{%	if cfg.filtering.max_prefix.peering_db %}
+	<li><p>The limit, if not provided on a client-by-client basis, is learnt from the client's <strong>PeeringDB record</strong>.</p></li>
+{%	endif %}
+	<li><p>If no more specific limits exist for the client, the general limit of {{ cfg.filtering.max_prefix.general_limit_ipv4 }} IPv4 routes and {{ cfg.filtering.max_prefix.general_limit_ipv6 }} IPv6 routes is enforced.</p></li>
+</ul>
+{% endif %}
+
+<h3>Min/max prefix length</h3>
+<p>
+Only prefixes whose length is in the following range are accepted by the route server:
+</p>
+<ul>
+	<li>IPv4: {{ cfg.filtering.ipv4_pref_len.min }}-{{ cfg.filtering.ipv4_pref_len.max }}</li>
+	<li>IPv6: {{ cfg.filtering.ipv6_pref_len.min }}-{{ cfg.filtering.ipv6_pref_len.max }}</li>
+</ul>
+
+{% if cfg.filtering.global_black_list_pref %}
+<h3>Rejected prefixes</h3>
+<p>The following prefixes are unconditionally rejected:</p>
+{{ write_prefix_list(cfg.filtering.global_black_list_pref) }}
+{% endif %}
+
+<h1><font color=red>WORK IN PROGRESS</font></h1>
+
+</div>
+</body>
+</html>

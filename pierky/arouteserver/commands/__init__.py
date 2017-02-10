@@ -13,13 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from build import BuildCommand
+from build import BuildCommand, HTMLCommand
 from clients_from_peeringdb import ClientsFromPeeringDBCommand 
 from setup import SetupCommand
 from init_scenario import InitScenarioCommand
 
 __all__ = [
     "BuildCommand",
+    "HTMLCommand",
     "ClientsFromPeeringDBCommand",
     "SetupCommand",
     "InitScenarioCommand",
