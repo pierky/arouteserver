@@ -19,8 +19,6 @@
 
 <h1>Configuration of route server {{ cfg.router_id }} at AS{{ cfg.rs_as }}</h1>
 
-
-
 <h2>BGP sessions default configuration</h2>
 
 <ul>
@@ -31,7 +29,7 @@
 {% if cfg.add_path %}
 <li><p><strong>ADD-PATH</strong> capability (<a href="//tools.ietf.org/html/rfc7911">RFC7911</a>) is negotiaded by default; the route server is configured as "able to send multiple paths to its peer".</p></li>
 {% else %}
-<li><p><strong>ADD-PATH</strong> capability (<a href="//tools.ietf.org/html/rfc7911">RFC7911</a>) is <strong>not</strong> negotiaded by default.</p></li>
+<li><p><strong>ADD-PATH</strong> capability (<a href="//tools.ietf.org/html/rfc7911">RFC7911</a>) is <strong>not</strong> negotiated by default.</p></li>
 {% endif %}
 </ul>
 

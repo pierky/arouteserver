@@ -19,7 +19,7 @@ import os
 import re
 import time
 
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 from .config.general import ConfigParserGeneral
 from .config.bogons import ConfigParserBogons
@@ -432,7 +432,8 @@ class ConfigBuilder(object):
         env = Environment(
             loader=FileSystemLoader(self.template_dir),
             trim_blocks=True,
-            lstrip_blocks=True
+            lstrip_blocks=True,
+            undefined=StrictUndefined
         )
         env.tests["current_ipver"] = current_ipver
         env.filters["community_is_set"] = community_is_set
