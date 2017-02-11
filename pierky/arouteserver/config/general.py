@@ -157,6 +157,24 @@ class ConfigParserGeneral(ConfigParserBase):
                             "provide at least the list of local IPv4/IPv6 "
                             "networks here.")
 
+        # Warning: 'tag_as_set' is on but no communities are provided
+        if self.cfg["cfg"]["filtering"]["rpsl"]["tag_as_set"]:
+            tag_as_set_comms_found = False
+            for comm in ("prefix_present_in_as_set",
+                         "prefix_not_present_in_as_set",
+                         "origin_present_in_as_set",
+                         "origin_not_present_in_as_set"):
+                for fmt in ("std", "ext", "lrg"):
+                    if self.cfg["cfg"]["communities"][comm][fmt]:
+                        tag_as_set_comms_found = True
+                        break
+                if tag_as_set_comms_found:
+                    break
+            if not tag_as_set_comms_found:
+                logging.warning("The 'filtering.rpsl.tag_as_set' "
+                                "option is set but no BGP communities "
+                                "are provided to tag prefixes.")
+
         # If blackhole filtering policy = "rewrite-next-hop", then
         # blackhole next-hops must be provided.
         for ip_ver in (4, 6):
