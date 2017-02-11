@@ -139,7 +139,7 @@ class ValidatorROA(ConfigParserValidator):
         try:
             prefix = ValidatorPrefixListEntry().validate(v["prefix"])
         except ConfigError as e:
-            err_msg = "Invalid ASN in ROA entry"
+            err_msg = "Invalid prefix in ROA entry"
             if str(e):
                 err_msg += ": {}".format(str(e))
             raise ConfigError(err_msg)
