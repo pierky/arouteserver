@@ -13,8 +13,6 @@
 <body>
 <div class="container-fluid">
 
-<h1><font color=red>WORK IN PROGRESS</font></h1>
-
 
 
 <h1>Configuration of route server {{ cfg.router_id }} at AS{{ cfg.rs_as }}</h1>
@@ -52,14 +50,11 @@
 <h3>NEXT_HOP attribute</h3>
 
 <ul>
-<li><p>The route server verifies that the NEXT_HOP attribute of routes received from a client matches the IP address of the client itself
+<li><p>The route server verifies that the NEXT_HOP attribute of routes received from a client matches the <strong>IP address of the client itself</strong>
 {% if cfg.filtering.next_hop_policy == "strict" %}
 .
 {% else %}
-or one of the IP addresses of other clients from the same AS. This...
-<blockquote>
-allows an organization with multiple connections into an IXP configured with different IP addresses to direct traffic off the IXP infrastructure through any of their connections for traffic engineering or other purposes.
-(<a href="https://tools.ietf.org/html/rfc7948#section-4.8">RFC7948, section 4.8</a>)
+or one of the <strong>IP addresses of other clients from the same AS</strong>. This "allows an organization with multiple connections into an IXP configured with different IP addresses to direct traffic off the IXP infrastructure through any of their connections for traffic engineering or other purposes." <a href="https://tools.ietf.org/html/rfc7948#section-4.8">RFC7948, section 4.8</a>
 </blockquote>
 {% endif %}
 </p></li>
@@ -70,17 +65,19 @@ allows an organization with multiple connections into an IXP configured with dif
 <h3>AS_PATH attribute</h3>
 
 <ul>
-<li><p>Prefixes whose AS_PATH is longer than {{ cfg.filtering.max_as_path_len }} ASNs are rejected.</p></li>
+<li><p>Prefixes whose <strong>AS_PATH is longer than {{ cfg.filtering.max_as_path_len }}</strong> ASNs are rejected.</p></li>
+
+<li><p>The <strong>left-most ASN</strong> in the AS_PATH of any route announced to the route server must be the ASN of the announcing client.</p></li>
 
 {% if cfg.filtering.reject_invalid_as_in_as_path %}
-<li><p>Prefixes whose AS_PATH contains <a href="http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html">private or invalid ASNs</a> are rejected.</p></li>
+<li><p>Prefixes whose AS_PATH contains <a href="http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html"><strong>private or invalid ASNs</strong></a> are rejected.</p></li>
 {% endif %}
 
 {% if cfg.filtering.transit_free.action %}
 <li><p>
-Prefixes with an AS_PATH containing one or more of the following "transit-free" networks' ASNs
+Prefixes with an AS_PATH containing one or more of the following <strong>"transit-free" networks</strong>' ASNs
 {%	if cfg.filtering.transit_free.action == "reject" %}
-are rejected.
+are <strong>rejected</strong>.
 {%	else %}
 produce a warning.
 {%	endif %}
@@ -101,7 +98,7 @@ List of "transit-free" networks' ASNs:
 
 <ul>
 <li><p>
-Origin ASN is
+Origin ASN validity is
 {% if not cfg.filtering.rpsl.enforce_origin_in_as_set %}
 <strong>not enforced.</strong>
 {% else %}
@@ -109,7 +106,7 @@ Origin ASN is
 {% endif %}
 </p></li>
 
-<li><p>Announced prefixes are
+<li><p>Announced prefixes validity is
 {% if not cfg.filtering.rpsl.enforce_prefix_in_as_set %}
 <strong>not enforced</strong>
 {% else %}
@@ -117,16 +114,20 @@ Origin ASN is
 {% endif %}
 </p></li>
 
-{% if cfg.filtering.rpsl.tag_as_set %}
+{% if cfg.filtering.rpsl.tag_as_set and
+	(cfg.communities.prefix_present_in_as_set|community_is_set or
+	 cfg.communities.prefix_not_present_in_as_set|community_is_set or
+	 cfg.communities.origin_present_in_as_set|community_is_set or
+	 cfg.communities.origin_not_present_in_as_set|community_is_set)%}
 <li><p>
-Prefix validation status is signalled to route server clients using the following BGP communities:
+Prefix <strong>validity state</strong> is signalled to route server clients using the following <strong>BGP communities</strong>:
 <table class="table">
 <thead>
   <tr>
-    <td>Status</td>
-    <td>Standard</td>
-    <td>Extended</td>
-    <td>Large</td>
+    <th>Validity state</th>
+    <th>Standard</th>
+    <th>Extended</th>
+    <th>Large</th>
   <tr>
 </thead>
 <tbody>
@@ -146,21 +147,21 @@ Prefix validation status is signalled to route server clients using the followin
 
 <ul>
 
-<li><p><a href="https://tools.ietf.org/html/rfc6811">RPKI validation</a> of prefixes received by the route server is <strong>{% if cfg.filtering.rpki.enabled %}enabled{% else %}disabled{% endif %}</strong>.</p></li>
+<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI validation</a> of prefixes received by the route server is <strong>{% if cfg.filtering.rpki.enabled %}enabled{% else %}disabled{% endif %}</strong>.</p></li>
 
 {% if cfg.filtering.rpki.enabled %}
 {%	if cfg.filtering.rpki.reject_invalid %}
 <li><p>When an INVALID prefix is received by the route server, <strong>it is rejected</strong>.</p></li>
 {%	endif %}
 <li><p>
-Prefix validity state is signalled to route server clients using the following BGP communities:
+Prefix <strong>validity state</strong> is signalled to route server clients using the following <strong>BGP communities</strong>:
 	<table class="table">
 	<thead>
 	  <tr>
-	    <td>Validity state</td>
-	    <td>Standard</td>
-	    <td>Extended</td>
-	    <td>Large</td>
+	    <th>Validity state</th>
+	    <th>Standard</th>
+	    <th>Extended</th>
+	    <th>Large</th>
 	  <tr>
 	</thead>
 	<tbody>
@@ -180,8 +181,8 @@ Prefix validity state is signalled to route server clients using the following B
 {% if cfg.filtering.max_prefix.action %}
 <h3>Max-pref limit</h3>
 <ul>
-	<li><p>A max-prefix limit is enforced; when it triggers, 
-{%	if cfg.filtering.max_prefix.action == "shutdown" %} 
+	<li><p>A <strong>max-prefix limit</strong> is enforced; when it triggers,
+	{%	if cfg.filtering.max_prefix.action == "shutdown" %}
 	the session with the announcing client is <strong>shutdown</strong>.
 {%	elif cfg.filtering.max_prefix.action == "restart" %}
 	the session with the announcing client is <strong>restart</strong>.
@@ -195,7 +196,7 @@ Prefix validity state is signalled to route server clients using the following B
 {%	if cfg.filtering.max_prefix.peering_db %}
 	<li><p>The limit, if not provided on a client-by-client basis, is learnt from the client's <strong>PeeringDB record</strong>.</p></li>
 {%	endif %}
-	<li><p>If no more specific limits exist for the client, the general limit of {{ cfg.filtering.max_prefix.general_limit_ipv4 }} IPv4 routes and {{ cfg.filtering.max_prefix.general_limit_ipv6 }} IPv6 routes is enforced.</p></li>
+	<li><p>If no more specific limits exist for the client, the <strong>general limit</strong> of {{ cfg.filtering.max_prefix.general_limit_ipv4 }} IPv4 routes and {{ cfg.filtering.max_prefix.general_limit_ipv6 }} IPv6 routes is enforced.</p></li>
 </ul>
 {% endif %}
 
@@ -219,8 +220,18 @@ Prefix validity state is signalled to route server clients using the following B
 <h3>Rejected prefixes</h3>
 
 <ul>
-<li><p>The following prefixes are unconditionally rejected:</p></li>
+<li><p>The following prefixes are <strong>unconditionally rejected</strong>:
 {{ write_prefix_list(cfg.filtering.global_black_list_pref) }}
+</p></li>
+
+<li><p><strong>Bogon prefixes</strong> are rejected too.
+<a data-toggle="collapse" href="#bogonprefixes">Click</a> to expand the list of these prefixes.
+<div class="collapse" id="bogonprefixes">
+{{ write_prefix_list(bogons) }}
+</div>
+</p></li>
+
+<li><p>IPv6 prefixes are accepted only if part of the IPv6 Global Unicast space 2000::/3.</p></li> 
 </ul>
 {% endif %}
 
@@ -230,43 +241,43 @@ Prefix validity state is signalled to route server clients using the following B
 <h2>Blackhole filtering</h2>
 
 <ul>
-<li><p>Blackhole filtering of more specific IP prefixes can be requested by tagging them with the following BGP communities:
-{% if cfg.communities.blackholing|community_is_set %}
-{%	for fmt in ("std", "ext", "lrg") %}
-{%		if cfg.communities.blackholing[fmt] %}
+<li><p>Blackhole filtering of more specific IP prefixes can be requested by tagging them with the following <strong>BGP communities</strong>:
+{%	if cfg.communities.blackholing|community_is_set %}
+{%		for fmt in ("std", "ext", "lrg") %}
+{%			if cfg.communities.blackholing[fmt] %}
 {{ cfg.communities.blackholing[fmt] }}, 
-{%		endif %}
-{%	endfor %}
-{% endif %}
+{%			endif %}
+{%		endfor %}
+{%	endif %}
 65535:666 (<a href="https://tools.ietf.org/html/rfc7999#section-5">BLACKHOLE</a> well-known community)
 </p></li>
 
 <li><p>By default, prefixes are 
-{% if cfg.blackhole_filtering.announce_to_client %}
-propagated to all the clients unless they have been explicitly configured to not receive them.
-{% else %}
-not propagated to the clients unless they have been explicitly configured to receive them.
-{% endif %}
+{%	if cfg.blackhole_filtering.announce_to_client %}
+<strong>propagated</strong> to all the clients unless they have been explicitly configured to not receive them.
+{%	else %}
+<strong>not propagated</strong> to the clients unless they have been explicitly configured to receive them.
+{%	endif %}
 </p></li>
 
-{% for af in (4, 6) %}
-{%	if af == 4 %}
-{%		set policy="policy_ipv4" %}
-{%		set bn="rewrite_next_hop_ipv4" %}
-{%	else %}
-{%		set policy="policy_ipv6" %}
-{%		set bn="rewrite_next_hop_ipv6" %}
-{%	endif %}
-{%	if cfg.blackhole_filtering[policy] == "propagate-unchanged" %}
-<li><p>IPv{{ af }} prefixes are propagated unchanged to clients.</p></li>
-{%	else %}
-<li><p>IPv{{ af }} prefixes are propagated to clients after their NEXT_HOP attribute has been rewritten to {{ cfg.blackhole_filtering[bn] }}.</p></li>
-{%	endif %}
-{% endfor %}
+{%	for af in (4, 6) %}
+{%		if af == 4 %}
+{%			set policy="policy_ipv4" %}
+{%			set bn="rewrite_next_hop_ipv4" %}
+{%		else %}
+{%			set policy="policy_ipv6" %}
+{%			set bn="rewrite_next_hop_ipv6" %}
+{%		endif %}
+{%		if cfg.blackhole_filtering[policy] == "propagate-unchanged" %}
+<li><p>IPv{{ af }} prefixes are propagated <strong>unchanged</strong> to clients.</p></li>
+{%		else %}
+<li><p>IPv{{ af }} prefixes are propagated to clients after their <strong>NEXT_HOP attribute has been rewritten</strong> to {{ cfg.blackhole_filtering[bn] }}.</p></li>
+{%		endif %}
+{% 	endfor %}
+<li><p>Before being announced to clients, all the prefixes are tagged with the BLACKHOLE well-known community.</p></li>
+
+<li><p>Blackhole filtering requests bypass any RPKI validation check and min/max length check.</p></li>
 {% endif %}
-
-<li><p>All the prefixes are announced to clients after being tagged with the BLACKHOLE well-known community.</p></li>
-
 </ul>
 
 
@@ -276,10 +287,10 @@ not propagated to the clients unless they have been explicitly configured to rec
 <table class="table table-striped">
   <thead>
     <tr>
-      <td>Function</td>
-      <td>Standard</td>
-      <td>Extended</td>
-      <td>Large</td>
+      <th>Function</th>
+      <th>Standard</th>
+      <th>Extended</th>
+      <th>Large</th>
     </tr>
   </thead>
   <tbody>
@@ -297,7 +308,6 @@ not propagated to the clients unless they have been explicitly configured to rec
   </tbody>
 </table>
 
-<h1><font color=red>WORK IN PROGRESS</font></h1>
 
 </div>
 </body>

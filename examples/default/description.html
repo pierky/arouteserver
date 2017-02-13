@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+     content="width=device-width, initial-scale=1, user-scalable=yes">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+
+
+
+<h1>Configuration of route server 192.0.2.2 at AS999</h1>
+
+<h2>BGP sessions default configuration</h2>
+
+<ul>
+<li><p><strong>Passive</strong> sessions are configured toward neighbors.</p></li>
+
+<li><p>GTSM (Generalized TTL Security Mechanism - <a href="//tools.ietf.org/html/rfc5082">RFC5082</a>) is <strong>disabled</strong> on sessions toward the neighbors.</p></li>
+
+<li><p><strong>ADD-PATH</strong> capability (<a href="//tools.ietf.org/html/rfc7911">RFC7911</a>) is <strong>not</strong> negotiated by default.</p></li>
+</ul>
+
+
+
+<h2>Route server general behaviours</h2>
+
+<ul>
+<li><p>Route server ASN is <strong>not prepended</strong> to the AS_PATH of routes announced to clients (<a href="https://tools.ietf.org/html/rfc7947#section-2.2.2.1">RFC7947 section 2.2.2.1</a>).</p></li>
+
+<li><p>Route server <strong>does  implement</strong> path-hiding mitigation techniques (<a href="https://tools.ietf.org/html/rfc7947#section-2.3.1">RFC7947 section 2.3.1</a>).</p></li>
+</ul>
+
+
+
+<h2>Default filtering policy</h2>
+
+
+
+<h3>NEXT_HOP attribute</h3>
+
+<ul>
+<li><p>The route server verifies that the NEXT_HOP attribute of routes received from a client matches the <strong>IP address of the client itself</strong>
+.
+</p></li>
+</ul>
+
+
+
+<h3>AS_PATH attribute</h3>
+
+<ul>
+<li><p>Prefixes whose <strong>AS_PATH is longer than 32</strong> ASNs are rejected.</p></li>
+
+<li><p>The <strong>left-most ASN</strong> in the AS_PATH of any route announced to the route server must be the ASN of the announcing client.</p></li>
+
+<li><p>Prefixes whose AS_PATH contains <a href="http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html"><strong>private or invalid ASNs</strong></a> are rejected.</p></li>
+
+</ul>
+
+
+
+<h3>IRRDBs prefix/origin ASN enforcement</h3>
+
+<ul>
+<li><p>
+Origin ASN validity is
+<strong>enforced</strong>. Prefixes whose origin ASN is not authorized by the client's AS-SET are rejected.
+</p></li>
+
+<li><p>Announced prefixes validity is
+<strong>enforced</strong>. Prefixes that are not part of the client's AS-SET are rejected.
+</p></li>
+
+</ul>
+
+
+
+<h3>RPKI validation</h3>
+
+<ul>
+
+<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI validation</a> of prefixes received by the route server is <strong>disabled</strong>.</p></li>
+
+</ul>
+
+
+
+
+
+
+<h3>Min/max prefix length</h3>
+
+<ul>
+<li>
+<p>Only prefixes whose length is in the following range are accepted by the route server:</p>
+	<ul>
+	<li>IPv4: 8-24</li>
+	<li>IPv6: 12-48</li>
+	</ul>
+</li>
+</ul>
+
+
+
+
+
+
+</ul>
+
+
+
+<h2>Announcement control via BGP communities</h2>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Standard</th>
+      <th>Extended</th>
+      <th>Large</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  
+  
+
+  
+  
+  
+
+  
+  
+  
+  </tbody>
+</table>
+
+
+</div>
+</body>
+</html>

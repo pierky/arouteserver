@@ -52,6 +52,8 @@ for d in */; do
 		cat $d/README.rst >> $DOCS_DIR/EXAMPLES.rst
 		echo "" >> $DOCS_DIR/EXAMPLES.rst
 		echo "https://github.com/pierky/arouteserver/blob/master/examples/$EXAMPLE_NAME" >> $DOCS_DIR/EXAMPLES.rst
+		echo "" >> $DOCS_DIR/EXAMPLES.rst
+		echo "See the \`textual representation of this configuration <_static/examples_$EXAMPLE_NAME.html>\`_." >> $DOCS_DIR/EXAMPLES.rst
 	fi
 done
 
@@ -61,23 +63,46 @@ cd $ROOT
 
 echo "Generating examples configurations"
 
-CFG_FILE="var/arouteserver.yml"
+function RenderExample() {
+	CFG_FILE="var/arouteserver.yml"
 
-CMD="./scripts/arouteserver build --cfg $CFG_FILE --general config.d/general.yml --clients config.d/clients.yml --bogons config.d/bogons.yml"
+	DST="$1" ; shift
+	COMMAND="$1" ; shift
+	GENERAL="$1" ; shift
+	CLIENTS="$1" ; shift
+	BOGONS="$1" ; shift
+
+	CMD="./scripts/arouteserver $COMMAND --cfg $CFG_FILE --general $GENERAL --clients $CLIENTS --bogons $BOGONS"
+
+	if [ "$COMMAND" == "build" ]; then
+		IP_VER="$1" ; shift
+		$CMD --ip-ver $IP_VER -o examples/$DST/bird$IP_VER.conf
+	elif [ "$COMMAND" == "html" ]; then
+		$CMD -o examples/$DST/description.html
+		cp examples/$DST/description.html $DOCS_DIR/_static/examples_$DST.html
+	else
+		echo "Command unknown: $COMMAND"
+	fi
+}
+
 
 echo "Building example: default, IPv4"
-$CMD --ip-ver 4 -o examples/default/bird4.conf
+RenderExample "default" "build" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml" 4
 
 echo "Building example: default, IPv6"
-$CMD --ip-ver 6 -o examples/default/bird6.conf
+RenderExample "default" "build" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml" 6
 
-CMD="./scripts/arouteserver build --cfg $CFG_FILE --general examples/rich/general.yml --clients examples/rich/clients.yml --bogons config.d/bogons.yml"
+echo "Building example HTML: default"
+RenderExample "default" "html" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml"
 
 echo "Building example: rich, IPv4"
-$CMD --ip-ver 4 -o examples/rich/bird4.conf
+RenderExample "rich" "build" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml" 4
 
 echo "Building example: rich, IPv6"
-$CMD --ip-ver 6 -o examples/rich/bird6.conf
+RenderExample "rich" "build" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml" 6
+
+echo "Building example HTML: rich"
+RenderExample "rich" "html" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml"
 
 # ----------------------------------------------------
 

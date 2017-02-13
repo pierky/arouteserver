@@ -10,6 +10,8 @@ BIRD configurations built using the default ``general.yml`` and ``clients.yml`` 
 
 https://github.com/pierky/arouteserver/blob/master/examples/default
 
+See the `textual representation of this configuration <_static/examples_default.html>`_.
+
 Feature-rich example
 --------------------
 
@@ -24,3 +26,5 @@ Configurations built using the files provided in the ``examples/rich`` directory
 - Control communities allow selective announcement control and prepending.
 
 https://github.com/pierky/arouteserver/blob/master/examples/rich
+
+See the `textual representation of this configuration <_static/examples_rich.html>`_.

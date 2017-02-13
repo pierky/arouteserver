@@ -17,6 +17,17 @@ It produces the route server configuration and saves it on ``/etc/bird/bird4.con
 Other commands
 --------------
 
+Textual representation
+**********************
+
+To build an HTML textual representation of route server's options and policies, the ``html`` command can be used:
+
+  .. code:: bash
+
+    arouteserver html -o /var/www/html/rs_description.html
+
+This command writes an HTML page that contains a brief textual representation of route server's policies. An example can be found `here <_static/examples_rich.html>`_.
+
 Initialize a custom live test scenario
 **************************************
 

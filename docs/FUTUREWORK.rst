@@ -7,7 +7,6 @@ Short term
 - New feature: custom informative BGP communities
 - Add options for bgpq3 (sources)
 - Doc: contributing section
-- Templates: textual representation of configurations
 
 Mid term
 --------

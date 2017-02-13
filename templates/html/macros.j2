@@ -2,24 +2,25 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <td>Prefix</td>
-      <td>Length</td>
-      <td>Ge</td>
-      <td>Le</td>
-      <td>Comment</td>
+      <th>Prefix</th>
+      <th>More specific</th>
+      <th>Comment</th>
     </tr>
   </thead>
   <tbody>
 {% if prefix_list %}
 {%	for entry in prefix_list if entry.prefix is current_ipver %}
     <tr>
-      <td>{{ entry.prefix }}</td>
-      <td>{{ entry.length }}</td>
+      <td>{{ entry.prefix }}/{{ entry.length }}</td>
       {% if not entry.exact %}
-      <td>{{ entry.ge or entry.length }}</td>
-      <td>{{ entry.le or entry.max_length }}</td>
+      {%	if (not entry.ge or entry.ge == entry.length ) and (not entry.le or entry.le == entry.max_length) %}
+      <td>any more specific prefix</td>
+      {%	else %}
+      <td>with len in the
+      {% if not entry.ge %}{{ entry.length }}{% else %}{{ entry.ge }}{% endif %}-{% if not entry.le %}{{ entry.max_length }}{% else %}{{ entry.le }}{% endif %} range</td>
+      {%	endif %}
       {% else %}
-      <td colspan=2>exact</td>
+      <td>only the exact prefix</td>
       {% endif %}
       <td>{{ entry.comment }}</td>
     </tr>
