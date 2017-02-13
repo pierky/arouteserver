@@ -43,7 +43,7 @@ class ASSet(IRRDBTools):
                       "{} from IRRdb".format(self.object_name))
 
         self.load_data()
-    
+
         # list of int
         self.asns = self.raw_data
 

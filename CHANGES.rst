@@ -1,6 +1,11 @@
 Change log
 ==========
 
+not released
+------------
+
+- The ``filtering.rpsl`` section of general and clients configuration files has been renamed into ``filtering.irrdb``.
+
 v0.1.0a10
 ---------
 
