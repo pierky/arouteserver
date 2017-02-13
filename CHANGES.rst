@@ -6,6 +6,7 @@ not released
 
 - The ``filtering.rpsl`` section of general and clients configuration files has been renamed into ``filtering.irrdb``.
 - The command line argument ``--template-dir`` has been renamed into ``--templates-dir``.
+- New options in the program's configuration file: ``bgpq3_host`` and ``bgpq3_sources``, used to set bgpq3 ``-h`` and ``-S`` arguments when gathering info from IRRDBs.
 
 v0.1.0a10
 ---------

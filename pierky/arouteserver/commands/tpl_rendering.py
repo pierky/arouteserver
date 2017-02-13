@@ -109,6 +109,8 @@ class TemplateRenderingCommands(ARouteServerCommand):
             "cache_dir": self.get_cfg_path("cache_dir"),
             "cache_expiry": self.get_cfg_val("cache_expiry"),
             "bgpq3_path": self.get_cfg_val("bgpq3_path"),
+            "bgpq3_host": self.get_cfg_val("bgpq3_host"),
+            "bgpq3_sources": self.get_cfg_val("bgpq3_sources"),
             "template_dir": self.get_cfg_path("templates_dir"),
             "template_name": self.get_cfg_val("template_name"),
             "ip_ver": self.args.ip_ver,

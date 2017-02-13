@@ -27,11 +27,17 @@ from .errors import IRRDBToolsError
 
 class IRRDBTools(CachedObject):
 
+    BGPQ3_DEFAULT_HOST = "rr.ntt.net"
+    BGPQ3_DEFAULT_SOURCES = ("RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,"
+                             "BBOI,BELL,GT,JPIRR,LEVEL3,RADB,RGNET,"
+                             "SAVVIS,TC")
+
     def __init__(self, *args, **kwargs):
         CachedObject.__init__(self, *args, **kwargs)
         self.bgpq3_path = kwargs.get("bgpq3_path")
-
-    pass
+        self.bgpq3_host = kwargs.get("bgpq3_host", self.BGPQ3_DEFAULT_HOST)
+        self.bgpq3_sources = kwargs.get("bgpq3_sources",
+                                        self.BGPQ3_DEFAULT_SOURCES)
 
 class ASSet(IRRDBTools):
 
@@ -52,6 +58,8 @@ class ASSet(IRRDBTools):
 
     def _get_data(self):
         cmd = [self.bgpq3_path]
+        cmd += ["-h", self.bgpq3_host]
+        cmd += ["-S", self.bgpq3_sources]
         cmd += ["-3"]
         cmd += ["-j"]
         cmd += ["-f", "1"]
@@ -62,7 +70,7 @@ class ASSet(IRRDBTools):
             out = subprocess.check_output(cmd)
         except Exception as e:
             raise IRRDBToolsError(
-                "Can't get AS-SET data for {}: {}".format(
+                "Can't get list of authorized ASNs for {}: {}".format(
                     self.object_name, str(e)
                 )
             )
@@ -100,6 +108,8 @@ class RSet(IRRDBTools):
 
     def _get_data(self):
         cmd = [self.bgpq3_path]
+        cmd += ["-h", self.bgpq3_host]
+        cmd += ["-S", self.bgpq3_sources]
         cmd += ["-3"]
         cmd += ["-4"] if self.ip_ver == 4 else ["-6"]
         cmd += ["-A"]
@@ -111,7 +121,7 @@ class RSet(IRRDBTools):
             out = subprocess.check_output(cmd)
         except Exception as e:
             raise IRRDBToolsError(
-                "Can't get R-SET data for {} IPv{}: {}".format(
+                "Can't get authorized prefix list for {} IPv{}: {}".format(
                     self.object_name, self.ip_ver, str(e)
                 )
             )

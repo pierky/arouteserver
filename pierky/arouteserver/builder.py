@@ -29,7 +29,7 @@ from .config.roa import ConfigParserROAEntries
 from .errors import MissingDirError, MissingFileError, BuilderError, \
                     ARouteServerError, PeeringDBError, PeeringDBNoInfoError, \
                     MissingArgumentError
-from .irrdb import ASSet, RSet
+from .irrdb import ASSet, RSet, IRRDBTools
 from .cached_objects import CachedObject
 from .peering_db import PeeringDBNet
 
@@ -69,7 +69,9 @@ class ConfigBuilder(object):
 
     def __init__(self, template_dir=None, template_name=None,
                  cache_dir=None, cache_expiry=CachedObject.DEFAULT_EXPIRY,
-                 bgpq3_path="bgpq3", ip_ver=None,
+                 bgpq3_path="bgpq3", bgpq3_host=IRRDBTools.BGPQ3_DEFAULT_HOST,
+                 bgpq3_sources=IRRDBTools.BGPQ3_DEFAULT_SOURCES,
+                 ip_ver=None,
                  cfg_general=None, cfg_bogons=None, cfg_clients=None,
                  cfg_roas=None):
 
@@ -93,6 +95,8 @@ class ConfigBuilder(object):
         self.cache_expiry = cache_expiry
 
         self.bgpq3_path = bgpq3_path
+        self.bgpq3_host = bgpq3_host
+        self.bgpq3_sources = bgpq3_sources
 
         try:
             with open(os.path.join(self.cache_dir, "write_test"), "w") as f:
@@ -147,6 +151,8 @@ class ConfigBuilder(object):
         try:
             asns = ASSet(as_set,
                             bgpq3_path=self.bgpq3_path,
+                            bgpq3_host=self.bgpq3_host,
+                            bgpq3_sources=self.bgpq3_sources,
                             cache_dir=self.cache_dir,
                             cache_expiry=self.cache_expiry).asns
             if not asns:
@@ -172,6 +178,8 @@ class ConfigBuilder(object):
             try:
                 prefixes = RSet(as_set, ip_ver,
                                 bgpq3_path=self.bgpq3_path,
+                                bgpq3_host=self.bgpq3_host,
+                                bgpq3_sources=self.bgpq3_sources,
                                 cache_dir=self.cache_dir,
                                 cache_expiry=self.cache_expiry).prefixes
                 if not prefixes:

@@ -19,9 +19,10 @@ import os
 import sys
 import yaml
 
+from ..irrdb import IRRDBTools
 from ..cached_objects import CachedObject
 from ..resources import get_config_dir, get_templates_dir
-from ..errors import ConfigError, ARouteServerError
+from ..errors import ConfigError, ARouteServerError, MissingFileError
 
 
 class ConfigParserProgram(object):
@@ -45,6 +46,8 @@ class ConfigParserProgram(object):
         "cache_expiry": CachedObject.DEFAULT_EXPIRY,
 
         "bgpq3_path": "bgpq3",
+        "bgpq3_host": IRRDBTools.BGPQ3_DEFAULT_HOST,
+        "bgpq3_sources": IRRDBTools.BGPQ3_DEFAULT_SOURCES,
     }
 
     def __init__(self):
@@ -55,6 +58,8 @@ class ConfigParserProgram(object):
 
     def load(self, path):
         self._reset_to_default()
+        if not os.path.exists(path):
+            raise MissingFileError(path)
         try:
             with open(path, "r") as f:
                 cfg_from_file = yaml.load(f.read())
@@ -178,11 +183,14 @@ class ConfigParserProgram(object):
         if not process_dir(templates_dir, os.path.join(dest_dir, "templates")):
             return False
 
-        self.load("{}/arouteserver.yml".format(dest_dir))
+        program_cfg_file_path = "{}/arouteserver.yml".format(dest_dir)
+        self.load(program_cfg_file_path)
 
         print("")
         print("Configuration complete!")
         print("")
+        print("- edit the {} file to configure program's options".format(
+            program_cfg_file_path))
         print("- edit the {} file to set your logging preferences".format(
             self.get_cfg_file_path("logging_config_file")))
         print("- configure route server's options and policies "

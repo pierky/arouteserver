@@ -18,7 +18,7 @@ from logging.config import fileConfig
 import os
 
 from ..config.program import program_config
-from ..errors import MissingFileError
+from ..errors import MissingFileError, ARouteServerError
 
 class ARouteServerCommand(object):
 
@@ -43,7 +43,8 @@ class ARouteServerCommand(object):
             "--cfg",
             help="ARouteServer configuration file.",
             metavar="FILE",
-            dest="cfg_program")
+            dest="cfg_program",
+            default=program_config.DEFAULT_CFG_PATH)
 
         group = parser.add_argument_group(
             title="Program configuration",
@@ -86,7 +87,15 @@ class ARouteServerCommand(object):
             logging_setted_up = True
 
         if self.args.cfg_program:
-            program_config.load(self.args.cfg_program)
+            try:
+                program_config.load(self.args.cfg_program)
+            except MissingFileError as e:
+                raise ARouteServerError(
+                    "{} - Please configure your system by running the "
+                    "'arouteserver setup' command or provide the "
+                    "program configuration file path using the "
+                    "'--cfg' argument.".format(str(e))
+                )
 
         # Logging setup: if no command line arg given, use the path from
         # program's config file.

@@ -1,4 +1,6 @@
-# Base directory where other files will be found.
+# Base path where the program will look for other files
+# and directories. Every other relative path will be
+# considered rooted at 'cfg_dir' directory.
 #cfg_dir: "/etc/arouteserver"
 
 # Logging configuration file, in Python fileConfig() format
@@ -29,6 +31,15 @@
 
 # Path to the 'bgpq3' external program.
 #bgpq3_path: "bgpq3"
+
+# Host running IRRD software used by bgpq3
+# (bgpq3 -h argument).
+# Use "host:port" to specify alternate port.
+#bgpq3_host: "rr.ntt.net"
+
+# Sources used by bgpq3
+# (bgpq3 -S argument).
+#bgpq3_sources: "RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,BBOI,BELL,GT,JPIRR,LEVEL3,RADB,RGNET,SAVVIS,TC"
 
 # Cache expiry time, in seconds.
 #cache_expiry: 43200
