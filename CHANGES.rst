@@ -1,6 +1,11 @@
 Change log
 ==========
 
+v0.1.0a10
+---------
+
+- New command to build textual representations of configurations: ``html``.
+
 v0.1.0a9
 --------
 
