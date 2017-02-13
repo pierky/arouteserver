@@ -38,7 +38,7 @@ class ConfigParserProgram(object):
         "cfg_clients": "clients.yml",
         "cfg_bogons": "bogons.yml",
 
-        "template_dir": "templates",
+        "templates_dir": "templates",
         "template_name": "main.j2",
 
         "cache_dir": "/var/lib/arouteserver",
@@ -68,7 +68,7 @@ class ConfigParserProgram(object):
 
     def get_cfg_file_path(self, cfg_key):
         assert cfg_key in ("logging_config_file", "cfg_general", "cfg_clients",
-                           "cfg_bogons", "template_dir", "cache_dir")
+                           "cfg_bogons", "templates_dir", "cache_dir")
 
         val = self.cfg[cfg_key]
         if os.path.isabs(val):

@@ -68,10 +68,12 @@ class TemplateRenderingCommands(ARouteServerCommand):
         )
 
         group.add_argument(
-            "--template-dir",
-            help="Directory where Jinja2 files are stored.",
+            "--templates-dir",
+            help="Directory where Jinja2 files are stored. This is the "
+                 "directory where the \"html\" directory and other BGP "
+                 "speaker specific directories (\"bird\") can be found.",
             metavar="DIR",
-            dest="template_dir")
+            dest="templates_dir")
 
         group.add_argument(
             "--template-file-name",
@@ -107,7 +109,7 @@ class TemplateRenderingCommands(ARouteServerCommand):
             "cache_dir": self.get_cfg_path("cache_dir"),
             "cache_expiry": self.get_cfg_val("cache_expiry"),
             "bgpq3_path": self.get_cfg_val("bgpq3_path"),
-            "template_dir": self.get_cfg_path("template_dir"),
+            "template_dir": self.get_cfg_path("templates_dir"),
             "template_name": self.get_cfg_val("template_name"),
             "ip_ver": self.args.ip_ver,
         }

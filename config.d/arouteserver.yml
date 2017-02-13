@@ -16,7 +16,10 @@
 #cfg_bogons: "bogons.yml"
 
 # Directory where Jinja2 templates are stored.
-#template_dir: "templates"
+# This is the directory where the "html" directory and
+# other BGP speaker specific directories ("bird") can be
+# found.
+#templates_dir: "templates"
 
 # Main file used to render the configuration.
 #template_name: "main.j2"

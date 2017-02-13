@@ -42,7 +42,7 @@ class InitScenarioCommand(ARouteServerCommand):
 
         skeleton_dir = get_live_test_skeleton_dir()
         dest_dir = self.args.dest_dir
-        templates_dir = program_config.get_cfg_file_path("template_dir")
+        templates_dir = program_config.get_cfg_file_path("templates_dir")
 
         if os.path.exists(dest_dir):
             raise ARouteServerError(
