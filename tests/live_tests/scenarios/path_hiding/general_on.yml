@@ -4,7 +4,7 @@ cfg:
         path_hiding: True
         add_path: True
         filtering:
-                rpsl:
+                irrdb:
                         enforce_origin_in_as_set: False
                         enforce_prefix_in_as_set: False
                         tag_as_set: False

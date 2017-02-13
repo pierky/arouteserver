@@ -1,7 +1,7 @@
 Tag prefixes/origin ASNs present/not-present in IRRDb
 *****************************************************
 
-Built to test the ``rpsl.tag_as_set`` option.
+Built to test the ``irrdb.tag_as_set`` option.
 
 Communities:
 

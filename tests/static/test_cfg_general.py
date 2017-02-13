@@ -186,21 +186,21 @@ class TestConfigParserGeneral(TestConfigParserBase):
 
     def test_tag_as_set(self):
         """{}: tag_as_set"""
-        self.assertEqual(self.cfg["filtering"]["rpsl"]["tag_as_set"], True)
-        self._test_bool_val(self.cfg["filtering"]["rpsl"], "tag_as_set")
-        self._test_mandatory(self.cfg["filtering"]["rpsl"], "tag_as_set", has_default=True)
+        self.assertEqual(self.cfg["filtering"]["irrdb"]["tag_as_set"], True)
+        self._test_bool_val(self.cfg["filtering"]["irrdb"], "tag_as_set")
+        self._test_mandatory(self.cfg["filtering"]["irrdb"], "tag_as_set", has_default=True)
 
     def test_enforce_origin_in_as_set(self):
         """{}: enforce_origin_in_as_set"""
-        self.assertEqual(self.cfg["filtering"]["rpsl"]["enforce_origin_in_as_set"], True)
-        self._test_bool_val(self.cfg["filtering"]["rpsl"], "enforce_origin_in_as_set")
-        self._test_mandatory(self.cfg["filtering"]["rpsl"], "enforce_origin_in_as_set", has_default=True)
+        self.assertEqual(self.cfg["filtering"]["irrdb"]["enforce_origin_in_as_set"], True)
+        self._test_bool_val(self.cfg["filtering"]["irrdb"], "enforce_origin_in_as_set")
+        self._test_mandatory(self.cfg["filtering"]["irrdb"], "enforce_origin_in_as_set", has_default=True)
 
     def test_enforce_prefix_in_as_set(self):
         """{}: enforce_prefix_in_as_set"""
-        self.assertEqual(self.cfg["filtering"]["rpsl"]["enforce_prefix_in_as_set"], True)
-        self._test_bool_val(self.cfg["filtering"]["rpsl"], "enforce_prefix_in_as_set")
-        self._test_mandatory(self.cfg["filtering"]["rpsl"], "enforce_prefix_in_as_set", has_default=True)
+        self.assertEqual(self.cfg["filtering"]["irrdb"]["enforce_prefix_in_as_set"], True)
+        self._test_bool_val(self.cfg["filtering"]["irrdb"], "enforce_prefix_in_as_set")
+        self._test_mandatory(self.cfg["filtering"]["irrdb"], "enforce_prefix_in_as_set", has_default=True)
 
     def test_rpki_enabled(self):
         """{}: rpki, enabled"""
@@ -521,9 +521,9 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.assertEqual(self.cfg["filtering"]["reject_invalid_as_in_as_path"], True)
         self.assertEqual(self.cfg["filtering"]["transit_free"]["action"], None)
         self.assertEqual(self.cfg["filtering"]["transit_free"]["asns"], None)
-        self.assertEqual(self.cfg["filtering"]["rpsl"]["tag_as_set"], True)
-        self.assertEqual(self.cfg["filtering"]["rpsl"]["enforce_origin_in_as_set"], True)
-        self.assertEqual(self.cfg["filtering"]["rpsl"]["enforce_prefix_in_as_set"], True)
+        self.assertEqual(self.cfg["filtering"]["irrdb"]["tag_as_set"], True)
+        self.assertEqual(self.cfg["filtering"]["irrdb"]["enforce_origin_in_as_set"], True)
+        self.assertEqual(self.cfg["filtering"]["irrdb"]["enforce_prefix_in_as_set"], True)
         self.assertEqual(self.cfg["filtering"]["rpki"]["enabled"], False)
         self.assertEqual(self.cfg["filtering"]["rpki"]["reject_invalid"], True)
         self.assertEqual(self.cfg["filtering"]["max_prefix"]["action"], None)

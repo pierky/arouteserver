@@ -24,7 +24,7 @@ from docker import InstanceError
 from pierky.arouteserver.builder import BIRDConfigBuilder
 from pierky.arouteserver.cached_objects import CachedObject
 from pierky.arouteserver.config.validators import ValidatorPrefixListEntry
-from pierky.arouteserver.rpsl import ASSet, RSet
+from pierky.arouteserver.irrdb import ASSet, RSet
 from pierky.arouteserver.tests.base import ARouteServerTestCase
 from pierky.arouteserver.tests.mock_peeringdb import mock_peering_db
 from pierky.arouteserver.tests.live_tests.instances import BGPSpeakerInstance
@@ -70,7 +70,7 @@ class LiveScenario(ARouteServerTestCase):
 
     - optionally, if it's needed by the scenario, the derived classes
       must also fill the ``AS_SET`` and ``R_SET`` dictionaries with
-      the expected content of any expanded AS-SETs used in RPSL
+      the expected content of any expanded AS-SETs used in IRRDB
       validation:
 
       - ``AS_SET``'s items must be in the format
@@ -252,7 +252,7 @@ class LiveScenario(ARouteServerTestCase):
         return cfg_file_path
 
     @classmethod
-    def mock_rpsl(cls):
+    def mock_irrdb(cls):
         def _mock_load_data_from_cache(*args, **kwargs):
             return False
 
@@ -282,10 +282,10 @@ class LiveScenario(ARouteServerTestCase):
         def _mock_save_data_to_cache(self):
             return
 
-        mock_RPSLTools_load_data_from_cache = mock.patch.object(
+        mock_IRRDBTools_load_data_from_cache = mock.patch.object(
             RSet, "load_data_from_cache"
         ).start()
-        mock_RPSLTools_load_data_from_cache.side_effect = _mock_load_data_from_cache
+        mock_IRRDBTools_load_data_from_cache.side_effect = _mock_load_data_from_cache
 
         mock_save_data_to_cache = mock.patch.object(
             CachedObject, "save_data_to_cache", autospec=True
@@ -307,7 +307,7 @@ class LiveScenario(ARouteServerTestCase):
         print("{}: setting instances up...".format(cls.SHORT_DESCR))
 
         mock_peering_db(cls._get_module_dir() + "/peeringdb_data")
-        cls.mock_rpsl()
+        cls.mock_irrdb()
         cls._setup_instances()
 
         if cls._do_not_run_instances():

@@ -29,7 +29,7 @@ from .config.roa import ConfigParserROAEntries
 from .errors import MissingDirError, MissingFileError, BuilderError, \
                     ARouteServerError, PeeringDBError, PeeringDBNoInfoError, \
                     MissingArgumentError
-from .rpsl import ASSet, RSet
+from .irrdb import ASSet, RSet
 from .cached_objects import CachedObject
 from .peering_db import PeeringDBNet
 
@@ -142,7 +142,7 @@ class ConfigBuilder(object):
         logging.info("Configuration processing completed after "
                      "{} seconds.".format(stop_time - start_time))
 
-    def enrich_config_rpsl_as_set(self, dest_descr, as_set, dest_list):
+    def enrich_config_irrdb_as_set(self, dest_descr, as_set, dest_list):
         errors = False
         try:
             asns = ASSet(as_set,
@@ -165,7 +165,7 @@ class ConfigBuilder(object):
         if errors:
             raise BuilderError()
 
-    def enrich_config_rpsl_r_set(self, dest_descr, as_set, dest_list):
+    def enrich_config_irrdb_r_set(self, dest_descr, as_set, dest_list):
         errors = False
         ip_versions = [self.ip_ver] if self.ip_ver else [4, 6]
         for ip_ver in ip_versions:
@@ -191,7 +191,7 @@ class ConfigBuilder(object):
         if errors:
             raise BuilderError()
 
-    def enrich_config_rpsl(self):
+    def enrich_config_irrdb(self):
         self.as_sets = []
         errors = False
 
@@ -238,19 +238,19 @@ class ConfigBuilder(object):
 
         # Add to as_sets all the AS-SETs reported in the 'clients' section.
         for client in self.cfg_clients.cfg["clients"]:
-            client_rpsl = client["cfg"]["filtering"]["rpsl"]
-            client_rpsl["as_set_ids"] = []
+            client_irrdb = client["cfg"]["filtering"]["irrdb"]
+            client_irrdb["as_set_ids"] = []
 
-            if not client_rpsl["enforce_origin_in_as_set"] and \
-                not client_rpsl["enforce_prefix_in_as_set"] and \
-                not self.cfg_general["filtering"]["rpsl"]["tag_as_set"]:
+            if not client_irrdb["enforce_origin_in_as_set"] and \
+                not client_irrdb["enforce_prefix_in_as_set"] and \
+                not self.cfg_general["filtering"]["irrdb"]["tag_as_set"]:
                     # Client does not require AS-SETs info to be gathered.
                     continue
 
-            if client_rpsl["as_sets"]:
+            if client_irrdb["as_sets"]:
                 # Client has its own specific set of AS-SETs.
-                for as_set in client_rpsl["as_sets"]:
-                    client_rpsl["as_set_ids"].append(
+                for as_set in client_irrdb["as_sets"]:
+                    client_irrdb["as_set_ids"].append(
                         use_as_set(as_set, "client {}".format(client["id"]))
                     )
                 continue
@@ -264,7 +264,7 @@ class ConfigBuilder(object):
             if asn in self.cfg_asns.cfg["asns"] and \
                 self.cfg_asns.cfg["asns"][asn]["as_sets"]:
                 for as_set in self.cfg_asns.cfg["asns"][asn]["as_sets"]:
-                    client_rpsl["as_set_ids"].append(
+                    client_irrdb["as_set_ids"].append(
                         use_as_set(as_set, "client {}".format(client["id"]))
                     )
                 continue
@@ -275,7 +275,7 @@ class ConfigBuilder(object):
                                 client["id"], client["asn"]
                             ))
 
-            client_rpsl["as_set_ids"].append(
+            client_irrdb["as_set_ids"].append(
                 use_as_set("AS{}".format(client["asn"]),
                            "client {}".format(client["id"]))
             )
@@ -291,14 +291,14 @@ class ConfigBuilder(object):
         for as_set in self.as_sets:
             used_by = ", ".join(as_set["used_by"])
             try:
-                self.enrich_config_rpsl_as_set(used_by, as_set["name"],
+                self.enrich_config_irrdb_as_set(used_by, as_set["name"],
                                                as_set["asns"])
             except ARouteServerError as e:
                 errors = True
                 if str(e):
                     logging.error(str(e))
             try:
-                self.enrich_config_rpsl_r_set(used_by, as_set["name"],
+                self.enrich_config_irrdb_r_set(used_by, as_set["name"],
                                               as_set["prefixes"])
             except ARouteServerError as e:
                 errors = True
@@ -384,9 +384,9 @@ class ConfigBuilder(object):
             )
             client["id"] = client_id
 
-        # RPSL info.
+        # IRRDB info.
         try:
-            self.enrich_config_rpsl()
+            self.enrich_config_irrdb()
         except ARouteServerError as e:
             errors = True
             if str(e):

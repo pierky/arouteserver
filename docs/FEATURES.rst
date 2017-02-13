@@ -22,7 +22,7 @@ How it works
           ip:
           - "192.0.2.11"
           - "2001:db8:1:1::11"
-          rpsl:
+          irrdb:
             as_sets:
               - "AS-AS111MAIN"
         ...

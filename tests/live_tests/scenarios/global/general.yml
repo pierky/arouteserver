@@ -19,7 +19,7 @@ cfg:
                 transit_free:
                   action: "reject"
                   asns: 174, 3
-                rpsl:
+                irrdb:
                         tag_as_set: False
                 rpki:
                         enabled: True

@@ -126,7 +126,7 @@ cfg:
         3257, 3320, 3356, 3549, 5511, 6453, 6461,
         6762, 6830, 7018, 12956
 
-    rpsl:
+    irrdb:
       # With regards of the following two options, if no AS-SET
       # is given in the clients configuration file for the
       # specific client nor for its AS, then only the ASN

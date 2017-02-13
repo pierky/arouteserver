@@ -49,7 +49,7 @@ class MissingDirError(ARouteServerError):
 class CachedObjectsError(ARouteServerError):
     pass
 
-class RPSLToolsError(ARouteServerError):
+class IRRDBToolsError(ARouteServerError):
     pass
 
 class PeeringDBError(ARouteServerError):

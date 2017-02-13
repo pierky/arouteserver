@@ -40,7 +40,7 @@ class SkeletonScenario(LiveScenario):
 
     If it's needed by the scenario, the derived classes must also fill the
     ``AS_SET`` and ``R_SET`` dictionaries with the expected content of any
-    expanded AS-SETs used in RPSL validation:
+    expanded AS-SETs used in IRRDB validation:
 
     - ``AS_SET``'s items must be in the format
       ``<AS_SET_name>: <list_of_authorized_origin_ASNs>``.
@@ -117,13 +117,13 @@ class SkeletonScenario(LiveScenario):
     CLIENT_INSTANCE_CLASS = None
     IP_VER = None
 
-    # If needed for RPSL validation, fill this dictionary with pairs
+    # If needed for IRRDB validation, fill this dictionary with pairs
     # in the format "<AS_SET_name>": [<list_of_authorized_origin_ASNs>].
     # See the example in the class docstring above.
     AS_SET = {
     }
 
-    # If needed for RPSL validation, fill this dictionary with pairs
+    # If needed for IRRDB validation, fill this dictionary with pairs
     # in the format "<AS_SET_name>": [<list_of_authorized_prefix_IDs>].
     # See the example in the class docstring above.
     R_SET = {

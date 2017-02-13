@@ -54,7 +54,7 @@ class ConfigParserClients(ConfigParserBase):
                     "ipv6_pref_len": ValidatorIPMinMaxLen(6, mandatory=False),          # Done, not tested
                     "max_as_path_len": ValidatorMaxASPathLen(mandatory=False),          # Done
                     "reject_invalid_as_in_as_path": ValidatorBool(mandatory=False),     # Done
-                    "rpsl": {
+                    "irrdb": {
                         "as_sets": ValidatorListOf(ValidatorASSet,
                                                    mandatory=False),                    # Done
                         "enforce_origin_in_as_set": ValidatorBool(mandatory=False),     # Done

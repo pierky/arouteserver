@@ -83,7 +83,7 @@ class ConfigParserGeneral(ConfigParserBase):
                                                   default="reject"),
                         "asns": ValidatorASNList(mandatory=False)
                     },
-                    "rpsl": {
+                    "irrdb": {
                         "enforce_origin_in_as_set": ValidatorBool(default=True),    # Done
                         "enforce_prefix_in_as_set": ValidatorBool(default=True),    # Done
                         "tag_as_set": ValidatorBool(default=True)                   # Done
@@ -158,7 +158,7 @@ class ConfigParserGeneral(ConfigParserBase):
                             "networks here.")
 
         # Warning: 'tag_as_set' is on but no communities are provided
-        if self.cfg["cfg"]["filtering"]["rpsl"]["tag_as_set"]:
+        if self.cfg["cfg"]["filtering"]["irrdb"]["tag_as_set"]:
             tag_as_set_comms_found = False
             for comm in ("prefix_present_in_as_set",
                          "prefix_not_present_in_as_set",
@@ -171,7 +171,7 @@ class ConfigParserGeneral(ConfigParserBase):
                 if tag_as_set_comms_found:
                     break
             if not tag_as_set_comms_found:
-                logging.warning("The 'filtering.rpsl.tag_as_set' "
+                logging.warning("The 'filtering.irrdb.tag_as_set' "
                                 "option is set but no BGP communities "
                                 "are provided to tag prefixes.")
 

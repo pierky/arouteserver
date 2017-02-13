@@ -6,7 +6,7 @@ clients:
           description: "AS1_1 client"
           cfg:
                 filtering:
-                        rpsl:
+                        irrdb:
                                 as_sets:
                                 - "AS-AS1"
                                 - "AS-AS1_CUSTOMERS"
@@ -18,7 +18,7 @@ clients:
           cfg:
                 filtering:
                         next_hop_policy: "same-as"
-                        rpsl:
+                        irrdb:
                                 as_sets:
                                 - "AS-AS1"
                                 - "AS-AS1_CUSTOMERS"
@@ -31,7 +31,7 @@ clients:
           description: "AS2_1 client"
           cfg:
                 filtering:
-                        rpsl:
+                        irrdb:
                                 as_sets:
                                 - "AS-AS2"
                                 - "AS-AS2_CUSTOMERS"
@@ -45,7 +45,7 @@ clients:
                 passive: False
                 add_path: True
                 filtering:
-                        rpsl:
+                        irrdb:
                                 enforce_origin_in_as_set: False
                                 enforce_prefix_in_as_set: False
                         black_list_pref:

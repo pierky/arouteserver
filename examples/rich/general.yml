@@ -42,7 +42,7 @@ cfg:
         3257, 3320, 3356, 3549, 5511, 6453, 6461,
         6762, 6830, 7018, 12956
 
-    rpsl:
+    irrdb:
       enforce_origin_in_as_set: True
 
       enforce_prefix_in_as_set: True

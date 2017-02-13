@@ -70,13 +70,13 @@ In this scenario, the route server's configuration will look like this:
 IRRDBs-based filtering
 **********************
 
-The ``filtering.rpsl`` section of the configuration files allows to use IRRDBs information to filter or to tag prefixes entering the route server. Information are acquired using the external program `bgpq3 <https://github.com/snar/bgpq3>`_: installations details on :doc:`INSTALLATION` page.
+The ``filtering.irrdb`` section of the configuration files allows to use IRRDBs information to filter or to tag prefixes entering the route server. Information are acquired using the external program `bgpq3 <https://github.com/snar/bgpq3>`_: installations details on :doc:`INSTALLATION` page.
 
 One or more AS-SETs can be used to gather information about authorized origin ASNs and prefixes that a client can announce to the route server. AS-SETs can be set in the ``clients.yml`` file on a two levels basis:
 
 - within the ``asns`` section, one or more AS-SETs can be given for each ASN of the clients configured in the rest of the file;
 
-- for each client, one or more AS-SETs can be configured in the ``cfg.filtering.rpsl`` section.
+- for each client, one or more AS-SETs can be configured in the ``cfg.filtering.irrdb`` section.
 
 To gather information from the IRRDBs, at first the script uses the AS-SETs provided in the client-level configuration; if no AS-SETs are provided there, it looks to the ASN configuration. If no AS-SETs are found in both the client and the ASN configuration, only the ASN's autnum object will be used.
 
@@ -98,7 +98,7 @@ Example:
        ip: "192.0.2.11"
        cfg:
          filtering:
-           rpsl:
+           irrdb:
              as_sets:
                - "AS-AS11NETS"
      - asn: 22
@@ -107,7 +107,7 @@ Example:
        ip: "192.0.2.33"
        cfg:
          filtering:
-           rpsl:
+           irrdb:
              as_sets:
                - "AS-AS33CUSTOMERS"
      - asn: 44

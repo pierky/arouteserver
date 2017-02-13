@@ -123,7 +123,7 @@ class TestConfigParserClients(TestConfigParserBase):
             "      prepend_rs_as: True",
             "      add_path: True",
             "      filtering:",
-            "        rpsl:",
+            "        irrdb:",
             "          enforce_origin_in_as_set: False",
             "          enforce_prefix_in_as_set: False",
             "        rpki:",
@@ -149,8 +149,8 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["passive"], True)
         self.assertEqual(client["cfg"]["add_path"], False)
         self.assertEqual(client["cfg"]["prepend_rs_as"], False)
-        self.assertEqual(client["cfg"]["filtering"]["rpsl"]["enforce_origin_in_as_set"], True)
-        self.assertEqual(client["cfg"]["filtering"]["rpsl"]["enforce_prefix_in_as_set"], True)
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_origin_in_as_set"], True)
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_prefix_in_as_set"], True)
         self.assertEqual(client["cfg"]["filtering"]["rpki"]["enabled"], False)
         self.assertEqual(client["cfg"]["filtering"]["reject_invalid_as_in_as_path"], True)
         self.assertEqual(client["cfg"]["filtering"]["max_as_path_len"], 32)
@@ -167,8 +167,8 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["passive"], False)
         self.assertEqual(client["cfg"]["add_path"], True)
         self.assertEqual(client["cfg"]["prepend_rs_as"], True)
-        self.assertEqual(client["cfg"]["filtering"]["rpsl"]["enforce_origin_in_as_set"], False)
-        self.assertEqual(client["cfg"]["filtering"]["rpsl"]["enforce_prefix_in_as_set"], False)
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_origin_in_as_set"], False)
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_prefix_in_as_set"], False)
         self.assertEqual(client["cfg"]["filtering"]["rpki"]["enabled"], True)
         self.assertEqual(client["cfg"]["filtering"]["reject_invalid_as_in_as_path"], False)
         self.assertEqual(client["cfg"]["filtering"]["max_as_path_len"], 64)

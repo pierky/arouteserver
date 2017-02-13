@@ -22,10 +22,10 @@ import time
 
 from .cached_objects import CachedObject
 from .config.validators import ValidatorPrefixListEntry
-from .errors import RPSLToolsError
+from .errors import IRRDBToolsError
 
 
-class RPSLTools(CachedObject):
+class IRRDBTools(CachedObject):
 
     def __init__(self, *args, **kwargs):
         CachedObject.__init__(self, *args, **kwargs)
@@ -33,10 +33,10 @@ class RPSLTools(CachedObject):
 
     pass
 
-class ASSet(RPSLTools):
+class ASSet(IRRDBTools):
 
     def __init__(self, object_name, **kwargs):
-        RPSLTools.__init__(self, **kwargs)
+        IRRDBTools.__init__(self, **kwargs)
         self.object_name = object_name
 
         logging.debug("Getting origin ASNs for "
@@ -61,7 +61,7 @@ class ASSet(RPSLTools):
         try:
             out = subprocess.check_output(cmd)
         except Exception as e:
-            raise RPSLToolsError(
+            raise IRRDBToolsError(
                 "Can't get AS-SET data for {}: {}".format(
                     self.object_name, str(e)
                 )
@@ -70,7 +70,7 @@ class ASSet(RPSLTools):
         try:
             data = json.loads(out)
         except Exception as e:
-            raise RPSLToolsError(
+            raise IRRDBToolsError(
                 "Error while parsing bgpq3 output "
                 "for the following command: '{}': {}".format(
                     " ".join(cmd), str(e)
@@ -79,10 +79,10 @@ class ASSet(RPSLTools):
 
         return data["asn_list"]
 
-class RSet(RPSLTools):
+class RSet(IRRDBTools):
 
     def __init__(self, object_name, ip_ver, **kwargs):
-        RPSLTools.__init__(self, **kwargs)
+        IRRDBTools.__init__(self, **kwargs)
         self.object_name = object_name
         assert ip_ver in (4, 6)
         self.ip_ver = ip_ver
@@ -110,7 +110,7 @@ class RSet(RPSLTools):
         try:
             out = subprocess.check_output(cmd)
         except Exception as e:
-            raise RPSLToolsError(
+            raise IRRDBToolsError(
                 "Can't get R-SET data for {} IPv{}: {}".format(
                     self.object_name, self.ip_ver, str(e)
                 )
@@ -119,7 +119,7 @@ class RSet(RPSLTools):
         try:
             data = json.loads(out)
         except Exception as e:
-            raise RPSLToolsError(
+            raise IRRDBToolsError(
                 "Error while parsing bgpq3 output "
                 "for the following command: '{}': {}".format(
                     " ".join(cmd), str(e)

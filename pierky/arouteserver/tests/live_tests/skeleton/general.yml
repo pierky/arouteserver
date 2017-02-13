@@ -3,7 +3,7 @@ cfg:
         router_id: "192.0.2.2"
         path_hiding: True
         filtering:
-                rpsl:
+                irrdb:
                         tag_as_set: False
                         enforce_origin_in_as_set: False
                         enforce_prefix_in_as_set: False

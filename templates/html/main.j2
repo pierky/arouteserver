@@ -99,7 +99,7 @@ List of "transit-free" networks' ASNs:
 <ul>
 <li><p>
 Origin ASN validity is
-{% if not cfg.filtering.rpsl.enforce_origin_in_as_set %}
+{% if not cfg.filtering.irrdb.enforce_origin_in_as_set %}
 <strong>not enforced.</strong>
 {% else %}
 <strong>enforced</strong>. Prefixes whose origin ASN is not authorized by the client's AS-SET are rejected.
@@ -107,14 +107,14 @@ Origin ASN validity is
 </p></li>
 
 <li><p>Announced prefixes validity is
-{% if not cfg.filtering.rpsl.enforce_prefix_in_as_set %}
+{% if not cfg.filtering.irrdb.enforce_prefix_in_as_set %}
 <strong>not enforced</strong>
 {% else %}
 <strong>enforced</strong>. Prefixes that are not part of the client's AS-SET are rejected.
 {% endif %}
 </p></li>
 
-{% if cfg.filtering.rpsl.tag_as_set and
+{% if cfg.filtering.irrdb.tag_as_set and
 	(cfg.communities.prefix_present_in_as_set|community_is_set or
 	 cfg.communities.prefix_not_present_in_as_set|community_is_set or
 	 cfg.communities.origin_present_in_as_set|community_is_set or

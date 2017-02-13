@@ -25,7 +25,7 @@ asns:
     #       ip: "192.0.2.11"
     #       cfg:
     #         filtering:
-    #           rpsl:
+    #           irrdb:
     #             as_sets:
     #               - "AS-AS1-CUSTOMERS"
     #    - asn: 2
@@ -71,7 +71,7 @@ clients:
     # settings:
     #
     # - filtering.black_list_pref
-    # - filtering.rpsl.as_sets
+    # - filtering.irrdb.as_sets
     #
     # Please refer to the general configuration file for more
     # details.
@@ -107,7 +107,7 @@ clients:
 
         #reject_invalid_as_in_as_path: True
 
-        rpsl:
+        irrdb:
 
           # Client's AS-SET(s) can be set here.
           # If not AS-SETs are provided here, those from the 'asns'
