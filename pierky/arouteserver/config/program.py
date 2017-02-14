@@ -65,11 +65,16 @@ class ConfigParserProgram(object):
             with open(path, "r") as f:
                 cfg_from_file = yaml.load(f.read())
                 if cfg_from_file:
+                    for key in cfg_from_file:
+                        if key not in ConfigParserProgram.DEFAULT:
+                            raise ConfigError(
+                                "Unknown statement: {}".format(key)
+                            )
                     self.cfg.update(cfg_from_file)
         except Exception as e:
-            logging.error("An error occurred while reading global "
+            logging.error("An error occurred while reading program "
                           "configuration at {}: {}".format(path, str(e)),
-                          exc_info=True)
+                          exc_info=not isinstance(e, ARouteServerError))
             raise ConfigError()
 
     def get_cfg_file_path(self, cfg_key):
