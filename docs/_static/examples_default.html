@@ -54,11 +54,11 @@
 <h3>AS_PATH attribute</h3>
 
 <ul>
-<li><p>Prefixes whose <strong>AS_PATH is longer than 32</strong> ASNs are rejected.</p></li>
+<li><p>Routes whose <strong>AS_PATH is longer than 32</strong> ASNs are rejected.</p></li>
 
 <li><p>The <strong>left-most ASN</strong> in the AS_PATH of any route announced to the route server must be the ASN of the announcing client.</p></li>
 
-<li><p>Prefixes whose AS_PATH contains <a href="http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html"><strong>private or invalid ASNs</strong></a> are rejected.</p></li>
+<li><p>Routes whose AS_PATH contains <a href="http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html"><strong>private or invalid ASNs</strong></a> are rejected.</p></li>
 
 </ul>
 
@@ -69,11 +69,11 @@
 <ul>
 <li><p>
 Origin ASN validity is
-<strong>enforced</strong>. Prefixes whose origin ASN is not authorized by the client's AS-SET are rejected.
+<strong>enforced</strong>. Routes whose origin ASN is not authorized by the client's AS-SET are rejected.
 </p></li>
 
 <li><p>Announced prefixes validity is
-<strong>enforced</strong>. Prefixes that are not part of the client's AS-SET are rejected.
+<strong>enforced</strong>. Routes whose prefix is not part of the client's AS-SET are rejected.
 </p></li>
 
 </ul>
@@ -84,7 +84,7 @@ Origin ASN validity is
 
 <ul>
 
-<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI validation</a> of prefixes received by the route server is <strong>disabled</strong>.</p></li>
+<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI validation</a> of routes received by the route server is <strong>disabled</strong>.</p></li>
 
 </ul>
 
