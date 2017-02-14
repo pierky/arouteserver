@@ -14,8 +14,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import re
 
 from base import ARouteServerCommand
+from ..ask import ask, ask_yes_no
 from ..config.program import program_config
 from ..errors import ARouteServerError
 from ..resources import get_live_test_skeleton_dir
@@ -40,6 +42,32 @@ class InitScenarioCommand(ARouteServerCommand):
         if not self.setup():
             return False
 
+        print("Please provide an identifier for the new scenario, "
+              "something that will be used as the name of the "
+              "Python classes where the test functions will be "
+              "implemented.")
+        print("Examples: TagASSet, BGPCommunities, MaxPrefix, PathHiding")
+        print("")
+        res, class_name = ask("Scenario class name:")
+
+        if not res:
+            print("")
+            print("Aborted.")
+            return False
+
+        if class_name.lower().endswith("scenario"):
+            class_name = class_name[:-8]
+
+        if not re.match("[a-z_][a-z_0-9]+", class_name, re.IGNORECASE):
+            print("")
+            print("Invalid name. "
+                  "It must be in the format "
+                  "(letter|\"_\") (letter | digit | \"_\")*")
+            print("Aborted.")
+            return False
+
+        class_name = "{}Scenario".format(class_name.capitalize())
+
         skeleton_dir = get_live_test_skeleton_dir()
         dest_dir = self.args.dest_dir
         templates_dir = program_config.get_cfg_file_path("templates_dir")
@@ -49,7 +77,16 @@ class InitScenarioCommand(ARouteServerCommand):
                 "The directory {} already exists".format(dest_dir)
             )
 
+        res, yes_or_no = ask_yes_no(
+            "The {} directory will be created: proceed?".format(dest_dir),
+            default="yes"
+        )
+
         print("")
+
+        if not res or yes_or_no != "yes":
+            print("Aborted.")
+            return False
 
         try:
             os.makedirs(dest_dir)
@@ -86,7 +123,13 @@ class InitScenarioCommand(ARouteServerCommand):
             try:
                 with open(src_path, "r") as s:
                     with open(dst_path, "w") as d:
-                        d.write(s.read())
+                        content = s.read()
+                        if filename in ("base.py", "test_bird4.py",
+                                        "test_bird6.py"):
+                            content = content.replace(
+                                "SkeletonScenario", class_name
+                            )
+                        d.write(content)
             except Exception as e:
                 raise ARouteServerError(
                     "An error occurred while copying {} "

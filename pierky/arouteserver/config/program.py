@@ -19,6 +19,7 @@ import os
 import sys
 import yaml
 
+from ..ask import ask, ask_yes_no
 from ..irrdb import IRRDBTools
 from ..cached_objects import CachedObject
 from ..resources import get_config_dir, get_templates_dir
@@ -88,19 +89,13 @@ class ConfigParserProgram(object):
         config_dir = get_config_dir()
         templates_dir = get_templates_dir()
 
-        sys.stdout.write("Where do you want configuration files and templates "
-                         "to be stored (default: {}): ".format(
-                             self.DEFAULT_CFG_DIR
-                         ))
-        try:
-            dest_dir = raw_input()
-        except:
+        res, dest_dir = ask("Where do you want configuration files and templates "
+                            "to be stored?", default=self.DEFAULT_CFG_DIR)
+        if not res:
             print("")
             print("Setup aborted")
             return False
 
-        if not dest_dir:
-            dest_dir = self.DEFAULT_CFG_DIR
         dest_dir = dest_dir.strip()
 
         if dest_dir != self.DEFAULT_CFG_DIR:
@@ -108,19 +103,11 @@ class ConfigParserProgram(object):
                   "default one: use the --cfg command line argument to "
                   "allow the program to find the needed files.")
 
-        sys.stdout.write("Do you confirm you want ARouteServer files to be "
-                         "stored at {}: [YES/no] ".format(dest_dir))
-        try:
-            yes_no = raw_input()
-        except:
-            print("")
-            print("Setup aborted")
-            return False
+        res, yes_or_no = ask_yes_no(
+            "Do you confirm you want ARouteServer files to be "
+            "stored at {}?".format(dest_dir), default="yes")
 
-        if not yes_no:
-            yes_no = "yes"
-
-        if yes_no.lower() != "yes":
+        if not res or yes_or_no != "yes":
             print("")
             print("Setup aborted")
             return False
@@ -141,17 +128,15 @@ class ConfigParserProgram(object):
             )
 
             if os.path.exists(d):
-                sys.stdout.write("already exists: "
-                                 "do you want to overwrite it [yes/NO]: ")
-                try:
-                    yes_no = raw_input()
-                except:
+                ret, yes_no = ask_yes_no(
+                    "already exists: do you want to overwrite it?",
+                    default="no"
+                )
+
+                if not ret:
                     return False
 
-                if not yes_no:
-                    yes_no = "no"
-
-                if yes_no.lower() != "yes":
+                if yes_no != "yes":
                     print("skipping")
                     return True
 
