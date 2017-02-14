@@ -5,7 +5,7 @@ cfg:
   # The route server's router ID.
   router_id: "192.0.2.2"
 
-  # Prepend the route server's AS number to the AS_PATH of prefixes
+  # Prepend the route server's AS number to the AS_PATH of routes
   # that it announces to clients.
   # https://tools.ietf.org/html/rfc7947#section-2.2.2.1
   #
@@ -15,7 +15,8 @@ cfg:
   prepend_rs_as: False
 
   # Path-hiding mitigation technique: if True, enable path
-  # hiding mitigation. (https://tools.ietf.org/html/rfc7947#section-2.3.1)
+  # hiding mitigation.
+  # (https://tools.ietf.org/html/rfc7947#section-2.3.1)
   # BIRD: the 'secondary' option is used.
   #   "Usually, if an export filter rejects a selected route, no
   #   other route is propagated for that network. This option
@@ -96,7 +97,7 @@ cfg:
     # Default: 32
     max_as_path_len: 32
 
-    # Reject prefixes which carry private/invalid AS numbers in
+    # Reject routes which carry private/invalid AS numbers in
     # their AS_PATH.
     # http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html
     #
@@ -109,11 +110,11 @@ cfg:
       # Transit-free networks' ASNs should appear in AS_PATH only
       # in the left-most position.
       #
-      # If a policy is given here, it is applied to prefixes whose
+      # If a policy is given here, it is applied to routes whose
       # AS_PATH contains one of the following ASN in any position
       # different from the first:
       #
-      # - reject: the prefix is discarded.
+      # - reject: the route is discarded.
       # - warning: a warning is logged.
       #
       # Default: none
@@ -136,7 +137,7 @@ cfg:
       # More details on the Configuration page on ReadTheDocs:
       # https://arouteserver.readthedocs.io/en/latest/CONFIG.html
 
-      # Accept only prefixes whose origin ASN is registered in
+      # Accept only routes whose origin ASN is registered in
       # the expanded AS-SET of the announcing client.
       #
       # Can be overwritten on a client-by-client basis.
@@ -152,10 +153,10 @@ cfg:
       # Default: True
       enforce_prefix_in_as_set: True
 
-      # Tag prefixes which are (not) present in a client's AS-SET.
+      # Tag routes whose prefix is (not) present in a client's AS-SET.
       # If a client's 'enforce_[origin|prefix]in_as_set' is True
       # then unauthorized prefixes are rejected and not tagged.
-      # BGP communities used to tag these prefixes are
+      # BGP communities used to tag these routes are
       # '[origin|prefix]_(not_)present_in_as_set'.
       #
       # Default: True
@@ -166,22 +167,22 @@ cfg:
       # be used: rtrlib (https://github.com/rtrlib/bird-rtrlib-cli).
       # The name of the table where send the ROAs to is 'RPKI'.
       #
-      # Enable RPKI ROAs validation for prefixes received from
+      # Enable RPKI ROAs validation for routes received from
       # clients.
       # https://tools.ietf.org/html/rfc6811
       #
-      # Prefixes announced by the route server to the clients are
+      # Routes announced by the route server to the clients are
       # tagged with BGP communities 'roa_valid', 'roa_invalid' and
       # 'roa_unknown' (provided that they are configured within the
       # 'communities' section below).
-      # If 'reject_invalid' is True, INVALID prefixes are rejected.
+      # If 'reject_invalid' is True, INVALID routes are rejected.
       #
       # Default: False
       enabled: False
 
-      # When an INVALID prefix is received, the route server rejects
+      # When an INVALID route is received, the route server rejects
       # it.
-      # If this is False, INVALID prefixes are accepted and simply
+      # If this is False, INVALID routes are accepted and simply
       # announced to clients after being tagged with the 'roa_invalid'
       # BGP community.
       #
@@ -247,15 +248,15 @@ cfg:
     # not implemented in the route server.
     #
     # Options:
-    # - propagate-unchanged: the prefix is accepted and propagated
+    # - propagate-unchanged: the route is accepted and propagated
     #   to clients unchanged. If missing, the BLACKHOLE well-known
     #   community 65535:666 is added. Other local 'blackholing'
     #   communities are scrubbed.
-    #   It's up to the receiving client to accept the prefix and to
-    #   discard traffic toward it.
+    #   It's up to the receiving client to accept the route and to
+    #   discard traffic toward its prefix.
     # - rewrite-next-hop: same behaviour of 'propagate-unchanged'
     #   option; in addition, the route server rewrites the NEXT_HOP
-    #   attribute of the advertised prefix to the address of the
+    #   attribute of the advertised route with the address of the
     #   blackhole next-hop (BN). BN should have a unique MAC
     #   address determined by ARP/NDP used to filter L2 frames
     #   entering clients ports on the basis of their destination
@@ -271,13 +272,13 @@ cfg:
     #rewrite_next_hop_ipv4: ""
     #rewrite_next_hop_ipv6: ""
 
-    # How tagged prefixes should be propagated to clients.
+    # How tagged routes should be propagated to clients.
     # This configuration statement works together with the same
     # client-level 'blackhole_filtering.announce_to_client' option.
-    # If here 'announce_to_client' is True, tagged prefixes
+    # If here 'announce_to_client' is True, tagged routes
     # are announced to clients unless they have their
     # 'announce_to_client' option explicitly set to False.
-    # If here 'announce_to_client' is False, tagged prefixes
+    # If here 'announce_to_client' is False, tagged routes
     # are announced to clients only if they have the
     # 'announce_to_client' option explicitly set to True.
     #
@@ -293,7 +294,7 @@ cfg:
     # The 'rs_as' macro is replaced with the route server ASN given
     # in cfg.rs_as.
     # The 'peer_as' macro, where allowed, is replaced with the ASN
-    # of the client the prefix is announced to.
+    # of the client the route is announced to.
 
     # Prefix/origin AS present in client's AS-SET.
     #
@@ -302,7 +303,7 @@ cfg:
     # tagged with the following BGP communities, provided that they
     # are set below.
     #
-    # The following communities are scrubbed from inbound prefixes.
+    # The following communities are scrubbed from inbound routes.
     #
     # The 'rs_as' macro can be used here.
     prefix_present_in_as_set:
@@ -324,11 +325,11 @@ cfg:
 
     # RPKI status.
     #
-    # If rpki.enable = True, VALID, INVALID and UNKNOWN prefixes
+    # If rpki.enable = True, VALID, INVALID and UNKNOWN routes
     # are tagged with the following BGP communities, provided that
     # they are set below.
     #
-    # The following communities are scrubbed from inbound prefixes.
+    # The following communities are scrubbed from inbound routes.
     #
     # The 'rs_as' macro can be used here.
     roa_valid:
@@ -347,14 +348,14 @@ cfg:
     # Blackhole filtering.
     #
     # If a policy is given in 'blackhole_filtering', it is applied to
-    # prefixes tagged with one of the following communities:
+    # routes tagged with one of the following communities:
     # - the BLACKHOLE well-known community 65535:666, that is always
     #   implemented if a 'blackhole_filtering' policy is given
     #   (https://tools.ietf.org/html/rfc7999#section-5)
     # - one of the following 'blackholing' Standard, Large or
     #   Extended BGP communities.
     #
-    # The following community is scrubbed from outbound prefixes.
+    # The following community is scrubbed from outbound routes.
     #
     # The 'rs_as' macro can be used here.
     blackholing:
@@ -364,13 +365,13 @@ cfg:
  
     # Control communities
     # 
-    # Prefixes that are tagged with the following community are not
+    # Routes that are tagged with the following community are not
     # announced to any client, unless they are also tagged with the
-    # 'announce_to_peer' communities: in this case, such prefixes are
+    # 'announce_to_peer' communities: in this case, such routes are
     # announced only to the clients whose ASN matches the value given
     # in the 'announce_to_peer' communities.
     #
-    # The following community is scrubbed from outbound prefixes.
+    # The following community is scrubbed from outbound routes.
     #
     # The 'rs_as' macro can be used here.
     do_not_announce_to_any:
@@ -378,14 +379,14 @@ cfg:
       #lrg:
       #ext:
 
-    # Prefixes that are tagged with the following community are not
+    # Routes that are tagged with the following community are not
     # announced to clients whose ASN matches the value given in the
     # community itself.
-    # If a prefix is tagged with the two conflicting communities
-    # 'do_not_announce_to_peer' and 'announce_to_peer', the prefix
+    # If a route is tagged with the two conflicting communities
+    # 'do_not_announce_to_peer' and 'announce_to_peer', the route
     # is not advertised to the peer.
     #
-    # The following community is scrubbed from outbound prefixes.
+    # The following community is scrubbed from outbound routes.
     #
     # The 'rs_as' macro can be used here.
     # The 'peer_as' macro must appear in the last part of values.
@@ -394,15 +395,15 @@ cfg:
       #lrg:
       #ext:
 
-    # Prefixes that are tagged with the following community are
+    # Routes that are tagged with the following community are
     # announced to clients whose ASN matches the value given in the
     # community itself even if they are tagged with the
     # 'do_not_announce_to_any' community.
-    # If a prefix is tagged with the two conflicting communities
-    # 'do_not_announce_to_peer' and 'announce_to_peer', the prefix
+    # If a route is tagged with the two conflicting communities
+    # 'do_not_announce_to_peer' and 'announce_to_peer', the route
     # is not advertised to the peer.
     #
-    # The following community is scrubbed from outbound prefixes.
+    # The following community is scrubbed from outbound routes.
     #
     # The 'rs_as' macro can be used here.
     # The 'peer_as' macro must appear in the last part of values.
@@ -411,15 +412,15 @@ cfg:
       #lrg:
       #ext:
 
-    # Prefixes that are tagged with the following communities are
+    # Routes that are tagged with the following communities are
     # propagated to all the clients with an AS_PATH prepended once,
     # twice or thrice with the announcing client's ASN.
-    # If a prefix is tagged with both a 'prepend_x_to_any' and a 
+    # If a route is tagged with both a 'prepend_x_to_any' and a
     # 'prepend_x_to_peer' community, only the latter will be
     # considered when announcing to the clients whose ASN match the
     # one given in its value.
     #
-    # The following communities are scrubbed from outbound prefixes.
+    # The following communities are scrubbed from outbound routes.
     #
     # The 'rs_as' macro can be used here.
     prepend_once_to_any:
@@ -436,16 +437,16 @@ cfg:
       #ext:
       #
 
-    # Prefixes that are tagged with the following communities are
+    # Routes that are tagged with the following communities are
     # propagated to the clients whose ASN matches the one given in
     # the community with an AS_PATH prepended once, twice or thrice
     # with the announcing client's ASN.
-    # If a prefix is tagged with both a 'prepend_x_to_any' and a 
+    # If a route is tagged with both a 'prepend_x_to_any' and a
     # 'prepend_x_to_peer' community, only the latter will be
     # considered when announcing to the clients whose ASN match the
     # one given in its value.
     #
-    # The following communities are scrubbed from outbound prefixes.
+    # The following communities are scrubbed from outbound routes.
     #
     # The 'rs_as' macro can be used here.
     # The 'peer_as' macro must appear in the last part of values.

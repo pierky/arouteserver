@@ -65,17 +65,17 @@ or one of the <strong>IP addresses of other clients from the same AS</strong>. T
 <h3>AS_PATH attribute</h3>
 
 <ul>
-<li><p>Prefixes whose <strong>AS_PATH is longer than {{ cfg.filtering.max_as_path_len }}</strong> ASNs are rejected.</p></li>
+<li><p>Routes whose <strong>AS_PATH is longer than {{ cfg.filtering.max_as_path_len }}</strong> ASNs are rejected.</p></li>
 
 <li><p>The <strong>left-most ASN</strong> in the AS_PATH of any route announced to the route server must be the ASN of the announcing client.</p></li>
 
 {% if cfg.filtering.reject_invalid_as_in_as_path %}
-<li><p>Prefixes whose AS_PATH contains <a href="http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html"><strong>private or invalid ASNs</strong></a> are rejected.</p></li>
+<li><p>Routes whose AS_PATH contains <a href="http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html"><strong>private or invalid ASNs</strong></a> are rejected.</p></li>
 {% endif %}
 
 {% if cfg.filtering.transit_free.action %}
 <li><p>
-Prefixes with an AS_PATH containing one or more of the following <strong>"transit-free" networks</strong>' ASNs
+Routes with an AS_PATH containing one or more of the following <strong>"transit-free" networks</strong>' ASNs
 {%	if cfg.filtering.transit_free.action == "reject" %}
 are <strong>rejected</strong>.
 {%	else %}
@@ -102,7 +102,7 @@ Origin ASN validity is
 {% if not cfg.filtering.irrdb.enforce_origin_in_as_set %}
 <strong>not enforced.</strong>
 {% else %}
-<strong>enforced</strong>. Prefixes whose origin ASN is not authorized by the client's AS-SET are rejected.
+<strong>enforced</strong>. Routes whose origin ASN is not authorized by the client's AS-SET are rejected.
 {% endif %}
 </p></li>
 
@@ -110,7 +110,7 @@ Origin ASN validity is
 {% if not cfg.filtering.irrdb.enforce_prefix_in_as_set %}
 <strong>not enforced</strong>
 {% else %}
-<strong>enforced</strong>. Prefixes that are not part of the client's AS-SET are rejected.
+<strong>enforced</strong>. Routes whose prefix is not part of the client's AS-SET are rejected.
 {% endif %}
 </p></li>
 
@@ -120,7 +120,7 @@ Origin ASN validity is
 	 cfg.communities.origin_present_in_as_set|community_is_set or
 	 cfg.communities.origin_not_present_in_as_set|community_is_set)%}
 <li><p>
-Prefix <strong>validity state</strong> is signalled to route server clients using the following <strong>BGP communities</strong>:
+Route <strong>validity state</strong> is signalled to route server clients using the following <strong>BGP communities</strong>:
 <table class="table">
 <thead>
   <tr>
@@ -147,14 +147,14 @@ Prefix <strong>validity state</strong> is signalled to route server clients usin
 
 <ul>
 
-<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI validation</a> of prefixes received by the route server is <strong>{% if cfg.filtering.rpki.enabled %}enabled{% else %}disabled{% endif %}</strong>.</p></li>
+<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI validation</a> of routes received by the route server is <strong>{% if cfg.filtering.rpki.enabled %}enabled{% else %}disabled{% endif %}</strong>.</p></li>
 
 {% if cfg.filtering.rpki.enabled %}
 {%	if cfg.filtering.rpki.reject_invalid %}
-<li><p>When an INVALID prefix is received by the route server, <strong>it is rejected</strong>.</p></li>
+<li><p>When an INVALID route is received by the route server, <strong>it is rejected</strong>.</p></li>
 {%	endif %}
 <li><p>
-Prefix <strong>validity state</strong> is signalled to route server clients using the following <strong>BGP communities</strong>:
+Route <strong>validity state</strong> is signalled to route server clients using the following <strong>BGP communities</strong>:
 	<table class="table">
 	<thead>
 	  <tr>
@@ -252,7 +252,7 @@ Prefix <strong>validity state</strong> is signalled to route server clients usin
 65535:666 (<a href="https://tools.ietf.org/html/rfc7999#section-5">BLACKHOLE</a> well-known community)
 </p></li>
 
-<li><p>By default, prefixes are 
+<li><p>By default, routes are 
 {%	if cfg.blackhole_filtering.announce_to_client %}
 <strong>propagated</strong> to all the clients unless they have been explicitly configured to not receive them.
 {%	else %}
@@ -269,12 +269,12 @@ Prefix <strong>validity state</strong> is signalled to route server clients usin
 {%			set bn="rewrite_next_hop_ipv6" %}
 {%		endif %}
 {%		if cfg.blackhole_filtering[policy] == "propagate-unchanged" %}
-<li><p>IPv{{ af }} prefixes are propagated <strong>unchanged</strong> to clients.</p></li>
+<li><p>IPv{{ af }} routes are propagated <strong>unchanged</strong> to clients.</p></li>
 {%		else %}
-<li><p>IPv{{ af }} prefixes are propagated to clients after their <strong>NEXT_HOP attribute has been rewritten</strong> to {{ cfg.blackhole_filtering[bn] }}.</p></li>
+<li><p>IPv{{ af }} routes are propagated to clients after their <strong>NEXT_HOP attribute has been rewritten</strong> to {{ cfg.blackhole_filtering[bn] }}.</p></li>
 {%		endif %}
 {% 	endfor %}
-<li><p>Before being announced to clients, all the prefixes are tagged with the BLACKHOLE well-known community.</p></li>
+<li><p>Before being announced to clients, all the routes are tagged with the BLACKHOLE well-known community.</p></li>
 
 <li><p>Blackhole filtering requests bypass any RPKI validation check and min/max length check.</p></li>
 {% endif %}

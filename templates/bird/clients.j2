@@ -37,7 +37,7 @@ function prefix_is_in_{{ client.id }}_as_set() {
 
 function next_hop_is_valid_for_{{ client.id }}()
 {
-	# Checks if NEXT_HOP is one of those allowed for prefixes announced by {{ client.id }}
+	# Checks if NEXT_HOP is one of those allowed for routes announced by {{ client.id }}
 	{% if client.cfg.filtering.next_hop_policy == "strict" %}
 	if bgp_next_hop = {{ client.ip }} then return true;
 	{% else %}
@@ -157,8 +157,8 @@ filter receive_from_{{ client.id }} {
 		accept "blackhole filtering request from {{ client.id }} - ACCEPTING ", net;
 	} else {
 		{% if cfg.filtering.rpki.enabled %}
-		if !prefix_passes_rpki_validation() then
-			reject "RPKI, prefix is INVALID - REJECTING ", net;
+		if !route_passes_rpki_validation() then
+			reject "RPKI, route is INVALID - REJECTING ", net;
 		{% endif %}
 
 		# Prefix: length
@@ -187,8 +187,8 @@ filter announce_to_{{ client.id }} {
 	}
 
 	# BGP control communities
-	if !prefix_can_be_announced_to({{ client.asn }}) then
-		reject "prefix didn't pass control communities checks - NOT ANNOUNCING ", net, " TO {{ client.id }}";
+	if !route_can_be_announced_to({{ client.asn }}) then
+		reject "route didn't pass control communities checks - NOT ANNOUNCING ", net, " TO {{ client.id }}";
 
 	apply_prepend({{ client.asn }});
 

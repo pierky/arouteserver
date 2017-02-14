@@ -70,7 +70,7 @@ In this scenario, the route server's configuration will look like this:
 IRRDBs-based filtering
 **********************
 
-The ``filtering.irrdb`` section of the configuration files allows to use IRRDBs information to filter or to tag prefixes entering the route server. Information are acquired using the external program `bgpq3 <https://github.com/snar/bgpq3>`_: installations details on :doc:`INSTALLATION` page.
+The ``filtering.irrdb`` section of the configuration files allows to use IRRDBs information to filter or to tag routes entering the route server. Information are acquired using the external program `bgpq3 <https://github.com/snar/bgpq3>`_: installations details on :doc:`INSTALLATION` page.
 
 One or more AS-SETs can be used to gather information about authorized origin ASNs and prefixes that a client can announce to the route server. AS-SETs can be set in the ``clients.yml`` file on a two levels basis:
 
@@ -123,7 +123,7 @@ With this configuration, the following values will be used to run the bgpq3 prog
 RPKI-based filtering
 ********************
 
-RPKI-based validation of prefixes can be configured using the general ``filtering.rpki`` section. Depending on the ``reject_invalid`` configuration, prefixes can be rejected or tagged with BGP communities.
+RPKI-based validation of routes can be configured using the general ``filtering.rpki`` section. Depending on the ``reject_invalid`` configuration, routes can be rejected or tagged with BGP communities.
 
 To acquire RPKI data and load them into BIRD, a couple of external tools from the `rtrlib <http://rpki.realmv6.org/>`_ suite are used: `rtrlib <https://github.com/rtrlib>`_ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`_. One or more trusted local validating caches should be used to get and validate RPKI data before pushing them to BIRD. An overview is provided on the `rtrlib GitHub wiki <https://github.com/rtrlib/rtrlib/wiki/Background>`_, where also an `usage guide <https://github.com/rtrlib/rtrlib/wiki/Usage-of-the-RTRlib>`_ can be found.
 

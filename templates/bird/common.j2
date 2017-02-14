@@ -90,7 +90,7 @@ int set transit_free_asns;
 
 # This function scrubs BGP communities used by the route server
 # for signaling purpose toward its clients. (RFC7454, Section 11)
-# It must be applied on prefixes entering the route server.
+# It must be applied on routes entering the route server.
 function scrub_communities_in() {
 {% for name in cfg.communities if cfg.communities[name].type == "outbound" %}
 {% if cfg.communities[name]|community_is_set %}
@@ -102,7 +102,7 @@ function scrub_communities_in() {
 
 # This function scrubs BGP communities used by clients to instruct
 # the route server to perform some actions.
-# It must be applied on prefixes leaving the route server.
+# It must be applied on routes leaving the route server.
 function scrub_communities_out() {
 {% for name in cfg.communities if cfg.communities[name].type == "inbound" %}
 {% if cfg.communities[name]|community_is_set %}
@@ -112,7 +112,7 @@ function scrub_communities_out() {
 {% endfor %}
 }
 
-# This function verifies if the prefix is tagged with one of
+# This function verifies if the route is tagged with one of
 # the blackhole filtering communities.
 function is_blackhole_filtering_request() {
 {% if ( ip_ver == 4 and cfg.blackhole_filtering.policy_ipv4 ) or
@@ -124,8 +124,8 @@ function is_blackhole_filtering_request() {
 	return false;
 }
 
-# This function must be applied to outgoing prefixes.
-# It applies the blackhole filtering policy to the current prefix.
+# This function must be applied to outgoing routes.
+# It applies the blackhole filtering policy to the current route.
 function apply_blackhole_filtering_policy() {
 {% if ip_ver == 4 and cfg.blackhole_filtering.policy_ipv4 == "propagate-unchanged" %}
 	# Configured policy: propagate-unchanged
@@ -146,10 +146,10 @@ function apply_blackhole_filtering_policy() {
 {% endif %}
 }
 
-# This function verifies if the current prefix can be announced to
+# This function verifies if the current route can be announced to
 # the given client on the basis of the attached control BGP
 # communities.
-function prefix_can_be_announced_to(int peer_as) {
+function route_can_be_announced_to(int peer_as) {
 	{% if cfg.communities.do_not_announce_to_peer|community_is_set %}
 	# do_not_announce_to_peer
 	{{- match_communities(cfg.communities.do_not_announce_to_peer, "return false;") }}
@@ -165,7 +165,7 @@ function prefix_can_be_announced_to(int peer_as) {
 	return true;
 }
 
-# This function verifies if the current prefix matches one of the
+# This function verifies if the current route matches one of the
 # control communities in charge of prepending client's ASN.
 function apply_prepend(int peer_as) {
 	{% if cfg.communities.prepend_once_to_peer|community_is_set %}
@@ -215,11 +215,11 @@ function add_rpki_community(string comm_name) {
 }
 
 # This functions performs RPKI validation of the current
-# prefix and adds the informative communities.
-# If the prefix is INVALID and the 'rpki.reject_invalid'
+# route and adds the informative communities.
+# If the route is INVALID and the 'rpki.reject_invalid'
 # option is True the functions return false; otherwise it
 # returns true.
-function prefix_passes_rpki_validation () {
+function route_passes_rpki_validation () {
 	case roa_check(RPKI) {
 		ROA_VALID: add_rpki_community("valid");
 		ROA_UNKNOWN: add_rpki_community("unknown");

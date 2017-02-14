@@ -420,7 +420,7 @@ class BasicScenario(LiveScenario):
 
         with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.AS2, self.DATA["AS3_cc_AS1only"])
-        self.log_contains(self.rs, "prefix didn't pass control communities checks - NOT ANNOUNCING {} TO {{AS2}}".format(self.DATA["AS3_cc_AS1only"]), {"AS2": self.AS2})
+        self.log_contains(self.rs, "route didn't pass control communities checks - NOT ANNOUNCING {} TO {{AS2}}".format(self.DATA["AS3_cc_AS1only"]), {"AS2": self.AS2})
 
     def test_080_control_communities_not_AS1(self):
         """{}: control communities, announce to all except AS1"""
@@ -432,7 +432,7 @@ class BasicScenario(LiveScenario):
         for inst in (self.AS1_1, self.AS1_2):
             with self.assertRaisesRegexp(AssertionError, "Routes not found."):
                 self.receive_route(inst, self.DATA["AS3_cc_not_AS1"])
-            self.log_contains(self.rs, "prefix didn't pass control communities checks - NOT ANNOUNCING {} TO {{other_inst}}".format(self.DATA["AS3_cc_not_AS1"]), {"other_inst": inst})
+            self.log_contains(self.rs, "route didn't pass control communities checks - NOT ANNOUNCING {} TO {{other_inst}}".format(self.DATA["AS3_cc_not_AS1"]), {"other_inst": inst})
 
     def test_080_control_communities_none(self):
         """{}: control communities, don't announce to any"""
@@ -440,7 +440,7 @@ class BasicScenario(LiveScenario):
         for inst in (self.AS1_1, self.AS1_2, self.AS2):
             with self.assertRaisesRegexp(AssertionError, "Routes not found."):
                 self.receive_route(inst, self.DATA["AS3_cc_none"])
-            self.log_contains(self.rs, "prefix didn't pass control communities checks - NOT ANNOUNCING {} TO {{other_inst}}".format(self.DATA["AS3_cc_none"]), {"other_inst": inst})
+            self.log_contains(self.rs, "route didn't pass control communities checks - NOT ANNOUNCING {} TO {{other_inst}}".format(self.DATA["AS3_cc_none"]), {"other_inst": inst})
 
     def test_081_control_communities_prepend1any(self):
         """{}: control communities, prepend once to any"""

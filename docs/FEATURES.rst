@@ -66,7 +66,7 @@ Features
 - Control and informative communities:
 
   - prefix/origin ASN present/not present in **IRRDB data**;
-  - prefix **RPKI** status;
+  - routes **RPKI** validity state;
   - do (not) announce to any / **peer**;
   - **prepend** to any / **peer**.
 

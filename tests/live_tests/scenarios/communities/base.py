@@ -95,7 +95,7 @@ class BGPCommunitiesScenario(LiveScenario):
                            std_comms=[], ext_comms=[], lrg_comms=[])
         with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.AS131073, pref)
-        msg = ("prefix didn't pass control communities checks - "
+        msg = ("route didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
         self.log_contains(self.rs, msg, {"inst": self.AS131073})
 
@@ -110,7 +110,7 @@ class BGPCommunitiesScenario(LiveScenario):
                            std_comms=[], ext_comms=[], lrg_comms=[])
         with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.AS131073, pref)
-        msg = ("prefix didn't pass control communities checks - "
+        msg = ("route didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
         self.log_contains(self.rs, msg, {"inst": self.AS131073})
 
@@ -125,7 +125,7 @@ class BGPCommunitiesScenario(LiveScenario):
                            std_comms=[], ext_comms=[], lrg_comms=[])
         with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.AS131073, pref)
-        msg = ("prefix didn't pass control communities checks - "
+        msg = ("route didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
         self.log_contains(self.rs, msg, {"inst": self.AS131073})
 
@@ -140,7 +140,7 @@ class BGPCommunitiesScenario(LiveScenario):
                            std_comms=[], ext_comms=[], lrg_comms=[])
         with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.AS1, pref)
-        msg = ("prefix didn't pass control communities checks - "
+        msg = ("route didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
         self.log_contains(self.rs, msg, {"inst": self.AS1})
 
@@ -155,7 +155,7 @@ class BGPCommunitiesScenario(LiveScenario):
                            std_comms=[], ext_comms=[], lrg_comms=[])
         with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.AS1, pref)
-        msg = ("prefix didn't pass control communities checks - "
+        msg = ("route didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
         self.log_contains(self.rs, msg, {"inst": self.AS1})
 

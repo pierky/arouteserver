@@ -133,9 +133,9 @@ class PathHidingScenario(LiveScenario):
         """{}: AS1 wants rs to not announce to AS3 and AS4"""
         self.receive_route(self.rs, self.DATA["AS101_pref_ok1"], self.AS1,
                            std_comms=["0:3", "0:4"])
-        self.log_contains(self.rs, "prefix didn't pass control communities checks - NOT ANNOUNCING {} TO {{AS3}}".format(
+        self.log_contains(self.rs, "route didn't pass control communities checks - NOT ANNOUNCING {} TO {{AS3}}".format(
             self.DATA["AS101_pref_ok1"]), {"AS3": self.AS3})
-        self.log_contains(self.rs, "prefix didn't pass control communities checks - NOT ANNOUNCING {} TO {{AS4}}".format(
+        self.log_contains(self.rs, "route didn't pass control communities checks - NOT ANNOUNCING {} TO {{AS4}}".format(
             self.DATA["AS101_pref_ok1"]), {"AS4": self.AS4})
 
 class PathHidingScenario_MitigationOn(PathHidingScenario):
