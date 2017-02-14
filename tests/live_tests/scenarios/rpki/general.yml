@@ -1,0 +1,19 @@
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+  filtering:
+    irrdb:
+      enforce_origin_in_as_set: False
+      enforce_prefix_in_as_set: False
+      tag_as_set: False
+    rpki:
+      enabled: True
+      reject_invalid: False
+  communities:
+    roa_valid:
+      std: "64512:1"
+    roa_invalid:
+      std: "64512:2"
+    roa_unknown:
+      std: "64512:3"
+

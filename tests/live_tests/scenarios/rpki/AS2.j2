@@ -1,0 +1,43 @@
+router id 192.0.2.22;
+
+log "/var/log/bird.log" all;
+log syslog all;
+debug protocols all;
+
+protocol device { }
+
+protocol static own_prefixes {
+	route {{ data.AS2_invalid1 }} reject;
+	route {{ data.AS2_badlen }} reject;
+	route {{ data.AS2_valid1 }} reject;
+	route {{ data.AS2_valid2 }} reject;
+}
+
+filter to_the_rs {
+	if net = {{ data.AS2_badlen }} then {
+		bgp_path.delete(2);
+		bgp_path.prepend(101);
+		bgp_path.prepend(2);
+	}
+	if net = {{ data.AS2_valid1 }} then {
+		bgp_path.delete(2);
+		bgp_path.prepend(101);
+		bgp_path.prepend(2);
+	}
+	if net = {{ data.AS2_valid2 }} then {
+		bgp_path.delete(2);
+		bgp_path.prepend(101);
+		bgp_path.prepend(2);
+	}
+	accept;
+}
+
+protocol bgp the_rs {
+	local as 2;
+	neighbor {{ data.rs_IPAddress }} as 999;
+	import all;
+	export filter to_the_rs;
+	connect delay time 1;
+	connect retry time 1;
+}
+

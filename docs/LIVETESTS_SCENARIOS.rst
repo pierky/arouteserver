@@ -9,4 +9,5 @@
    LIVETESTS_SCENARIOS_max_prefix
    LIVETESTS_SCENARIOS_path_hiding
    LIVETESTS_SCENARIOS_rich_example
+   LIVETESTS_SCENARIOS_rpki
    LIVETESTS_SCENARIOS_tag_as_set
