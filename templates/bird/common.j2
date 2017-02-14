@@ -196,6 +196,9 @@ function apply_prepend(int peer_as) {
 }
 
 {% if cfg.filtering.rpki.enabled %}
+# This function adds the BGP communities used to
+# inform clients about the RPKI validity state of
+# a route.
 function add_rpki_community(string comm_name) {
 	if comm_name = "valid" then {
 {% if cfg.communities.roa_valid|community_is_set %}
@@ -223,7 +226,7 @@ function route_passes_rpki_validation () {
 	case roa_check(RPKI) {
 		ROA_VALID: add_rpki_community("valid");
 		ROA_UNKNOWN: add_rpki_community("unknown");
-		ROA_INVALID: add_rpki_community("invalid");{% if cfg.filtering.rpki.enabled and cfg.filtering.rpki.reject_invalid %} return false;{% endif %}
+		ROA_INVALID: add_rpki_community("invalid");{% if cfg.filtering.rpki.enabled and cfg.filtering.rpki.reject_invalid %} return false;{{ "\n" }}{% endif %}
 	}
 	return true;
 }
