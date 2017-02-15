@@ -26,19 +26,22 @@ To run built-in live tests, the full repository must be cloned locally and Docke
 
    .. code:: bash
 
-      cd tests/live_tests/
-
-      # build the image from the Dockerfile
-      docker build -t pierky/bird:1.6.3 -f dockerfiles/Dockerfile.bird .
+      # build the image using the Dockerfile
+      # from https://github.com/pierky/dockerfiles
+      mkdir ~/dockerfiles
+      cd ~/dockerfiles
+      curl -o Dockerfile.bird -L https://raw.githubusercontent.com/pierky/dockerfiles/master/bird/1.6.3/Dockerfile
+      docker build -t pierky/bird:1.6.3 -f Dockerfile.bird .
 
       # or pull it from Dockerhub
       docker pull pierky/bird:1.6.3
 
-2. Run the Python testunit using ``nose``:
+2. Run the Python unittest using ``nose``:
 
    .. code:: bash
 
-      nosetests -vs 
+      # from within the repository's root
+      nosetests -vs tests/live_tests/
 
 How it works
 ------------
