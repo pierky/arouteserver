@@ -9,3 +9,8 @@ Blog: https://blog.pierky.com Twitter: `@pierky <https://twitter.com/pierky>`_
     :target: https://arouteserver.readthedocs.org/en/latest/?badge=latest
 .. |Build Status| image:: https://travis-ci.org/pierky/arouteserver.svg?branch=master
     :target: https://travis-ci.org/pierky/arouteserver
+.. |PYPI Version| image:: https://img.shields.io/pypi/v/arouteserver.svg
+    :target: https://pypi.python.org/pypi/arouteserver/
+.. |Requirements| image:: https://requires.io/github/pierky/arouteserver/requirements.svg?branch=master
+    :target: https://requires.io/github/pierky/arouteserver/requirements/?branch=master
+    :alt: Requirements Status
