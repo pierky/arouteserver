@@ -1,21 +1,3 @@
-
-Full documentation
-------------------
-
-Full documentation can be found on ReadTheDocs: https://arouteserver.readthedocs.org/
-
-Status
-------
-
-**Highly experimental**! Please consider it as a toy, far from being production ready. Looking for advices and testers.
-
-Bug? Issues?
-------------
-
-But also suggestions? New ideas?
-
-Please create an issue on GitHub at https://github.com/pierky/arouteserver/issues
-
 Author
 ------
 

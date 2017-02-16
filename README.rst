@@ -103,14 +103,16 @@ Full documentation can be found on ReadTheDocs: https://arouteserver.readthedocs
 Status
 ------
 
-**Highly experimental**! Please consider it as a toy, far from being production ready. Looking for advices and testers.
+**Beta testing**, looking for testers and reviewers.
+
+Anyone who wants to share his/her point of views, to review the output configurations or to test them is **more than welcome**!
 
 Bug? Issues?
 ------------
 
 But also suggestions? New ideas?
 
-Please create an issue on GitHub at https://github.com/pierky/arouteserver/issues
+Please create an `issue on GitHub <https://github.com/pierky/arouteserver/issues>`_ or `drop me a message <https://pierky.com/#contactme>`_.
 
 Author
 ------

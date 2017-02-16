@@ -1,0 +1,14 @@
+Status
+------
+
+**Beta testing**, looking for testers and reviewers.
+
+Anyone who wants to share his/her point of view, to review the output configurations or to test them is **more than welcome**!
+
+Bug? Issues?
+------------
+
+But also suggestions? New ideas?
+
+Please create an `issue on GitHub <https://github.com/pierky/arouteserver/issues>`_ or `drop me a message <https://pierky.com/#contactme>`_.
+

@@ -112,6 +112,8 @@ echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > 
 echo "" >> README.rst
 cat $DOCS_DIR/README_header.txt >> README.rst
 cat $DOCS_DIR/FEATURES.rst >> README.rst
+cat $DOCS_DIR/README_fulldocs.txt >> README.rst
+cat $DOCS_DIR/STATUS.txt >> README.rst
 cat $DOCS_DIR/README_footer.txt >> README.rst
 
 # ----------------------------------------------------

@@ -1,6 +1,11 @@
 Change log
 ==========
 
+v0.1.0
+------
+
+- First beta version.
+
 v0.1.0a11
 ------------
 
