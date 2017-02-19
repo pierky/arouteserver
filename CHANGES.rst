@@ -1,13 +1,18 @@
 Change log
 ==========
 
+v0.1.1
+------
+
+- Add local static files into the route server's configuration.
+
 v0.1.0
 ------
 
 - First beta version.
 
 v0.1.0a11
-------------
+---------
 
 - The ``filtering.rpsl`` section of general and clients configuration files has been renamed into ``filtering.irrdb``.
 - The command line argument ``--template-dir`` has been renamed into ``--templates-dir``.
