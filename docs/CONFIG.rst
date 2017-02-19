@@ -132,3 +132,30 @@ BGP Communities
 
 BGP communities can be used for many features in the configurations built using ARouteServer: blackhole filtering, AS_PATH prepending, announcement control, various informative purposes (valid ASN, RPKI status, ...) and more. All these communities are referenced by *name* (or *tag*) in the configuration files and their real values are reported only once, in the ``communities`` section of the ``general.yml`` file.
 For each community, values can be set for any of the three *formats*: standard (`RFC1997 <https://tools.ietf.org/html/rfc1997>`_), extended (`RFC4360 <https://tools.ietf.org/html/rfc4360>`_/`RFC5668 <https://tools.ietf.org/html/rfc5668>`_) and large (`draft-ietf-idr-large-community <https://tools.ietf.org/html/draft-ietf-idr-large-community>`_).
+
+Site-specific custom configuration files
+****************************************
+
+Local configuration files can be used to load static site-specific options into the BGP speaker, bypassing ARouteServer configuration building logic. These files can be used to configure, for example, neighborship with peers which are not route server members or that require custom settings.
+
+In BIRD, an *include* statement is used to add local files at the end of the main configuration file:
+
+.. code::
+
+    include "*.local";
+
+Every file that is put into the same directory of the BIRD main configuration file and whose name matches the "\*.local" pattern is added to the end of the configuration. These files are not processed by ARouteServer but only by BIRD.
+
+Example: file name "01-route_collector.local" in "/etc/bird" directory:
+
+.. code::
+
+    protocol bgp RouteCollector {
+    	local as 999;
+    	neighbor 192.0.2.99 as 65535;
+    	rs client;
+       	secondary;
+    
+    	import none;
+    	export all;
+    }
