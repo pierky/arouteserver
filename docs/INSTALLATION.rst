@@ -100,3 +100,25 @@ ARouteServer uses the following external programs:
   More details: https://github.com/rtrlib/rtrlib/wiki/Installation
 
   To configure bird-rtrlib-cli please refer to the `README <https://github.com/rtrlib/bird-rtrlib-cli>`_.
+
+Upgrading
+---------
+
+To upgrade the program, download the new version...
+
+.. code:: bash
+
+    # if you cloned the repository from GitHub,
+    # from within the local repository's directory:
+    git pull origin master
+
+    # if you installed it with pip:
+    pip install --upgrade arouteserver
+
+... then sync the local templates with those distributed in the new version:
+
+.. code:: bash
+
+    arouteserver setup-templates
+
+If local templates have been edited, make a backup of your files in order to merge your changes in the new ones later.

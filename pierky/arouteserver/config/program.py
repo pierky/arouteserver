@@ -53,6 +53,8 @@ class ConfigParserProgram(object):
         "bgpq3_sources": IRRDBTools.BGPQ3_DEFAULT_SOURCES,
     }
 
+#    FINGERPTINTS_FILENAME = "fingerprints.yml"
+
     def __init__(self):
         self._reset_to_default()
 
@@ -100,7 +102,11 @@ class ConfigParserProgram(object):
     @staticmethod
     def cp_file(s, d):
         filename = os.path.basename(s)
-        sys.stdout.write("- {}... ".format(filename))
+
+        def write_title():
+            sys.stdout.write("- {}... ".format(filename))
+
+        write_title()
 
         if os.path.exists(d):
             if filecmp.cmp(s, d, shallow=False):
@@ -115,6 +121,8 @@ class ConfigParserProgram(object):
             if not ret:
                 return False
 
+            write_title()
+
             if yes_no != "yes":
                 print("skipping")
                 return True
@@ -128,6 +136,8 @@ class ConfigParserProgram(object):
 
     @staticmethod
     def process_dir(s, d):
+        print("Populating {}...".format(d))
+
         for filename in os.listdir(s):
             if os.path.isdir(os.path.join(s, filename)):
                 ConfigParserProgram.mk_dir(os.path.join(d, filename))
@@ -145,11 +155,36 @@ class ConfigParserProgram(object):
 
         return True
 
-    def setup_templates(self, templates_dir):
+#    @staticmethod
+#    def get_fingerprints(d):
+#
+#        hasher = hashlib.sha512()
+#
+#        def iterate_dir(d, dic):
+#            for filename in os.listdir(d):
+#                path = os.path.join(d, filename)
+#                if os.path.isdir(path):
+#                    dic[filename] = {}
+#                    iterate_dir(path, dic[filename])
+#                else:
+#                    with open(path, "rb") as f:
+#                        buf = f.read()
+#                        hasher.update(buf)
+#                        dic[filename] = hasher.hexdigest()
+#
+#        res = {}
+#        iterate_dir(d, res)
+#        return res
+
+    def setup_templates(self, templates_dir=None):
         distrib_templates_dir = get_templates_dir()
-        ConfigParserProgram.mk_dir(templates_dir)
+
+        dest_dir = templates_dir or self.get_cfg_file_path("templates_dir")
+
+        ConfigParserProgram.mk_dir(dest_dir)
+
         return ConfigParserProgram.process_dir(
-            distrib_templates_dir, templates_dir
+            distrib_templates_dir, dest_dir
         )
 
     def setup(self):

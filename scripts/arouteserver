@@ -41,6 +41,7 @@ def main():
     sub_parsers.required = True
 
     SetupCommand.attach_to_parser(sub_parsers)
+    SetupTemplatesCommand.attach_to_parser(sub_parsers)
     BuildCommand.attach_to_parser(sub_parsers)
     HTMLCommand.attach_to_parser(sub_parsers)
     ClientsFromPeeringDBCommand.attach_to_parser(sub_parsers)
@@ -50,6 +51,8 @@ def main():
 
     if args.command == "setup":
         cmd_class = SetupCommand
+    elif args.command == "setup-templates":
+        cmd_class = SetupTemplatesCommand
     elif args.command == "build":
         cmd_class = BuildCommand
     elif args.command == "html":

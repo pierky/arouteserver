@@ -45,7 +45,6 @@ with open("requirements.txt", "r") as f:
     for line in f.read().split("\n"):
         if line:
             install_requires.append(line)
-print(install_requires)
 
 # Get the long description from README.md
 setup(

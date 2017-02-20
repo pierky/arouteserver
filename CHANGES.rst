@@ -1,6 +1,11 @@
 Change log
 ==========
 
+next release
+------------
+
+- ``setup-templates`` command to just sync local templates with those distributed within a new release.
+
 v0.1.2
 ------
 
