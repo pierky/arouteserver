@@ -14,6 +14,8 @@
 # along with this program.  Ifnot, see <http://www.gnu.org/licenses/>.
 
 from copy import deepcopy
+import hashlib
+import filecmp
 import logging
 import os
 import sys
@@ -86,13 +88,76 @@ class ConfigParserProgram(object):
             return val
         return os.path.join(self.cfg["cfg_dir"], val)
 
+    @staticmethod
+    def mk_dir(d):
+        sys.stdout.write("Creating {}... ".format(d))
+        if os.path.exists(d):
+            print("already exists")
+        else:
+            os.makedirs(d)
+            print("OK")
+
+    @staticmethod
+    def cp_file(s, d):
+        filename = os.path.basename(s)
+        sys.stdout.write("- {}... ".format(filename))
+
+        if os.path.exists(d):
+            if filecmp.cmp(s, d, shallow=False):
+                print("skipping (equal files)")
+                return True
+
+            ret, yes_no = ask_yes_no(
+                "already exists: do you want to overwrite it?",
+                default="no"
+            )
+
+            if not ret:
+                return False
+
+            if yes_no != "yes":
+                print("skipping")
+                return True
+
+        with open(s, "r") as src:
+            with open(d, "w") as dst:
+                dst.write(src.read())
+
+        print("OK")
+        return True
+
+    @staticmethod
+    def process_dir(s, d):
+        for filename in os.listdir(s):
+            if os.path.isdir(os.path.join(s, filename)):
+                ConfigParserProgram.mk_dir(os.path.join(d, filename))
+                if not ConfigParserProgram.process_dir(
+                    os.path.join(s, filename),
+                    os.path.join(d, filename)
+                ):
+                    return False
+            else:
+                if not ConfigParserProgram.cp_file(
+                    os.path.join(s, filename),
+                    os.path.join(d, filename)
+                ):
+                    return False
+
+        return True
+
+    def setup_templates(self, templates_dir):
+        distrib_templates_dir = get_templates_dir()
+        ConfigParserProgram.mk_dir(templates_dir)
+        return ConfigParserProgram.process_dir(
+            distrib_templates_dir, templates_dir
+        )
+
     def setup(self):
 
         print("ARouteServer setup")
         print("")
 
-        config_dir = get_config_dir()
-        templates_dir = get_templates_dir()
+        distrib_config_dir = get_config_dir()
 
         res, dest_dir = ask("Where do you want configuration files and templates "
                             "to be stored?", default=self.DEFAULT_CFG_DIR)
@@ -117,62 +182,19 @@ class ConfigParserProgram(object):
             print("Setup aborted")
             return False
 
-        def mk_dir(d):
-            sys.stdout.write("Creating {}... ".format(d))
-            if os.path.exists(d):
-                print("already exists")
-            else:
-                os.makedirs(d)
-                print("OK")
+        ConfigParserProgram.mk_dir(dest_dir)
 
-        def cp_file(s, d):
-            sys.stdout.write(
-                "Copying default {} file into {}... ".format(
-                    os.path.basename(s), d
-                )
-            )
-
-            if os.path.exists(d):
-                ret, yes_no = ask_yes_no(
-                    "already exists: do you want to overwrite it?",
-                    default="no"
-                )
-
-                if not ret:
-                    return False
-
-                if yes_no != "yes":
-                    print("skipping")
-                    return True
-
-            with open(s, "r") as src:
-                with open(d, "w") as dst:
-                    dst.write(src.read())
-            print("OK")
-            return True
-
-        mk_dir(dest_dir)
-        mk_dir(os.path.join(dest_dir, "templates"))
-
-        def process_dir(s, d):
-            for filename in os.listdir(s):
-                if os.path.isdir(os.path.join(s, filename)):
-                    mk_dir(os.path.join(d, filename))
-                    process_dir(os.path.join(s, filename),
-                                os.path.join(d, filename))
-                else:
-                    if not cp_file(os.path.join(s, filename),
-                                   os.path.join(d, filename)):
-                        print("")
-                        print("Setup aborted")
-                        return False
-            return True
-
-        if not process_dir(config_dir, dest_dir):
-            return False
-        if not process_dir(templates_dir, os.path.join(dest_dir, "templates")):
+        if not ConfigParserProgram.process_dir(distrib_config_dir, dest_dir):
+            print("")
+            print("Setup aborted")
             return False
 
+        if not self.setup_templates(os.path.join(dest_dir, "templates")):
+            print("")
+            print("Setup aborted")
+            return False
+
+        # Load the new configuration.
         program_cfg_file_path = "{}/arouteserver.yml".format(dest_dir)
         self.load(program_cfg_file_path)
 
@@ -188,5 +210,7 @@ class ConfigParserProgram(object):
                 self.get_cfg_file_path("cfg_general")))
         print("- configure route server clients in the {} file".format(
             self.get_cfg_file_path("cfg_clients")))
+
+        return True
 
 program_config = ConfigParserProgram()
