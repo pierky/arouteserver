@@ -16,7 +16,7 @@
 import re
 
 from docker import DockerInstance
-from instances import Route
+from instances import Route, BGPSpeakerInstance
 
 
 class BIRDInstance(DockerInstance):
@@ -106,11 +106,21 @@ class BIRDInstance(DockerInstance):
                 "{}: can't build protocols status map".format(self.name)
             )
 
-    def bgp_session_is_up(self, other_inst, force_update=False):
+    def get_bgp_session(self, other_inst_or_ip, force_update=False):
+        if isinstance(other_inst_or_ip, BGPSpeakerInstance):
+            other_inst_ip = other_inst_or_ip.ip
+        else:
+            other_inst_ip = other_inst_or_ip
         self._get_protocols_status(force_update=force_update)
         for proto in self.protocols_status:
-            if self.protocols_status[proto]["ip"] == other_inst.ip:
-                return self.protocols_status[proto]["is_up"]
+            if self.protocols_status[proto]["ip"] == other_inst_ip:
+                return self.protocols_status[proto]
+        return None
+
+    def bgp_session_is_up(self, other_inst, force_update=False):
+        bgp_session_info = self.get_bgp_session(other_inst, force_update)
+        if bgp_session_info:
+            return bgp_session_info["is_up"]
         raise Exception(
             "Can't get BGP session status for {} on {} "
             "(looking for {})".format(

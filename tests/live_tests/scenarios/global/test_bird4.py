@@ -33,6 +33,7 @@ class BasicScenario_BIRDIPv4(BasicScenario):
         "AS1_2_IPAddress":          "192.0.2.12",
         "AS2_1_IPAddress":          "192.0.2.21",
         "AS101_IPAddress":          "192.0.2.101",
+        "Dummy":                    "192.0.2.99",
 
         "AS1_allowed_prefixes":     "1.0.0.0/8",
         "AS1_good1":                "1.0.1.0/24",

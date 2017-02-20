@@ -57,6 +57,24 @@ class BGPSpeakerInstance(object):
     def run_cmd(self, args):
         raise NotImplementedError()
 
+    def get_bgp_session(self, other_inst, force_update=False):
+        """Get information about the BGP session with ``other_inst``.
+
+        Args:
+            other_inst: the
+                :class:`BGPSpeakerInstance`
+                instance that the current instance is expected to have a
+                running BGP session with.
+
+            force_update (bool): if True, the instance must bypass
+                any caching mechanism used to keep the BGP sessions status.
+
+        Returns:
+            a dictionary containing information about the BGP session;
+            None if the BGP session is not found.
+        """
+        raise NotImplementedError()
+
     def bgp_session_is_up(self, other_inst, force_update=False):
         """Check if a BGP session with ``other_inst`` is up.
 

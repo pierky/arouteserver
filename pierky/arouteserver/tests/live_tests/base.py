@@ -134,6 +134,10 @@ class LiveScenario(ARouteServerTestCase):
         return os.path.dirname(cls.MODULE_PATH)
 
     @classmethod
+    def _get_local_file_path(cls, filename):
+        return os.path.join(cls._get_module_dir(), filename)
+
+    @classmethod
     def _get_instance_by_name(cls, name):
         for instance in cls.INSTANCES:
             if instance.name == name:
@@ -250,6 +254,26 @@ class LiveScenario(ARouteServerTestCase):
             f.write(cfg)
 
         return cfg_file_path
+
+    @classmethod
+    def use_static_file(cls, local_filename):
+        """Prepare the local file in order to use it later.
+
+        Args:
+            filename (str): the name of the local file,
+                relative to the scenario directory.
+
+        Returns:
+            the path of the file to be used
+        """
+
+        var_dir = cls._create_var_dir()
+        var_path = os.path.join(var_dir, local_filename)
+        local_path = os.path.join(cls._get_module_dir(), local_filename)
+        with open(local_path, "r") as src:
+            with open(var_path, "w") as dst:
+                dst.write(src.read())
+        return var_path
 
     @classmethod
     def mock_irrdb(cls):
@@ -574,6 +598,27 @@ class LiveScenario(ARouteServerTestCase):
         if not inst.log_contains(expanded_msg):
             self.fail("Expected message not found on {} logs:\n\t{}".format(inst.name, expanded_msg))
 
+    def session_exists(self, inst_a, inst_b_or_ip):
+        """Test if a BGP session between the two instances exists.
+
+        Args:
+            inst_a: the :class:`BGPSpeakerInstance` instance where the
+                BGP session is looked for.
+
+            inst_b_or_ip: the :class:`BGPSpeakerInstance` instance or an
+                IP address that *inst_a* is expected to peer with.
+        """
+
+        if inst_a.get_bgp_session(inst_b_or_ip) is None:
+            self.fail("A BGP session between '{}' ({}) and '{}' "
+                "does not exist.".format(
+                inst_a.name, inst_a.ip,
+                "{} ({})".format(
+                    inst_b_or_ip.name, inst_b_or_ip.ip
+                ) if isinstance(inst_b_or_ip, BGPSpeakerInstance)
+                  else inst_b_or_ip
+            ))
+
     def session_is_up(self, inst_a, inst_b):
         """Test if a BGP session between the two instances is up.
 
@@ -587,6 +632,8 @@ class LiveScenario(ARouteServerTestCase):
             inst_b: the :class:`BGPSpeakerInstance` instance that *inst_a* is
                 expected to peer with.
         """
+
+        self.session_exists(inst_a, inst_b)
 
         if inst_a.bgp_session_is_up(inst_b):
             return

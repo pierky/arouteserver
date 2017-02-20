@@ -33,6 +33,7 @@ class BasicScenario_BIRDIPv6(BasicScenario):
         "AS1_2_IPAddress":          "2001:db8:1:1::12",
         "AS2_1_IPAddress":          "2001:db8:1:1::21",
         "AS101_IPAddress":          "2001:db8:1:1::101",
+        "Dummy":                    "2001:db8:1:1::999",
 
         "AS1_allowed_prefixes":     "2a01:0::/32",
         "AS1_good1":                "2a01:0:1::/48",

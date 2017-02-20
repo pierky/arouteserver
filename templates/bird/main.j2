@@ -20,3 +20,8 @@
  
 
 include "*.local";
+{% if ip_ver == 4 %}
+include "*.local4";
+{% else %}
+include "*.local6";
+{% endif %}

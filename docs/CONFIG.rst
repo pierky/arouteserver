@@ -136,17 +136,26 @@ For each community, values can be set for any of the three *formats*: standard (
 Site-specific custom configuration files
 ****************************************
 
-Local configuration files can be used to load static site-specific options into the BGP speaker, bypassing ARouteServer configuration building logic. These files can be used to configure, for example, neighborship with peers which are not route server members or that require custom settings.
+Local configuration files can be used to load static site-specific options into the BGP speaker, bypassing the dynamic ARouteServer configuration building mechanisms. These files can be used to configure, for example, neighborship with peers which are not route server members or that require custom settings.
 
-In BIRD, an *include* statement is used to add local files at the end of the main configuration file:
+In BIRD, *include* statements are used to add local files at the end of the main configuration file.
+Depending on the IP version that is in use to build the current configuration, an address family specific *include* statement is also added:
 
 .. code::
 
+    # include statements for IPv4 configuration files
     include "*.local";
+    include "*.local4";
 
-Every file that is put into the same directory of the BIRD main configuration file and whose name matches the "\*.local" pattern is added to the end of the configuration. These files are not processed by ARouteServer but only by BIRD.
+.. code::
 
-Example: file name "01-route_collector.local" in "/etc/bird" directory:
+    # include statements for IPv6 configuration files
+    include "*.local";
+    include "*.local6";
+
+Every file that is put into the same directory of the BIRD main configuration file and whose name matches the "\*.local" or "\*.local[4|6]" pattern is added to the end of the configuration. These files are not processed by ARouteServer but only by BIRD. Configuration options given in .local files must be IP version agnostic and must be supported by both the IPv4 and IPv6 processes; address family specific options must be set in .local4 or .local6 files.
+
+Example: file name "01-route_collector.local4" in "/etc/bird" directory:
 
 .. code::
 

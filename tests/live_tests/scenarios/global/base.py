@@ -56,6 +56,10 @@ class BasicScenario(LiveScenario):
                         cls.build_rs_cfg("bird", "main.j2", "rs.conf",
                                           cfg_roas="roas{}.yml".format(cls.IP_VER)),
                         "/etc/bird/bird.conf"
+                    ),
+                    (
+                        cls.use_static_file("local_file.local{}".format(cls.IP_VER)),
+                        "/etc/bird/local_file.local{}".format(cls.IP_VER)
                     )
                 ],
             ),
@@ -136,6 +140,10 @@ class BasicScenario(LiveScenario):
         self.session_is_up(self.AS101, self.AS1_1)
         self.session_is_up(self.AS101, self.AS1_2)
         self.session_is_up(self.AS101, self.AS2)
+
+        # A dummy session is configured using local include files.
+        # The following tests if those files are really included.
+        self.session_exists(self.rs, self.DATA["Dummy"])
 
     def test_030_good_prefixes_received_by_rs(self):
         """{}: good prefixes received by rs"""
