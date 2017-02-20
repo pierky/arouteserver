@@ -1,6 +1,24 @@
 Change log
 ==========
 
+v0.1.2
+------
+
+- Fix local files usage among IPv4/IPv6 processes.
+
+  Before of this release, only *.local* files were included into the route server configuration, for both the IPv4 and IPv6 configurations.
+  After this, *.local* files continue to be used for both the address families but *.local4* and *.local6* files can also be used to include IP version specific options, depending on the IP version used to build the configuration. Details `here <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#site-specific-custom-configuration-files>`_.
+
+To upgrade:
+
+.. code:: bash
+
+        # pull from GitHub master branch or use pip:
+        pip install --upgrade arouteserver
+
+        # install the new template files into local system
+        arouteserver setup
+
 v0.1.1
 ------
 
