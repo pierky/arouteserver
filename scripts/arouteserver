@@ -19,7 +19,7 @@ import argparse
 import logging
 import sys
 
-from pierky.arouteserver.commands import *
+from pierky.arouteserver.commands import all_commands
 from pierky.arouteserver.errors import ARouteServerError
 from pierky.arouteserver.version import __version__, COPYRIGHT_YEAR
 
@@ -40,32 +40,17 @@ def main():
         dest="command")
     sub_parsers.required = True
 
-    SetupCommand.attach_to_parser(sub_parsers)
-    SetupTemplatesCommand.attach_to_parser(sub_parsers)
-    BuildCommand.attach_to_parser(sub_parsers)
-    HTMLCommand.attach_to_parser(sub_parsers)
-    ClientsFromPeeringDBCommand.attach_to_parser(sub_parsers)
-    InitScenarioCommand.attach_to_parser(sub_parsers)
+    commands = {}
+    for cmd_class in all_commands:
+        cmd_class.attach_to_parser(sub_parsers)
+        commands[cmd_class.COMMAND_NAME] = cmd_class
 
     args = parser.parse_args()
 
-    if args.command == "setup":
-        cmd_class = SetupCommand
-    elif args.command == "setup-templates":
-        cmd_class = SetupTemplatesCommand
-    elif args.command == "build":
-        cmd_class = BuildCommand
-    elif args.command == "html":
-        cmd_class = HTMLCommand
-    elif args.command == "clients-from-peeringdb":
-        cmd_class = ClientsFromPeeringDBCommand
-    elif args.command == "init-scenario":
-        cmd_class = InitScenarioCommand
+    if args.command in commands:
+        return commands[args.command](args).run()
     else:
         raise NotImplementedError("Command unknown: {}".format(args.command))
-
-    cmd = cmd_class(args)
-    return cmd.run()
 
 try:
     if main():

@@ -19,11 +19,11 @@ from setup import SetupCommand
 from setup_templates import SetupTemplatesCommand
 from init_scenario import InitScenarioCommand
 
-__all__ = [
-    "BuildCommand",
-    "HTMLCommand",
-    "ClientsFromPeeringDBCommand",
-    "SetupCommand",
-    "SetupTemplatesCommand",
-    "InitScenarioCommand",
+all_commands = [
+    BuildCommand,
+    HTMLCommand,
+    ClientsFromPeeringDBCommand,
+    SetupCommand,
+    SetupTemplatesCommand,
+    InitScenarioCommand,
 ]
