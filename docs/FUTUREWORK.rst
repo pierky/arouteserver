@@ -6,8 +6,6 @@ Short term
 
 - New feature: custom informative BGP communities
 - Doc: contributing section
-- Templates handling: template versioning
-- Templates handling: detect local changes
 - Packaging: a command to upgrade the program
 
 Mid term
