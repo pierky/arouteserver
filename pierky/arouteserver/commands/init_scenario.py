@@ -27,21 +27,17 @@ class InitScenarioCommand(ARouteServerCommand):
     COMMAND_NAME = "init-scenario"
     COMMAND_HELP = ("Initialize a new live test scenario by copying "
                     "files from the skeleton example.")
+    NEEDS_CONFIG = True
 
     @classmethod
     def add_arguments(cls, parser):
         super(InitScenarioCommand, cls).add_arguments(parser)
-
-        cls.add_program_config_arguments(parser)
 
         parser.add_argument(
             "dest_dir",
             help="Destination directory for the new scenario")
 
     def run(self):
-        if not self.setup():
-            return False
-
         print("Please provide an identifier for the new scenario, "
               "something that will be used as the name of the "
               "Python classes where the test functions will be "
@@ -70,7 +66,7 @@ class InitScenarioCommand(ARouteServerCommand):
 
         skeleton_dir = get_live_test_skeleton_dir()
         dest_dir = self.args.dest_dir
-        templates_dir = program_config.get_cfg_file_path("templates_dir")
+        templates_dir = program_config.get("templates_dir")
 
         if os.path.exists(dest_dir):
             raise ARouteServerError(

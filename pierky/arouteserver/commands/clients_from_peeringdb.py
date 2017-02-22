@@ -18,6 +18,7 @@ import sys
 import yaml
 
 from .base import ARouteServerCommand
+from ..config.program import program_config
 from ..peering_db import clients_from_peeringdb
 
 class ClientsFromPeeringDBCommand(ARouteServerCommand):
@@ -25,12 +26,11 @@ class ClientsFromPeeringDBCommand(ARouteServerCommand):
     COMMAND_NAME = "clients-from-peeringdb"
     COMMAND_HELP = ("Build a list of clients and their AS-SET on the basis "
                     "of PeeringDB records.")
+    NEEDS_CONFIG = True
 
     @classmethod
     def add_arguments(cls, parser):
         super(ClientsFromPeeringDBCommand, cls).add_arguments(parser)
-
-        cls.add_program_config_arguments(parser)
 
         parser.add_argument(
             "-o", "--output",
@@ -45,12 +45,9 @@ class ClientsFromPeeringDBCommand(ARouteServerCommand):
             help="PeeringDB NetIX LAN ID.")
 
     def run(self):
-        if not self.setup():
-            return False
-
         data = clients_from_peeringdb(
             self.args.netixlanid,
-            self.get_cfg_path("cache_dir")
+            program_config.get("cache_dir")
         )
         yaml.dump(data, self.args.output_file, default_flow_style=False)
 

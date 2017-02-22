@@ -24,15 +24,7 @@ class SetupTemplatesCommand(ARouteServerCommand):
                     "within the package. Useful after an "
                     "upgrade to sync the local templates "
                     "to those used by the new version.")
-
-    @classmethod
-    def add_arguments(cls, parser):
-        super(SetupTemplatesCommand, cls).add_arguments(parser)
-
-        cls.add_program_config_arguments(parser)
+    NEEDS_CONFIG = True
 
     def run(self):
-        if not self.setup():
-            return False
-
         return program_config.setup_templates()

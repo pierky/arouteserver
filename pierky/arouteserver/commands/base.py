@@ -22,8 +22,14 @@ from ..errors import MissingFileError, ARouteServerError
 
 class ARouteServerCommand(object):
 
+    COMMAND_NAME = None
+    COMMAND_HELP = None
+    NEEDS_CONFIG = False
+
     def __init__(self, args):
         self.args = args
+        if self.NEEDS_CONFIG:
+            self._setup()
 
     @classmethod
     def attach_to_parser(cls, parser):
@@ -34,7 +40,8 @@ class ARouteServerCommand(object):
 
     @classmethod
     def add_arguments(cls, parser):
-        pass
+        if cls.NEEDS_CONFIG:
+            cls.add_program_config_arguments(parser)
 
     @classmethod
     def add_program_config_arguments(cls, parser):
@@ -65,25 +72,23 @@ class ARouteServerCommand(object):
                 "#configuration-file-format)",
             dest="logging_config_file")
 
-    def setup(self):
+    def _setup(self):
         logging_setted_up = False
 
         def setup_logging(path):
             if not os.path.exists(path):
                 raise MissingFileError(path)
+
             try:
                 fileConfig(path)
-                return True
             except Exception as e:
-                logging.error(
+                raise ARouteServerError(
                     "Error processing the logging configuration file "
                     "{}: {}".format(path, str(e))
                 )
-                return False
 
         if self.args.logging_config_file:
-            if not setup_logging(self.args.logging_config_file):
-                return False
+            setup_logging(self.args.logging_config_file)
             logging_setted_up = True
 
         if self.args.cfg_program:
@@ -97,28 +102,15 @@ class ARouteServerCommand(object):
                     "'--cfg' argument.".format(str(e))
                 )
 
+        program_config.parse_cli_args(self.args)
+
         # Logging setup: if no command line arg given, use the path from
         # program's config file.
 
         if not logging_setted_up:
-            log_ini_path = program_config.get_cfg_file_path("logging_config_file")
+            log_ini_path = program_config.get("logging_config_file")
             if log_ini_path:
-                if not setup_logging(log_ini_path):
-                    return False
-
-        return True
-
-    def get_cfg_path(self, arg_name):
-        args_dict = vars(self.args)
-        if arg_name in args_dict and args_dict[arg_name]:
-            return args_dict[arg_name]
-        return program_config.get_cfg_file_path(arg_name)
-
-    def get_cfg_val(self, arg_name):
-        args_dict = vars(self.args)
-        if arg_name in args_dict and args_dict[arg_name]:
-            return args_dict[arg_name]
-        return program_config.cfg[arg_name]
+                setup_logging(log_ini_path)
 
     def run(self):
         raise NotImplementedError()

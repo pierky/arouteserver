@@ -48,7 +48,8 @@ def main():
     args = parser.parse_args()
 
     if args.command in commands:
-        return commands[args.command](args).run()
+        cmd = commands[args.command](args)
+        return cmd.run()
     else:
         raise NotImplementedError("Command unknown: {}".format(args.command))
 

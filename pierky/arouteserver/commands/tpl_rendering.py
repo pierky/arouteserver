@@ -20,15 +20,16 @@ import sys
 
 from .base import ARouteServerCommand
 from ..builder import ConfigBuilder, BIRDConfigBuilder
+from ..config.program import program_config
 from ..errors import ARouteServerError
 
 class TemplateRenderingCommands(ARouteServerCommand):
 
+    NEEDS_CONFIG = True
+
     @classmethod
     def add_arguments(cls, parser):
         super(TemplateRenderingCommands, cls).add_arguments(parser)
-
-        cls.add_program_config_arguments(parser)
 
         parser.add_argument(
             "-o", "--output",
@@ -97,22 +98,19 @@ class TemplateRenderingCommands(ARouteServerCommand):
         raise NotImplementedError()
 
     def run(self):
-        if not self.setup():
-            return False
-
         # Config builder setup
 
         cfg_builder_params = {
-            "cfg_general": self.get_cfg_path("cfg_general"),
-            "cfg_clients": self.get_cfg_path("cfg_clients"),
-            "cfg_bogons": self.get_cfg_path("cfg_bogons"),
-            "cache_dir": self.get_cfg_path("cache_dir"),
-            "cache_expiry": self.get_cfg_val("cache_expiry"),
-            "bgpq3_path": self.get_cfg_val("bgpq3_path"),
-            "bgpq3_host": self.get_cfg_val("bgpq3_host"),
-            "bgpq3_sources": self.get_cfg_val("bgpq3_sources"),
-            "template_dir": self.get_cfg_path("templates_dir"),
-            "template_name": self.get_cfg_val("template_name"),
+            "cfg_general": program_config.get("cfg_general"),
+            "cfg_clients": program_config.get("cfg_clients"),
+            "cfg_bogons": program_config.get("cfg_bogons"),
+            "cache_dir": program_config.get("cache_dir"),
+            "cache_expiry": program_config.get("cache_expiry"),
+            "bgpq3_path": program_config.get("bgpq3_path"),
+            "bgpq3_host": program_config.get("bgpq3_host"),
+            "bgpq3_sources": program_config.get("bgpq3_sources"),
+            "template_dir": program_config.get("templates_dir"),
+            "template_name": program_config.get("template_name"),
             "ip_ver": self.args.ip_ver,
         }
 

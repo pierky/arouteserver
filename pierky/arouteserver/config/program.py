@@ -65,8 +65,10 @@ class ConfigParserProgram(object):
 
     def load(self, path):
         self._reset_to_default()
+
         if not os.path.exists(path):
             raise MissingFileError(path)
+
         try:
             with open(path, "r") as f:
                 cfg_from_file = yaml.load(f.read())
@@ -77,20 +79,29 @@ class ConfigParserProgram(object):
                                 "Unknown statement: {}".format(key)
                             )
                     self.cfg.update(cfg_from_file)
+
         except Exception as e:
             logging.error("An error occurred while reading program "
                           "configuration at {}: {}".format(path, str(e)),
                           exc_info=not isinstance(e, ARouteServerError))
             raise ConfigError()
 
-    def get_cfg_file_path(self, cfg_key):
-        assert cfg_key in ("logging_config_file", "cfg_general", "cfg_clients",
-                           "cfg_bogons", "templates_dir", "cache_dir")
+        # relative path -> absolute path
+        for cfg_key in ("logging_config_file", "cfg_general", "cfg_clients",
+                        "cfg_bogons", "templates_dir", "cache_dir"):
+            val = self.cfg[cfg_key]
+            if not os.path.isabs(val):
+                self.cfg[cfg_key] = os.path.join(self.cfg["cfg_dir"], val)
 
+    def parse_cli_args(self, args):
+        args_dict = vars(args)
+        for option_name in self.cfg:
+            if option_name in args_dict and args_dict[option_name]:
+                self.cfg[option_name] = args_dict[option_name]
+
+    def get(self, cfg_key):
         val = self.cfg[cfg_key]
-        if os.path.isabs(val):
-            return val
-        return os.path.join(self.cfg["cfg_dir"], val)
+        return val
 
     @staticmethod
     def mk_dir(d):
@@ -120,7 +131,7 @@ class ConfigParserProgram(object):
         print("")
 
     @staticmethod
-    def process_file(s, d, fps_status={}, rel_path=None):
+    def process_file(s, d, fps_status=None, rel_path=None):
         filename = os.path.basename(s)
 
         def write_title():
@@ -209,15 +220,15 @@ class ConfigParserProgram(object):
                 return True
 
     @staticmethod
-    def process_dir(s, d, fps_status={}, rel_path=None):
+    def process_dir(s, d, fps_status=None, rel_path=None):
         print("Populating {}...".format(d))
 
         for filename in os.listdir(s):
             if filename == ConfigParserProgram.FINGERPRINTS_FILENAME:
                 continue
 
-            new_fps_status = {}
-            if filename in fps_status:
+            new_fps_status = None
+            if fps_status and filename in fps_status:
                 new_fps_status = fps_status[filename]
 
             if os.path.isdir(os.path.join(s, filename)):
@@ -233,7 +244,7 @@ class ConfigParserProgram(object):
                 if not ConfigParserProgram.process_file(
                     os.path.join(s, filename),
                     os.path.join(d, filename),
-                    fps_status=new_fps_status["status"],
+                    fps_status=new_fps_status["status"] if new_fps_status else None,
                     rel_path=os.path.join(rel_path, filename) if rel_path else None
                 ):
                     return False
@@ -270,7 +281,7 @@ class ConfigParserProgram(object):
     def get_local_fingerprints(self):
         """Calculate fingerprints from local template files."""
 
-        templates_dir = self.get_cfg_file_path("templates_dir")
+        templates_dir = self.get("templates_dir")
         return self.calculate_fingerprints(templates_dir)
 
     def get_local_distrib_fingerprints(self):
@@ -284,7 +295,7 @@ class ConfigParserProgram(object):
         been edited on the local system after the package installation.
         """
 
-        templates_dir = self.get_cfg_file_path("templates_dir")
+        templates_dir = self.get("templates_dir")
         path = os.path.join(templates_dir, self.FINGERPRINTS_FILENAME)
         if os.path.exists(path):
             return self.load_fingerprints_from_file(path)
@@ -407,11 +418,10 @@ class ConfigParserProgram(object):
                 fps_status)
         return fps_status
 
-    def setup_templates(self, templates_dir=None):
-
+    def setup_templates(self):
         distrib_templates_dir = get_templates_dir()
 
-        dest_dir = templates_dir or self.get_cfg_file_path("templates_dir")
+        dest_dir = self.get("templates_dir")
 
         print("Installing templates into {}...".format(dest_dir))
         print("")
@@ -434,7 +444,6 @@ class ConfigParserProgram(object):
         return True
 
     def setup(self):
-
         print("ARouteServer setup")
         print("")
 
@@ -448,11 +457,18 @@ class ConfigParserProgram(object):
             return False
 
         dest_dir = dest_dir.strip()
+        program_cfg_file_path = os.path.join(dest_dir, "arouteserver.yml")
 
         if dest_dir != self.DEFAULT_CFG_DIR:
             print("WARNING: the directory that has been chosen is not the "
                   "default one: use the --cfg command line argument to "
                   "allow the program to find the needed files.")
+
+            # The 'cfg_dir' option is overwritten only if the
+            # configuration file is not existing, otherwise it is
+            # supposed to be correctly configured by the used and it's
+            # not changed.
+            rewrite_cfg_dir = not os.path.exists(program_cfg_file_path)
 
         res, yes_or_no = ask_yes_no(
             "Do you confirm you want ARouteServer files to be "
@@ -473,14 +489,25 @@ class ConfigParserProgram(object):
             print("Setup aborted")
             return False
 
-        if not self.setup_templates(os.path.join(dest_dir, "templates")):
+        # Rewrite the 'cfg_dir' option if the dest dir != self.DEFAULT_CFG_DIR
+        if rewrite_cfg_dir:
+            with open(program_cfg_file_path, "r") as f:
+                buf = f.read()
+            buf = buf.replace(
+                '#cfg_dir: "/etc/arouteserver"',
+                'cfg_dir: "{}"'.format(dest_dir)
+            )
+            with open(program_cfg_file_path, "w") as f:
+                f.write(buf)
+
+        # Load the new configuration, so that the following .setup_templates()
+        # can work fine.
+        self.load(program_cfg_file_path)
+
+        if not self.setup_templates():
             print("")
             print("Setup aborted")
             return False
-
-        # Load the new configuration.
-        program_cfg_file_path = "{}/arouteserver.yml".format(dest_dir)
-        self.load(program_cfg_file_path)
 
         print("")
         print("Configuration complete!")
@@ -488,12 +515,12 @@ class ConfigParserProgram(object):
         print("- edit the {} file to configure program's options".format(
             program_cfg_file_path))
         print("- edit the {} file to set your logging preferences".format(
-            self.get_cfg_file_path("logging_config_file")))
+            self.get("logging_config_file")))
         print("- configure route server's options and policies "
               "in the {} file".format(
-                self.get_cfg_file_path("cfg_general")))
+                self.get("cfg_general")))
         print("- configure route server clients in the {} file".format(
-            self.get_cfg_file_path("cfg_clients")))
+            self.get("cfg_clients")))
 
         return True
 
