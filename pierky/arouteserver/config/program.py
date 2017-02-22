@@ -14,11 +14,13 @@
 # along with this program.  Ifnot, see <http://www.gnu.org/licenses/>.
 
 from copy import deepcopy
+import difflib
 import hashlib
 import filecmp
 import logging
 import os
 import sys
+import textwrap
 import yaml
 
 from ..ask import ask, ask_yes_no
@@ -53,7 +55,7 @@ class ConfigParserProgram(object):
         "bgpq3_sources": IRRDBTools.BGPQ3_DEFAULT_SOURCES,
     }
 
-#    FINGERPTINTS_FILENAME = "fingerprints.yml"
+    FINGERPRINTS_FILENAME = "fingerprints.yml"
 
     def __init__(self):
         self._reset_to_default()
@@ -101,6 +103,24 @@ class ConfigParserProgram(object):
 
     @staticmethod
     def cp_file(s, d):
+        with open(s, "r") as src:
+            with open(d, "w") as dst:
+                dst.write(src.read())
+
+    @staticmethod
+    def show_diff(s, d):
+        with open(s, "r") as f:
+            fromlines = f.readlines()
+        with open(d, "r") as f:
+            tolines = f.readlines()
+        diff = difflib.unified_diff(fromlines, tolines,
+                                    "currently installed", "new")
+        print("")
+        sys.stdout.writelines(diff)
+        print("")
+
+    @staticmethod
+    def process_file(s, d, fps_status={}, rel_path=None):
         filename = os.path.basename(s)
 
         def write_title():
@@ -108,84 +128,310 @@ class ConfigParserProgram(object):
 
         write_title()
 
-        if os.path.exists(d):
-            if filecmp.cmp(s, d, shallow=False):
-                print("skipping (equal files)")
+        if not os.path.exists(d):
+            ConfigParserProgram.cp_file(s, d)
+            print("OK (created)")
+            return True
+
+        if filecmp.cmp(s, d, shallow=False):
+            print("skipped (equal files)")
+            return True
+
+        if fps_status:
+            status_descr = ConfigParserProgram.get_fingerprints_status_descr(
+                fps_status, rel_path)
+
+            if fps_status["new_file"]:
+                ConfigParserProgram.cp_file(s, d)
+                print("OK (created)")
                 return True
 
-            ret, yes_no = ask_yes_no(
+            if fps_status["same_file"]:
+                print("skipped (equal files)")
+                return True
+
+            if not fps_status["local_unknown"]:
+                if fps_status["installed_version_mismatch"]:
+                    if not fps_status["locally_edited"]:
+                        ConfigParserProgram.cp_file(s, d)
+                        print("OK (updated)")
+                        return True
+
+                if fps_status["locally_edited"]:
+                    print("WARNING!")
+                    print("")
+                    print(
+                        "   " +
+                        "\n   ".join(textwrap.wrap(status_descr, width=60))
+                    )
+                    print("")
+                    bak_path = "{}.bak".format(d)
+                    ret, yes_no = ask_yes_no(
+                        "Do you want to create "
+                        "a backup copy into {}?".format(bak_path),
+                        default="yes"
+                    )
+
+                    if not ret:
+                        return False
+
+                    if yes_no == "yes":
+                        ConfigParserProgram.cp_file(s, bak_path)
+                        ConfigParserProgram.cp_file(s, d)
+                        write_title()
+                        print("OK (backed up and updated)")
+                        return True
+                    else:
+                        write_title()
+
+        while True:
+            ret, answer = ask(
                 "already exists: do you want to overwrite it?",
+                options=["yes", "no", "diff"],
                 default="no"
             )
 
             if not ret:
                 return False
 
-            write_title()
+            if answer == "diff":
+                ConfigParserProgram.show_diff(s, d)
+                write_title()
+            else:
+                write_title()
 
-            if yes_no != "yes":
-                print("skipping")
+                if answer != "yes":
+                    print("skipped")
+                    return True
+
+                ConfigParserProgram.cp_file(s, d)
+                print("OK")
                 return True
 
-        with open(s, "r") as src:
-            with open(d, "w") as dst:
-                dst.write(src.read())
-
-        print("OK")
-        return True
-
     @staticmethod
-    def process_dir(s, d):
+    def process_dir(s, d, fps_status={}, rel_path=None):
         print("Populating {}...".format(d))
 
         for filename in os.listdir(s):
+            if filename == ConfigParserProgram.FINGERPRINTS_FILENAME:
+                continue
+
+            new_fps_status = {}
+            if filename in fps_status:
+                new_fps_status = fps_status[filename]
+
             if os.path.isdir(os.path.join(s, filename)):
                 ConfigParserProgram.mk_dir(os.path.join(d, filename))
                 if not ConfigParserProgram.process_dir(
                     os.path.join(s, filename),
-                    os.path.join(d, filename)
+                    os.path.join(d, filename),
+                    fps_status=new_fps_status,
+                    rel_path=os.path.join(rel_path, filename) if rel_path else None
                 ):
                     return False
             else:
-                if not ConfigParserProgram.cp_file(
+                if not ConfigParserProgram.process_file(
                     os.path.join(s, filename),
-                    os.path.join(d, filename)
+                    os.path.join(d, filename),
+                    fps_status=new_fps_status["status"],
+                    rel_path=os.path.join(rel_path, filename) if rel_path else None
                 ):
                     return False
 
         return True
 
-#    @staticmethod
-#    def get_fingerprints(d):
-#
-#        hasher = hashlib.sha512()
-#
-#        def iterate_dir(d, dic):
-#            for filename in os.listdir(d):
-#                path = os.path.join(d, filename)
-#                if os.path.isdir(path):
-#                    dic[filename] = {}
-#                    iterate_dir(path, dic[filename])
-#                else:
-#                    with open(path, "rb") as f:
-#                        buf = f.read()
-#                        hasher.update(buf)
-#                        dic[filename] = hasher.hexdigest()
-#
-#        res = {}
-#        iterate_dir(d, res)
-#        return res
+    @staticmethod
+    def calculate_fingerprints(d):
+
+        def iterate_dir(d, dic):
+            for filename in os.listdir(d):
+                if filename == ConfigParserProgram.FINGERPRINTS_FILENAME:
+                    continue
+                path = os.path.join(d, filename)
+                if os.path.isdir(path):
+                    dic[filename] = {}
+                    iterate_dir(path, dic[filename])
+                else:
+                    with open(path, "rb") as f:
+                        hasher = hashlib.sha512()
+                        buf = f.read()
+                        hasher.update(buf)
+                        dic[filename] = hasher.hexdigest()
+
+        res = {}
+        iterate_dir(d, res)
+        return res
+
+    @staticmethod
+    def load_fingerprints_from_file(path):
+        with open(path, "r") as f:
+            return yaml.load(f.read())
+
+    def get_local_fingerprints(self):
+        """Calculate fingerprints from local template files."""
+
+        templates_dir = self.get_cfg_file_path("templates_dir")
+        return self.calculate_fingerprints(templates_dir)
+
+    def get_local_distrib_fingerprints(self):
+        """Get fingerprints of the locally installed templates.
+
+        Reads the fingerprints from <templates_dir>/<FINGERPRINTS_FILENAME>.
+
+        These fingerprints are those distributed by the program at the time
+        of the package installation. A difference between these fingerprints
+        and those calculated from the real files means that templates have
+        been edited on the local system after the package installation.
+        """
+
+        templates_dir = self.get_cfg_file_path("templates_dir")
+        path = os.path.join(templates_dir, self.FINGERPRINTS_FILENAME)
+        if os.path.exists(path):
+            return self.load_fingerprints_from_file(path)
+        return {}
+
+    def get_current_distrib_fingerprints(self):
+        """Get fingerprints of the distributed package.
+
+        These fingerprints are those distributed within the current release
+        of the package. A difference between these fingerprints and those
+        calculated from the real files means that templates have been edited
+        on the local system after the package installation or that the current
+        release uses different files from those installed on the local system.
+        """
+
+        distrib_templates_dir = get_templates_dir()
+        path = os.path.join(distrib_templates_dir, self.FINGERPRINTS_FILENAME)
+        return self.load_fingerprints_from_file(path)
+
+    @staticmethod
+    def get_fingerprints_status_descr(status, filename):
+        if status["new_file"]:
+            s = ("{filename} expected but not found on the local "
+                 "templates directory")
+            return s.format(filename=filename)
+
+        if status["same_file"]:
+            s = ("the installed version of {filename} is aligned with "
+                 "the one used by the current version of the program")
+            return s.format(filename=filename)
+
+        if status["local_unknown"]:
+            s = ("the {fp} file is missing so it's not possible "
+                 "to determine if the template is aligned with "
+                 "the current version of the program, nor if it "
+                 "has been edited after the installation on the "
+                 "local system")
+            return s.format(fp=ConfigParserProgram.FINGERPRINTS_FILENAME)
+
+        if status["installed_version_mismatch"]:
+            s = ("the installed version of {filename} is not aligned "
+                    "with the one used by the current version of the program")
+            if status["locally_edited"]:
+                s += ("; moreover, it seems that it has been edited "
+                        "after the installation on the local system")
+            return s.format(filename=filename)
+
+        if status["locally_edited"]:
+            s = ("the {filename} template has been edited after the "
+                 "installation on the local system")
+            return s.format(filename=filename)
+
+        raise NotImplementedError("status: {}".format(str(status)))
+
+    def get_fingerprints_status(self):
+        """Build a dict containing the status of a template file.
+
+        new_file is True when there isn't any calculated fingerprint.
+
+        same_file is True when the calculated fingerprint matches the
+        fingerprint in the current package.
+
+        local_unknown is True when the local fingerpints.yml file does
+        not exists.
+
+        locally_edited is True when the calculated fingerprint does
+        not match the fingerprint in the local fingerprints.yml file.
+
+        installed_version_mismatch is True when the fingerprint in the
+        local fingerprints.yml file does not match the fingerprint in
+        the current package.
+        """
+
+        calculated_fps = self.get_local_fingerprints()
+        local_distrib_fps = self.get_local_distrib_fingerprints()
+        current_distrib_fps = self.get_current_distrib_fingerprints()
+
+        fps_status = {}
+        def iterate(curr, local, calc, dst):
+            for filename in curr:
+                dst[filename] = {}
+                if isinstance(curr[filename], dict):
+                    iterate(
+                        curr[filename],
+                        local.get(filename, {}),
+                        calc.get(filename, {}),
+                        dst[filename]
+                    )
+                else:
+                    dst[filename]["curr"] = curr.get(filename, None)
+                    dst[filename]["calc"] = calc.get(filename, None)
+                    dst[filename]["local"] = local.get(filename, None)
+
+                    status = {}
+                    if dst[filename]["calc"] is None:
+                        status["new_file"] = True
+                        dst[filename]["status"] = status
+                        continue
+                    status["new_file"] = False
+
+                    if dst[filename]["calc"] == dst[filename]["curr"]:
+                        status["same_file"] = True
+                        dst[filename]["status"] = status
+                        continue
+                    status["same_file"] = False
+
+                    if dst[filename]["local"] is None:
+                        status["local_unknown"] = True
+                        dst[filename]["status"] = status
+                        continue
+                    status["local_unknown"] = False
+
+                    status["locally_edited"] = \
+                        dst[filename]["local"] != dst[filename]["calc"]
+                    status["installed_version_mismatch"] = \
+                        dst[filename]["local"] != dst[filename]["curr"]
+                    dst[filename]["status"] = status
+
+        iterate(current_distrib_fps, local_distrib_fps, calculated_fps,
+                fps_status)
+        return fps_status
 
     def setup_templates(self, templates_dir=None):
+
         distrib_templates_dir = get_templates_dir()
 
         dest_dir = templates_dir or self.get_cfg_file_path("templates_dir")
 
+        print("Installing templates into {}...".format(dest_dir))
+        print("")
+
         ConfigParserProgram.mk_dir(dest_dir)
 
-        return ConfigParserProgram.process_dir(
-            distrib_templates_dir, dest_dir
+        fps_status = self.get_fingerprints_status()
+
+        if not ConfigParserProgram.process_dir(
+            distrib_templates_dir, dest_dir, fps_status, "templates"
+        ):
+            print("")
+            print("Templates installation aborted")
+            return False
+
+        ConfigParserProgram.cp_file(
+            os.path.join(distrib_templates_dir, self.FINGERPRINTS_FILENAME),
+            os.path.join(dest_dir, self.FINGERPRINTS_FILENAME)
         )
+        return True
 
     def setup(self):
 
@@ -216,6 +462,9 @@ class ConfigParserProgram(object):
             print("")
             print("Setup aborted")
             return False
+
+        print("Installing configuration files into {}...".format(dest_dir))
+        print("")
 
         ConfigParserProgram.mk_dir(dest_dir)
 
