@@ -98,8 +98,15 @@ class TemplateRenderingCommands(ARouteServerCommand):
         raise NotImplementedError()
 
     def run(self):
-        # Config builder setup
+        all_right, _ = program_config.verify_templates()
+        if not all_right:
+            logging.warning("One or more templates are not aligned "
+                            "with those used by the current version "
+                            "of the program. "
+                            "Run 'arouteserver verify-templates' for "
+                            "more information.")
 
+        # Config builder setup
         cfg_builder_params = {
             "cfg_general": program_config.get("cfg_general"),
             "cfg_clients": program_config.get("cfg_clients"),

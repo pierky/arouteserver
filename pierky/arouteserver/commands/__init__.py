@@ -17,6 +17,7 @@ from tpl_rendering import BuildCommand, HTMLCommand
 from clients_from_peeringdb import ClientsFromPeeringDBCommand 
 from setup import SetupCommand
 from setup_templates import SetupTemplatesCommand
+from verify_templates import VerifyTemplatesCommand
 from init_scenario import InitScenarioCommand
 
 all_commands = [
@@ -25,5 +26,6 @@ all_commands = [
     ClientsFromPeeringDBCommand,
     SetupCommand,
     SetupTemplatesCommand,
+    VerifyTemplatesCommand,
     InitScenarioCommand,
 ]

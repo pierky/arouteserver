@@ -230,6 +230,9 @@ class ConfigParserProgram(object):
             new_fps_status = None
             if fps_status and filename in fps_status:
                 new_fps_status = fps_status[filename]
+            new_rel_path = None
+            if rel_path:
+                new_rel_path = os.path.join(rel_path, filename)
 
             if os.path.isdir(os.path.join(s, filename)):
                 ConfigParserProgram.mk_dir(os.path.join(d, filename))
@@ -237,15 +240,17 @@ class ConfigParserProgram(object):
                     os.path.join(s, filename),
                     os.path.join(d, filename),
                     fps_status=new_fps_status,
-                    rel_path=os.path.join(rel_path, filename) if rel_path else None
+                    rel_path=new_rel_path
                 ):
                     return False
             else:
+                if new_fps_status:
+                    new_fps_status = new_fps_status["status"]
                 if not ConfigParserProgram.process_file(
                     os.path.join(s, filename),
                     os.path.join(d, filename),
-                    fps_status=new_fps_status["status"] if new_fps_status else None,
-                    rel_path=os.path.join(rel_path, filename) if rel_path else None
+                    fps_status=new_fps_status,
+                    rel_path=new_rel_path
                 ):
                     return False
 
@@ -328,12 +333,13 @@ class ConfigParserProgram(object):
             return s.format(filename=filename)
 
         if status["local_unknown"]:
-            s = ("the {fp} file is missing so it's not possible "
-                 "to determine if the template is aligned with "
-                 "the current version of the program, nor if it "
+            s = ("the {filename} file is not aligned with the current "
+                 "version of the program; since the {fp} file is missing, "
+                 "it's not possible to determine if the {filename} file "
                  "has been edited after the installation on the "
                  "local system")
-            return s.format(fp=ConfigParserProgram.FINGERPRINTS_FILENAME)
+            return s.format(fp=ConfigParserProgram.FINGERPRINTS_FILENAME,
+                            filename=filename)
 
         if status["installed_version_mismatch"]:
             s = ("the installed version of {filename} is not aligned "
@@ -344,7 +350,7 @@ class ConfigParserProgram(object):
             return s.format(filename=filename)
 
         if status["locally_edited"]:
-            s = ("the {filename} template has been edited after the "
+            s = ("the {filename} file has been edited after the "
                  "installation on the local system")
             return s.format(filename=filename)
 
@@ -417,6 +423,34 @@ class ConfigParserProgram(object):
         iterate(current_distrib_fps, local_distrib_fps, calculated_fps,
                 fps_status)
         return fps_status
+
+    def verify_templates(self):
+        """Verify if templates are aligned with the current version
+
+        Returns:
+            bool, list of errors
+        """
+        fps_status = self.get_fingerprints_status()
+
+        errors = []
+
+        def iterate(dic, path):
+            all_right = True
+            for filename in dic:
+                new_path = os.path.join(path, filename)
+                if "status" not in dic[filename]:
+                    all_right = all_right and iterate(dic[filename], new_path)
+                else:
+                    fps_status = dic[filename]["status"]
+                    if not fps_status.get("same_file", False):
+                        all_right = False
+                        descr = self.get_fingerprints_status_descr(
+                            fps_status, new_path
+                        )
+                        errors.append(descr)
+            return all_right
+
+        return iterate(fps_status, "templates"), errors
 
     def setup_templates(self):
         distrib_templates_dir = get_templates_dir()
