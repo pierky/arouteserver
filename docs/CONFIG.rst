@@ -133,6 +133,8 @@ BGP Communities
 BGP communities can be used for many features in the configurations built using ARouteServer: blackhole filtering, AS_PATH prepending, announcement control, various informative purposes (valid ASN, RPKI status, ...) and more. All these communities are referenced by *name* (or *tag*) in the configuration files and their real values are reported only once, in the ``communities`` section of the ``general.yml`` file.
 For each community, values can be set for any of the three *formats*: standard (`RFC1997 <https://tools.ietf.org/html/rfc1997>`_), extended (`RFC4360 <https://tools.ietf.org/html/rfc4360>`_/`RFC5668 <https://tools.ietf.org/html/rfc5668>`_) and large (`draft-ietf-idr-large-community <https://tools.ietf.org/html/draft-ietf-idr-large-community>`_).
 
+.. _site-specific-custom-config:
+
 Site-specific custom configuration files
 ****************************************
 

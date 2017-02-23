@@ -57,7 +57,7 @@ External programs
 
 ARouteServer uses the following external programs:
 
-- `bgpq3 <https://github.com/snar/bgpq3>`_ is used to gather information from IRRDBs.
+- (mandatory) `bgpq3 <https://github.com/snar/bgpq3>`_ is used to gather information from IRRDBs.
   
   To install it:
 
@@ -71,11 +71,11 @@ ARouteServer uses the following external programs:
     make
     make install
 
-- `Docker <https://www.docker.com/>`_ is used to perform :doc:`live validation <LIVETESTS>` of configurations.
+- (optional) `Docker <https://www.docker.com/>`_ is used to perform :doc:`live validation <LIVETESTS>` of configurations.
 
   To install it, please refer to its `official guide <https://www.docker.com/products/overview>`_.
 
-- `rtrlib <https://github.com/rtrlib>`_ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`_; indirectly ARouteServer needs these tools to load RPKI data into BIRD.
+- (optional) `rtrlib <https://github.com/rtrlib>`_ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`_; indirectly ARouteServer needs these tools to load RPKI data into BIRD.
 
   To install them:
 
@@ -122,3 +122,4 @@ To upgrade the program, download the new version...
     arouteserver setup-templates
 
 If local templates have been edited, make a backup of your files in order to merge your changes in the new ones later.
+To customize the configuration of the route server with your own options, please consider using :ref:`site-specific-custom-config` instead of editing the template files.

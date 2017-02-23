@@ -49,5 +49,5 @@ class VerifyTemplatesCommand(ARouteServerCommand):
                   "custom configuration files' instead of editing the "
                   "template files: more info at "
                   "https://arouteserver.readthedocs.io/en/latest/CONFIG.html"
-                  "#site-specific-custom-configuration-files")))
+                  "#site-specific-custom-config")))
         return all_right
