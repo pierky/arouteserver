@@ -14,6 +14,17 @@ The script can be executed via command-line:
 
 It produces the route server configuration and saves it on ``/etc/bird/bird4.conf``.
 
+It exits with ``0`` if everything is fine or with an exit code different than zero if something wrong occurs.
+
+It can be scheduled at regular interval to re-build the configuration (for example to add new clients or to update IRRDB information), test it and finally to deploy it in production:
+
+  .. code:: bash
+
+    arouteserver build --ipver-4 -o /etc/bird/bird4.new && \
+        bird -p -c /etc/bird/bird4.new && \
+        cp /etc/bird/bird4.new /etc/bird/bird4.conf && \
+        birdcl configure
+
 Other commands
 --------------
 
@@ -27,6 +38,17 @@ To build an HTML textual representation of route server's options and policies, 
     arouteserver html -o /var/www/html/rs_description.html
 
 This command writes an HTML page that contains a brief textual representation of route server's policies. An example can be found `here <_static/examples_rich.html>`_.
+
+Template context data
+*********************
+
+To dump the list of variables and data that can be used inside a template, the ``template-context`` command can be used:
+
+  .. code:: bash
+
+    arouteserver template-context
+
+It produces a YAML document that contains the context variables and their values as they are passed to the template engine used to build configurations.
 
 Initialize a custom live test scenario
 **************************************

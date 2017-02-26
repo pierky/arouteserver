@@ -8,6 +8,7 @@ next release
 - Multithreading support for tasks that acquire data from external sources (IRRDB info, PeeringDB max-prefix).
 
   Can be set using the ``threads`` option in the ``arouteserver.yml`` configuration file.
+- New ``template-context`` command, useful to dump the list of context variables and data that can be used inside a template.
 
 v0.1.2
 ------

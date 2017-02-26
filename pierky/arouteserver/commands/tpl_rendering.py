@@ -19,7 +19,7 @@ import os
 import sys
 
 from .base import ARouteServerCommand
-from ..builder import ConfigBuilder, BIRDConfigBuilder
+from ..builder import ConfigBuilder, BIRDConfigBuilder, TemplateContextDumper
 from ..config.program import program_config
 from ..errors import ARouteServerError
 
@@ -183,3 +183,16 @@ class HTMLCommand(TemplateRenderingCommands):
 
     def _get_template_sub_dir(self):
         return "html"
+
+class DumpTemplateContextCommand(TemplateRenderingCommands):
+
+    COMMAND_NAME = "template-context"
+    COMMAND_HELP = ("Dump the context used to build templates, that is the "
+                    "data and the variables that can be consumed within a "
+                    "template to build the output configuration.")
+
+    def _get_builder_class(self):
+        return TemplateContextDumper
+
+    def _get_template_sub_dir(self):
+        return "template-context"

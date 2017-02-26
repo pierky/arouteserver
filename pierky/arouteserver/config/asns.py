@@ -26,11 +26,11 @@ class ConfigParserASNS(ConfigParserBase):
     ROOT = "asns"
 
     def parse(self):
+        if "clients" in self.cfg:
+            del self.cfg["clients"]
         if "asns" not in self.cfg:
             self.cfg["asns"] = {}
             return
-        if "clients" in self.cfg:
-            del self.cfg["clients"]
 
         errors = False
 

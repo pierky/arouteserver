@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from tpl_rendering import BuildCommand, HTMLCommand
+from tpl_rendering import BuildCommand, HTMLCommand, DumpTemplateContextCommand
 from clients_from_peeringdb import ClientsFromPeeringDBCommand 
 from setup import SetupCommand
 from setup_templates import SetupTemplatesCommand
@@ -23,6 +23,7 @@ from init_scenario import InitScenarioCommand
 all_commands = [
     BuildCommand,
     HTMLCommand,
+    DumpTemplateContextCommand,
     ClientsFromPeeringDBCommand,
     SetupCommand,
     SetupTemplatesCommand,

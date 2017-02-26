@@ -18,6 +18,7 @@ import logging
 import os
 import re
 import time
+import yaml
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
@@ -40,6 +41,9 @@ from .peering_db import PeeringDBNet
 class ConfigBuilder(object):
 
     def validate_flavor_specific_configuration(self):
+        pass
+
+    def enrich_j2_environment(self, env):
         pass
 
     @staticmethod
@@ -228,6 +232,8 @@ class ConfigBuilder(object):
         env.tests["current_ipver"] = current_ipver
         env.filters["community_is_set"] = community_is_set
 
+        self.enrich_j2_environment(env)
+
         tpl = env.get_template(self.template_name)
         return tpl.render(data)
 
@@ -240,3 +246,12 @@ class BIRDConfigBuilder(ConfigBuilder):
                 "to build BIRD configuration. Use the "
                 "--ip-ver command line argument to supply one."
             )
+
+class TemplateContextDumper(ConfigBuilder):
+
+    def enrich_j2_environment(self, env):
+
+        def to_yaml(obj):
+            return yaml.dump(obj, default_flow_style=False)
+
+        env.filters["to_yaml"] = to_yaml
