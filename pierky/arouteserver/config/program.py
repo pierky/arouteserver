@@ -53,6 +53,8 @@ class ConfigParserProgram(object):
         "bgpq3_path": "bgpq3",
         "bgpq3_host": IRRDBTools.BGPQ3_DEFAULT_HOST,
         "bgpq3_sources": IRRDBTools.BGPQ3_DEFAULT_SOURCES,
+
+        "threads": 4,
     }
 
     FINGERPRINTS_FILENAME = "fingerprints.yml"

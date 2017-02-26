@@ -119,6 +119,7 @@ class TemplateRenderingCommands(ARouteServerCommand):
             "template_dir": program_config.get("templates_dir"),
             "template_name": program_config.get("template_name"),
             "ip_ver": self.args.ip_ver,
+            "threads": program_config.get("threads")
         }
 
         builder_class = self._get_builder_class()

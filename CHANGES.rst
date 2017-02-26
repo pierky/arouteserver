@@ -5,6 +5,9 @@ next release
 ------------
 
 - ``setup-templates`` command to just sync local templates with those distributed within a new release.
+- Multithreading support for tasks that acquire data from external sources (IRRDB info, PeeringDB max-prefix).
+
+  Can be set using the ``threads`` option in the ``arouteserver.yml`` configuration file.
 
 v0.1.2
 ------
