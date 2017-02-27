@@ -1,8 +1,8 @@
 Change log
 ==========
 
-next release
-------------
+v0.2.0
+------
 
 - ``setup-templates`` command to just sync local templates with those distributed within a new release.
 - Multithreading support for tasks that acquire data from external sources (IRRDB info, PeeringDB max-prefix).
