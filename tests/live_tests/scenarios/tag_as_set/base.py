@@ -23,27 +23,6 @@ class TagASSetScenario(LiveScenario):
     CLIENT_INSTANCE_CLASS = None
     IP_VER = None
 
-    AS_SET = {
-        "AS1": [1],
-        "AS-AS2": [2],
-        "AS-AS4": [4],
-        "AS-AS5": [5],
-    }
-    R_SET = {
-        "AS1": [
-            "AS1_allowed_prefixes"
-        ],
-        "AS-AS2": [
-            "AS2_allowed_prefixes"
-        ],
-        "AS-AS4": [
-            "AS4_allowed_prefixes"
-        ],
-        "AS-AS5": [
-            "AS5_allowed_prefixes"
-        ]
-    }
-
     @classmethod
     def _setup_instances(cls):
         cls.INSTANCES = [
@@ -117,6 +96,31 @@ class TagASSetScenario(LiveScenario):
         self.session_is_up(self.rs, self.AS4)
         self.session_is_up(self.rs, self.AS5)
 
+
+class TagASSetScenario_WithAS_SETs(TagASSetScenario):
+    __test__ = False
+
+    AS_SET = {
+        "AS1": [1],
+        "AS-AS2": [2],
+        "AS-AS4": [4],
+        "AS-AS5": [5],
+    }
+    R_SET = {
+        "AS1": [
+            "AS1_allowed_prefixes"
+        ],
+        "AS-AS2": [
+            "AS2_allowed_prefixes"
+        ],
+        "AS-AS4": [
+            "AS4_allowed_prefixes"
+        ],
+        "AS-AS5": [
+            "AS5_allowed_prefixes"
+        ]
+    }
+
     def test_030_AS2_prefix_ok_origin_ok(self):
         """{}: AS2 prefix ok origin ok"""
         self.receive_route(self.rs, self.DATA["AS2_pref_ok_origin_ok1"], self.AS2, as_path="2", next_hop=self.AS2,
@@ -148,12 +152,12 @@ class TagASSetScenario(LiveScenario):
         self.receive_route(self.rs, self.DATA["AS4_pref_ko_origin_ok1"], self.AS4, as_path="4", next_hop=self.AS4,
                            std_comms=["999:64513", "999:64514"], lrg_comms=["999:0:64513", "999:0:64514"])
 
-    def test_040_AS4_prefix_ok_origin_ko(self):
-        """{}: AS4 prefix ok origin ko"""
+    def test_040_AS4_origin_filtered(self):
+        """{}: AS4 route filtered (origin ko)"""
         self.receive_route(self.rs, self.DATA["AS3_pref_ok_origin_ko2"], self.AS4, as_path="4 3", next_hop=self.AS4, filtered=True)
 
-    def test_040_AS4_prefix_ko_origin_ko(self):
-        """{}: AS4 prefix ko origin ko"""
+    def test_040_AS4_prefix_origin_filtered(self):
+        """{}: AS4 route filtered (prefix ko, origin ko)"""
         self.receive_route(self.rs, self.DATA["AS3_pref_ko_origin_ko1"], self.AS4, as_path="4 3", next_hop=self.AS4, filtered=True)
 
 
@@ -162,8 +166,8 @@ class TagASSetScenario(LiveScenario):
         self.receive_route(self.rs, self.DATA["AS5_pref_ok_origin_ok1"], self.AS5, as_path="5", next_hop=self.AS5,
                            std_comms=["999:64512", "999:64514"], lrg_comms=["999:0:64512", "999:0:64514"])
 
-    def test_050_AS5_prefix_ko_origin_ok(self):
-        """{}: AS5 prefix ko origin ok"""
+    def test_050_AS5_prefix_filtered(self):
+        """{}: AS5 route filtered (prefix ko)"""
         self.receive_route(self.rs, self.DATA["AS5_pref_ko_origin_ok1"], self.AS5, as_path="5", next_hop=self.AS5, filtered=True)
 
     def test_050_AS5_prefix_ok_origin_ko(self):
@@ -171,6 +175,51 @@ class TagASSetScenario(LiveScenario):
         self.receive_route(self.rs, self.DATA["AS3_pref_ok_origin_ko3"], self.AS5, as_path="5 3", next_hop=self.AS5,
                            std_comms=["999:64512", "999:64515"], lrg_comms=["999:0:64512", "999:0:64515"])
 
-    def test_050_AS5_prefix_ko_origin_ko(self):
-        """{}: AS5 prefix ko origin ko"""
+    def test_050_AS5_origin_filtered(self):
+        """{}: AS5 route filtered (origin ko)"""
         self.receive_route(self.rs, self.DATA["AS3_pref_ko_origin_ko1"], self.AS5, as_path="5 3", next_hop=self.AS5, filtered=True)
+
+class TagASSetScenario_EmptyAS_SETs(TagASSetScenario):
+    __test__ = False
+
+    AS_SET = {
+        "AS1": [],
+        "AS-AS2": [],
+        "AS-AS4": [],
+        "AS-AS5": [],
+    }
+    R_SET = {
+        "AS1": [
+        ],
+        "AS-AS2": [
+        ],
+        "AS-AS4": [
+        ],
+        "AS-AS5": [
+        ]
+    }
+
+    def test_030_AS2_no_enforcement(self):
+        """{}: AS2 no enforcement, prefix and origin not in AS-SET"""
+        for pref in (self.DATA["AS2_pref_ok_origin_ok1"],
+                     self.DATA["AS2_pref_ko_origin_ok1"],
+                     self.DATA["AS3_pref_ok_origin_ko1"],
+                     self.DATA["AS3_pref_ko_origin_ko1"]):
+            self.receive_route(self.rs, pref, self.AS2, next_hop=self.AS2,
+                            std_comms=["999:64513", "999:64515"], lrg_comms=["999:0:64513", "999:0:64515"])
+
+    def test_040_AS4_origin_enforcement(self):
+        """{}: AS4 origin enforcement"""
+        for pref in (self.DATA["AS4_pref_ok_origin_ok1"],
+                     self.DATA["AS4_pref_ko_origin_ok1"],
+                     self.DATA["AS3_pref_ok_origin_ko2"],
+                     self.DATA["AS3_pref_ko_origin_ko1"]):
+            self.receive_route(self.rs, pref, self.AS4, next_hop=self.AS4, filtered=True)
+
+    def test_050_AS4_prefix_enforcement(self):
+        """{}: AS4 prefix enforcement"""
+        for pref in (self.DATA["AS5_pref_ok_origin_ok1"],
+                     self.DATA["AS5_pref_ko_origin_ok1"],
+                     self.DATA["AS3_pref_ok_origin_ko3"],
+                     self.DATA["AS3_pref_ko_origin_ko1"]):
+            self.receive_route(self.rs, pref, self.AS5, next_hop=self.AS5, filtered=True)

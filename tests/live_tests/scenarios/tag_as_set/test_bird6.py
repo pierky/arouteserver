@@ -13,13 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import TagASSetScenario
+from base import TagASSetScenario_WithAS_SETs, TagASSetScenario_EmptyAS_SETs
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 
-class TagASSetScenario_BIRDIPv6(TagASSetScenario):
+class TagASSetScenario_BIRDIPv6(object):
     __test__ = True
 
-    SHORT_DESCR = "Live test, BIRD, tag prefix/origin in AS-SET, IPv6"
     RS_INSTANCE_CLASS = BIRDInstanceIPv6
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
     IP_VER = 6
@@ -49,3 +48,13 @@ class TagASSetScenario_BIRDIPv6(TagASSetScenario):
         "AS5_pref_ko_origin_ok1":           "2a05:1:0::/48",
         "AS3_pref_ok_origin_ko3":           "2a05:0:2::/48",
     }
+
+class TagASSetScenario_WithAS_SETs_BIRDIPv6(TagASSetScenario_BIRDIPv6,
+                                            TagASSetScenario_WithAS_SETs):
+
+    SHORT_DESCR = "Live test, BIRD, tag prefix/origin in AS-SET, IPv6"
+
+class TagASSetScenario_EmptyAS_SETs_BIRDIPv6(TagASSetScenario_BIRDIPv6,
+                                             TagASSetScenario_EmptyAS_SETs):
+
+    SHORT_DESCR = "Live test, BIRD, tag prefix/origin empty AS-SET, IPv6"

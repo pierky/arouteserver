@@ -57,7 +57,9 @@ class IRRDBConfigEnricher_WorkerThread_Prefixes(IRRDBConfigEnricher_WorkerThread
                 prefixes = RSet(as_set_name, ip_ver,
                                 **self.irrdbtools_cfg).prefixes
                 if not prefixes:
-                    raise BuilderError("it's empty")
+                    logging.warning("No IPv{} prefixes found in "
+                                    "{} for {}".format(
+                                        ip_ver, as_set_name, dest_descr))
                 res.extend(prefixes)
             except ARouteServerError as e:
                 errors = True
@@ -83,7 +85,9 @@ class IRRDBConfigEnricher_WorkerThread_OriginASNs(IRRDBConfigEnricher_WorkerThre
         try:
             asns = ASSet(as_set_name, **self.irrdbtools_cfg).asns
             if not asns:
-                raise BuilderError("it's empty")
+                logging.warning("No origin ASNs found in "
+                                "{} for {}".format(
+                                    as_set_name, dest_descr))
             return asns
         except ARouteServerError as e:
             errors = True
@@ -206,7 +210,9 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
                               "{}".format(as_set["name"]))
         as_sets = [as_set for as_set in as_sets if as_set["used_by"]]
 
-        self.builder.as_sets = as_sets
+        self.builder.as_sets = {}
+        for as_set in as_sets:
+            self.builder.as_sets[as_set["id"]] = as_set
 
     def _config_thread(self, thread):
         thread.ip_ver = self.builder.ip_ver
@@ -220,7 +226,7 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
 
     def add_tasks(self):
         # Enqueuing tasks.
-        for as_set in self.builder.as_sets:
+        for as_set_id, as_set in self.builder.as_sets.items():
             used_by = ", ".join(as_set["used_by"])
             self.tasks_q.put((as_set, used_by, as_set["name"]))
 

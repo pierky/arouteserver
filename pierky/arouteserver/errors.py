@@ -14,7 +14,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class ARouteServerError(Exception):
-    pass
+
+    def __init__(self, *args, **kwargs):
+        Exception.__init__(self, *args, **kwargs)
+        self.please_open_issue = False
+        self.extra_info = None
 
 class ConfigError(ARouteServerError):
     pass
@@ -60,6 +64,22 @@ class PeeringDBNoInfoError(ARouteServerError):
 
 class BuilderError(ARouteServerError):
     pass
+
+class TemplateRenderingError(BuilderError):
+
+    def __init__(self, msg, templates_not_aligned=False):
+        BuilderError.__init__(self, msg)
+        self.please_open_issue = True
+        if templates_not_aligned:
+            self.extra_info = ("One or more template files are not "
+                               "aligned with those distributed with the current "
+                               "version of the program (maybe they need to be "
+                               "updated after an upgrade), it's possible that this "
+                               "issue is due to this reason.\n"
+                               "Please consider running the "
+                               "'arouteserver verify-templates' command and, if "
+                               "suggested, to install the distributed version of the "
+                               "templates.")
 
 class ResourceNotFoundError(ARouteServerError):
 

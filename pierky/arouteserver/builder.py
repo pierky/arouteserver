@@ -32,7 +32,7 @@ from .enrichers.irrdb import IRRDBConfigEnricher_OriginASNs, \
 from .enrichers.peeringdb import PeeringDBConfigEnricher
 from .errors import MissingDirError, MissingFileError, BuilderError, \
                     ARouteServerError, PeeringDBError, PeeringDBNoInfoError, \
-                    MissingArgumentError
+                    MissingArgumentError, TemplateRenderingError
 from .irrdb import ASSet, RSet, IRRDBTools
 from .cached_objects import CachedObject
 from .peering_db import PeeringDBNet
@@ -235,7 +235,10 @@ class ConfigBuilder(object):
         self.enrich_j2_environment(env)
 
         tpl = env.get_template(self.template_name)
-        return tpl.render(data)
+        try:
+            return tpl.render(data)
+        except Exception as e:
+            raise TemplateRenderingError(str(e))
 
 class BIRDConfigBuilder(ConfigBuilder):
 

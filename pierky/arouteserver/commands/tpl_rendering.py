@@ -21,7 +21,7 @@ import sys
 from .base import ARouteServerCommand
 from ..builder import ConfigBuilder, BIRDConfigBuilder, TemplateContextDumper
 from ..config.program import program_config
-from ..errors import ARouteServerError
+from ..errors import ARouteServerError, TemplateRenderingError
 
 class TemplateRenderingCommands(ARouteServerCommand):
 
@@ -98,8 +98,8 @@ class TemplateRenderingCommands(ARouteServerCommand):
         raise NotImplementedError()
 
     def run(self):
-        all_right, _ = program_config.verify_templates()
-        if not all_right:
+        tpl_all_right = program_config.verify_templates() == []
+        if not tpl_all_right:
             logging.warning("One or more templates are not aligned "
                             "with those used by the current version "
                             "of the program. "
@@ -133,6 +133,12 @@ class TemplateRenderingCommands(ARouteServerCommand):
         try:
             builder = builder_class(**cfg_builder_params)
             self.args.output_file.write(builder.render_template())
+        except TemplateRenderingError as e:
+            if tpl_all_right:
+                raise
+
+            msg = str(e)
+            raise TemplateRenderingError(str(e), True)
         except ARouteServerError as e:
             if str(e):
                 logging.error(str(e))

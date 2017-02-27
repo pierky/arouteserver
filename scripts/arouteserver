@@ -53,22 +53,31 @@ def main():
     else:
         raise NotImplementedError("Command unknown: {}".format(args.command))
 
+PLEASE_OPEN_ISSUE = (
+    "Please consider reporting this issue to the author using the URL below, "
+    "including the following traceback and some hints on how to reproduce it: "
+    "https://github.com/pierky/arouteserver/issues\n\n"
+)
+
 try:
     if main():
         sys.exit(0)
     else:
         sys.exit(1)
 except ARouteServerError as e:
+    msg = "An error occurred: please refer to the log for details."
     if str(e):
-        logging.error("Error: {}".format(str(e)))
+        msg = "Error: {}".format(str(e))
+    if e.extra_info:
+        msg += "\n\n{}".format(e.extra_info)
+    if e.please_open_issue:
+        msg += "\n\n{}".format(PLEASE_OPEN_ISSUE)
+    logging.error(msg, exc_info=e.please_open_issue)
     sys.exit(1)
 except Exception as e:
     logging.error(
         "An unexpected error occurred: {}\n"
         "\n"
-        "Please consider reporting it using the URL below, "
-        "including the following traceback and some "
-        "hints on how to reproduce it: "
-        "https://github.com/pierky/arouteserver/issues\n\n".format(str(e)),
+        "{}".format(str(e), PLEASE_OPEN_ISSUE),
         exc_info=True)
     sys.exit(1)

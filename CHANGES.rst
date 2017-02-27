@@ -9,6 +9,9 @@ next release
 
   Can be set using the ``threads`` option in the ``arouteserver.yml`` configuration file.
 - New ``template-context`` command, useful to dump the list of context variables and data that can be used inside a template.
+- New empty AS-SETs handling: if an AS-SET is empty, no errors are given but only a warning is logged and the configuration building process goes on.
+
+  Any client with IRRDB enforcing enabled and whose AS-SET is empty will have its routes rejected by the route server.
 
 v0.1.2
 ------

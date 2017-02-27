@@ -3,8 +3,12 @@
 # ---------------------------------------------------------
 # IRRDB
 
-{% for as_set in as_sets %}
+{% for as_set_id in as_sets %}
+{% set as_set = as_sets[as_set_id] %}
 # {{ as_set.name }}
+{% if as_set.asns|length == 0 %}
+# no origin ASNs found for {{ as_set.name }}
+{% else %}
 define AS_SET_{{ as_set.id }}_asns = [
 {{ "\t" -}}
 {%	for asn in as_set.asns %}
@@ -14,7 +18,14 @@ define AS_SET_{{ as_set.id }}_asns = [
 {%	endfor %}
 
 ];
+{% endif %}
+
+{% if as_set.prefixes|length == 0 %}
+# no prefixes found for {{ as_set.name }}
+{% else %}
 define AS_SET_{{ as_set.id }}_prefixes = [
 {{ write_prefix_list(as_set.prefixes, True) }}
 ];
+{% endif %}
+
 {% endfor %}

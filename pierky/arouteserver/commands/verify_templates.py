@@ -27,7 +27,8 @@ class VerifyTemplatesCommand(ARouteServerCommand):
     NEEDS_CONFIG = True
 
     def run(self):
-        all_right, errors = program_config.verify_templates()
+        errors = program_config.verify_templates()
+        all_right = errors == []
         if not all_right:
             print("\n".join(textwrap.wrap(
                   "One or more templates are not aligned with those "

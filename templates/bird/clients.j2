@@ -17,8 +17,12 @@
 function origin_as_is_in_{{ client.id }}_as_set() {
 {% if client.cfg.filtering.irrdb.as_set_ids %}
 {%	for as_set_id in client.cfg.filtering.irrdb.as_set_ids %}
+{%		if as_sets[as_set_id].asns %}
 	if bgp_path.last ~ AS_SET_{{ as_set_id }}_asns then
 		return true;
+{%		else %}
+	# AS-SET {{ as_set_id }} referenced but empty.
+{%		endif %}
 {%	endfor %}
 {% endif %}
 	return false;
@@ -28,8 +32,12 @@ function origin_as_is_in_{{ client.id }}_as_set() {
 function prefix_is_in_{{ client.id }}_as_set() {
 {% if client.cfg.filtering.irrdb.as_set_ids %}
 {%	for as_set_id in client.cfg.filtering.irrdb.as_set_ids %}
+{%		if as_sets[as_set_id].prefixes %}
 	if net ~ AS_SET_{{ as_set_id }}_prefixes then
 		return true;
+{%		else %}
+	# AS-SET {{ as_set_id }} referenced but empty.
+{%		endif %}
 {%	endfor %}
 {% endif %}
 	return false;

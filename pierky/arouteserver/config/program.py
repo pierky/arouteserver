@@ -163,7 +163,16 @@ class ConfigParserProgram(object):
                 print("skipped (equal files)")
                 return True
 
-            if not fps_status["local_unknown"]:
+            if fps_status["local_unknown"]:
+                print("WARNING!")
+                print("")
+                print(
+                    "   " +
+                    "\n   ".join(textwrap.wrap(status_descr, width=60))
+                )
+                print("")
+                write_title()
+            else:
                 if fps_status["installed_version_mismatch"]:
                     if not fps_status["locally_edited"]:
                         ConfigParserProgram.cp_file(s, d)
@@ -430,29 +439,27 @@ class ConfigParserProgram(object):
         """Verify if templates are aligned with the current version
 
         Returns:
-            bool, list of errors
+            list of errors
         """
         fps_status = self.get_fingerprints_status()
 
         errors = []
 
         def iterate(dic, path):
-            all_right = True
             for filename in dic:
                 new_path = os.path.join(path, filename)
                 if "status" not in dic[filename]:
-                    all_right = all_right and iterate(dic[filename], new_path)
+                    iterate(dic[filename], new_path)
                 else:
-                    fps_status = dic[filename]["status"]
-                    if not fps_status.get("same_file", False):
-                        all_right = False
+                    status = dic[filename]["status"]
+                    if not status.get("same_file", False):
                         descr = self.get_fingerprints_status_descr(
-                            fps_status, new_path
+                            status, new_path
                         )
                         errors.append(descr)
-            return all_right
 
-        return iterate(fps_status, "templates"), errors
+        iterate(fps_status, "templates")
+        return errors
 
     def setup_templates(self):
         distrib_templates_dir = get_templates_dir()
