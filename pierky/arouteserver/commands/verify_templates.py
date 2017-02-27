@@ -51,4 +51,7 @@ class VerifyTemplatesCommand(ARouteServerCommand):
                   "template files: more info at "
                   "https://arouteserver.readthedocs.io/en/latest/CONFIG.html"
                   "#site-specific-custom-config")))
+        else:
+            print("Everything is fine; templates are aligned with those "
+                  "expected by the current version of the program.")
         return all_right
