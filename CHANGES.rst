@@ -1,6 +1,11 @@
 Change log
 ==========
 
+next release
+------------
+
+- New ``--test-only`` flag for builder commands.
+
 v0.2.0
 ------
 

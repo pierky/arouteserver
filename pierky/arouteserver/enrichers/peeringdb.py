@@ -22,7 +22,7 @@ from ..peering_db import PeeringDBNet
 
 class PeeringDBConfigEnricher_WorkerThread(BaseConfigEnricherThread):
 
-    TARGET_FIELD = None
+    DESCR = "PeeringDB"
 
     def __init__(self, *args, **kwargs):
         BaseConfigEnricherThread.__init__(self, *args, **kwargs)

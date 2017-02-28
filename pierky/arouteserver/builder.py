@@ -201,7 +201,7 @@ class ConfigBuilder(object):
         if errors:
             raise BuilderError()
 
-    def render_template(self):
+    def render_template(self, output_file=None):
         data = {}
         data["ip_ver"] = self.ip_ver
         data["cfg"] = self.cfg_general
@@ -235,10 +235,24 @@ class ConfigBuilder(object):
         self.enrich_j2_environment(env)
 
         tpl = env.get_template(self.template_name)
+
+        start_time = int(time.time())
+
+        logging.info("Started template rendering "
+                     "for {}".format(self.template_path))
         try:
-            return tpl.render(data)
+            if output_file:
+                for buf in tpl.generate(data):
+                    output_file.write(buf)
+            else:
+                return tpl.render(data)
         except Exception as e:
             raise TemplateRenderingError(str(e))
+        finally:
+            stop_time = int(time.time())
+
+            logging.info("Template rendering completed after "
+                        "{} seconds.".format(stop_time - start_time))
 
 class BIRDConfigBuilder(ConfigBuilder):
 

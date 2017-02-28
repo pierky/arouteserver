@@ -249,9 +249,8 @@ class LiveScenario(ARouteServerTestCase):
 
         cfg_file_path = "{}/{}".format(var_dir, out_file_name)
 
-        cfg = builder.render_template()
         with open(cfg_file_path, "w") as f:
-            f.write(cfg)
+            cfg = builder.render_template(f)
 
         return cfg_file_path
 

@@ -38,6 +38,14 @@ class TemplateRenderingCommands(ARouteServerCommand):
             default=sys.stdout,
             dest="output_file")
 
+        parser.add_argument(
+            "--test-only",
+            action="store_true",
+            help="Only verify the input configuration files (general.yml, "
+                 "clients.yml and so on), do not produce any output "
+                 "configuration.",
+            dest="test_only")
+
         group = parser.add_argument_group(
             title="Route server configuration",
             description="The following arguments override those provided "
@@ -132,7 +140,8 @@ class TemplateRenderingCommands(ARouteServerCommand):
 
         try:
             builder = builder_class(**cfg_builder_params)
-            self.args.output_file.write(builder.render_template())
+            if not self.args.test_only:
+                builder.render_template(output_file=self.args.output_file)
         except TemplateRenderingError as e:
             if tpl_all_right:
                 raise
