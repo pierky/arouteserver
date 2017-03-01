@@ -13,13 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import argparse
 import json
 import os
 import unittest
 import yaml
 
-from pierky.arouteserver.commands.clients_from_euroix import ClientsFromEuroIXCommand
+from pierky.arouteserver.euro_ix import EuroIXMemberList
 
 class TestClientsFromEuroIX(unittest.TestCase):
 
@@ -34,9 +33,8 @@ class TestClientsFromEuroIX(unittest.TestCase):
 
     def _run(self, filename, *args, **kwargs):
         data = self._load(filename)
-        self.clients = ClientsFromEuroIXCommand.clients_from_euroix(
-            data, *args, **kwargs
-        )
+        euro_ix = EuroIXMemberList(data)
+        self.clients = euro_ix.get_clients(*args, **kwargs)
 
     def _result_match_file(self, json_in_filename, yml_res_filename=None,
                        *args, **kwargs):

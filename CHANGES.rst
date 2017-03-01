@@ -5,6 +5,7 @@ next release
 ------------
 
 - New ``--test-only`` flag for builder commands.
+- New ``--clients-from-euroix`` command to build the ``clients.yml`` file on the basis of records from an `Euro-IX member list JSON file <https://github.com/euro-ix/json-schemas>`_.
 
 v0.2.0
 ------
