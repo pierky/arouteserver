@@ -67,7 +67,7 @@ try:
 except ARouteServerError as e:
     msg = "An error occurred: please refer to the log for details."
     if str(e):
-        msg = "Error: {}".format(str(e))
+        msg = str(e)
     if e.extra_info:
         msg += "\n\n{}".format(e.extra_info)
     if e.please_open_issue:

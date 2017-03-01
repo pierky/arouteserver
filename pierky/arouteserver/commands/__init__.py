@@ -14,7 +14,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from tpl_rendering import BuildCommand, HTMLCommand, DumpTemplateContextCommand
-from clients_from_peeringdb import ClientsFromPeeringDBCommand 
+from clients_from_peeringdb import ClientsFromPeeringDBCommand
+from clients_from_euroix import ClientsFromEuroIXCommand
 from setup import SetupCommand
 from setup_templates import SetupTemplatesCommand
 from verify_templates import VerifyTemplatesCommand
@@ -25,6 +26,7 @@ all_commands = [
     HTMLCommand,
     DumpTemplateContextCommand,
     ClientsFromPeeringDBCommand,
+    ClientsFromEuroIXCommand,
     SetupCommand,
     SetupTemplatesCommand,
     VerifyTemplatesCommand,

@@ -62,6 +62,18 @@ class PeeringDBError(ARouteServerError):
 class PeeringDBNoInfoError(ARouteServerError):
     pass
 
+class EuroIXError(ARouteServerError):
+    pass
+
+class EuroIXSchemaError(EuroIXError):
+
+    def __init__(self, msg):
+        EuroIXError.__init__(self, msg)
+        self.extra_info = ("It's possible that the JSON schema used by the IX "
+                           "to export its members list is not aligned with "
+                           "the one recognized by this version of the "
+                           "program, or that it contains errors.")
+
 class BuilderError(ARouteServerError):
     pass
 
