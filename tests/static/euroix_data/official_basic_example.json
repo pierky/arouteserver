@@ -1,0 +1,44 @@
+{
+    "version": "0.6",
+    "timestamp": "2016-01-22T00:00:00Z",
+    "ixp_list": [
+       {
+          "ixp_id": 42,
+          "shortname": "AMS-IX"
+        }
+    ],
+    "member_list": [
+        {
+            "asnum": 8560,
+            "connection_list": [
+                {
+                    "ixp_id": 42
+                }
+            ]
+        },
+        {
+            "asnum": 197219,
+            "connection_list": [
+                {
+                    "ixp_id": 42
+                }
+            ]
+        },
+        {
+            "asnum": 51088,
+            "connection_list": [
+                {
+                    "ixp_id": 42
+                }
+            ]
+        },
+        {
+            "asnum": 47836,
+            "connection_list": [
+                {
+                    "ixp_id": 42
+                }
+            ]
+        }
+    ]
+}

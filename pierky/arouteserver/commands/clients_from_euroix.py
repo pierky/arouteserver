@@ -32,20 +32,30 @@ from ..errors import EuroIXError, EuroIXSchemaError
 class ClientsFromEuroIXCommand(ARouteServerCommand):
 
     COMMAND_NAME = "clients-from-euroix"
-    COMMAND_HELP = ("Build a list of clients and their AS-SET on the basis "
-                    "of EURO-IX JSON records.")
+    COMMAND_HELP = ("Build a list of clients on the basis "
+                    "of EURO-IX JSON file.")
     NEEDS_CONFIG = True
     
-    TESTED_EUROIX_SCHEMA_VERSION = ("0.4", "0.5", "0.6")
+    TESTED_EUROIX_SCHEMA_VERSIONS = ("0.4", "0.5", "0.6")
 
     @classmethod
     def add_arguments(cls, parser):
         super(ClientsFromEuroIXCommand, cls).add_arguments(parser)
 
         parser.add_argument(
-            "url",
+            "--url",
             type=str,
-            help="URL of the file that contains the Euro-IX JSON member list.")
+            help="URL of the file that contains the Euro-IX JSON "
+                 "member list. If this is not given, data is read "
+                 "from the input file (arguments -i, --input).",
+            dest="url")
+
+        parser.add_argument(
+            "-i", "--input",
+            type=argparse.FileType('r'),
+            help="Input file. Default: stdin.",
+            default=sys.stdin,
+            dest="input_file")
 
         parser.add_argument(
             "ixp_id",
@@ -78,7 +88,9 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
             default=sys.stdout,
             dest="output_file")
 
-    def clients_from_euroix(self):
+    @staticmethod
+    def clients_from_euroix(data, ixp_id, vlan_id=None,
+                            routeserver_only=False):
 
         def check_type(v, vname, expected_type):
             if expected_type is str:
@@ -172,7 +184,7 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
         def process_connection(member, connection, clients):
             check_type(connection, "connection", dict)
 
-            if get_item("ixp_id", connection, int) != self.args.ixp_id:
+            if get_item("ixp_id", connection, int) != ixp_id:
                 return
 
             # Member has a connection to the selected IXP infrastructure.
@@ -181,7 +193,7 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
 
             vlan_list = get_item("vlan_list", connection, list, True)
 
-            if self.args.vlan_id and not vlan_list:
+            if vlan_id and not vlan_list:
                 # A specific VLAN has been requested but member does not
                 # have information about VLANs at all.
                 return
@@ -189,8 +201,8 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
             for vlan in vlan_list or []:
                 check_type(vlan, "vlan", dict)
 
-                if self.args.vlan_id and \
-                    get_item("vlan_id", vlan, int, True) != self.args.vlan_id:
+                if vlan_id and \
+                    get_item("vlan_id", vlan, int, True) != vlan_id:
                     # This VLAN is not the requested one.
                     continue
 
@@ -206,7 +218,7 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
                     if not address:
                         continue
 
-                    if self.args.routeserver_only:
+                    if routeserver_only:
                         # Members with routeserver attribute == False
                         # are excluded.
                         if get_item("routeserver", ip_info, bool, True) is False:
@@ -233,29 +245,14 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
 
                     clients.append(client)
 
-        try:
-            response = urlopen(self.args.url)
-        except Exception as e:
-            raise EuroIXError(
-                "Error while retrieving Euro-IX JSON file from {}: {}".format(
-                    self.args.url, str(e)
-                )
-            )
-
-        try:
-            data = json.loads(response.read().decode("utf-8"))
-        except Exception as e:
-            raise EuroIXSchemaError(
-                "Error while processing JSON data: {}".format(str(e))
-            )
-
         version = get_item("version", data, str)
-        if version not in self.TESTED_EUROIX_SCHEMA_VERSION:
+        tested_versions = ClientsFromEuroIXCommand.TESTED_EUROIX_SCHEMA_VERSIONS
+        if version not in tested_versions:
             logging.warning("The version of the JSON schema of this file ({}) "
                             "is not one of those tested ({}). Unexpected "
                             "errors may occurr.".format(
                                 version,
-                                ", ".join(self.TESTED_EUROIX_SCHEMA_VERSION)
+                                ", ".join(tested_versions)
                             ))
 
         ixp_list = get_item("ixp_list", data, list)
@@ -265,13 +262,13 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
         for ixp in ixp_list:
             check_type(ixp, "ixp", dict)
 
-            if get_item("ixp_id", ixp, int) == self.args.ixp_id:
+            if get_item("ixp_id", ixp, int) == ixp_id:
                 ixp_found = True
                 break
 
         if not ixp_found:
             raise EuroIXError(
-                "IXP ID {} not found".format(self.args.ixp_id))
+                "IXP ID {} not found".format(ixp_id))
 
         raw_clients = []
         for member in member_list:
@@ -292,9 +289,31 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
         # TODO: Merge clients with same IRRDB info
 
     def run(self):
-        clients = self.clients_from_euroix()
-        data = {"clients": clients}
+        if self.args.url:
+            try:
+                response = urlopen(self.args.url)
+                raw = response.read().decode("utf-8")
+            except Exception as e:
+                raise EuroIXError(
+                    "Error while retrieving Euro-IX JSON file from {}: {}".format(
+                        self.args.url, str(e)
+                    )
+                )
+        else:
+            raw = self.args.input_file.read()
 
-        yaml.safe_dump(data, self.args.output_file, default_flow_style=False)
+        try:
+            data = json.loads(raw)
+        except Exception as e:
+            raise EuroIXSchemaError(
+                "Error while processing JSON data: {}".format(str(e))
+            )
+
+        clients = self.clients_from_euroix(
+            data, self.args.ixp_id, vlan_id=self.args.vlan_id,
+            routeserver_only=self.args.routeserver_only)
+        res = {"clients": clients}
+
+        yaml.safe_dump(res, self.args.output_file, default_flow_style=False)
 
         return True

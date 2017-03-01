@@ -1,0 +1,162 @@
+{
+    "version": "0.6",
+    "timestamp": "2016-01-22T00:00:00Z",
+    "ixp_list": [
+      {
+        "shortname": "AMS-IX",
+        "name": "Amsterdam Internet Exchange",
+        "ixp_id": 42,
+        "ixf_id": 2,
+        "country": "NL",
+        "url": "http://www.ams-ix.net/",
+        "stats_api": "https://my.ams-ix.net/api/v1/stats.json",
+        "support_email": "noc@ams-ix.net",
+        "support_phone": "+31 20 514 1717",
+        "support_contact_hours": "8/5",
+        "emergency_email": "noc@ams-ix.net",
+        "emergency_phone": "+31 20 514 1717",
+        "emergency_contact_hours": "24/7",
+        "billing_email": "info@ams-ix.net",
+        "billing_phone": "+31 20 305 89 99",
+        "billing_contact_hours": "8/5",
+        "peering_policy_list": [
+            "open",
+            "selective",
+            "closed",
+            "case-by-case",
+            "custom"
+        ],
+        "switch": [
+            {
+                "id": 0,
+                "name": "PXC-TC5-144",
+                "colo": "Telecity 5",
+                "pdb_facility_id": 1236,
+                "city": "Amsterdam",
+                "country": "NL"
+            },
+            {
+                "id": 1,
+                "name": "PXC-GLO-146",
+                "colo": "Global Switch",
+                "pdb_facility_id": 63,
+                "city": "Amsterdam",
+                "country": "NL"
+            }
+        ],
+        "vlan": [
+            {
+                "id": 0,
+                "name": "ISP",
+                "ipv4": {
+                    "prefix": "80.249.208.0",
+                    "mask_length": 21
+                },
+                "ipv6": {
+                    "prefix": "2001:7f8:1::",
+                    "mask_length": 64
+                }
+            },
+            {
+                "id": 1,
+                "name": "GRX",
+                "ipv4": {
+                    "prefix": "193.105.101.0",
+                    "mask_length": 23
+                }
+            }
+        ]
+      }
+    ],
+    "member_list": [
+        {
+            "asnum": 2906,
+            "member_type": "peering",
+            "name": "Netflix",
+            "url": "http://netflix.com/",
+            "contact_email": [
+                "peering@netflix.com",
+                "mrpeering@netflix.com"
+            ],
+            "contact_phone": [
+                "+1 1234 5678"
+            ],
+            "contact_hours": "8/5",
+            "peering_policy": "open",
+            "peering_policy_url": "https://www.netflix.com/openconnect/",
+            "member_since": "2009-02-04T00:00:00Z",
+            "connection_list": [
+                {
+                    "ixp_id": 42,
+                    "connected_since": "2009-02-04T00:00:00Z",
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 0,
+                            "if_speed": 10000,
+                            "if_type": "LR4"
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 0,
+                            "ipv4": {
+                                "address": "195.69.146.250",
+                                "routeserver": true,
+                                "max_prefix": 42,
+                                "as_macro": "AS-NFLX-V4",
+                                "mac_address" : [
+                                    "00:0a:95:9d:68:16"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:7f8:1::a500:2906:2",
+                                "routeserver": true,
+                                "max_prefix": 42,
+                                "as_macro": "AS-NFLX-V6",
+                                "mac_address" : [
+                                    "00:0a:95:9d:68:16"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "ixp_id": 42,
+                    "connected_since": "2009-02-04T00:00:00Z",
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000,
+                            "if_type": "LR4"
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 0,
+                            "ipv4": {
+                                "address": "195.69.147.250",
+                                "routeserver": true,
+                                "max_prefix": 42,
+                                "as_macro": "AS-NFLX-V4",
+                                "mac_address" : [
+                                    "00:0a:95:9d:68:16"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:7f8:1::a500:2906:1",
+                                "routeserver": true,
+                                "max_prefix": 42,
+                                "as_macro": "AS-NFLX-V6",
+                                "mac_address" : [
+                                    "00:0a:95:9d:68:16"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

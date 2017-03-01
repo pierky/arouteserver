@@ -1,0 +1,56 @@
+{
+    "version": "0.6",
+    "ixp_list": [
+      {
+        "ixp_id": 42
+      }
+    ],
+    "member_list": [
+        {
+            "asnum": 1,
+            "name": "One",
+            "connection_list": [
+                {
+                    "ixp_id": 42,
+                    "vlan_list": [
+                        {
+                            "vlan_id": 0,
+                            "ipv4": {
+                                "address": "1.1.1.1",
+                                "routeserver": false,
+                                "max_prefix": 1114,
+                                "as_macro": "AS-11-V4"
+                            },
+                            "ipv6": {
+                                "address": "1:1:1:1::",
+                                "routeserver": false,
+                                "max_prefix": 1116,
+                                "as_macro": "AS-11-V6"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "ixp_id": 42,
+                    "vlan_list": [
+                        {
+                            "vlan_id": 0,
+                            "ipv4": {
+                                "address": "1.1.1.2",
+                                "routeserver": true,
+                                "max_prefix": 1124,
+                                "as_macro": "AS-12-V4"
+                            },
+                            "ipv6": {
+                                "address": "1:1:1:2::",
+                                "routeserver": true,
+                                "max_prefix": 1126,
+                                "as_macro": "AS-12-V6"
+                            }
+                        }
+                    ]
+                } 
+            ]
+        }
+    ]
+}

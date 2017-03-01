@@ -1,0 +1,41 @@
+clients:
+- asn: 2906
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NFLX-V4
+      max_prefix:
+        limit_ipv4: 42
+  description: Netflix
+  ip: 195.69.146.250
+- asn: 2906
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NFLX-V6
+      max_prefix:
+        limit_ipv6: 42
+  description: Netflix
+  ip: 2001:7f8:1::a500:2906:2
+- asn: 2906
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NFLX-V4
+      max_prefix:
+        limit_ipv4: 42
+  description: Netflix
+  ip: 195.69.147.250
+- asn: 2906
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NFLX-V6
+      max_prefix:
+        limit_ipv6: 42
+  description: Netflix
+  ip: 2001:7f8:1::a500:2906:1

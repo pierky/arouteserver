@@ -1,0 +1,21 @@
+clients:
+- asn: 1
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-12-V4
+      max_prefix:
+        limit_ipv4: 1124
+  description: One
+  ip: 1.1.1.2
+- asn: 1
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-12-V6
+      max_prefix:
+        limit_ipv6: 1126
+  description: One
+  ip: '1:1:1:2::'
