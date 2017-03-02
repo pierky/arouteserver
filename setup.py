@@ -54,7 +54,7 @@ if len(sys.argv) > 1 and sys.argv[1] in ("fps", "sdist"):
     fps = ConfigParserProgram.calculate_fingerprints("templates")
     fps_path = os.path.join("templates", ConfigParserProgram.FINGERPRINTS_FILENAME)
     with open(fps_path, "w") as f:
-        yaml.dump(fps, f, default_flow_style=False)
+        yaml.safe_dump(fps, f, default_flow_style=False)
     if sys.argv[1] == "fps":
         sys.exit(0)
 

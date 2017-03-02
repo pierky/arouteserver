@@ -76,7 +76,7 @@ class ConfigParserProgram(object):
 
         try:
             with open(path, "r") as f:
-                cfg_from_file = yaml.load(f.read())
+                cfg_from_file = yaml.safe_load(f.read())
                 if cfg_from_file:
                     for key in cfg_from_file:
                         if key not in ConfigParserProgram.DEFAULT:
@@ -303,7 +303,7 @@ class ConfigParserProgram(object):
     @staticmethod
     def load_fingerprints_from_file(path):
         with open(path, "r") as f:
-            return yaml.load(f.read())
+            return yaml.safe_load(f.read())
 
     def get_local_fingerprints(self):
         """Calculate fingerprints from local template files."""

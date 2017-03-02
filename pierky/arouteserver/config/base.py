@@ -43,7 +43,7 @@ class ConfigParserBase(object):
 
     def _load_from_yaml(self, doc):
         try:
-            self.cfg = yaml.load(doc)
+            self.cfg = yaml.safe_load(doc)
         except Exception as e:
             raise ConfigError(
                 "Can't parse YAML file: {}".format(str(e))

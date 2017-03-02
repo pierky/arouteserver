@@ -269,6 +269,6 @@ class TemplateContextDumper(ConfigBuilder):
     def enrich_j2_environment(self, env):
 
         def to_yaml(obj):
-            return yaml.dump(obj, default_flow_style=False)
+            return yaml.safe_dump(obj, default_flow_style=False)
 
         env.filters["to_yaml"] = to_yaml

@@ -47,7 +47,7 @@ class TestClientsFromEuroIX(unittest.TestCase):
             "{}.yml".format(yml_res_filename or json_in_filename)
         )
         with open(yml_res_path, "r") as f:
-            expected_result = yaml.load(f.read())
+            expected_result = yaml.safe_load(f.read())
 
         self.assertEqual(res, expected_result)
 
