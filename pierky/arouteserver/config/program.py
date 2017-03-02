@@ -518,6 +518,7 @@ class ConfigParserProgram(object):
 
         program_cfg_file_path = os.path.join(dest_dir, "arouteserver.yml")
 
+        rewrite_cfg_dir = False
         if dest_dir != self.DEFAULT_CFG_DIR:
             print("WARNING: the directory that has been chosen is not the "
                   "default one: use the --cfg command line argument to "
@@ -525,7 +526,7 @@ class ConfigParserProgram(object):
 
             # The 'cfg_dir' option is overwritten only if the
             # configuration file is not existing, otherwise it is
-            # supposed to be correctly configured by the used and it's
+            # supposed to be correctly configured by the user and it's
             # not changed.
             rewrite_cfg_dir = not os.path.exists(program_cfg_file_path)
 
