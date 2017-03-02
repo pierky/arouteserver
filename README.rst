@@ -89,7 +89,7 @@ Features
 - Automatic building of clients list:
 
   - `integration <https://arouteserver.readthedocs.io/en/latest/USAGE.html#ixp-manager-integration>`_ with **IXP-Manager**;
-  - `fetch lists <https://arouteserver.readthedocs.io/en/latest/USAGE.html#_automatic-clients>`_ from **PeeringDB** records and **Euro-IX member list JSON** files.
+  - `fetch lists <https://arouteserver.readthedocs.io/en/latest/USAGE.html#automatic-clients>`_ from **PeeringDB** records and **Euro-IX member list JSON** files.
 
 A comprehensive list of features can be found within the comments of the distributed configuration file on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`_.
 
