@@ -1,0 +1,41 @@
+clients:
+- asn: 112
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS112
+      max_prefix:
+        limit_ipv4: 20
+  description: AS112 Reverse DNS
+  ip: 185.6.36.6
+- asn: 112
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS112
+      max_prefix:
+        limit_ipv6: 20
+  description: AS112 Reverse DNS
+  ip: 2001:7f8:18::6
+- asn: 112
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS112
+      max_prefix:
+        limit_ipv4: 20
+  description: AS112 Reverse DNS
+  ip: 194.88.240.6
+- asn: 112
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS112
+      max_prefix:
+        limit_ipv6: 20
+  description: AS112 Reverse DNS
+  ip: 2001:7f8:18:12::6

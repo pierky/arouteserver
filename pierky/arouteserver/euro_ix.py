@@ -181,6 +181,11 @@ class EuroIXMemberList(object):
                 # have information about VLANs at all.
                 return
 
+            # Workaround for IXP-Manager issue:
+            # https://github.com/inex/IXP-Manager/commit/50c3781711ed38e773f86a8f3017d669d18e464d
+            if vlan_list and isinstance(vlan_list[0], list):
+                vlan_list = vlan_list[0]
+
             for vlan in vlan_list or []:
                 self._check_type(vlan, "vlan", dict)
 

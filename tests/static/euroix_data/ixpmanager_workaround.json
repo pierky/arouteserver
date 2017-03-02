@@ -1,0 +1,79 @@
+{
+    "version": "0.5",
+    "ixp_list": [
+        {
+            "shortname": "INEX",
+            "name": "Internet Neutral Exchange Association Limited by Guarantee",
+            "country": "IE",
+            "url": "https://www.inex.ie/",
+            "ixf_id": 48,
+            "ixp_id": 1
+        }
+    ],
+    "member_list": [
+        {
+            "asnum": 112,
+            "name": "AS112 Reverse DNS",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 51,
+                            "if_speed": 1000
+                        }
+                    ],
+                    "vlan_list": [
+			[
+                        {
+                            "vlan_id": 2,
+                            "ipv4": {
+                                "address": "185.6.36.6",
+                                "routeserver": true,
+                                "max_prefix": 20,
+                                "as_macro": "AS112"
+                            },
+                            "ipv6": {
+                                "address": "2001:7f8:18::6",
+                                "routeserver": true,
+                                "max_prefix": 20,
+                                "as_macro": "AS112"
+                            }
+                        }
+			]
+                    ]
+                },
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 21,
+                            "if_speed": 1000
+                        }
+                    ],
+                    "vlan_list": [
+			[
+                        {
+                            "vlan_id": 3,
+                            "ipv4": {
+                                "address": "194.88.240.6",
+                                "routeserver": true,
+                                "max_prefix": 20,
+                                "as_macro": "AS112"
+                            },
+                            "ipv6": {
+                                "address": "2001:7f8:18:12::6",
+                                "routeserver": true,
+                                "max_prefix": 20,
+                                "as_macro": "AS112"
+                            }
+                        }
+			]
+                    ]
+                }
+            ]
+        }
+    ]
+}

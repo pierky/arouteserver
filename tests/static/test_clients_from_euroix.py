@@ -80,3 +80,7 @@ class TestClientsFromEuroIX(unittest.TestCase):
         self._result_match_file("routeserver_only", "routeserver_only_no_flag",
             ixp_id=42)
 
+    def test_ixpmanager_workaround(self):
+        """Clients from Euro-IX: IXP-Manager workaround"""
+        self._result_match_file("ixpmanager_workaround", ixp_id=1)
+
