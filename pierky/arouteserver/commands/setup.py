@@ -25,5 +25,16 @@ class SetupCommand(ARouteServerCommand):
                     "directories. Confirmation before each action will "
                     "be asked.")
 
+    @classmethod
+    def add_arguments(cls, parser):
+        super(SetupCommand, cls).add_arguments(parser)
+
+        parser.add_argument(
+            "--dest-dir",
+            type=str,
+            help="Directory where the program's configuration files and "
+                 "templates will be stored.",
+            dest="dest_dir")
+
     def run(self):
-        return program_config.setup()
+        return program_config.setup(destination_directory=self.args.dest_dir)

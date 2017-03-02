@@ -57,6 +57,9 @@ class ConfigParserProgram(object):
         "threads": 4,
     }
 
+    PATH_KEYS = ("logging_config_file", "cfg_general", "cfg_clients",
+                 "cfg_bogons", "templates_dir", "cache_dir")
+
     FINGERPRINTS_FILENAME = "fingerprints.yml"
 
     def __init__(self):
@@ -88,12 +91,21 @@ class ConfigParserProgram(object):
                           exc_info=not isinstance(e, ARouteServerError))
             raise ConfigError()
 
+        self.cfg["cfg_dir"] = os.path.expanduser(self.cfg["cfg_dir"])
+
         # relative path -> absolute path
-        for cfg_key in ("logging_config_file", "cfg_general", "cfg_clients",
-                        "cfg_bogons", "templates_dir", "cache_dir"):
-            val = self.cfg[cfg_key]
+        for cfg_key in self.PATH_KEYS:
+            val = os.path.expanduser(self.cfg[cfg_key])
             if not os.path.isabs(val):
                 self.cfg[cfg_key] = os.path.join(self.cfg["cfg_dir"], val)
+            else:
+                self.cfg[cfg_key] = val
+
+    def expanduser(self, cfg_key):
+        if cfg_key in self.PATH_KEYS:
+            return os.path.expanduser(self.cfg[cfg_key])
+        else:
+            return self.cfg[cfg_key]
 
     def parse_cli_args(self, args):
         args_dict = vars(args)
@@ -102,8 +114,7 @@ class ConfigParserProgram(object):
                 self.cfg[option_name] = args_dict[option_name]
 
     def get(self, cfg_key):
-        val = self.cfg[cfg_key]
-        return val
+        return self.expanduser(cfg_key)
 
     @staticmethod
     def mk_dir(d):
@@ -486,20 +497,25 @@ class ConfigParserProgram(object):
         )
         return True
 
-    def setup(self):
+    def setup(self, destination_directory=None):
         print("ARouteServer setup")
         print("")
 
         distrib_config_dir = get_config_dir()
 
-        res, dest_dir = ask("Where do you want configuration files and templates "
-                            "to be stored?", default=self.DEFAULT_CFG_DIR)
-        if not res:
-            print("")
-            print("Setup aborted")
-            return False
+        if destination_directory:
+            dest_dir = destination_directory
+        else:
+            res, dest_dir = ask("Where do you want configuration files and templates "
+                                "to be stored?", default=self.DEFAULT_CFG_DIR)
+            if not res:
+                print("")
+                print("Setup aborted")
+                return False
 
         dest_dir = dest_dir.strip()
+        dest_dir = os.path.expanduser(dest_dir)
+
         program_cfg_file_path = os.path.join(dest_dir, "arouteserver.yml")
 
         if dest_dir != self.DEFAULT_CFG_DIR:
@@ -513,14 +529,15 @@ class ConfigParserProgram(object):
             # not changed.
             rewrite_cfg_dir = not os.path.exists(program_cfg_file_path)
 
-        res, yes_or_no = ask_yes_no(
-            "Do you confirm you want ARouteServer files to be "
-            "stored at {}?".format(dest_dir), default="yes")
+        if not destination_directory:
+            res, yes_or_no = ask_yes_no(
+                "Do you confirm you want ARouteServer files to be "
+                "stored at {}?".format(dest_dir), default="yes")
 
-        if not res or yes_or_no != "yes":
-            print("")
-            print("Setup aborted")
-            return False
+            if not res or yes_or_no != "yes":
+                print("")
+                print("Setup aborted")
+                return False
 
         print("Installing configuration files into {}...".format(dest_dir))
         print("")

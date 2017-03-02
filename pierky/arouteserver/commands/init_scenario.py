@@ -65,7 +65,7 @@ class InitScenarioCommand(ARouteServerCommand):
         class_name = "{}Scenario".format(class_name.capitalize())
 
         skeleton_dir = get_live_test_skeleton_dir()
-        dest_dir = self.args.dest_dir
+        dest_dir = os.path.expanduser(self.args.dest_dir)
         templates_dir = program_config.get("templates_dir")
 
         if os.path.exists(dest_dir):
