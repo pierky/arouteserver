@@ -10,17 +10,20 @@ The script can be executed via command-line:
     ./scripts/arouteserver build --ip-ver 4 -o /etc/bird/bird4.conf
 
     # if installed using pip:
-    arouteserver build --ipver-4 -o /etc/bird/bird4.conf
+    arouteserver build --ip-ver 4 -o /etc/bird/bird4.conf
 
 It produces the route server configuration and saves it on ``/etc/bird/bird4.conf``.
 
 It exits with ``0`` if everything is fine or with an exit code different than zero if something wrong occurs.
 
-It can be scheduled at regular interval to re-build the configuration (for example to add new clients or to update IRRDB information), test it and finally to deploy it in production:
+It can be scheduled at regular intervals to re-build the configuration (for example to add new clients or to update IRRDB information), test it and finally to deploy it in production:
 
   .. code:: bash
 
-    arouteserver build --ipver-4 -o /etc/bird/bird4.new && \
+    # The following assumes that ARouteServer runs on the
+    # route server itself, that is a thing that you may want
+    # to avoid.
+    arouteserver build --ip-ver 4 -o /etc/bird/bird4.new && \
         bird -p -c /etc/bird/bird4.new && \
         cp /etc/bird/bird4.new /etc/bird/bird4.conf && \
         birdcl configure
@@ -35,6 +38,8 @@ To build an HTML textual representation of route server's options and policies, 
     arouteserver html -o /var/www/html/rs_description.html
 
 This command writes an HTML page that contains a brief textual representation of route server's policies. An example can be found `here <_static/examples_rich.html>`_.
+
+.. _automatic-clients:
 
 Automatic ``clients.yml`` creation
 ----------------------------------
@@ -58,9 +63,9 @@ The ``clients-from-euroix`` command can be used for this purpose.
 
 The JSON file may contain information about more than one IXP for every IX. For example, AMS-IX has 'AMS-IX', 'AMS-IX Caribbean', 'AMS-IX Hong Kong' and more. To filter only those clients which are connected to the IXP of interest an identifier (``ixp_id``) is needed. When executed without the ``ixp_id`` argument, the command prints the list of IXPs and VLANs reported in the JSON file; the ID can be found on this list:
 
-.. code:: bash
+.. code-block:: console
 
-	arouteserver clients-from-euroix --url https://my.ams-ix.net/api/v1/members.json
+	$ arouteserver clients-from-euroix --url https://my.ams-ix.net/api/v1/members.json
 	IXP ID 1, short name 'AMS-IX'
 	 - VLAN ID 502, name 'GRX', IPv4 prefix 193.105.101.0/25, IPv6 prefix 2001:7f8:86:1::/64
 	 - VLAN ID 504, name 'MDX', IPv4 prefix 195.60.82.128/26
@@ -75,9 +80,9 @@ The JSON file may contain information about more than one IXP for every IX. For 
 
 Finally, the list of clients and their attributes can be fetched:
 
-.. code:: bash
+.. code-block:: console
 
-        arouteserver clients-from-euroix --url https://my.ams-ix.net/api/v1/members.json 1 --vlan 502
+        $ arouteserver clients-from-euroix --url https://my.ams-ix.net/api/v1/members.json 1 --vlan 502
         clients:
         - asn: 58453
           description: China Mobile International Limited
@@ -98,9 +103,9 @@ Finally, the list of clients and their attributes can be fetched:
 
 An example from the LONAP:
 
-.. code:: bash
+.. code-block:: console
 
-        arouteserver clients-from-euroix --url https://portal.lonap.net/apiv1/member-list/list 1
+        $ arouteserver clients-from-euroix --url https://portal.lonap.net/apiv1/member-list/list 1
         clients:
         - asn: 42
           cfg:
@@ -135,6 +140,47 @@ An example from the LONAP:
         ...
 
 To get a list of all the available options, run the ``arouteserver clients-from-euroix --help`` command.
+
+.. _ixp-manager-integration:
+
+Integration with IXP-Manager
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Since the popular `IXP-Manager <https://github.com/inex/IXP-Manager>`_ allows to `export the list of members in Euro-IX JSON format <https://github.com/inex/IXP-Manager/wiki/Euro-IX-Member-Data-Export>`_, this ARouteServer's command can also be used to integrate the two tools:
+
+.. code:: bash
+
+        #!/bin/bash
+
+        set -e
+
+        # Setup an API key on IXP-Manager and write it below.
+        # https://github.com/inex/IXP-Manager/wiki/Euro-IX-Member-Data-Export#setting-up-an-api-key
+        api_key="YOURAPIKEY"
+
+        # Adjust the URL and point it to your IXP-Manager application.
+        url="https://www.example.com/ixp/apiv1/member-list/list/key/$api_key"
+
+        # This is the IXP ID you want to export members from.
+        ixp_id=1
+
+        # Path to the clients file.
+        clients_file=~/ars/clients-from-ixpmanager.yml
+
+        # Build the clients file using info from IXP-Manager.
+        arouteserver clients-from-euroix \
+                -o $clients_file \
+                --url "$url" $ixp_id
+
+        # Build the route server configuration.
+        arouteserver build \
+                --clients $clients_file \
+                --ip-ver 4 \
+                -o /etc/bird/bird4.new
+
+        # Now test the new configuration and, finally,
+        # push it to the route server.
+        ...
 
 Live tests, development and customization
 -----------------------------------------

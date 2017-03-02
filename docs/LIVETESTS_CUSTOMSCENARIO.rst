@@ -167,16 +167,16 @@ To debug custom scenarios some utilities are provided:
 
 - once the BGP speaker instances are up (using the ``REUSE_INSTANCES`` environment variable seen above), they can be queried using standard Docker commands:
 
-  .. code:: bash
+  .. code-block:: console
 
-        # list all the running Docker instances
-        docker ps
+        $ # list all the running Docker instances
+        $ docker ps
         CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
         142f88379428        pierky/bird:1.6.3   "bird -c /etc/bird..."   18 minutes ago      Up 18 minutes       179/tcp             ars_AS101
         26a9ec58dcf1        pierky/bird:1.6.3   "bird -c /etc/bird..."   18 minutes ago      Up 18 minutes       179/tcp             ars_AS2
 
-        # run 'birdcl show route' on ars_AS101
-        docker exec -it 142f88379428 birdcl show route
+        $ # run 'birdcl show route' on ars_AS101
+        $ docker exec -it 142f88379428 birdcl show route
 
 
   Some utilities are provided whitin the ``/utils`` directory to ease these tasks:
