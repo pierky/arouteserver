@@ -232,7 +232,7 @@ function route_passes_rpki_validation () {
 }
 {% endif %}
 
-# This functions add NO-EXPORT and/or NO-ADVERTISE
+# This function adds NO-EXPORT and/or NO-ADVERTISE
 # well-known communities.
 function add_noexport_noadvertise(int peer_as) {
 	{% if cfg.communities.add_noexport_to_any|community_is_set %}
