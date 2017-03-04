@@ -463,3 +463,30 @@ cfg:
       #lrg:
       #ext:
 
+    # Routes that are tagged with the following communities are
+    # propagated to other clients before the NO-EXPORT (65535:65281)
+    # and/or the NO-ADVERTISE (65535:65282) well-known communities
+    # are added.
+    #
+    # The following communities are scrubbed from outbound routes.
+    #
+    # The 'rs_as' macro can be used here.
+    add_noexport_to_any:
+      #std:
+      #lrg:
+      #ext:
+    add_noadvertise_to_any:
+      #std:
+      #lrg:
+      #ext:
+    #
+    # The 'rs_as' macro can be used here.
+    # The 'peer_as' macro must appear in the last part of values.
+    add_noexport_to_peer:
+      #std:
+      #lrg:
+      #ext:
+    add_noadvertise_to_peer:
+      #std:
+      #lrg:
+      #ext:

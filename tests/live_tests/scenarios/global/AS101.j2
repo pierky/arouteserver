@@ -58,7 +58,8 @@ filter outgoing {
 	}
 	if net = {{ data.AS101_roa_blackhole }} then
 		bgp_community.add((65535,666));
-	accept;
+	if proto = "own_prefixes" then accept;
+	reject;
 }
 protocol bgp AS1_1 {
 	local as 101;

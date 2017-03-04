@@ -80,4 +80,20 @@ cfg:
                         std: "65506:peer_as"
                         ext: "rt:65506:peer_as"
                         lrg: "rs_as:65506:peer_as"
+                add_noexport_to_any:
+                        std: "65507:rs_as"
+                        ext: "rt:65507:rs_as"
+                        lrg: "rs_as:65507:rs_as"
+                add_noadvertise_to_any:
+                        std: "65508:rs_as"
+                        ext: "rt:65508:rs_as"
+                        lrg: "rs_as:65508:rs_as"
+                add_noexport_to_peer:
+                        std: "65509:peer_as"
+                        ext: "rt:65509:peer_as"
+                        lrg: "rs_as:65509:peer_as"
+                add_noadvertise_to_peer:
+                        std: "65510:peer_as"
+                        ext: "rt:65510:peer_as"
+                        lrg: "rs_as:65510:peer_as"
 

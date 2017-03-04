@@ -231,3 +231,24 @@ function route_passes_rpki_validation () {
 	return true;
 }
 {% endif %}
+
+# This functions add NO-EXPORT and/or NO-ADVERTISE
+# well-known communities.
+function add_noexport_noadvertise(int peer_as) {
+	{% if cfg.communities.add_noexport_to_any|community_is_set %}
+	# add_noexport_to_any
+	{{ match_communities(cfg.communities.add_noexport_to_any, "{ bgp_community.add((65535, 65281)); }") }}
+	{% endif %}
+	{% if cfg.communities.add_noadvertise_to_any|community_is_set %}
+	# add_noadvertise_to_any
+	{{ match_communities(cfg.communities.add_noadvertise_to_any, "{ bgp_community.add((65535, 65282)); }") }}
+	{% endif %}
+	{% if cfg.communities.add_noexport_to_peer|community_is_set %}
+	# add_noexport_to_peer
+	{{ match_communities(cfg.communities.add_noexport_to_peer, "{ bgp_community.add((65535, 65281)); }") }}
+	{% endif %}
+	{% if cfg.communities.add_noadvertise_to_peer|community_is_set %}
+	# add_noadvertise_to_peer
+	{{ match_communities(cfg.communities.add_noadvertise_to_peer, "{ bgp_community.add((65535, 65282)); }") }}
+	{% endif %}
+}

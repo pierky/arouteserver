@@ -205,6 +205,8 @@ filter announce_to_{{ client.id }} {
 	bgp_path.prepend({{ cfg.rs_as }});
 	{% endif %}
 
+	add_noexport_noadvertise({{ client.asn }});
+
 	scrub_communities_out();
 
 	accept;

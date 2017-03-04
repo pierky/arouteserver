@@ -305,6 +305,12 @@ Route <strong>validity state</strong> is signalled to route server clients using
   {{ write_communities_table_row(cfg.communities.prepend_once_to_peer, "Prepend the announcing ASN once to peer") }}
   {{ write_communities_table_row(cfg.communities.prepend_twice_to_peer, "Prepend the announcing ASN twice to peer") }}
   {{ write_communities_table_row(cfg.communities.prepend_thrice_to_peer, "Prepend the announcing ASN thrice to peer") }}
+
+  {{ write_communities_table_row(cfg.communities.add_noexport_to_any, "Add NO-EXPORT to any") }}
+  {{ write_communities_table_row(cfg.communities.add_noadvertise_to_any, "Add NO-ADVERTISE to any") }}
+  {{ write_communities_table_row(cfg.communities.add_noexport_to_peer, "Add NO-EXPORT to peer") }}
+  {{ write_communities_table_row(cfg.communities.add_noadvertise_to_peer, "Add NO-ADVERTISE to peer") }}
+
   </tbody>
 </table>
 

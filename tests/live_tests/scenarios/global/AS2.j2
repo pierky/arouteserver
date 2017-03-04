@@ -29,11 +29,6 @@ filter to_rs {
 	accept;
 }
 
-filter to_AS101 {
-	if proto = "own_prefixes" then accept;
-	reject;
-}
-
 protocol bgp the_rs {
 	local as 2;
 	neighbor {{ data.rs_IPAddress }} as 999;
@@ -48,7 +43,7 @@ protocol bgp AS101 {
 	local as 2;
 	neighbor {{ data.AS101_IPAddress }} as 101;
 	import all;
-	export filter to_AS101;
+	export all;
 	connect delay time 1;
 	connect retry time 1;
 }

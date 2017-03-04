@@ -322,7 +322,8 @@ class TestConfigParserGeneral(TestConfigParserBase):
 
         for comm in ("announce_to_peer", "do_not_announce_to_peer",
                      "prepend_once_to_peer", "prepend_twice_to_peer",
-                     "prepend_thrice_to_peer"):
+                     "prepend_thrice_to_peer", "add_noexport_to_peer",
+                     "add_noadvertise_to_peer"):
             for c in self.VALID_STD_COMMS:
                 self.cfg["communities"][comm]["std"] = c
                 self._contains_err("'peer_as' macro is mandatory in this community")

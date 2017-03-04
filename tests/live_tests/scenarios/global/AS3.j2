@@ -17,6 +17,8 @@ protocol static own_prefixes {
 	route {{ data.AS3_prepend1_AS1 }} reject;
 	route {{ data.AS3_prepend2_AS2 }} reject;
 	route {{ data.AS3_prep3AS1_1any }} reject;
+	route {{ data.AS3_noexport_any }} reject;
+	route {{ data.AS3_noexport_AS1 }} reject;
 	route {{ data.Default_route }} reject;
 }
 
@@ -49,6 +51,13 @@ filter to_rs {
 	if net = {{ data.AS3_prep3AS1_1any }} then {
 		bgp_community.add((65506,1));
 		bgp_community.add((999,65501));
+	}
+	if net = {{ data.AS3_noexport_any }} then {
+		bgp_community.add((65507,999));
+	}
+	if net = {{ data.AS3_noexport_AS1 }} then {
+		bgp_community.add((65509,1));
+		bgp_community.add((65506,2));
 	}
 	accept;
 }
