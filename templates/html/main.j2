@@ -274,7 +274,11 @@ Route <strong>validity state</strong> is signalled to route server clients using
 <li><p>IPv{{ af }} routes are propagated to clients after their <strong>NEXT_HOP attribute has been rewritten</strong> to {{ cfg.blackhole_filtering[bn] }}.</p></li>
 {%		endif %}
 {% 	endfor %}
-<li><p>Before being announced to clients, all the routes are tagged with the BLACKHOLE well-known community.</p></li>
+<li><p>Before being announced to clients, all the routes are tagged with the BLACKHOLE well-known community.
+{%	if cfg.blackhole_filtering.add_noexport %}
+The NO_EXPORT well-known community is also added.
+{%	endif %}
+</p></li>
 
 <li><p>Blackhole filtering requests bypass any RPKI validation check and min/max length check.</p></li>
 {% endif %}

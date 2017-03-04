@@ -482,7 +482,9 @@ Route <strong>validity state</strong> is signalled to route server clients using
 
 <li><p>IPv4 routes are propagated to clients after their <strong>NEXT_HOP attribute has been rewritten</strong> to 192.0.2.66.</p></li>
 <li><p>IPv6 routes are propagated to clients after their <strong>NEXT_HOP attribute has been rewritten</strong> to 2001:db8:1:1::66.</p></li>
-<li><p>Before being announced to clients, all the routes are tagged with the BLACKHOLE well-known community.</p></li>
+<li><p>Before being announced to clients, all the routes are tagged with the BLACKHOLE well-known community.
+The NO_EXPORT well-known community is also added.
+</p></li>
 
 <li><p>Blackhole filtering requests bypass any RPKI validation check and min/max length check.</p></li>
 </ul>

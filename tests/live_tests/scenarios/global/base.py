@@ -329,7 +329,7 @@ class BasicScenario(LiveScenario):
                 self.DATA["AS101_roa_blackhole"]), {"inst": inst})
         self.receive_route(self.AS3, self.DATA["AS101_roa_blackhole"], self.rs,
                            next_hop=self.DATA["blackhole_IP"],
-                           std_comms=["65535:666"], lrg_comms=[])
+                           std_comms=["65535:666", "65535:65281"], lrg_comms=[])
 
     def test_050_prefixes_from_AS101_received_by_its_upstreams(self):
         """{}: prefixes from AS101 received by its upstreams"""
@@ -396,13 +396,13 @@ class BasicScenario(LiveScenario):
 
       for inst in (self.AS1_1, self.AS3):
         self.receive_route(inst, self.DATA["AS2_blackhole1"], self.rs, next_hop=self.DATA["blackhole_IP"],
-                           std_comms=["65535:666"], lrg_comms=[])
+                           std_comms=["65535:666", "65535:65281"], lrg_comms=[])
         self.receive_route(inst, self.DATA["AS2_blackhole2"], self.rs, next_hop=self.DATA["blackhole_IP"],
-                           std_comms=["65535:666"], lrg_comms=[])
+                           std_comms=["65535:666", "65535:65281"], lrg_comms=[])
         self.receive_route(inst, self.DATA["AS2_blackhole3"], self.rs, next_hop=self.DATA["blackhole_IP"],
-                           std_comms=["65535:666"], lrg_comms=[])
+                           std_comms=["65535:666", "65535:65281"], lrg_comms=[])
 
-    def test_71_blackholed_prefixes_not_seen_by_not_enabled_clients(self):
+    def test_071_blackholed_prefixes_not_seen_by_not_enabled_clients(self):
         """{}: blackholed prefixes not seen by not enabled clients"""
 
         # AS1_2 not enabled to receive blackholed prefixes

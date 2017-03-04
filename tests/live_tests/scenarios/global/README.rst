@@ -72,7 +72,7 @@ Built to group as many tests as possible in a single scenario.
 
     AS2_blackhole1  2.0.3.1/32         announced with BLACKHOLE 65535:666 comm   propagated with only 65535:666 to AS1_1 and AS3
                                                                                  (AS1_2 has "announce_to_client" = False) and
-                                                                                 next-hop 192.0.2.66
+                                                                                 next-hop 192.0.2.66; NO_EXPORT also added
     AS2_blackhole2  2.0.3.2/32         announced with local 65534:0 comm         as above
     AS2_blackhole3  2.0.3.3/32         announced with local 65534:0:0 comm       as above
     ==============  ================   =======================================   =================================================

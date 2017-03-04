@@ -287,6 +287,10 @@ cfg:
     # Default: True
     announce_to_client: True
 
+    # Automatically add the NO_EXPORT well-known community to
+    # tagged routes before announcing them to clients.
+    #add_noexport: False
+
   communities:
     # For each community name below, Standard, Large and Extended
     # BGP Communities can be provided in the 'std', 'lrg' and 'ext'

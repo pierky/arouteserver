@@ -28,6 +28,7 @@ cfg:
                 rewrite_next_hop_ipv4: "192.0.2.66"
                 policy_ipv6: "rewrite-next-hop"
                 rewrite_next_hop_ipv6: "2001:db8:1:1::66"
+                add_noexport: True
         communities:
                 blackholing:
                         std: "65534:0"
