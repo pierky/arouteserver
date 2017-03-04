@@ -107,9 +107,9 @@ Built to group as many tests as possible in a single scenario.
     AS3_prepend2_AS2   3.0.9.0/24   65505:2           AS_PATH 3, 3, 3 on AS2 clients
     AS3_prep3AS1_1any  3.0.10.0/24  65506:1 999:65501 AS_PATH 3, 3, 3, 3
                                                       on AS1 clients, 3, 3 on AS2 clients
-    AS3_noexport_any   3.0.11.0/24  65507:999         received by all with NO-EXPORT
+    AS3_noexport_any   3.0.11.0/24  65507:999         received by all with NO_EXPORT
     AS3_noexport_AS1   3.0.12.0/24  65509:1 65506:2   (prepend x3 to AS2) received by AS1 with
-                                                      NO-EXPORT
+                                                      NO_EXPORT
     Default_route      0.0.0.0/0                      rejected by rs
     =================  ============ ================= ============================================
 

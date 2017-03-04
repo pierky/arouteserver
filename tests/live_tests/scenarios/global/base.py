@@ -499,7 +499,7 @@ class BasicScenario(LiveScenario):
                            next_hop=self.AS3, std_comms=[], lrg_comms=[])
 
     def test_083_control_communities_AS3_noexport_to_any(self):
-        """{}: control communities, NO-EXPORT to any"""
+        """{}: control communities, NO_EXPORT to any"""
 
         for inst in (self.AS1_1, self.AS1_2, self.AS2):
             self.receive_route(inst, self.DATA["AS3_noexport_any"], self.rs,
@@ -510,7 +510,7 @@ class BasicScenario(LiveScenario):
             self.receive_route(self.AS101, self.DATA["AS3_noexport_any"])
 
     def test_083_control_communities_AS3_noexport_to_AS1(self):
-        """{}: control communities, NO-EXPORT to AS1"""
+        """{}: control communities, NO_EXPORT to AS1"""
 
         pref = self.DATA["AS3_noexport_AS1"]
         for inst in (self.AS1_1, self.AS1_2):

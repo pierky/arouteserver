@@ -78,7 +78,7 @@ Features
   - routes **RPKI** validity state;
   - do (not) announce to any / **peer**;
   - **prepend** to any / **peer**;
-  - add **NO-EXPORT** / **NO-ADVERTISE** to any / **peer**.
+  - add **NO_EXPORT** / **NO_ADVERTISE** to any / **peer**.
 
 - Optional session features on a client-by-client basis:
 

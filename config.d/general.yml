@@ -464,8 +464,8 @@ cfg:
       #ext:
 
     # Routes that are tagged with the following communities are
-    # propagated to other clients before the NO-EXPORT (65535:65281)
-    # and/or the NO-ADVERTISE (65535:65282) well-known communities
+    # propagated to other clients before the NO_EXPORT (65535:65281)
+    # and/or the NO_ADVERTISE (65535:65282) well-known communities
     # are added.
     #
     # The following communities are scrubbed from outbound routes.
