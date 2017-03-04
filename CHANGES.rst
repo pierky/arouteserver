@@ -9,6 +9,7 @@ next release
 
   This also allows the `integration <https://arouteserver.readthedocs.io/en/latest/USAGE.html#ixp-manager-integration>`_ with `IXP-Manager <https://github.com/inex/IXP-Manager>`_.
 - New BGP communities: add NO_EXPORT and/or NO_ADVERTISE to any client or to specific peers.
+- New option (set by default) to automatically add the NO_EXPORT community to blackhole filtering announcements.
 
 v0.2.0
 ------

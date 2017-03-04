@@ -123,7 +123,7 @@ class ConfigParserGeneral(ConfigParserBase):
                         mandatory=False),
                     "rewrite_next_hop_ipv4": ValidatorIPv4Addr(mandatory=False),# Done
                     "rewrite_next_hop_ipv6": ValidatorIPv6Addr(mandatory=False),# Done, not tested
-                    "add_noexport": ValidatorBool(default=False),
+                    "add_noexport": ValidatorBool(default=True),
                 },
                 "communities": {
                 }

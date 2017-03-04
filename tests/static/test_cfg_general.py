@@ -555,7 +555,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 "rewrite_next_hop_ipv4": None,
                 "rewrite_next_hop_ipv6": None,
                 "announce_to_client": True,
-                "add_noexport": False,
+                "add_noexport": True,
             }
         }
 

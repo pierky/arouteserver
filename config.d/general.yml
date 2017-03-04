@@ -289,7 +289,7 @@ cfg:
 
     # Automatically add the NO_EXPORT well-known community to
     # tagged routes before announcing them to clients.
-    #add_noexport: False
+    #add_noexport: True
 
   communities:
     # For each community name below, Standard, Large and Extended
