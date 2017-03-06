@@ -1,6 +1,11 @@
 Change log
 ==========
 
+next release
+------------
+
+- Add MD5 password support on clients configuration.
+
 v0.3.0
 ------
 

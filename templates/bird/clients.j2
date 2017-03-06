@@ -221,6 +221,10 @@ protocol bgp {{ client.id }} {
 	neighbor {{ client.ip }} as {{ client.asn }};
 	rs client;
 
+	{% if client.password %}
+	password "{{ client.password }}";
+	{% endif -%}
+
 	{% if client.cfg.passive %}
 	passive on;
 	{% else %}
