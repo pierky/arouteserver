@@ -482,7 +482,9 @@ Route <strong>validity state</strong> is signalled to route server clients using
 
 <li><p>IPv4 routes are propagated to clients after their <strong>NEXT_HOP attribute has been rewritten</strong> to 192.0.2.66.</p></li>
 <li><p>IPv6 routes are propagated to clients after their <strong>NEXT_HOP attribute has been rewritten</strong> to 2001:db8:1:1::66.</p></li>
-<li><p>Before being announced to clients, all the routes are tagged with the BLACKHOLE well-known community.</p></li>
+<li><p>Before being announced to clients, all the routes are tagged with the BLACKHOLE well-known community.
+The NO_EXPORT well-known community is also added.
+</p></li>
 
 <li><p>Blackhole filtering requests bypass any RPKI validation check and min/max length check.</p></li>
 </ul>
@@ -565,6 +567,36 @@ Route <strong>validity state</strong> is signalled to route server clients using
     <td>rt:65506:peer_as</td>
     <td>999:65506:peer_as</td>
   </tr>
+
+
+    <tr>
+    <td>Add NO_EXPORT to any</td>
+    <td>65507:999</td>
+    <td>rt:65507:999</td>
+    <td>999:65507:999</td>
+  </tr>
+
+    <tr>
+    <td>Add NO_ADVERTISE to any</td>
+    <td>65508:999</td>
+    <td>rt:65508:999</td>
+    <td>999:65508:999</td>
+  </tr>
+
+    <tr>
+    <td>Add NO_EXPORT to peer</td>
+    <td>65509:peer_as</td>
+    <td>rt:65509:peer_as</td>
+    <td>999:65509:peer_as</td>
+  </tr>
+
+    <tr>
+    <td>Add NO_ADVERTISE to peer</td>
+    <td>65510:peer_as</td>
+    <td>rt:65510:peer_as</td>
+    <td>999:65510:peer_as</td>
+  </tr>
+
 
   </tbody>
 </table>

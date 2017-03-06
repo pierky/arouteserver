@@ -130,17 +130,33 @@ function apply_blackhole_filtering_policy() {
 {% if ip_ver == 4 and cfg.blackhole_filtering.policy_ipv4 == "propagate-unchanged" %}
 	# Configured policy: propagate-unchanged
 	bgp_community.add((65535, 666));
+{%	if cfg.blackhole_filtering.add_noexport %}
+	# NO_EXPORT
+	bgp_community.add((65535, 65281));
+{%	endif %}
 {% elif ip_ver == 4 and cfg.blackhole_filtering.policy_ipv4 == "rewrite-next-hop" %}
 	# Configured policy: rewrite-next-hop
 	bgp_community.add((65535, 666));
 	bgp_next_hop = {{ cfg.blackhole_filtering.rewrite_next_hop_ipv4 }};
+{%	if cfg.blackhole_filtering.add_noexport %}
+	# NO_EXPORT
+	bgp_community.add((65535, 65281));
+{%	endif %}
 {% elif ip_ver == 6 and cfg.blackhole_filtering.policy_ipv6 == "propagate-unchanged" %}
 	# Configured policy: propagate-unchanged
 	bgp_community.add((65535, 666));
+{%	if cfg.blackhole_filtering.add_noexport %}
+	# NO_EXPORT
+	bgp_community.add((65535, 65281));
+{%	endif %}
 {% elif ip_ver == 6 and cfg.blackhole_filtering.policy_ipv6 == "rewrite-next-hop" %}
 	# Configured policy: rewrite-next-hop
 	bgp_community.add((65535, 666));
 	bgp_next_hop = {{ cfg.blackhole_filtering.rewrite_next_hop_ipv6 }};
+{%	if cfg.blackhole_filtering.add_noexport %}
+	# NO_EXPORT
+	bgp_community.add((65535, 65281));
+{%	endif %}
 {% else %}
 	reject "blackhole filtering requested but no policy given - REJECTING ", net;
 {% endif %}
@@ -231,3 +247,24 @@ function route_passes_rpki_validation () {
 	return true;
 }
 {% endif %}
+
+# This function adds NO_EXPORT and/or NO_ADVERTISE
+# well-known communities.
+function add_noexport_noadvertise(int peer_as) {
+	{% if cfg.communities.add_noexport_to_any|community_is_set %}
+	# add_noexport_to_any
+	{{ match_communities(cfg.communities.add_noexport_to_any, "{ bgp_community.add((65535, 65281)); }") }}
+	{% endif %}
+	{% if cfg.communities.add_noadvertise_to_any|community_is_set %}
+	# add_noadvertise_to_any
+	{{ match_communities(cfg.communities.add_noadvertise_to_any, "{ bgp_community.add((65535, 65282)); }") }}
+	{% endif %}
+	{% if cfg.communities.add_noexport_to_peer|community_is_set %}
+	# add_noexport_to_peer
+	{{ match_communities(cfg.communities.add_noexport_to_peer, "{ bgp_community.add((65535, 65281)); }") }}
+	{% endif %}
+	{% if cfg.communities.add_noadvertise_to_peer|community_is_set %}
+	# add_noadvertise_to_peer
+	{{ match_communities(cfg.communities.add_noadvertise_to_peer, "{ bgp_community.add((65535, 65282)); }") }}
+	{% endif %}
+}

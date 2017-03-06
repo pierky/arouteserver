@@ -64,7 +64,7 @@ cd $ROOT
 echo "Generating examples configurations"
 
 function RenderExample() {
-	CFG_FILE="var/arouteserver.yml"
+	CFG_FILE="var/build_doc.yml"
 
 	DST="$1" ; shift
 	COMMAND="$1" ; shift

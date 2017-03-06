@@ -287,6 +287,10 @@ cfg:
     # Default: True
     announce_to_client: True
 
+    # Automatically add the NO_EXPORT well-known community to
+    # tagged routes before announcing them to clients.
+    #add_noexport: True
+
   communities:
     # For each community name below, Standard, Large and Extended
     # BGP Communities can be provided in the 'std', 'lrg' and 'ext'
@@ -463,3 +467,30 @@ cfg:
       #lrg:
       #ext:
 
+    # Routes that are tagged with the following communities are
+    # propagated to other clients before the NO_EXPORT (65535:65281)
+    # and/or the NO_ADVERTISE (65535:65282) well-known communities
+    # are added.
+    #
+    # The following communities are scrubbed from outbound routes.
+    #
+    # The 'rs_as' macro can be used here.
+    add_noexport_to_any:
+      #std:
+      #lrg:
+      #ext:
+    add_noadvertise_to_any:
+      #std:
+      #lrg:
+      #ext:
+    #
+    # The 'rs_as' macro can be used here.
+    # The 'peer_as' macro must appear in the last part of values.
+    add_noexport_to_peer:
+      #std:
+      #lrg:
+      #ext:
+    add_noadvertise_to_peer:
+      #std:
+      #lrg:
+      #ext:

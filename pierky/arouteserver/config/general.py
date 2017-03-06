@@ -43,6 +43,10 @@ class ConfigParserGeneral(ConfigParserBase):
         "prepend_once_to_peer": { "type": "inbound", "peer_as": True },
         "prepend_twice_to_peer": { "type": "inbound", "peer_as": True },
         "prepend_thrice_to_peer": { "type": "inbound", "peer_as": True },
+        "add_noexport_to_any": { "type": "inbound" },
+        "add_noadvertise_to_any": { "type": "inbound" },
+        "add_noexport_to_peer": { "type": "inbound", "peer_as": True },
+        "add_noadvertise_to_peer": { "type": "inbound", "peer_as": True },
     }
 
     def parse(self):
@@ -119,6 +123,7 @@ class ConfigParserGeneral(ConfigParserBase):
                         mandatory=False),
                     "rewrite_next_hop_ipv4": ValidatorIPv4Addr(mandatory=False),# Done
                     "rewrite_next_hop_ipv6": ValidatorIPv6Addr(mandatory=False),# Done, not tested
+                    "add_noexport": ValidatorBool(default=True),
                 },
                 "communities": {
                 }

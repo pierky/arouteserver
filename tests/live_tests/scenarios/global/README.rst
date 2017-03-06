@@ -72,7 +72,7 @@ Built to group as many tests as possible in a single scenario.
 
     AS2_blackhole1  2.0.3.1/32         announced with BLACKHOLE 65535:666 comm   propagated with only 65535:666 to AS1_1 and AS3
                                                                                  (AS1_2 has "announce_to_client" = False) and
-                                                                                 next-hop 192.0.2.66
+                                                                                 next-hop 192.0.2.66; NO_EXPORT also added
     AS2_blackhole2  2.0.3.2/32         announced with local 65534:0 comm         as above
     AS2_blackhole3  2.0.3.3/32         announced with local 65534:0:0 comm       as above
     ==============  ================   =======================================   =================================================
@@ -92,23 +92,26 @@ Built to group as many tests as possible in a single scenario.
 
     Announced prefixes:
 
-    =================  ============    ============================================
-    Prefix ID          Prefix          Expected result
-    =================  ============    ============================================
-    AS3_blacklist1     3.0.1.0/24      fail prefix_is_in_AS3_1_blacklist
+    =================  ============ ================= ============================================
+    Prefix ID          Prefix       Communities       Expected result
+    =================  ============ ================= ============================================
+    AS3_blacklist1     3.0.1.0/24                     fail prefix_is_in_AS3_1_blacklist
 
-    AS3_cc_AS1only     3.0.2.0/24      add 0:999 and 999:1, seen on AS1_1/_2 only
-    AS3_cc_not_AS1     3.0.3.0/24      add 0:1, seen on AS2 only
-    AS3_cc_none        3.0.4.0/24      add 0:999 , not seen
-    AS3_prepend1any    3.0.5.0/24      add 999:65501, AS_PATH 3, 3
-    AS3_prepend2any    3.0.6.0/24      add 999:65502, AS_PATH 3, 3, 3
-    AS3_prepend3any    3.0.7.0/24      add 999:65503, AS_PATH 3, 3, 3, 3
-    AS3_prepend1_AS1   3.0.8.0/24      add 65504:1, AS_PATH 3, 3 on AS1 clients
-    AS3_prepend2_AS2   3.0.9.0/24      add 65505:2, AS_PATH 3, 3, 3 on AS2 clients
-    AS3_prep3AS1_1any  3.0.10.0/24     add 65506:1, 999:65501, AS_PATH 3, 3, 3, 3
-                                       on AS1 clients, 3, 3 on AS2 clients
-    Default_route      0.0.0.0/0       rejected by rs
-    =================  ============    ============================================
+    AS3_cc_AS1only     3.0.2.0/24   0:999, 999:1      seen on AS1_1/_2 only
+    AS3_cc_not_AS1     3.0.3.0/24   0:1               seen on AS2 only
+    AS3_cc_none        3.0.4.0/24   0:999             not seen
+    AS3_prepend1any    3.0.5.0/24   999:65501         AS_PATH 3, 3
+    AS3_prepend2any    3.0.6.0/24   999:65502         AS_PATH 3, 3, 3
+    AS3_prepend3any    3.0.7.0/24   999:65503         AS_PATH 3, 3, 3, 3
+    AS3_prepend1_AS1   3.0.8.0/24   65504:1           AS_PATH 3, 3 on AS1 clients
+    AS3_prepend2_AS2   3.0.9.0/24   65505:2           AS_PATH 3, 3, 3 on AS2 clients
+    AS3_prep3AS1_1any  3.0.10.0/24  65506:1 999:65501 AS_PATH 3, 3, 3, 3
+                                                      on AS1 clients, 3, 3 on AS2 clients
+    AS3_noexport_any   3.0.11.0/24  65507:999         received by all with NO_EXPORT
+    AS3_noexport_AS1   3.0.12.0/24  65509:1 65506:2   (prepend x3 to AS2) received by AS1 with
+                                                      NO_EXPORT
+    Default_route      0.0.0.0/0                      rejected by rs
+    =================  ============ ================= ============================================
 
 - **AS101**:
 

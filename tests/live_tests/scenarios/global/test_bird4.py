@@ -64,6 +64,8 @@ class BasicScenario_BIRDIPv4(BasicScenario):
         "AS3_prepend1_AS1":         "3.0.8.0/24",
         "AS3_prepend2_AS2":         "3.0.9.0/24",
         "AS3_prep3AS1_1any":        "3.0.10.0/24",
+        "AS3_noexport_any":         "3.0.11.0/24",
+        "AS3_noexport_AS1":         "3.0.12.0/24",
 
         "AS101_allowed_prefixes":   "101.0.0.0/16",
         "AS101_good1":              "101.0.1.0/24",

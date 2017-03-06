@@ -322,7 +322,8 @@ class TestConfigParserGeneral(TestConfigParserBase):
 
         for comm in ("announce_to_peer", "do_not_announce_to_peer",
                      "prepend_once_to_peer", "prepend_twice_to_peer",
-                     "prepend_thrice_to_peer"):
+                     "prepend_thrice_to_peer", "add_noexport_to_peer",
+                     "add_noadvertise_to_peer"):
             for c in self.VALID_STD_COMMS:
                 self.cfg["communities"][comm]["std"] = c
                 self._contains_err("'peer_as' macro is mandatory in this community")
@@ -507,29 +508,60 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.cfg.parse()
         self._contains_err()
 
-        self.assertEqual(self.cfg["prepend_rs_as"], False)
-        self.assertEqual(self.cfg["path_hiding"], True)
-        self.assertEqual(self.cfg["passive"], True)
-        self.assertEqual(self.cfg["gtsm"], False)
-        self.assertEqual(self.cfg["add_path"], False)
-        self.assertEqual(self.cfg["filtering"]["next_hop_policy"], "strict")
-        self.assertEqual(self.cfg["filtering"]["ipv4_pref_len"]["min"], 8)
-        self.assertEqual(self.cfg["filtering"]["ipv4_pref_len"]["max"], 24)
-        self.assertEqual(self.cfg["filtering"]["ipv6_pref_len"]["min"], 12)
-        self.assertEqual(self.cfg["filtering"]["ipv6_pref_len"]["max"], 48)
-        self.assertEqual(self.cfg["filtering"]["max_as_path_len"], 32)
-        self.assertEqual(self.cfg["filtering"]["reject_invalid_as_in_as_path"], True)
-        self.assertEqual(self.cfg["filtering"]["transit_free"]["action"], None)
-        self.assertEqual(self.cfg["filtering"]["transit_free"]["asns"], None)
-        self.assertEqual(self.cfg["filtering"]["irrdb"]["tag_as_set"], True)
-        self.assertEqual(self.cfg["filtering"]["irrdb"]["enforce_origin_in_as_set"], True)
-        self.assertEqual(self.cfg["filtering"]["irrdb"]["enforce_prefix_in_as_set"], True)
-        self.assertEqual(self.cfg["filtering"]["rpki"]["enabled"], False)
-        self.assertEqual(self.cfg["filtering"]["rpki"]["reject_invalid"], True)
-        self.assertEqual(self.cfg["filtering"]["max_prefix"]["action"], None)
-        self.assertEqual(self.cfg["filtering"]["max_prefix"]["peering_db"], True)
-        self.assertEqual(self.cfg["filtering"]["max_prefix"]["general_limit_ipv4"], 170000)
-        self.assertEqual(self.cfg["filtering"]["max_prefix"]["general_limit_ipv6"], 12000)
-        self.assertEqual(self.cfg["blackhole_filtering"]["policy_ipv4"], None)
-        self.assertEqual(self.cfg["blackhole_filtering"]["policy_ipv6"], None)
+        exp_res = {
+            "rs_as": 999,
+            "router_id": "192.0.2.2",
+            "prepend_rs_as": False,
+            "path_hiding": True,
+            "passive": True,
+            "gtsm": False,
+            "add_path": False,
+            "filtering": {
+                "next_hop_policy": "strict",
+                "global_black_list_pref": None,
+                "ipv4_pref_len": {
+                    "min": 8,
+                    "max": 24
+                },
+                "ipv6_pref_len": {
+                    "min": 12,
+                    "max": 48
+                },
+                "max_as_path_len": 32,
+                "reject_invalid_as_in_as_path": True,
+                "transit_free": {
+                    "action": None,
+                    "asns": None
+                },
+                "irrdb": {
+                    "tag_as_set": True,
+                    "enforce_origin_in_as_set": True,
+                    "enforce_prefix_in_as_set": True
+                },
+                "rpki": {
+                    "enabled": False,
+                    "reject_invalid": True
+                },
+                "max_prefix": {
+                    "action": None,
+                    "peering_db": True,
+                    "general_limit_ipv4": 170000,
+                    "general_limit_ipv6": 12000
+                },
+            },
+            "blackhole_filtering": {
+                "policy_ipv4": None,
+                "policy_ipv6": None,
+                "rewrite_next_hop_ipv4": None,
+                "rewrite_next_hop_ipv6": None,
+                "announce_to_client": True,
+                "add_noexport": True,
+            }
+        }
 
+        self.maxDiff = None
+        del self.cfg["communities"]
+        self.assertMultiLineEqual(
+            yaml.safe_dump(self.cfg.cfg, default_flow_style=False),
+            yaml.safe_dump({"cfg": exp_res}, default_flow_style=False)
+        )
