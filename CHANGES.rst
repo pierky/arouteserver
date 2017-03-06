@@ -1,8 +1,8 @@
 Change log
 ==========
 
-next release
-------------
+v0.3.0
+------
 
 - New ``--test-only`` flag for builder commands.
 - New ``--clients-from-euroix`` `command <https://arouteserver.readthedocs.io/en/latest/USAGE.html#create-clients-yml-file-from-euro-ix-member-list-json-file>`_ to build the ``clients.yml`` file on the basis of records from an `Euro-IX member list JSON file <https://github.com/euro-ix/json-schemas>`_.
