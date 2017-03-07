@@ -16,7 +16,7 @@
 from base import DefaultConfigScenario
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 
-class TagASSetScenario_BIRDIPv4(DefaultConfigScenario):
+class DefaultConfigScenario_BIRDIPv4(DefaultConfigScenario):
     __test__ = True
 
     SHORT_DESCR = "Live test, BIRD, default config, IPv4"
