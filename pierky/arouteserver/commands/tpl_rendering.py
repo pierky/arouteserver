@@ -145,9 +145,8 @@ class TemplateRenderingCommands(ARouteServerCommand):
         except TemplateRenderingError as e:
             if tpl_all_right:
                 raise
-
-            msg = str(e)
-            raise TemplateRenderingError(str(e), True)
+            e.templates_not_aligned = True
+            raise e
         except ARouteServerError as e:
             if str(e):
                 logging.error(str(e))

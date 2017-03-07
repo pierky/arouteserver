@@ -17,6 +17,7 @@ import ipaddr
 import logging
 import os
 import re
+import sys
 import time
 import yaml
 
@@ -211,6 +212,9 @@ class ConfigBuilder(object):
         data["as_sets"] = self.as_sets
         data["roas"] = self.cfg_roas
 
+        def ipaddr_ver(ip):
+            return ipaddr.IPAddress(ip).version
+
         def current_ipver(ip):
             if self.ip_ver is None:
                 return True
@@ -231,6 +235,7 @@ class ConfigBuilder(object):
         )
         env.tests["current_ipver"] = current_ipver
         env.filters["community_is_set"] = community_is_set
+        env.filters["ipaddr_ver"] = ipaddr_ver
 
         self.enrich_j2_environment(env)
 
@@ -247,7 +252,11 @@ class ConfigBuilder(object):
             else:
                 return tpl.render(data)
         except Exception as e:
-            raise TemplateRenderingError(str(e))
+            _, _, traceback = sys.exc_info()
+            raise TemplateRenderingError(
+                "Error while rendering template: {}".format(str(e)),
+                traceback=traceback
+            )
         finally:
             stop_time = int(time.time())
 
@@ -263,6 +272,10 @@ class BIRDConfigBuilder(ConfigBuilder):
                 "to build BIRD configuration. Use the "
                 "--ip-ver command line argument to supply one."
             )
+
+class GoBGPConfigBuilder(ConfigBuilder):
+
+    pass
 
 class TemplateContextDumper(ConfigBuilder):
 
