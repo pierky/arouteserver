@@ -45,6 +45,7 @@ cfg:
   # Use ADD-PATH (RFC7911).
   # The router server will be configure as "able to send multiple
   # paths to its peer".
+  # OpenBGPD: not supported.
   #
   # Can be overwritten on a client-by-client basis.
   #
@@ -198,6 +199,7 @@ cfg:
       # - 'restart': the BGP session is restarted.
       # - 'block': new routes are discarded.
       # - 'warning': log a warning message.
+      # OpenBGPD: used only if action is 'shutdown' or 'restart'.
       #
       # Can be overwritten on a client-by-client basis.
       #

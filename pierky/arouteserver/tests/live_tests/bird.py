@@ -117,17 +117,6 @@ class BIRDInstance(DockerInstance):
                 return self.protocols_status[proto]
         return None
 
-    def bgp_session_is_up(self, other_inst, force_update=False):
-        bgp_session_info = self.get_bgp_session(other_inst, force_update)
-        if bgp_session_info:
-            return bgp_session_info["is_up"]
-        raise Exception(
-            "Can't get BGP session status for {} on {} "
-            "(looking for {})".format(
-                other_inst.name, self.name, other_inst.ip
-            )
-        )
-
     def get_routes(self, prefix, include_filtered=False, only_best=False):
         if include_filtered and only_best:
             raise Exception("Can't set both include_filtered and only_best")

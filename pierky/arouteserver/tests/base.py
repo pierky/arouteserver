@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+import os
 import unittest
 
 
@@ -85,7 +86,7 @@ class ARouteServerTestCase(unittest.TestCase):
 
     @classmethod
     def debug(cls, s):
-        if cls.DEBUG:
+        if cls.DEBUG or "DEBUG" in os.environ:
             print("DEBUG: {}".format(s))
 
     def shortDescription(self):

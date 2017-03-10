@@ -13,14 +13,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import BasicScenarioBIRD
-from data6 import BasicScenario_Data6
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
+import os
+import unittest
 
-class BasicScenario_BIRDIPv6(BasicScenario_Data6, BasicScenarioBIRD):
+from base import BasicScenarioOpenBGPD
+from data4 import BasicScenario_Data4
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
+
+@unittest.skipIf("TRAVIS_CI" in os.environ, "not supported on Travis CI")
+class BasicScenario_OpenBGPDIPv4(BasicScenario_Data4, BasicScenarioOpenBGPD):
+
     __test__ = True
 
-    SHORT_DESCR = "Live test, BIRD, global scenario, IPv6"
-    RS_INSTANCE_CLASS = BIRDInstanceIPv6
-    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
-    IP_VER = 6
+    SHORT_DESCR = "Live test, OpenBGPD, global scenario, IPv4"
+    RS_INSTANCE_CLASS = OpenBGPDInstance
+    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
+    IP_VER = 4

@@ -48,21 +48,8 @@ class BasicScenario(LiveScenario):
     @classmethod
     def _setup_instances(cls):
         cls.INSTANCES = [
-            cls.RS_INSTANCE_CLASS(
-                "rs",
-                cls.DATA["rs_IPAddress"],
-                [
-                    (
-                        cls.build_rs_cfg("bird", "main.j2", "rs.conf",
-                                          cfg_roas="roas{}.yml".format(cls.IP_VER)),
-                        "/etc/bird/bird.conf"
-                    ),
-                    (
-                        cls.use_static_file("local_file.local{}".format(cls.IP_VER)),
-                        "/etc/bird/local_file.local{}".format(cls.IP_VER)
-                    )
-                ],
-            ),
+            cls._setup_rs_instance(),
+
             # Run AS3 as soon as possible because it's configured with passive
             # session, so while other instance come up rs has more time to
             # setup the session with it.
@@ -141,6 +128,8 @@ class BasicScenario(LiveScenario):
         self.session_is_up(self.AS101, self.AS1_2)
         self.session_is_up(self.AS101, self.AS2)
 
+    def test_021_session_configured_via_local_files(self):
+        """{}: session configured via local include files"""
         # A dummy session is configured using local include files.
         # The following tests if those files are really included.
         self.session_exists(self.rs, self.DATA["Dummy"])
@@ -583,4 +572,46 @@ class BasicScenario(LiveScenario):
         self.receive_route(self.AS3, self.DATA["AS101_bad_good_comms"], self.rs, as_path="999 2 101", next_hop=self.AS2,
                            std_comms=["777:0"], lrg_comms=["777:0:0"])
 
+
+class BasicScenarioBIRD(BasicScenario):
+    __test__ = False
+
+    @classmethod
+    def _setup_rs_instance(cls):
+        return cls.RS_INSTANCE_CLASS(
+            "rs",
+            cls.DATA["rs_IPAddress"],
+            [
+                (
+                    cls.build_rs_cfg("bird", "main.j2", "rs.conf",
+                                        cfg_roas="roas{}.yml".format(cls.IP_VER)),
+                    "/etc/bird/bird.conf"
+                ),
+                (
+                    cls.use_static_file("local_file.local{}".format(cls.IP_VER)),
+                    "/etc/bird/local_file.local{}".format(cls.IP_VER)
+                )
+            ],
+        )
+
+class BasicScenarioOpenBGPD(BasicScenario):
+    __test__ = False
+
+    @classmethod
+    def _setup_rs_instance(cls):
+        return cls.RS_INSTANCE_CLASS(
+            "rs",
+            cls.DATA["rs_IPAddress"],
+            [
+                (
+                    cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf",
+                                        cfg_roas="roas{}.yml".format(cls.IP_VER)),
+                    "/etc/bgpd.conf"
+                ),
+                (
+                    cls.use_static_file("local_file.local{}".format(cls.IP_VER)),
+                    "/etc/bgpd.local{}.conf".format(cls.IP_VER)
+                )
+            ],
+        )
 

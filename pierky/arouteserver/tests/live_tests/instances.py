@@ -14,6 +14,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+import os
+
 class InstanceError(Exception):
     pass
 
@@ -30,17 +32,29 @@ class BGPSpeakerInstance(object):
 
     Currently, the ``start``, ``stop``, ``is_running`` and
     ``run_cmd`` methods are implemented by the
-    :class:`DockerInstance` derived class, while the ``reload_config``,
-    ``bgp_session_is_up``, ``get_routes`` and ``log_contains`` by the
-    DockerInstance-derived :class:`BIRDInstance` class.
+    :class:`DockerInstance` and :class:`KVMInstance` derived classes,
+    while the ``reload_config``, ``get_bgp_session``, ``get_routes``
+    and ``log_contains`` methods by the [Docker|KVM]Instance-derived
+    :class:`BIRDInstance` class.
     """
 
-    def __init__(self, name, ip):
+    def __init__(self, name, ip, mount=[], **kwargs):
         self.name = name
         self.ip = ip
+        self.mount = mount
 
     def set_var_dir(self, var_dir):
         self.var_dir = var_dir
+
+    def get_mounts(self):
+        for mount in self.mount:
+            res = {}
+            res["host"] = mount[0]
+            res["container"] = mount[1]
+            res["host_filename"] = os.path.split(mount[0])[1]
+            res["var_path"] = "{}/{}".format(self.var_dir,
+                                             res["host_filename"])
+            yield res
 
     def is_running(self):
         raise NotImplementedError()
@@ -70,8 +84,12 @@ class BGPSpeakerInstance(object):
                 any caching mechanism used to keep the BGP sessions status.
 
         Returns:
-            a dictionary containing information about the BGP session;
-            None if the BGP session is not found.
+            None if the BGP session is not found, otherwise a dictionary
+            containing information about the BGP session:
+            {
+                "ip": "neighbor IP address",
+                "is_up": [True|False]
+            }
         """
         raise NotImplementedError()
 
@@ -91,7 +109,15 @@ class BGPSpeakerInstance(object):
             True if the current instance has a running BGP
             session with ``other_inst``; False otherwise.
         """
-        raise NotImplementedError()
+        bgp_session_info = self.get_bgp_session(other_inst, force_update)
+        if bgp_session_info:
+            return bgp_session_info["is_up"]
+        raise Exception(
+            "Can't get BGP session status for {} on {} "
+            "(looking for {})".format(
+                other_inst.name, self.name, other_inst.ip
+            )
+        )
 
     def get_routes(self, prefix, include_filtered=False, only_best=False):
         """Get a list of all the known routes for ``prefix``.
