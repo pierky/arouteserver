@@ -47,6 +47,13 @@ class ARouteServerTestCase(unittest.TestCase):
     NEED_TO_CAPTURE_LOG = False
     SHORT_DESCR = ""
     DEBUG = False
+    SKIP_ON_TRAVIS = False
+
+    @classmethod
+    def should_be_skipped(cls):
+        if cls.SKIP_ON_TRAVIS and "TRAVIS" in os.environ:
+            return True
+        return False
 
     def _capture_log(self):
         self.logger_handler = None
@@ -65,6 +72,8 @@ class ARouteServerTestCase(unittest.TestCase):
         pass
 
     def setUp(self):
+        if self.should_be_skipped():
+            return
         self._capture_log()
         self._setUp()
 
@@ -74,6 +83,8 @@ class ARouteServerTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        if cls.should_be_skipped():
+            return
         cls._setUpClass()
 
     @classmethod
@@ -82,6 +93,8 @@ class ARouteServerTestCase(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        if cls.should_be_skipped():
+            return
         cls._tearDownClass()
 
     @classmethod

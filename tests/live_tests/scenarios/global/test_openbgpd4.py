@@ -25,6 +25,7 @@ from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
 class BasicScenario_OpenBGPDIPv4(BasicScenario_Data4, BasicScenarioOpenBGPD):
 
     __test__ = True
+    SKIP_ON_TRAVIS = True
 
     SHORT_DESCR = "Live test, OpenBGPD, global scenario, IPv4"
     RS_INSTANCE_CLASS = OpenBGPDInstance
