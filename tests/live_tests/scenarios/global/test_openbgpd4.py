@@ -21,7 +21,7 @@ from data4 import BasicScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
 
-@unittest.skipIf("TRAVIS_CI" in os.environ, "not supported on Travis CI")
+@unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
 class BasicScenario_OpenBGPDIPv4(BasicScenario_Data4, BasicScenarioOpenBGPD):
 
     __test__ = True

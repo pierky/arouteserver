@@ -6,7 +6,5 @@ before_install:
   - docker pull pierky/bird:1.6.3 
 install:
   - pip install -r requirements.txt
-env:
-  - TRAVIS_CI=1
 script:
   - nosetests -vs tests/
