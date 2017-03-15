@@ -217,6 +217,7 @@ class Route(object):
         self.via = kwargs.get("via", None)
         self.as_path = kwargs.get("as_path", None)
         self.next_hop = kwargs.get("next_hop", None)
+        self.localpref = kwargs.get("localpref", None)
         self.filtered = kwargs.get("filtered", False)
         self.best = kwargs.get("best", None)
         self.std_comms = self._parse_std_bgp_communities(kwargs.get("std_comms", None))
@@ -229,6 +230,7 @@ class Route(object):
             "via": self.via,
             "as_path": self.as_path,
             "next_hop": self.next_hop,
+            "localpref": self.localpref,
             "filtered": self.filtered,
             "best": self.best,
             "std_comms": self.std_comms,

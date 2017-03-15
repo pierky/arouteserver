@@ -45,7 +45,7 @@ class OpenBGPDRoute(Route):
 
     def __init__(self, *args, **kwargs):
         Route.__init__(self, *args, **kwargs)
-        if "NO_ADVERTISE" in self.std_comms:
+        if "NO_ADVERTISE" in self.std_comms and self.localpref == 1:
             self.std_comms.remove("NO_ADVERTISE")
             self.filtered = True
             for comm in self.std_comms:
@@ -184,6 +184,9 @@ class OpenBGPDInstance(KVMInstance):
                 route["via"] = parts[5]
             elif line.startswith("Origin"):
                 route["best"] = "best" in line
+
+                match = re.search("localpref ([0-9]+)", line)
+                route["localpref"] = int(match.group(1))
             elif line.startswith("Communities:"):
                 route["std_comms"] = line.split(": ")[1]
             elif line.startswith("Ext. communities:"):
