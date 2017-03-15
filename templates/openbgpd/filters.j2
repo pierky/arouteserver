@@ -10,6 +10,56 @@
 set { community NO_ADVERTISE community 0:{{ cause_code }} localpref 1 }
 {% endmacro %}
 
+{% macro irrdb_filter(client, enforce_object_in_as_set, tag_as_set, objects, comm_object_present_in_as_set, comm_object_not_present_in_as_set, reject_code) %}
+{% if enforce_object_in_as_set or tag_as_set %}
+
+{%	if enforce_object_in_as_set %}
+match from {{ client.ip  }} set community NO_ADVERTISE
+{%	endif %}
+
+{%	if tag_as_set and comm_object_not_present_in_as_set|community_is_set %}
+# tag with not_present_in_as_set
+{{		add_communities("match from " ~ client.ip, comm_object_not_present_in_as_set) }}
+{%	endif %}
+
+{%      if client.cfg.filtering.irrdb.as_set_ids %}
+{%              for as_set_id in client.cfg.filtering.irrdb.as_set_ids %}
+{%			if objects == "asns" %}
+{%				set matching_element = "source-as" %}
+{%			else %}
+{%				set matching_element = "prefix" %}
+{%			endif %}
+{%			set matching_element = matching_element + " $AS_SET_" ~ as_set_id ~ "_" ~ objects %}
+{%                      if as_sets[as_set_id][objects] %}
+match from {{ client.ip }} {{ matching_element }} set community delete NO_ADVERTISE	# {{ as_sets[as_set_id].name }}
+{%				if tag_as_set %}
+{%					if comm_object_not_present_in_as_set|community_is_set %}
+# removing not_present_in_as_set community
+{{ del_communities("match from " ~ client.ip ~ " " ~ matching_element, comm_object_not_present_in_as_set) }}
+{%					endif %}
+{%					if comm_object_present_in_as_set|community_is_set %}
+# adding present_in_as_set community
+{{ add_communities("match from " ~ client.ip ~ " " ~ matching_element, comm_object_present_in_as_set) }}
+{%					endif %}
+{%				endif %}
+{%			else %}
+# AS-SET {{ as_set_id }} referenced but empty.
+{%                      endif %}
+{%              endfor %}
+{%      endif %}
+
+{%      if enforce_object_in_as_set %}
+# enforcing
+match quick from {{ client.ip }} community NO_ADVERTISE {{ deny_inbound_route(reject_code) }}
+{%	else %}
+match from {{ client.ip }} community NO_ADVERTISE set community delete NO_ADVERTISE
+{%	endif %}
+
+{% else %}
+# not configured
+{% endif %}
+{% endmacro %}
+
 # NO_ADVERTISE usage notes.
 # The NO_ADVERTISE well-know community is used here to accept
 # routes that should be rejected. Those routes are also tagged
@@ -37,13 +87,18 @@ bogons="{ {{ write_prefix_list(bogons) }} }"
 # AS_PATH: length
 match quick from group clients max-as-len {{ cfg.filtering.max_as_path_len }} {{ deny_inbound_route(1) }}
 
-# Prefix: bogon
-match quick from group clients prefix $bogons {{ deny_inbound_route(2) }}
-
 {% if cfg.filtering.global_black_list_pref %}
 # Prefix: global blacklist
 match quick from group clients prefix $global_black_list_pref {{ deny_inbound_route(3) }}
 {% endif %}
+
+# Prefix: only IPv6 Global Unicast space allowed
+match from group clients inet6 set community NO_ADVERTISE
+match from group clients prefix 2000::/3 or-longer set community delete NO_ADVERTISE
+match quick from group clients community NO_ADVERTISE {{ deny_inbound_route(10) }}
+
+# Prefix: bogon
+match quick from group clients prefix $bogons {{ deny_inbound_route(2) }}
 
 {% for client in clients if client.ip is current_ipver %}
 
@@ -95,68 +150,11 @@ match quick from {{ client.ip }} AS { {{ cfg.filtering.transit_free.asns|join(",
 {%	endif %}
 {% endif %}
 
-{% macro irrdb_filter(client, enforce_object_in_as_set, tag_as_set, objects, comm_object_present_in_as_set, comm_object_not_present_in_as_set, reject_code) %}
-{% if enforce_object_in_as_set or tag_as_set %}
-
-{%	if enforce_object_in_as_set %}
-match from {{ client.ip  }} set community NO_ADVERTISE
-{%	endif %}
-
-{%	if tag_as_set and comm_object_not_present_in_as_set|community_is_set %}
-# tag with not_present_in_as_set
-{{		add_communities("match from " ~ client.ip, comm_object_not_present_in_as_set) }}
-{%	endif %}
-
-{%      if client.cfg.filtering.irrdb.as_set_ids %}
-{%              for as_set_id in client.cfg.filtering.irrdb.as_set_ids %}
-{%			if objects == "asns" %}
-{%				set matching_element = "source-as" %}
-{%			else %}
-{%				set matching_element = "prefix" %}
-{%			endif %}
-{%			set matching_element = matching_element + " $AS_SET_" ~ as_set_id ~ "_" ~ objects %}
-{%                      if as_sets[as_set_id][objects] %}
-match from {{ client.ip }} {{ matching_element }} set community delete NO_ADVERTISE	# {{ as_sets[as_set_id].name }}
-{%				if tag_as_set %}
-{%					if comm_object_not_present_in_as_set|community_is_set %}
-# removing not_present_in_as_set community
-{{ del_communities("match from " ~ client.ip ~ " " ~ matching_element, comm_object_not_present_in_as_set) }}
-{%					endif %}
-{%					if comm_object_present_in_as_set|community_is_set %}
-# adding present_in_as_set community
-{{ add_communities("match from " ~ client.ip ~ " " ~ matching_element, comm_object_present_in_as_set) }}
-{%					endif %}
-{%				endif %}
-{%			else %}
-# AS-SET {{ as_set_id }} referenced but empty.
-{%                      endif %}
-{%              endfor %}
-{%      endif %}
-
-{%      if enforce_object_in_as_set %}
-# enforcing
-match quick from {{ client.ip }} community NO_ADVERTISE {{ deny_inbound_route(reject_code) }}
-{%	else %}
-match from {{ client.ip }} community NO_ADVERTISE set community delete NO_ADVERTISE
-{%	endif %}
-
-{% else %}
-# not configured
-{% endif %}
-{% endmacro %}
-
 # AS_PATH: enforce origin via AS-SET (or tag)
 {{ irrdb_filter(client, client.cfg.filtering.irrdb.enforce_origin_in_as_set, cfg.filtering.irrdb.tag_as_set,
 		"asns",
 		cfg.communities.origin_present_in_as_set, cfg.communities.origin_not_present_in_as_set,
 		9) }}
-
-{% if client.ip|ipaddr_ver == 6 %}
-# Prefix: only IPv6 Global Unicast space allowed
-match from {{ client.ip }} set community NO_ADVERTISE
-match from {{ client.ip }} prefix 2000::/3 or-longer set community delete NO_ADVERTISE
-match quick from {{ client.ip }} community NO_ADVERTISE {{ deny_inbound_route(10) }}
-{% endif %}
 
 {% if client.cfg.filtering.black_list_pref %}
 # Prefix: client's blacklist

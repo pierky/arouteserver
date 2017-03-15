@@ -219,6 +219,7 @@ class Route(object):
         self.next_hop = kwargs.get("next_hop", None)
         self.localpref = kwargs.get("localpref", None)
         self.filtered = kwargs.get("filtered", False)
+        self.reject_reason = kwargs.get("reject_reason", None)
         self.best = kwargs.get("best", None)
         self.std_comms = self._parse_std_bgp_communities(kwargs.get("std_comms", None))
         self.lrg_comms = self._parse_lrg_bgp_communities(kwargs.get("lrg_comms", None))
@@ -232,6 +233,7 @@ class Route(object):
             "next_hop": self.next_hop,
             "localpref": self.localpref,
             "filtered": self.filtered,
+            "reject_reason": self.reject_reason,
             "best": self.best,
             "std_comms": self.std_comms,
             "lrg_comms": self.lrg_comms,

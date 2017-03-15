@@ -50,7 +50,7 @@ class OpenBGPDRoute(Route):
             self.filtered = True
             for comm in self.std_comms:
                 if comm.startswith("0:"):
-                    self.reject_cause = int(comm.split(":")[1])
+                    self.reject_reason = int(comm.split(":")[1])
                     self.std_comms.remove(comm)
 
 class OpenBGPDInstance(KVMInstance):

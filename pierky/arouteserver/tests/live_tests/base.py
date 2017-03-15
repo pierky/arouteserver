@@ -368,7 +368,8 @@ class LiveScenario(ARouteServerTestCase):
 
     def receive_route(self, inst, prefix, other_inst=None, as_path=None,
                       next_hop=None, std_comms=None, lrg_comms=None,
-                      ext_comms=None, filtered=None, only_best=None):
+                      ext_comms=None, filtered=None, only_best=None,
+                      reject_reason=None):
         """Test if the BGP speaker receives the expected route(s).
 
         If no routes matching the given criteria are found, the
@@ -398,6 +399,28 @@ class LiveScenario(ARouteServerTestCase):
                 filtered are considered.
 
             only_best (bool): if given, only best routes are considered.
+
+            reject_reason (int): valid only if `filtered` is True: if given
+                the route must be reject with this reason code.
+                It can be also a set of codes: in this case, the route must
+                be rejected with one of those codes.
+                Currently implemented on OpenBGPD only.
+
+                Valid codes follow:
+
+                1   invalid AS_PATH length
+                2   prefix is bogon
+                3   prefix is in global blacklist
+                4   invalid AFI
+                5   invalid NEXT_HOP
+                6   invalid left-most ASN
+                7   invalid ASN in AS_PATH
+                8   transit-free ASN in AS_PATH
+                9   origin ASN not in IRRDB AS-SETs
+                10  IPv6 prefix not in global unicast space
+                11  prefis is in client blacklist
+                12  prefix not in IRRDB AS-SETs
+                13  invalid prefix length
 
         """
         assert isinstance(inst, BGPSpeakerInstance), \
@@ -451,6 +474,19 @@ class LiveScenario(ARouteServerTestCase):
                 ("lrg_comms must be a list of strings representing "
                  "BGP large communities")
 
+        if reject_reason is not None and not filtered:
+            raise AssertionError(
+                "reject_reason can be set only if filtered is True"
+            )
+
+        reject_reasons = None
+        if reject_reason is not None:
+            if isinstance(reject_reason, int):
+                reject_reasons = [reject_reason]
+            else:
+                reject_reasons = list(reject_reason)
+            for code in reject_reasons:
+                assert code in range(1,14), "invalid reject_reason"
 
         include_filtered = filtered if filtered is not None else False
         best_only = only_best if only_best is not None else False
@@ -495,6 +531,22 @@ class LiveScenario(ARouteServerTestCase):
                         )
                     )
                     err = True
+                if filtered is True and route.filtered and \
+                    reject_reasons is not None and route.reject_reason is not None and \
+                    route.reject_reason not in reject_reasons:
+                    errors.append(
+                        "{{inst}} receives {{prefix}} from {via}, AS_PATH {as_path}, NEXT_HOP {next_hop}, "
+                        "it is filtered but reject reasons don't match: it is {reason} while "
+                        "it is expected to be {exp_reason}.".format(
+                            via=route.via,
+                            as_path=route.as_path,
+                            next_hop=route.next_hop,
+                            reason=route.reject_reason,
+                            exp_reason=reject_reasons[0] if len(reject_reasons) == 1 else
+                                       "one of {}".format(", ".join(map(str, reject_reasons)))
+                        )
+                    )
+                    err = True
                 if not err:
                     return
 
@@ -514,6 +566,17 @@ class LiveScenario(ARouteServerTestCase):
                 criteria.append("with ext comms {}".format(ext_comms))
             if filtered is True:
                 criteria.append("filtered")
+            if reject_reasons:
+                if len(reject_reasons) == 1:
+                    criteria.append(
+                        "with reject reason {}".format(reject_reasons[0])
+                    )
+                else:
+                    criteria.append(
+                        "with reject reason in {}".format(
+                            ", ".join(map(str, reject_reasons))
+                        )
+                    )
 
             failure = "Routes not found.\n"
             failure += "Looking for {prefix} on {inst} {criteria}:\n\t".format(

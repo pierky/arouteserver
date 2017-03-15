@@ -8,7 +8,6 @@ OpenBGPD support
 - Fix: blackhole filtering requests, next-hop rewriting for IPv6
 - Config builder warning: community names that only have large communities
 - Config builder warning: ext communities scrubbing
-- Live tests: take into account the cause of route rejecting (like log_contains)
 
 Short term
 ----------

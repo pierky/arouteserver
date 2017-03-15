@@ -163,12 +163,15 @@ class TagASSetScenario_WithAS_SETs(object):
 
     def test_040_AS4_origin_filtered(self):
         """{}: AS4 route filtered (origin ko)"""
-        self.receive_route(self.rs, self.DATA["AS3_pref_ok_origin_ko2"], self.AS4, as_path="4 3", next_hop=self.AS4, filtered=True)
+        self.receive_route(self.rs, self.DATA["AS3_pref_ok_origin_ko2"],
+                           self.AS4, as_path="4 3", next_hop=self.AS4,
+                           filtered=True, reject_reason=9)
 
     def test_040_AS4_prefix_origin_filtered(self):
         """{}: AS4 route filtered (prefix ko, origin ko)"""
-        self.receive_route(self.rs, self.DATA["AS3_pref_ko_origin_ko1"], self.AS4, as_path="4 3", next_hop=self.AS4, filtered=True)
-
+        self.receive_route(self.rs, self.DATA["AS3_pref_ko_origin_ko1"],
+                           self.AS4, as_path="4 3", next_hop=self.AS4,
+                           filtered=True, reject_reason=9)
 
     def test_050_AS5_prefix_ok_origin_ok(self):
         """{}: AS5 prefix ok origin ok"""
@@ -179,7 +182,9 @@ class TagASSetScenario_WithAS_SETs(object):
 
     def test_050_AS5_prefix_filtered(self):
         """{}: AS5 route filtered (prefix ko)"""
-        self.receive_route(self.rs, self.DATA["AS5_pref_ko_origin_ok1"], self.AS5, as_path="5", next_hop=self.AS5, filtered=True)
+        self.receive_route(self.rs, self.DATA["AS5_pref_ko_origin_ok1"],
+                           self.AS5, as_path="5", next_hop=self.AS5,
+                           filtered=True, reject_reason=12)
 
     def test_050_AS5_prefix_ok_origin_ko(self):
         """{}: AS5 prefix ok origin ko"""
@@ -189,8 +194,13 @@ class TagASSetScenario_WithAS_SETs(object):
                            lrg_comms=lrg_comms)
 
     def test_050_AS5_origin_filtered(self):
-        """{}: AS5 route filtered (origin ko)"""
-        self.receive_route(self.rs, self.DATA["AS3_pref_ko_origin_ko1"], self.AS5, as_path="5 3", next_hop=self.AS5, filtered=True)
+        """{}: AS5 route filtered (prefix ko, origin ko)"""
+        # AS5 is configured with prefix enforcement only, that's why
+        # the reject reason should be 12 (prefix not in IRRDBs) and
+        # not 9 (origin ASN not in IRRDBs).
+        self.receive_route(self.rs, self.DATA["AS3_pref_ko_origin_ko1"],
+                           self.AS5, as_path="5 3", next_hop=self.AS5,
+                           filtered=True, reject_reason=12)
 
 class TagASSetScenario_EmptyAS_SETs(object):
 
@@ -233,7 +243,8 @@ class TagASSetScenario_EmptyAS_SETs(object):
                      self.DATA["AS4_pref_ko_origin_ok1"],
                      self.DATA["AS3_pref_ok_origin_ko2"],
                      self.DATA["AS3_pref_ko_origin_ko1"]):
-            self.receive_route(self.rs, pref, self.AS4, next_hop=self.AS4, filtered=True)
+            self.receive_route(self.rs, pref, self.AS4, next_hop=self.AS4,
+                               filtered=True, reject_reason=(9, 12))
 
     def test_050_AS4_prefix_enforcement(self):
         """{}: AS4 prefix enforcement"""
@@ -241,7 +252,8 @@ class TagASSetScenario_EmptyAS_SETs(object):
                      self.DATA["AS5_pref_ko_origin_ok1"],
                      self.DATA["AS3_pref_ok_origin_ko3"],
                      self.DATA["AS3_pref_ko_origin_ko1"]):
-            self.receive_route(self.rs, pref, self.AS5, next_hop=self.AS5, filtered=True)
+            self.receive_route(self.rs, pref, self.AS5, next_hop=self.AS5,
+                               filtered=True, reject_reason=(9, 12))
 
 class TagASSetScenarioBIRD(TagASSetScenario):
     __test__ = False

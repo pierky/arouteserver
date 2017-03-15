@@ -145,14 +145,28 @@ class BasicScenario(LiveScenario):
 
     def test_030_good_prefixes_received_by_rs(self):
         """{}: good prefixes received by rs"""
-        self.receive_route(self.rs, self.DATA["AS1_good1"], self.AS1_1)
-        self.receive_route(self.rs, self.DATA["AS1_good2"], self.AS1_1)
-        self.receive_route(self.rs, self.DATA["AS1_good1"], self.AS1_2)
-        self.receive_route(self.rs, self.DATA["AS1_good2"], self.AS1_2)
+        self.receive_route(self.rs, self.DATA["AS1_good1"], self.AS1_1,
+                           next_hop=self.AS1_1, as_path="1",
+                           std_comms=[], ext_comms=[], lrg_comms=[])
+        self.receive_route(self.rs, self.DATA["AS1_good2"], self.AS1_1,
+                           next_hop=self.AS1_1, as_path="1",
+                           std_comms=[], ext_comms=[], lrg_comms=[])
+        self.receive_route(self.rs, self.DATA["AS1_good1"], self.AS1_2,
+                           next_hop=self.AS1_2, as_path="1",
+                           std_comms=[], ext_comms=[], lrg_comms=[])
+        self.receive_route(self.rs, self.DATA["AS1_good2"], self.AS1_2,
+                           next_hop=self.AS1_2, as_path="1",
+                           std_comms=[], ext_comms=[], lrg_comms=[])
         # AS1_good3 is announced by AS1_2 with NEXT_HOP = AS1_1
-        self.receive_route(self.rs, self.DATA["AS1_good3"], self.AS1_2, next_hop=self.AS1_1)
-        self.receive_route(self.rs, self.DATA["AS2_good1"], self.AS2)
-        self.receive_route(self.rs, self.DATA["AS2_good2"], self.AS2)
+        self.receive_route(self.rs, self.DATA["AS1_good3"], self.AS1_2,
+                           next_hop=self.AS1_1, as_path="1",
+                           std_comms=[], ext_comms=[], lrg_comms=[])
+        self.receive_route(self.rs, self.DATA["AS2_good1"], self.AS2,
+                           next_hop=self.AS2, as_path="2",
+                           std_comms=[], ext_comms=[], lrg_comms=[])
+        self.receive_route(self.rs, self.DATA["AS2_good2"], self.AS2,
+                           next_hop=self.AS2, as_path="2",
+                           std_comms=[], ext_comms=[], lrg_comms=[])
 
         # rs should not receive prefixes with the following criteria
         with self.assertRaisesRegexp(AssertionError, "Routes not found."):
@@ -174,13 +188,17 @@ class BasicScenario(LiveScenario):
 
     def test_040_bad_prefixes_received_by_rs_bogon(self):
         """{}: bad prefixes received by rs: bogon"""
-        self.receive_route(self.rs, self.DATA["bogon1"], self.AS1_1, as_path="1", next_hop=self.AS1_1, filtered=True)
+        self.receive_route(self.rs, self.DATA["bogon1"], self.AS1_1,
+                           as_path="1", next_hop=self.AS1_1,
+                           filtered=True, reject_reason=2)
         self.log_contains(self.rs, "prefix is bogon - REJECTING " + self.DATA["bogon1"])
 
     def test_040_bad_prefixes_received_by_rs_global_blacklist(self):
         """{}: bad prefixes received by rs: global blacklist"""
 
-        self.receive_route(self.rs, self.DATA["local1"], self.AS1_1, as_path="1", next_hop=self.AS1_1, filtered=True)
+        self.receive_route(self.rs, self.DATA["local1"], self.AS1_1,
+                           as_path="1", next_hop=self.AS1_1,
+                           filtered=True, reject_reason=3)
         self.log_contains(self.rs, "prefix is in global blacklist - REJECTING " + self.DATA["local1"])
 
     def test_040_bad_prefixes_received_by_rs_prefix_len(self):
@@ -188,7 +206,9 @@ class BasicScenario(LiveScenario):
 
         ip_ver = ipaddr.IPNetwork(self.DATA["pref_len1"]).version
 
-        self.receive_route(self.rs, self.DATA["pref_len1"], self.AS1_1, as_path="1", next_hop=self.AS1_1, filtered=True)
+        self.receive_route(self.rs, self.DATA["pref_len1"], self.AS1_1,
+                           as_path="1", next_hop=self.AS1_1,
+                           filtered=True, reject_reason=13)
         pref_len = 7 if ip_ver == 4 else 16
         pref_len_range = "8-24" if ip_ver == 4 else "17-48"
         self.log_contains(self.rs, "prefix len [{}] not in {} - REJECTING {}".format(
@@ -197,37 +217,49 @@ class BasicScenario(LiveScenario):
     def test_040_bad_prefixes_received_by_rs_leftmost_asn(self):
         """{}: bad prefixes received by rs: left-most ASN"""
 
-        self.receive_route(self.rs, self.DATA["peer_as1"], self.AS1_1, as_path="2 1", next_hop=self.AS1_1, filtered=True)
+        self.receive_route(self.rs, self.DATA["peer_as1"], self.AS1_1,
+                           as_path="2 1", next_hop=self.AS1_1,
+                           filtered=True, reject_reason=6)
         self.log_contains(self.rs, "invalid left-most ASN [2] - REJECTING " + self.DATA["peer_as1"])
 
     def test_040_bad_prefixes_received_by_rs_invalid_aspath(self):
         """{}: bad prefixes received by rs: invalid ASN in AS-PATH"""
 
-        self.receive_route(self.rs, self.DATA["invalid_asn1"], self.AS1_1, as_path="1 65536 1", next_hop=self.AS1_1, filtered=True)
+        self.receive_route(self.rs, self.DATA["invalid_asn1"], self.AS1_1,
+                           as_path="1 65536 1", next_hop=self.AS1_1,
+                           filtered=True, reject_reason=7)
         self.log_contains(self.rs, "AS_PATH [(path 1 65536 1)] contains invalid ASN - REJECTING " + self.DATA["invalid_asn1"])
 
     def test_040_bad_prefixes_received_by_rs_transitfree_as_path(self):
         """{}: bad prefixes received by rs: transit-free ASN in AS-PATH"""
 
-        self.receive_route(self.rs, self.DATA["AS101_transitfree_1"], self.AS1_1, as_path="1 101 174", next_hop=self.AS1_1, filtered=True)
+        self.receive_route(self.rs, self.DATA["AS101_transitfree_1"],
+                           self.AS1_1, as_path="1 101 174",
+                           next_hop=self.AS1_1, filtered=True, reject_reason=8)
         self.log_contains(self.rs, "AS_PATH [(path 1 101 174)] contains transit-free ASN - REJECTING " + self.DATA["AS101_transitfree_1"])
 
     def test_040_bad_prefixes_received_by_rs_aspath_len(self):
         """{}: bad prefixes received by rs: AS_PATH len"""
 
-        self.receive_route(self.rs, self.DATA["aspath_len1"], self.AS1_1, as_path="1 2 2 2 2 2 2 1", next_hop=self.AS1_1, filtered=True)
+        self.receive_route(self.rs, self.DATA["aspath_len1"], self.AS1_1,
+                           as_path="1 2 2 2 2 2 2 1", next_hop=self.AS1_1,
+                           filtered=True, reject_reason=1)
         self.log_contains(self.rs, "AS_PATH len [8] longer than 6 - REJECTING " + self.DATA["aspath_len1"])
 
     def test_040_bad_prefixes_received_by_rs_client_blacklist(self):
         """{}: bad prefixes received by rs: client blacklist"""
 
-        self.receive_route(self.rs, self.DATA["AS3_blacklist1"], self.AS3, as_path="3", next_hop=self.AS3, filtered=True)
+        self.receive_route(self.rs, self.DATA["AS3_blacklist1"], self.AS3,
+                           as_path="3", next_hop=self.AS3,
+                           filtered=True, reject_reason=11)
         self.log_contains(self.rs, "prefix is in client's blacklist - REJECTING " + self.DATA["AS3_blacklist1"])
 
     def test_040_bad_prefixes_received_by_rs_invalid_nexthop(self):
         """{}: bad prefixes received by rs: invalid NEXT_HOP"""
 
-        self.receive_route(self.rs, self.DATA["AS101_good1"], self.AS1_2, as_path="1 101", next_hop=self.AS101, filtered=True)
+        self.receive_route(self.rs, self.DATA["AS101_good1"], self.AS1_2,
+                           as_path="1 101", next_hop=self.AS101,
+                           filtered=True, reject_reason=5)
         self.log_contains(self.rs, "NEXT_HOP [" + self.AS101.ip + "] not allowed - REJECTING " + self.DATA["AS101_good1"])
 
     def test_040_bad_prefixes_received_by_rs_no_rset(self):
@@ -235,8 +267,12 @@ class BasicScenario(LiveScenario):
 
         # AS101_no_rset is not included in AS-AS1_CUSTOMERS nor in AS-AS2_CUSTOMERS, so it's
         # rejected by the rs.
-        self.receive_route(self.rs, self.DATA["AS101_no_rset"], self.AS1_1, as_path="1 101", next_hop=self.AS1_1, filtered=True)
-        self.receive_route(self.rs, self.DATA["AS101_no_rset"], self.AS2, as_path="2 101", next_hop=self.AS2, filtered=True)
+        self.receive_route(self.rs, self.DATA["AS101_no_rset"], self.AS1_1,
+                           as_path="1 101", next_hop=self.AS1_1,
+                           filtered=True, reject_reason=12)
+        self.receive_route(self.rs, self.DATA["AS101_no_rset"], self.AS2,
+                           as_path="2 101", next_hop=self.AS2,
+                           filtered=True, reject_reason=12)
         self.log_contains(self.rs, "prefix not in client's r_set - REJECTING " + self.DATA["AS101_no_rset"])
 
     def test_040_bad_prefixes_received_by_rs_no_asset(self):
@@ -245,8 +281,12 @@ class BasicScenario(LiveScenario):
         # AS102_no_asset is announced by an (hypothetical) AS102 to AS101,
         # and AS102 is not included in AS-AS1_CUSTOMERS nor in AS-AS2_CUSTOMERS, so it's
         # rejected by the rs.
-        self.receive_route(self.rs, self.DATA["AS102_no_asset"], self.AS1_1, as_path="1 101 102", next_hop=self.AS1_1, filtered=True)
-        self.receive_route(self.rs, self.DATA["AS102_no_asset"], self.AS2, as_path="2 101 102", next_hop=self.AS2, filtered=True)
+        self.receive_route(self.rs, self.DATA["AS102_no_asset"], self.AS1_1,
+                           as_path="1 101 102", next_hop=self.AS1_1,
+                           filtered=True, reject_reason=9)
+        self.receive_route(self.rs, self.DATA["AS102_no_asset"], self.AS2,
+                           as_path="2 101 102", next_hop=self.AS2,
+                           filtered=True, reject_reason=9)
         self.log_contains(self.rs, "origin ASN [102] not in allowed as-sets - REJECTING " + self.DATA["AS102_no_asset"])
 
     def test_040_bad_prefix_not_ipv6_global_unicat(self):
@@ -254,13 +294,15 @@ class BasicScenario(LiveScenario):
         if "AS101_no_ipv6_gl_uni" not in self.DATA:
             # it's an IPv4-only scenario
             return
-        self.receive_route(self.rs, self.DATA["AS101_no_ipv6_gl_uni"], filtered=True)
+        self.receive_route(self.rs, self.DATA["AS101_no_ipv6_gl_uni"],
+                           filtered=True, reject_reason=10)
         self.log_contains(self.rs, "prefix is not in IPv6 Global Unicast space - REJECTING " + self.DATA["AS101_no_ipv6_gl_uni"])
 
     def test_040_default_rejected_by_rs(self):
         """{}: bad prefixes received by rs: default route"""
         self.receive_route(self.rs, self.DATA["Default_route"],
-                           other_inst=self.AS3, filtered=True)
+                           other_inst=self.AS3,
+                           filtered=True, reject_reason=(2, 10))
         if ipaddr.IPNetwork(self.DATA["Default_route"]).version == 4:
             msg = "prefix is bogon - REJECTING " + self.DATA["Default_route"]
         else:
@@ -367,7 +409,9 @@ class BasicScenario(LiveScenario):
         # and AS1_2 has not 'next-hop-self' on the session with rs:
         # next-hop received by rs is the one of AS101, so the prefix
         # should be filtered by the rs.
-        self.receive_route(self.rs, self.DATA["AS101_good1"], self.AS1_2, as_path="1 101", next_hop=self.AS101, filtered=True)
+        self.receive_route(self.rs, self.DATA["AS101_good1"], self.AS1_2,
+                           as_path="1 101", next_hop=self.AS101,
+                           filtered=True, reject_reason=5)
 
     def test_060_communities_as_seen_by_AS101_upstreams(self):
         """{}: bad communities as seen by AS101 upstreams"""
