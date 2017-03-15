@@ -15,6 +15,7 @@
 
 import logging
 import os
+import sys
 import unittest
 
 
@@ -101,9 +102,17 @@ class ARouteServerTestCase(unittest.TestCase):
         cls._tearDownClass()
 
     @classmethod
+    def print_msg(cls, s):
+        sys.stderr.write("{}\n".format(s))
+
+    @classmethod
     def debug(cls, s):
         if cls.DEBUG or "DEBUG" in os.environ:
-            print("DEBUG: {}".format(s))
+            cls.print_msg("DEBUG: {}".format(s))
+
+    @classmethod
+    def info(cls, s):
+        cls.print_msg(s)
 
     def shortDescription(self):
         return self._testMethodDoc.format(self.SHORT_DESCR)

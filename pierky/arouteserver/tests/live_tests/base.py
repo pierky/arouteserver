@@ -313,7 +313,7 @@ class LiveScenario(ARouteServerTestCase):
 
     @classmethod
     def _setUpClass(cls):
-        print("{}: setting instances up...".format(cls.SHORT_DESCR))
+        cls.info("{}: setting instances up...".format(cls.SHORT_DESCR))
 
         mock_peering_db(cls._get_module_dir() + "/peeringdb_data")
         cls.mock_irrdb()
@@ -351,7 +351,7 @@ class LiveScenario(ARouteServerTestCase):
             cls.debug("Skipping stopping instances")
             return
 
-        print("{}: stopping instances...".format(cls.SHORT_DESCR))
+        cls.info("{}: stopping instances...".format(cls.SHORT_DESCR))
 
         for instance in cls.INSTANCES:
             cls.debug("Stopping instance '{}'...".format(instance.name))

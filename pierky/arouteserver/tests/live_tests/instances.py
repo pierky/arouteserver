@@ -15,6 +15,7 @@
 
 
 import os
+import sys
 
 class InstanceError(Exception):
     pass
@@ -45,7 +46,7 @@ class BGPSpeakerInstance(object):
     @classmethod
     def debug(cls, s):
         if cls.DEBUG or "DEBUG" in os.environ:
-            print("DEBUG: {}".format(s))
+            sys.stderr.write("DEBUG: {}\n".format(s))
 
     def __init__(self, name, ip, mount=[], **kwargs):
         self.name = name

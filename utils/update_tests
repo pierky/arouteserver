@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+if [ ! -e "setup.py" ]; then
+	echo "The script must be executed from within the repository's root directory."
+	exit
+fi
+
+echo "Restarting docker..."
+sudo service docker restart
+
+echo "Verifying no VMs are running..."
+if [ "`virsh list --name --state-running | wc -w`" != "0" ]; then
+	echo "One or more VMs are already running"
+	exit
+fi
+
+export PYTHONPATH="`pwd`"
+ROOT="`pwd`"
+
+TESTS_DIR="`pwd`/tests"
+
+nosetests -vs -x $TESTS_DIR 2>&1 | tee $TESTS_DIR/last
