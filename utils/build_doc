@@ -28,7 +28,8 @@ function RenderExample() {
 
 	if [ "$COMMAND" == "build" ]; then
 		IP_VER="$1" ; shift
-		$CMD --ip-ver $IP_VER -o examples/$DST/bird$IP_VER.conf
+		$CMD --speaker BIRD --ip-ver $IP_VER -o examples/$DST/bird$IP_VER.conf
+		$CMD --speaker OpenBGPD -o examples/$DST/openbgpd.conf
 	elif [ "$COMMAND" == "html" ]; then
 		$CMD -o examples/$DST/description.html
 		cp examples/$DST/description.html $DOCS_DIR/_static/examples_$DST.html
@@ -48,6 +49,9 @@ function ClientsFromEuroIX() {
 	fi
 
 	$CMD
+
+	./scripts/arouteserver build --cfg $CFG_FILE --test-only --general "config.d/general.yml" --clients $OUTPUT_FILE --bogons "config.d/bogons.yml" --ip-ver 4
+	./scripts/arouteserver build --cfg $CFG_FILE --test-only --general "config.d/general.yml" --clients $OUTPUT_FILE --bogons "config.d/bogons.yml" --ip-ver 6
 }
 
 echo "Building example: default, IPv4"

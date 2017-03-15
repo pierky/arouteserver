@@ -30,4 +30,3 @@ class BasicScenario_OpenBGPDIPv4(BasicScenario_Data4, BasicScenarioOpenBGPD):
     SHORT_DESCR = "Live test, OpenBGPD, global scenario, IPv4"
     RS_INSTANCE_CLASS = OpenBGPDInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
-    IP_VER = 4

@@ -5,6 +5,7 @@ next release
 ------------
 
 - Add MD5 password support on clients configuration.
+- OpenBGPD support.
 
 v0.3.0
 ------

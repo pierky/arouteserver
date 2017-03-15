@@ -13,26 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import BGPCommunitiesScenario
+from base import BGPCommunitiesScenarioBIRD
+from data6 import BGPCommunitiesScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 
-class BGPCommunitiesScenario_BIRDIPv6(BGPCommunitiesScenario):
+class BGPCommunitiesScenario_BIRDIPv6(BGPCommunitiesScenario_Data6,
+                                      BGPCommunitiesScenarioBIRD):
     __test__ = True
 
     SHORT_DESCR = "Live test, BIRD, BGP communities, IPv6"
     RS_INSTANCE_CLASS = BIRDInstanceIPv6
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
     IP_VER = 6
-
-    DATA = {
-        "rs_IPAddress":             "2001:db8:1:1::2",
-        "AS1_IPAddress":            "2001:db8:1:1::11",
-        "AS2_IPAddress":            "2001:db8:1:1::22",
-        "AS131073_IPAddress":       "2001:db8:1:1::33",
-
-        "AS2_only_to_AS1_s":        "2a00:1::/32",
-        "AS2_only_to_AS1_e":        "2a00:2::/32",
-        "AS2_only_to_AS1_l":        "2a00:3::/32",
-        "AS2_only_to_AS131073_e":   "2a00:4::/32",
-        "AS2_only_to_AS131073_l":   "2a00:5::/32",
-    }

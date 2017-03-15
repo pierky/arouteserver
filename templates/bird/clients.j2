@@ -94,6 +94,7 @@ filter receive_from_{{ client.id }} {
 	{% endif %}
 
 	{% if cfg.filtering.transit_free.action %}
+	# AS_PATH: transit-free ASNs
 	if as_path_contains_transit_free_asn() then
 	{%	if cfg.filtering.transit_free.action == "reject" %}
 		reject "AS_PATH [", bgp_path ,"] contains transit-free ASN - REJECTING ", net;

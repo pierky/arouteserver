@@ -13,7 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class DefaultConfigScenario(LiveScenario):
     __test__ = False
@@ -21,7 +24,7 @@ class DefaultConfigScenario(LiveScenario):
     MODULE_PATH = __file__
     RS_INSTANCE_CLASS = None
     CLIENT_INSTANCE_CLASS = None
-    IP_VER = None
+    CONFIG_BUILDER_CLASS = None
 
     AS_SET = {
         "AS3333": [3333],
@@ -39,16 +42,7 @@ class DefaultConfigScenario(LiveScenario):
     @classmethod
     def _setup_instances(cls):
         cls.INSTANCES = [
-            cls.RS_INSTANCE_CLASS(
-                "rs",
-                cls.DATA["rs_IPAddress"],
-                [
-                    (
-                        cls.build_rs_cfg("bird", "main.j2", "rs.conf"),
-                        "/etc/bird/bird.conf"
-                    )
-                ],
-            )
+            cls._setup_rs_instance()
         ]
 
     def set_instance_variables(self):
@@ -57,3 +51,39 @@ class DefaultConfigScenario(LiveScenario):
     def test_010_setup(self):
         """{}: instances setup"""
         pass
+
+class DefaultConfigScenarioBIRD(DefaultConfigScenario):
+    __test__ = False
+
+    CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+
+    @classmethod
+    def _setup_rs_instance(cls):
+        return cls.RS_INSTANCE_CLASS(
+            "rs",
+            cls.DATA["rs_IPAddress"],
+            [
+                (
+                    cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER),
+                    "/etc/bird/bird.conf"
+                )
+            ]
+        )
+
+class DefaultConfigScenarioOpenBGPD(DefaultConfigScenario):
+    __test__ = False
+
+    CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
+
+    @classmethod
+    def _setup_rs_instance(cls):
+        return cls.RS_INSTANCE_CLASS(
+            "rs",
+            cls.DATA["rs_IPAddress"],
+            [
+                (
+                    cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None),
+                    "/etc/bgpd.conf"
+                )
+            ]
+        )

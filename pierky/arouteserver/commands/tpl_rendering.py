@@ -19,7 +19,8 @@ import os
 import sys
 
 from .base import ARouteServerCommand
-from ..builder import ConfigBuilder, BIRDConfigBuilder, TemplateContextDumper
+from ..builder import ConfigBuilder, BIRDConfigBuilder, \
+                      OpenBGPDConfigBuilder, TemplateContextDumper
 from ..config.program import program_config
 from ..errors import ARouteServerError, TemplateRenderingError
 
@@ -168,12 +169,14 @@ class BuildCommand(TemplateRenderingCommands):
             help="The BGP speaker target implementation for "
                 "the configuration that will be built.",
             dest="speaker",
-            choices=["BIRD"],
+            choices=["BIRD", "OpenBGPD"],
             default="BIRD")
 
     def _get_builder_class(self):
         if self.args.speaker == "BIRD":
             return BIRDConfigBuilder
+        if self.args.speaker == "OpenBGPD":
+            return OpenBGPDConfigBuilder
         raise ARouteServerError(
             "Unknown BGP speaker implementation: {}".format(self.args.speaker)
         )
@@ -181,6 +184,8 @@ class BuildCommand(TemplateRenderingCommands):
     def _get_template_sub_dir(self):
         if self.args.speaker == "BIRD":
             return "bird"
+        if self.args.speaker == "OpenBGPD":
+            return "openbgpd"
         raise ARouteServerError(
             "Unknown BGP speaker implementation: {}".format(self.args.speaker)
         )

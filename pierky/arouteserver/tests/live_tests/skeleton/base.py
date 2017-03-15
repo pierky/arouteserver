@@ -170,7 +170,7 @@ class SkeletonScenario(LiveScenario):
                 cls.DATA["rs_IPAddress"],
                 [
                     (
-                        cls.build_rs_cfg("bird", "main.j2", "rs.conf"),
+                        cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER),
                         "/etc/bird/bird.conf"
                     )
                 ]

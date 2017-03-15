@@ -5,9 +5,10 @@ group "clients" {
 {% for client in clients if client.ip is current_ipver %}
 
 	neighbor {{ client.ip }} {
+		softreconfig in yes
 
 		{% if client.description %}
-		descr "{{ client.description }}"
+		descr "{{ client.description|truncate(31) }}"
 		{% endif %}
 
 		remote-as {{ client.asn }}
@@ -50,7 +51,13 @@ group "clients" {
 
 		announce all
 		announce as-4byte yes
-		announce IPv{{ client.ip|ipaddr_ver }} unicast
+		{% if client.ip|ipaddr_ver == 4 %}
+		announce IPv6 none
+		announce IPv4 unicast
+		{% else %}
+		announce IPv6 unicast
+		announce IPv4 none
+		{% endif %}
 
 		set nexthop no-modify
 	}

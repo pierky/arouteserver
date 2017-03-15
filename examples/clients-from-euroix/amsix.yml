@@ -1,0 +1,85 @@
+# Data fetched from https://my.ams-ix.net/api/v1/members.json at 2017-03-15T19:43:24.633358 UTC
+# IXP ID: 1
+# VLAN ID: 502
+clients:
+- asn: 58453
+  description: China Mobile International Limited
+  ip: 193.105.101.100
+- asn: 33849
+  description: Comfone AG
+  ip: 193.105.101.30
+- asn: 8959
+  description: Emirates Telecommunications Corporation (Etisalat) (GRX)
+  ip: 193.105.101.22
+- asn: 8959
+  description: Emirates Telecommunications Corporation (Etisalat) (GRX)
+  ip: 193.105.101.62
+- asn: 12322
+  description: Free SAS
+  ip: 193.105.101.28
+- asn: 9304
+  description: Hutchison Global Communications Limited
+  ip: 193.105.101.12
+- asn: 43225
+  description: KPN Global Carrier Services B.V.
+  ip: 193.105.101.35
+- asn: 43225
+  description: KPN Global Carrier Services B.V.
+  ip: 193.105.101.65
+- asn: 32978
+  description: Neustar
+  ip: 193.105.101.16
+- asn: 32978
+  description: Neustar
+  ip: 193.105.101.17
+- asn: 32978
+  description: Neustar
+  ip: 193.105.101.18
+- asn: 32978
+  description: Neustar
+  ip: 193.105.101.19
+- asn: 38645
+  description: NTT Communications Corporation
+  ip: 193.105.101.14
+- asn: 38645
+  description: NTT Communications Corporation
+  ip: 193.105.101.15
+- asn: 28725
+  description: O2 Czech Republic a.s.
+  ip: 193.105.101.72
+- asn: 28725
+  description: O2 Czech Republic a.s.
+  ip: 193.105.101.73
+- asn: 22870
+  description: Syniverse Technologies LLC.
+  ip: 193.105.101.20
+- asn: 4755
+  description: TATA Communications
+  ip: 193.105.101.63
+- asn: 64518
+  description: Telecom Italia Netherlands B.V.
+  ip: 193.105.101.36
+- asn: 64518
+  description: Telecom Italia Netherlands B.V.
+  ip: 193.105.101.39
+- asn: 12956
+  description: Telefonica Internacional Wholesale Services S.L.
+  ip: 193.105.101.13
+- asn: 28834
+  description: Telekom Austria
+  ip: 193.105.101.26
+- asn: 28834
+  description: Telekom Austria
+  ip: 193.105.101.27
+- asn: 4637
+  description: Telstra Global
+  ip: 193.105.101.54
+- asn: 47009
+  description: Transaction Network Services
+  ip: 193.105.101.10
+- asn: 4445
+  description: ' Vodafone Carrier Services'
+  ip: 193.105.101.79
+- asn: 4445
+  description: ' Vodafone Carrier Services'
+  ip: 193.105.101.80

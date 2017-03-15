@@ -38,6 +38,15 @@ class BGPSpeakerInstance(object):
     :class:`BIRDInstance` class.
     """
 
+    MESSAGE_LOGGING_SUPPORT = True
+
+    DEBUG = False
+
+    @classmethod
+    def debug(cls, s):
+        if cls.DEBUG or "DEBUG" in os.environ:
+            print("DEBUG: {}".format(s))
+
     def __init__(self, name, ip, mount=[], **kwargs):
         self.name = name
         self.ip = ip
@@ -86,10 +95,9 @@ class BGPSpeakerInstance(object):
         Returns:
             None if the BGP session is not found, otherwise a dictionary
             containing information about the BGP session:
-            {
-                "ip": "neighbor IP address",
-                "is_up": [True|False]
-            }
+
+            - "ip": "neighbor IP address",
+            - "is_up": [True|False]
         """
         raise NotImplementedError()
 
@@ -176,9 +184,7 @@ class Route(object):
             the "[rt|ro]:x:y" format).
     """
 
-
-    @staticmethod
-    def _parse_bgp_communities(communities):
+    def _parse_bgp_communities(self, communities):
         if not communities:
             return []
 
@@ -197,15 +203,25 @@ class Route(object):
             res.append(parse_bgp_community(bgp_comm))
         return res
 
+    def _parse_std_bgp_communities(self, communities):
+        return self._parse_bgp_communities(communities)
+
+    def _parse_ext_bgp_communities(self, communities):
+        return self._parse_bgp_communities(communities)
+
+    def _parse_lrg_bgp_communities(self, communities):
+        return self._parse_bgp_communities(communities)
+
     def __init__(self, prefix, **kwargs):
         self.prefix = prefix
         self.via = kwargs.get("via", None)
         self.as_path = kwargs.get("as_path", None)
         self.next_hop = kwargs.get("next_hop", None)
         self.filtered = kwargs.get("filtered", False)
-        self.std_comms = self._parse_bgp_communities(kwargs.get("std_comms", None))
-        self.lrg_comms = self._parse_bgp_communities(kwargs.get("lrg_comms", None))
-        self.ext_comms = self._parse_bgp_communities(kwargs.get("ext_comms", None))
+        self.best = kwargs.get("best", None)
+        self.std_comms = self._parse_std_bgp_communities(kwargs.get("std_comms", None))
+        self.lrg_comms = self._parse_lrg_bgp_communities(kwargs.get("lrg_comms", None))
+        self.ext_comms = self._parse_ext_bgp_communities(kwargs.get("ext_comms", None))
 
     def __str__(self):
         return str({
@@ -214,6 +230,7 @@ class Route(object):
             "as_path": self.as_path,
             "next_hop": self.next_hop,
             "filtered": self.filtered,
+            "best": self.best,
             "std_comms": self.std_comms,
             "lrg_comms": self.lrg_comms,
             "ext_comms": self.ext_comms,

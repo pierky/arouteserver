@@ -273,9 +273,17 @@ class BIRDConfigBuilder(ConfigBuilder):
                 "--ip-ver command line argument to supply one."
             )
 
-class GoBGPConfigBuilder(ConfigBuilder):
+class OpenBGPDConfigBuilder(ConfigBuilder):
 
-    pass
+    def enrich_j2_environment(self, env):
+
+        def convert_ext_comm(s):
+            parts = s.split(":")
+            return "{} {}:{}".format(
+                parts[0], parts[1], parts[2]
+            )
+
+        env.filters["convert_ext_comm"] = convert_ext_comm
 
 class TemplateContextDumper(ConfigBuilder):
 

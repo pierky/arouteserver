@@ -17,7 +17,7 @@ Built to group as many tests as possible in a single scenario.
     - next-hop-self configured in AS1_1.conf
     - next_hop_policy: strict (inherited from general config)
 
-    Announced prefixes:
+    Originated prefixes:
 
     ============   ============  ============  ====================================
     Prefix ID      Prefix        AS_PATH       Expected result
@@ -38,7 +38,7 @@ Built to group as many tests as possible in a single scenario.
     - NO next-hop-self in AS1_2.conf (next-hop of AS101 used for AS101_good == 101.0.1.0/24)
     - next_hop_policy: same-as (from clients config)
 
-    Announced prefixes:
+    Originated prefixes:
 
     ===========    ===========     ==============  ===========================================
     Prefix ID      Prefix          Feature         Expected result    
@@ -62,7 +62,7 @@ Built to group as many tests as possible in a single scenario.
     - next-hop-self configured in AS2.conf
     - next_hop_policy: strict (inherited from general config)
 
-    Announced prefixes:
+    Originated prefixes:
 
     ==============  ================   =======================================   =================================================
     Prefix ID       Prefix             Feature                                   Expected result
@@ -90,7 +90,7 @@ Built to group as many tests as possible in a single scenario.
     - ADD-PATH enabled
     - passive client-side (no passive on the route server)
 
-    Announced prefixes:
+    Originated prefixes:
 
     =================  ============ ================= ============================================
     Prefix ID          Prefix       Communities       Expected result
@@ -129,7 +129,7 @@ Built to group as many tests as possible in a single scenario.
     3  101.0.128.0/20  23    101
     == ==============  ====  ======
 
-  Annouced prefixes:
+  Originated prefixes:
 
   ====================  ==============   ========== ==================================================================================
   Prefix ID             Prefix           AS_PATH    Expected result

@@ -48,9 +48,12 @@ class ARouteServerTestCase(unittest.TestCase):
     SHORT_DESCR = ""
     DEBUG = False
     SKIP_ON_TRAVIS = False
+    UNCONDITIONALLY_SKIP_THIS_CLASS = False
 
     @classmethod
     def should_be_skipped(cls):
+        if cls.UNCONDITIONALLY_SKIP_THIS_CLASS:
+            return True
         if cls.SKIP_ON_TRAVIS and "TRAVIS" in os.environ:
             return True
         return False

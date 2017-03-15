@@ -13,26 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import BGPCommunitiesScenario
+from base import BGPCommunitiesScenarioBIRD
+from data4 import BGPCommunitiesScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 
-class BGPCommunitiesScenario_BIRDIPv4(BGPCommunitiesScenario):
+class BGPCommunitiesScenario_BIRDIPv4(BGPCommunitiesScenario_Data4,
+                                      BGPCommunitiesScenarioBIRD):
     __test__ = True
 
     SHORT_DESCR = "Live test, BIRD, BGP communities, IPv4"
     RS_INSTANCE_CLASS = BIRDInstanceIPv4
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
     IP_VER = 4
-
-    DATA = {
-        "rs_IPAddress":             "192.0.2.2",
-        "AS1_IPAddress":            "192.0.2.11",
-        "AS2_IPAddress":            "192.0.2.22",
-        "AS131073_IPAddress":       "192.0.2.33",
-
-        "AS2_only_to_AS1_s":        "2.0.1.0/24",
-        "AS2_only_to_AS1_e":        "2.0.2.0/24",
-        "AS2_only_to_AS1_l":        "2.0.3.0/24",
-        "AS2_only_to_AS131073_e":   "2.0.4.0/24",
-        "AS2_only_to_AS131073_l":   "2.0.5.0/24",
-    }

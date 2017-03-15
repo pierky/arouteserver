@@ -14,36 +14,30 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from base import PathHidingScenario_MitigationOn, \
-                 PathHidingScenario_MitigationOff
+                 PathHidingScenario_MitigationOff, \
+                 PathHidingScenarioBIRD
+from data4 import PathHidingScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 
-class PathHidingScenario_BIRDIPv4(object):
-    __test__ = False
+class PathHidingScenario_MitigationOn_BIRDIPv4(PathHidingScenario_Data4,
+                                               PathHidingScenario_MitigationOn,
+                                               PathHidingScenarioBIRD):
+    __test__ = True
 
     RS_INSTANCE_CLASS = BIRDInstanceIPv4
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
     IP_VER = 4
 
-    DATA = {
-        "rs_IPAddress":                   "192.0.2.2",
-        "AS1_IPAddress":                  "192.0.2.11",
-        "AS2_IPAddress":                  "192.0.2.21",
-        "AS3_IPAddress":                  "192.0.2.31",
-        "AS4_IPAddress":                  "192.0.2.41",
-        "AS101_IPAddress":                "192.0.2.101",
-
-        "AS101_pref_ok1":                 "101.0.1.0/24",
-    }
-
-class PathHidingScenario_MitigationOn_BIRDIPv4(PathHidingScenario_BIRDIPv4,
-                                               PathHidingScenario_MitigationOn):
-    __test__ = True
-
     SHORT_DESCR = "Live test, BIRD, path hiding, mitigation on, IPv4"
 
-class PathHidingScenario_MitigationOff_BIRDIPv4(PathHidingScenario_BIRDIPv4,
-                                                PathHidingScenario_MitigationOff):
+class PathHidingScenario_MitigationOff_BIRDIPv4(PathHidingScenario_Data4,
+                                                PathHidingScenario_MitigationOff,
+                                                PathHidingScenarioBIRD):
     __test__ = True
+
+    RS_INSTANCE_CLASS = BIRDInstanceIPv4
+    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
+    IP_VER = 4
 
     SHORT_DESCR = "Live test, BIRD, path hiding, mitigation off, IPv4"
 

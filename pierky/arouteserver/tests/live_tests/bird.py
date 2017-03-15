@@ -16,7 +16,7 @@
 import re
 
 from docker import DockerInstance
-from instances import Route, BGPSpeakerInstance
+from instances import Route, BGPSpeakerInstance, InstanceNotRunning
 
 
 class BIRDInstance(DockerInstance):
@@ -26,6 +26,8 @@ class BIRDInstance(DockerInstance):
     some Docker-specific methods to start/stop the instance and to run
     commands on it.
     """
+
+    MESSAGE_LOGGING_SUPPORT = True
 
     DOCKER_IMAGE = "pierky/bird:1.6.3"
 

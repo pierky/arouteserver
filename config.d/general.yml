@@ -17,12 +17,14 @@ cfg:
   # Path-hiding mitigation technique: if True, enable path
   # hiding mitigation.
   # (https://tools.ietf.org/html/rfc7947#section-2.3.1)
+  #
   # BIRD: the 'secondary' option is used.
   #   "Usually, if an export filter rejects a selected route, no
   #   other route is propagated for that network. This option
   #   allows to try the next route in order until one that is
   #   accepted is found or all routes for that network are rejected."
   #   (http://bird.network.cz/?get_doc&f=bird-6.html#bgp-secondary)
+  # OpenBGPD: not implemented in ARouteServer. Single RIB only.
   #
   # Default: True
   path_hiding: True
@@ -45,6 +47,7 @@ cfg:
   # Use ADD-PATH (RFC7911).
   # The router server will be configure as "able to send multiple
   # paths to its peer".
+  #
   # OpenBGPD: not supported.
   #
   # Can be overwritten on a client-by-client basis.
@@ -118,6 +121,8 @@ cfg:
       # - reject: the route is discarded.
       # - warning: a warning is logged.
       #
+      # OpenBGPD: used only if action is 'reject'.
+      #
       # Default: none
       #action: "reject"
 
@@ -178,6 +183,8 @@ cfg:
       # 'communities' section below).
       # If 'reject_invalid' is True, INVALID routes are rejected.
       #
+      # OpenBGPD: not supported.
+      #
       # Default: False
       enabled: False
 
@@ -199,6 +206,7 @@ cfg:
       # - 'restart': the BGP session is restarted.
       # - 'block': new routes are discarded.
       # - 'warning': log a warning message.
+      #
       # OpenBGPD: used only if action is 'shutdown' or 'restart'.
       #
       # Can be overwritten on a client-by-client basis.
@@ -264,6 +272,8 @@ cfg:
     #   entering clients ports on the basis of their destination
     #   MAC address.
     #
+    # OpenBGPD: work in progress to have 'rewrite-next-hop' working.
+    #
     # Default: none
     #policy_ipv4:
     #policy_ipv6:
@@ -301,6 +311,13 @@ cfg:
     # in cfg.rs_as.
     # The 'peer_as' macro, where allowed, is replaced with the ASN
     # of the client the route is announced to.
+    #
+    # OpenBGPD: large communities are not supported, so they are not
+    # taken into account when building the configuration.
+    # Moreover, ext communities that use the 'peer_as' macro can't
+    # be scrubbed from outbound routes (routes announced by the
+    # route server to the clients) because of lack of wildcard
+    # matching.
 
     # Prefix/origin AS present in client's AS-SET.
     #
@@ -441,7 +458,6 @@ cfg:
       #std:
       #lrg:
       #ext:
-      #
 
     # Routes that are tagged with the following communities are
     # propagated to the clients whose ASN matches the one given in

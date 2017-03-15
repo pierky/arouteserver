@@ -16,6 +16,7 @@ Example: in a configuration where blackhole filtering is enabled, an instance of
                          std_comms=["65535:666"], lrg_comms=[])
 
 Travis CI log file contains the latest built-in live tests results: https://travis-ci.org/pierky/arouteserver/
+Since (AFAIK) OpenBGPD can't be run on Travis CI platform, the full live tests results including those run on OpenBGPD can be found on `this file <https://github.com/pierky/arouteserver/blob/master/tests/last>`_.
 
 How to run built-in live tests
 -------------------------------

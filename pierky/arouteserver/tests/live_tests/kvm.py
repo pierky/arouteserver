@@ -29,20 +29,14 @@ class KVMInstance(BGPSpeakerInstance):
         self.domain_name = self.VIRSH_DOMAINNAME
 
     @classmethod
-    def _run(cls, cmd, detached=False):
+    def _run(cls, cmd):
+        cls.debug("Executing '{}'".format(cmd))
         try:
-            if detached:
-                dev_null = open(os.devnull, "w")
-                process = subprocess.Popen(
-                    cmd.split(),
-                    stdin=None,
-                    stdout=dev_null,
-                    stderr=dev_null
-                )
-                return None
-            else:
-                stdout = subprocess.check_output(cmd.split())
-                return stdout
+            dev_null = open(os.devnull, "w")
+            stdout = subprocess.check_output(
+                cmd.split(), stderr=dev_null
+            )
+            return stdout
         except subprocess.CalledProcessError as e:
             raise InstanceError(
                 "Error executing the following command:\n"
@@ -74,20 +68,29 @@ class KVMInstance(BGPSpeakerInstance):
                     )
                 )
 
-            for i in range(self.MAX_BOOT_TIME / 10):
-                time.sleep(10)
+            running = False
+            for i in range(self.MAX_BOOT_TIME / 5):
+                time.sleep(5)
                 try:
                     res = self.run_cmd("uname -n")
                     if self.domain_name in res:
-                        return
+                        running = True
+                        break
                 except:
                     pass
 
-            raise InstanceError(
-                "Instance '{}' seems not running after {} seconds".format(
-                    self.name, self.MAX_BOOT_TIME
+            if not running:
+                raise InstanceError(
+                    "Instance '{}' seems not running after {} seconds".format(
+                        self.name, self.MAX_BOOT_TIME
+                    )
                 )
-            )
+
+            # The VM is now up and bgpd should be started too,
+            # but configuration files have not been updated yet,
+            # so call reload_config() in order to push them
+            # to the VM and reload the daemon.
+            self.reload_config()
         else:
             raise InstanceError("Instance '{}' already running.".format(self.name))
 
@@ -101,17 +104,34 @@ class KVMInstance(BGPSpeakerInstance):
         if self._graceful_shutdown():
             time.sleep(10)
 
-        self._run("virsh shutdown {}".format(self.domain_name))
-        time.sleep(5)
+        for i in range(20 / 5):
+            if not self.is_running():
+                return
+            time.sleep(5)
 
         if self.is_running():
-            self._run("virsh destroy {}".format(self.domain_name))
+            try:
+                self._run("virsh shutdown {}".format(self.domain_name))
+                for i in range(30 / 5):
+                    if not self.is_running():
+                        return
+                    time.sleep(5)
+            except:
+                pass
+
+        if self.is_running():
+            try:
+                self._run("virsh destroy {}".format(self.domain_name))
+            except:
+                pass
 
     def run_cmd(self, args):
         if not self.is_running():
             raise InstanceNotRunning(self.name)
 
-        cmd = "ssh {user}@{ip} -i {path_to_key} {cmd}".format(
+        cmd = ("ssh -o BatchMode=yes -o ConnectTimeout=5 "
+               "-o ServerAliveInterval=10 {user}@{ip} -i {path_to_key} "
+               "{cmd}").format(
             user="root",
             ip=self.ip,
             path_to_key=os.path.expanduser("~/.ssh/arouteserver"),
@@ -126,7 +146,7 @@ class KVMInstance(BGPSpeakerInstance):
                    "{user}@{ip}:{container_file} ".format(
                        host_file=mount["host"],
                        user="root",
-                       ip=self.ip,
+                       ip="[{}]".format(self.ip) if ":" in self.ip else self.ip,
                        container_file=mount["container"],
                        path_to_key=os.path.expanduser("~/.ssh/arouteserver")
                     ))

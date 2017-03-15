@@ -13,7 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class TagASSetScenario(LiveScenario):
     __test__ = False
@@ -21,21 +24,13 @@ class TagASSetScenario(LiveScenario):
     MODULE_PATH = __file__
     RS_INSTANCE_CLASS = None
     CLIENT_INSTANCE_CLASS = None
-    IP_VER = None
+    CONFIG_BUILDER_CLASS = None
 
     @classmethod
     def _setup_instances(cls):
         cls.INSTANCES = [
-            cls.RS_INSTANCE_CLASS(
-                "rs",
-                cls.DATA["rs_IPAddress"],
-                [
-                    (
-                        cls.build_rs_cfg("bird", "main.j2", "rs.conf"),
-                        "/etc/bird/bird.conf"
-                    )
-                ],
-            ),
+            cls._setup_rs_instance(),
+
             cls.CLIENT_INSTANCE_CLASS(
                 "AS1",
                 cls.DATA["AS1_1_IPAddress"],
@@ -96,9 +91,7 @@ class TagASSetScenario(LiveScenario):
         self.session_is_up(self.rs, self.AS4)
         self.session_is_up(self.rs, self.AS5)
 
-
-class TagASSetScenario_WithAS_SETs(TagASSetScenario):
-    __test__ = False
+class TagASSetScenario_WithAS_SETs(object):
 
     AS_SET = {
         "AS1": [1],
@@ -121,36 +114,52 @@ class TagASSetScenario_WithAS_SETs(TagASSetScenario):
         ]
     }
 
+    def _set_lrg_comms(self, lst):
+        if isinstance(self.rs, OpenBGPDInstance):
+            return []
+        return lst
+
     def test_030_AS2_prefix_ok_origin_ok(self):
         """{}: AS2 prefix ok origin ok"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64514"])
         self.receive_route(self.rs, self.DATA["AS2_pref_ok_origin_ok1"], self.AS2, as_path="2", next_hop=self.AS2,
-                           std_comms=["999:64512", "999:64514"], lrg_comms=["999:0:64512", "999:0:64514"])
+                           std_comms=["999:64512", "999:64514"],
+                           lrg_comms=lrg_comms)
 
     def test_030_AS2_prefix_ko_origin_ok(self):
         """{}: AS2 prefix ko origin ok"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64514"])
         self.receive_route(self.rs, self.DATA["AS2_pref_ko_origin_ok1"], self.AS2, as_path="2", next_hop=self.AS2,
-                           std_comms=["999:64513", "999:64514"], lrg_comms=["999:0:64513", "999:0:64514"])
+                           std_comms=["999:64513", "999:64514"],
+                           lrg_comms=lrg_comms)
 
     def test_030_AS2_prefix_ok_origin_ko(self):
         """{}: AS2 prefix ok origin ko"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64515"])
         self.receive_route(self.rs, self.DATA["AS3_pref_ok_origin_ko1"], self.AS2, as_path="2 3", next_hop=self.AS2,
-                           std_comms=["999:64512", "999:64515"], lrg_comms=["999:0:64512", "999:0:64515"])
+                           std_comms=["999:64512", "999:64515"],
+                           lrg_comms=lrg_comms)
 
     def test_030_AS2_prefix_ko_origin_ko(self):
         """{}: AS2 prefix ko origin ko"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64515"])
         self.receive_route(self.rs, self.DATA["AS3_pref_ko_origin_ko1"], self.AS2, as_path="2 3", next_hop=self.AS2,
-                           std_comms=["999:64513", "999:64515"], lrg_comms=["999:0:64513", "999:0:64515"])
-
+                           std_comms=["999:64513", "999:64515"],
+                           lrg_comms=lrg_comms)
 
     def test_040_AS4_prefix_ok_origin_ok(self):
         """{}: AS4 prefix ok origin ok"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64514"])
         self.receive_route(self.rs, self.DATA["AS4_pref_ok_origin_ok1"], self.AS4, as_path="4", next_hop=self.AS4,
-                           std_comms=["999:64512", "999:64514"], lrg_comms=["999:0:64512", "999:0:64514"])
+                           std_comms=["999:64512", "999:64514"],
+                           lrg_comms=lrg_comms)
 
     def test_040_AS4_prefix_ko_origin_ok(self):
         """{}: AS4 prefix ko origin ok"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64514"])
         self.receive_route(self.rs, self.DATA["AS4_pref_ko_origin_ok1"], self.AS4, as_path="4", next_hop=self.AS4,
-                           std_comms=["999:64513", "999:64514"], lrg_comms=["999:0:64513", "999:0:64514"])
+                           std_comms=["999:64513", "999:64514"],
+                           lrg_comms=lrg_comms)
 
     def test_040_AS4_origin_filtered(self):
         """{}: AS4 route filtered (origin ko)"""
@@ -163,8 +172,10 @@ class TagASSetScenario_WithAS_SETs(TagASSetScenario):
 
     def test_050_AS5_prefix_ok_origin_ok(self):
         """{}: AS5 prefix ok origin ok"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64514"])
         self.receive_route(self.rs, self.DATA["AS5_pref_ok_origin_ok1"], self.AS5, as_path="5", next_hop=self.AS5,
-                           std_comms=["999:64512", "999:64514"], lrg_comms=["999:0:64512", "999:0:64514"])
+                           std_comms=["999:64512", "999:64514"],
+                           lrg_comms=lrg_comms)
 
     def test_050_AS5_prefix_filtered(self):
         """{}: AS5 route filtered (prefix ko)"""
@@ -172,15 +183,16 @@ class TagASSetScenario_WithAS_SETs(TagASSetScenario):
 
     def test_050_AS5_prefix_ok_origin_ko(self):
         """{}: AS5 prefix ok origin ko"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64515"])
         self.receive_route(self.rs, self.DATA["AS3_pref_ok_origin_ko3"], self.AS5, as_path="5 3", next_hop=self.AS5,
-                           std_comms=["999:64512", "999:64515"], lrg_comms=["999:0:64512", "999:0:64515"])
+                           std_comms=["999:64512", "999:64515"],
+                           lrg_comms=lrg_comms)
 
     def test_050_AS5_origin_filtered(self):
         """{}: AS5 route filtered (origin ko)"""
         self.receive_route(self.rs, self.DATA["AS3_pref_ko_origin_ko1"], self.AS5, as_path="5 3", next_hop=self.AS5, filtered=True)
 
-class TagASSetScenario_EmptyAS_SETs(TagASSetScenario):
-    __test__ = False
+class TagASSetScenario_EmptyAS_SETs(object):
 
     AS_SET = {
         "AS1": [],
@@ -199,14 +211,21 @@ class TagASSetScenario_EmptyAS_SETs(TagASSetScenario):
         ]
     }
 
+    def _set_lrg_comms(self, lst):
+        if isinstance(self.rs, OpenBGPDInstance):
+            return []
+        return lst
+
     def test_030_AS2_no_enforcement(self):
         """{}: AS2 no enforcement, prefix and origin not in AS-SET"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64515"])
         for pref in (self.DATA["AS2_pref_ok_origin_ok1"],
                      self.DATA["AS2_pref_ko_origin_ok1"],
                      self.DATA["AS3_pref_ok_origin_ko1"],
                      self.DATA["AS3_pref_ko_origin_ko1"]):
             self.receive_route(self.rs, pref, self.AS2, next_hop=self.AS2,
-                            std_comms=["999:64513", "999:64515"], lrg_comms=["999:0:64513", "999:0:64515"])
+                            std_comms=["999:64513", "999:64515"],
+                            lrg_comms=lrg_comms)
 
     def test_040_AS4_origin_enforcement(self):
         """{}: AS4 origin enforcement"""
@@ -223,3 +242,39 @@ class TagASSetScenario_EmptyAS_SETs(TagASSetScenario):
                      self.DATA["AS3_pref_ok_origin_ko3"],
                      self.DATA["AS3_pref_ko_origin_ko1"]):
             self.receive_route(self.rs, pref, self.AS5, next_hop=self.AS5, filtered=True)
+
+class TagASSetScenarioBIRD(TagASSetScenario):
+    __test__ = False
+
+    CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+
+    @classmethod
+    def _setup_rs_instance(cls):
+        return cls.RS_INSTANCE_CLASS(
+            "rs",
+            cls.DATA["rs_IPAddress"],
+            [
+                (
+                    cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER),
+                    "/etc/bird/bird.conf"
+                )
+            ]
+        )
+
+class TagASSetScenarioOpenBGPD(TagASSetScenario):
+    __test__ = False
+
+    CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
+
+    @classmethod
+    def _setup_rs_instance(cls):
+        return cls.RS_INSTANCE_CLASS(
+            "rs",
+            cls.DATA["rs_IPAddress"],
+            [
+                (
+                    cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None),
+                    "/etc/bgpd.conf"
+                )
+            ]
+        )

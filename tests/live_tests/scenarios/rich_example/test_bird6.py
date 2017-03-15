@@ -13,20 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import RichConfigExampleScenario
+from base import RichConfigExampleScenarioBIRD
+from data6 import RichConfigExampleScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 
-class RichConfigExampleScenario_BIRDIPv6(RichConfigExampleScenario):
+class RichConfigExampleScenario_BIRDIPv6(RichConfigExampleScenario_Data6,
+                                         RichConfigExampleScenarioBIRD):
     __test__ = True
 
     SHORT_DESCR = "Live test, BIRD, examples, rich config, IPv6"
     RS_INSTANCE_CLASS = BIRDInstanceIPv6
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
     IP_VER = 6
-
-    DATA = {
-        "rs_IPAddress":                     "2001:db8:1:1::2",
-
-        "AS10745_allowed_prefixes":         "2001:500:4::/48",
-        "AS3333_allowed_prefixes":          "2001:67c:2e8::/48",
-    }
