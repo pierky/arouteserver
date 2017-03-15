@@ -75,6 +75,25 @@ class MaxPrefixScenario(LiveScenario):
         """{}: instances setup"""
         pass
 
+class MaxPrefixScenarioBIRD(MaxPrefixScenario):
+    __test__ = False
+
+    CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+
+    @classmethod
+    def _setup_rs_instance(cls):
+        return cls.RS_INSTANCE_CLASS(
+            "rs",
+            cls.DATA["rs_IPAddress"],
+            [
+                (
+                    cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
+                                     cfg_general="general_bird.yml"),
+                    "/etc/bird/bird.conf"
+                )
+            ]
+        )
+
     def test_020_sessions_up(self):
         """{}: sessions are up"""
         self.session_is_up(self.rs, self.AS1)
@@ -123,25 +142,6 @@ class MaxPrefixScenario(LiveScenario):
         self.assertEqual(len(self._get_routes_from(3)), 2)
         self.assertEqual(len(self._get_routes_from(3, include_filtered=True)), 5)
 
-class MaxPrefixScenarioBIRD(MaxPrefixScenario):
-    __test__ = False
-
-    CONFIG_BUILDER_CLASS = BIRDConfigBuilder
-
-    @classmethod
-    def _setup_rs_instance(cls):
-        return cls.RS_INSTANCE_CLASS(
-            "rs",
-            cls.DATA["rs_IPAddress"],
-            [
-                (
-                    cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                     cfg_general="general_bird.yml"),
-                    "/etc/bird/bird.conf"
-                )
-            ]
-        )
-
 class MaxPrefixScenarioOpenBGPD(MaxPrefixScenario):
     __test__ = False
 
@@ -160,3 +160,16 @@ class MaxPrefixScenarioOpenBGPD(MaxPrefixScenario):
                 )
             ]
         )
+
+    def test_020_sessions_down(self):
+        """{}: sessions are down"""
+        for inst in (self.AS1, self.AS2, self.AS3):
+            with self.assertRaisesRegexp(
+                AssertionError, "is not up"
+            ):
+                self.session_is_up(self.rs, inst)
+
+    def test_030_clients_receive_maxpref_not(self):
+        """{}: clients log max-prefix notification"""
+        for inst in (self.AS1, self.AS2, self.AS3):
+            self.log_contains(inst, "the_rs: Received: Maximum number of prefixes reached")
