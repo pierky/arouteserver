@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function instance_is_running() {
+function docker_instance_is_running() {
         # $1 instance name
         # ret:
         #       0 is running
@@ -15,16 +15,31 @@ function instance_is_running() {
         fi
 }
 
+function kvm_instance_is_running() {
+	virsh list | grep openbsd1 &>/dev/null
+
+	if [ $? -eq 0 ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
 INSTANCE_NAME="$1"
 
 shift
 
-instance_is_running "$INSTANCE_NAME"
+docker_instance_is_running "$INSTANCE_NAME"
 
 if [ $? -eq 0 ]; then
-	# instance already running
+	# docker instance is running
 	docker exec -it ars_$INSTANCE_NAME "$@"
 else
-	echo "Instance not running."
-fi
+	kvm_instance_is_running "$INSTANCE_NAME"
 
+	if [ $? -eq 0 ]; then
+		ssh -o BatchMode=yes -o ConnectTimeout=5 -o ServerAliveInterval=10 root@192.0.2.2 -i ~/.ssh/arouteserver "$@"
+	else
+		echo "Instance not running."
+	fi
+fi
