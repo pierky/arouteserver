@@ -10,7 +10,6 @@
 {%	else %}
 AS_SET_{{ as_set.id }}_asns="{ {% for asn in as_set.asns %}{{ asn }}{% if not loop.last %}, {% endif %}{% endfor %} }"
 {%	endif %}
-
 {%	if as_set.prefixes|length == 0 %}
 # no prefixes found for {{ as_set.name }}
 {%	else %}
