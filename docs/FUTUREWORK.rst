@@ -6,8 +6,6 @@ OpenBGPD support
 - New feature: path-hiding mitigation technique
 - New feature: max-prefix 'restart' action timer
 - Fix: blackhole filtering requests, next-hop rewriting for IPv6
-- Config builder warning: community names that only have large communities
-- Config builder warning: ext communities scrubbing
 
 Short term
 ----------
