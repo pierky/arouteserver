@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import unittest
+
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
@@ -176,6 +178,9 @@ class PathHidingScenario_MitigationOn(object):
 
     def test_040_AS3_and_AS4_prefix_via_AS2(self):
         """{}: AS3 and AS4 receive prefix with sub-optimal path via AS2"""
+        if isinstance(self.rs, OpenBGPDInstance):
+            raise unittest.SkipTest("Work in progress")
+
         for inst in (self.AS3, self.AS4):
             self.receive_route(inst, self.DATA["AS101_pref_ok1"], self.rs,
                                as_path="2 101 101 101 101", next_hop=self.AS2,
@@ -199,6 +204,9 @@ class PathHidingScenario_MitigationOff(object):
 
     def test_051_AS4_receives_prefix_via_AS2_because_of_ADD_PATH(self):
         """{}: AS4 receives the prefix via AS2 because of ADD-PATH"""
+        if isinstance(self.rs, OpenBGPDInstance):
+            raise unittest.SkipTest("ADD-PATH not supported by OpenBGPD")
+
         self.receive_route(self.AS4, self.DATA["AS101_pref_ok1"], self.rs,
                            as_path="2 101 101 101 101", next_hop=self.AS2,
                            std_comms=[])
