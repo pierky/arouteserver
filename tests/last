@@ -407,6 +407,42 @@ Live test, BIRD, path hiding, mitigation on, IPv6: AS1 wants rs to not announce 
 Live test, BIRD, path hiding, mitigation on, IPv6: AS3 and AS4 receive prefix with sub-optimal path via AS2 ... ok
 Live test, BIRD, path hiding, mitigation on, IPv6: AS3 and AS4 don't receive prefix via AS1 ... ok
 Live test, BIRD, path hiding, mitigation on, IPv6: stopping instances...
+Live test, OpenBGPD, path hiding, mitigation off, IPv4: setting instances up...
+Live test, OpenBGPD, path hiding, mitigation off, IPv4: instances setup ... ok
+Live test, OpenBGPD, path hiding, mitigation off, IPv4: sessions are up ... ok
+Live test, OpenBGPD, path hiding, mitigation off, IPv4: rs should receive prefix from both AS1 and AS2 ... ok
+Live test, OpenBGPD, path hiding, mitigation off, IPv4: rs should have best toward AS1 ... ok
+Live test, OpenBGPD, path hiding, mitigation off, IPv4: AS1 wants rs to not announce to AS3 and AS4 ... ok
+Live test, OpenBGPD, path hiding, mitigation off, IPv4: AS3 does not receive prefix at all ... ok
+Live test, OpenBGPD, path hiding, mitigation off, IPv4: AS4 receives the prefix via AS2 because of ADD-PATH ... SKIP: ADD-PATH not supported by OpenBGPD
+Live test, OpenBGPD, path hiding, mitigation off, IPv4: stopping instances...
+Live test, OpenBGPD, path hiding, mitigation on, IPv4: setting instances up...
+Live test, OpenBGPD, path hiding, mitigation on, IPv4: instances setup ... ok
+Live test, OpenBGPD, path hiding, mitigation on, IPv4: sessions are up ... ok
+Live test, OpenBGPD, path hiding, mitigation on, IPv4: rs should receive prefix from both AS1 and AS2 ... ok
+Live test, OpenBGPD, path hiding, mitigation on, IPv4: rs should have best toward AS1 ... ok
+Live test, OpenBGPD, path hiding, mitigation on, IPv4: AS1 wants rs to not announce to AS3 and AS4 ... ok
+Live test, OpenBGPD, path hiding, mitigation on, IPv4: AS3 and AS4 receive prefix with sub-optimal path via AS2 ... SKIP: Work in progress
+Live test, OpenBGPD, path hiding, mitigation on, IPv4: AS3 and AS4 don't receive prefix via AS1 ... ok
+Live test, OpenBGPD, path hiding, mitigation on, IPv4: stopping instances...
+Live test, OpenBGPD, path hiding, mitigation off, IPv6: setting instances up...
+Live test, OpenBGPD, path hiding, mitigation off, IPv6: instances setup ... ok
+Live test, OpenBGPD, path hiding, mitigation off, IPv6: sessions are up ... ok
+Live test, OpenBGPD, path hiding, mitigation off, IPv6: rs should receive prefix from both AS1 and AS2 ... ok
+Live test, OpenBGPD, path hiding, mitigation off, IPv6: rs should have best toward AS1 ... ok
+Live test, OpenBGPD, path hiding, mitigation off, IPv6: AS1 wants rs to not announce to AS3 and AS4 ... ok
+Live test, OpenBGPD, path hiding, mitigation off, IPv6: AS3 does not receive prefix at all ... ok
+Live test, OpenBGPD, path hiding, mitigation off, IPv6: AS4 receives the prefix via AS2 because of ADD-PATH ... SKIP: ADD-PATH not supported by OpenBGPD
+Live test, OpenBGPD, path hiding, mitigation off, IPv6: stopping instances...
+Live test, OpenBGPD, path hiding, mitigation on, IPv6: setting instances up...
+Live test, OpenBGPD, path hiding, mitigation on, IPv6: instances setup ... ok
+Live test, OpenBGPD, path hiding, mitigation on, IPv6: sessions are up ... ok
+Live test, OpenBGPD, path hiding, mitigation on, IPv6: rs should receive prefix from both AS1 and AS2 ... ok
+Live test, OpenBGPD, path hiding, mitigation on, IPv6: rs should have best toward AS1 ... ok
+Live test, OpenBGPD, path hiding, mitigation on, IPv6: AS1 wants rs to not announce to AS3 and AS4 ... ok
+Live test, OpenBGPD, path hiding, mitigation on, IPv6: AS3 and AS4 receive prefix with sub-optimal path via AS2 ... SKIP: Work in progress
+Live test, OpenBGPD, path hiding, mitigation on, IPv6: AS3 and AS4 don't receive prefix via AS1 ... ok
+Live test, OpenBGPD, path hiding, mitigation on, IPv6: stopping instances...
 Live test, BIRD, examples, rich config, IPv4: setting instances up...
 Live test, BIRD, examples, rich config, IPv4: instances setup ... ok
 Live test, BIRD, examples, rich config, IPv4: stopping instances...
@@ -529,6 +565,6 @@ Live test, OpenBGPD, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ok 
 Live test, OpenBGPD, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 461 tests in 1725.827s
+Ran 489 tests in 2114.223s
 
-OK (SKIP=32)
+OK (SKIP=36)
