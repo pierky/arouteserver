@@ -3,7 +3,7 @@ Live tests
 
 Live tests are used to validate configurations built by ARouteServer.
 
-A mix of Python's unittest and Docker allows to create scenarios where some instances of BGP speakers connect to a route server that has been configured using this program in order to test compliance between expected and real results.
+A mix of Python's unittest and Docker (and KVM too for OpenBGPD tests) allows to create scenarios where some instances of BGP speakers connect to a route server that has been configured using this program in order to test compliance between expected and real results.
 
 Example: in a configuration where blackhole filtering is enabled, an instance of a route server client (AS1) is used to announce some tagged prefixes (203.0.113.1/32) and the instances representing other clients (AS2, AS3) are queried to ensure they receive those prefixes with the expected blackhole NEXT_HOP (192.0.2.66).
 
@@ -21,7 +21,7 @@ Since (AFAIK) OpenBGPD can't be run on Travis CI platform, the full live tests r
 How to run built-in live tests
 -------------------------------
 
-To run built-in live tests, the full repository must be cloned locally and Docker must be present on the system.
+To run built-in live tests, the full repository must be cloned locally and Docker and KVM must be present on the system.
 
 1. Build the Docker image (or pull it from `Dockerhub <https://hub.docker.com/r/pierky/bird/>`_):
 
@@ -37,7 +37,50 @@ To run built-in live tests, the full repository must be cloned locally and Docke
       # or pull it from Dockerhub
       docker pull pierky/bird:1.6.3
 
-2. Run the Python unittest using ``nose``:
+2. (optional, needed to run tests on OpenBGPD)
+
+   Setup and install a KVM virtual-machine with OpenBSD 6.0.
+   By default, the VM name must be "arouteserver_openbgpd"; this can be changed by setting the ``VIRSH_DOMAINNAME`` environment variable before running the tests.
+   This VM will be started and stopped many times during tests: don't use a production VM.
+
+   .. code:: bash
+
+      # on this example the virtual disk will be stored in ~/vms
+      sudo virsh pool-define-as --name vms_pool --type dir --target ~/vms
+      sudo virsh pool-start vms_pool
+
+      # the VM will be reachable by connecting to any IP address
+      # of the host via VNC; the installation disk image is expected
+      # to be found in the install60.iso file
+      sudo virt-install \
+        -n arouteserver_openbgpd \
+        -r 512 \
+        --vcpus=1 \
+        --os-variant=openbsd4 \
+        --accelerate \
+        -v -c install60.iso \
+        -w bridge:br-2d2956ce4b64 \
+        --graphics vnc,listen=0.0.0.0 \
+        --disk path=~/vms/arouteserver_openbgpd.qcow2,size=5,format=qcow2
+
+      # add the current user to the libvirtd group to allow
+      # management of the VM
+      sudo adduser `id -un` libvirtd
+
+   To interact with this VM, the live tests framework will use SSH; by default, the connection will be established using the ``root`` username and the local key file ``~/.ssh/arouteserver``, so the VM must be configured to accept SSH connections using SSH keys:
+
+   .. code:: bash
+
+      mkdir /root/.ssh
+      cat << EOF > .ssh/authorized_keys
+      ssh-rsa [public_key_here] arouteserver
+      EOF
+
+   The SSH username and key file path can be changed by setting the ``SSH_USERNAME`` and ``SSH_KEY_PATH`` environment variables before running the tests.
+
+   Be sure the ``bgpd`` daemon and the ``bgpctl`` tool can be executed correctly.
+
+3. Run the Python unittest using ``nose``:
 
    .. code:: bash
 
@@ -48,7 +91,7 @@ How it works
 ------------
 
 Each directory in ``tests/live_tests/scenarios`` represents a scenario: the route server configuration is stored in the usual ``general.yml`` and ``clients.yml`` files, while other BGP speaker instances (route server clients and their peers) are configured through the ``ASxxx.j2`` files.
-These files are Jinja2 templates and are expanded by the Python code at runtime. Containers' configuration files are saved in the local ``var`` directory and are used to mount the BGP speaker configuration file (currenly, ``/etc/bird/bird.conf``).
-The unittest code sets up a Docker network (with name ``arouteserver``) used to attach instances and finally brings instances up. Regular unittest tests are now performed and can be used to match expectations to real results.
+These files are Jinja2 templates and are expanded by the Python code at runtime. Containers' configuration files are saved in the local ``var`` directory and are used to mount the BGP speaker configuration file (currenly, ``/etc/bird/bird.conf`` for BIRD and ``/etc/bgpd.conf`` for OpenBGPD).
+The unittest code sets up a Docker network (with name ``arouteserver``) used to attach instances and finally brings instances up. Regular Python unittest tests are then performed and can be used to match expectations to real results.
 
 Details about the code behind the live tests can be found in the :doc:`LIVETESTS_CODEDOC` section.

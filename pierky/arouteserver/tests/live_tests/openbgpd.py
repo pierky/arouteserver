@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
 import re
 import time
 
@@ -63,7 +64,7 @@ class OpenBGPDInstance(KVMInstance):
 
     MESSAGE_LOGGING_SUPPORT = False
 
-    VIRSH_DOMAINNAME = "openbsd1"
+    VIRSH_DOMAINNAME = "arouteserver_openbgpd"
 
     def __init__(self, *args, **kwargs):
         KVMInstance.__init__(self, *args, **kwargs)

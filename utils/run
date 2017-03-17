@@ -16,7 +16,7 @@ function docker_instance_is_running() {
 }
 
 function kvm_instance_is_running() {
-	virsh list | grep openbsd1 &>/dev/null
+	virsh list | grep arouteserver_openbgpd &>/dev/null
 
 	if [ $? -eq 0 ]; then
 		return 0
