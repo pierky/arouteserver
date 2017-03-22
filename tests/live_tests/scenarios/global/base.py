@@ -136,8 +136,6 @@ class BasicScenario(LiveScenario):
 
     def test_021_session_configured_via_local_files(self):
         """{}: session configured via local include files"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("Not yet implemented for OpenBGPD")
 
         # A dummy session is configured using local include files.
         # The following tests if those files are really included.
@@ -746,7 +744,7 @@ class BasicScenarioBIRD(BasicScenario):
                     "/etc/bird/bird.conf"
                 ),
                 (
-                    cls.use_static_file("local_file.local{}".format(cls.IP_VER)),
+                    cls.use_static_file("bird_local_file.local{}".format(cls.IP_VER)),
                     "/etc/bird/local_file.local{}".format(cls.IP_VER)
                 )
             ],
@@ -764,8 +762,14 @@ class BasicScenarioOpenBGPD(BasicScenario):
             cls.DATA["rs_IPAddress"],
             [
                 (
-                    cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None),
+                    cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
+                                     local_files_dir="/etc/bgpd",
+                                     local_files=["post-clients"]),
                     "/etc/bgpd.conf"
+                ),
+                (
+                    cls.use_static_file("openbgpd_post-clients.local"),
+                    "/etc/bgpd/post-clients.local"
                 )
             ]
         )

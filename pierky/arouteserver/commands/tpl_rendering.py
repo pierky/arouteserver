@@ -106,6 +106,9 @@ class TemplateRenderingCommands(ARouteServerCommand):
     def _get_builder_class(self):
         raise NotImplementedError()
 
+    def _set_cfg_builder_params(self):
+        pass
+
     def run(self):
         tpl_all_right = program_config.verify_templates() == []
         if not tpl_all_right:
@@ -116,7 +119,7 @@ class TemplateRenderingCommands(ARouteServerCommand):
                             "more information.")
 
         # Config builder setup
-        cfg_builder_params = {
+        self.cfg_builder_params = {
             "cfg_general": program_config.get("cfg_general"),
             "cfg_clients": program_config.get("cfg_clients"),
             "cfg_bogons": program_config.get("cfg_bogons"),
@@ -130,17 +133,18 @@ class TemplateRenderingCommands(ARouteServerCommand):
             "ip_ver": self.args.ip_ver,
             "threads": program_config.get("threads")
         }
+        self._set_cfg_builder_params()
 
         builder_class = self._get_builder_class()
         
         template_sub_dir = self._get_template_sub_dir()
         if template_sub_dir:
-            cfg_builder_params["template_dir"] = os.path.join(
-                cfg_builder_params["template_dir"], template_sub_dir
+            self.cfg_builder_params["template_dir"] = os.path.join(
+                self.cfg_builder_params["template_dir"], template_sub_dir
             )
 
         try:
-            builder = builder_class(**cfg_builder_params)
+            builder = builder_class(**self.cfg_builder_params)
             if not self.args.test_only:
                 builder.render_template(output_file=self.args.output_file)
         except TemplateRenderingError as e:
@@ -155,40 +159,55 @@ class TemplateRenderingCommands(ARouteServerCommand):
 
         return True
 
-class BuildCommand(TemplateRenderingCommands):
+class BIRDCommand(TemplateRenderingCommands):
 
-    COMMAND_NAME = "build"
-    COMMAND_HELP = "Build route server configuration."
+    COMMAND_NAME = "bird"
+    COMMAND_HELP = "Build route server configuration for BIRD."
+
+    def _get_builder_class(self):
+        return BIRDConfigBuilder
+
+    def _get_template_sub_dir(self):
+        return "bird"
+
+class OpenBGPDCommand(TemplateRenderingCommands):
+
+    COMMAND_NAME = "openbgpd"
+    COMMAND_HELP = "Build route server configuration for OpenBGPD."
+
+    def _get_builder_class(self):
+        return OpenBGPDConfigBuilder
+
+    def _get_template_sub_dir(self):
+        return "openbgpd"
 
     @classmethod
     def add_arguments(cls, parser):
-        super(BuildCommand, cls).add_arguments(parser)
+        super(OpenBGPDCommand, cls).add_arguments(parser)
 
         parser.add_argument(
-            "--speaker",
-            help="The BGP speaker target implementation for "
-                "the configuration that will be built.",
-            dest="speaker",
-            choices=["BIRD", "OpenBGPD"],
-            default="BIRD")
-
-    def _get_builder_class(self):
-        if self.args.speaker == "BIRD":
-            return BIRDConfigBuilder
-        if self.args.speaker == "OpenBGPD":
-            return OpenBGPDConfigBuilder
-        raise ARouteServerError(
-            "Unknown BGP speaker implementation: {}".format(self.args.speaker)
+            "--local-files-dir",
+            help="The directory where .local files are located, from the "
+                 "route server's perspective.",
+            default="/etc/bgpd",
+            dest="local_files_dir"
         )
 
-    def _get_template_sub_dir(self):
-        if self.args.speaker == "BIRD":
-            return "bird"
-        if self.args.speaker == "OpenBGPD":
-            return "openbgpd"
-        raise ARouteServerError(
-            "Unknown BGP speaker implementation: {}".format(self.args.speaker)
-        )
+        parser.add_argument(
+            "--use-local-files",
+            help="Enable the inclusion of .local files into the generated "
+                 "OpenBGPD configuration. "
+                 "The list of available .local files IDs follows: {}".format(
+                     ", ".join(OpenBGPDConfigBuilder.LOCAL_FILES_IDS)
+                 ),
+            nargs="*",
+            choices=OpenBGPDConfigBuilder.LOCAL_FILES_IDS,
+            metavar="FILE_ID",
+            dest="local_files")
+
+    def _set_cfg_builder_params(self):
+        self.cfg_builder_params["local_files_dir"] = self.args.local_files_dir
+        self.cfg_builder_params["local_files"] = self.args.local_files
 
 class HTMLCommand(TemplateRenderingCommands):
 

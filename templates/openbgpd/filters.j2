@@ -78,6 +78,8 @@ bogons="{ {{ write_prefix_list(bogons) }} }"
 transit_free_asns="{ {{ cfg.filtering.transit_free.asns|join(", ") }} }"
 {% endif %}
 
+{{ "pre-filters"|include_local_file -}}
+
 # Scrub communities from inbound routes
 {% for name in cfg.communities if cfg.communities[name].type == "outbound" %}
 {%	if cfg.communities[name]|community_is_set %}
@@ -302,3 +304,6 @@ allow to {{ client.ip }}
 {{ del_communities("match to group clients", cfg.communities[name], cfg.communities[name].peer_as) -}}
 {%	endif %}
 {% endfor %}
+
+{{ "post-filters"|include_local_file -}}
+

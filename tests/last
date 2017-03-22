@@ -234,7 +234,7 @@ Live test, BIRD, global scenario, IPv6: stopping instances...
 Live test, OpenBGPD, global scenario, IPv4: setting instances up...
 Live test, OpenBGPD, global scenario, IPv4: instances setup ... ok
 Live test, OpenBGPD, global scenario, IPv4: sessions are up ... ok
-Live test, OpenBGPD, global scenario, IPv4: session configured via local include files ... SKIP: Not yet implemented for OpenBGPD
+Live test, OpenBGPD, global scenario, IPv4: session configured via local include files ... ok
 Live test, OpenBGPD, global scenario, IPv4: good prefixes received by rs ... ok
 Live test, OpenBGPD, global scenario, IPv4: bad prefixes received by rs: not IPv6 global unicast space ... ok
 Live test, OpenBGPD, global scenario, IPv4: bad prefixes received by rs: AS_PATH len ... ok
@@ -291,7 +291,7 @@ Live test, OpenBGPD, global scenario, IPv4: stopping instances...
 Live test, OpenBGPD, global scenario, IPv6: setting instances up...
 Live test, OpenBGPD, global scenario, IPv6: instances setup ... ok
 Live test, OpenBGPD, global scenario, IPv6: sessions are up ... ok
-Live test, OpenBGPD, global scenario, IPv6: session configured via local include files ... SKIP: Not yet implemented for OpenBGPD
+Live test, OpenBGPD, global scenario, IPv6: session configured via local include files ... ok
 Live test, OpenBGPD, global scenario, IPv6: good prefixes received by rs ... ok
 Live test, OpenBGPD, global scenario, IPv6: bad prefixes received by rs: not IPv6 global unicast space ... ok
 Live test, OpenBGPD, global scenario, IPv6: bad prefixes received by rs: AS_PATH len ... ok
@@ -565,6 +565,6 @@ Live test, OpenBGPD, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ok 
 Live test, OpenBGPD, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 489 tests in 2114.223s
+Ran 489 tests in 2146.519s
 
-OK (SKIP=36)
+OK (SKIP=34)

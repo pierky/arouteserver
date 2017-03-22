@@ -194,7 +194,7 @@ class LiveScenario(ARouteServerTestCase):
     @classmethod
     def build_rs_cfg(cls, tpl_dir_name, tpl_name, out_file_name, ip_ver,
                       cfg_general="general.yml", cfg_bogons="bogons.yml",
-                      cfg_clients="clients.yml", cfg_roas=None):
+                      cfg_clients="clients.yml", cfg_roas=None, **kwargs):
         """Builds configuration file for the route server.
 
         Args:
@@ -241,7 +241,8 @@ class LiveScenario(ARouteServerTestCase):
             cfg_bogons="{}/{}".format(cls._get_module_dir(), cfg_bogons),
             cfg_clients="{}/{}".format(cls._get_module_dir(), cfg_clients),
             cfg_roas="{}/{}".format(cls._get_module_dir(), cfg_roas) if cfg_roas else None,
-            ip_ver=ip_ver
+            ip_ver=ip_ver,
+            **kwargs
         )
 
         cfg_file_path = "{}/{}".format(var_dir, out_file_name)

@@ -84,7 +84,15 @@ class OpenBGPDInstance(KVMInstance):
         if not self.is_running():
             raise InstanceNotRunning(self.name)
 
+        try:
+            self.run_cmd("mkdir /etc/bgpd")
+        except:
+            pass
+
         self._mount_files()
+
+        self.run_cmd("chmod 0600 /etc/bgpd.conf")
+        self.run_cmd("chmod 0600 /etc/bgpd/*")
 
         self.run_cmd("/etc/rc.d/bgpd stop")
         time.sleep(5)

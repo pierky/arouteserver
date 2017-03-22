@@ -2,6 +2,8 @@
 # ---------------------------------------------------------
 # IRRDB
 
+{{ "pre-irrdb"|include_local_file -}}
+
 {% for as_set_id in as_sets %}
 {%	set as_set = as_sets[as_set_id] %}
 # {{ as_set.name }}
@@ -17,3 +19,6 @@ AS_SET_{{ as_set.id }}_prefixes="{ {{ write_prefix_list(as_set.prefixes) }} }"
 {%	endif %}
 
 {% endfor %}
+
+{{ "post-irrdb"|include_local_file -}}
+

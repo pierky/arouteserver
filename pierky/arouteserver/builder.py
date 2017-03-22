@@ -81,7 +81,8 @@ class ConfigBuilder(object):
                  bgpq3_sources=IRRDBTools.BGPQ3_DEFAULT_SOURCES, threads=4,
                  ip_ver=None,
                  cfg_general=None, cfg_bogons=None, cfg_clients=None,
-                 cfg_roas=None):
+                 cfg_roas=None,
+                 **kwargs):
 
         self.template_dir = self._check_is_dir(
             "template_dir", template_dir
@@ -144,6 +145,8 @@ class ConfigBuilder(object):
         else:
             self.cfg_roas = None
 
+        self.kwargs = kwargs
+
         self.as_sets = None
 
         logging.info("Started processing configuration "
@@ -205,14 +208,14 @@ class ConfigBuilder(object):
             raise BuilderError()
 
     def render_template(self, output_file=None):
-        data = {}
-        data["ip_ver"] = self.ip_ver
-        data["cfg"] = self.cfg_general
-        data["bogons"] = self.cfg_bogons
-        data["clients"] = self.cfg_clients
-        data["asns"] = self.cfg_asns
-        data["as_sets"] = self.as_sets
-        data["roas"] = self.cfg_roas
+        self.data = {}
+        self.data["ip_ver"] = self.ip_ver
+        self.data["cfg"] = self.cfg_general
+        self.data["bogons"] = self.cfg_bogons
+        self.data["clients"] = self.cfg_clients
+        self.data["asns"] = self.cfg_asns
+        self.data["as_sets"] = self.as_sets
+        self.data["roas"] = self.cfg_roas
 
         def ipaddr_ver(ip):
             return ipaddr.IPAddress(ip).version
@@ -249,10 +252,10 @@ class ConfigBuilder(object):
                      "for {}".format(self.template_path))
         try:
             if output_file:
-                for buf in tpl.generate(data):
+                for buf in tpl.generate(self.data):
                     output_file.write(buf)
             else:
-                return tpl.render(data)
+                return tpl.render(self.data)
         except Exception as e:
             _, _, traceback = sys.exc_info()
             raise TemplateRenderingError(
@@ -277,7 +280,28 @@ class BIRDConfigBuilder(ConfigBuilder):
 
 class OpenBGPDConfigBuilder(ConfigBuilder):
 
+    LOCAL_FILES_IDS = ["header",
+                       "pre-irrdb", "post-irrdb",
+                       "pre-clients", "post-clients", "client",
+                       "pre-filters", "post-filters",
+                       "footer"]
+
     def validate_flavor_specific_configuration(self):
+        local_files = self.kwargs.get("local_files", None)
+
+        if local_files:
+            if not isinstance(local_files, list):
+                raise BuilderError(
+                    "local_files must be a list of .local files IDs"
+                )
+            for local_file_id in local_files:
+                if local_file_id not in self.LOCAL_FILES_IDS:
+                    raise BuilderError(
+                        "The .local file ID '{}' is invalid.".format(
+                            local_file_id
+                        )
+                    )
+
         if self.cfg_general["path_hiding"]:
             logging.warning(
                 "The 'path_hiding' general configuration parameter is "
@@ -397,6 +421,19 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             )
 
         env.filters["convert_ext_comm"] = convert_ext_comm
+
+        def include_local_file(s):
+            local_files = self.kwargs.get("local_files") or []
+            if s in local_files:
+                return 'include "{}"\n\n'.format(
+                    os.path.join(
+                        self.kwargs.get("local_files_dir", "/etc/bgpd"),
+                        "{}.local".format(s)
+                    )
+                )
+            return ""
+
+        env.filters["include_local_file"] = include_local_file
 
 class TemplateContextDumper(ConfigBuilder):
 

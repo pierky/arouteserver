@@ -5,6 +5,7 @@ OpenBGPD support
 ----------------
 - New feature: path-hiding mitigation technique
 - New feature: max-prefix 'restart' action timer
+- New feature: group clients by AFI/ASN
 - Fix: blackhole filtering requests, next-hop rewriting for IPv6
 
 Short term
