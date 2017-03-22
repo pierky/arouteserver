@@ -408,19 +408,19 @@ class LiveScenario(ARouteServerTestCase):
 
                 Valid codes follow:
 
-                1   invalid AS_PATH length
-                2   prefix is bogon
-                3   prefix is in global blacklist
-                4   invalid AFI
-                5   invalid NEXT_HOP
-                6   invalid left-most ASN
-                7   invalid ASN in AS_PATH
-                8   transit-free ASN in AS_PATH
-                9   origin ASN not in IRRDB AS-SETs
-                10  IPv6 prefix not in global unicast space
-                11  prefis is in client blacklist
-                12  prefix not in IRRDB AS-SETs
-                13  invalid prefix length
+                - 1   invalid AS_PATH length
+                - 2   prefix is bogon
+                - 3   prefix is in global blacklist
+                - 4   invalid AFI
+                - 5   invalid NEXT_HOP
+                - 6   invalid left-most ASN
+                - 7   invalid ASN in AS_PATH
+                - 8   transit-free ASN in AS_PATH
+                - 9   origin ASN not in IRRDB AS-SETs
+                - 10  IPv6 prefix not in global unicast space
+                - 11  prefis is in client blacklist
+                - 12  prefix not in IRRDB AS-SETs
+                - 13  invalid prefix length
 
         """
         assert isinstance(inst, BGPSpeakerInstance), \

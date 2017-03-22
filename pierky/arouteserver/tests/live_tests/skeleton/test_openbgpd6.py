@@ -13,21 +13,27 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import SkeletonScenario
-from pierky.arouteserver.builder import BIRDConfigBuilder
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
+import os
+import unittest
 
-class SkeletonScenario_BIRDIPv6(SkeletonScenario):
+from base import SkeletonScenario
+from pierky.arouteserver.builder import OpenBGPDConfigBuilder
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
+
+@unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
+class SkeletonScenario_OpenBGPDIPv6(SkeletonScenario):
     """BGP speaker specific and IP version specific derived class.
 
     Please see test_bird4.py for more information.
     """
 
     __test__ = True
+    SKIP_ON_TRAVIS = True
 
-    SHORT_DESCR = "Live test, BIRD, skeleton, IPv6"
-    CONFIG_BUILDER_CLASS = BIRDConfigBuilder
-    RS_INSTANCE_CLASS = BIRDInstanceIPv6
+    SHORT_DESCR = "Live test, OpenBGPD, skeleton, IPv6"
+    CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
+    RS_INSTANCE_CLASS = OpenBGPDInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
     IP_VER = 6
 
@@ -37,5 +43,5 @@ class SkeletonScenario_BIRDIPv6(SkeletonScenario):
         "AS2_IPAddress":            "2001:db8:1:1::22",
 
         "AS2_prefix1":              "2a00:2::/32",
-        "AS2_bogon1":               "2001:0:8000::/48"  
+        "AS2_bogon1":               "2001:0:8000::/48"
     }

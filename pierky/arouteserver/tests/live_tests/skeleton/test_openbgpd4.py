@@ -13,34 +13,27 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import SkeletonScenario
-from pierky.arouteserver.builder import BIRDConfigBuilder
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
+import os
+import unittest
 
-class SkeletonScenario_BIRDIPv4(SkeletonScenario):
+from base import SkeletonScenario
+from pierky.arouteserver.builder import OpenBGPDConfigBuilder
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
+
+@unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
+class SkeletonScenario_OpenBGPDIPv4(SkeletonScenario):
     """BGP speaker specific and IP version specific derived class.
 
-    This class inherits all the test functions from the base class.
-    Here, only IP version specific attributes are set, such as the
-    prefix IDs / real IP prefixes mapping schema.
-
-    The prefix IDs reported within the ``DATA`` dictionary must be
-    used in the parent class' test functions to reference the real
-    IP addresses/prefixes used in the scenario. Also the other
-    BGP speakers' configuration templates must use these IDs.
-    For an example plase see the "AS2.j2" file.
-
-    The ``SHORT_DESCR`` attribute can be set with a brief description
-    of this scenario.
+    Please see test_bird4.py for more information.
     """
 
-    # Leave this to True in order to allow nose to use this class
-    # to run tests.
     __test__ = True
+    SKIP_ON_TRAVIS = True
 
-    SHORT_DESCR = "Live test, BIRD, skeleton, IPv4"
-    CONFIG_BUILDER_CLASS = BIRDConfigBuilder
-    RS_INSTANCE_CLASS = BIRDInstanceIPv4
+    SHORT_DESCR = "Live test, OpenBGPD, skeleton, IPv4"
+    CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
+    RS_INSTANCE_CLASS = OpenBGPDInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
     IP_VER = 4
 

@@ -6,7 +6,7 @@ Examples of configurations
 Default
 -------
 
-BIRD configurations built using the default ``general.yml`` and ``clients.yml`` files distributed with the project.
+Configurations built using the default ``general.yml`` and ``clients.yml`` files distributed with the project.
 
 https://github.com/pierky/arouteserver/blob/master/examples/default
 

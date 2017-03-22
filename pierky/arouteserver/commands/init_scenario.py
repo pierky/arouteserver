@@ -54,7 +54,7 @@ class InitScenarioCommand(ARouteServerCommand):
         if class_name.lower().endswith("scenario"):
             class_name = class_name[:-8]
 
-        if not re.match("[a-z_][a-z_0-9]+", class_name, re.IGNORECASE):
+        if not re.match("[a-z_][a-z_0-9 ]+", class_name, re.IGNORECASE):
             print("")
             print("Invalid name. "
                   "It must be in the format "
@@ -62,7 +62,7 @@ class InitScenarioCommand(ARouteServerCommand):
             print("Aborted.")
             return False
 
-        class_name = "{}Scenario".format(class_name.capitalize())
+        class_name = "{}Scenario".format(class_name.title()).replace(" ", "")
 
         skeleton_dir = get_live_test_skeleton_dir()
         dest_dir = os.path.expanduser(self.args.dest_dir)
@@ -93,21 +93,22 @@ class InitScenarioCommand(ARouteServerCommand):
                 )
             )
 
-        link_src = "{}/bird".format(templates_dir)
-        link_dst = "{}/bird".format(dest_dir)
-        try:
-            os.symlink(link_src, link_dst)
-        except Exception as e:
-            raise ARouteServerError(
-                "An error occurred while creating a link "
-                "to the BIRD templates directory: link "
-                "source {}, link destination {}: {}".format(
-                    link_src, link_dst, str(e)
+        for speaker in ("bird", "openbgpd"):
+            link_src = "{}/{}".format(templates_dir, speaker)
+            link_dst = "{}/{}".format(dest_dir, speaker)
+            try:
+                os.symlink(link_src, link_dst)
+            except Exception as e:
+                raise ARouteServerError(
+                    "An error occurred while creating a link "
+                    "to the '{}' templates directory: link "
+                    "source {}, link destination {}: {}".format(
+                        speaker, link_src, link_dst, str(e)
+                    )
                 )
-            )
-        print("A link to the BIRD templates directory {} "
-              "has been created in {}.".format(
-                  link_src, link_dst
+            print("A link to the '{}' templates directory {} "
+                  "has been created in {}.".format(
+                    speaker, link_src, link_dst
                 )
             )
 
@@ -121,9 +122,13 @@ class InitScenarioCommand(ARouteServerCommand):
                     with open(dst_path, "w") as d:
                         content = s.read()
                         if filename in ("base.py", "test_bird4.py",
-                                        "test_bird6.py"):
+                                        "test_bird6.py", "test_openbgpd4.py",
+                                        "test_openbgpd6.py"):
                             content = content.replace(
                                 "SkeletonScenario", class_name
+                            )
+                            content = content.replace(
+                                ", skeleton,", ", {},".format(class_name)
                             )
                         d.write(content)
             except Exception as e:
