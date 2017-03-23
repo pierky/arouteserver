@@ -36,7 +36,7 @@ group "clients" {
 {%      	endif %}
 {%      	if max_pref_limit > 0 %}
 {%			if client.cfg.filtering.max_prefix.action == "restart" %}
-		max-prefix {{ max_pref_limit }} restart 1
+		max-prefix {{ max_pref_limit }} restart 15
 {%			else %}
 		max-prefix {{ max_pref_limit }}
 {%			endif %}
