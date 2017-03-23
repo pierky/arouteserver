@@ -487,13 +487,18 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
 
         env.filters["convert_ext_comm"] = convert_ext_comm
 
-        def include_local_file(s):
+        def include_local_file(local_file_id):
+            if local_file_id not in self.LOCAL_FILES_IDS:
+                raise AssertionError(
+                    "Local file ID '{}' is referenced in J2 "
+                    "templates but is not in LOCAL_FILES_IDS."
+                )
             local_files = self.kwargs.get("local_files") or []
-            if s in local_files:
+            if local_file_id in local_files:
                 return 'include "{}"\n\n'.format(
                     os.path.join(
                         self.kwargs.get("local_files_dir", "/etc/bgpd"),
-                        "{}.local".format(s)
+                        "{}.local".format(local_file_id)
                     )
                 )
             return ""
