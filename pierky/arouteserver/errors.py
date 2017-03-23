@@ -82,6 +82,17 @@ class EuroIXSchemaError(EuroIXError):
 class BuilderError(ARouteServerError):
     pass
 
+class CompatibilityIssuesError(BuilderError):
+
+    @property
+    def extra_info(self):
+        return(
+            "Please check the errors reported above for more details.\n"
+            "To ignore those errors, use the '--ignore-issues' command "
+            "line argument and list the IDs of the issues you want to "
+            "ignore."
+        )
+
 class TemplateRenderingError(BuilderError):
 
     def __init__(self, msg, traceback=None, templates_not_aligned=False):

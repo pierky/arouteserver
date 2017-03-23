@@ -47,6 +47,14 @@ class TemplateRenderingCommands(ARouteServerCommand):
                  "configuration.",
             dest="test_only")
 
+        parser.add_argument(
+            "--ignore-issues",
+            nargs="+",
+            help="Ignore compatibility issues identified by the IDs "
+                 "provided here.",
+            metavar="ISSUE_ID",
+            dest="ignore_errors")
+
         group = parser.add_argument_group(
             title="Route server configuration",
             description="The following arguments override those provided "
@@ -131,7 +139,8 @@ class TemplateRenderingCommands(ARouteServerCommand):
             "template_dir": program_config.get("templates_dir"),
             "template_name": program_config.get("template_name"),
             "ip_ver": self.args.ip_ver,
-            "threads": program_config.get("threads")
+            "threads": program_config.get("threads"),
+            "ignore_errors": self.args.ignore_errors
         }
         self._set_cfg_builder_params()
 
@@ -152,10 +161,6 @@ class TemplateRenderingCommands(ARouteServerCommand):
                 raise
             e.templates_not_aligned = True
             raise e
-        except ARouteServerError as e:
-            if str(e):
-                logging.error(str(e))
-            return False
 
         return True
 

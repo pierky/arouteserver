@@ -30,7 +30,7 @@ function RenderExample() {
 		IP_VER="$1" ; shift
 		$CMD --ip-ver $IP_VER -o examples/$DST/bird$IP_VER.conf
 	elif [ "$COMMAND" == "openbgpd" ]; then
-		$CMD -o examples/$DST/openbgpd.conf
+		$CMD -o examples/$DST/openbgpd.conf --ignore-issues \*
 	elif [ "$COMMAND" == "html" ]; then
 		$CMD -o examples/$DST/description.html
 		cp examples/$DST/description.html $DOCS_DIR/_static/examples_$DST.html

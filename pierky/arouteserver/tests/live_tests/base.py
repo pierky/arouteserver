@@ -242,6 +242,7 @@ class LiveScenario(ARouteServerTestCase):
             cfg_clients="{}/{}".format(cls._get_module_dir(), cfg_clients),
             cfg_roas="{}/{}".format(cls._get_module_dir(), cfg_roas) if cfg_roas else None,
             ip_ver=ip_ver,
+            ignore_errors=["*"],
             **kwargs
         )
 
