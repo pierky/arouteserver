@@ -62,7 +62,7 @@ Features
   - maximum **AS_PATH length**;
   - reject **invalid AS_PATHs** (containing `private/invalid ASNs <http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html>`_);
   - reject AS_PATHs containing **transit-free** ASNs;
-  - **RPKI**-based filtering/tagging `RFC6811`_;
+  - **RPKI**-based filtering/tagging (`RFC6811`_);
   - reject **bogons**;
   - prefixes and origin ASNs enforcing via **RPSL/IRRdb AS-SETs** (`RFC7948`_ `section 4.6.2 <https://tools.ietf.org/html/rfc7948#section-4.6.2>`_);
   - **max-prefix limit** based on global or client-specific values or on **PeeringDB** data.

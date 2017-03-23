@@ -125,7 +125,9 @@ RPKI-based filtering
 
 RPKI-based validation of routes can be configured using the general ``filtering.rpki`` section. Depending on the ``reject_invalid`` configuration, routes can be rejected or tagged with BGP communities.
 
-To acquire RPKI data and load them into BIRD, a couple of external tools from the `rtrlib <http://rpki.realmv6.org/>`_ suite are used: `rtrlib <https://github.com/rtrlib>`_ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`_. One or more trusted local validating caches should be used to get and validate RPKI data before pushing them to BIRD. An overview is provided on the `rtrlib GitHub wiki <https://github.com/rtrlib/rtrlib/wiki/Background>`_, where also an `usage guide <https://github.com/rtrlib/rtrlib/wiki/Usage-of-the-RTRlib>`_ can be found.
+- To acquire RPKI data and load them into BIRD, a couple of external tools from the `rtrlib <http://rpki.realmv6.org/>`_ suite are used: `rtrlib <https://github.com/rtrlib>`_ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`_. One or more trusted local validating caches should be used to get and validate RPKI data before pushing them to BIRD. An overview is provided on the `rtrlib GitHub wiki <https://github.com/rtrlib/rtrlib/wiki/Background>`_, where also an `usage guide <https://github.com/rtrlib/rtrlib/wiki/Usage-of-the-RTRlib>`_ can be found.
+
+- RPKI validation is not supported by OpenBGPD.
 
 BGP Communities
 ***************
@@ -202,6 +204,8 @@ Local configuration files can be used to load static site-specific options into 
      
      [...]
 
+  In the example above, the ``header`` and ``post-clients`` inclusion points are enabled and allow to insert two ``include`` statements into the generated configuration: one at the start of the file and one between clients declaration and filters.
+
   .. code-block:: console
 
      $ arouteserver openbgpd --use-local-files client footer --local-files-dir /etc/
@@ -226,3 +230,5 @@ Local configuration files can be used to load static site-specific options into 
      [...]
      
      include "/etc/footer.local"
+
+  The example above uses the ``client`` label, that is used to add an ``include`` statement into every neighbor configuration. Also, the base directory is set to ``/etc/``.
