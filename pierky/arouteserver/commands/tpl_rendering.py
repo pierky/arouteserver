@@ -164,6 +164,30 @@ class TemplateRenderingCommands(ARouteServerCommand):
 
         return True
 
+class BuildCommand(TemplateRenderingCommands):
+
+    COMMAND_NAME = "build"
+    COMMAND_HELP = ("Build route server configuration. DEPRECATED! "
+                    "Please use 'bird' or 'openbgpd' commands.")
+
+    @classmethod
+    def add_arguments(cls, parser):
+        super(BuildCommand, cls).add_arguments(parser)
+
+        parser.add_argument(
+            "--speaker",
+            help="The BGP speaker target implementation for "
+                "the configuration that will be built.",
+            dest="speaker",
+            choices=["BIRD"],
+            default="BIRD")
+
+    def run(self):
+        raise ARouteServerError(
+            "The 'build' command has been replaced by "
+            "BGP-speaker-specific commands: 'bird' and 'openbgpd'."
+        )
+
 class BIRDCommand(TemplateRenderingCommands):
 
     COMMAND_NAME = "bird"
