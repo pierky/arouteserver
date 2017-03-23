@@ -24,6 +24,7 @@ cfg:
   #   allows to try the next route in order until one that is
   #   accepted is found or all routes for that network are rejected."
   #   (http://bird.network.cz/?get_doc&f=bird-6.html#bgp-secondary)
+  #
   # OpenBGPD: not implemented in ARouteServer. Single RIB only.
   #
   # Default: True
@@ -169,10 +170,6 @@ cfg:
       tag_as_set: True
 
     rpki:
-      # BIRD: to load ROA entries into BIRD an external tool must
-      # be used: rtrlib (https://github.com/rtrlib/bird-rtrlib-cli).
-      # The name of the table where send the ROAs to is 'RPKI'.
-      #
       # Enable RPKI ROAs validation for routes received from
       # clients.
       # https://tools.ietf.org/html/rfc6811
@@ -182,6 +179,10 @@ cfg:
       # 'roa_unknown' (provided that they are configured within the
       # 'communities' section below).
       # If 'reject_invalid' is True, INVALID routes are rejected.
+      #
+      # BIRD: to load ROA entries into BIRD an external tool must
+      # be used: rtrlib (https://github.com/rtrlib/bird-rtrlib-cli).
+      # The name of the table where send the ROAs to is 'RPKI'.
       #
       # OpenBGPD: not supported.
       #
@@ -272,7 +273,8 @@ cfg:
     #   entering clients ports on the basis of their destination
     #   MAC address.
     #
-    # OpenBGPD: work in progress to have 'rewrite-next-hop' working.
+    # OpenBGPD: there is an issue that impacts 'rewrite-next-hop'
+    # for IPv6. https://github.com/pierky/arouteserver/issues/3
     #
     # Default: none
     #policy_ipv4:
