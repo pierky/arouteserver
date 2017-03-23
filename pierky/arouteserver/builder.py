@@ -105,7 +105,7 @@ class ConfigBuilder(object):
                  cache_dir=None, cache_expiry=CachedObject.DEFAULT_EXPIRY,
                  bgpq3_path="bgpq3", bgpq3_host=IRRDBTools.BGPQ3_DEFAULT_HOST,
                  bgpq3_sources=IRRDBTools.BGPQ3_DEFAULT_SOURCES, threads=4,
-                 ip_ver=None, ignore_errors=[],
+                 ip_ver=None, ignore_errors=[], live_tests=False,
                  cfg_general=None, cfg_bogons=None, cfg_clients=None,
                  cfg_roas=None,
                  **kwargs):
@@ -152,6 +152,8 @@ class ConfigBuilder(object):
                 raise BuilderError("Invalid IP version: {}".format(ip_ver))
 
         self.ignore_errors = ignore_errors or []
+
+        self.live_tests = live_tests
 
         self.cfg_general = self._get_cfg(cfg_general,
                                          ConfigParserGeneral,
@@ -247,6 +249,7 @@ class ConfigBuilder(object):
         self.data["asns"] = self.cfg_asns
         self.data["as_sets"] = self.as_sets
         self.data["roas"] = self.cfg_roas
+        self.data["live_tests"] = self.live_tests
 
         def ipaddr_ver(ip):
             return ipaddr.IPAddress(ip).version
