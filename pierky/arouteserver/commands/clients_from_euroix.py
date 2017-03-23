@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import argparse
+import datetime
 import sys
 import yaml
 
@@ -91,6 +92,15 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
                 routeserver_only=self.args.routeserver_only)
             res = {"clients": clients}
 
+            comments = []
+            comments.append("# Data fetched from {} at {} UTC".format(
+                self.args.url or self.args.input_file.name,
+                datetime.datetime.utcnow().isoformat()
+            ))
+            comments.append("# IXP ID: {}".format(self.args.ixp_id))
+            if self.args.vlan_id:
+                comments.append("# VLAN ID: {}".format(self.args.vlan_id))
+            self.args.output_file.write("\n".join(comments) + "\n")
             yaml.safe_dump(res, self.args.output_file, default_flow_style=False)
         else:
             euro_ix.print_infrastructure_list(self.args.output_file)

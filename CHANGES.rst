@@ -1,6 +1,13 @@
 Change log
 ==========
 
+next release
+------------
+
+- OpenBGPD support.
+- Add MD5 password support on clients configuration.
+- The ``build`` command used to generate route server configurations has been removed in favor of BGP-speaker-specific sub-commands: ``bird`` and ``openbgpd``.
+
 v0.3.0
 ------
 

@@ -28,9 +28,8 @@ class DockerInstance(BGPSpeakerInstance):
     DOCKER_NETWORK_SUBNET_IPv4 = "192.0.2.0/24"
     DOCKER_NETWORK_SUBNET_IPv6 = "2001:db8:1:1::/64"
 
-    def __init__(self, name, ip, mount=[], **kwargs):
-        super(DockerInstance, self).__init__(name, ip)
-        self.mount = mount
+    def __init__(self, *args, **kwargs):
+        super(DockerInstance, self).__init__(*args, **kwargs)
         self.image = self.DOCKER_IMAGE
 
     @classmethod
@@ -123,16 +122,6 @@ class DockerInstance(BGPSpeakerInstance):
                     cls.DOCKER_NETWORK_NAME, str(e)
                 )
             )
-
-    def get_mounts(self):
-        for mount in self.mount:
-            res = {}
-            res["host"] = mount[0]
-            res["container"] = mount[1]
-            res["host_filename"] = os.path.split(mount[0])[1]
-            res["var_path"] = "{}/{}".format(self.var_dir,
-                                             res["host_filename"])
-            yield res
 
     def is_running(self):
         return self._instance_is_running(self.name)

@@ -1,0 +1,322 @@
+{% from 'macros.j2' import write_prefix_list %}
+{% from 'macros.j2' import match_communities %}
+{% from 'macros.j2' import add_communities %}
+{% from 'macros.j2' import del_communities %}
+{% from 'macros.j2' import remove_prepending_comms %}
+# ---------------------------------------------------------
+# FILTERS
+
+# NO_ADVERTISE usage notes.
+{% if live_tests %}
+# The NO_ADVERTISE well-know community is used here to accept
+# routes that should be rejected. Those routes are also tagged
+# with an additional community in the format 0:<reject_cause>,
+# to track the reason why they should have been rejected, and
+# they are set with a localpref = 1, to avoid they are preferred
+# over other routes.
+# This is done in order to keep track of them for debug and
+# analysis purposes.
+{% else %}
+# The NO_ADVERTISE well-know community is used here to handle
+# filters that span over multiple steps. At first it is added
+# to any route, then it is removed as filters conditions are
+# satisfied. Finally, if it is still present, it means that
+# the route should be discarded.
+{% endif %}
+
+{% macro deny_inbound_route(condition, cause_code) %}
+{% if live_tests %}
+match quick {{ condition }} set { community NO_ADVERTISE community 0:{{ cause_code }} localpref 1 }
+{% else %}
+deny quick {{ condition }}
+{% endif %}
+{% endmacro %}
+
+{% macro irrdb_filter(client, enforce_object_in_as_set, tag_as_set, objects, comm_object_present_in_as_set, comm_object_not_present_in_as_set, reject_code) %}
+{% if enforce_object_in_as_set or tag_as_set %}
+{%	if enforce_object_in_as_set %}
+# enforcing: tag any with NO_ADVERTISE; it will be removed later if at least one AS-SET authorizes this route
+match from {{ client.ip  }} set community NO_ADVERTISE
+{%	endif %}
+{%	if tag_as_set and comm_object_not_present_in_as_set|community_is_set %}
+# tag with not_present_in_as_set
+{{		add_communities("match from " ~ client.ip, comm_object_not_present_in_as_set) -}}
+{%	endif %}
+{%      if client.cfg.filtering.irrdb.as_set_ids %}
+# verifying if route is authorized by AS-SETs
+{%              for as_set_id in client.cfg.filtering.irrdb.as_set_ids %}
+{%			if objects == "asns" %}
+{%				set matching_element = "source-as" %}
+{%			else %}
+{%				set matching_element = "prefix" %}
+{%			endif %}
+{%			set matching_element = matching_element + " $AS_SET_" ~ as_set_id ~ "_" ~ objects %}
+{%                      if as_sets[as_set_id][objects] %}
+match from {{ client.ip }} {{ matching_element }} set community delete NO_ADVERTISE	# {{ as_sets[as_set_id].name }}
+{%				if tag_as_set %}
+{%					if comm_object_not_present_in_as_set|community_is_set %}
+# removing not_present_in_as_set community from matching routes
+{{ del_communities("match from " ~ client.ip ~ " " ~ matching_element, comm_object_not_present_in_as_set) -}}
+{%					endif %}
+{%					if comm_object_present_in_as_set|community_is_set %}
+# adding present_in_as_set community to matching routes
+{{ add_communities("match from " ~ client.ip ~ " " ~ matching_element, comm_object_present_in_as_set) -}}
+{%					endif %}
+{%				endif %}
+{%			else %}
+# AS-SET {{ as_set_id }} referenced but empty.
+{%                      endif %}
+{%              endfor %}
+{%      endif %}
+{%      if enforce_object_in_as_set %}
+# enforcing: if NO_ADVERTISE has not been removed then the route is not authorized
+{{ deny_inbound_route("from " ~ client.ip ~ " community NO_ADVERTISE", reject_code) }}
+{%	else %}
+# tag only: even if NO_ADVERTISE is still in place, remove it
+match from {{ client.ip }} community NO_ADVERTISE set community delete NO_ADVERTISE
+{%	endif %}
+{% else %}
+# not configured
+{% endif %}
+{% endmacro %}
+
+
+{% if cfg.filtering.global_black_list_pref %}
+global_black_list_pref="{ {{ write_prefix_list(cfg.filtering.global_black_list_pref) }} }"
+{% endif %}
+
+bogons="{ {{ write_prefix_list(bogons) }} }"
+
+{% if cfg.filtering.transit_free.action == "reject" and cfg.filtering.transit_free.asns %}
+transit_free_asns="{ {{ cfg.filtering.transit_free.asns|join(", ") }} }"
+{% endif %}
+
+{{ "pre-filters"|include_local_file -}}
+
+# Scrub communities from inbound routes
+{% for name in cfg.communities if cfg.communities[name].type == "outbound" %}
+{%	if cfg.communities[name]|community_is_set %}
+# {{ name }}
+{{ del_communities("match from group clients", cfg.communities[name]) -}}
+{%	endif %}
+{% endfor %}
+
+# AS_PATH: length
+{{ deny_inbound_route("from group clients max-as-len " ~ cfg.filtering.max_as_path_len, 1) }}
+
+{% if cfg.filtering.global_black_list_pref %}
+# Prefix: global blacklist
+{{ deny_inbound_route("from group clients prefix $global_black_list_pref", 3) }}
+{% endif %}
+
+# Prefix: only IPv6 Global Unicast space allowed
+match from group clients inet6 set community NO_ADVERTISE
+match from group clients prefix 2000::/3 or-longer set community delete NO_ADVERTISE
+{{ deny_inbound_route("from group clients community NO_ADVERTISE", 10) }}
+
+# Prefix: bogon
+{{ deny_inbound_route("from group clients prefix $bogons", 2) }}
+
+{% for client in clients if client.ip is current_ipver %}
+
+# ---------------------------------------------
+# client {{ client.id }}, inbound
+
+{% if client.ip|ipaddr_ver == 4 %}
+{{ deny_inbound_route("from " ~ client.ip ~ " inet6", 4) }}
+{% else %}
+{{ deny_inbound_route("from " ~ client.ip ~ " inet", 4) }}
+{% endif %}
+
+# NEXT_HOP
+match from {{ client.ip }} set community NO_ADVERTISE
+{% if client.cfg.filtering.next_hop_policy == "strict" %}
+match from {{ client.ip }} nexthop {{ client.ip }} set community delete NO_ADVERTISE
+{% else %}
+{%	for asn, same_as_clients in clients|groupby("asn") if asn == client.asn %}
+{%		for same_as_client in same_as_clients if same_as_client.ip|ipaddr_ver == client.ip|ipaddr_ver %}
+match from {{ client.ip }} nexthop {{ same_as_client.ip }} set community delete NO_ADVERTISE
+{%		endfor %}
+{%	endfor %}
+{% endif %}
+{{ deny_inbound_route("from " ~ client.ip ~ " community NO_ADVERTISE", 5) }}
+
+# AS_PATH: left-most ASN
+{{ deny_inbound_route("from " ~ client.ip ~ " peer-as != " ~ client.asn, 6) }}
+
+{% if client.cfg.filtering.reject_invalid_as_in_as_path %}
+# AS_PATH: invalid ASNs
+{{ deny_inbound_route("from " ~ client.ip ~ " AS 0", 7) }}
+{{ deny_inbound_route("from " ~ client.ip ~ " AS 23456", 7) }}
+{{ deny_inbound_route("from " ~ client.ip ~ " AS 64496 - 64511", 7) }}
+{{ deny_inbound_route("from " ~ client.ip ~ " AS 64512 - 65534", 7) }}
+{{ deny_inbound_route("from " ~ client.ip ~ " AS 65535", 7) }}
+
+{{ deny_inbound_route("from " ~ client.ip ~ " AS 65536 - 65551", 7) }}
+{{ deny_inbound_route("from " ~ client.ip ~ " AS 65552 - 131071", 7) }}
+{{ deny_inbound_route("from " ~ client.ip ~ " AS 4200000000 - 4294967294", 7) }}
+{{ deny_inbound_route("from " ~ client.ip ~ " AS 4294967295", 7) }}
+{% endif %}
+
+{% if cfg.filtering.transit_free.action == "reject" and cfg.filtering.transit_free.asns %}
+# AS_PATH: transit-free ASNs
+{%	if client.asn in cfg.filtering.transit_free.asns %}
+# client's ASN is in the list of transit-free ASNs: not applying any filtering
+{%	else %}
+{{ deny_inbound_route("from " ~ client.ip ~ " AS $transit_free_asns", 8) }}
+{%	endif %}
+{% endif %}
+
+# AS_PATH: enforce/tag origin via AS-SET
+{{ irrdb_filter(client, client.cfg.filtering.irrdb.enforce_origin_in_as_set, cfg.filtering.irrdb.tag_as_set,
+		"asns",
+		cfg.communities.origin_present_in_as_set, cfg.communities.origin_not_present_in_as_set,
+		9) -}}
+
+{% if client.cfg.filtering.black_list_pref %}
+# Prefix: client's blacklist
+{%	set pref_list_name = "client_" ~ client.id ~ "_black_list_pref_ipv" ~ client.ip|ipaddr_ver %}
+{{ pref_list_name }} = "{ {{ write_prefix_list(client.cfg.filtering.black_list_pref, client.ip|ipaddr_ver) }} }"
+{{ deny_inbound_route("from " ~ client.ip ~ " prefix $" ~ pref_list_name, 11) }}
+{% endif %}
+
+# Prefix: enforce/tag prefix via AS-SET
+{{ irrdb_filter(client, client.cfg.filtering.irrdb.enforce_prefix_in_as_set, cfg.filtering.irrdb.tag_as_set,
+		"prefixes",
+		cfg.communities.prefix_present_in_as_set, cfg.communities.prefix_not_present_in_as_set,
+		12) -}}
+
+# Blackhole request?
+{% if ( client.ip|ipaddr_ver == 4 and cfg.blackhole_filtering.policy_ipv4 ) or
+      ( client.ip|ipaddr_ver == 6 and cfg.blackhole_filtering.policy_ipv6 ) %}
+allow quick from {{ client.ip }} community BLACKHOLE
+{{ match_communities("allow quick from " ~ client.ip, cfg.communities.blackholing, "") }}
+{% endif %}
+
+# Prefix: length
+{% if client.ip|ipaddr_ver == 4 %}
+{% set min_pref_len = client.cfg.filtering.ipv4_pref_len.min %}
+{% set max_pref_len = client.cfg.filtering.ipv4_pref_len.max %}
+{{ deny_inbound_route("from " ~ client.ip ~ " prefix 0.0.0.0/0 prefixlen " ~ min_pref_len ~ " >< " ~ max_pref_len, 13) }}
+{% else %}
+{% set min_pref_len = client.cfg.filtering.ipv6_pref_len.min %}
+{% set max_pref_len = client.cfg.filtering.ipv6_pref_len.max %}
+{{ deny_inbound_route("from " ~ client.ip ~ " prefix ::/0 prefixlen " ~ min_pref_len ~ " >< " ~ max_pref_len, 13) }}
+{% endif %}
+
+allow quick from {{ client.ip }}
+
+# ---------------------------------------------
+# client {{ client.id }}, outbound
+
+# Blackhole request?
+{% if not client.cfg.blackhole_filtering.announce_to_client %}
+deny quick to {{ client.ip }} community BLACKHOLE
+{{ match_communities("deny quick to " ~ client.ip, cfg.communities.blackholing, "") -}}
+{% else %}
+{%	if ( client.ip|ipaddr_ver == 4 and cfg.blackhole_filtering.policy_ipv4 == "propagate-unchanged" ) or
+	   ( client.ip|ipaddr_ver == 6 and cfg.blackhole_filtering.policy_ipv6 == "propagate-unchanged" ) %}
+# Configured policy: propagate-unchanged
+{{ match_communities("match to " ~ client.ip, cfg.communities.blackholing, "set community BLACKHOLE") -}}
+{%		if cfg.blackhole_filtering.add_noexport %}
+match to {{ client.ip }} community BLACKHOLE set community NO_EXPORT
+{%      	endif %}
+
+{%	elif ( client.ip|ipaddr_ver == 4 and cfg.blackhole_filtering.policy_ipv4 == "rewrite-next-hop" ) or
+	     ( client.ip|ipaddr_ver == 6 and cfg.blackhole_filtering.policy_ipv6 == "rewrite-next-hop" ) %}
+# Configured policy: rewrite-next-hop
+{{ match_communities("match to " ~ client.ip, cfg.communities.blackholing, "set community BLACKHOLE") -}}
+{%		if cfg.blackhole_filtering.add_noexport %}
+match to {{ client.ip }} community BLACKHOLE set community NO_EXPORT
+{%      	endif %}
+{%		if client.ip|ipaddr_ver == 4 %}
+{%			set bhn = cfg.blackhole_filtering.rewrite_next_hop_ipv4 %}
+{%		else %}
+{%			set bhn = cfg.blackhole_filtering.rewrite_next_hop_ipv6 %}
+{%		endif %}
+match to {{ client.ip }} community BLACKHOLE set nexthop {{ bhn }}
+
+{%	else %}
+# Blackhole filtering requested but no policy given
+deny quick to {{ client.ip }} community BLACKHOLE
+{{ match_communities("deny quick to " ~ client.ip, cfg.communities.blackholing, "") -}}
+{%	endif %}
+{% endif %}
+
+# NO_EXPORT and NO_ADVERTISE communities
+{% if cfg.communities.add_noexport_to_any|community_is_set %}
+# add_noexport_to_any
+{{	match_communities("match to " ~ client.ip, cfg.communities.add_noexport_to_any, "set community NO_EXPORT") -}}
+{% endif %}
+{% if cfg.communities.add_noadvertise_to_any|community_is_set %}
+# add_noadvertise_to_any
+{{	match_communities("match to " ~ client.ip, cfg.communities.add_noadvertise_to_any, "set community NO_ADVERTISE") -}}
+{% endif %}
+{% if cfg.communities.add_noexport_to_peer|community_is_set %}
+# add_noexport_to_peer
+{{	match_communities("match to " ~ client.ip, cfg.communities.add_noexport_to_peer, "set community NO_EXPORT", client.asn) -}}
+{% endif %}
+{% if cfg.communities.add_noadvertise_to_peer|community_is_set %}
+# add_noadvertise_to_peer
+{{	match_communities("match to " ~ client.ip, cfg.communities.add_noadvertise_to_peer, "set community NO_ADVERTISE", client.asn) -}}
+{% endif %}
+
+# BGP control communities
+allow to {{ client.ip }}
+
+{% if cfg.communities.do_not_announce_to_any|community_is_set %}
+# do_not_announce_to_any
+{{	match_communities("deny to " ~ client.ip, cfg.communities.do_not_announce_to_any, "") -}}
+{% endif %}
+{% if cfg.communities.do_not_announce_to_peer|community_is_set %}
+# do_not_announce_to_peer
+{{	match_communities("deny quick to " ~ client.ip, cfg.communities.do_not_announce_to_peer, "", client.asn) -}}
+{% endif %}
+{% if cfg.communities.announce_to_peer|community_is_set %}
+# announce_to_peer
+{{	match_communities("allow to " ~ client.ip, cfg.communities.announce_to_peer, "", client.asn) -}}
+{% endif %}
+
+{% if cfg.communities.prepend_once_to_peer|community_is_set %}
+# prepend_once_to_peer; remove further "prepend" communities from matching routes
+{{	match_communities("match to " ~ client.ip, cfg.communities.prepend_once_to_peer, "set prepend-neighbor 1", client.asn) -}}
+{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_once_to_peer, cfg.communities, client.asn) -}}
+{% endif %}
+{% if cfg.communities.prepend_twice_to_peer|community_is_set %}
+# prepend_twice_to_peer; remove further "prepend" communities from matching routes
+{{	match_communities("match to " ~ client.ip, cfg.communities.prepend_twice_to_peer, "set prepend-neighbor 2", client.asn) -}}
+{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_twice_to_peer, cfg.communities, client.asn) -}}
+{% endif %}
+{% if cfg.communities.prepend_thrice_to_peer|community_is_set %}
+# prepend_thrice_to_peer; remove further "prepend" communities from matching routes
+{{	match_communities("match to " ~ client.ip, cfg.communities.prepend_thrice_to_peer, "set prepend-neighbor 3", client.asn) -}}
+{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_thrice_to_peer, cfg.communities, client.asn) -}}
+{% endif %}
+
+{% if cfg.communities.prepend_once_to_any|community_is_set %}
+# prepend_once_to_any; remove further "prepend" communities from matching routes
+{{	match_communities("match to " ~ client.ip, cfg.communities.prepend_once_to_any, "set prepend-neighbor 1") -}}
+{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_once_to_any, cfg.communities, client.asn) -}}
+{% endif %}
+{% if cfg.communities.prepend_twice_to_any|community_is_set %}
+# prepend_twice_to_any; remove further "prepend" communities from matching routes
+{{	match_communities("match to " ~ client.ip, cfg.communities.prepend_twice_to_any, "set prepend-neighbor 2") -}}
+{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_twice_to_any, cfg.communities, client.asn) -}}
+{% endif %}
+{% if cfg.communities.prepend_thrice_to_any|community_is_set %}
+# prepend_thrice_to_any; remove further "prepend" communities from matching routes
+{{	match_communities("match to " ~ client.ip, cfg.communities.prepend_thrice_to_any, "set prepend-neighbor 3") -}}
+{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_thrice_to_any, cfg.communities, client.asn) -}}
+{% endif %}
+{% endfor %}
+
+# Scrub communities from outbound routes
+{% for name in cfg.communities if cfg.communities[name].type == "inbound" %}
+{%	if cfg.communities[name]|community_is_set %}
+# {{ name }}
+{{ del_communities("match to group clients", cfg.communities[name], cfg.communities[name].peer_as) -}}
+{%	endif %}
+{% endfor %}
+
+{{ "post-filters"|include_local_file -}}
+

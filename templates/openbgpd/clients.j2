@@ -1,0 +1,68 @@
+# ---------------------------------------------------------
+# MEMBERS
+
+{{ "pre-clients"|include_local_file -}}
+
+group "clients" {
+{% for client in clients if client.ip is current_ipver %}
+
+	neighbor {{ client.ip }} {
+		{{ "client"|include_local_file -}}
+
+		softreconfig in yes
+{%	if client.description %}
+		descr "{{ client.description|truncate(31) }}"
+{%	endif %}
+		remote-as {{ client.asn }}
+{%	if client.cfg.passive %}
+		passive
+{%	endif %}
+{%	if client.password %}
+		tcp md5sig password "{{ client.password }}"
+{%	endif %}
+{%	if client.cfg.gtsm %}
+		ttl-security yes
+{%	else %}
+		ttl-security no
+{%	endif %}
+{%	if client.cfg.filtering.max_prefix.action == "shutdown" or
+	   client.cfg.filtering.max_prefix.action == "restart" %}
+{%      	if client.ip|ipaddr_ver == 4 and client.cfg.filtering.max_prefix.limit_ipv4 %}
+{%              	set max_pref_limit = client.cfg.filtering.max_prefix.limit_ipv4 %}
+{%      	elif client.ip|ipaddr_ver == 6 and client.cfg.filtering.max_prefix.limit_ipv6 %}
+{%              	set max_pref_limit = client.cfg.filtering.max_prefix.limit_ipv6 %}
+{%      	else %}
+{%              	set max_pref_limit = 0 %}
+{%      	endif %}
+{%      	if max_pref_limit > 0 %}
+{%			if client.cfg.filtering.max_prefix.action == "restart" %}
+		max-prefix {{ max_pref_limit }} restart 1
+{%			else %}
+		max-prefix {{ max_pref_limit }}
+{%			endif %}
+{%		endif %}
+{%	endif %}
+{%	if client.cfg.prepend_rs_as %}
+		transparent-as no
+{%	else %}
+		transparent-as yes
+{%	endif %}
+		enforce neighbor-as no
+
+		announce all
+		announce as-4byte yes
+{%	if client.ip|ipaddr_ver == 4 %}
+		announce IPv6 none
+		announce IPv4 unicast
+{%	else %}
+		announce IPv6 unicast
+		announce IPv4 none
+{%	endif %}
+
+		set nexthop no-modify
+	}
+{% endfor %}
+}
+
+{{ "post-clients"|include_local_file -}}
+

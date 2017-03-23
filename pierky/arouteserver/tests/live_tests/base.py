@@ -21,10 +21,9 @@ import time
 
 from docker import InstanceError
 
-from pierky.arouteserver.builder import BIRDConfigBuilder
-from pierky.arouteserver.cached_objects import CachedObject
 from pierky.arouteserver.config.validators import ValidatorPrefixListEntry
-from pierky.arouteserver.irrdb import ASSet, RSet
+from pierky.arouteserver.enrichers.irrdb import IRRDBConfigEnricher_OriginASNs, \
+                                                IRRDBConfigEnricher_Prefixes
 from pierky.arouteserver.tests.base import ARouteServerTestCase
 from pierky.arouteserver.tests.mock_peeringdb import mock_peering_db
 from pierky.arouteserver.tests.live_tests.instances import BGPSpeakerInstance
@@ -38,9 +37,6 @@ class LiveScenario(ARouteServerTestCase):
 
     - set the ``MODULE_PATH`` attribute to ``__file__``, in order
       to correctly locate files needed by the scenario.
-
-    - set the ``IP_VER`` attribute to the IP version used by
-      the scenario.
 
     - fill the ``INSTANCES`` list with a list of 
       :class:`BGPSpeakerInstance`
@@ -118,7 +114,6 @@ class LiveScenario(ARouteServerTestCase):
     MODULE_PATH = None
     SHORT_DESCR = ""
 
-    IP_VER = None
     DATA = {}
     AS_SET = {}
     R_SET = {}
@@ -127,7 +122,7 @@ class LiveScenario(ARouteServerTestCase):
     DEBUG = False
     DO_NOT_STOP_INSTANCES = False
 
-    CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+    CONFIG_BUILDER_CLASS = None
 
     @classmethod
     def _get_module_dir(cls):
@@ -170,17 +165,15 @@ class LiveScenario(ARouteServerTestCase):
         Returns:
             the path of the local rendered file.
 
-        To render the template, two attributes are used and consumed by Jinja2:
-
-        - ``ip_ver``, the IP version of the current scenario;
+        To render the template, one attribute is used and consumed by Jinja2:
 
         - ``data``, the scenario's ``DATA`` dictionary.
 
         The resulting file is saved into the local ``var`` directory
         and its absolute path is returned.
         """
-        cls.debug("Building config from {}/{} - IPv{}".format(
-            cls._get_module_dir(), tpl_name, cls.IP_VER))
+        cls.debug("Building config from {}/{}".format(
+            cls._get_module_dir(), tpl_name))
 
         env = Environment(
             loader=FileSystemLoader(cls._get_module_dir()),
@@ -188,7 +181,7 @@ class LiveScenario(ARouteServerTestCase):
             lstrip_blocks=True
         )
         tpl = env.get_template(tpl_name)
-        cfg = tpl.render(ip_ver=cls.IP_VER, data=cls.DATA)
+        cfg = tpl.render(data=cls.DATA)
 
         var_dir = cls._create_var_dir()
         cfg_file_path = "{}/{}.config".format(var_dir, tpl_name)
@@ -199,9 +192,9 @@ class LiveScenario(ARouteServerTestCase):
         return cfg_file_path
 
     @classmethod
-    def build_rs_cfg(cls, tpl_dir_name, tpl_name, out_file_name,
+    def build_rs_cfg(cls, tpl_dir_name, tpl_name, out_file_name, ip_ver,
                       cfg_general="general.yml", cfg_bogons="bogons.yml",
-                      cfg_clients="clients.yml", cfg_roas=None):
+                      cfg_clients="clients.yml", cfg_roas=None, **kwargs):
         """Builds configuration file for the route server.
 
         Args:
@@ -213,6 +206,10 @@ class LiveScenario(ARouteServerTestCase):
 
             out_file_name (str): the name of the destination
                 file.
+
+            ip_ver (int): the IP version for which this route server
+                will operate. Use None if the configuration is valid
+                for both IPv4 and IPv6.
 
             cfg_general (str), cfg_bogons (str), cfg_clients (str): the
                 name of the 3 main files containing route server's
@@ -230,8 +227,8 @@ class LiveScenario(ARouteServerTestCase):
         and its absolute path is returned.
         """
 
-        cls.debug("Building config from {}/{} - IPv{}".format(
-            tpl_dir_name, tpl_name, cls.IP_VER)
+        cls.debug("Building config from {}/{}".format(
+            tpl_dir_name, tpl_name)
         )
 
         var_dir = cls._create_var_dir()
@@ -244,7 +241,10 @@ class LiveScenario(ARouteServerTestCase):
             cfg_bogons="{}/{}".format(cls._get_module_dir(), cfg_bogons),
             cfg_clients="{}/{}".format(cls._get_module_dir(), cfg_clients),
             cfg_roas="{}/{}".format(cls._get_module_dir(), cfg_roas) if cfg_roas else None,
-            ip_ver=cls.IP_VER
+            ip_ver=ip_ver,
+            ignore_errors=["*"],
+            live_tests=True,
+            **kwargs
         )
 
         cfg_file_path = "{}/{}".format(var_dir, out_file_name)
@@ -276,58 +276,47 @@ class LiveScenario(ARouteServerTestCase):
 
     @classmethod
     def mock_irrdb(cls):
-        def _mock_load_data_from_cache(*args, **kwargs):
-            return False
-
-        def _mock_RSet__get_data(self):
     
-            def add_prefix_to_list(prefix_name, lst):
-                obj = ipaddr.IPNetwork(cls.DATA[prefix_name])
-                lst.append(
-                    ValidatorPrefixListEntry().validate({
-                        "prefix": str(obj.ip),
-                        "length": obj.prefixlen,
-                        "comment": self.object_name
-                    })
-                )
+        def add_prefix_to_list(prefix_name, lst):
+            obj = ipaddr.IPNetwork(cls.DATA[prefix_name])
+            lst.append(
+                ValidatorPrefixListEntry().validate({
+                    "prefix": str(obj.ip),
+                    "length": obj.prefixlen,
+                    "comment": prefix_name
+                })
+            )
 
-            res = []
+        def _mock_ASSet(self):
+            self.prepare()
+            for as_set_id in self.builder.as_sets:
+                as_set = self.builder.as_sets[as_set_id]
+                as_set_name = as_set["name"]
+                if as_set_name in cls.AS_SET:
+                    as_set["asns"].extend(cls.AS_SET[as_set_name])
 
-            if self.object_name in cls.R_SET:
-                for prefix_name in cls.R_SET[self.object_name]:
-                    add_prefix_to_list(prefix_name, res)
-            return res
+        def _mock_RSet(self):
+            self.prepare()
+            for as_set_id in self.builder.as_sets:
+                as_set = self.builder.as_sets[as_set_id]
+                as_set_name = as_set["name"]
+                if as_set_name in cls.R_SET:
+                    for prefix_name in cls.R_SET[as_set_name]:
+                        add_prefix_to_list(prefix_name, as_set["prefixes"])
 
-        def _mock_ASSet__get_data(self):
-            if self.object_name in cls.AS_SET:
-                return cls.AS_SET[self.object_name]
-
-        def _mock_save_data_to_cache(self):
-            return
-
-        mock_IRRDBTools_load_data_from_cache = mock.patch.object(
-            RSet, "load_data_from_cache"
+        mock_ASSet = mock.patch.object(
+            IRRDBConfigEnricher_OriginASNs, "enrich", autospec=True
         ).start()
-        mock_IRRDBTools_load_data_from_cache.side_effect = _mock_load_data_from_cache
+        mock_ASSet.side_effect = _mock_ASSet
 
-        mock_save_data_to_cache = mock.patch.object(
-            CachedObject, "save_data_to_cache", autospec=True
+        mock_RSet = mock.patch.object(
+            IRRDBConfigEnricher_Prefixes, "enrich", autospec=True
         ).start()
-        mock_save_data_to_cache.side_effect = _mock_save_data_to_cache
-
-        mock_ASSet__get_data = mock.patch.object(
-            ASSet, "_get_data", autospec=True
-        ).start()
-        mock_ASSet__get_data.side_effect = _mock_ASSet__get_data
-
-        mock_RSet__get_data = mock.patch.object(
-            RSet, "_get_data", autospec=True
-        ).start()
-        mock_RSet__get_data.side_effect = _mock_RSet__get_data
+        mock_RSet.side_effect = _mock_RSet
 
     @classmethod
     def _setUpClass(cls):
-        print("{}: setting instances up...".format(cls.SHORT_DESCR))
+        cls.info("{}: setting instances up...".format(cls.SHORT_DESCR))
 
         mock_peering_db(cls._get_module_dir() + "/peeringdb_data")
         cls.mock_irrdb()
@@ -365,7 +354,7 @@ class LiveScenario(ARouteServerTestCase):
             cls.debug("Skipping stopping instances")
             return
 
-        print("{}: stopping instances...".format(cls.SHORT_DESCR))
+        cls.info("{}: stopping instances...".format(cls.SHORT_DESCR))
 
         for instance in cls.INSTANCES:
             cls.debug("Stopping instance '{}'...".format(instance.name))
@@ -382,7 +371,8 @@ class LiveScenario(ARouteServerTestCase):
 
     def receive_route(self, inst, prefix, other_inst=None, as_path=None,
                       next_hop=None, std_comms=None, lrg_comms=None,
-                      ext_comms=None, filtered=None, only_best=None):
+                      ext_comms=None, filtered=None, only_best=None,
+                      reject_reason=None):
         """Test if the BGP speaker receives the expected route(s).
 
         If no routes matching the given criteria are found, the
@@ -412,6 +402,28 @@ class LiveScenario(ARouteServerTestCase):
                 filtered are considered.
 
             only_best (bool): if given, only best routes are considered.
+
+            reject_reason (int): valid only if `filtered` is True: if given
+                the route must be reject with this reason code.
+                It can be also a set of codes: in this case, the route must
+                be rejected with one of those codes.
+                Currently implemented on OpenBGPD only.
+
+                Valid codes follow:
+
+                - 1   invalid AS_PATH length
+                - 2   prefix is bogon
+                - 3   prefix is in global blacklist
+                - 4   invalid AFI
+                - 5   invalid NEXT_HOP
+                - 6   invalid left-most ASN
+                - 7   invalid ASN in AS_PATH
+                - 8   transit-free ASN in AS_PATH
+                - 9   origin ASN not in IRRDB AS-SETs
+                - 10  IPv6 prefix not in global unicast space
+                - 11  prefis is in client blacklist
+                - 12  prefix not in IRRDB AS-SETs
+                - 13  invalid prefix length
 
         """
         assert isinstance(inst, BGPSpeakerInstance), \
@@ -465,6 +477,19 @@ class LiveScenario(ARouteServerTestCase):
                 ("lrg_comms must be a list of strings representing "
                  "BGP large communities")
 
+        if reject_reason is not None and not filtered:
+            raise AssertionError(
+                "reject_reason can be set only if filtered is True"
+            )
+
+        reject_reasons = None
+        if reject_reason is not None:
+            if isinstance(reject_reason, int):
+                reject_reasons = [reject_reason]
+            else:
+                reject_reasons = list(reject_reason)
+            for code in reject_reasons:
+                assert code in range(1,14), "invalid reject_reason"
 
         include_filtered = filtered if filtered is not None else False
         best_only = only_best if only_best is not None else False
@@ -509,6 +534,22 @@ class LiveScenario(ARouteServerTestCase):
                         )
                     )
                     err = True
+                if filtered is True and route.filtered and \
+                    reject_reasons is not None and route.reject_reason is not None and \
+                    route.reject_reason not in reject_reasons:
+                    errors.append(
+                        "{{inst}} receives {{prefix}} from {via}, AS_PATH {as_path}, NEXT_HOP {next_hop}, "
+                        "it is filtered but reject reasons don't match: it is {reason} while "
+                        "it is expected to be {exp_reason}.".format(
+                            via=route.via,
+                            as_path=route.as_path,
+                            next_hop=route.next_hop,
+                            reason=route.reject_reason,
+                            exp_reason=reject_reasons[0] if len(reject_reasons) == 1 else
+                                       "one of {}".format(", ".join(map(str, reject_reasons)))
+                        )
+                    )
+                    err = True
                 if not err:
                     return
 
@@ -528,6 +569,17 @@ class LiveScenario(ARouteServerTestCase):
                 criteria.append("with ext comms {}".format(ext_comms))
             if filtered is True:
                 criteria.append("filtered")
+            if reject_reasons:
+                if len(reject_reasons) == 1:
+                    criteria.append(
+                        "with reject reason {}".format(reject_reasons[0])
+                    )
+                else:
+                    criteria.append(
+                        "with reject reason in {}".format(
+                            ", ".join(map(str, reject_reasons))
+                        )
+                    )
 
             failure = "Routes not found.\n"
             failure += "Looking for {prefix} on {inst} {criteria}:\n\t".format(
@@ -551,6 +603,9 @@ class LiveScenario(ARouteServerTestCase):
 
     def log_contains(self, inst, msg, instances={}):
         """Test if the BGP speaker's log contains the expected message.
+
+        This only works for BGP speaker instances that support message
+        logging: currently only BIRD.
 
         If no log entries are found, the ``TestCase.fail()`` method is
         called and the test fails.
@@ -581,6 +636,9 @@ class LiveScenario(ARouteServerTestCase):
         On BIRD, "{AS1}" will be expanded using the "protocol name" that BIRD
         uses to identify the BGP session with AS1.
         """
+        if not inst.MESSAGE_LOGGING_SUPPORT:
+            return
+
         expanded_msg = msg
 
         macros_dict = {}

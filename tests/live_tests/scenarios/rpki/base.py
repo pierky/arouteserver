@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from pierky.arouteserver.builder import BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
 
 class RPKIINVALIDScenario(LiveScenario):
@@ -23,6 +24,8 @@ class RPKIINVALIDScenario(LiveScenario):
     CLIENT_INSTANCE_CLASS = None
     IP_VER = None
 
+    CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+
     @classmethod
     def _setup_instances(cls):
         cls.INSTANCES = [
@@ -31,7 +34,7 @@ class RPKIINVALIDScenario(LiveScenario):
                 cls.DATA["rs_IPAddress"],
                 [
                     (
-                        cls.build_rs_cfg("bird", "main.j2", "rs.conf",
+                        cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
                                          cfg_roas="roas{}.yml".format(cls.IP_VER)),
                         "/etc/bird/bird.conf"
                     )

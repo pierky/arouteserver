@@ -18,7 +18,12 @@ class ARouteServerError(Exception):
     def __init__(self, *args, **kwargs):
         Exception.__init__(self, *args, **kwargs)
         self.please_open_issue = False
-        self.extra_info = None
+        self._extra_info = None
+        self.traceback = None
+
+    @property
+    def extra_info(self):
+        return self._extra_info
 
 class ConfigError(ARouteServerError):
     pass
@@ -69,29 +74,45 @@ class EuroIXSchemaError(EuroIXError):
 
     def __init__(self, msg):
         EuroIXError.__init__(self, msg)
-        self.extra_info = ("It's possible that the JSON schema used by the IX "
-                           "to export its members list is not aligned with "
-                           "the one recognized by this version of the "
-                           "program, or that it contains errors.")
+        self._extra_info = ("It's possible that the JSON schema used by the IX "
+                            "to export its members list is not aligned with "
+                            "the one recognized by this version of the "
+                            "program, or that it contains errors.")
 
 class BuilderError(ARouteServerError):
     pass
 
+class CompatibilityIssuesError(BuilderError):
+
+    @property
+    def extra_info(self):
+        return(
+            "Please check the errors reported above for more details.\n"
+            "To ignore those errors, use the '--ignore-issues' command "
+            "line argument and list the IDs of the issues you want to "
+            "ignore."
+        )
+
 class TemplateRenderingError(BuilderError):
 
-    def __init__(self, msg, templates_not_aligned=False):
+    def __init__(self, msg, traceback=None, templates_not_aligned=False):
         BuilderError.__init__(self, msg)
+        self.traceback = traceback
         self.please_open_issue = True
-        if templates_not_aligned:
-            self.extra_info = ("One or more template files are not "
-                               "aligned with those distributed with the current "
-                               "version of the program (maybe they need to be "
-                               "updated after an upgrade), it's possible that this "
-                               "issue is due to this reason.\n"
-                               "Please consider running the "
-                               "'arouteserver verify-templates' command and, if "
-                               "suggested, to install the distributed version of the "
-                               "templates.")
+        self.templates_not_aligned = templates_not_aligned
+
+    @property
+    def extra_info(self):
+        if self.templates_not_aligned:
+            return("One or more template files are not "
+                   "aligned with those distributed with the current "
+                   "version of the program (maybe they need to be "
+                   "updated after an upgrade), it's possible that this "
+                   "issue is due to this reason.\n"
+                   "Please consider running the "
+                   "'arouteserver verify-templates' command and, if "
+                   "suggested, to install the distributed version of the "
+                   "templates.")
 
 class ResourceNotFoundError(ARouteServerError):
 

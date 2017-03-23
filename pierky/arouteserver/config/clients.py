@@ -41,6 +41,7 @@ class ConfigParserClients(ConfigParserBase):
             "asn": ValidatorASN(),
             "ip": ValidatorIPAddr(),
             "description": ValidatorText(mandatory=False),
+            "password": ValidatorText(mandatory=False),
             "cfg": {
                 "prepend_rs_as": ValidatorBool(mandatory=False),                        # Done
                 "passive": ValidatorBool(mandatory=False),                              # Done

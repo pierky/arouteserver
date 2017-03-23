@@ -75,6 +75,16 @@ ARouteServer uses the following external programs:
 
   To install it, please refer to its `official guide <https://www.docker.com/products/overview>`_.
 
+- (optional) `KVM <https://www.linux-kvm.org/page/Main_Page>`_ is also used to perform :doc:`live tests <LIVETESTS>` of OpenBGPD configurations on an OpenBSD virtual machine.
+
+  To install it:
+
+  .. code:: bash
+
+    apt-get install qemu-kvm virtinst
+
+  More details: https://wiki.debian.org/KVM
+
 - (optional) `rtrlib <https://github.com/rtrlib>`_ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`_; indirectly ARouteServer needs these tools to load RPKI data into BIRD.
 
   To install them:

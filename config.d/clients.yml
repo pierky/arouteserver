@@ -63,6 +63,10 @@ clients:
     # A brief description.
     #description: ""
 
+    # An optional MD5 password used for authentication of BGP
+    # session (RFC2385).
+    #password: ""
+
     # The following configuration statements are optional.
     # Settings provided here override those provided in the
     # general configuration on a client-by-client basis.

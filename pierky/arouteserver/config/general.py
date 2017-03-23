@@ -24,6 +24,13 @@ class ConfigParserGeneral(ConfigParserBase):
 
     ROOT = "cfg"
 
+    # outbound   communities used by the route server to signal
+    #            something to its clients
+    # inbound    communities sent by clients to the route server
+    #            to ask it to perform some action
+    # peer_as    the last part of the community must be the ASN
+    #            with regards of which the requested action must
+    #            be performed
     COMMUNITIES_SCHEMA = {
         "origin_present_in_as_set": { "type": "outbound" },
         "origin_not_present_in_as_set": { "type": "outbound" },

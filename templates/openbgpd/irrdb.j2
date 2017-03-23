@@ -1,0 +1,24 @@
+{% from 'macros.j2' import write_prefix_list %}
+# ---------------------------------------------------------
+# IRRDB
+
+{{ "pre-irrdb"|include_local_file -}}
+
+{% for as_set_id in as_sets %}
+{%	set as_set = as_sets[as_set_id] %}
+# {{ as_set.name }}
+{%	if as_set.asns|length == 0 %}
+# no origin ASNs found for {{ as_set.name }}
+{%	else %}
+AS_SET_{{ as_set.id }}_asns="{ {% for asn in as_set.asns %}{{ asn }}{% if not loop.last %}, {% endif %}{% endfor %} }"
+{%	endif %}
+{%	if as_set.prefixes|length == 0 %}
+# no prefixes found for {{ as_set.name }}
+{%	else %}
+AS_SET_{{ as_set.id }}_prefixes="{ {{ write_prefix_list(as_set.prefixes) }} }"
+{%	endif %}
+
+{% endfor %}
+
+{{ "post-irrdb"|include_local_file -}}
+

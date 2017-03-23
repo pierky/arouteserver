@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from base import SkeletonScenario
+from pierky.arouteserver.builder import BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 
 class SkeletonScenario_BIRDIPv4(SkeletonScenario):
@@ -38,6 +39,7 @@ class SkeletonScenario_BIRDIPv4(SkeletonScenario):
     __test__ = True
 
     SHORT_DESCR = "Live test, BIRD, skeleton, IPv4"
+    CONFIG_BUILDER_CLASS = BIRDConfigBuilder
     RS_INSTANCE_CLASS = BIRDInstanceIPv4
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
     IP_VER = 4

@@ -14,6 +14,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, \
+                                                      BIRDInstanceIPv6
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
 
 # -----------------------------------------------------------------------
 # FULL DOCUMENTATION ON
@@ -34,8 +37,8 @@ class SkeletonScenario(LiveScenario):
     - base.py: a base class (this one) where test functions are implemented
       in an IP version independent way;
 
-    - test_bird4.py and test_bird6.py: two IP version specific and BGP speaker
-      specific classes where the real IP addresses and prefixes are provided
+    - test_XXX.py: BGP speaker specific and IP version specific
+      classes where the real IP addresses and prefixes are provided
       in a dictionary made of ``prefix_ID: real_IP_prefix`` entries.
 
     If it's needed by the scenario, the derived classes must also fill the
@@ -104,8 +107,8 @@ class SkeletonScenario(LiveScenario):
     """
 
     # Leave this to False to avoid nose to use this abstract class to run
-    # tests. Only derived, more specific classes (test_bird4.py,
-    # test_bird6.py) must have this set to True.
+    # tests. Only derived, more specific classes (test_XXX.py) must have
+    # this set to True.
     __test__ = False
 
     # This allows to use files and directories paths which are relative
@@ -113,6 +116,7 @@ class SkeletonScenario(LiveScenario):
     MODULE_PATH = __file__
 
     # The following attributes must be setted in derived classes.
+    CONFIG_BUILDER_CLASS = None
     RS_INSTANCE_CLASS = None
     CLIENT_INSTANCE_CLASS = None
     IP_VER = None
@@ -138,7 +142,7 @@ class SkeletonScenario(LiveScenario):
         and to transform them into real BGP speaker configuration files.
 
         The ``cls.RS_INSTANCE_CLASS`` and ``cls.CLIENT_INSTANCE_CLASS``
-        attributes are set by the derived classes (test_bird[4|6].py) and
+        attributes are set by the derived classes (test_XXX.py) and
         represent the route server class and the other BGP speakers class
         respectively.
 
@@ -147,7 +151,7 @@ class SkeletonScenario(LiveScenario):
         - The second argument is the IP address that is used to run the
           instance. Here, the ``cls.DATA`` dictionary is used to lookup the
           real IP address to use, which is configured in the derived classes
-          (test_bird[4|6].py).
+          (test_XXX.py).
 
         - The third argument is a list of files that are mounted from the local
           host (where Docker is running) to the container (the BGP speaker).
@@ -165,16 +169,8 @@ class SkeletonScenario(LiveScenario):
         """
 
         cls.INSTANCES = [
-            cls.RS_INSTANCE_CLASS(
-                "rs",
-                cls.DATA["rs_IPAddress"],
-                [
-                    (
-                        cls.build_rs_cfg("bird", "main.j2", "rs.conf"),
-                        "/etc/bird/bird.conf"
-                    )
-                ]
-            ),
+            cls._setup_rs_instance(),
+
             cls.CLIENT_INSTANCE_CLASS(
                 "AS1",
                 cls.DATA["AS1_IPAddress"],
@@ -196,6 +192,34 @@ class SkeletonScenario(LiveScenario):
                 ]
             )
         ]
+
+    @classmethod
+    def _setup_rs_instance(cls):
+        if cls.RS_INSTANCE_CLASS is OpenBGPDInstance:
+            return cls.RS_INSTANCE_CLASS(
+                "rs",
+                cls.DATA["rs_IPAddress"],
+                [
+                    (
+                        cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None),
+                        "/etc/bgpd.conf"
+                    )
+                ]
+            )
+        if cls.RS_INSTANCE_CLASS is BIRDInstanceIPv4 or \
+            cls.RS_INSTANCE_CLASS is BIRDInstanceIPv6:
+            return cls.RS_INSTANCE_CLASS(
+                "rs",
+                cls.DATA["rs_IPAddress"],
+                [
+                    (
+                        cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER),
+                        "/etc/bird/bird.conf"
+                    )
+                ]
+            )
+        raise NotImplementedError("RS_INSTANCE_CLASS unknown: {}".format(
+            cls.RS_INSTANCE_CLASS.__name__))
 
     def set_instance_variables(self):
         """Simply set local attributes for an easier usage later

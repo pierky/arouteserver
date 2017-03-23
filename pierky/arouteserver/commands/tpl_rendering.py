@@ -19,7 +19,8 @@ import os
 import sys
 
 from .base import ARouteServerCommand
-from ..builder import ConfigBuilder, BIRDConfigBuilder, TemplateContextDumper
+from ..builder import ConfigBuilder, BIRDConfigBuilder, \
+                      OpenBGPDConfigBuilder, TemplateContextDumper
 from ..config.program import program_config
 from ..errors import ARouteServerError, TemplateRenderingError
 
@@ -45,6 +46,14 @@ class TemplateRenderingCommands(ARouteServerCommand):
                  "clients.yml and so on), do not produce any output "
                  "configuration.",
             dest="test_only")
+
+        parser.add_argument(
+            "--ignore-issues",
+            nargs="+",
+            help="Ignore compatibility issues identified by the IDs "
+                 "provided here.",
+            metavar="ISSUE_ID",
+            dest="ignore_errors")
 
         group = parser.add_argument_group(
             title="Route server configuration",
@@ -105,6 +114,9 @@ class TemplateRenderingCommands(ARouteServerCommand):
     def _get_builder_class(self):
         raise NotImplementedError()
 
+    def _set_cfg_builder_params(self):
+        pass
+
     def run(self):
         tpl_all_right = program_config.verify_templates() == []
         if not tpl_all_right:
@@ -115,7 +127,7 @@ class TemplateRenderingCommands(ARouteServerCommand):
                             "more information.")
 
         # Config builder setup
-        cfg_builder_params = {
+        self.cfg_builder_params = {
             "cfg_general": program_config.get("cfg_general"),
             "cfg_clients": program_config.get("cfg_clients"),
             "cfg_bogons": program_config.get("cfg_bogons"),
@@ -127,38 +139,36 @@ class TemplateRenderingCommands(ARouteServerCommand):
             "template_dir": program_config.get("templates_dir"),
             "template_name": program_config.get("template_name"),
             "ip_ver": self.args.ip_ver,
-            "threads": program_config.get("threads")
+            "threads": program_config.get("threads"),
+            "ignore_errors": self.args.ignore_errors
         }
+        self._set_cfg_builder_params()
 
         builder_class = self._get_builder_class()
         
         template_sub_dir = self._get_template_sub_dir()
         if template_sub_dir:
-            cfg_builder_params["template_dir"] = os.path.join(
-                cfg_builder_params["template_dir"], template_sub_dir
+            self.cfg_builder_params["template_dir"] = os.path.join(
+                self.cfg_builder_params["template_dir"], template_sub_dir
             )
 
         try:
-            builder = builder_class(**cfg_builder_params)
+            builder = builder_class(**self.cfg_builder_params)
             if not self.args.test_only:
                 builder.render_template(output_file=self.args.output_file)
         except TemplateRenderingError as e:
             if tpl_all_right:
                 raise
-
-            msg = str(e)
-            raise TemplateRenderingError(str(e), True)
-        except ARouteServerError as e:
-            if str(e):
-                logging.error(str(e))
-            return False
+            e.templates_not_aligned = True
+            raise e
 
         return True
 
 class BuildCommand(TemplateRenderingCommands):
 
     COMMAND_NAME = "build"
-    COMMAND_HELP = "Build route server configuration."
+    COMMAND_HELP = ("Build route server configuration. DEPRECATED! "
+                    "Please use 'bird' or 'openbgpd' commands.")
 
     @classmethod
     def add_arguments(cls, parser):
@@ -172,19 +182,61 @@ class BuildCommand(TemplateRenderingCommands):
             choices=["BIRD"],
             default="BIRD")
 
-    def _get_builder_class(self):
-        if self.args.speaker == "BIRD":
-            return BIRDConfigBuilder
+    def run(self):
         raise ARouteServerError(
-            "Unknown BGP speaker implementation: {}".format(self.args.speaker)
+            "The 'build' command has been replaced by "
+            "BGP-speaker-specific commands: 'bird' and 'openbgpd'."
         )
 
+class BIRDCommand(TemplateRenderingCommands):
+
+    COMMAND_NAME = "bird"
+    COMMAND_HELP = "Build route server configuration for BIRD."
+
+    def _get_builder_class(self):
+        return BIRDConfigBuilder
+
     def _get_template_sub_dir(self):
-        if self.args.speaker == "BIRD":
-            return "bird"
-        raise ARouteServerError(
-            "Unknown BGP speaker implementation: {}".format(self.args.speaker)
+        return "bird"
+
+class OpenBGPDCommand(TemplateRenderingCommands):
+
+    COMMAND_NAME = "openbgpd"
+    COMMAND_HELP = "Build route server configuration for OpenBGPD."
+
+    def _get_builder_class(self):
+        return OpenBGPDConfigBuilder
+
+    def _get_template_sub_dir(self):
+        return "openbgpd"
+
+    @classmethod
+    def add_arguments(cls, parser):
+        super(OpenBGPDCommand, cls).add_arguments(parser)
+
+        parser.add_argument(
+            "--local-files-dir",
+            help="The directory where .local files are located, from the "
+                 "route server's perspective.",
+            default="/etc/bgpd",
+            dest="local_files_dir"
         )
+
+        parser.add_argument(
+            "--use-local-files",
+            help="Enable the inclusion of .local files into the generated "
+                 "OpenBGPD configuration. "
+                 "The list of available .local files IDs follows: {}".format(
+                     ", ".join(OpenBGPDConfigBuilder.LOCAL_FILES_IDS)
+                 ),
+            nargs="*",
+            choices=OpenBGPDConfigBuilder.LOCAL_FILES_IDS,
+            metavar="FILE_ID",
+            dest="local_files")
+
+    def _set_cfg_builder_params(self):
+        self.cfg_builder_params["local_files_dir"] = self.args.local_files_dir
+        self.cfg_builder_params["local_files"] = self.args.local_files
 
 class HTMLCommand(TemplateRenderingCommands):
 

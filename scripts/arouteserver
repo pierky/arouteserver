@@ -18,6 +18,7 @@
 import argparse
 import logging
 import sys
+import traceback
 
 from pierky.arouteserver.commands import all_commands
 from pierky.arouteserver.errors import ARouteServerError
@@ -72,6 +73,8 @@ except ARouteServerError as e:
         msg += "\n\n{}".format(e.extra_info)
     if e.please_open_issue:
         msg += "\n\n{}".format(PLEASE_OPEN_ISSUE)
+    if e.traceback:
+        msg += "\n\n{}".format("\n".join(traceback.format_tb(e.traceback)))
     logging.error(msg, exc_info=e.please_open_issue)
     sys.exit(1)
 except Exception as e:

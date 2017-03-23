@@ -1,9 +1,9 @@
 Live tests
 ==========
 
-Live tests are used to validate configurations built by ARouteServer.
+Live tests are used to validate configurations built by ARouteServer and to test compliance between expected and real results.
 
-A mix of Python's unittest and Docker allows to create scenarios where some instances of BGP speakers connect to a route server that has been configured using this program in order to test compliance between expected and real results.
+A mix of Python unittest and Docker allows to create scenarios where some instances of BGP speakers (the clients) connect to a route server whose configuration has been generated using this tool.
 
 Example: in a configuration where blackhole filtering is enabled, an instance of a route server client (AS1) is used to announce some tagged prefixes (203.0.113.1/32) and the instances representing other clients (AS2, AS3) are queried to ensure they receive those prefixes with the expected blackhole NEXT_HOP (192.0.2.66).
 
@@ -15,39 +15,7 @@ Example: in a configuration where blackhole filtering is enabled, an instance of
                          next_hop="192.0.2.66",
                          std_comms=["65535:666"], lrg_comms=[])
 
-Travis CI log file contains the latest built-in live tests results: https://travis-ci.org/pierky/arouteserver/
+`Travis CI log file <https://travis-ci.org/pierky/arouteserver/>`_ contains the latest built-in live tests results.
+Since (AFAIK) OpenBGPD can't be run on Travis CI platform, the full live tests results including those run on OpenBGPD can be found on `this file <https://github.com/pierky/arouteserver/blob/master/tests/last>`_.
 
-How to run built-in live tests
--------------------------------
-
-To run built-in live tests, the full repository must be cloned locally and Docker must be present on the system.
-
-1. Build the Docker image (or pull it from `Dockerhub <https://hub.docker.com/r/pierky/bird/>`_):
-
-   .. code:: bash
-
-      # build the image using the Dockerfile
-      # from https://github.com/pierky/dockerfiles
-      mkdir ~/dockerfiles
-      cd ~/dockerfiles
-      curl -o Dockerfile.bird -L https://raw.githubusercontent.com/pierky/dockerfiles/master/bird/1.6.3/Dockerfile
-      docker build -t pierky/bird:1.6.3 -f Dockerfile.bird .
-
-      # or pull it from Dockerhub
-      docker pull pierky/bird:1.6.3
-
-2. Run the Python unittest using ``nose``:
-
-   .. code:: bash
-
-      # from within the repository's root
-      nosetests -vs tests/live_tests/
-
-How it works
-------------
-
-Each directory in ``tests/live_tests/scenarios`` represents a scenario: the route server configuration is stored in the usual ``general.yml`` and ``clients.yml`` files, while other BGP speaker instances (route server clients and their peers) are configured through the ``ASxxx.j2`` files.
-These files are Jinja2 templates and are expanded by the Python code at runtime. Containers' configuration files are saved in the local ``var`` directory and are used to mount the BGP speaker configuration file (currenly, ``/etc/bird/bird.conf``).
-The unittest code sets up a Docker network (with name ``arouteserver``) used to attach instances and finally brings instances up. Regular unittest tests are now performed and can be used to match expectations to real results.
-
-Details about the code behind the live tests can be found in the :doc:`LIVETESTS_CODEDOC` section.
+More details on the `Live tests <https://arouteserver.readthedocs.io/en/latest/LIVETESTS.html>`_ page on the official documentation.

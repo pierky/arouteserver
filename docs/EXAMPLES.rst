@@ -6,7 +6,7 @@ Examples of configurations
 Default
 -------
 
-BIRD configurations built using the default ``general.yml`` and ``clients.yml`` files distributed with the project.
+Configurations built using the default ``general.yml`` and ``clients.yml`` files distributed with the project.
 
 https://github.com/pierky/arouteserver/blob/master/examples/default
 
@@ -28,3 +28,10 @@ Configurations built using the files provided in the ``examples/rich`` directory
 https://github.com/pierky/arouteserver/blob/master/examples/rich
 
 See the `textual representation of this configuration <_static/examples_rich.html>`_.
+
+Clients from Euro-IX member list JSON file
+------------------------------------------
+
+Some clients files automatically built from `Euro-IX member list JSON files <https://github.com/euro-ix/json-schemas>`_ are reported here.
+
+https://github.com/pierky/arouteserver/blob/master/examples/clients-from-euroix

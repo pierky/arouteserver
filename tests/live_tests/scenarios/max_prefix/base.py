@@ -15,7 +15,10 @@
 
 import os
 
+from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class MaxPrefixScenario(LiveScenario):
     __test__ = False
@@ -23,21 +26,13 @@ class MaxPrefixScenario(LiveScenario):
     MODULE_PATH = __file__
     RS_INSTANCE_CLASS = None
     CLIENT_INSTANCE_CLASS = None
-    IP_VER = None
+    CONFIG_BUILDER_CLASS = None
 
     @classmethod
     def _setup_instances(cls):
         cls.INSTANCES = [
-            cls.RS_INSTANCE_CLASS(
-                "rs",
-                cls.DATA["rs_IPAddress"],
-                [
-                    (
-                        cls.build_rs_cfg("bird", "main.j2", "rs.conf"),
-                        "/etc/bird/bird.conf"
-                    )
-                ],
-            ),
+            cls._setup_rs_instance(),
+
             cls.CLIENT_INSTANCE_CLASS(
                 "AS1",
                 cls.DATA["AS1_1_IPAddress"],
@@ -79,6 +74,25 @@ class MaxPrefixScenario(LiveScenario):
     def test_010_setup(self):
         """{}: instances setup"""
         pass
+
+class MaxPrefixScenarioBIRD(MaxPrefixScenario):
+    __test__ = False
+
+    CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+
+    @classmethod
+    def _setup_rs_instance(cls):
+        return cls.RS_INSTANCE_CLASS(
+            "rs",
+            cls.DATA["rs_IPAddress"],
+            [
+                (
+                    cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
+                                     cfg_general="general_bird.yml"),
+                    "/etc/bird/bird.conf"
+                )
+            ]
+        )
 
     def test_020_sessions_up(self):
         """{}: sessions are up"""
@@ -128,3 +142,34 @@ class MaxPrefixScenario(LiveScenario):
         self.assertEqual(len(self._get_routes_from(3)), 2)
         self.assertEqual(len(self._get_routes_from(3, include_filtered=True)), 5)
 
+class MaxPrefixScenarioOpenBGPD(MaxPrefixScenario):
+    __test__ = False
+
+    CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
+
+    @classmethod
+    def _setup_rs_instance(cls):
+        return cls.RS_INSTANCE_CLASS(
+            "rs",
+            cls.DATA["rs_IPAddress"],
+            [
+                (
+                    cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
+                                     cfg_general="general_openbgpd.yml"),
+                    "/etc/bgpd.conf"
+                )
+            ]
+        )
+
+    def test_020_sessions_down(self):
+        """{}: sessions are down"""
+        for inst in (self.AS1, self.AS2, self.AS3):
+            with self.assertRaisesRegexp(
+                AssertionError, "is not up"
+            ):
+                self.session_is_up(self.rs, inst)
+
+    def test_030_clients_receive_maxpref_not(self):
+        """{}: clients log max-prefix notification"""
+        for inst in (self.AS1, self.AS2, self.AS3):
+            self.log_contains(inst, "the_rs: Received: Maximum number of prefixes reached")

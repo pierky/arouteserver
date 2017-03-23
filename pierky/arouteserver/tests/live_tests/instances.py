@@ -14,6 +14,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+import os
+import sys
+
 class InstanceError(Exception):
     pass
 
@@ -30,17 +33,38 @@ class BGPSpeakerInstance(object):
 
     Currently, the ``start``, ``stop``, ``is_running`` and
     ``run_cmd`` methods are implemented by the
-    :class:`DockerInstance` derived class, while the ``reload_config``,
-    ``bgp_session_is_up``, ``get_routes`` and ``log_contains`` by the
-    DockerInstance-derived :class:`BIRDInstance` class.
+    :class:`DockerInstance` and :class:`KVMInstance` derived classes,
+    while the ``reload_config``, ``get_bgp_session``, ``get_routes``
+    and ``log_contains`` methods by the [Docker|KVM]Instance-derived
+    :class:`BIRDInstance` class.
     """
 
-    def __init__(self, name, ip):
+    MESSAGE_LOGGING_SUPPORT = True
+
+    DEBUG = False
+
+    @classmethod
+    def debug(cls, s):
+        if cls.DEBUG or "DEBUG" in os.environ:
+            sys.stderr.write("DEBUG: {}\n".format(s))
+
+    def __init__(self, name, ip, mount=[], **kwargs):
         self.name = name
         self.ip = ip
+        self.mount = mount
 
     def set_var_dir(self, var_dir):
         self.var_dir = var_dir
+
+    def get_mounts(self):
+        for mount in self.mount:
+            res = {}
+            res["host"] = mount[0]
+            res["container"] = mount[1]
+            res["host_filename"] = os.path.split(mount[0])[1]
+            res["var_path"] = "{}/{}".format(self.var_dir,
+                                             res["host_filename"])
+            yield res
 
     def is_running(self):
         raise NotImplementedError()
@@ -70,8 +94,11 @@ class BGPSpeakerInstance(object):
                 any caching mechanism used to keep the BGP sessions status.
 
         Returns:
-            a dictionary containing information about the BGP session;
-            None if the BGP session is not found.
+            None if the BGP session is not found, otherwise a dictionary
+            containing information about the BGP session:
+
+            - "ip": "neighbor IP address",
+            - "is_up": [True|False]
         """
         raise NotImplementedError()
 
@@ -91,7 +118,15 @@ class BGPSpeakerInstance(object):
             True if the current instance has a running BGP
             session with ``other_inst``; False otherwise.
         """
-        raise NotImplementedError()
+        bgp_session_info = self.get_bgp_session(other_inst, force_update)
+        if bgp_session_info:
+            return bgp_session_info["is_up"]
+        raise Exception(
+            "Can't get BGP session status for {} on {} "
+            "(looking for {})".format(
+                other_inst.name, self.name, other_inst.ip
+            )
+        )
 
     def get_routes(self, prefix, include_filtered=False, only_best=False):
         """Get a list of all the known routes for ``prefix``.
@@ -150,9 +185,7 @@ class Route(object):
             the "[rt|ro]:x:y" format).
     """
 
-
-    @staticmethod
-    def _parse_bgp_communities(communities):
+    def _parse_bgp_communities(self, communities):
         if not communities:
             return []
 
@@ -171,15 +204,27 @@ class Route(object):
             res.append(parse_bgp_community(bgp_comm))
         return res
 
+    def _parse_std_bgp_communities(self, communities):
+        return self._parse_bgp_communities(communities)
+
+    def _parse_ext_bgp_communities(self, communities):
+        return self._parse_bgp_communities(communities)
+
+    def _parse_lrg_bgp_communities(self, communities):
+        return self._parse_bgp_communities(communities)
+
     def __init__(self, prefix, **kwargs):
         self.prefix = prefix
         self.via = kwargs.get("via", None)
         self.as_path = kwargs.get("as_path", None)
         self.next_hop = kwargs.get("next_hop", None)
+        self.localpref = kwargs.get("localpref", None)
         self.filtered = kwargs.get("filtered", False)
-        self.std_comms = self._parse_bgp_communities(kwargs.get("std_comms", None))
-        self.lrg_comms = self._parse_bgp_communities(kwargs.get("lrg_comms", None))
-        self.ext_comms = self._parse_bgp_communities(kwargs.get("ext_comms", None))
+        self.reject_reason = kwargs.get("reject_reason", None)
+        self.best = kwargs.get("best", None)
+        self.std_comms = self._parse_std_bgp_communities(kwargs.get("std_comms", None))
+        self.lrg_comms = self._parse_lrg_bgp_communities(kwargs.get("lrg_comms", None))
+        self.ext_comms = self._parse_ext_bgp_communities(kwargs.get("ext_comms", None))
 
     def __str__(self):
         return str({
@@ -187,7 +232,10 @@ class Route(object):
             "via": self.via,
             "as_path": self.as_path,
             "next_hop": self.next_hop,
+            "localpref": self.localpref,
             "filtered": self.filtered,
+            "reject_reason": self.reject_reason,
+            "best": self.best,
             "std_comms": self.std_comms,
             "lrg_comms": self.lrg_comms,
             "ext_comms": self.ext_comms,

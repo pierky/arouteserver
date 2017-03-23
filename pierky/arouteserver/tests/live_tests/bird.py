@@ -16,7 +16,7 @@
 import re
 
 from docker import DockerInstance
-from instances import Route, BGPSpeakerInstance
+from instances import Route, BGPSpeakerInstance, InstanceNotRunning
 
 
 class BIRDInstance(DockerInstance):
@@ -26,6 +26,8 @@ class BIRDInstance(DockerInstance):
     some Docker-specific methods to start/stop the instance and to run
     commands on it.
     """
+
+    MESSAGE_LOGGING_SUPPORT = True
 
     DOCKER_IMAGE = "pierky/bird:1.6.3"
 
@@ -116,17 +118,6 @@ class BIRDInstance(DockerInstance):
             if self.protocols_status[proto]["ip"] == other_inst_ip:
                 return self.protocols_status[proto]
         return None
-
-    def bgp_session_is_up(self, other_inst, force_update=False):
-        bgp_session_info = self.get_bgp_session(other_inst, force_update)
-        if bgp_session_info:
-            return bgp_session_info["is_up"]
-        raise Exception(
-            "Can't get BGP session status for {} on {} "
-            "(looking for {})".format(
-                other_inst.name, self.name, other_inst.ip
-            )
-        )
 
     def get_routes(self, prefix, include_filtered=False, only_best=False):
         if include_filtered and only_best:

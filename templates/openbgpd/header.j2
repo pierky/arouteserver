@@ -1,0 +1,7 @@
+AS {{ cfg.rs_as }}
+router-id {{ cfg.router_id }}
+
+fib-update no
+log updates
+
+nexthop qualify via default

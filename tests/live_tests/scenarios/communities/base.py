@@ -13,7 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import unittest
+
+from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class BGPCommunitiesScenario(LiveScenario):
     __test__ = False
@@ -21,21 +26,13 @@ class BGPCommunitiesScenario(LiveScenario):
     MODULE_PATH = __file__
     RS_INSTANCE_CLASS = None
     CLIENT_INSTANCE_CLASS = None
-    IP_VER = None
+    CONFIG_BUILDER_CLASS = None
 
     @classmethod
     def _setup_instances(cls):
         cls.INSTANCES = [
-            cls.RS_INSTANCE_CLASS(
-                "rs",
-                cls.DATA["rs_IPAddress"],
-                [
-                    (
-                        cls.build_rs_cfg("bird", "main.j2", "rs.conf"),
-                        "/etc/bird/bird.conf"
-                    )
-                ]
-            ),
+            cls._setup_rs_instance(),
+
             cls.CLIENT_INSTANCE_CLASS(
                 "AS1",
                 cls.DATA["AS1_IPAddress"],
@@ -106,8 +103,15 @@ class BGPCommunitiesScenario(LiveScenario):
                            std_comms=[],
                            ext_comms=["rt:0:999", "rt:999:1"],
                            lrg_comms=[])
-        self.receive_route(self.AS1, pref, self.rs,
-                           std_comms=[], ext_comms=[], lrg_comms=[])
+        if isinstance(self.rs, OpenBGPDInstance):
+            #TODO: don't check for ext_comms on OpenBGPD since
+            #      it seems not possible to remove ext comms using
+            #      wildcard, so ext comms scrubbing is not implemented
+            self.receive_route(self.AS1, pref, self.rs,
+                               std_comms=[], lrg_comms=[])
+        else:
+            self.receive_route(self.AS1, pref, self.rs,
+                               std_comms=[], ext_comms=[], lrg_comms=[])
         with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.AS131073, pref)
         msg = ("route didn't pass control communities checks - "
@@ -116,6 +120,9 @@ class BGPCommunitiesScenario(LiveScenario):
 
     def test_022_only_to_AS1_lrg(self):
         """{}: announce to AS1 only (lrg)"""
+        if isinstance(self.rs, OpenBGPDInstance):
+            raise unittest.SkipTest("Large comms not supported by OpenBGPD")
+
         pref = self.DATA["AS2_only_to_AS1_l"]
         self.receive_route(self.rs, pref, self.AS2,
                            std_comms=[],
@@ -136,8 +143,15 @@ class BGPCommunitiesScenario(LiveScenario):
                            std_comms=["0:999"],
                            ext_comms=["rt:999:131073"],
                            lrg_comms=[])
-        self.receive_route(self.AS131073, pref, self.rs,
-                           std_comms=[], ext_comms=[], lrg_comms=[])
+        if isinstance(self.rs, OpenBGPDInstance):
+            #TODO: don't check for ext_comms on OpenBGPD since
+            #      it seems not possible to remove ext comms using
+            #      wildcard, so ext comms scrubbing is not implemented
+            self.receive_route(self.AS131073, pref, self.rs,
+                            std_comms=[], lrg_comms=[])
+        else:
+            self.receive_route(self.AS131073, pref, self.rs,
+                            std_comms=[], ext_comms=[], lrg_comms=[])
         with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.AS1, pref)
         msg = ("route didn't pass control communities checks - "
@@ -146,16 +160,61 @@ class BGPCommunitiesScenario(LiveScenario):
 
     def test_031_only_to_AS131073_lrg(self):
         """{}: announce to AS131073 only (lrg)"""
+        if isinstance(self.rs, OpenBGPDInstance):
+            raise unittest.SkipTest("Large comms not supported by OpenBGPD")
+
         pref = self.DATA["AS2_only_to_AS131073_l"]
         self.receive_route(self.rs, pref, self.AS2,
                            std_comms=[],
                            ext_comms=[],
                            lrg_comms=["999:0:999", "999:999:131073"])
-        self.receive_route(self.AS131073, pref, self.rs,
-                           std_comms=[], ext_comms=[], lrg_comms=[])
+        if isinstance(self.rs, OpenBGPDInstance):
+            #TODO: don't check for ext_comms on OpenBGPD since
+            #      it seems not possible to remove ext comms using
+            #      wildcard, so ext comms scrubbing is not implemented
+            self.receive_route(self.AS131073, pref, self.rs,
+                               std_comms=[], lrg_comms=[])
+        else:
+            self.receive_route(self.AS131073, pref, self.rs,
+                               std_comms=[], ext_comms=[], lrg_comms=[])
         with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.AS1, pref)
         msg = ("route didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
         self.log_contains(self.rs, msg, {"inst": self.AS1})
 
+class BGPCommunitiesScenarioBIRD(BGPCommunitiesScenario):
+    __test__ = False
+
+    CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+
+    @classmethod
+    def _setup_rs_instance(cls):
+        return cls.RS_INSTANCE_CLASS(
+            "rs",
+            cls.DATA["rs_IPAddress"],
+            [
+                (
+                    cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER),
+                    "/etc/bird/bird.conf"
+                )
+            ]
+        )
+
+class BGPCommunitiesScenarioOpenBGPD(BGPCommunitiesScenario):
+    __test__ = False
+
+    CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
+
+    @classmethod
+    def _setup_rs_instance(cls):
+        return cls.RS_INSTANCE_CLASS(
+            "rs",
+            cls.DATA["rs_IPAddress"],
+            [
+                (
+                    cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None),
+                    "/etc/bgpd.conf"
+                )
+            ]
+        )

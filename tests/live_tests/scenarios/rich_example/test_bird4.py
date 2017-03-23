@@ -13,20 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import RichConfigExampleScenario
+from base import RichConfigExampleScenarioBIRD
+from data4 import RichConfigExampleScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 
-class RichConfigExampleScenario_BIRDIPv4(RichConfigExampleScenario):
+class RichConfigExampleScenario_BIRDIPv4(RichConfigExampleScenario_Data4,
+                                         RichConfigExampleScenarioBIRD):
     __test__ = True
 
     SHORT_DESCR = "Live test, BIRD, examples, rich config, IPv4"
     RS_INSTANCE_CLASS = BIRDInstanceIPv4
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
     IP_VER = 4
-
-    DATA = {
-        "rs_IPAddress":                     "192.0.2.2",
-
-        "AS10745_allowed_prefixes":         "199.43.0.0/24",
-        "AS3333_allowed_prefixes":          "193.0.0.0/21",
-    }

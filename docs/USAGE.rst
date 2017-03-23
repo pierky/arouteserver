@@ -7,12 +7,13 @@ The script can be executed via command-line:
 
     # if cloned from GitHub, from the repository's root directory:
     export PYTHONPATH="`pwd`"
-    ./scripts/arouteserver build --ip-ver 4 -o /etc/bird/bird4.conf
+    ./scripts/arouteserver bird --ip-ver 4 -o /etc/bird/bird4.conf
 
     # if installed using pip:
-    arouteserver build --ip-ver 4 -o /etc/bird/bird4.conf
+    arouteserver bird --ip-ver 4 -o /etc/bird/bird4.conf
 
-It produces the route server configuration and saves it on ``/etc/bird/bird4.conf``.
+It produces the route server configuration for BIRD and saves it on ``/etc/bird/bird4.conf``.
+To build the configuration for OpenBGPD, the ``bird`` sub-command must be replaced with ``openbgpd``.
 
 It exits with ``0`` if everything is fine or with an exit code different than zero if something wrong occurs.
 
@@ -23,7 +24,7 @@ It can be scheduled at regular intervals to re-build the configuration (for exam
     # The following assumes that ARouteServer runs on the
     # route server itself, that is a thing that you may want
     # to avoid.
-    arouteserver build --ip-ver 4 -o /etc/bird/bird4.new && \
+    arouteserver bird --ip-ver 4 -o /etc/bird/bird4.new && \
         bird -p -c /etc/bird/bird4.new && \
         cp /etc/bird/bird4.new /etc/bird/bird4.conf && \
         birdcl configure
@@ -173,7 +174,7 @@ Since the popular `IXP-Manager <https://github.com/inex/IXP-Manager>`_ allows to
                 --url "$url" $ixp_id
 
         # Build the route server configuration.
-        arouteserver build \
+        arouteserver bird \
                 --clients $clients_file \
                 --ip-ver 4 \
                 -o /etc/bird/bird4.new

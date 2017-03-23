@@ -31,8 +31,7 @@ How it works
 
 #. `Jinja2`_ built-in templates are used to render the final route server's configuration file.
 
-   Currently, only **BIRD** is supported.
-   OpenBGPD support is `under development <https://github.com/pierky/arouteserver/tree/openbgpd>`_.
+   Currently, **BIRD** and **OpenBGPD** are supported.
 
 **Validation** and testing are performed using the built-in **live tests** framework: `Docker`_ instances are used to simulate several scenarios, and more custom scenarios can be built on the basis of the user's needs. More details on the `Live tests <https://arouteserver.readthedocs.io/en/latest/LIVETESTS.html>`_ section.
 
@@ -53,7 +52,7 @@ Features
   - maximum **AS_PATH length**;
   - reject **invalid AS_PATHs** (containing `private/invalid ASNs <http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html>`_);
   - reject AS_PATHs containing **transit-free** ASNs;
-  - **RPKI**-based filtering/tagging `RFC6811`_;
+  - **RPKI**-based filtering/tagging (`RFC6811`_);
   - reject **bogons**;
   - prefixes and origin ASNs enforcing via **RPSL/IRRdb AS-SETs** (`RFC7948`_ `section 4.6.2 <https://tools.ietf.org/html/rfc7948#section-4.6.2>`_);
   - **max-prefix limit** based on global or client-specific values or on **PeeringDB** data.
