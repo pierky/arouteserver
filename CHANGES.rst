@@ -1,10 +1,10 @@
 Change log
 ==========
 
-next release
-------------
+v0.4.0
+------
 
-- OpenBGPD support.
+- OpenBGPD support (some `limitations <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#caveats-and-limitations>`_ apply).
 - Add MD5 password support on clients configuration.
 - The ``build`` command used to generate route server configurations has been removed in favor of BGP-speaker-specific sub-commands: ``bird`` and ``openbgpd``.
 
