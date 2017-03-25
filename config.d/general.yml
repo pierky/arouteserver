@@ -214,6 +214,10 @@ cfg:
       #
       # Default: none
       #action: "shutdown"
+      #
+      # OpenBGPD only: for the 'restart' action, sessions will be
+      # restarted after 'restart_after' minutes.
+      #restart_after: 15
 
       # Dynamically adjust max-prefix limit of each client on the
       # basis of the following criteria, in priority order:

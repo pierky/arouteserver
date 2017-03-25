@@ -113,7 +113,9 @@ class ConfigParserGeneral(ConfigParserBase):
                             ("shutdown", "restart", "block", "warning"),
                             mandatory=False,
                             default="shutdown"
-                        )
+                        ),
+                        "restart_after": ValidatorUInt(default=15,
+                                                       mandatory=True)
                     },
                 },
                 "blackhole_filtering": {                                        # Done

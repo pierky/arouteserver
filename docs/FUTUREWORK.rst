@@ -4,7 +4,6 @@ Future work
 Short term
 ----------
 
-- New feature: max-prefix 'restart' action timer (OpenBGPD only)
 - New feature: custom informative BGP communities
 - New feature: timers customization
 - Improvement: BIRD .local files

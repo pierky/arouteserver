@@ -54,7 +54,8 @@ cfg:
       reject_invalid: True
 
     max_prefix:
-      action: "shutdown"
+      action: "restart"
+      restart_after: 30
       peering_db: True
 
   blackhole_filtering:

@@ -549,6 +549,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 },
                 "max_prefix": {
                     "action": None,
+                    "restart_after": 15,
                     "peering_db": True,
                     "general_limit_ipv4": 170000,
                     "general_limit_ipv6": 12000

@@ -74,6 +74,7 @@ class ConfigParserClients(ConfigParserBase):
                             ("shutdown", "restart", "block", "warning"),
                             mandatory=False
                         ),
+                        "restart_after": ValidatorUInt(mandatory=False),
                         "peering_db": ValidatorBool(mandatory=False),
                         "limit_ipv4": ValidatorUInt(mandatory=False),
                         "limit_ipv6": ValidatorUInt(mandatory=False),

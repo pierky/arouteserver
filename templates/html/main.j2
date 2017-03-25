@@ -185,7 +185,7 @@ Route <strong>validity state</strong> is signalled to route server clients using
 	{%	if cfg.filtering.max_prefix.action == "shutdown" %}
 	the session with the announcing client is <strong>shutdown</strong>.
 {%	elif cfg.filtering.max_prefix.action == "restart" %}
-	the session with the announcing client is <strong>restart</strong>.
+	the session with the announcing client is <strong>restarted</strong> after {{ cfg.filtering.max_prefix.restart_after }} minutes.
 {%	elif cfg.filtering.max_prefix.action == "block" %}
 	new routes from the announcing client are <strong>discarded</strong>.
 {%	else %}
