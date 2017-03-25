@@ -1,6 +1,11 @@
 Change log
 ==========
 
+next release
+------------
+
+- Fix: avoid the use of standard communities in the range 65535:x.
+
 v0.4.0
 ------
 

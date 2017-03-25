@@ -472,6 +472,10 @@ class ValidatorCommunityStd(ValidatorCommunity):
                 if part_val < 0 or part_val > 65535:
                     raise ConfigError()
                 validated_parts.append(str(int(part_val)))
+            if parts[0] == "65535":
+                raise ConfigError(
+                    "range 65535:x is reserved"
+                )
             return ":".join(validated_parts)
         except ConfigError as e:
             raise ConfigError(

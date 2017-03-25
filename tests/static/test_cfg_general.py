@@ -29,7 +29,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
     CONFIG_PARSER_CLASS = ConfigParserGeneral
     SHORT_DESCR = "General config parser"
 
-    VALID_STD_COMMS = ("65535:666", "1:1", "0:0", "1:0", "65535:65535", "rs_as:1")
+    VALID_STD_COMMS = ("65534:666", "1:1", "0:0", "1:0", "65534:65535", "rs_as:1")
     VALID_LRG_COMMS = ("65535:666:0", "1:1:1", "0:0:0", "1:0:65535", "4294967295:4294967295:4294967295", "rs_as:1:2")
     VALID_EXT_COMMS = ("rt:1:0", "rt:65535:666", "ro:65535:666", "rt:rs_as:3")
 
@@ -282,9 +282,14 @@ class TestConfigParserGeneral(TestConfigParserBase):
         for c in ("65536:666", "-1:-1", "0:-1", "65535:65536", "1", "1:1:1", "rt:1:0") + self.VALID_LRG_COMMS + self.VALID_EXT_COMMS:
             self.cfg["communities"]["blackholing"]["std"] = c
             self._contains_err("Invalid BGP standard community: {};".format(c))
-        for c in ("65535:peer_as", "peer_as:1"):
+        for c in ("65534:peer_as", "peer_as:1"):
             self.cfg["communities"]["blackholing"]["std"] = c
             self._contains_err("'peer_as' macro not allowed")
+
+        c = "65535:1"
+        self.cfg["communities"]["blackholing"]["std"] = c
+        self._contains_err("range 65535:x is reserved")
+
         self.cfg["communities"]["blackholing"]["std"] = self.VALID_STD_COMMS[0]
         self._test_optional(self.cfg["communities"]["blackholing"], "std")
 
