@@ -1,0 +1,49 @@
+router id 192.0.2.33;
+
+log "/var/log/bird.log" all;
+log syslog all;
+debug protocols all;
+
+protocol device { }
+
+protocol static own_prefixes {
+	route {{ data.AS3_invalid1 }} reject;
+	route {{ data.AS3_badlen }} reject;
+	route {{ data.AS3_valid1 }} reject;
+	route {{ data.AS3_valid2 }} reject;
+	route {{ data.AS3_unknown1 }} reject;
+}
+
+filter to_the_rs {
+	if net = {{ data.AS3_invalid1 }} then accept;
+	if net = {{ data.AS3_unknown1 }} then accept;
+	if net = {{ data.AS3_badlen }} then {
+		bgp_path.delete(3);
+		bgp_path.prepend(103);
+		bgp_path.prepend(3);
+		accept;
+	}
+	if net = {{ data.AS3_valid1 }} then {
+		bgp_path.delete(3);
+		bgp_path.prepend(103);
+		bgp_path.prepend(3);
+		accept;
+	}
+	if net = {{ data.AS3_valid2 }} then {
+		bgp_path.delete(3);
+		bgp_path.prepend(103);
+		bgp_path.prepend(3);
+		accept;
+	}
+	reject;
+}
+
+protocol bgp the_rs {
+	local as 3;
+	neighbor {{ data.rs_IPAddress }} as 999;
+	import all;
+	export filter to_the_rs;
+	connect delay time 1;
+	connect retry time 1;
+}
+

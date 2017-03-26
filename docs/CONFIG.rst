@@ -123,7 +123,8 @@ With this configuration, the following values will be used to run the bgpq3 prog
 RPKI-based filtering
 ********************
 
-RPKI-based validation of routes can be configured using the general ``filtering.rpki`` section. Depending on the ``reject_invalid`` configuration, routes can be rejected or tagged with BGP communities.
+RPKI-based validation of routes can be configured using the general ``filtering.rpki`` section. Depending on the ``reject_invalid`` and ``announce_invalid`` configuration, INVALID routes can be rejected before entering the route server or accepted, tagged with BGP communities (à la RPKI-Light) and propagated.
+Please consider the `Security Considerations <https://tools.ietf.org/html/draft-ietf-sidrops-route-server-rpki-light#section-5>` section of the draft before enabling RPKI-Light by setting ``announce_invalid`` to True.
 
 - To acquire RPKI data and load them into BIRD, a couple of external tools from the `rtrlib <http://rpki.realmv6.org/>`_ suite are used: `rtrlib <https://github.com/rtrlib>`_ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`_. One or more trusted local validating caches should be used to get and validate RPKI data before pushing them to BIRD. An overview is provided on the `rtrlib GitHub wiki <https://github.com/rtrlib/rtrlib/wiki/Background>`_, where also an `usage guide <https://github.com/rtrlib/rtrlib/wiki/Usage-of-the-RTRlib>`_ can be found.
 

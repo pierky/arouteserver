@@ -128,6 +128,8 @@ class TestConfigParserClients(TestConfigParserBase):
             "          enforce_prefix_in_as_set: False",
             "        rpki:",
             "          enabled: True",
+            "          reject_invalid: False",
+            "          announce_invalid: True",
             "        reject_invalid_as_in_as_path: False",
             "        max_as_path_len: 64",
             "        ipv4_pref_len:",
@@ -152,6 +154,8 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_origin_in_as_set"], True)
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_prefix_in_as_set"], True)
         self.assertEqual(client["cfg"]["filtering"]["rpki"]["enabled"], False)
+        self.assertEqual(client["cfg"]["filtering"]["rpki"]["reject_invalid"], True)
+        self.assertEqual(client["cfg"]["filtering"]["rpki"]["announce_invalid"], False)
         self.assertEqual(client["cfg"]["filtering"]["reject_invalid_as_in_as_path"], True)
         self.assertEqual(client["cfg"]["filtering"]["max_as_path_len"], 32)
         self.assertEqual(client["cfg"]["filtering"]["ipv4_pref_len"]["min"], 8)
@@ -170,6 +174,8 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_origin_in_as_set"], False)
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_prefix_in_as_set"], False)
         self.assertEqual(client["cfg"]["filtering"]["rpki"]["enabled"], True)
+        self.assertEqual(client["cfg"]["filtering"]["rpki"]["reject_invalid"], False)
+        self.assertEqual(client["cfg"]["filtering"]["rpki"]["announce_invalid"], True)
         self.assertEqual(client["cfg"]["filtering"]["reject_invalid_as_in_as_path"], False)
         self.assertEqual(client["cfg"]["filtering"]["max_as_path_len"], 64)
         self.assertEqual(client["cfg"]["filtering"]["ipv4_pref_len"]["min"], 1)

@@ -235,16 +235,15 @@ function add_rpki_community(string comm_name) {
 
 # This functions performs RPKI validation of the current
 # route and adds the informative communities.
-# If the route is INVALID and the 'rpki.reject_invalid'
-# option is True the functions return false; otherwise it
-# returns true.
-function route_passes_rpki_validation () {
+# If the route is INVALID it sets a lower local-pref and
+# returns true, otherwise it returns false.
+function route_is_rpki_invalid () {
 	case roa_check(RPKI) {
 		ROA_VALID: add_rpki_community("valid");
 		ROA_UNKNOWN: add_rpki_community("unknown");
-		ROA_INVALID: add_rpki_community("invalid");{% if cfg.filtering.rpki.enabled and cfg.filtering.rpki.reject_invalid %} return false;{{ "\n" }}{% endif %}
+		ROA_INVALID: add_rpki_community("invalid"); bgp_local_pref = rpki_invalid_local_pref; return true;
 	}
-	return true;
+	return false;
 }
 {% endif %}
 

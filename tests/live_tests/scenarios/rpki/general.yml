@@ -8,7 +8,6 @@ cfg:
       tag_as_set: False
     rpki:
       enabled: True
-      reject_invalid: False
   communities:
     roa_valid:
       std: "64512:1"

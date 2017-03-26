@@ -214,6 +214,12 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._test_bool_val(self.cfg["filtering"]["rpki"], "reject_invalid")
         self._test_optional(self.cfg["filtering"]["rpki"], "reject_invalid")
 
+    def test_rpki_announce_invalid(self):
+        """{}: rpki, announce_invalid"""
+        self.assertEqual(self.cfg["filtering"]["rpki"]["announce_invalid"], False)
+        self._test_bool_val(self.cfg["filtering"]["rpki"], "announce_invalid")
+        self._test_optional(self.cfg["filtering"]["rpki"], "announce_invalid")
+
     def test_blackhole_announce_to_client(self):
         """{}: blackhole_filtering, announce_to_client"""
         self.assertEqual(self.cfg["blackhole_filtering"]["announce_to_client"], True)
@@ -545,7 +551,8 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 },
                 "rpki": {
                     "enabled": False,
-                    "reject_invalid": True
+                    "reject_invalid": True,
+                    "announce_invalid": False
                 },
                 "max_prefix": {
                     "action": None,

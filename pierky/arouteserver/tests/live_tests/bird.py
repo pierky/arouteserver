@@ -165,6 +165,8 @@ class BIRDInstance(DockerInstance):
                             route["lrg_comms"] = line.split(": ")[1].strip()
                         if "BGP.ext_community:" in line:
                             route["ext_comms"] = line.split(": ")[1].strip()
+                        if "BGP.local_pref:" in line:
+                            route["localpref"] = line.split(": ")[1].strip()
                 route["filtered"] = option == "filtered"
                 routes.append(Route(**route))
         return routes

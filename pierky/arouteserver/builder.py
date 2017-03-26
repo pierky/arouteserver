@@ -110,6 +110,8 @@ class ConfigBuilder(object):
                  cfg_roas=None,
                  **kwargs):
 
+        # Parameters initialization
+
         self.template_dir = self._check_is_dir(
             "template_dir", template_dir
         )
@@ -161,9 +163,16 @@ class ConfigBuilder(object):
         self.cfg_bogons = self._get_cfg(cfg_bogons,
                                         ConfigParserBogons,
                                         "bogons")
-        self.cfg_asns = self._get_cfg(cfg_clients,
-                                         ConfigParserASNS,
-                                         "asns")
+
+        if isinstance(cfg_clients, str):
+            self.cfg_asns = self._get_cfg(cfg_clients,
+                                            ConfigParserASNS,
+                                            "asns")
+        else:
+            self.cfg_asns = ConfigParserASNS()
+            self.cfg_asns._load_from_yaml("{}")
+            self.cfg_asns.parse()
+
         self.cfg_clients = self._get_cfg(cfg_clients,
                                          ConfigParserClients,
                                          "clients",
@@ -179,10 +188,40 @@ class ConfigBuilder(object):
 
         self.as_sets = None
 
+        # Validation
+
+        # RPKI: announce_invalid can be True only if roa_invalid is provided
+        if self.cfg_general["filtering"]["rpki"]["enabled"] and \
+            not self.community_is_set(
+                self.cfg_general["communities"]["roa_invalid"]
+            ):
+
+            rpki_announce_invalid_clients = []
+            for client in self.cfg_clients.cfg["clients"]:
+                if client["cfg"]["filtering"]["rpki"]["announce_invalid"]:
+                    rpki_announce_invalid_clients.append(client["ip"])
+            if rpki_announce_invalid_clients:
+                raise BuilderError(
+                    "The BGP community 'roa_invalid' has not been configured "
+                    "but 'rpki.announce_invalid' has been set for the "
+                    "following clients: {}{}. 'announce_invalid' can be set "
+                    "to True only if a BGP community has been configured to "
+                    "mark INVALID routes before announcing them to enabled "
+                    "clients.".format(
+                        ", ".join(rpki_announce_invalid_clients[:3]),
+                        "" if len(rpki_announce_invalid_clients) <= 3 else
+                            " and {} more".format(
+                            len(rpki_announce_invalid_clients) - 3
+                            )
+                    )
+                )
+
         if not self.validate_bgpspeaker_specific_configuration():
             raise CompatibilityIssuesError(
                 "One or more compatibility issues have been found."
             )
+
+        # Processing
 
         logging.info("Started processing configuration "
                      "for {}".format(self.template_path))
@@ -240,6 +279,22 @@ class ConfigBuilder(object):
         if errors:
             raise BuilderError()
 
+    @staticmethod
+    def community_is_set(comm):
+        """Helper filter used by Jinja2 templates.
+
+        It's defined at class-level because different BGP-speaker-specific
+        builder classes may have a diffent way to treat communities:
+        OpenBGPD 6.0, for example, does not implement large communities, so
+        a community defined with only large values must have a return value
+        False.
+        """
+        if not comm:
+            return False
+        if not comm["std"] and not comm["lrg"] and not comm["ext"]:
+            return False
+        return True
+
     def render_template(self, output_file=None):
         self.data = {}
         self.data["ip_ver"] = self.ip_ver
@@ -259,13 +314,6 @@ class ConfigBuilder(object):
                 return True
             return ipaddr.IPAddress(ip).version == self.ip_ver
 
-        def community_is_set(comm):
-            if not comm:
-                return False
-            if not comm["std"] and not comm["lrg"] and not comm["ext"]:
-                return False
-            return True
-
         env = Environment(
             loader=FileSystemLoader(self.template_dir),
             trim_blocks=True,
@@ -273,7 +321,7 @@ class ConfigBuilder(object):
             undefined=StrictUndefined
         )
         env.tests["current_ipver"] = current_ipver
-        env.filters["community_is_set"] = community_is_set
+        env.filters["community_is_set"] = self.community_is_set
         env.filters["ipaddr_ver"] = ipaddr_ver
 
         self.enrich_j2_environment(env)
@@ -321,6 +369,14 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                        "pre-clients", "post-clients", "client",
                        "pre-filters", "post-filters",
                        "footer"]
+
+    @staticmethod
+    def community_is_set(comm):
+        if not comm:
+            return False
+        if not comm["std"] and not comm["ext"]:
+            return False
+        return True
 
     def validate_bgpspeaker_specific_configuration(self):
         res = True

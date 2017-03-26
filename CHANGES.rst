@@ -6,6 +6,15 @@ next release
 
 - Fix: avoid the use of standard communities in the range 65535:x.
 - Improvement: option to set max-prefix restart timer for OpenBGPD.
+- Improvement: finer configuration granularity for RPKI route validation and RPKI-light tagging.
+
+  - A new boolean flag has been introduced: ``announce_invalid``, False by default.
+  - The ``reject_invalid`` flag, that previously was on general scope only, now can be set on a client-by-client basis.
+
+  In order to have INVALID routes tagged with ``roa_invalid`` BGP communities and propagated to clients this flag must be explicitly set to True on a client-basis for those clients who explicitly request to receive them.
+  This *breaks backward compatibility* with previous configurations, where this behaviour was possible by just setting ``reject_invalid`` to False.
+
+  Related: `issue #4 on GitHub <https://github.com/pierky/arouteserver/issues/4>`_
 
 v0.4.0
 ------

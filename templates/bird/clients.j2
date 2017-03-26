@@ -70,6 +70,8 @@ prefix set {{ client.id }}_blacklist;
 {% endif %}
 
 filter receive_from_{{ client.id }} {
+	bgp_local_pref = default_local_pref;
+
 	if !(source = RTS_BGP ) then
 		reject "source != RTS_BGP - REJECTING ", net;
 
@@ -166,8 +168,13 @@ filter receive_from_{{ client.id }} {
 		accept "blackhole filtering request from {{ client.id }} - ACCEPTING ", net;
 	} else {
 		{% if cfg.filtering.rpki.enabled %}
-		if !route_passes_rpki_validation() then
+		if route_is_rpki_invalid() then {
+			{% if client.cfg.filtering.rpki.reject_invalid %}
 			reject "RPKI, route is INVALID - REJECTING ", net;
+			{% else %}
+			print "'rpki.reject_invalid' is False for this client, not rejecting ", net;
+			{% endif %}
+		}
 		{% endif %}
 
 		# Prefix: length
@@ -193,7 +200,16 @@ filter announce_to_{{ client.id }} {
 	{% else %}
 		apply_blackhole_filtering_policy();
 	{% endif %}
+	{% if cfg.filtering.rpki.enabled and not client.cfg.filtering.rpki.announce_invalid %}
+	} else {
+		# RPKI: client doesn't want INVALID routes
+		case roa_check(RPKI) {
+			ROA_INVALID: reject "route is INVALID, client has 'announce_invalid' = False - NOT ANNOUNCING ", net, " TO {{ client.id}}";
+		}
 	}
+	{% else %}
+	}
+	{% endif %}
 
 	# BGP control communities
 	if !route_can_be_announced_to({{ client.asn }}) then

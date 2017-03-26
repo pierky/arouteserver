@@ -67,26 +67,26 @@ class ConfigParserGeneral(ConfigParserBase):
             "cfg": {
                 "rs_as": ValidatorASN(),
                 "router_id": ValidatorIPv4Addr(mandatory=True),
-                "prepend_rs_as": ValidatorBool(default=False),                      # Done
-                "path_hiding": ValidatorBool(default=True),                         # Done, not tested
-                "passive": ValidatorBool(default=True),                             # Done
+                "prepend_rs_as": ValidatorBool(default=False),
+                "path_hiding": ValidatorBool(default=True),
+                "passive": ValidatorBool(default=True),
                 "gtsm": ValidatorBool(default=False),
-                "add_path": ValidatorBool(default=False),                           # Done
+                "add_path": ValidatorBool(default=False),
                 "filtering": {
                     "next_hop_policy": ValidatorOption("next_hop_policy",
                                                        ("strict", "same-as"),
-                                                       default="strict"),           # Done
+                                                       default="strict"),
                     "ipv4_pref_len": ValidatorIPMinMaxLen(4,
                                                           default={"min": 8,
-                                                                   "max": 24}),     # Done
+                                                                   "max": 24}),
                     "ipv6_pref_len": ValidatorIPMinMaxLen(6,
                                                           default={"min": 12,
-                                                                   "max": 48}),     # Done, not tested
+                                                                   "max": 48}),
                     "global_black_list_pref": ValidatorListOf(
                         ValidatorPrefixListEntry, mandatory=False,
-                    ),                                                              # Done
-                    "max_as_path_len": ValidatorMaxASPathLen(default=32),           # Done
-                    "reject_invalid_as_in_as_path": ValidatorBool(default=True),    # Done
+                    ),
+                    "max_as_path_len": ValidatorMaxASPathLen(default=32),
+                    "reject_invalid_as_in_as_path": ValidatorBool(default=True),
                     "transit_free": {
                         "action": ValidatorOption("action",
                                                   ("reject", "warning"),
@@ -95,16 +95,18 @@ class ConfigParserGeneral(ConfigParserBase):
                         "asns": ValidatorASNList(mandatory=False)
                     },
                     "irrdb": {
-                        "enforce_origin_in_as_set": ValidatorBool(default=True),    # Done
-                        "enforce_prefix_in_as_set": ValidatorBool(default=True),    # Done
-                        "tag_as_set": ValidatorBool(default=True)                   # Done
+                        "enforce_origin_in_as_set": ValidatorBool(default=True),
+                        "enforce_prefix_in_as_set": ValidatorBool(default=True),
+                        "tag_as_set": ValidatorBool(default=True)
                     },
                     "rpki": {
-                        "enabled": ValidatorBool(default=False),                    # MISSING
+                        "enabled": ValidatorBool(default=False),
                         "reject_invalid": ValidatorBool(mandatory=True,
-                                                        default=True),              # MISSING
+                                                        default=True),
+                        "announce_invalid": ValidatorBool(mandatory=True,
+                                                          default=False),
                     },
-                    "max_prefix": {                                                 # MISSING
+                    "max_prefix": {
                         "peering_db": ValidatorBool(default=True),
                         "general_limit_ipv4": ValidatorUInt(default=170000),
                         "general_limit_ipv6": ValidatorUInt(default=12000),
@@ -118,20 +120,20 @@ class ConfigParserGeneral(ConfigParserBase):
                                                        mandatory=True)
                     },
                 },
-                "blackhole_filtering": {                                        # Done
-                    "announce_to_client": ValidatorBool(                        # Done
+                "blackhole_filtering": {
+                    "announce_to_client": ValidatorBool(
                         mandatory=True, default=True
                     ),
-                    "policy_ipv4": ValidatorOption(                             # Done
+                    "policy_ipv4": ValidatorOption(
                         "policy_ipv4",
                         ("propagate-unchanged", "rewrite-next-hop"),
                         mandatory=False),
-                    "policy_ipv6": ValidatorOption(                             # Done, not tested
+                    "policy_ipv6": ValidatorOption(
                         "policy_ipv6",
                         ("propagate-unchanged", "rewrite-next-hop"),
                         mandatory=False),
-                    "rewrite_next_hop_ipv4": ValidatorIPv4Addr(mandatory=False),# Done
-                    "rewrite_next_hop_ipv6": ValidatorIPv6Addr(mandatory=False),# Done, not tested
+                    "rewrite_next_hop_ipv4": ValidatorIPv4Addr(mandatory=False),
+                    "rewrite_next_hop_ipv6": ValidatorIPv6Addr(mandatory=False),
                     "add_noexport": ValidatorBool(default=True),
                 },
                 "communities": {

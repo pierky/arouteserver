@@ -371,8 +371,8 @@ class LiveScenario(ARouteServerTestCase):
 
     def receive_route(self, inst, prefix, other_inst=None, as_path=None,
                       next_hop=None, std_comms=None, lrg_comms=None,
-                      ext_comms=None, filtered=None, only_best=None,
-                      reject_reason=None):
+                      ext_comms=None, local_pref=None,
+                      filtered=None, only_best=None, reject_reason=None):
         """Test if the BGP speaker receives the expected route(s).
 
         If no routes matching the given criteria are found, the
@@ -397,6 +397,9 @@ class LiveScenario(ARouteServerTestCase):
             std_comms, lrg_comms, ext_comms (list): if given, only routes
                 that carry these BGP communities are considered. Use an
                 empty list ([]) to consider only routes with no BGP comms.
+
+            local_pref (int): if given, only routes with local-pref equal
+                to this value are considered.
 
             filtered (bool): if given, only routes that have been (not)
                 filtered are considered.
@@ -477,6 +480,12 @@ class LiveScenario(ARouteServerTestCase):
                 ("lrg_comms must be a list of strings representing "
                  "BGP large communities")
 
+        if local_pref:
+            assert isinstance(local_pref, int), \
+                "local_pref must be an integer >= 0"
+            assert local_pref >= 0, \
+                "local_pref must be an integer >= 0"
+
         if reject_reason is not None and not filtered:
             raise AssertionError(
                 "reject_reason can be set only if filtered is True"
@@ -521,6 +530,9 @@ class LiveScenario(ARouteServerTestCase):
                     err = True
                 if ext_comms is not None and sorted(route.ext_comms) != sorted(ext_comms):
                     errors.append("{{inst}} receives {{prefix}} with ext comms {comms} and not with {{ext_comms}}.".format(comms=route.ext_comms))
+                    err = True
+                if local_pref is not None and route.localpref != local_pref:
+                    errors.append("{{inst}} receives {{prefix}} with local-pref {local_pref} and not with {{local_pref}}.".format(local_pref=route.localpref))
                     err = True
                 if filtered is not None and route.filtered != filtered:
                     errors.append(
@@ -567,6 +579,8 @@ class LiveScenario(ARouteServerTestCase):
                 criteria.append("with lrg comms {}".format(lrg_comms))
             if ext_comms:
                 criteria.append("with ext comms {}".format(ext_comms))
+            if local_pref:
+                criteria.append("with local-pref {}".format(local_pref))
             if filtered is True:
                 criteria.append("filtered")
             if reject_reasons:
@@ -597,6 +611,7 @@ class LiveScenario(ARouteServerTestCase):
                     std_comms=std_comms,
                     lrg_comms=lrg_comms,
                     ext_comms=ext_comms,
+                    local_pref=local_pref,
                 ) for err in errors
             ])
             self.fail(failure)

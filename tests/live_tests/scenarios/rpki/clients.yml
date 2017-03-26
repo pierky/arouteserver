@@ -3,7 +3,31 @@ clients:
           ip:
           - "192.0.2.11"
           - "2001:db8:1:1::11"
+          cfg:
+                  filtering:
+                          rpki:
+                                  announce_invalid: True
         - asn: 2
           ip:
           - "192.0.2.22"
           - "2001:db8:1:1::22"
+          cfg:
+                  filtering:
+                          rpki:
+                                  reject_invalid: False
+        - asn: 3
+          ip:
+          - "192.0.2.33"
+          - "2001:db8:1:1::33"
+          cfg:
+                  filtering:
+                          rpki:
+                                  reject_invalid: True
+        - asn: 4
+          ip:
+          - "192.0.2.44"
+          - "2001:db8:1:1::44"
+          cfg:
+                  filtering:
+                          rpki:
+                                  announce_invalid: False

@@ -183,6 +183,8 @@ class Route(object):
 
         ext_comms (list): list of extended BGP communities (strings in
             the "[rt|ro]:x:y" format).
+
+        localpref (int): local-pref.
     """
 
     def _parse_bgp_communities(self, communities):
@@ -219,6 +221,8 @@ class Route(object):
         self.as_path = kwargs.get("as_path", None)
         self.next_hop = kwargs.get("next_hop", None)
         self.localpref = kwargs.get("localpref", None)
+        if self.localpref:
+            self.localpref = int(self.localpref)
         self.filtered = kwargs.get("filtered", False)
         self.reject_reason = kwargs.get("reject_reason", None)
         self.best = kwargs.get("best", None)

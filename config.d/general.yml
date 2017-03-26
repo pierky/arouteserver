@@ -174,11 +174,19 @@ cfg:
       # clients.
       # https://tools.ietf.org/html/rfc6811
       #
-      # Routes announced by the route server to the clients are
-      # tagged with BGP communities 'roa_valid', 'roa_invalid' and
-      # 'roa_unknown' (provided that they are configured within the
-      # 'communities' section below).
-      # If 'reject_invalid' is True, INVALID routes are rejected.
+      # The 'reject_invalid' and 'announce_invalid' flags below
+      # control how routes are handled on the basis of their validity
+      # state.
+      # The mix of the two flags and of communities à la RPKI-light
+      # allows to have the route server able to receive INVALID routes
+      # and to announce them only to clients that have been
+      # configured with `announce_invalid: True` and which are
+      # supposedly ready to correctly interpret them and treat them
+      # accordingly.
+      #
+      # Note well: 'announce_invalid: True' will enable the use of
+      #            "RPKI-Light", that is an Internet Draft currently
+      #            under discussion and development.
       #
       # BIRD: to load ROA entries into BIRD an external tool must
       # be used: rtrlib (https://github.com/rtrlib/bird-rtrlib-cli).
@@ -191,12 +199,38 @@ cfg:
 
       # When an INVALID route is received, the route server rejects
       # it.
-      # If this is False, INVALID routes are accepted and simply
-      # announced to clients after being tagged with the 'roa_invalid'
-      # BGP community.
+      # If this is False, INVALID routes are accepted and tagged with
+      # BGP communities 'roa_valid', 'roa_invalid' and 'roa_unknown'
+      # (provided that they are configured within the 'communities'
+      # section below). A lower local-pref is set on INVALID routes.
+      #
+      # Can be overwritten on a client-by-client basis.
       #
       # Default: True
       reject_invalid: True
+
+      # If this flag is True, INVALID routes are announced to
+      # clients, provided that the 'roa_invalid' BGP community has
+      # been configured in order to mark them and to allow clients
+      # to identify their invalid RPKI state.
+      # It is strongly suggested to leave the general value of this
+      # flag to False and to only set it to True on the clients
+      # configuration file, only for those clients who explicitly
+      # requested it.
+      #
+      # Note well: 'announce_invalid: True' will enable the use of
+      #            "RPKI-Light", that is an Internet Draft currently
+      #            under discussion and development.
+      #
+      # Please consider the 'Security Considerations' section of the
+      # draft before enabling RPKI-Light by setting 'announce_invalid'
+      # to True: https://tools.ietf.org/html/
+      # draft-ietf-sidrops-route-server-rpki-light#section-5
+      #
+      # Can be overwritten on a client-by-client basis.
+      #
+      # Default: False
+      announce_invalid: False
 
     max_prefix:
       # If 'action' is not given, no max-prefix enforcement

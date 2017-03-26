@@ -43,31 +43,32 @@ class ConfigParserClients(ConfigParserBase):
             "description": ValidatorText(mandatory=False),
             "password": ValidatorText(mandatory=False),
             "cfg": {
-                "prepend_rs_as": ValidatorBool(mandatory=False),                        # Done
-                "passive": ValidatorBool(mandatory=False),                              # Done
-                "gtsm": ValidatorBool(mandatory=False),                                 # Done, not tested
-                "add_path": ValidatorBool(mandatory=False),                             # Done
+                "prepend_rs_as": ValidatorBool(mandatory=False),
+                "passive": ValidatorBool(mandatory=False),
+                "gtsm": ValidatorBool(mandatory=False),
+                "add_path": ValidatorBool(mandatory=False),
                 "filtering": {
                     "next_hop_policy": ValidatorOption("next_hop_policy",
                                                        ("strict", "same-as"),
-                                                       mandatory=False),                # Done
-                    "ipv4_pref_len": ValidatorIPMinMaxLen(4, mandatory=False),          # Done
-                    "ipv6_pref_len": ValidatorIPMinMaxLen(6, mandatory=False),          # Done, not tested
-                    "max_as_path_len": ValidatorMaxASPathLen(mandatory=False),          # Done
-                    "reject_invalid_as_in_as_path": ValidatorBool(mandatory=False),     # Done
+                                                       mandatory=False),
+                    "ipv4_pref_len": ValidatorIPMinMaxLen(4, mandatory=False),
+                    "ipv6_pref_len": ValidatorIPMinMaxLen(6, mandatory=False),
+                    "max_as_path_len": ValidatorMaxASPathLen(mandatory=False),
+                    "reject_invalid_as_in_as_path": ValidatorBool(mandatory=False),
                     "irrdb": {
                         "as_sets": ValidatorListOf(ValidatorASSet,
-                                                   mandatory=False),                    # Done
-                        "enforce_origin_in_as_set": ValidatorBool(mandatory=False),     # Done
-                        "enforce_prefix_in_as_set": ValidatorBool(mandatory=False),     # Done
+                                                   mandatory=False),
+                        "enforce_origin_in_as_set": ValidatorBool(mandatory=False),
+                        "enforce_prefix_in_as_set": ValidatorBool(mandatory=False),
                     },
-                    "rpki": {                                                           # MISSING
+                    "rpki": {
                         "enabled": ValidatorBool(mandatory=False),
                         "reject_invalid": ValidatorBool(mandatory=False),
+                        "announce_invalid": ValidatorBool(mandatory=False),
                     },
                     "black_list_pref": ValidatorListOf(
                         ValidatorPrefixListEntry, mandatory=False,
-                    ),                                                                  # Done
+                    ),
                     "max_prefix": {
                         "action": ValidatorOption(
                             "action",
