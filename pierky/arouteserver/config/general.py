@@ -36,9 +36,6 @@ class ConfigParserGeneral(ConfigParserBase):
         "origin_not_present_in_as_set": { "type": "outbound" },
         "prefix_present_in_as_set": { "type": "outbound" },
         "prefix_not_present_in_as_set": { "type": "outbound" },
-        "roa_valid": { "type": "outbound" },
-        "roa_invalid": { "type": "outbound" },
-        "roa_unknown": { "type": "outbound" },
 
         "blackholing": { "type": "inbound" },
         "do_not_announce_to_any": { "type": "inbound" },
@@ -103,8 +100,6 @@ class ConfigParserGeneral(ConfigParserBase):
                         "enabled": ValidatorBool(default=False),
                         "reject_invalid": ValidatorBool(mandatory=True,
                                                         default=True),
-                        "announce_invalid": ValidatorBool(mandatory=True,
-                                                          default=False),
                     },
                     "max_prefix": {
                         "peering_db": ValidatorBool(default=True),

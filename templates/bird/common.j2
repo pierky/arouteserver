@@ -213,36 +213,38 @@ function apply_prepend(int peer_as) {
 
 {% if cfg.filtering.rpki.enabled %}
 # This function adds the BGP communities used to
-# inform clients about the RPKI validity state of
-# a route.
+# keep track of RPKI validation state.
+# RFC8097 extended communities are used here.
 function add_rpki_community(string comm_name) {
 	if comm_name = "valid" then {
-{% if cfg.communities.roa_valid|community_is_set %}
-{{ add_communities(cfg.communities.roa_valid) }}
-{% endif %}
+		bgp_ext_community.add((unknown 0x4300, 0, 0));
 	}
 	if comm_name = "unknown" then {
-{% if cfg.communities.roa_unknown|community_is_set %}
-{{ add_communities(cfg.communities.roa_unknown) }}
-{% endif %}
+		bgp_ext_community.add((unknown 0x4300, 0, 1));
 	}
 	if comm_name = "invalid" then {
-{% if cfg.communities.roa_invalid|community_is_set %}
-{{ add_communities(cfg.communities.roa_invalid) }}
-{% endif %}
+		bgp_ext_community.add((unknown 0x4300, 0, 2));
 	}
 }
 
 # This functions performs RPKI validation of the current
 # route and adds the informative communities.
-# If the route is INVALID it sets a lower local-pref and
-# returns true, otherwise it returns false.
-function route_is_rpki_invalid () {
+function perform_rpki_validation () {
 	case roa_check(RPKI) {
 		ROA_VALID: add_rpki_community("valid");
 		ROA_UNKNOWN: add_rpki_community("unknown");
-		ROA_INVALID: add_rpki_community("invalid"); bgp_local_pref = rpki_invalid_local_pref; return true;
+		ROA_INVALID: add_rpki_community("invalid");
 	}
+}
+
+# This function returns True if the route is INVALID.
+function route_is_rpki_invalid () {
+	return (unknown 0x4300, 0, 2) ~ bgp_ext_community;
+}
+
+# This function returns True if RPKI INVALID routes
+# should be announced to clients.
+function announce_rpki_invalid_to_client () {
 	return false;
 }
 {% endif %}

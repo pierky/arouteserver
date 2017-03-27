@@ -78,18 +78,6 @@ cfg:
     origin_not_present_in_as_set:
       std: "65530:0"
       lrg: "rs_as:65530:0"
-    roa_valid:
-      std: "65530:2"
-      lrg: "rs_as:65530:2"
-      ext: "rt:65530:2"
-    roa_invalid:
-      std: "65530:3"
-      lrg: "rs_as:65530:3"
-      ext: "rt:65530:3"
-    roa_unknown:
-      std: "65530:4"
-      lrg: "rs_as:65530:4"
-      ext: "rt:65530:4"
     do_not_announce_to_peer:
       std: "0:peer_as"
       ext: "rt:0:peer_as"

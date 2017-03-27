@@ -63,12 +63,6 @@ cfg:
                         std: "rs_as:65503"
                         ext: "rt:rs_as:65503"
                         lrg: "rs_as:65503:rs_as"
-                roa_valid:
-                        std: "64512:1"
-                        lrg: "rs_as:64512:1"
-                roa_invalid:
-                        std: "64512:2"
-                        lrg: "rs_as:64512:2"
                 prepend_once_to_peer:
                         std: "65504:peer_as"
                         ext: "rt:65504:peer_as"

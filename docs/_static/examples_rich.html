@@ -127,35 +127,6 @@ Route <strong>validity state</strong> is signalled to route server clients using
 <li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI validation</a> of routes received by the route server is <strong>enabled</strong>.</p></li>
 
 <li><p>When an INVALID route is received by the route server, <strong>it is rejected</strong>.</p></li>
-<li><p>
-Route <strong>validity state</strong> is signalled to route server clients using the following <strong>BGP communities</strong>:
-	<table class="table">
-	<thead>
-	  <tr>
-	    <th>Validity state</th>
-	    <th>Standard</th>
-	    <th>Extended</th>
-	    <th>Large</th>
-	  <tr>
-	</thead>
-	<tbody>
-	    <tr>
-    <td>VALID</td>
-    <td>65530:2</td>
-    <td>rt:65530:2</td>
-    <td>999:65530:2</td>
-  </tr>
-
-	    <tr>
-    <td>UNKNOWN</td>
-    <td>65530:4</td>
-    <td>rt:65530:4</td>
-    <td>999:65530:4</td>
-  </tr>
-
-	</tbody>
-	</table>
-</p></li>
 </ul>
 
 

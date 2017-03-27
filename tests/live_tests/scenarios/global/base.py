@@ -143,28 +143,32 @@ class BasicScenario(LiveScenario):
 
     def test_030_good_prefixes_received_by_rs(self):
         """{}: good prefixes received by rs"""
+        if isinstance(self.rs, BIRDInstance):
+            ext_comm_rpki_unknown = ["generic:0x43000000:0x1"]
+        else:
+            ext_comm_rpki_unknown = []
         self.receive_route(self.rs, self.DATA["AS1_good1"], self.AS1_1,
                            next_hop=self.AS1_1, as_path="1",
-                           std_comms=[], ext_comms=[], lrg_comms=[])
+                           std_comms=[], ext_comms=ext_comm_rpki_unknown, lrg_comms=[])
         self.receive_route(self.rs, self.DATA["AS1_good2"], self.AS1_1,
                            next_hop=self.AS1_1, as_path="1",
-                           std_comms=[], ext_comms=[], lrg_comms=[])
+                           std_comms=[], ext_comms=ext_comm_rpki_unknown, lrg_comms=[])
         self.receive_route(self.rs, self.DATA["AS1_good1"], self.AS1_2,
                            next_hop=self.AS1_2, as_path="1",
-                           std_comms=[], ext_comms=[], lrg_comms=[])
+                           std_comms=[], ext_comms=ext_comm_rpki_unknown, lrg_comms=[])
         self.receive_route(self.rs, self.DATA["AS1_good2"], self.AS1_2,
                            next_hop=self.AS1_2, as_path="1",
-                           std_comms=[], ext_comms=[], lrg_comms=[])
+                           std_comms=[], ext_comms=ext_comm_rpki_unknown, lrg_comms=[])
         # AS1_good3 is announced by AS1_2 with NEXT_HOP = AS1_1
         self.receive_route(self.rs, self.DATA["AS1_good3"], self.AS1_2,
                            next_hop=self.AS1_1, as_path="1",
-                           std_comms=[], ext_comms=[], lrg_comms=[])
+                           std_comms=[], ext_comms=ext_comm_rpki_unknown, lrg_comms=[])
         self.receive_route(self.rs, self.DATA["AS2_good1"], self.AS2,
                            next_hop=self.AS2, as_path="2",
-                           std_comms=[], ext_comms=[], lrg_comms=[])
+                           std_comms=[], ext_comms=ext_comm_rpki_unknown, lrg_comms=[])
         self.receive_route(self.rs, self.DATA["AS2_good2"], self.AS2,
                            next_hop=self.AS2, as_path="2",
-                           std_comms=[], ext_comms=[], lrg_comms=[])
+                           std_comms=[], ext_comms=ext_comm_rpki_unknown, lrg_comms=[])
 
         # rs should not receive prefixes with the following criteria
         with self.assertRaisesRegexp(AssertionError, "Routes not found."):
@@ -332,38 +336,41 @@ class BasicScenario(LiveScenario):
         if isinstance(self.rs, OpenBGPDInstance):
             raise unittest.SkipTest("RPKI not supported by OpenBGPD")
 
-        self.receive_route(self.rs, self.DATA["AS101_roa_valid1"], self.AS1_1, as_path="1 101",
-                           std_comms=["64512:1"], lrg_comms=["999:64512:1"])
-        self.receive_route(self.rs, self.DATA["AS101_roa_valid1"], self.AS2, as_path="2 101",
-                           std_comms=["64512:1"], lrg_comms=["999:64512:1"])
+        self.receive_route(self.rs, self.DATA["AS101_roa_valid1"], self.AS1_1,
+                           as_path="1 101")
+        self.receive_route(self.rs, self.DATA["AS101_roa_valid1"], self.AS2,
+                           as_path="2 101")
 
     def test_045_rpki_invalid_prefix_asn(self):
         """{}: RPKI, invalid prefix (bad ASN) received by rs"""
         if isinstance(self.rs, OpenBGPDInstance):
             raise unittest.SkipTest("RPKI not supported by OpenBGPD")
 
-        self.receive_route(self.rs, self.DATA["AS101_roa_invalid1"], self.AS1_1, as_path="1 101",
-                           std_comms=["64512:2"], lrg_comms=["999:64512:2"], filtered=True)
-        self.receive_route(self.rs, self.DATA["AS101_roa_invalid1"], self.AS2, as_path="2 101",
-                           std_comms=["64512:2"], lrg_comms=["999:64512:2"], filtered=True)
+        self.receive_route(self.rs, self.DATA["AS101_roa_invalid1"], self.AS1_1,
+                           as_path="1 101", filtered=True,
+                           ext_comms=["generic:0x43000000:0x2"])
+        self.receive_route(self.rs, self.DATA["AS101_roa_invalid1"], self.AS2,
+                           as_path="2 101", filtered=True,
+                           ext_comms=["generic:0x43000000:0x2"])
 
     def test_045_rpki_invalid_prefix_length(self):
         """{}: RPKI, invalid prefix (bad length) received by rs"""
         if isinstance(self.rs, OpenBGPDInstance):
             raise unittest.SkipTest("RPKI not supported by OpenBGPD")
 
-        self.receive_route(self.rs, self.DATA["AS101_roa_badlen"], self.AS1_1, as_path="1 101",
-                           std_comms=["64512:2"], lrg_comms=["999:64512:2"], filtered=True)
-        self.receive_route(self.rs, self.DATA["AS101_roa_badlen"], self.AS2, as_path="2 101",
-                           std_comms=["64512:2"], lrg_comms=["999:64512:2"], filtered=True)
+        self.receive_route(self.rs, self.DATA["AS101_roa_badlen"], self.AS1_1,
+                           as_path="1 101", filtered=True,
+                           ext_comms=["generic:0x43000000:0x2"])
+        self.receive_route(self.rs, self.DATA["AS101_roa_badlen"], self.AS2,
+                           as_path="2 101", filtered=True,
+                           ext_comms=["generic:0x43000000:0x2"])
 
     def test_045_rpki_valid_prefix_propagated_to_clients(self):
         """{}: RPKI, valid prefix propagated to clients"""
         if isinstance(self.rs, OpenBGPDInstance):
             raise unittest.SkipTest("RPKI not supported by OpenBGPD")
 
-        self.receive_route(self.AS3, self.DATA["AS101_roa_valid1"], self.rs,
-                           std_comms=["64512:1"], lrg_comms=["999:64512:1"])
+        self.receive_route(self.AS3, self.DATA["AS101_roa_valid1"], self.rs)
 
     def test_045_rpki_invalid_prefixes_not_propagated_to_clients(self):
         """{}: RPKI, invalid prefix (bad ASN) not propagated to clients"""

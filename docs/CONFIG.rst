@@ -123,8 +123,10 @@ With this configuration, the following values will be used to run the bgpq3 prog
 RPKI-based filtering
 ********************
 
-RPKI-based validation of routes can be configured using the general ``filtering.rpki`` section. Depending on the ``reject_invalid`` and ``announce_invalid`` configuration, INVALID routes can be rejected before entering the route server or accepted, tagged with BGP communities (à la RPKI-Light) and propagated.
-Please consider the `Security Considerations <https://tools.ietf.org/html/draft-ietf-sidrops-route-server-rpki-light#section-5>` section of the draft before enabling RPKI-Light by setting ``announce_invalid`` to True.
+RPKI-based validation of routes can be configured using the general ``filtering.rpki`` section.
+RFC8097 BGP extended communities are used to mark routes on the basis of their validity state.
+Depending on the ``reject_invalid`` configuration, INVALID routes can be rejected before entering the route server or accepted for further processing from external tools or functions provided within :ref:`.local files <site-specific-custom-config>`.
+INVALID routes are not propagated to clients.
 
 - To acquire RPKI data and load them into BIRD, a couple of external tools from the `rtrlib <http://rpki.realmv6.org/>`_ suite are used: `rtrlib <https://github.com/rtrlib>`_ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`_. One or more trusted local validating caches should be used to get and validate RPKI data before pushing them to BIRD. An overview is provided on the `rtrlib GitHub wiki <https://github.com/rtrlib/rtrlib/wiki/Background>`_, where also an `usage guide <https://github.com/rtrlib/rtrlib/wiki/Usage-of-the-RTRlib>`_ can be found.
 
@@ -133,7 +135,7 @@ Please consider the `Security Considerations <https://tools.ietf.org/html/draft-
 BGP Communities
 ***************
 
-BGP communities can be used for many features in the configurations built using ARouteServer: blackhole filtering, AS_PATH prepending, announcement control, various informative purposes (valid ASN, RPKI status, ...) and more. All these communities are referenced by *name* (or *tag*) in the configuration files and their real values are reported only once, in the ``communities`` section of the ``general.yml`` file.
+BGP communities can be used for many features in the configurations built using ARouteServer: blackhole filtering, AS_PATH prepending, announcement control, various informative purposes (valid origin ASN, valid prefix, ...) and more. All these communities are referenced by *name* (or *tag*) in the configuration files and their real values are reported only once, in the ``communities`` section of the ``general.yml`` file.
 For each community, values can be set for any of the three *formats*: standard (`RFC1997 <https://tools.ietf.org/html/rfc1997>`_), extended (`RFC4360 <https://tools.ietf.org/html/rfc4360>`_/`RFC5668 <https://tools.ietf.org/html/rfc5668>`_) and large (`draft-ietf-idr-large-community <https://tools.ietf.org/html/draft-ietf-idr-large-community>`_).
 
 .. _site-specific-custom-config:

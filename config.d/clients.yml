@@ -129,16 +129,6 @@ clients:
         rpki:
           #reject_invalid: True
 
-          # Note well: 'announce_invalid: True' will enable the use of
-          #            "RPKI-Light", that is an Internet Draft currently
-          #            under discussion and development.
-          #
-          # Please consider the 'Security Considerations' section of
-          # the RPKI-Light draft before setting 'announce_invalid' to
-          # True: https://tools.ietf.org/html/
-          # draft-ietf-sidrops-route-server-rpki-light#section-5
-          #announce_invalid: False
-
         max_prefix:
           #action: "shutdown"
           #peering_db: True

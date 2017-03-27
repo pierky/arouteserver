@@ -128,7 +128,7 @@ class TestRPKIAnnounceInvalid(ARouteServerTestCase):
         self._create_builder(cfg_tpl, clients_tpl)
 
 class TestRPKIAnnounceInvalidBIRD(TestRPKIAnnounceInvalid):
-    __test__ = True
+    __test__ = False
 
     SHORT_DESCR = "RPKI, announce invalid, BIRD"
     BUILDER_CLASS = BIRDConfigBuilder
@@ -136,7 +136,7 @@ class TestRPKIAnnounceInvalidBIRD(TestRPKIAnnounceInvalid):
     IP_VER = 4
 
 class TestRPKIAnnounceInvalidOpenBGPD(TestRPKIAnnounceInvalid):
-    __test__ = True
+    __test__ = False
 
     SHORT_DESCR = "RPKI, announce invalid, OpenBGPD"
     BUILDER_CLASS = OpenBGPDConfigBuilder

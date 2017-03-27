@@ -190,32 +190,6 @@ class ConfigBuilder(object):
 
         # Validation
 
-        # RPKI: announce_invalid can be True only if roa_invalid is provided
-        if self.cfg_general["filtering"]["rpki"]["enabled"] and \
-            not self.community_is_set(
-                self.cfg_general["communities"]["roa_invalid"]
-            ):
-
-            rpki_announce_invalid_clients = []
-            for client in self.cfg_clients.cfg["clients"]:
-                if client["cfg"]["filtering"]["rpki"]["announce_invalid"]:
-                    rpki_announce_invalid_clients.append(client["ip"])
-            if rpki_announce_invalid_clients:
-                raise BuilderError(
-                    "The BGP community 'roa_invalid' has not been configured "
-                    "but 'rpki.announce_invalid' has been set for the "
-                    "following clients: {}{}. 'announce_invalid' can be set "
-                    "to True only if a BGP community has been configured to "
-                    "mark INVALID routes before announcing them to enabled "
-                    "clients.".format(
-                        ", ".join(rpki_announce_invalid_clients[:3]),
-                        "" if len(rpki_announce_invalid_clients) <= 3 else
-                            " and {} more".format(
-                            len(rpki_announce_invalid_clients) - 3
-                            )
-                    )
-                )
-
         if not self.validate_bgpspeaker_specific_configuration():
             raise CompatibilityIssuesError(
                 "One or more compatibility issues have been found."

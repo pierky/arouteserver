@@ -64,7 +64,6 @@ class ConfigParserClients(ConfigParserBase):
                     "rpki": {
                         "enabled": ValidatorBool(mandatory=False),
                         "reject_invalid": ValidatorBool(mandatory=False),
-                        "announce_invalid": ValidatorBool(mandatory=False),
                     },
                     "black_list_pref": ValidatorListOf(
                         ValidatorPrefixListEntry, mandatory=False,

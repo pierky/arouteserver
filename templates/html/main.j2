@@ -152,27 +152,9 @@ Route <strong>validity state</strong> is signalled to route server clients using
 {% if cfg.filtering.rpki.enabled %}
 {%	if cfg.filtering.rpki.reject_invalid %}
 <li><p>When an INVALID route is received by the route server, <strong>it is rejected</strong>.</p></li>
+{%	else %}
+<li><p>INVALID routes are not announced to clients.</p></li>
 {%	endif %}
-<li><p>
-Route <strong>validity state</strong> is signalled to route server clients using the following <strong>BGP communities</strong>:
-	<table class="table">
-	<thead>
-	  <tr>
-	    <th>Validity state</th>
-	    <th>Standard</th>
-	    <th>Extended</th>
-	    <th>Large</th>
-	  <tr>
-	</thead>
-	<tbody>
-{%	if not cfg.filtering.rpki.reject_invalid %}
-	  {{ write_communities_table_row(cfg.communities.roa_invalid, "INVALID") }}
-{%	endif %}
-	  {{ write_communities_table_row(cfg.communities.roa_valid, "VALID") }}
-	  {{ write_communities_table_row(cfg.communities.roa_unknown, "UNKNOWN") }}
-	</tbody>
-	</table>
-</p></li>
 {% endif %}
 </ul>
 
