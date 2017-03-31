@@ -42,6 +42,9 @@ from .peering_db import PeeringDBNet
 
 class ConfigBuilder(object):
 
+    LOCAL_FILES_IDS = None
+    LOCAL_FILES_BASE_DIR = None
+
     def validate_bgpspeaker_specific_configuration(self):
         """Check compatibility between config and target BGP speaker
 
@@ -106,6 +109,7 @@ class ConfigBuilder(object):
                  bgpq3_path="bgpq3", bgpq3_host=IRRDBTools.BGPQ3_DEFAULT_HOST,
                  bgpq3_sources=IRRDBTools.BGPQ3_DEFAULT_SOURCES, threads=4,
                  ip_ver=None, ignore_errors=[], live_tests=False,
+                 local_files=[], local_files_dir=None,
                  cfg_general=None, cfg_bogons=None, cfg_clients=None,
                  cfg_roas=None,
                  **kwargs):
@@ -157,6 +161,9 @@ class ConfigBuilder(object):
 
         self.live_tests = live_tests
 
+        self.local_files = local_files
+        self.local_files_dir = local_files_dir
+
         self.cfg_general = self._get_cfg(cfg_general,
                                          ConfigParserGeneral,
                                          "general")
@@ -189,6 +196,19 @@ class ConfigBuilder(object):
         self.as_sets = None
 
         # Validation
+
+        if self.local_files:
+            if not isinstance(self.local_files, list):
+                raise BuilderError(
+                    "local_files must be a list of .local files IDs"
+                )
+            for local_file_id in self.local_files:
+                if local_file_id not in self.LOCAL_FILES_IDS:
+                    raise BuilderError(
+                        "The .local file ID '{}' is invalid.".format(
+                            local_file_id
+                        )
+                    )
 
         if not self.validate_bgpspeaker_specific_configuration():
             raise CompatibilityIssuesError(
@@ -269,6 +289,9 @@ class ConfigBuilder(object):
             return False
         return True
 
+    def _include_local_file(self, local_file_id):
+        raise NotImplementedError()
+
     def render_template(self, output_file=None):
         self.data = {}
         self.data["ip_ver"] = self.ip_ver
@@ -288,6 +311,19 @@ class ConfigBuilder(object):
                 return True
             return ipaddr.IPAddress(ip).version == self.ip_ver
 
+        def include_local_file(local_file_id):
+            if local_file_id not in self.LOCAL_FILES_IDS:
+                raise AssertionError(
+                    "Local file ID '{}' is referenced in J2 "
+                    "templates but is not in LOCAL_FILES_IDS.".format(
+                        local_file_id
+                    )
+                )
+            local_files = self.local_files or []
+            if local_file_id in local_files:
+                return self._include_local_file(local_file_id)
+            return ""
+
         env = Environment(
             loader=FileSystemLoader(self.template_dir),
             trim_blocks=True,
@@ -297,6 +333,7 @@ class ConfigBuilder(object):
         env.tests["current_ipver"] = current_ipver
         env.filters["community_is_set"] = self.community_is_set
         env.filters["ipaddr_ver"] = ipaddr_ver
+        env.filters["include_local_file"] = include_local_file
 
         self.enrich_j2_environment(env)
 
@@ -326,6 +363,16 @@ class ConfigBuilder(object):
 
 class BIRDConfigBuilder(ConfigBuilder):
 
+    LOCAL_FILES_IDS = ["header", "header4", "header6",
+                       "footer", "footer4", "footer6"]
+    LOCAL_FILES_BASE_DIR = "/etc/bird"
+
+    HOOKS = ["pre_receive_from_client", "post_receive_from_client",
+             "pre_announce_to_client", "post_announce_to_client",
+             "route_can_be_announced_to", "announce_rpki_invalid_to_client",
+             "scrub_communities_in", "scrub_communities_out",
+             "apply_blackhole_filtering_policy", "route_can_be_announced_to"]
+
     def validate_bgpspeaker_specific_configuration(self):
         if self.ip_ver is None:
             raise BuilderError(
@@ -334,7 +381,35 @@ class BIRDConfigBuilder(ConfigBuilder):
                 "--ip-ver command line argument to supply one."
             )
 
+        hooks = self.kwargs.get("hooks", [])
+        if hooks:
+            if not isinstance(hooks, list):
+                raise BuilderError(
+                    "hooks must be a list of hook names"
+                )
+
         return True
+
+    def _include_local_file(self, local_file_id):
+        return 'include "{}";\n\n'.format(
+            os.path.join(
+                self.local_files_dir or self.LOCAL_FILES_BASE_DIR,
+                "{}.local".format(local_file_id)
+            )
+        )
+
+    def enrich_j2_environment(self, env):
+
+        def hook_is_set(hook_name):
+            if hook_name not in self.HOOKS:
+                raise AssertionError(
+                    "Hook '{}' is referenced in J2 "
+                    "templates but is not in HOOKS.".format(hook_name)
+                )
+            hooks = self.kwargs.get("hooks", []) or []
+            return hook_name in hooks
+
+        env.filters["hook_is_set"] = hook_is_set
 
 class OpenBGPDConfigBuilder(ConfigBuilder):
 
@@ -343,6 +418,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                        "pre-clients", "post-clients", "client",
                        "pre-filters", "post-filters",
                        "footer"]
+    LOCAL_FILES_BASE_DIR = "/etc/bgpd"
 
     @staticmethod
     def community_is_set(comm):
@@ -352,23 +428,16 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             return False
         return True
 
+    def _include_local_file(self, local_file_id):
+        return 'include "{}"\n\n'.format(
+            os.path.join(
+                self.local_files_dir or self.LOCAL_FILES_BASE_DIR,
+                "{}.local".format(local_file_id)
+            )
+        )
+
     def validate_bgpspeaker_specific_configuration(self):
         res = True
-
-        local_files = self.kwargs.get("local_files", None)
-
-        if local_files:
-            if not isinstance(local_files, list):
-                raise BuilderError(
-                    "local_files must be a list of .local files IDs"
-                )
-            for local_file_id in local_files:
-                if local_file_id not in self.LOCAL_FILES_IDS:
-                    raise BuilderError(
-                        "The .local file ID '{}' is invalid.".format(
-                            local_file_id
-                        )
-                    )
 
         if self.cfg_general["path_hiding"]:
             if not self.process_bgpspeaker_specific_compatibility_issue(
@@ -516,24 +585,6 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             )
 
         env.filters["convert_ext_comm"] = convert_ext_comm
-
-        def include_local_file(local_file_id):
-            if local_file_id not in self.LOCAL_FILES_IDS:
-                raise AssertionError(
-                    "Local file ID '{}' is referenced in J2 "
-                    "templates but is not in LOCAL_FILES_IDS."
-                )
-            local_files = self.kwargs.get("local_files") or []
-            if local_file_id in local_files:
-                return 'include "{}"\n\n'.format(
-                    os.path.join(
-                        self.kwargs.get("local_files_dir", "/etc/bgpd"),
-                        "{}.local".format(local_file_id)
-                    )
-                )
-            return ""
-
-        env.filters["include_local_file"] = include_local_file
 
 class TemplateContextDumper(ConfigBuilder):
 

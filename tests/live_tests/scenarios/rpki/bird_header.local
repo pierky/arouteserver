@@ -1,0 +1,15 @@
+function hook_post_announce_to_client(int client_asn; ip client_ip; string client_id) {
+	# Transform RFC8097 extended communities into locally significant communities
+
+	# VALID
+	if (unknown 0x4300, 0, 0) ~ bgp_ext_community then
+		bgp_community.add((64512, 1));
+	# UNKNOWN
+	if (unknown 0x4300, 0, 1) ~ bgp_ext_community then
+		bgp_community.add((64512, 3));
+	# INVALID
+	if (unknown 0x4300, 0, 2) ~ bgp_ext_community then
+		bgp_community.add((64512, 2));
+
+	return true;
+}

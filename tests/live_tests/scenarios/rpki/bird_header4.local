@@ -1,0 +1,7 @@
+function hook_announce_rpki_invalid_to_client(int client_asn; ip client_ip; string client_id) {
+	# AS1 wants to receive INVALID routes too.
+	if client_ip = 192.0.2.11 then {
+		return true;
+	}
+	return false;
+}

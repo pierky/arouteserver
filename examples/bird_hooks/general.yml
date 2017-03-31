@@ -1,0 +1,132 @@
+cfg:
+  rs_as: 999
+
+  router_id: "192.0.2.2"
+
+  prepend_rs_as: False
+
+  path_hiding: True
+
+  passive: True
+
+  gtsm: True
+
+  add_path: True
+
+  filtering:
+    next_hop_policy: "same-as"
+
+    ipv4_pref_len:
+      min: 8
+      max: 24
+    ipv6_pref_len:
+      min: 12
+      max: 48
+
+    global_black_list_pref:
+      - prefix: "192.0.2.0"
+        length: 24
+        comment: "Local network"
+      - prefix: "2001:db8:1:1::"
+        length: 64
+        comment: "Local network"
+
+    max_as_path_len: 32
+
+    reject_invalid_as_in_as_path: True
+
+    transit_free:
+      action: "reject"
+      asns: >
+        174, 209, 286, 701, 1239, 1299, 2828, 2914,
+        3257, 3320, 3356, 3549, 5511, 6453, 6461,
+        6762, 6830, 7018, 12956
+
+    irrdb:
+      enforce_origin_in_as_set: True
+
+      enforce_prefix_in_as_set: True
+
+      tag_as_set: True
+
+    rpki:
+      enabled: True
+      reject_invalid: True
+
+    max_prefix:
+      action: "restart"
+      restart_after: 30
+      peering_db: True
+
+  blackhole_filtering:
+    policy_ipv4: "rewrite-next-hop"
+    policy_ipv6: "rewrite-next-hop"
+
+    rewrite_next_hop_ipv4: "192.0.2.66"
+    rewrite_next_hop_ipv6: "2001:db8:1:1::66"
+
+    announce_to_client: True
+    add_noexport: True
+  
+  communities:
+    blackholing:
+      std: "65534:0"
+      lrg: "rs_as:666:0"
+    origin_present_in_as_set:
+      std: "65530:1"
+      lrg: "rs_as:65530:1"
+    origin_not_present_in_as_set:
+      std: "65530:0"
+      lrg: "rs_as:65530:0"
+    do_not_announce_to_peer:
+      std: "0:peer_as"
+      ext: "rt:0:peer_as"
+      lrg: "rs_as:0:peer_as"
+    announce_to_peer:
+      std: "rs_as:peer_as"
+      ext: "rt:rs_as:peer_as"
+      lrg: "rs_as:rs_as:peer_as"
+    do_not_announce_to_any:
+      std: "0:rs_as"
+      ext: "rt:0:rs_as"
+      lrg: "rs_as:0:rs_as"
+    prepend_once_to_any:
+      std: "65501:rs_as"
+      ext: "rt:65501:rs_as"
+      lrg: "rs_as:65501:rs_as"
+    prepend_twice_to_any:
+      std: "65502:rs_as"
+      ext: "rt:65502:rs_as"
+      lrg: "rs_as:65502:rs_as"
+    prepend_thrice_to_any:
+      std: "65503:rs_as"
+      ext: "rt:65503:rs_as"
+      lrg: "rs_as:65503:rs_as"
+    prepend_once_to_peer:
+      std: "65504:peer_as"
+      ext: "rt:65504:peer_as"
+      lrg: "rs_as:65504:peer_as"
+    prepend_twice_to_peer:
+      std: "65505:peer_as"
+      ext: "rt:65505:peer_as"
+      lrg: "rs_as:65505:peer_as"
+    prepend_thrice_to_peer:
+      std: "65506:peer_as"
+      ext: "rt:65506:peer_as"
+      lrg: "rs_as:65506:peer_as"
+    add_noexport_to_any:
+      std: "65507:rs_as"
+      ext: "rt:65507:rs_as"
+      lrg: "rs_as:65507:rs_as"
+    add_noadvertise_to_any:
+      std: "65508:rs_as"
+      ext: "rt:65508:rs_as"
+      lrg: "rs_as:65508:rs_as"
+    add_noexport_to_peer:
+      std: "65509:peer_as"
+      ext: "rt:65509:peer_as"
+      lrg: "rs_as:65509:peer_as"
+    add_noadvertise_to_peer:
+      std: "65510:peer_as"
+      ext: "rt:65510:peer_as"
+      lrg: "rs_as:65510:peer_as"

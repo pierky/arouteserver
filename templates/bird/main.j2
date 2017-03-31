@@ -7,6 +7,14 @@
 {% include "header.j2" %}
 
 
+{{ "header"|include_local_file -}}
+{% if ip_ver == 4 %}
+{{ "header4"|include_local_file -}}
+{% else %}
+{{ "header6"|include_local_file -}}
+{% endif %}
+
+
 {% include "rpki.j2" %}
 
 
@@ -19,9 +27,9 @@
 {% include "clients.j2" %}
  
 
-include "*.local";
+{{ "footer"|include_local_file -}}
 {% if ip_ver == 4 %}
-include "*.local4";
+{{ "footer4"|include_local_file -}}
 {% else %}
-include "*.local6";
+{{ "footer6"|include_local_file -}}
 {% endif %}

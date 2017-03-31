@@ -8,11 +8,3 @@ cfg:
       tag_as_set: False
     rpki:
       enabled: True
-  communities:
-    roa_valid:
-      std: "64512:1"
-    roa_invalid:
-      std: "64512:2"
-    roa_unknown:
-      std: "64512:3"
-

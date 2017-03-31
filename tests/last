@@ -48,7 +48,6 @@ General config parser: peer_as macro usage in communities ... ok
 General config parser: prepend_rs_as ... ok
 General config parser: reject_invalid_as_in_as_path ... ok
 General config parser: router_id ... ok
-General config parser: rpki, announce_invalid ... ok
 General config parser: rpki, enabled ... ok
 General config parser: rpki, reject_invalid ... ok
 General config parser: rs_as ... ok
@@ -70,16 +69,12 @@ Clients from Euro-IX: official more complex example ... ok
 Clients from Euro-IX: --routeserver-only filter ... ok
 PeeringDB network: get data ... ok
 PeeringDB network: missing data ... ok
-RPKI, announce invalid, BIRD: enabled for all, no 'roa_invalid' ... ok
-RPKI, announce invalid, BIRD: enabled for all, with 'roa_invalid' ... ok
-RPKI, announce invalid, BIRD: enabled for one, no 'roa_invalid' ... ok
-RPKI, announce invalid, BIRD: no announce_invalid ... ok
-RPKI, announce invalid, OpenBGPD: enabled for all, no 'roa_invalid' ... ok
-RPKI, announce invalid, OpenBGPD: enabled for all, with 'roa_invalid' ... ok
-RPKI, announce invalid, OpenBGPD: enabled for one, no 'roa_invalid' ... ok
-RPKI, announce invalid, OpenBGPD: no announce_invalid ... ok
-RPKI, announce invalid, OpenBGPD: enabled for all, with 'roa_invalid' large comm only ... ok
-RPKI, announce invalid, OpenBGPD: enabled for all, with 'roa_invalid' large comm + ext comm ... ok
+Live test, BIRD, hooks example, IPv4: setting instances up...
+Live test, BIRD, hooks example, IPv4: instances setup ... ok
+Live test, BIRD, hooks example, IPv4: stopping instances...
+Live test, BIRD, hooks example, IPv6: setting instances up...
+Live test, BIRD, hooks example, IPv6: instances setup ... ok
+Live test, BIRD, hooks example, IPv6: stopping instances...
 Live test, BIRD, BGP communities, IPv4: setting instances up...
 Live test, BIRD, BGP communities, IPv4: instances setup ... ok
 Live test, BIRD, BGP communities, IPv4: announce to AS1 only (std) ... ok
@@ -588,6 +583,6 @@ Live test, OpenBGPD, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ok 
 Live test, OpenBGPD, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 512 tests in 2161.765s
+Ran 503 tests in 2177.017s
 
 OK (SKIP=34)

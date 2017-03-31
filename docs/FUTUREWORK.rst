@@ -6,8 +6,8 @@ Short term
 
 - New feature: custom informative BGP communities
 - New feature: timers customization
-- Improvement: BIRD .local files
 - Packaging: a command to upgrade the program
+- Doc: better documentation of BIRD hooks
 
 Mid term
 --------

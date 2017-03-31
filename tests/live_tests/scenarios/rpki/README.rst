@@ -1,7 +1,12 @@
 RPKI INVALID routes tagging
 ***************************
 
-Mostly to test INVALID routes tagging and propagation, since other cases are already tested with the *global* scenario.
+Mostly to test hooks and include files in a scenario where a custom configuration allows to propagate RPKI INVALID routes to some selected clients and to tag them with locally significant BGP communities.
+
+Hooks used:
+
+- ``announce_rpki_invalid_to_client``, implemented in the ``header[4|6]`` include files and used to discriminate which clients should receive INVALIDs;
+- ``post_announce_to_client``, implemented in the ``header`` include file and used to convert RFC8097 extended communities into locally significant ones.
 
 - RPKI ROAs:
 
@@ -27,7 +32,7 @@ Mostly to test INVALID routes tagging and propagation, since other cases are alr
     6  3003:0:8000::/33  34    103
     == ================  ====  ======
 
-- Communities:
+- Locally significant communities:
 
   ==============  =============
   Validity state  BGP community
@@ -39,7 +44,7 @@ Mostly to test INVALID routes tagging and propagation, since other cases are alr
 
 - AS1, receives only
 
-  Configured with ``announce_invalid`` True.
+  Configured to receive INVALID routes using the hook ``announce_rpki_invalid_to_client``, implemented in the local ``header[4|6]`` file.
 
 - AS2:
 
@@ -83,6 +88,4 @@ Mostly to test INVALID routes tagging and propagation, since other cases are alr
                         3003:3003::/32
   ====================  ================   ========== ==================================================================================
 
-- AS3, receives only
-
-  Configured with ``announce_invalid`` False.
+- AS4, receives only with no particular configuration.

@@ -1,0 +1,32 @@
+function hook_pre_receive_from_client(int client_asn; ip client_ip; string client_id) {
+	return true;
+}
+
+function hook_post_receive_from_client(int client_asn; ip client_ip; string client_id) {
+	return true;
+}
+
+function hook_pre_announce_to_client(int client_asn; ip client_ip; string client_id) {
+	return true;
+}
+
+function hook_post_announce_to_client(int client_asn; ip client_ip; string client_id) {
+	return true;
+}
+
+function hook_scrub_communities_in() {
+}
+
+function hook_scrub_communities_out() {
+}
+
+function hook_apply_blackhole_filtering_policy(int ip_ver) {
+}
+
+function hook_route_can_be_announced_to(int client_asn; ip client_ip; string client_id) {
+	return true;
+}
+
+function hook_announce_rpki_invalid_to_client(int client_asn; ip client_ip; string client_id) {
+	return false;
+}

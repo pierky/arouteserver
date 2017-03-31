@@ -73,6 +73,11 @@ filter receive_from_{{ client.id }} {
 	if !(source = RTS_BGP ) then
 		reject "source != RTS_BGP - REJECTING ", net;
 
+	{% if "pre_receive_from_client"|hook_is_set %}
+	if !hook_pre_receive_from_client({{ client.asn }}, {{ client.ip }}, "{{ client.id }}") then
+		reject "hook_pre_receive_from_client returned false - REJECTING ", net;
+	{% endif %}
+
 	scrub_communities_in();
 
 	# NEXT_HOP
@@ -168,10 +173,10 @@ filter receive_from_{{ client.id }} {
 		{% if cfg.filtering.rpki.enabled %}
 		perform_rpki_validation();
 
-		{% if client.cfg.filtering.rpki.reject_invalid %}
+		{%	if client.cfg.filtering.rpki.reject_invalid %}
 		if route_is_rpki_invalid() then
 			reject "RPKI, route is INVALID - REJECTING ", net;
-		{% endif %}
+		{%	endif %}
 		{% endif %}
 
 		# Prefix: length
@@ -186,10 +191,20 @@ filter receive_from_{{ client.id }} {
 			reject "prefix len [", net.len, "] not in {{ min_pref_len }}-{{ max_pref_len }} - REJECTING ", net;
 	}
 
+	{% if "post_receive_from_client"|hook_is_set %}
+	if !hook_post_receive_from_client({{ client.asn }}, {{ client.ip }}, "{{ client.id }}") then
+		reject "hook_post_receive_from_client returned false - REJECTING ", net;
+	{% endif %}
+
 	accept;
 }
 
 filter announce_to_{{ client.id }} {
+	{% if "pre_announce_to_client"|hook_is_set %}
+	if !hook_pre_announce_to_client({{ client.asn }}, {{ client.ip }}, "{{ client.id }}") then
+		reject "hook_pre_announce_to_client returned false - NOT ANNOUNCING ", net, " TO {{ client.id}}";
+	{% endif %}
+
 	# Blackhole request?
 	if is_blackhole_filtering_request() then {
 	{% if not client.cfg.blackhole_filtering.announce_to_client %}
@@ -201,7 +216,7 @@ filter announce_to_{{ client.id }} {
 	} else {
 		# RPKI: do not announce INVALID to clients
 		if route_is_rpki_invalid() then {
-			if !announce_rpki_invalid_to_client() then
+			if !announce_rpki_invalid_to_client({{ client.asn }}, {{ client.ip }}, "{{ client.id }}") then
 				reject "route is INVALID - NOT ANNOUNCING ", net, " TO {{ client.id}}";
 		}
 	}
@@ -210,7 +225,7 @@ filter announce_to_{{ client.id }} {
 	{% endif %}
 
 	# BGP control communities
-	if !route_can_be_announced_to({{ client.asn }}) then
+	if !route_can_be_announced_to({{ client.asn }}, {{ client.ip }}, "{{ client.id }}") then
 		reject "route didn't pass control communities checks - NOT ANNOUNCING ", net, " TO {{ client.id }}";
 
 	apply_prepend({{ client.asn }});
@@ -223,6 +238,11 @@ filter announce_to_{{ client.id }} {
 	add_noexport_noadvertise({{ client.asn }});
 
 	scrub_communities_out();
+
+	{% if "post_announce_to_client"|hook_is_set %}
+	if !hook_post_announce_to_client({{ client.asn }}, {{ client.ip }}, "{{ client.id }}") then
+		reject "hook_post_announce_to_client returned false - NOT ANNOUNCING ", net, " TO {{ client.id}}";
+	{% endif %}
 
 	accept;
 }

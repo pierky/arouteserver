@@ -98,6 +98,9 @@ function scrub_communities_in() {
 {{ del_communities(cfg.communities[name]) }}
 {% endif %}
 {% endfor %}
+{% if "scrub_communities_in"|hook_is_set %}
+	hook_scrub_communities_in();
+{% endif %}
 }
 
 # This function scrubs BGP communities used by clients to instruct
@@ -110,6 +113,9 @@ function scrub_communities_out() {
 {{ del_communities(cfg.communities[name], cfg.communities[name].peer_as) }}
 {% endif %}
 {% endfor %}
+{% if "scrub_communities_out"|hook_is_set %}
+	hook_scrub_communities_out();
+{% endif %}
 }
 
 # This function verifies if the route is tagged with one of
@@ -160,12 +166,18 @@ function apply_blackhole_filtering_policy() {
 {% else %}
 	reject "blackhole filtering requested but no policy given - REJECTING ", net;
 {% endif %}
+{% if "apply_blackhole_filtering_policy"|hook_is_set %}
+	hook_apply_blackhole_filtering_policy({{ ip_ver }});
+{% endif %}
 }
 
 # This function verifies if the current route can be announced to
 # the given client on the basis of the attached control BGP
 # communities.
-function route_can_be_announced_to(int peer_as) {
+function route_can_be_announced_to(int peer_as; ip client_ip; string client_id) {
+	{% if "route_can_be_announced_to"|hook_is_set %}
+	return hook_route_can_be_announced_to(peer_as, client_ip, client_id);
+	{% else %}
 	{% if cfg.communities.do_not_announce_to_peer|community_is_set %}
 	# do_not_announce_to_peer
 	{{- match_communities(cfg.communities.do_not_announce_to_peer, "return false;") }}
@@ -179,6 +191,7 @@ function route_can_be_announced_to(int peer_as) {
 	{{- match_communities(cfg.communities.do_not_announce_to_any, "return false;") }}
 	{% endif %}
 	return true;
+	{% endif %}
 }
 
 # This function verifies if the current route matches one of the
@@ -244,8 +257,12 @@ function route_is_rpki_invalid () {
 
 # This function returns True if RPKI INVALID routes
 # should be announced to clients.
-function announce_rpki_invalid_to_client () {
+function announce_rpki_invalid_to_client(int client_asn; ip client_ip; string client_id) {
+	{% if "announce_rpki_invalid_to_client"|hook_is_set %}
+	return hook_announce_rpki_invalid_to_client(client_asn, client_ip, client_id);
+	{% else %}
 	return false;
+	{% endif %}
 }
 {% endif %}
 

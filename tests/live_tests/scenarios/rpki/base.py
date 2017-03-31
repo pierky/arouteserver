@@ -35,8 +35,24 @@ class RPKIINVALIDScenario(LiveScenario):
                 [
                     (
                         cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                         cfg_roas="roas{}.yml".format(cls.IP_VER)),
+                                         cfg_roas="roas{}.yml".format(cls.IP_VER),
+                                         local_files=[
+                                             "header",
+                                             "header{}".format(cls.IP_VER)
+                                         ],
+                                         hooks=[
+                                             "announce_rpki_invalid_to_client",
+                                             "post_announce_to_client"
+                                         ]),
                         "/etc/bird/bird.conf"
+                    ),
+                    (
+                        cls.use_static_file("bird_header.local"),
+                        "/etc/bird/header.local"
+                    ),
+                    (
+                        cls.use_static_file("bird_header{}.local".format(cls.IP_VER)),
+                        "/etc/bird/header{}.local".format(cls.IP_VER)
                     )
                 ]
             ),
@@ -103,8 +119,7 @@ class RPKIINVALIDScenario(LiveScenario):
     def test_030_rpki_AS2_invalid_bad_asn(self):
         """{}: RPKI, AS2 invalid prefix, bad ASN"""
         prefix = self.DATA["AS2_invalid1"]
-        self.receive_route(self.rs, prefix, self.AS2, as_path="2",
-                           local_pref=80)
+        self.receive_route(self.rs, prefix, self.AS2, as_path="2")
         self.receive_route(self.AS1, prefix, self.rs, as_path="2",
                            std_comms=["64512:2"], lrg_comms=[], ext_comms=[])
         with self.assertRaisesRegexp(AssertionError, "Routes not found."):
@@ -113,8 +128,7 @@ class RPKIINVALIDScenario(LiveScenario):
     def test_030_rpki_AS2_invalid_bad_len(self):
         """{}: RPKI, AS2 invalid prefix, bad length"""
         prefix = self.DATA["AS2_badlen"]
-        self.receive_route(self.rs, prefix, self.AS2, as_path="2 101",
-                           local_pref=80)
+        self.receive_route(self.rs, prefix, self.AS2, as_path="2 101")
         self.receive_route(self.AS1, prefix, self.rs, as_path="2 101",
                            std_comms=["64512:2"], lrg_comms=[], ext_comms=[])
         with self.assertRaisesRegexp(AssertionError, "Routes not found."):
@@ -123,8 +137,7 @@ class RPKIINVALIDScenario(LiveScenario):
     def test_040_rpki_AS2_valid_1(self):
         """{}: RPKI, AS2 valid prefix, exact match"""
         prefix = self.DATA["AS2_valid1"]
-        self.receive_route(self.rs, prefix, self.AS2, as_path="2 101",
-                           local_pref=100)
+        self.receive_route(self.rs, prefix, self.AS2, as_path="2 101")
         for inst in (self.AS1, self.AS4):
             self.receive_route(inst, prefix, self.rs, as_path="2 101",
                                std_comms=["64512:1"], lrg_comms=[], ext_comms=[])
@@ -132,8 +145,7 @@ class RPKIINVALIDScenario(LiveScenario):
     def test_040_rpki_AS2_valid_2(self):
         """{}: RPKI, AS2 valid prefix, sub prefix"""
         prefix = self.DATA["AS2_valid2"]
-        self.receive_route(self.rs, prefix, self.AS2, as_path="2 101",
-                           local_pref=100)
+        self.receive_route(self.rs, prefix, self.AS2, as_path="2 101")
         for inst in (self.AS1, self.AS4):
             self.receive_route(inst, prefix, self.rs, as_path="2 101",
                                std_comms=["64512:1"], lrg_comms=[], ext_comms=[])
@@ -141,8 +153,7 @@ class RPKIINVALIDScenario(LiveScenario):
     def test_040_rpki_AS2_unknown_1(self):
         """{}: RPKI, AS2 unknown prefix"""
         prefix = self.DATA["AS2_unknown1"]
-        self.receive_route(self.rs, prefix, self.AS2, as_path="2",
-                           local_pref=100)
+        self.receive_route(self.rs, prefix, self.AS2, as_path="2")
         for inst in (self.AS1, self.AS4):
             self.receive_route(inst, prefix, self.rs, as_path="2",
                                std_comms=["64512:3"], lrg_comms=[], ext_comms=[])
@@ -174,8 +185,7 @@ class RPKIINVALIDScenario(LiveScenario):
     def test_060_rpki_AS3_valid_1(self):
         """{}: RPKI, AS3 valid prefix, exact match"""
         prefix = self.DATA["AS3_valid1"]
-        self.receive_route(self.rs, prefix, self.AS3, as_path="3 103",
-                           local_pref=100)
+        self.receive_route(self.rs, prefix, self.AS3, as_path="3 103")
         for inst in (self.AS1, self.AS4):
             self.receive_route(inst, prefix, self.rs, as_path="3 103",
                                std_comms=["64512:1"], lrg_comms=[], ext_comms=[])
@@ -183,8 +193,7 @@ class RPKIINVALIDScenario(LiveScenario):
     def test_060_rpki_AS3_valid_2(self):
         """{}: RPKI, AS3 valid prefix, sub prefix"""
         prefix = self.DATA["AS3_valid2"]
-        self.receive_route(self.rs, prefix, self.AS3, as_path="3 103",
-                           local_pref=100)
+        self.receive_route(self.rs, prefix, self.AS3, as_path="3 103")
         for inst in (self.AS1, self.AS4):
             self.receive_route(inst, prefix, self.rs, as_path="3 103",
                                std_comms=["64512:1"], lrg_comms=[], ext_comms=[])
@@ -192,8 +201,7 @@ class RPKIINVALIDScenario(LiveScenario):
     def test_060_rpki_AS3_unknown_1(self):
         """{}: RPKI, AS3 unknown prefix"""
         prefix = self.DATA["AS3_unknown1"]
-        self.receive_route(self.rs, prefix, self.AS3, as_path="3",
-                           local_pref=100)
+        self.receive_route(self.rs, prefix, self.AS3, as_path="3")
         for inst in (self.AS1, self.AS4):
             self.receive_route(inst, prefix, self.rs, as_path="3",
                                std_comms=["64512:3"], lrg_comms=[], ext_comms=[])

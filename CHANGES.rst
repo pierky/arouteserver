@@ -13,6 +13,13 @@ next release
 
   Related: `issue #4 on GitHub <https://github.com/pierky/arouteserver/issues/4>`_
 
+  This **breaks backward compatibility**.
+
+- New feature: `BIRD hooks <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#bird-hooks>`_ to add site-specific custom implementations.
+- Improvement: `BIRD local files <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#site-specific-custom-config>`_.
+
+  This **breaks backward compatibility**: previously, \*.local, \*.local4 and \*.local6 files that were found in the same directory where the BIRD configuration was stored were automatically included. Now, only the header([4|6]).local and footer([4|6]).local files are included, depending on the values passed to the ``--use-local-files`` command line argument.
+
 v0.4.0
 ------
 

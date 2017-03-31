@@ -28,7 +28,7 @@ function RenderExample() {
 
 	if [ "$COMMAND" == "bird" ]; then
 		IP_VER="$1" ; shift
-		$CMD --ip-ver $IP_VER -o examples/$DST/bird$IP_VER.conf
+		$CMD --ip-ver $IP_VER -o examples/$DST/bird$IP_VER.conf $@
 	elif [ "$COMMAND" == "openbgpd" ]; then
 		$CMD -o examples/$DST/openbgpd.conf --ignore-issues \*
 	elif [ "$COMMAND" == "html" ]; then
@@ -77,6 +77,11 @@ RenderExample "rich" "openbgpd" "examples/rich/general.yml" "examples/rich/clien
 echo "Building example HTML: rich"
 RenderExample "rich" "html" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml"
 
+echo "Building example: BIRD hooks"
+HOOKS="pre_receive_from_client post_receive_from_client pre_announce_to_client post_announce_to_client scrub_communities_in scrub_communities_out apply_blackhole_filtering_policy route_can_be_announced_to announce_rpki_invalid_to_client"
+RenderExample "bird_hooks" "bird" "examples/bird_hooks/general.yml" "examples/bird_hooks/clients.yml" "config.d/bogons.yml" 4 --use-hooks $HOOKS
+RenderExample "bird_hooks" "bird" "examples/bird_hooks/general.yml" "examples/bird_hooks/clients.yml" "config.d/bogons.yml" 6 --use-hooks $HOOKS
+
 echo "Build clients from Euro-IX files? [yes/NO] "
 read YES_NO
 
@@ -118,7 +123,7 @@ echo "Examples of configurations" >> $DOCS_DIR/EXAMPLES.rst
 echo "==========================" >> $DOCS_DIR/EXAMPLES.rst
 
 cd examples
-for d in default rich clients-from-euroix; do
+for d in default rich bird_hooks clients-from-euroix; do
 	EXAMPLE_NAME="$d"
 	if [ -e "$EXAMPLE_NAME/README.rst" ]; then
 		echo "" >> $DOCS_DIR/EXAMPLES.rst
