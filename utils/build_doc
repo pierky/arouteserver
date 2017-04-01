@@ -79,8 +79,8 @@ RenderExample "rich" "html" "examples/rich/general.yml" "examples/rich/clients.y
 
 echo "Building example: BIRD hooks"
 HOOKS="pre_receive_from_client post_receive_from_client pre_announce_to_client post_announce_to_client scrub_communities_in scrub_communities_out apply_blackhole_filtering_policy route_can_be_announced_to announce_rpki_invalid_to_client"
-RenderExample "bird_hooks" "bird" "examples/bird_hooks/general.yml" "examples/bird_hooks/clients.yml" "config.d/bogons.yml" 4 --use-hooks $HOOKS
-RenderExample "bird_hooks" "bird" "examples/bird_hooks/general.yml" "examples/bird_hooks/clients.yml" "config.d/bogons.yml" 6 --use-hooks $HOOKS
+RenderExample "bird_hooks" "bird" "examples/bird_hooks/general.yml" "examples/bird_hooks/clients.yml" "config.d/bogons.yml" 4 --use-hooks $HOOKS --use-local-files header
+RenderExample "bird_hooks" "bird" "examples/bird_hooks/general.yml" "examples/bird_hooks/clients.yml" "config.d/bogons.yml" 6 --use-hooks $HOOKS --use-local-files header
 
 echo "Build clients from Euro-IX files? [yes/NO] "
 read YES_NO
