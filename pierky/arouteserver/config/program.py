@@ -32,11 +32,16 @@ from ..errors import ConfigError, ARouteServerError, MissingFileError
 
 class ConfigParserProgram(object):
 
-    DEFAULT_CFG_DIR = "/etc/arouteserver"
-    DEFAULT_CFG_PATH = "{}/arouteserver.yml".format(DEFAULT_CFG_DIR)
+    DEFAULT_CFG_DIR_USR = "~/arouteserver"
+    DEFAULT_CFG_DIR_ETC = "/etc/arouteserver"
+    DEFAULT_CFG_DIRS = [DEFAULT_CFG_DIR_ETC,
+                        DEFAULT_CFG_DIR_USR]
+    DEFAULT_CFG_FILE = "arouteserver.yml"
+    DEFAULT_CFG_PATHS = [os.path.join(DEFAULT_CFG_DIR_ETC, DEFAULT_CFG_FILE),
+                         os.path.join(DEFAULT_CFG_DIR_USR, DEFAULT_CFG_FILE)]
 
     DEFAULT = {
-        "cfg_dir": "{}".format(DEFAULT_CFG_DIR),
+        "cfg_dir": None,
 
         "logging_config_file": "log.ini",
 
@@ -47,7 +52,7 @@ class ConfigParserProgram(object):
         "templates_dir": "templates",
         "template_name": "main.j2",
 
-        "cache_dir": "/var/lib/arouteserver",
+        "cache_dir": "cache",
         "cache_expiry": CachedObject.DEFAULT_EXPIRY,
 
         "bgpq3_path": "bgpq3",
@@ -91,7 +96,10 @@ class ConfigParserProgram(object):
                           exc_info=not isinstance(e, ARouteServerError))
             raise ConfigError()
 
-        self.cfg["cfg_dir"] = os.path.expanduser(self.cfg["cfg_dir"])
+        if self.cfg["cfg_dir"]:
+            self.cfg["cfg_dir"] = os.path.expanduser(self.cfg["cfg_dir"])
+        else:
+            self.cfg["cfg_dir"] = os.path.dirname(path)
 
         # relative path -> absolute path
         for cfg_key in self.PATH_KEYS:
@@ -122,14 +130,20 @@ class ConfigParserProgram(object):
         if os.path.exists(d):
             print("already exists")
         else:
-            os.makedirs(d)
-            print("OK")
+            try:
+                os.makedirs(d)
+                print("OK")
+            except OSError as e:
+                raise ARouteServerError(str(e))
 
     @staticmethod
     def cp_file(s, d):
-        with open(s, "r") as src:
-            with open(d, "w") as dst:
-                dst.write(src.read())
+        try:
+            with open(s, "r") as src:
+                with open(d, "w") as dst:
+                    dst.write(src.read())
+        except (IOError, OSError) as e:
+            raise ARouteServerError(str(e))
 
     @staticmethod
     def show_diff(s, d):
@@ -507,28 +521,22 @@ class ConfigParserProgram(object):
             dest_dir = destination_directory
         else:
             res, dest_dir = ask("Where do you want configuration files and templates "
-                                "to be stored?", default=self.DEFAULT_CFG_DIR)
+                                "to be stored?", default=self.DEFAULT_CFG_DIR_USR)
             if not res:
                 print("")
                 print("Setup aborted")
                 return False
 
         dest_dir = dest_dir.strip()
+
+        if dest_dir not in self.DEFAULT_CFG_DIRS:
+            print("WARNING: the directory that has been chosen is not one "
+                  "of those used by default by the program to look for its "
+                  "configuration file: use the --cfg command line "
+                  "argument to allow the program to find the needed files.")
+
         dest_dir = os.path.expanduser(dest_dir)
-
         program_cfg_file_path = os.path.join(dest_dir, "arouteserver.yml")
-
-        rewrite_cfg_dir = False
-        if dest_dir != self.DEFAULT_CFG_DIR:
-            print("WARNING: the directory that has been chosen is not the "
-                  "default one: use the --cfg command line argument to "
-                  "allow the program to find the needed files.")
-
-            # The 'cfg_dir' option is overwritten only if the
-            # configuration file is not existing, otherwise it is
-            # supposed to be correctly configured by the user and it's
-            # not changed.
-            rewrite_cfg_dir = not os.path.exists(program_cfg_file_path)
 
         if not destination_directory:
             res, yes_or_no = ask_yes_no(
@@ -550,17 +558,6 @@ class ConfigParserProgram(object):
             print("Setup aborted")
             return False
 
-        # Rewrite the 'cfg_dir' option if the dest dir != self.DEFAULT_CFG_DIR
-        if rewrite_cfg_dir:
-            with open(program_cfg_file_path, "r") as f:
-                buf = f.read()
-            buf = buf.replace(
-                '#cfg_dir: "/etc/arouteserver"',
-                'cfg_dir: "{}"'.format(dest_dir)
-            )
-            with open(program_cfg_file_path, "w") as f:
-                f.write(buf)
-
         # Load the new configuration, so that the following .setup_templates()
         # can work fine.
         self.load(program_cfg_file_path)
@@ -569,6 +566,10 @@ class ConfigParserProgram(object):
             print("")
             print("Setup aborted")
             return False
+
+        # Creating cache directory
+        cache_dir = self.get("cache_dir")
+        self.mk_dir(cache_dir)
 
         print("")
         print("Configuration complete!")

@@ -48,10 +48,12 @@ class ARouteServerCommand(object):
 
         parser.add_argument(
             "--cfg",
-            help="ARouteServer configuration file.",
+            help="ARouteServer configuration file. "
+                 "By default, the program looks for its configuration "
+                 "file in the following paths: {}".format(
+                     ", ".join(program_config.DEFAULT_CFG_PATHS)),
             metavar="FILE",
-            dest="cfg_program",
-            default=program_config.DEFAULT_CFG_PATH)
+            dest="cfg_program")
 
         group = parser.add_argument_group(
             title="Program configuration",
@@ -91,16 +93,30 @@ class ARouteServerCommand(object):
             setup_logging(self.args.logging_config_file)
             logging_setted_up = True
 
+        program_cfg_found = False
+        program_cfg_paths = []
         if self.args.cfg_program:
+            program_cfg_paths.append(os.path.expanduser(self.args.cfg_program))
+        else:
+            for default_path in program_config.DEFAULT_CFG_PATHS:
+                program_cfg_paths.append(default_path)
+
+        for program_cfg_path in program_cfg_paths:
             try:
-                program_config.load(self.args.cfg_program)
+                program_config.load(program_cfg_path)
+                program_cfg_found = True
+                break
             except MissingFileError as e:
-                raise ARouteServerError(
-                    "{} - Please configure your system by running the "
-                    "'arouteserver setup' command or provide the "
-                    "program configuration file path using the "
-                    "'--cfg' argument.".format(str(e))
-                )
+                pass
+
+        if not program_cfg_found:
+            raise ARouteServerError(
+                "Configuration file not found - "
+                "Please configure your system by running the "
+                "'arouteserver setup' command or provide the "
+                "program configuration file path using the "
+                "'--cfg' argument."
+            )
 
         program_config.parse_cli_args(self.args)
 

@@ -1,7 +1,9 @@
 # Base path where the program will look for other files
 # and directories. Every other relative path will be
 # considered rooted at 'cfg_dir' directory.
-#cfg_dir: "/etc/arouteserver"
+# If not specified, the directory of the program's
+# configuration file will be used.
+#cfg_dir:
 
 # Logging configuration file, in Python fileConfig() format
 # (https://docs.python.org/2/library/logging.config.html
@@ -27,7 +29,7 @@
 #template_name: "main.j2"
 
 # Directory where cached data are stored.
-#cache_dir: "/var/lib/arouteserver"
+#cache_dir: "cache"
 
 # Path to the 'bgpq3' external program.
 #bgpq3_path: "bgpq3"

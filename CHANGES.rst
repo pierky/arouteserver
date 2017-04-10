@@ -19,6 +19,9 @@ next release
 - Improvement: `BIRD local files <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#site-specific-custom-config>`_.
 
   This **breaks backward compatibility**: previously, \*.local, \*.local4 and \*.local6 files that were found in the same directory where the BIRD configuration was stored were automatically included. Now, only the header([4|6]).local and footer([4|6]).local files are included, depending on the values passed to the ``--use-local-files`` command line argument.
+- Improvement: ``setup`` command and program's configuration file.
+
+  The default path of the cache directory (*cache_dir* option) has changed: it was ``/var/lib/arouteserver`` and now it is ``cache``, that is a directory which is relative to the *cfg_dir* option (by default, the directory where the program's configuration file is stored).
 
 v0.4.0
 ------
