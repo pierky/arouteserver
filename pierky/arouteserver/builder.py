@@ -371,7 +371,7 @@ class BIRDConfigBuilder(ConfigBuilder):
              "pre_announce_to_client", "post_announce_to_client",
              "route_can_be_announced_to", "announce_rpki_invalid_to_client",
              "scrub_communities_in", "scrub_communities_out",
-             "apply_blackhole_filtering_policy", "route_can_be_announced_to"]
+             "apply_blackhole_filtering_policy"]
 
     def validate_bgpspeaker_specific_configuration(self):
         if self.ip_ver is None:
