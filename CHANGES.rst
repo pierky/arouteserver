@@ -1,8 +1,8 @@
 Change log
 ==========
 
-next release
-------------
+v0.5.0
+------
 
 - Fix: avoid the use of standard communities in the range 65535:x.
 - Improvement: option to set max-prefix restart timer for OpenBGPD.
