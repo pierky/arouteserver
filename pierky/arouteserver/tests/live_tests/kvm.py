@@ -185,6 +185,7 @@ class KVMInstance(BGPSpeakerInstance):
             raise InstanceNotRunning(self.name)
 
         cmd = ("ssh -o BatchMode=yes -o ConnectTimeout=5 "
+               "-o StrictHostKeyChecking=no "
                "-o ServerAliveInterval=10 {user}@{ip} -i {path_to_key} "
                "{cmd}").format(
             user=self._get_ssh_user(),
@@ -197,8 +198,9 @@ class KVMInstance(BGPSpeakerInstance):
 
     def _mount_files(self):
         for mount in self.get_mounts():
-            cmd = ("scp -i {path_to_key} {host_file} "
-                   "{user}@{ip}:{container_file} ".format(
+            cmd = ("scp -i {path_to_key} "
+                   "-o StrictHostKeyChecking=no "
+                   "{host_file} {user}@{ip}:{container_file} ".format(
                        host_file=mount["host"],
                        user=self._get_ssh_user(),
                        ip="[{}]".format(self.ip) if ":" in self.ip else self.ip,

@@ -16,6 +16,7 @@
 import ipaddr
 import logging
 import os
+from packaging import version
 import re
 import sys
 import time
@@ -44,6 +45,8 @@ class ConfigBuilder(object):
 
     LOCAL_FILES_IDS = None
     LOCAL_FILES_BASE_DIR = None
+
+    DEFAULT_VERSION = None
 
     def validate_bgpspeaker_specific_configuration(self):
         """Check compatibility between config and target BGP speaker
@@ -109,7 +112,7 @@ class ConfigBuilder(object):
                  bgpq3_path="bgpq3", bgpq3_host=IRRDBTools.BGPQ3_DEFAULT_HOST,
                  bgpq3_sources=IRRDBTools.BGPQ3_DEFAULT_SOURCES, threads=4,
                  ip_ver=None, ignore_errors=[], live_tests=False,
-                 local_files=[], local_files_dir=None,
+                 local_files=[], local_files_dir=None, target_version=None,
                  cfg_general=None, cfg_bogons=None, cfg_clients=None,
                  cfg_roas=None,
                  **kwargs):
@@ -163,6 +166,8 @@ class ConfigBuilder(object):
 
         self.local_files = local_files
         self.local_files_dir = local_files_dir
+
+        self.target_version = target_version or self.DEFAULT_VERSION
 
         self.cfg_general = self._get_cfg(cfg_general,
                                          ConfigParserGeneral,
@@ -324,6 +329,11 @@ class ConfigBuilder(object):
                 return self._include_local_file(local_file_id)
             return ""
 
+        def target_version_ge(v):
+            if self.target_version:
+                return version.parse(self.target_version) >= version.parse(v)
+            return False
+
         env = Environment(
             loader=FileSystemLoader(self.template_dir),
             trim_blocks=True,
@@ -334,6 +344,7 @@ class ConfigBuilder(object):
         env.filters["community_is_set"] = self.community_is_set
         env.filters["ipaddr_ver"] = ipaddr_ver
         env.filters["include_local_file"] = include_local_file
+        env.filters["target_version_ge"] = target_version_ge
 
         self.enrich_j2_environment(env)
 
@@ -372,6 +383,9 @@ class BIRDConfigBuilder(ConfigBuilder):
              "route_can_be_announced_to", "announce_rpki_invalid_to_client",
              "scrub_communities_in", "scrub_communities_out",
              "apply_blackhole_filtering_policy"]
+
+    AVAILABLE_VERSION = ["1.6.3"]
+    DEFAULT_VERSION = "1.6.3"
 
     def validate_bgpspeaker_specific_configuration(self):
         if self.ip_ver is None:
@@ -419,6 +433,9 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                        "pre-filters", "post-filters",
                        "footer"]
     LOCAL_FILES_BASE_DIR = "/etc/bgpd"
+
+    AVAILABLE_VERSION = ["6.0", "6.1"]
+    DEFAULT_VERSION = "6.0"
 
     @staticmethod
     def community_is_set(comm):
@@ -536,22 +553,23 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             if peer_as and direction == "inbound" and comm["ext"]:
                 peer_as_ext_comms.append((comm_name, comm["ext"]))
 
-        if only_large_comms:
+        if only_large_comms and \
+            version.parse(self.target_version or "6.0") < version.parse("6.1"):
             comms = only_large_comms
             if not self.process_bgpspeaker_specific_compatibility_issue(
                 "large_communities",
                 "The communit{y_ies} '{names}' ha{s_ve} been configured to be "
                 "implemented using only the large communit{y_ies} "
                 "'{comms}'; large communities are not supported by "
-                "OpenBGPD so the function{s1} {it_they} cover{s2} will be "
-                "not available.".format(
+                "OpenBGPD previous to OpenBSD 6.1 so the function{s1} "
+                "{it_they} {is_are} used for will be not available.".format(
                     y_ies="y" if len(comms) == 1 else "ies",
                     names=", ".join([_[0] for _ in comms]),
                     s_ve="s" if len(comms) == 1 else "ve",
                     comms=", ".join([_[1] for _ in comms]),
                     s1="" if len(comms) == 1 else "s",
                     it_they="it" if len(comms) == 1 else "they",
-                    s2="s" if len(comms) == 1 else ""
+                    is_are="is" if len(comms) == 1 else "are"
                 )
             ):
                 res = False

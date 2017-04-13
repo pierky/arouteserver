@@ -41,7 +41,7 @@ How it works
 
 #. `Jinja2`_ built-in templates are used to render the final route server's configuration file.
 
-   Currently, **BIRD** and **OpenBGPD** are supported.
+   Currently, **BIRD** (1.6.3) and **OpenBGPD** (OpenBSD 6.0 and 6.1) are supported.
 
 **Validation** and testing are performed using the built-in **live tests** framework: `Docker`_ instances are used to simulate several scenarios, and more custom scenarios can be built on the basis of the user's needs. More details on the `Live tests <https://arouteserver.readthedocs.io/en/latest/LIVETESTS.html>`_ section.
 

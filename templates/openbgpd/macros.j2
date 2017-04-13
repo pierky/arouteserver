@@ -41,6 +41,13 @@
 {{ left }} ext-community {{ comm.ext|convert_ext_comm }} {{ right }}
 {%		endif %}
 {%	endif %}
+{%      if comm.lrg and "6.1"|target_version_ge %}
+{%              if "peer_as" in comm.lrg %}
+{{ left }} large-community {{ comm.lrg|replace("peer_as", peer_as) }} {{ right }}
+{%		else %}
+{{ left }} large-community {{ comm.lrg }} {{ right }}
+{%		endif %}
+{%	endif %}
 {% endif %}
 {% endmacro %}
 
@@ -51,6 +58,9 @@
 {%	endif %}
 {%      if comm.ext %}
 {{ left }} set ext-community {{ comm.ext|convert_ext_comm }}
+{%	endif %}
+{%      if comm.lrg and "6.1"|target_version_ge %}
+{{ left }} set large-community {{ comm.lrg }}
 {%	endif %}
 {% endif %}
 {% endmacro %}
@@ -71,6 +81,13 @@
 {{ left }} set ext-community delete {{ comm.ext|convert_ext_comm }}
 {%		endif %}
 {%	endif %}
+{%      if comm.lrg and "6.1"|target_version_ge %}
+{%		if replace_peer_as %}
+{{ left }} set large-community delete {{ comm.lrg|replace("peer_as", "*") }}
+{%		else %}
+{{ left }} set large-community delete {{ comm.lrg }}
+{%		endif %}
+{%	endif %}
 {% endif %}
 {% endmacro %}
 
@@ -84,6 +101,9 @@
 {%			endif %}
 {%			if comm.ext %}
 {{				" ext-community delete " ~ comm.ext|convert_ext_comm|replace("peer_as", asn) -}}
+{%			endif %}
+{%			if comm.lrg and "6.1"|target_version_ge %}
+{{				" large-community delete " ~ comm.lrg|replace("peer_as", asn) -}}
 {%			endif %}
 {%		endif %}
 {%	endif %}

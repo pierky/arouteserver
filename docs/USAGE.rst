@@ -15,7 +15,9 @@ The script can be executed via command-line:
 It produces the route server configuration for BIRD and saves it on ``/etc/bird/bird4.conf``.
 To build the configuration for OpenBGPD, the ``bird`` sub-command must be replaced with ``openbgpd``.
 
-It exits with ``0`` if everything is fine or with an exit code different than zero if something wrong occurs.
+The ``--target-version`` argument can be used to set the version of the target BGP daemon for which the configuration is generated: this allows to enable features that are supported only by more recent versions of BGP speakers and that, otherwise, would produce an error.
+
+The script exits with ``0`` if everything is fine or with an exit code different than zero if something wrong occurs.
 
 It can be scheduled at regular intervals to re-build the configuration (for example to add new clients or to update IRRDB information), test it and finally to deploy it in production:
 

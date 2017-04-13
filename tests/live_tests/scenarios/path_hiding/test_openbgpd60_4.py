@@ -16,32 +16,34 @@
 import os
 import unittest
 
-from base import SkeletonScenario
-from pierky.arouteserver.builder import OpenBGPDConfigBuilder
+from base import PathHidingScenario_MitigationOn, \
+                 PathHidingScenario_MitigationOff, \
+                 PathHidingScenarioOpenBGPD60
+from data4 import PathHidingScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
 
 @unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
-class SkeletonScenario_OpenBGPDIPv4(SkeletonScenario):
-    """BGP speaker specific and IP version specific derived class.
-
-    Please see test_bird4.py for more information.
-    """
-
+class PathHidingScenario_MitigationOn_BIRDIPv4(PathHidingScenario_Data4,
+                                               PathHidingScenario_MitigationOn,
+                                               PathHidingScenarioOpenBGPD60):
     __test__ = True
     SKIP_ON_TRAVIS = True
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.0, skeleton, IPv4"
-    CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
     RS_INSTANCE_CLASS = OpenBGPD60Instance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
-    IP_VER = 4
 
-    DATA = {
-        "rs_IPAddress":             "192.0.2.2",
-        "AS1_IPAddress":            "192.0.2.11",
-        "AS2_IPAddress":            "192.0.2.22",
+    SHORT_DESCR = "Live test, OpenBGPD 6.0, path hiding, mitigation on, IPv4"
 
-        "AS2_prefix1":              "2.0.1.0/24",
-        "AS2_bogon1":               "192.168.2.0/24"
-    }
+@unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
+class PathHidingScenario_MitigationOff_BIRDIPv4(PathHidingScenario_Data4,
+                                                PathHidingScenario_MitigationOff,
+                                                PathHidingScenarioOpenBGPD60):
+    __test__ = True
+    SKIP_ON_TRAVIS = True
+
+    RS_INSTANCE_CLASS = OpenBGPD60Instance
+    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
+
+    SHORT_DESCR = "Live test, OpenBGPD 6.0, path hiding, mitigation off, IPv4"
+

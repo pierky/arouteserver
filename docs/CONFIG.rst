@@ -287,7 +287,7 @@ Caveats and limitations
 ***********************
 
 Not all features offered by ARouteServer are supported by both BIRD and OpenBGPD.
-The following list of limitations is based on the currently supported versions of BIRD (1.6.3) and OpenBGPD (OpenBSD 6.0).
+The following list of limitations is based on the currently supported versions of BIRD (1.6.3) and OpenBGPD (OpenBSD 6.0 and 6.1).
 
 - OpenBGPD
 
@@ -301,7 +301,7 @@ The following list of limitations is based on the currently supported versions o
 
   - `An issue <https://github.com/pierky/arouteserver/issues/3>`_ is currently preventing next-hop rewriting for **IPv6 blackhole filtering** policies.
 
-  - **Large communities** are not supported by OpenBGPD: features that are configured to be offered via large communities only are ignored and not included into the generated OpenBGPD configuration.
+  - **Large communities** are not supported by OpenBGPD 6.0: features that are configured to be offered via large communities only are ignored and not included into the generated OpenBGPD configuration.
 
   - OpenBGPD does not offer a way to delete **extended communities** using wildcard (``rt xxx:*``): peer-ASN-specific extended communities (such as ``prepend_once_to_peer``, ``do_not_announce_to_peer``) are not scrubbed from routes that leave OpenBGPD route servers and so they are propagated to the route server clients.
 

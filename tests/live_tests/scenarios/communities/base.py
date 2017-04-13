@@ -17,7 +17,8 @@ import unittest
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
+                                                          OpenBGPD60Instance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class BGPCommunitiesScenario(LiveScenario):
@@ -120,8 +121,8 @@ class BGPCommunitiesScenario(LiveScenario):
 
     def test_022_only_to_AS1_lrg(self):
         """{}: announce to AS1 only (lrg)"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("Large comms not supported by OpenBGPD")
+        if isinstance(self.rs, OpenBGPD60Instance):
+            raise unittest.SkipTest("Large comms not supported by OpenBGPD 6.0")
 
         pref = self.DATA["AS2_only_to_AS1_l"]
         self.receive_route(self.rs, pref, self.AS2,
@@ -160,8 +161,8 @@ class BGPCommunitiesScenario(LiveScenario):
 
     def test_031_only_to_AS131073_lrg(self):
         """{}: announce to AS131073 only (lrg)"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("Large comms not supported by OpenBGPD")
+        if isinstance(self.rs, OpenBGPD60Instance):
+            raise unittest.SkipTest("Large comms not supported by OpenBGPD 6.0")
 
         pref = self.DATA["AS2_only_to_AS131073_l"]
         self.receive_route(self.rs, pref, self.AS2,
@@ -206,6 +207,8 @@ class BGPCommunitiesScenarioOpenBGPD(BGPCommunitiesScenario):
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
 
+    TARGET_VERSION = None
+
     @classmethod
     def _setup_rs_instance(cls):
         return cls.RS_INSTANCE_CLASS(
@@ -213,8 +216,19 @@ class BGPCommunitiesScenarioOpenBGPD(BGPCommunitiesScenario):
             cls.DATA["rs_IPAddress"],
             [
                 (
-                    cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None),
+                    cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
+                                     target_version=cls.TARGET_VERSION),
                     "/etc/bgpd.conf"
                 )
             ]
         )
+
+class BGPCommunitiesScenarioOpenBGPD60(BGPCommunitiesScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.0"
+
+class BGPCommunitiesScenarioOpenBGPD61(BGPCommunitiesScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.1"

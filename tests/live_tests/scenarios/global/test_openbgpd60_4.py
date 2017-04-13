@@ -16,17 +16,17 @@
 import os
 import unittest
 
-from base import RichConfigExampleScenarioOpenBGPD
-from data6 import RichConfigExampleScenario_Data6
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
+from base import BasicScenarioOpenBGPD60
+from data4 import BasicScenario_Data4
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
 
 @unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
-class RichConfigExampleScenarioOpenBGPD_IPv6(RichConfigExampleScenario_Data6,
-                                             RichConfigExampleScenarioOpenBGPD):
+class BasicScenario_OpenBGPDIPv4(BasicScenario_Data4, BasicScenarioOpenBGPD60):
+
     __test__ = True
     SKIP_ON_TRAVIS = True
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.0, examples, rich config, IPv6"
+    SHORT_DESCR = "Live test, OpenBGPD 6.0, global scenario, IPv4"
     RS_INSTANCE_CLASS = OpenBGPD60Instance
-    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
+    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4

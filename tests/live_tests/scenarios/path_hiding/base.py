@@ -158,6 +158,8 @@ class PathHidingScenarioOpenBGPD(PathHidingScenario):
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
 
+    TARGET_VERSION = None
+
     @classmethod
     def _setup_rs_instance(cls):
         return cls.RS_INSTANCE_CLASS(
@@ -166,11 +168,22 @@ class PathHidingScenarioOpenBGPD(PathHidingScenario):
             [
                 (
                     cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
-                                     cfg_general=cls.CFG_GENERAL),
+                                     cfg_general=cls.CFG_GENERAL,
+                                     target_version=cls.TARGET_VERSION),
                     "/etc/bgpd.conf"
                 )
             ]
         )
+
+class PathHidingScenarioOpenBGPD60(PathHidingScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.0"
+
+class PathHidingScenarioOpenBGPD61(PathHidingScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.1"
 
 class PathHidingScenario_MitigationOn(object):
 

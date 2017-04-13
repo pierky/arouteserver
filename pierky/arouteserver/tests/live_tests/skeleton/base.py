@@ -16,7 +16,8 @@
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, \
                                                       BIRDInstanceIPv6
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance, \
+                                                          OpenBGPD61Instance
 
 # -----------------------------------------------------------------------
 # FULL DOCUMENTATION ON
@@ -195,13 +196,26 @@ class SkeletonScenario(LiveScenario):
 
     @classmethod
     def _setup_rs_instance(cls):
-        if cls.RS_INSTANCE_CLASS is OpenBGPDInstance:
+        if cls.RS_INSTANCE_CLASS is OpenBGPD60Instance:
             return cls.RS_INSTANCE_CLASS(
                 "rs",
                 cls.DATA["rs_IPAddress"],
                 [
                     (
-                        cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None),
+                        cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
+                                         target_version="6.0"),
+                        "/etc/bgpd.conf"
+                    )
+                ]
+            )
+        if cls.RS_INSTANCE_CLASS is OpenBGPD61Instance:
+            return cls.RS_INSTANCE_CLASS(
+                "rs",
+                cls.DATA["rs_IPAddress"],
+                [
+                    (
+                        cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
+                                         target_version="6.1"),
                         "/etc/bgpd.conf"
                     )
                 ]

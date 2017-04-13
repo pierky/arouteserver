@@ -1,0 +1,56 @@
+#!/bin/bash
+
+if [ ! -e "setup.py" ]; then
+	echo "The script must be executed from within the repository's root directory."
+	exit 1
+fi
+
+export PYTHONPATH="`pwd`"
+
+function reset() {
+	AROUTESERVER="./scripts/arouteserver"
+	CFG_FILE="var/build_doc.yml"
+	GENERAL="config.d/general.yml"
+	CLIENTS="config.d/clients.yml"
+	BOGONS="config.d/bogons.yml"
+}
+
+function run_cmd() {
+	COMMAND="$1" ; shift
+	$AROUTESERVER $COMMAND --cfg $CFG_FILE --general $GENERAL --clients $CLIENTS --bogons $BOGONS $@ 2>&1
+}
+
+function error() {
+	echo "$1"
+}
+
+function must_contain() {
+	grep "$1" &>/dev/null || error "Fail: \"$1\" not found."
+}
+
+function must_not_contain() {
+	grep "$1" &>/dev/null
+
+	if [ $? -eq 0 ]; then
+		error "Fail: \"$1\" found."
+	fi
+}
+
+reset
+run_cmd "openbgpd" | must_contain "ERROR Compatibility issue ID 'path_hiding'"
+
+reset
+GENERAL="tests/var/general.yml"
+cat << EOF > $GENERAL
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+  communities:
+    do_not_announce_to_peer:
+      lrg: "rs_as:0:peer_as"
+EOF
+run_cmd "openbgpd" | must_contain "ERROR Compatibility issue ID 'large_communities'. The community 'do_not_announce_to_peer'"
+run_cmd "openbgpd" --target-version 6.0 | must_contain "ERROR Compatibility issue ID 'large_communities'. The community 'do_not_announce_to_peer'"
+run_cmd "openbgpd" --target-version 6.1 | must_not_contain "ERROR Compatibility issue ID 'large_communities'"
+
+echo "Done!"

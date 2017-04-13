@@ -15,7 +15,6 @@
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class DefaultConfigScenario(LiveScenario):

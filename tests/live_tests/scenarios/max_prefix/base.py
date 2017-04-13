@@ -17,7 +17,6 @@ import os
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class MaxPrefixScenario(LiveScenario):
@@ -147,6 +146,8 @@ class MaxPrefixScenarioOpenBGPD(MaxPrefixScenario):
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
 
+    TARGET_VERSION = None
+
     @classmethod
     def _setup_rs_instance(cls):
         return cls.RS_INSTANCE_CLASS(
@@ -155,7 +156,8 @@ class MaxPrefixScenarioOpenBGPD(MaxPrefixScenario):
             [
                 (
                     cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
-                                     cfg_general="general_openbgpd.yml"),
+                                     cfg_general="general_openbgpd.yml",
+                                     target_version=cls.TARGET_VERSION),
                     "/etc/bgpd.conf"
                 )
             ]
@@ -173,3 +175,13 @@ class MaxPrefixScenarioOpenBGPD(MaxPrefixScenario):
         """{}: clients log max-prefix notification"""
         for inst in (self.AS1, self.AS2, self.AS3):
             self.log_contains(inst, "the_rs: Received: Maximum number of prefixes reached")
+
+class MaxPrefixScenarioOpenBGPD60(MaxPrefixScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.0"
+
+class MaxPrefixScenarioOpenBGPD61(MaxPrefixScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.1"

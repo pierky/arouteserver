@@ -55,22 +55,24 @@ OpenBGPD live-tests environment
 
 1. To run an instance of OpenBGPD, KVM is needed. Some info about its installation can be found on the :ref:`External programs` installation section.
 
-2. Setup and install a KVM virtual-machine running OpenBSD 6.0. This VM will be started and stopped many times during tests: don't use a production VM.
+2. Setup and install a KVM virtual-machine running OpenBSD 6.0 or 6.1. This VM will be started and stopped many times during tests: don't use a production VM.
 
-   - By default, the VM name must be ``arouteserver_openbgpd``; this can be changed by setting the ``VIRSH_DOMAINNAME`` environment variable before running the tests.
+   - By default, the VM name must be ``arouteserver_openbgpd60`` or ``arouteserver_openbgpd61``; this can be changed by setting the ``VIRSH_DOMAINNAME`` environment variable before running the tests.
 
    - The VM must be connected to the same Docker network created above: the commands ``ip link show`` and ``ifconfig`` can be used to determine the local network name needed when creating the VM:
 
    .. code-block:: console
 
       $ ifconfig
-      br-76917ebc96d6 Link encap:Ethernet  HWaddr 02:42:57:82:bc:91
+      br-2d2956ce4b64 Link encap:Ethernet  HWaddr 02:42:57:82:bc:91
         inet addr:192.0.2.1  Bcast:0.0.0.0  Mask:255.255.255.0
         inet6 addr: fe80::42:57ff:fe82:bc91/64 Scope:Link
         inet6 addr: 2001:db8:1:1::1/64 Scope:Global
         inet6 addr: fe80::1/64 Scope:Link
         UP BROADCAST MULTICAST  MTU:1500  Metric:1
         ...
+
+   - In order to run built-in live test scenarios, the VM must be reachable at 192.0.2.2/24 and 2001:db8:1:1::2/64.
 
    On the following example, the virtual disk will be stored in ~/vms, the VM will be reachable by connecting to any IP address of the host via VNC, the installation disk image is expected to be found in the install60.iso file and the network name used is **br-2d2956ce4b64**:
 
@@ -104,9 +106,11 @@ OpenBGPD live-tests environment
       ssh-rsa [public_key_here] arouteserver
       EOF
 
+   The ``StrictHostKeyChecking`` option is disabled via command line argument in order to allow to connect to multiple different VMs with the same IP address.
+
    The SSH username and key file path can be changed by setting the ``SSH_USERNAME`` and ``SSH_KEY_PATH`` environment variables before running the tests.
 
-   Be sure the ``bgpd`` daemon and the ``bgpctl`` tool can be executed correctly.
+   Be sure the ``bgpd`` daemon and the ``bgpctl`` tool can be executed correctly on the OpenBSD VM: ``chmod 0555 /var/www/bin/bgpctl``.
 
 How to run built-in live tests
 ------------------------------

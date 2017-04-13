@@ -19,7 +19,7 @@ import unittest
 from base import DefaultConfigScenarioOpenBGPD
 from data6 import DefaultConfigScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
 
 @unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
 class DefaultConfigScenarioBIRD_IPv6(DefaultConfigScenario_Data6,
@@ -27,6 +27,6 @@ class DefaultConfigScenarioBIRD_IPv6(DefaultConfigScenario_Data6,
     __test__ = True
     SKIP_ON_TRAVIS = True
 
-    SHORT_DESCR = "Live test, OpenBGPD, default config, IPv6"
-    RS_INSTANCE_CLASS = OpenBGPDInstance
+    SHORT_DESCR = "Live test, OpenBGPD 6.0, default config, IPv6"
+    RS_INSTANCE_CLASS = OpenBGPD60Instance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6

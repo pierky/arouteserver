@@ -18,7 +18,8 @@ import unittest
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
+                                                          OpenBGPD60Instance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class BasicScenario(LiveScenario):
@@ -436,8 +437,8 @@ class BasicScenario(LiveScenario):
 
     def test_061_bad_communities_scrubbed_by_rs_lrg(self):
         """{}: bad communities scrubbed by rs (lrg)"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("Large comms not supported by OpenBGPD")
+        if isinstance(self.rs, OpenBGPD60Instance):
+            raise unittest.SkipTest("Large comms not supported by OpenBGPD 6.0")
 
         self.receive_route(self.rs, self.DATA["AS101_bad_lrg_comm"], self.AS1_1, lrg_comms=[])
         self.receive_route(self.rs, self.DATA["AS101_bad_lrg_comm"], self.AS2, lrg_comms=[])
@@ -451,8 +452,8 @@ class BasicScenario(LiveScenario):
 
     def test_062_other_communities_not_scrubbed_by_rs_lrg(self):
         """{}: other communities not scrubbed by rs (lrg)"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("Large comms not supported by OpenBGPD")
+        if isinstance(self.rs, OpenBGPD60Instance):
+            raise unittest.SkipTest("Large comms not supported by OpenBGPD 6.0")
 
         for inst in (self.AS1_1, self.AS2):
             self.receive_route(self.rs, self.DATA["AS101_other_l_comm"], inst, lrg_comms=["888:0:0"])
@@ -474,8 +475,8 @@ class BasicScenario(LiveScenario):
 
     def test_070_blackhole_filtering_as_seen_by_rs_lrg_cust(self):
         """{}: blackhole filtering requests as seen by rs (lrg cust)"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("Large comms not supported by OpenBGPD")
+        if isinstance(self.rs, OpenBGPD60Instance):
+            raise unittest.SkipTest("Large comms not supported by OpenBGPD 6.0")
 
         self.receive_route(self.rs, self.DATA["AS2_blackhole3"], self.AS2, next_hop=self.AS2, as_path="2",
                            std_comms=[], lrg_comms=["65534:0:0"])
@@ -515,8 +516,8 @@ class BasicScenario(LiveScenario):
 
     def test_071_blackholed_prefixes_as_seen_by_enabled_clients_lrg_cust(self):
         """{}: blackholed prefixes as seen by enabled clients (lrg_cust)"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("Large comms not supported by OpenBGPD")
+        if isinstance(self.rs, OpenBGPD60Instance):
+            raise unittest.SkipTest("Large comms not supported by OpenBGPD 6.0")
 
         for inst in (self.AS1_1, self.AS3):
             self.receive_route(inst, self.DATA["AS2_blackhole3"], self.rs, next_hop=self.DATA["blackhole_IP"],
@@ -524,8 +525,9 @@ class BasicScenario(LiveScenario):
 
     def test_071_blackholed_prefixes_triggered_via_unsupported_lrg_comms(self):
         """{}: blackholed prefixes triggered via unsupported lrg comms"""
-        if isinstance(self.rs, BIRDInstance):
-            raise unittest.SkipTest("Large comms are supported by BIRD")
+        if not isinstance(self.rs, OpenBGPD60Instance):
+            # Test valid only for BGP daemons that don't support large comms
+            raise unittest.SkipTest("Large comms are supported here")
 
         with self.assertRaisesRegexp(AssertionError, "Routes not found."):
             self.receive_route(self.AS1_1, self.DATA["AS2_blackhole3"])
@@ -762,6 +764,7 @@ class BasicScenarioOpenBGPD(BasicScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
+    TARGET_VERSION = None
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -772,7 +775,8 @@ class BasicScenarioOpenBGPD(BasicScenario):
                 (
                     cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
                                      local_files_dir="/etc/bgpd",
-                                     local_files=["post-clients"]),
+                                     local_files=["post-clients"],
+                                     target_version=cls.TARGET_VERSION),
                     "/etc/bgpd.conf"
                 ),
                 (
@@ -781,3 +785,13 @@ class BasicScenarioOpenBGPD(BasicScenario):
                 )
             ]
         )
+
+class BasicScenarioOpenBGPD60(BasicScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.0"
+
+class BasicScenarioOpenBGPD61(BasicScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.1"

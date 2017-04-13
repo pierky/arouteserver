@@ -15,7 +15,7 @@
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class TagASSetScenario(LiveScenario):
@@ -115,7 +115,7 @@ class TagASSetScenario_WithAS_SETs(object):
     }
 
     def _set_lrg_comms(self, lst):
-        if isinstance(self.rs, OpenBGPDInstance):
+        if isinstance(self.rs, OpenBGPD60Instance):
             return []
         return lst
 
@@ -222,7 +222,7 @@ class TagASSetScenario_EmptyAS_SETs(object):
     }
 
     def _set_lrg_comms(self, lst):
-        if isinstance(self.rs, OpenBGPDInstance):
+        if isinstance(self.rs, OpenBGPD60Instance):
             return []
         return lst
 
@@ -278,6 +278,8 @@ class TagASSetScenarioOpenBGPD(TagASSetScenario):
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
 
+    TARGET_VERSION = None
+
     @classmethod
     def _setup_rs_instance(cls):
         return cls.RS_INSTANCE_CLASS(
@@ -285,8 +287,19 @@ class TagASSetScenarioOpenBGPD(TagASSetScenario):
             cls.DATA["rs_IPAddress"],
             [
                 (
-                    cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None),
+                    cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
+                                     target_version=cls.TARGET_VERSION),
                     "/etc/bgpd.conf"
                 )
             ]
         )
+
+class TagASSetScenarioOpenBGPD60(TagASSetScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.0"
+
+class TagASSetScenarioOpenBGPD61(TagASSetScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.1"

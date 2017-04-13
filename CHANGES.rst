@@ -1,6 +1,11 @@
 Change log
 ==========
 
+next release
+------------
+
+- OpenBGPD 6.1 support: enable large BGP communities support.
+
 v0.5.0
 ------
 

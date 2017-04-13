@@ -60,11 +60,14 @@ class OpenBGPDInstance(KVMInstance):
     This class is derived from :class:`KVMInstance`, that implements
     some kvm-specific methods to start/stop the instance and to run
     commands on it.
+
+    The VIRSH_DOMAINNAME attribute must be set by derived classes on the
+    basis of the specific version of OpenBSD they represent.
     """
 
     MESSAGE_LOGGING_SUPPORT = False
 
-    VIRSH_DOMAINNAME = "arouteserver_openbgpd"
+    VIRSH_DOMAINNAME = None
 
     def __init__(self, *args, **kwargs):
         KVMInstance.__init__(self, *args, **kwargs)
@@ -266,3 +269,11 @@ class OpenBGPDInstance(KVMInstance):
 
     def log_contains(self, s):
         return True
+
+class OpenBGPD60Instance(OpenBGPDInstance):
+
+    VIRSH_DOMAINNAME = "arouteserver_openbgpd60"
+
+class OpenBGPD61Instance(OpenBGPDInstance):
+
+    VIRSH_DOMAINNAME = "arouteserver_openbgpd61"

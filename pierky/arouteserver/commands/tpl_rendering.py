@@ -163,11 +163,11 @@ class TemplateRenderingCommands(ARouteServerCommand):
 
         return True
 
-class CustomizableTemplateRenderingCommand(TemplateRenderingCommands):
+class ConfigRenderingCommand(TemplateRenderingCommands):
 
     @classmethod
     def add_arguments(cls, parser):
-        super(CustomizableTemplateRenderingCommand, cls).add_arguments(parser)
+        super(ConfigRenderingCommand, cls).add_arguments(parser)
 
         URL = ("https://arouteserver.readthedocs.io/en/latest/CONFIG.html"
                "#site-specific-custom-config")
@@ -202,11 +202,23 @@ class CustomizableTemplateRenderingCommand(TemplateRenderingCommands):
             metavar="FILE_ID",
             dest="local_files")
 
+        parser.add_argument(
+            "--target-version",
+            help="The version of the BGP daemon for which the configuration "
+                 "will be generated. Default for {}: {}".format(
+                     cls.COMMAND_NAME,
+                     cls.BUILDER_CLASS.DEFAULT_VERSION
+                 ),
+            dest="target_version",
+            choices=cls.BUILDER_CLASS.AVAILABLE_VERSION,
+            default=cls.BUILDER_CLASS.DEFAULT_VERSION)
+
     def _set_cfg_builder_params(self):
-        super(CustomizableTemplateRenderingCommand, self)._set_cfg_builder_params()
+        super(ConfigRenderingCommand, self)._set_cfg_builder_params()
 
         self.cfg_builder_params["local_files_dir"] = self.args.local_files_dir
         self.cfg_builder_params["local_files"] = self.args.local_files
+        self.cfg_builder_params["target_version"] = self.args.target_version
 
 class BuildCommand(TemplateRenderingCommands):
 
@@ -232,7 +244,7 @@ class BuildCommand(TemplateRenderingCommands):
             "BGP-speaker-specific commands: 'bird' and 'openbgpd'."
         )
 
-class BIRDCommand(CustomizableTemplateRenderingCommand):
+class BIRDCommand(ConfigRenderingCommand):
 
     COMMAND_NAME = "bird"
     COMMAND_HELP = "Build route server configuration for BIRD."
@@ -265,7 +277,7 @@ class BIRDCommand(CustomizableTemplateRenderingCommand):
 
         self.cfg_builder_params["hooks"] = self.args.hooks
 
-class OpenBGPDCommand(CustomizableTemplateRenderingCommand):
+class OpenBGPDCommand(ConfigRenderingCommand):
 
     COMMAND_NAME = "openbgpd"
     COMMAND_HELP = "Build route server configuration for OpenBGPD."
