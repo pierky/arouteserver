@@ -53,7 +53,7 @@ Create clients.yml file from PeeringDB records
 The ``clients-from-peeringdb`` command can be used to automatically create a ``clients.yml`` file on the basis of PeeringDB records.
 Given an IX LAN ID, it collects all the networks which are registered as route server clients on that LAN, then it builds the clients file accordingly.
 
-If the IX LAN ID argument is not given, the script uses the `IX-F database <http://www.ix-f.net/ixp-database.html>`_ to show a list of IXP and their PeeringDB ID; this can be used to easily search for the IXP PeeringDB ID.
+If the IX LAN ID argument is not given, the script uses the `IX-F database <http://www.ix-f.net/ixp-database.html>`_ to show a list of IXPs and their PeeringDB ID; this can be used to easily search for the IXP PeeringDB ID.
 
 .. code-block:: console
 
@@ -224,4 +224,4 @@ To setup a new live test scenario:
 
       arouteserver init-scenario ~/ars_scenarios/myscenario
 
-More details on :doc:`LIVETESTS_CUSTOMSCENARIO`.
+More details on :ref:`How to build custom scenarios`.
