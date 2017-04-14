@@ -5,6 +5,7 @@ next release
 ------------
 
 - OpenBGPD 6.1 support: enable large BGP communities support.
+- Improvement: the ``clients-from-peeringdb`` command now uses the `IX-F database <http://www.ix-f.net/ixp-database.html>`_ to show a list of IXP and their PeeringDB ID.
 
 v0.5.0
 ------

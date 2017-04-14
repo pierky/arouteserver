@@ -17,8 +17,10 @@ import argparse
 import sys
 import yaml
 
+from ..ask import ask, ask_int
 from .base import ARouteServerCommand
 from ..config.program import program_config
+from ..ixf_db import IXFDB
 from ..peering_db import clients_from_peeringdb
 
 class ClientsFromPeeringDBCommand(ARouteServerCommand):
@@ -42,11 +44,69 @@ class ClientsFromPeeringDBCommand(ARouteServerCommand):
         parser.add_argument(
             "netixlanid",
             type=int,
-            help="PeeringDB NetIX LAN ID.")
+            nargs="?",
+            default=None,
+            help="PeeringDB NetIX LAN ID. If not given, the IX-F database "
+                 "will be used to show a list of IXPs.")
+
+    def get_netixlanid(self):
+        sys.stdout.write("Loading IX-F database... ")
+        ixf_db = IXFDB()
+        sys.stdout.write("OK\n")
+
+        print("")
+        print("Select the IXP for which the clients list must be built")
+        answer_given, text = ask("Enter the text to search for "
+                                 "(IXP name, country, city):")
+        if not answer_given:
+            return None
+
+        text = text.lower()
+
+        print("{:>7}  {}".format("ID", "IXP description"))
+
+        found = False
+        for ixp in ixf_db.ixp_list:
+            if text in ixp["city"].lower() or \
+                text in ixp["country"].lower() or \
+                text in ixp["full_name"].lower() or \
+                text in ixp["short_name"].lower():
+
+                found = True
+
+                print("{:>7}  {}, {}, {} ({})".format(
+                    ixp["peeringdb_handle"],
+                    ixp["country"].encode("ascii", "replace"),
+                    ixp["city"].encode("ascii", "replace"),
+                    ixp["full_name"].encode("ascii", "replace"),
+                    ixp["short_name"].encode("ascii", "replace")
+                ))
+
+        if not found:
+            print("No IXP found using '{}'".format(text))
+            return False
+
+        print("")
+        answer_given, id = ask_int("Enter the ID of the IXP you want to use "
+                                   "to build the clients list:")
+
+        if not answer_given:
+            return None
+
+        return id
 
     def run(self):
+        netixlanid = self.args.netixlanid
+        if not netixlanid:
+            netixlanid = self.get_netixlanid()
+        if not netixlanid:
+            return False
+
+        print("Building clients list from "
+              "PeeringDB Net IX LAN ID {}...".format(netixlanid))
+
         data = clients_from_peeringdb(
-            self.args.netixlanid,
+            netixlanid,
             program_config.get("cache_dir")
         )
         yaml.safe_dump(data, self.args.output_file, default_flow_style=False)

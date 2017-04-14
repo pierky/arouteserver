@@ -79,6 +79,18 @@ class EuroIXSchemaError(EuroIXError):
                             "the one recognized by this version of the "
                             "program, or that it contains errors.")
 
+class IXFDBError(ARouteServerError):
+    pass
+
+class IXFDBSchemaError(IXFDBError):
+
+    def __init__(self, msg):
+        IXFDBError.__init__(self, msg)
+        self._extra_info = ("It's possible that the JSON schema used in the "
+                            "IX-F database is not aligned with "
+                            "the one recognized by this version of the "
+                            "program, or that it contains errors.")
+
 class BuilderError(ARouteServerError):
     pass
 

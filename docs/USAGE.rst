@@ -50,8 +50,24 @@ Automatic ``clients.yml`` creation
 Create clients.yml file from PeeringDB records
 **********************************************
 
-The ``clients-from-peeringdb`` command can be used for testing purposes to automatically create a ``clients.yml`` file on the basis of PeeringDB records.
+The ``clients-from-peeringdb`` command can be used to automatically create a ``clients.yml`` file on the basis of PeeringDB records.
 Given an IX LAN ID, it collects all the networks which are registered as route server clients on that LAN, then it builds the clients file accordingly.
+
+If the IX LAN ID argument is not given, the script uses the `IX-F database <http://www.ix-f.net/ixp-database.html>`_ to show a list of IXP and their PeeringDB ID; this can be used to easily search for the IXP PeeringDB ID.
+
+.. code-block:: console
+
+   $ arouteserver clients-from-peeringdb
+   Loading IX-F database... OK
+   
+   Select the IXP for which the clients list must be built
+   Enter the text to search for (IXP name, country, city): LINX
+        ID  IXP description
+        18  GB, London, London Internet Exchange LON1 (LINX LON1)
+       777  US, Ashburn, LINX NoVA (LINX NoVA)
+       321  GB, London, London Internet Exchange LON2 (LINX LON2)
+   
+   Enter the ID of the IXP you want to use to build the clients list: 18
 
 Create clients.yml file from Euro-IX member list JSON file
 **********************************************************

@@ -55,3 +55,12 @@ def ask(text, options=None, default=None):
 
 def ask_yes_no(text, default=None):
     return ask(text, ["yes", "no"], default)
+
+def ask_int(text, default=None):
+    answer_given, v = ask(text, None, default)
+    if not answer_given:
+        return False, None
+    if not v.isdigit():
+        print("Invalid input: it must be an integer.")
+        return False, None
+    return True, int(v)
