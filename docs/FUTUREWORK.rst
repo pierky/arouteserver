@@ -5,7 +5,6 @@ Short term
 ----------
 
 - New feature: custom informative BGP communities
-- New feature: timers customization
 - Packaging: a command to upgrade the program
 
 Mid term

@@ -9,6 +9,7 @@ next release
 - Improvement: enable NEXT_HOP rewriting for IPv6 blackhole filtering requests on OpenBGPD after `OpenBSD 6.1 fixup <https://github.com/openbsd/src/commit/f1385c8f4f9b9e193ff65d9f2039862d3e230a45>`_.
 
   Related: `issue #3 <https://github.com/pierky/arouteserver/issues/3>`_.
+- Improvement: BIRD, client-level `.local file <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#site-specific-custom-config>`_.
 
 v0.5.0
 ------

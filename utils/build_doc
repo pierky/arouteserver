@@ -67,7 +67,7 @@ echo "Building example HTML: default"
 RenderExample "default" "html" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml"
 
 echo "Building example: rich, IPv4"
-RenderExample "rich" "bird" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml" 4
+RenderExample "rich" "bird" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml" 4 --use-local-files client
 RenderExample "rich" "openbgpd" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml"
 
 echo "Building example: rich, IPv6"

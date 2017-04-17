@@ -294,6 +294,14 @@ protocol bgp {{ client.id }} {
 	{% endif %}
 
 	import keep filtered on;
+
+	{{ "client"|include_local_file -}}
+	{% if ip_ver == 4 %}
+	{{ "client4"|include_local_file -}}
+	{% else %}
+	{{ "client6"|include_local_file -}}
+	{% endif %}
+
 	import filter receive_from_{{ client.id }};
 	export filter announce_to_{{ client.id }};
 }

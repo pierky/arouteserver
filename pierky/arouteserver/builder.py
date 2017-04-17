@@ -375,7 +375,8 @@ class ConfigBuilder(object):
 class BIRDConfigBuilder(ConfigBuilder):
 
     LOCAL_FILES_IDS = ["header", "header4", "header6",
-                       "footer", "footer4", "footer6"]
+                       "footer", "footer4", "footer6",
+                       "client", "client4", "client6"]
     LOCAL_FILES_BASE_DIR = "/etc/bird"
 
     HOOKS = ["pre_receive_from_client", "post_receive_from_client",

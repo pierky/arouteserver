@@ -63,8 +63,13 @@ class RichConfigExampleScenarioBIRD(RichConfigExampleScenario):
             cls.DATA["rs_IPAddress"],
             [
                 (
-                    cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER),
+                    cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
+                                     local_files=["client"]),
                     "/etc/bird/bird.conf"
+                ),
+                (
+                    cls.use_static_file("bird.client.local"),
+                    "/etc/bird/client.local"
                 )
             ]
         )
