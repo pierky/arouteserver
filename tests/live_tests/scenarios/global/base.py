@@ -484,21 +484,10 @@ class BasicScenario(LiveScenario):
 
     def test_071_blackholed_prefixes_as_seen_by_enabled_clients_BLACKHOLE(self):
         """{}: blackholed prefixes as seen by enabled clients (BLACKHOLE)"""
-        if isinstance(self.rs, OpenBGPDInstance) and ":" in self.DATA["AS2_blackhole1"]:
-            # FIXME: work in progress to have IPv6 blackhole requests with
-            # next-hop rewriting working.
-            # The command...
-            # 'bgpctl -n show rib detail out neighbor 2001:db8:1:1::11 2a02:0:3::1/128'
-            # ... shows "Nexthop 2001:db8:1:1::66" but the UPDATE received by
-            # the client contains NEXT_HOP = <the route server>:
-            # From tcpdump:
-            # ...
-            # Multi-Protocol Reach NLRI (14), length: 55, Flags [O]:
-            #     AFI: IPv6 (2), SAFI: Unicast (1)
-            #     nexthop: 2001:db8:1:1::2, nh-length: 16, no SNPA
-            #     2a02:0:3::2/128
-            #     2a02:0:3::1/128
-            raise unittest.SkipTest("Work in progress")
+        if isinstance(self.rs, OpenBGPD60Instance) and ":" in self.DATA["AS2_blackhole1"]:
+            # OpenBGPD < 6.1 bug: https://github.com/pierky/arouteserver/issues/3
+            # fixed by https://github.com/openbsd/src/commit/f1385c8f4f9b9e193ff65d9f2039862d3e230a45
+            raise unittest.SkipTest("Not working on OpenBGPD 6.0")
 
         for inst in (self.AS1_1, self.AS3):
             self.receive_route(inst, self.DATA["AS2_blackhole1"], self.rs, next_hop=self.DATA["blackhole_IP"],
@@ -506,9 +495,10 @@ class BasicScenario(LiveScenario):
 
     def test_071_blackholed_prefixes_as_seen_by_enabled_clients_std_cust(self):
         """{}: blackholed prefixes as seen by enabled clients (std_cust)"""
-        if isinstance(self.rs, OpenBGPDInstance) and ":" in self.DATA["AS2_blackhole2"]:
-            # FIXME: see above
-            raise unittest.SkipTest("Work in progress")
+        if isinstance(self.rs, OpenBGPD60Instance) and ":" in self.DATA["AS2_blackhole1"]:
+            # OpenBGPD < 6.1 bug: https://github.com/pierky/arouteserver/issues/3
+            # fixed by https://github.com/openbsd/src/commit/f1385c8f4f9b9e193ff65d9f2039862d3e230a45
+            raise unittest.SkipTest("Not working on OpenBGPD 6.0")
 
         for inst in (self.AS1_1, self.AS3):
             self.receive_route(inst, self.DATA["AS2_blackhole2"], self.rs, next_hop=self.DATA["blackhole_IP"],

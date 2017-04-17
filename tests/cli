@@ -53,4 +53,18 @@ run_cmd "openbgpd" | must_contain "ERROR Compatibility issue ID 'large_communiti
 run_cmd "openbgpd" --target-version 6.0 | must_contain "ERROR Compatibility issue ID 'large_communities'. The community 'do_not_announce_to_peer'"
 run_cmd "openbgpd" --target-version 6.1 | must_not_contain "ERROR Compatibility issue ID 'large_communities'"
 
+reset
+GENERAL="tests/var/general.yml"
+cat << EOF > $GENERAL
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+  blackhole_filtering:
+    policy_ipv6: 'rewrite-next-hop'
+    rewrite_next_hop_ipv6: '2001:db8:1:1::66'
+EOF
+run_cmd "openbgpd" | must_contain "Compatibility issue ID 'blackhole_filtering_rewrite_ipv6_nh'. On OpenBSD < 6.1"
+run_cmd "openbgpd" --target-version 6.0 | must_contain "Compatibility issue ID 'blackhole_filtering_rewrite_ipv6_nh'. On OpenBSD < 6.1"
+run_cmd "openbgpd" --target-version 6.1 | must_not_contain "Compatibility issue ID 'blackhole_filtering_rewrite_ipv6_nh'"
+
 echo "Done!"

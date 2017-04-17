@@ -299,7 +299,7 @@ The following list of limitations is based on the currently supported versions o
 
   - For max-prefix filtering, only the ``shutdown`` and the ``restart`` actions are supported by OpenBGPD. Restart is configured with a 15 minutes timer.
 
-  - `An issue <https://github.com/pierky/arouteserver/issues/3>`_ is currently preventing next-hop rewriting for **IPv6 blackhole filtering** policies.
+  - `An issue <https://github.com/pierky/arouteserver/issues/3>`_ is preventing next-hop rewriting for **IPv6 blackhole filtering** policies on OpenBGPD/OpenBSD 6.0.
 
   - **Large communities** are not supported by OpenBGPD 6.0: features that are configured to be offered via large communities only are ignored and not included into the generated OpenBGPD configuration.
 

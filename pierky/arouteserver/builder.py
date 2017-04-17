@@ -526,10 +526,11 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             ):
                 res = False
 
-        if self.cfg_general["blackhole_filtering"]["policy_ipv6"] == "rewrite-next-hop":
+        if self.cfg_general["blackhole_filtering"]["policy_ipv6"] == "rewrite-next-hop" and \
+            version.parse(self.target_version or "6.0") < version.parse("6.1"):
             if not self.process_bgpspeaker_specific_compatibility_issue(
                 "blackhole_filtering_rewrite_ipv6_nh",
-                "There is an issue related to next-hop rewriting "
+                "On OpenBSD < 6.1 there is an issue related to next-hop rewriting "
                 "that impacts blackhole filtering policies when "
                 "'blackhole_filtering.policy_ipv6' is 'rewrite-next-hop': "
                 "https://github.com/pierky/arouteserver/issues/3"

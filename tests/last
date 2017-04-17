@@ -347,9 +347,9 @@ Live test, OpenBGPD 6.0, global scenario, IPv6: other communities not scrubbed b
 Live test, OpenBGPD 6.0, global scenario, IPv6: blackhole filtering requests as seen by rs (BLACKHOLE) ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: blackhole filtering requests as seen by rs (lrg cust) ... SKIP: Large comms not supported by OpenBGPD 6.0
 Live test, OpenBGPD 6.0, global scenario, IPv6: blackhole filtering requests as seen by rs (std cust) ... ok
-Live test, OpenBGPD 6.0, global scenario, IPv6: blackholed prefixes as seen by enabled clients (BLACKHOLE) ... SKIP: Work in progress
+Live test, OpenBGPD 6.0, global scenario, IPv6: blackholed prefixes as seen by enabled clients (BLACKHOLE) ... SKIP: Not working on OpenBGPD 6.0
 Live test, OpenBGPD 6.0, global scenario, IPv6: blackholed prefixes as seen by enabled clients (lrg_cust) ... SKIP: Large comms not supported by OpenBGPD 6.0
-Live test, OpenBGPD 6.0, global scenario, IPv6: blackholed prefixes as seen by enabled clients (std_cust) ... SKIP: Work in progress
+Live test, OpenBGPD 6.0, global scenario, IPv6: blackholed prefixes as seen by enabled clients (std_cust) ... SKIP: Not working on OpenBGPD 6.0
 Live test, OpenBGPD 6.0, global scenario, IPv6: blackholed prefixes not seen by not enabled clients ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: blackholed prefixes triggered via unsupported lrg comms ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: control communities, announce to AS1 only ... ok
@@ -461,9 +461,9 @@ Live test, OpenBGPD 6.1, global scenario, IPv6: other communities not scrubbed b
 Live test, OpenBGPD 6.1, global scenario, IPv6: blackhole filtering requests as seen by rs (BLACKHOLE) ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv6: blackhole filtering requests as seen by rs (lrg cust) ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv6: blackhole filtering requests as seen by rs (std cust) ... ok
-Live test, OpenBGPD 6.1, global scenario, IPv6: blackholed prefixes as seen by enabled clients (BLACKHOLE) ... SKIP: Work in progress
+Live test, OpenBGPD 6.1, global scenario, IPv6: blackholed prefixes as seen by enabled clients (BLACKHOLE) ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv6: blackholed prefixes as seen by enabled clients (lrg_cust) ... ok
-Live test, OpenBGPD 6.1, global scenario, IPv6: blackholed prefixes as seen by enabled clients (std_cust) ... SKIP: Work in progress
+Live test, OpenBGPD 6.1, global scenario, IPv6: blackholed prefixes as seen by enabled clients (std_cust) ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv6: blackholed prefixes not seen by not enabled clients ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv6: blackholed prefixes triggered via unsupported lrg comms ... SKIP: Large comms are supported here
 Live test, OpenBGPD 6.1, global scenario, IPv6: control communities, announce to AS1 only ... ok
@@ -807,6 +807,6 @@ Live test, OpenBGPD 6.1, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin
 Live test, OpenBGPD 6.1, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 699 tests in 3559.253s
+Ran 699 tests in 3565.621s
 
-OK (SKIP=56)
+OK (SKIP=54)

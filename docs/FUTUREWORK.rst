@@ -16,7 +16,6 @@ Mid term
 - Doc: better documentation
 - Doc: contributing section
 - Doc: schema of data that can be used within J2 templates
-- Fix: blackhole filtering requests, next-hop rewriting for IPv6 (OpenBGPD only)
 
 Long term
 ---------
