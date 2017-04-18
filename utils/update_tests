@@ -21,4 +21,7 @@ ROOT="`pwd`"
 
 TESTS_DIR="`pwd`/tests"
 
+echo -n "Testing CLI commands... "
+./tests/cli
+
 nosetests -vs -x $TESTS_DIR 2>&1 | tee $TESTS_DIR/last

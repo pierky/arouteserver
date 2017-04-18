@@ -7,6 +7,9 @@ fi
 
 export PYTHONPATH="`pwd`"
 
+RES_FILE=`mktemp`
+echo 0 > $RES_FILE
+
 function reset() {
 	AROUTESERVER="./scripts/arouteserver"
 	CFG_FILE="var/build_doc.yml"
@@ -15,13 +18,19 @@ function reset() {
 	BOGONS="config.d/bogons.yml"
 }
 
-function run_cmd() {
+function build_cmd() {
 	COMMAND="$1" ; shift
 	$AROUTESERVER $COMMAND --cfg $CFG_FILE --general $GENERAL --clients $CLIENTS --bogons $BOGONS $@ 2>&1
 }
 
+function run_cmd() {
+	COMMAND="$1" ; shift
+	$AROUTESERVER $COMMAND --cfg $CFG_FILE $@ 2>&1
+}
+
 function error() {
 	echo "$1"
+	echo 1 > $RES_FILE
 }
 
 function must_contain() {
@@ -36,8 +45,18 @@ function must_not_contain() {
 	fi
 }
 
+# clients-from-euroix
 reset
-run_cmd "openbgpd" | must_contain "ERROR Compatibility issue ID 'path_hiding'"
+
+# 0.4 schema version:
+run_cmd "clients-from-euroix" --url https://my.ams-ix.net/api/v1/members.json 1 | must_contain "description: Akamai"
+# 0.5 schema version:
+run_cmd "clients-from-euroix" --url https://portal.lonap.net/apiv1/member-list/list 1 | must_contain "AS-APPLE"
+# 0.6 schema version:
+run_cmd "clients-from-euroix" --url https://www.swissix.ch/euroix/create-json-ixp-member-list.php 1 | must_contain "description: Microsoft"
+
+reset
+build_cmd "openbgpd" | must_contain "ERROR Compatibility issue ID 'path_hiding'"
 
 reset
 GENERAL="tests/var/general.yml"
@@ -49,9 +68,9 @@ cfg:
     do_not_announce_to_peer:
       lrg: "rs_as:0:peer_as"
 EOF
-run_cmd "openbgpd" | must_contain "ERROR Compatibility issue ID 'large_communities'. The community 'do_not_announce_to_peer'"
-run_cmd "openbgpd" --target-version 6.0 | must_contain "ERROR Compatibility issue ID 'large_communities'. The community 'do_not_announce_to_peer'"
-run_cmd "openbgpd" --target-version 6.1 | must_not_contain "ERROR Compatibility issue ID 'large_communities'"
+build_cmd "openbgpd" | must_contain "ERROR Compatibility issue ID 'large_communities'. The community 'do_not_announce_to_peer'"
+build_cmd "openbgpd" --target-version 6.0 | must_contain "ERROR Compatibility issue ID 'large_communities'. The community 'do_not_announce_to_peer'"
+build_cmd "openbgpd" --target-version 6.1 | must_not_contain "ERROR Compatibility issue ID 'large_communities'"
 
 reset
 GENERAL="tests/var/general.yml"
@@ -63,8 +82,16 @@ cfg:
     policy_ipv6: 'rewrite-next-hop'
     rewrite_next_hop_ipv6: '2001:db8:1:1::66'
 EOF
-run_cmd "openbgpd" | must_contain "Compatibility issue ID 'blackhole_filtering_rewrite_ipv6_nh'. On OpenBSD < 6.1"
-run_cmd "openbgpd" --target-version 6.0 | must_contain "Compatibility issue ID 'blackhole_filtering_rewrite_ipv6_nh'. On OpenBSD < 6.1"
-run_cmd "openbgpd" --target-version 6.1 | must_not_contain "Compatibility issue ID 'blackhole_filtering_rewrite_ipv6_nh'"
+build_cmd "openbgpd" | must_contain "Compatibility issue ID 'blackhole_filtering_rewrite_ipv6_nh'. On OpenBSD < 6.1"
+build_cmd "openbgpd" --target-version 6.0 | must_contain "Compatibility issue ID 'blackhole_filtering_rewrite_ipv6_nh'. On OpenBSD < 6.1"
+build_cmd "openbgpd" --target-version 6.1 | must_not_contain "Compatibility issue ID 'blackhole_filtering_rewrite_ipv6_nh'"
 
-echo "Done!"
+ERROR=`cat $RES_FILE`
+if [ $ERROR -eq 1 ]; then
+	echo "Done! ERRORS FOUND"
+else
+	echo "Done!"
+fi
+rm $RES_FILE
+
+exit $ERROR
