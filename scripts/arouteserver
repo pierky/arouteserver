@@ -27,7 +27,7 @@ from pierky.arouteserver.version import __version__, COPYRIGHT_YEAR
 def main():
 
     parser = argparse.ArgumentParser(
-        description="A Router Server v{}: a tool to automatically "
+        description="ARouterServer v{}: a tool to automatically "
                     "build route servers configuration.".format(
                         __version__
                     ),
