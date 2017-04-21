@@ -1,8 +1,10 @@
 Change log
 ==========
 
-next release
-------------
+.. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`_ section of the documentation.
+
+v0.6.0
+------
 
 - OpenBGPD 6.1 support: enable large BGP communities support.
 - Improvement: the ``clients-from-peeringdb`` command now uses the `IX-F database <http://www.ix-f.net/ixp-database.html>`_ to show a list of IXP and their PeeringDB ID.

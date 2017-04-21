@@ -1,0 +1,103 @@
+#!/bin/bash
+
+if [ "`pwd`" != `echo ~` ]; then
+	echo "The script must be executed from within the user's home directory."
+	exit
+fi
+ROOT="`pwd`/arouteserver"
+CURR_PACKAGE="`ls $ROOT/dist/ | tail -n 1`"
+
+function run() {
+	VENV_NAME="$1"; shift
+	IS_UPGR="$1"; shift
+
+	echo "Arguments: VENV_NAME: $VENV_NAME, IS_UPGR: $IS_UPGR"
+	echo
+	echo
+
+	echo "Setting up the environment..."
+	VENV_DIR=~/.virtualenvs/$VENV_NAME
+	DEST_DIR=~/$VENV_NAME
+	CFG_FILE=$DEST_DIR/arouteserver.yml
+
+	if [ $IS_UPGR -eq 0 ]; then
+		rm -r $DEST_DIR
+		rm -r $VENV_DIR
+	fi
+
+	mkdir -p $DEST_DIR
+	mkdir -p $VENV_DIR
+
+	virtualenv $VENV_DIR
+	source $VENV_DIR/bin/activate
+	echo
+	echo
+
+	if [ $IS_UPGR -eq 1 ]; then
+		echo -n "Previous version of arouteserver: "
+		pip freeze | grep arouteserver
+		echo
+		echo
+	fi
+
+	echo "Installing $CURR_PACKAGE..."
+	if [ $IS_UPGR -eq 1 ]; then
+		pip install --upgrade $ROOT/dist/$CURR_PACKAGE
+	else
+		pip install $ROOT/dist/$CURR_PACKAGE
+	fi
+	echo
+	echo
+
+	echo -n "Installed version of arouteserver: "
+	pip freeze | grep arouteserver
+	echo
+	echo
+
+	if [ $IS_UPGR -eq 0 ]; then
+		echo "Testing setup..."
+		arouteserver setup --dest-dir $DEST_DIR
+		echo
+		echo
+	fi
+
+	echo "Testing BIRD..."
+	arouteserver bird --cfg $CFG_FILE -o /dev/null --ip-ver 4
+	echo
+	echo
+
+	echo "Testing OpenBGPD..."
+	arouteserver openbgpd --cfg $CFG_FILE -o /dev/null --ignore-issues path_hiding
+	echo
+	echo
+
+	if [ $IS_UPGR -eq 1 ]; then
+		echo "Verifying templates..."
+		arouteserver verify-templates --cfg $CFG_FILE
+		echo
+		echo
+
+		echo -n "Run 'setup-templates'? [yes/NO] "
+		read YES_NO
+
+		if [ "$YES_NO" == "yes" ]; then
+			echo "Running setup-templates..."
+			arouteserver setup-templates --cfg $CFG_FILE
+			echo
+			echo
+		else
+			echo
+			echo
+		fi
+	fi
+
+	echo "Deactivating venv (activate with 'source $VENV_DIR/bin/activate')..."
+	deactivate
+	echo
+	echo
+}
+
+run "ars_new_rel_test" 0
+run "ars_upgr_rel_test" 1
+
+echo "Done!"
