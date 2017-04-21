@@ -13,10 +13,9 @@ Installation
     sudo yum install python-pip python-virtualenv 
 
     # setup a virtualenv
-    mkdir arouteserver
-    cd arouteserver
-    virtualenv venv
-    source venv/bin/activate
+    mkdir -p ~/.virtualenvs/arouteserver
+    virtualenv ~/.virtualenvs/arouteserver
+    source ~/.virtualenvs/arouteserver/bin/activate
 
   More: ``virtualenv`` `installation <https://virtualenv.pypa.io/en/latest/installation.html>`_ and `usage <https://virtualenv.pypa.io/en/latest/userguide.html>`_.
 
