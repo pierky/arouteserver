@@ -10,6 +10,7 @@ next release
 
   Related: `issue #3 <https://github.com/pierky/arouteserver/issues/3>`_.
 - Improvement: BIRD, client-level `.local file <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#site-specific-custom-config>`_.
+- Improvement: next-hop checks, the ``authorized_addresses`` option allows to authorize IP addresses of non-client routers for NEXT_HOP attribute of routes received from a client.
 
 v0.5.0
 ------

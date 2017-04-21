@@ -121,3 +121,26 @@ class ConfigParserBase(object):
         Contents of cfg dict is updated/normalized by validators.
         """
         raise NotImplementedError()
+
+def convert_next_hop_policy(cfg):
+    if not cfg:
+        return
+    if not isinstance(cfg, dict):
+        return
+    if not "filtering" in cfg:
+        return
+    if not cfg["filtering"]:
+        return
+    if not isinstance(cfg["filtering"], dict):
+        return
+    if "next_hop_policy" in cfg["filtering"]:
+        if "next_hop" in cfg["filtering"]:
+            raise ConfigError(
+                "Can't use the new 'next_hop' and the old 'next_hop_policy' "
+                "statements simultaneously for NEXT_HOP policy configuration"
+            )
+
+        cfg["filtering"]["next_hop"] = {
+            "policy": cfg["filtering"]["next_hop_policy"]
+        }
+        del cfg["filtering"]["next_hop_policy"]

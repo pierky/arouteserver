@@ -16,7 +16,7 @@
 from copy import deepcopy
 import logging
 
-from .base import ConfigParserBase
+from .base import ConfigParserBase, convert_next_hop_policy
 from .validators import *
 from ..errors import ConfigError, ARouteServerError
 
@@ -30,6 +30,17 @@ class ConfigParserClients(ConfigParserBase):
         self.general_cfg = general_cfg
 
     def parse(self):
+
+        def get_client_descr(client):
+            client_descr = ""
+            if "asn" in client:
+                client_descr += "AS{}".format(client["asn"])
+            if "ip" in client:
+                client_descr += " " + client["ip"]
+            if not client_descr:
+                client_descr = "unknown client"
+            return client_descr
+
         if "clients" not in self.cfg:
             raise ConfigError("Missing top 'clients' statement.")
         if "asns" in self.cfg:
@@ -48,9 +59,15 @@ class ConfigParserClients(ConfigParserBase):
                 "gtsm": ValidatorBool(mandatory=False),
                 "add_path": ValidatorBool(mandatory=False),
                 "filtering": {
-                    "next_hop_policy": ValidatorOption("next_hop_policy",
-                                                       ("strict", "same-as"),
-                                                       mandatory=False),
+                    "next_hop": {
+                        "policy": ValidatorOption("policy",
+                                                  ("strict", "same-as",
+                                                   "authorized_addresses"),
+                                                  mandatory=False),
+                        "authorized_addresses_list": ValidatorListOf(
+                            ValidatorIPAddr, mandatory=False
+                        )
+                    },
                     "ipv4_pref_len": ValidatorIPMinMaxLen(4, mandatory=False),
                     "ipv6_pref_len": ValidatorIPMinMaxLen(6, mandatory=False),
                     "max_as_path_len": ValidatorMaxASPathLen(mandatory=False),
@@ -100,15 +117,12 @@ class ConfigParserClients(ConfigParserBase):
 
         # Clients' config validation
         for client in self.cfg["clients"]:
-            client_descr = ""
-            if "asn" in client:
-                client_descr += "AS{}".format(client["asn"])
-            if "ip" in client:
-                client_descr += " " + client["ip"]
-            if not client_descr:
-                client_descr = "unknown client"
+            client_descr = get_client_descr(client)
 
             try:
+                # Convert next_hop_policy (< v0.6.0) into the new format
+                if "cfg" in client:
+                    convert_next_hop_policy(client["cfg"])
                 ConfigParserBase.validate(schema, client, "clients")
             except ARouteServerError as e:
                 err_msg = ("One or more errors occurred while processing "
@@ -145,6 +159,39 @@ class ConfigParserClients(ConfigParserBase):
                 errors = True
             else:
                 unique_ip.append(ip)
+
+        # Clients with...
+        # - next_hop.policy == "authorized_addresses" AND
+        # - no authorized IP addresses
+        # ... or with...
+        # - "authorized_addresses_list" AND
+        # - next_hop.policy != "authorized_addresses"
+        for client in self.cfg["clients"]:
+            client_descr = get_client_descr(client)
+            next_hop = client["cfg"]["filtering"]["next_hop"]
+
+            if next_hop["policy"] == "authorized_addresses" and \
+                not next_hop["authorized_addresses_list"]:
+
+                logging.error("The next_hop policy for client {} "
+                              "is set to 'authorized_addresses' but "
+                              "the list of authorized IP addresses "
+                              "('authorized_addresses_list') is empty".format(
+                                  client_descr
+                                ))
+                errors = True
+
+            if next_hop["policy"] != "authorized_addresses" and \
+                "authorized_addresses_list" in next_hop and \
+                next_hop["authorized_addresses_list"] is not None:
+
+                logging.error("The next_hop policy for client {} "
+                              "is not 'authorized_addresses' but "
+                              "the 'authorized_addresses_list' option "
+                              "is set".format(
+                                  client_descr
+                                ))
+                errors = True
 
         if errors:
             raise ConfigError()

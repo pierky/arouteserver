@@ -91,7 +91,17 @@ clients:
 
       filtering:
 
-        #next_hop_policy: "strict"
+        next_hop:
+          #policy: "strict"
+
+          # Clients having 'policy' set to 'authorized_addresses'
+          # must have the following option configured with the list
+          # of IP addresses allowed to be used in the NEXT_HOP
+          # attribute for the routes they announce to the route
+          # server.
+          #authorized_addresses_list:
+            #- "IP_ADDRESS_1"
+            #- "IP_ADDRESS_2"
 
         #ipv4_pref_len:
         #  min: 8

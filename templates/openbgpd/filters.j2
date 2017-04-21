@@ -130,8 +130,12 @@ match from group clients prefix 2000::/3 or-longer set community delete NO_ADVER
 
 # NEXT_HOP
 match from {{ client.ip }} set community NO_ADVERTISE
-{% if client.cfg.filtering.next_hop_policy == "strict" %}
+{% if client.cfg.filtering.next_hop.policy == "strict" %}
 match from {{ client.ip }} nexthop {{ client.ip }} set community delete NO_ADVERTISE
+{% elif client.cfg.filtering.next_hop.policy == "authorized_addresses" %}
+{%	for addr in client.cfg.filtering.next_hop.authorized_addresses_list if addr|ipaddr_ver == client.ip|ipaddr_ver %}
+match from {{ client.ip }} nexthop {{ addr }} set community delete NO_ADVERTISE
+{%	endfor %}
 {% else %}
 {%	for asn, same_as_clients in clients|groupby("asn") if asn == client.asn %}
 {%		for same_as_client in same_as_clients if same_as_client.ip|ipaddr_ver == client.ip|ipaddr_ver %}

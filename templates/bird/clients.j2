@@ -46,8 +46,12 @@ function prefix_is_in_{{ client.id }}_as_set() {
 function next_hop_is_valid_for_{{ client.id }}()
 {
 	# Checks if NEXT_HOP is one of those allowed for routes announced by {{ client.id }}
-	{% if client.cfg.filtering.next_hop_policy == "strict" %}
+	{% if client.cfg.filtering.next_hop.policy == "strict" %}
 	if bgp_next_hop = {{ client.ip }} then return true;
+	{% elif client.cfg.filtering.next_hop.policy == "authorized_addresses" %}
+	{%	for addr in client.cfg.filtering.next_hop.authorized_addresses_list if addr is current_ipver %}
+	if bgp_next_hop = {{ addr }} then return true;
+	{%	endfor %}
 	{% else %}
 	{% for asn, same_as_clients in clients|groupby("asn") if asn == client.asn %}
 	{% for same_as_client in same_as_clients if same_as_client.ip is current_ipver %}

@@ -44,6 +44,10 @@ class BasicScenario_Data4(object):
         "AS2_blackhole1":           "2.0.3.1/32",
         "AS2_blackhole2":           "2.0.3.2/32",
         "AS2_blackhole3":           "2.0.3.3/32",
+        "AS2_nonclient_nexthop1":   "2.0.4.0/24",
+        "AS2_nonclient_nexthop1_nh":"192.0.2.22",
+        "AS2_nonclient_nexthop2":   "2.0.5.0/24",
+        "AS2_nonclient_nexthop2_nh":"192.0.2.23",
 
         "AS3_blacklist1":           "3.0.1.0/24",
 	"AS3_cc_AS1only":           "3.0.2.0/24",

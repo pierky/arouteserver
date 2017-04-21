@@ -96,10 +96,25 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._test_mandatory(self.cfg, "add_path", has_default=True)
 
     def test_next_hop_policy(self):
-        """{}: next_hop_policy"""
-        self.assertEqual(self.cfg["filtering"]["next_hop_policy"], "strict")
-        self._test_option(self.cfg["filtering"], "next_hop_policy", ("strict", "same-as"))
-        self._test_mandatory(self.cfg["filtering"], "next_hop_policy", has_default=True)
+        """{}: next_hop.policy"""
+        self.assertEqual(self.cfg["filtering"]["next_hop"]["policy"], "strict")
+        self._test_option(self.cfg["filtering"]["next_hop"], "policy", ("strict", "same-as"))
+        self._test_mandatory(self.cfg["filtering"]["next_hop"], "policy", has_default=True)
+
+    def test_next_hop_policy(self):
+        """{}: next_hop_policy (pre v0.6.0 format)"""
+
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: 192.0.2.2\n"
+            "  filtering:\n"
+            "    next_hop_policy: 'same-as'\n"
+        )
+        self.cfg.parse()
+        self._contains_err()
+
+        self.assertEqual(self.cfg["filtering"]["next_hop"]["policy"], "same-as")
 
     def test_ipv4_pref_len(self):
         """{}: ipv4_pref_len"""
@@ -522,7 +537,9 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "gtsm": False,
             "add_path": False,
             "filtering": {
-                "next_hop_policy": "strict",
+                "next_hop": {
+                    "policy": "strict"
+                },
                 "global_black_list_pref": None,
                 "ipv4_pref_len": {
                     "min": 8,

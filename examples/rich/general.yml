@@ -14,7 +14,8 @@ cfg:
   add_path: True
 
   filtering:
-    next_hop_policy: "same-as"
+    next_hop:
+      policy: "same-as"
 
     ipv4_pref_len:
       min: 8

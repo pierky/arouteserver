@@ -10,7 +10,8 @@ How it works
         router_id: "192.0.2.2"
         add_path: True
         filtering:
-          next_hop_policy: "same-as"
+          next_hop:
+            policy: "same-as"
         blackhole_filtering:
           policy_ipv4: "rewrite-next-hop"
           ...

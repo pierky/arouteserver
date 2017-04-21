@@ -15,7 +15,7 @@ Built to group as many tests as possible in a single scenario.
   - AS1_1 (192.0.2.11)
 
     - next-hop-self configured in AS1_1.conf
-    - next_hop_policy: strict (inherited from general config)
+    - next_hop.policy: strict (inherited from general config)
 
     Originated prefixes:
 
@@ -36,7 +36,7 @@ Built to group as many tests as possible in a single scenario.
   - AS1_2 (192.0.2.12)
 
     - NO next-hop-self in AS1_2.conf (next-hop of AS101 used for AS101_good == 101.0.1.0/24)
-    - next_hop_policy: same-as (from clients config)
+    - next_hop.policy: same-as (from clients config)
 
     Originated prefixes:
 
@@ -60,22 +60,28 @@ Built to group as many tests as possible in a single scenario.
   - AS2 (192.0.2.21)
 
     - next-hop-self configured in AS2.conf
-    - next_hop_policy: strict (inherited from general config)
+    - next_hop.policy: authorized_addresses (from clients config)
+    - next_hop.authorized_addresses_list:
+      - 192.0.2.21 and 2001:db8:1:1::21, its own IP addresses
+      - 192.0.2.22 and 2001:db8:1:1::22, IP addresses not configured as route server client
 
     Originated prefixes:
 
-    ==============  ================   =======================================   =================================================
-    Prefix ID       Prefix             Feature                                   Expected result
-    ==============  ================   =======================================   =================================================
-    AS2_good1       2.0.1.0/24
-    AS2_good2       2.0.2.0/24
+    =======================  ================   =======================================   =================================================
+    Prefix ID                Prefix             Feature                                   Expected result
+    =======================  ================   =======================================   =================================================
+    AS2_good1                2.0.1.0/24
+    AS2_good2                2.0.2.0/24
 
-    AS2_blackhole1  2.0.3.1/32         announced with BLACKHOLE 65535:666 comm   propagated with only 65535:666 to AS1_1 and AS3
-                                                                                 (AS1_2 has "announce_to_client" = False) and
-                                                                                 next-hop 192.0.2.66; NO_EXPORT also added
-    AS2_blackhole2  2.0.3.2/32         announced with local 65534:0 comm         as above
-    AS2_blackhole3  2.0.3.3/32         announced with local 65534:0:0 comm       as above
-    ==============  ================   =======================================   =================================================
+    AS2_blackhole1           2.0.3.1/32         announced with BLACKHOLE 65535:666 comm   propagated with only 65535:666 to AS1_1 and AS3
+                                                                                          (AS1_2 has "announce_to_client" = False) and
+                                                                                          next-hop 192.0.2.66; NO_EXPORT also added
+    AS2_blackhole2           2.0.3.2/32         announced with local 65534:0 comm         as above
+    AS2_blackhole3           2.0.3.3/32         announced with local 65534:0:0 comm       as above
+
+    AS2_nonclient_nexthop1   2.0.4.0/24         announce with an authorized next-hop      received by other clients
+    AS2_nonclient_nexthop2   2.0.5.0/24         announce with an unknown next-hop         not received by other clients
+    =======================  ================   =======================================   =================================================
 
 - **AS3**:
 

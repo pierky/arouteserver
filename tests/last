@@ -15,6 +15,12 @@ Clients config parser: duplicate IP addresses ... ok
 Clients config parser: inherit from general cfg ... ok
 Clients config parser: IP address ... ok
 Clients config parser: clients with multiple IP addresses ... ok
+Clients config parser: next_hop.policy authorized_addresses, empty list ... ok
+Clients config parser: next_hop.policy authorized_addresses, invalid list ... ok
+Clients config parser: next_hop.policy authorized_addresses, invalid IP addr ... ok
+Clients config parser: next_hop.policy authorized_addresses, ok ... ok
+Clients config parser: next_hop.policy and next_hop_policy ... ok
+Clients config parser: next_hop.policy != authorized_addresses, list given ... ok
 Clients config parser: unknown statement ... ok
 Clients config parser: valid configuration ... ok
 General config parser: add_path ... ok
@@ -40,7 +46,7 @@ General config parser: max_prefix action ... ok
 General config parser: max_prefix general_limit_ipv4 ... ok
 General config parser: max_prefix general_limit_ipv6 ... ok
 General config parser: max_prefix PeeringDB ... ok
-General config parser: next_hop_policy ... ok
+General config parser: next_hop_policy (pre v0.6.0 format) ... ok
 General config parser: overlapping communities ... ok
 General config parser: passive ... ok
 General config parser: path_hiding ... ok
@@ -146,6 +152,7 @@ Live test, BIRD, global scenario, IPv4: instances setup ... ok
 Live test, BIRD, global scenario, IPv4: sessions are up ... ok
 Live test, BIRD, global scenario, IPv4: session configured via local include files ... ok
 Live test, BIRD, global scenario, IPv4: good prefixes received by rs ... ok
+Live test, BIRD, global scenario, IPv4: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: not IPv6 global unicast space ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: AS_PATH len ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: bogon ... ok
@@ -158,6 +165,7 @@ Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: origin not 
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: prefix not in AS-SET ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: invalid prefix-len ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
+Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: unknown NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: default route ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes not received by clients ... ok
 Live test, BIRD, global scenario, IPv4: RPKI, blackhole request for a covered prefix ... ok
@@ -203,6 +211,7 @@ Live test, BIRD, global scenario, IPv6: instances setup ... ok
 Live test, BIRD, global scenario, IPv6: sessions are up ... ok
 Live test, BIRD, global scenario, IPv6: session configured via local include files ... ok
 Live test, BIRD, global scenario, IPv6: good prefixes received by rs ... ok
+Live test, BIRD, global scenario, IPv6: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: not IPv6 global unicast space ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: AS_PATH len ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: bogon ... ok
@@ -215,6 +224,7 @@ Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: origin not 
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: prefix not in AS-SET ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: invalid prefix-len ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
+Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: unknown NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: default route ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes not received by clients ... ok
 Live test, BIRD, global scenario, IPv6: RPKI, blackhole request for a covered prefix ... ok
@@ -260,6 +270,7 @@ Live test, OpenBGPD 6.0, global scenario, IPv4: instances setup ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: sessions are up ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: session configured via local include files ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: good prefixes received by rs ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv4: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: not IPv6 global unicast space ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: AS_PATH len ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: bogon ... ok
@@ -272,6 +283,7 @@ Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: ori
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: prefix not in AS-SET ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: invalid prefix-len ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: unknown NEXT_HOP ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: default route ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes not received by clients ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: RPKI, blackhole request for a covered prefix ... SKIP: RPKI not supported by OpenBGPD
@@ -317,6 +329,7 @@ Live test, OpenBGPD 6.0, global scenario, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: sessions are up ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: session configured via local include files ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: good prefixes received by rs ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv6: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: not IPv6 global unicast space ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: AS_PATH len ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: bogon ... ok
@@ -329,6 +342,7 @@ Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: ori
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: prefix not in AS-SET ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: invalid prefix-len ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: unknown NEXT_HOP ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: default route ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes not received by clients ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: RPKI, blackhole request for a covered prefix ... SKIP: RPKI not supported by OpenBGPD
@@ -374,6 +388,7 @@ Live test, OpenBGPD 6.1, global scenario, IPv4: instances setup ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv4: sessions are up ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv4: session configured via local include files ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv4: good prefixes received by rs ... ok
+Live test, OpenBGPD 6.1, global scenario, IPv4: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv4: bad prefixes received by rs: not IPv6 global unicast space ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv4: bad prefixes received by rs: AS_PATH len ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv4: bad prefixes received by rs: bogon ... ok
@@ -386,6 +401,7 @@ Live test, OpenBGPD 6.1, global scenario, IPv4: bad prefixes received by rs: ori
 Live test, OpenBGPD 6.1, global scenario, IPv4: bad prefixes received by rs: prefix not in AS-SET ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv4: bad prefixes received by rs: invalid prefix-len ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
+Live test, OpenBGPD 6.1, global scenario, IPv4: bad prefixes received by rs: unknown NEXT_HOP ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv4: bad prefixes received by rs: default route ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv4: bad prefixes not received by clients ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv4: RPKI, blackhole request for a covered prefix ... SKIP: RPKI not supported by OpenBGPD
@@ -431,6 +447,7 @@ Live test, OpenBGPD 6.1, global scenario, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv6: sessions are up ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv6: session configured via local include files ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv6: good prefixes received by rs ... ok
+Live test, OpenBGPD 6.1, global scenario, IPv6: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv6: bad prefixes received by rs: not IPv6 global unicast space ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv6: bad prefixes received by rs: AS_PATH len ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv6: bad prefixes received by rs: bogon ... ok
@@ -443,6 +460,7 @@ Live test, OpenBGPD 6.1, global scenario, IPv6: bad prefixes received by rs: ori
 Live test, OpenBGPD 6.1, global scenario, IPv6: bad prefixes received by rs: prefix not in AS-SET ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv6: bad prefixes received by rs: invalid prefix-len ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
+Live test, OpenBGPD 6.1, global scenario, IPv6: bad prefixes received by rs: unknown NEXT_HOP ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv6: bad prefixes received by rs: default route ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv6: bad prefixes not received by clients ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv6: RPKI, blackhole request for a covered prefix ... SKIP: RPKI not supported by OpenBGPD
@@ -807,6 +825,6 @@ Live test, OpenBGPD 6.1, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin
 Live test, OpenBGPD 6.1, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 699 tests in 3565.621s
+Ran 717 tests in 3570.415s
 
 OK (SKIP=54)

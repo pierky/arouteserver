@@ -44,6 +44,10 @@ class BasicScenario_Data6(object):
         "AS2_blackhole1":           "2a02:0:3::1/128",
         "AS2_blackhole2":           "2a02:0:3::2/128",
         "AS2_blackhole3":           "2a02:0:3::3/128",
+        "AS2_nonclient_nexthop1":   "2a02:0:4::/48",
+        "AS2_nonclient_nexthop1_nh":"2001:db8:1:1::22",
+        "AS2_nonclient_nexthop2":   "2a02:0:5::/48",
+        "AS2_nonclient_nexthop2_nh":"2001:db8:1:1::23",
 
         "AS3_blacklist1":           "2a03:0:1::/48",
         "AS3_cc_AS1only":           "2a03:0:2::/48",

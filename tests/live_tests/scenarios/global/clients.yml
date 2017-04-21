@@ -31,6 +31,13 @@ clients:
           description: "AS2_1 client"
           cfg:
                 filtering:
+                        next_hop:
+                                policy: "authorized_addresses"
+                                authorized_addresses_list:
+                                - "192.0.2.21"
+                                - "2001:db8:1:1::21"
+                                - "192.0.2.22"
+                                - "2001:db8:1:1::22"
                         irrdb:
                                 as_sets:
                                 - "AS-AS2"

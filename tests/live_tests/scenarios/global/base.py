@@ -189,6 +189,13 @@ class BasicScenario(LiveScenario):
         self.receive_route(self.rs, self.DATA["AS1_good1"], self.AS1_1, as_path="1", next_hop=self.AS1_1)
         self.receive_route(self.rs, self.DATA["AS2_good1"], self.AS2, as_path="2", next_hop=self.AS2)
 
+    def test_030_good_prefixes_received_by_rs_nonclient_nexthop(self):
+        """{}: good prefixes received by rs: non-client NEXT_HOP"""
+
+        self.receive_route(self.rs, self.DATA["AS2_nonclient_nexthop1"],
+                           as_path="2",
+                           next_hop=self.DATA["AS2_nonclient_nexthop1_nh"])
+
     def test_040_bad_prefixes_received_by_rs_bogon(self):
         """{}: bad prefixes received by rs: bogon"""
         self.receive_route(self.rs, self.DATA["bogon1"], self.AS1_1,
@@ -265,6 +272,15 @@ class BasicScenario(LiveScenario):
                            filtered=True, reject_reason=5)
         self.log_contains(self.rs, "NEXT_HOP [" + self.AS101.ip + "] not allowed - REJECTING " + self.DATA["AS101_good1"])
 
+    def test_040_bad_prefixes_received_by_rs_unknown_nonclient_nexthop(self):
+        """{}: bad prefixes received by rs: unknown NEXT_HOP"""
+
+        self.receive_route(self.rs, self.DATA["AS2_nonclient_nexthop2"],
+                           self.AS2, as_path="2",
+                           next_hop=self.DATA["AS2_nonclient_nexthop2_nh"],
+                           filtered=True, reject_reason=5)
+        self.log_contains(self.rs, "NEXT_HOP [" + self.DATA["AS2_nonclient_nexthop2_nh"] + "] not allowed - REJECTING " + self.DATA["AS2_nonclient_nexthop2"])
+
     def test_040_bad_prefixes_received_by_rs_no_rset(self):
         """{}: bad prefixes received by rs: prefix not in AS-SET"""
 
@@ -319,7 +335,8 @@ class BasicScenario(LiveScenario):
                        self.DATA["pref_len1"],
                        self.DATA["peer_as1"],
                        self.DATA["invalid_asn1"],
-                       self.DATA["aspath_len1"]):
+                       self.DATA["aspath_len1"],
+                       self.DATA["AS2_nonclient_nexthop2"]):
             for inst in (self.AS2, self.AS3):
                 with self.assertRaisesRegexp(AssertionError, "Routes not found."):
                     self.receive_route(inst, prefix)
@@ -650,12 +667,18 @@ class BasicScenario(LiveScenario):
         """{}: prefixes received by clients: AS1_1"""
         self.receive_route(self.AS1_1, self.DATA["AS2_good1"], self.rs, as_path="2", next_hop=self.AS2)
         self.receive_route(self.AS1_1, self.DATA["AS2_good2"], self.rs, as_path="2", next_hop=self.AS2)
+        self.receive_route(self.AS1_1, self.DATA["AS2_nonclient_nexthop1"],
+                           self.rs, as_path="2",
+                           next_hop=self.DATA["AS2_nonclient_nexthop1_nh"])
 
     def test_100_prefixes_received_by_clients_AS1_2(self):
         """{}: prefixes received by clients: AS1_2"""
 
         self.receive_route(self.AS1_2, self.DATA["AS2_good1"], self.rs, as_path="2", next_hop=self.AS2)
         self.receive_route(self.AS1_2, self.DATA["AS2_good2"], self.rs, as_path="2", next_hop=self.AS2)
+        self.receive_route(self.AS1_2, self.DATA["AS2_nonclient_nexthop1"],
+                           self.rs, as_path="2",
+                           next_hop=self.DATA["AS2_nonclient_nexthop1_nh"])
 
     def test_100_prefixes_received_by_clients_AS2(self):
         """{}: prefixes received by clients: AS2"""

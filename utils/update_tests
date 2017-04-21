@@ -24,4 +24,7 @@ TESTS_DIR="`pwd`/tests"
 echo -n "Testing CLI commands... "
 ./tests/cli
 
+echo "Testing live scenarios with BUILD_ONLY=1..."
+BUILD_ONLY=1 nosetests -vs -x $TESTS_DIR/live_tests
+
 nosetests -vs -x $TESTS_DIR 2>&1 | tee $TESTS_DIR/last

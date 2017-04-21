@@ -15,7 +15,7 @@
 
 import logging
 
-from .base import ConfigParserBase
+from .base import ConfigParserBase, convert_next_hop_policy
 from .validators import *
 from ..errors import ConfigError, ARouteServerError
 
@@ -70,9 +70,12 @@ class ConfigParserGeneral(ConfigParserBase):
                 "gtsm": ValidatorBool(default=False),
                 "add_path": ValidatorBool(default=False),
                 "filtering": {
-                    "next_hop_policy": ValidatorOption("next_hop_policy",
-                                                       ("strict", "same-as"),
-                                                       default="strict"),
+                    "next_hop": {
+                        "policy": ValidatorOption("policy",
+                                                  ("strict", "same-as",
+                                                   "authorized_addresses"),
+                                                  default="strict"),
+                    },
                     "ipv4_pref_len": ValidatorIPMinMaxLen(4,
                                                           default={"min": 8,
                                                                    "max": 24}),
@@ -154,6 +157,8 @@ class ConfigParserGeneral(ConfigParserBase):
             }
 
         try:
+            # Convert next_hop_policy (< v0.6.0) into the new format
+            convert_next_hop_policy(self.cfg["cfg"])
             ConfigParserBase.validate(schema, self.cfg)
         except ARouteServerError as e:
             errors = True

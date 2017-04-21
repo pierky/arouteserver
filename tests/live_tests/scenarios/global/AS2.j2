@@ -9,6 +9,8 @@ protocol device { }
 protocol static own_prefixes {
         route {{ data.AS2_good1 }} reject;
 	route {{ data.AS2_good2 }} reject;
+	route {{ data.AS2_nonclient_nexthop1 }} reject;
+	route {{ data.AS2_nonclient_nexthop2 }} reject;
 }
 
 protocol static bh_prefixes {
@@ -26,6 +28,12 @@ filter to_rs {
 
 	if net = {{ data.AS2_blackhole3 }} then
 		bgp_large_community.add((65534,0,0));
+
+	if net = {{ data.AS2_nonclient_nexthop1 }} then
+		bgp_next_hop = {{ data.AS2_nonclient_nexthop1_nh }};
+	if net = {{ data.AS2_nonclient_nexthop2 }} then
+		bgp_next_hop = {{ data.AS2_nonclient_nexthop2_nh }};
+
 	accept;
 }
 
@@ -37,6 +45,7 @@ protocol bgp the_rs {
 	export filter to_rs;
 	connect delay time 1;
 	connect retry time 1;
+	missing lladdr ignore;
 }
 
 protocol bgp AS101 {

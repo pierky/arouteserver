@@ -51,7 +51,7 @@
 
 <ul>
 <li><p>The route server verifies that the NEXT_HOP attribute of routes received from a client matches the <strong>IP address of the client itself</strong>
-{% if cfg.filtering.next_hop_policy == "strict" %}
+{% if cfg.filtering.next_hop.policy == "strict" %}
 .
 {% else %}
 or one of the <strong>IP addresses of other clients from the same AS</strong>. This "allows an organization with multiple connections into an IXP configured with different IP addresses to direct traffic off the IXP infrastructure through any of their connections for traffic engineering or other purposes." <a href="https://tools.ietf.org/html/rfc7948#section-4.8">RFC7948, section 4.8</a>
