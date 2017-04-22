@@ -31,6 +31,11 @@ It can be scheduled at regular intervals to re-build the configuration (for exam
         cp /etc/bird/bird4.new /etc/bird/bird4.conf && \
         birdcl configure
 
+Library
+-------
+
+ARouteServer can be used as a Python library too: see :doc:`LIBRARY` for more details.
+
 Textual representation
 ----------------------
 

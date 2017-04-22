@@ -42,6 +42,10 @@ from .peering_db import PeeringDBNet
 
 
 class ConfigBuilder(object):
+    """The base configuration builder class.
+
+    This class must be derived by BGP-daemon-specific classes.
+    """
 
     LOCAL_FILES_IDS = None
     LOCAL_FILES_BASE_DIR = None
@@ -85,11 +89,12 @@ class ConfigBuilder(object):
         if isinstance(obj_or_path, cls):
             return obj_or_path
         elif isinstance(obj_or_path, str):
-            if not os.path.isfile(obj_or_path):
-                raise MissingFileError(obj_or_path)
+            path = os.path.expanduser(obj_or_path)
+            if not os.path.isfile(path):
+                raise MissingFileError(path)
             obj = cls(**kwargs)
             try:
-                obj.load(obj_or_path)
+                obj.load(path)
             except ARouteServerError as e:
                 raise BuilderError(
                     "One or more errors occurred while loading "
@@ -103,9 +108,10 @@ class ConfigBuilder(object):
     def _check_is_dir(arg, path):
         if path is None:
             raise MissingArgumentError(arg)
-        if not os.path.isdir(path):
+        dir_path = os.path.expanduser(path)
+        if not os.path.isdir(dir_path):
             raise MissingDirError(path)
-        return path
+        return dir_path
 
     def __init__(self, template_dir=None, template_name=None,
                  cache_dir=None, cache_expiry=CachedObject.DEFAULT_EXPIRY,
@@ -116,6 +122,179 @@ class ConfigBuilder(object):
                  cfg_general=None, cfg_bogons=None, cfg_clients=None,
                  cfg_roas=None,
                  **kwargs):
+        """Initialize the configuration builder.
+
+        Here, external data sources are also queried to enrich the
+        configuration with additional data (PeeringDB records, ASNs and
+        prefixes from IRRDBs, ...).
+
+        Raises:
+
+            ARouteServerError or derived exceptions
+              (from pierky.arouteserver.errors).
+
+              Exceptions raised here can have no arguments and their string
+              representation can be empty: in these cases, it means that
+              one or more errors have been logged using the ``logging`` module.
+
+        Args:
+
+            template_dir (str): the directory that contains the templates
+                that must be used to render the output configuration.
+
+                Example: /home/user/arouteserver/templates/bird
+
+                Same of:
+
+                - *--templates-dir* CLI argument.
+                - *templates_dir* program's configuration file option.
+
+            template_name (str): the name of the file that must be used to
+                render the output configuration.
+
+                Example: main.j2
+
+                Same of:
+
+                - *--template-file-name* CLI argument.
+                - *template_name* program's configuration file option.
+
+            cfg_general (str)
+            cfg_clients (str)
+            cfg_bogons (str): paths to the YAML
+                files containing the general route server policy, the clients
+                list and the list of bogon prefixes.
+
+                Example: ``cfg_general="/home/user/arouteserver/general.yml"``
+
+                Same of:
+
+                - *--general*, *--clients*, *--bogons* CLI arguments.
+                - *cfg_general*, *cfg_clients*, *cfg_bogons* program's
+                  configuration file options.
+
+            cache_dir (str): the directory that will be used to store results
+                from external data sources queries (PeeringDB info, IRRDBs).
+
+                Same of:
+
+                - *--cache-dir* CLI argument.
+                - *cache_dir* program's configuration file option.
+
+            cache_expiry (int): how long cached data must be considered valid,
+                in seconds.
+
+                Same of:
+
+                - *cache_expiry* program's configuration file option.
+
+            ip_ver (int): if *None*, the output configuration will be targeted
+                for both IPv4 and IPv6; otherwise, set this to *4* or to
+                *6* to obtain AFI-specific output configuration.
+
+                Same of:
+
+                - *--ip-ver* CLI argument.
+
+            target_version (str): the BGP daemon target version for which the
+                output configuration must be generated.
+
+                This is used to detect and/or solve any compatibility issue
+                with some features that are available only using a specific
+                version of the target BGP daemon.
+
+                The list of available versions is taken from the derived BGP
+                daemon specific classes' ``AVAILABLE_VERSION`` attribute.
+
+                The default value is taken from the derived BGP daemon
+                specific classes' ``DEFAULT_VERSION`` attribute.
+
+                Example: to enable large BGP communities (that are available
+                only on OpenBGPD/OpenBSD > 6.1) use ``target_version="6.1"``
+
+                Same of:
+
+                - *--target-version* CLI argument.
+
+            ignore_errors (list): a list of issue IDs (strings) that must be
+                ignored when building the configuration.
+
+                Depending on the target BGP daemon and its version, some
+                features may be unavailable; ARouteServer produces errors
+                when one or more of these features are enabled in the route
+                server configuration YAML file. These errors are marked with
+                an 'issue ID' that can be reported in this list to instruct
+                ARouteServer to ignore it and to continue the building process.
+
+                Use ``ignore_errors=["*"]`` to ignore any issue.
+
+                Example: ``ignore_errors=["add_path"]`` to ignore the issue due
+                to the lack of support for ADD_PATH in OpenBGPD.
+
+                Same of:
+
+                - *--ignore-issues* CLI argument.
+
+            local_files (list): the list of local files IDs for which the
+                relative inclusion point must be enabled on the output
+                configuration. Details: https://arouteserver.readthedocs.io/en/latest/CONFIG.html#site-specific-custom-configuration-files
+
+                The list of available IDs is taken from the derived BGP daemon
+                specific classes' ``LOCAL_FILES_IDS`` attribute.
+
+                Example: ``local_files=["header4", "footer4"]``
+
+                Same of:
+
+                - *--use-local-files* CLI argument.
+
+            local_files_dir (str): the base directory of the local files that
+                will be included in the output configuration.
+
+                The default value is taken from the derived BGP daemon
+                specific classes' ``LOCAL_FILES_BASE_DIR`` attribute.
+
+                Example: /etc/bird
+
+                Same of:
+
+                - *--local-files-dir* CLI argument.
+
+            bgpq3_path (str): path to the 'bgpq3' external program; this will
+                be used to expand AS macros and to obtain the list of
+                authorized origin ASNs and prefixes from IRRDBs.
+
+                Same of:
+
+                - *bgpq3_path* program's configuration file option.
+
+            bgpq3_host (str): the host that will be queried by bgpq3; this
+                will be used to set the *-h* argument of the program.
+
+                Same of:
+
+                - *bgpq3_host* program's configuration file option.
+
+            bgpq3_sources (str): a comma separated list of sources that will
+                be used by the bgpq3 program; this will be used to set the
+                *-S* argument of bgpq3.
+
+                Same of:
+
+                - *bgpq3_sources* program's configuration file option.
+
+            threads (int): number of concurrent threads used to gather
+                additional data from external sources (bgpq3, PeeringDB, ...)
+
+                Same of:
+
+                - *threads* program's configuration file option.
+
+            kwargs: additional arguments used by BGP daemon specific builder
+                classes.
+
+            live_tests (bool): only used on live tests.
+        """
 
         # Parameters initialization
 
@@ -298,6 +477,23 @@ class ConfigBuilder(object):
         raise NotImplementedError()
 
     def render_template(self, output_file=None):
+        """Render the output configuration.
+
+        Raises:
+
+            ARouteServerError or derived exceptions
+              (from pierky.arouteserver.errors).
+
+              Exceptions raised here can have no arguments and their string
+              representation can be empty: in these cases, it means that
+              one or more errors have been logged using the ``logging`` module.
+
+        Args:
+
+            output_file (file): the output file where the configuration must
+                be written.
+        """
+
         self.data = {}
         self.data["ip_ver"] = self.ip_ver
         self.data["cfg"] = self.cfg_general
@@ -373,6 +569,16 @@ class ConfigBuilder(object):
                         "{} seconds.".format(stop_time - start_time))
 
 class BIRDConfigBuilder(ConfigBuilder):
+    """BIRD configuration builder.
+
+    The ``kwargs`` parameter of the ``__init__`` method can be used
+    to pass the following additional arguments.
+
+    Args:
+
+        hooks (list): list of hook IDs for which to enable hooks in
+            the output configuration. Details: https://arouteserver.readthedocs.io/en/latest/CONFIG.html#bird-hooks
+    """
 
     LOCAL_FILES_IDS = ["header", "header4", "header6",
                        "footer", "footer4", "footer6",
@@ -427,6 +633,8 @@ class BIRDConfigBuilder(ConfigBuilder):
         env.filters["hook_is_set"] = hook_is_set
 
 class OpenBGPDConfigBuilder(ConfigBuilder):
+    """OpenBGPD configuration builder.
+    """
 
     LOCAL_FILES_IDS = ["header",
                        "pre-irrdb", "post-irrdb",
