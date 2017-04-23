@@ -328,6 +328,10 @@ cfg:
     # For each community name below, Standard, Large and Extended
     # BGP Communities can be provided in the 'std', 'lrg' and 'ext'
     # statements respectively.
+    # Communities values must be given using the following formats:
+    # - 'std': 'x:x'
+    # - 'lrg': 'x:x:x'
+    # - 'ext': '[rt|ro]:x:x'
     # The 'rs_as' macro is replaced with the route server ASN given
     # in cfg.rs_as.
     # The 'peer_as' macro, where allowed, is replaced with the ASN
