@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from logging.config import fileConfig
+from logging.config import fileConfig, dictConfig
 import os
 
 from ..config.program import program_config
@@ -74,6 +74,13 @@ class ARouteServerCommand(object):
                 "#configuration-file-format)",
             dest="logging_config_file")
 
+        group.add_argument(
+            "--logging-level",
+            help="Logging level. Overrides any configuration given in the "
+                 "logging configuration file.",
+            choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+            dest="logging_level")
+
     def _setup(self):
         logging_setted_up = False
 
@@ -88,6 +95,14 @@ class ARouteServerCommand(object):
                     "Error processing the logging configuration file "
                     "{}: {}".format(path, str(e))
                 )
+            if self.args.logging_level:
+                dictConfig({
+                    "version": 1,
+                    "root": {
+                        "level": self.args.logging_level
+                    },
+                    "incremental": True
+                })
 
         if self.args.logging_config_file:
             setup_logging(self.args.logging_config_file)

@@ -52,6 +52,8 @@ class ConfigBuilder(object):
 
     DEFAULT_VERSION = None
 
+    IGNORABLE_ISSUES = []
+
     def validate_bgpspeaker_specific_configuration(self):
         """Check compatibility between config and target BGP speaker
 
@@ -71,6 +73,8 @@ class ConfigBuilder(object):
         Otherwise, logs an error message and returns False.
 
         """
+        assert issue_id in self.IGNORABLE_ISSUES
+
         msg = "Compatibility issue ID '{}'. {}".format(issue_id, text)
         if issue_id in self.ignore_errors or "*" in self.ignore_errors:
             logging.warning(
@@ -209,8 +213,9 @@ class ConfigBuilder(object):
                 The default value is taken from the derived BGP daemon
                 specific classes' ``DEFAULT_VERSION`` attribute.
 
-                Example: to enable large BGP communities (that are available
-                only on OpenBGPD/OpenBSD > 6.1) use ``target_version="6.1"``
+                Example: on OpenBGPD, to avoid errors when building configs
+                that use large BGP communities (available only on
+                OpenBGPD/OpenBSD > 6.1) use ``target_version="6.1"``
 
                 Same of:
 
@@ -646,6 +651,11 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
     AVAILABLE_VERSION = ["6.0", "6.1"]
     DEFAULT_VERSION = "6.0"
 
+    IGNORABLE_ISSUES = ["path_hiding", "transit_free_action", "rpki",
+                        "add_path", "max_prefix_action",
+                        "blackhole_filtering_rewrite_ipv6_nh",
+                        "large_communities", "extended_communities"]
+
     @staticmethod
     def community_is_set(comm):
         if not comm:
@@ -742,18 +752,28 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                 "On OpenBSD < 6.1 there is an issue related to next-hop rewriting "
                 "that impacts blackhole filtering policies when "
                 "'blackhole_filtering.policy_ipv6' is 'rewrite-next-hop': "
-                "https://github.com/pierky/arouteserver/issues/3"
+                "https://github.com/pierky/arouteserver/issues/3 "
+                "If the release running on the route server includes the fix "
+                "for this issue, please consider to enable this feature by "
+                "setting the configuration target version to a value "
+                "greater than or equal to '6.1' (--target-version command "
+                "line argument)."
             ):
                 res = False
 
         only_large_comms = []
+        large_comms_used = []
         peer_as_ext_comms = []
         for comm_name in ConfigParserGeneral.COMMUNITIES_SCHEMA:
             comm = self.cfg_general["communities"][comm_name]
 
-            # only large comms
-            if comm["lrg"] and not comm["std"] and not comm["ext"]:
-                only_large_comms.append((comm_name, comm["lrg"]))
+            # large comms used
+            if comm["lrg"]:
+                large_comms_used.append((comm_name, comm["lrg"]))
+
+                # only large comms
+                if not comm["std"] and not comm["ext"]:
+                    only_large_comms.append((comm_name, comm["lrg"]))
 
             # peer_as ext communities not scrubbed
             comm_def = ConfigParserGeneral.COMMUNITIES_SCHEMA[comm_name]
@@ -762,6 +782,13 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
 
             if peer_as and direction == "inbound" and comm["ext"]:
                 peer_as_ext_comms.append((comm_name, comm["ext"]))
+
+        large_comms_advice = ("If large BGP communities are supported by the "
+                              "release of OpenBGPD running on the route "
+                              "server, enable them by setting the "
+                              "configuration target version to a value "
+                              "greater than or equal to '6.1' "
+                              "(--target-version command line argument).")
 
         if only_large_comms and \
             version.parse(self.target_version or "6.0") < version.parse("6.1"):
@@ -772,14 +799,40 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                 "implemented using only the large communit{y_ies} "
                 "'{comms}'; large communities are not supported by "
                 "OpenBGPD previous to OpenBSD 6.1 so the function{s1} "
-                "{it_they} {is_are} used for will be not available.".format(
+                "{it_they} {is_are} used for will be not available. "
+                "{large_comms_advice}".format(
                     y_ies="y" if len(comms) == 1 else "ies",
                     names=", ".join([_[0] for _ in comms]),
                     s_ve="s" if len(comms) == 1 else "ve",
                     comms=", ".join([_[1] for _ in comms]),
                     s1="" if len(comms) == 1 else "s",
                     it_they="it" if len(comms) == 1 else "they",
-                    is_are="is" if len(comms) == 1 else "are"
+                    is_are="is" if len(comms) == 1 else "are",
+                    large_comms_advice=large_comms_advice
+                )
+            ):
+                res = False
+
+        if large_comms_used and \
+            version.parse(self.target_version or "6.0") < version.parse("6.1"):
+            comms = large_comms_used
+            if not self.process_bgpspeaker_specific_compatibility_issue(
+                "large_communities",
+                "The communit{y_ies} '{names}' ha{s_ve} been configured to be "
+                "implemented using also the large communit{y_ies} "
+                "'{comms}'; large communities are not supported by "
+                "OpenBGPD previous to OpenBSD 6.1 so the function{s1} "
+                "{it_they} {is_are} used for will be available via "
+                "standard/extended communities only. "
+                "{large_comms_advice}".format(
+                    y_ies="y" if len(comms) == 1 else "ies",
+                    names=", ".join([_[0] for _ in comms]),
+                    s_ve="s" if len(comms) == 1 else "ve",
+                    comms=", ".join([_[1] for _ in comms]),
+                    s1="" if len(comms) == 1 else "s",
+                    it_they="it" if len(comms) == 1 else "they",
+                    is_are="is" if len(comms) == 1 else "are",
+                    large_comms_advice=large_comms_advice
                 )
             ):
                 res = False

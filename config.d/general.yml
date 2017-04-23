@@ -118,7 +118,7 @@ cfg:
     # Default: 32
     max_as_path_len: 32
 
-    # Reject routes which carry private/invalid AS numbers in
+    # Reject routes that carry private/invalid AS numbers in
     # their AS_PATH.
     # http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html
     #
@@ -291,8 +291,9 @@ cfg:
     #   entering clients ports on the basis of their destination
     #   MAC address.
     #
-    # OpenBGPD: there is an issue that impacts 'rewrite-next-hop'
-    # for IPv6. https://github.com/pierky/arouteserver/issues/3
+    # OpenBGPD: there is an issue that prevents the 'rewrite-next-hop'
+    # option to work for IPv6 on versions prior to OpenBSD 6.1.
+    # https://github.com/pierky/arouteserver/issues/3
     #
     # Default: none
     #policy_ipv4:
@@ -332,8 +333,12 @@ cfg:
     # The 'peer_as' macro, where allowed, is replaced with the ASN
     # of the client the route is announced to.
     #
-    # OpenBGPD: large communities are not supported, so they are not
-    # taken into account when building the configuration.
+    # OpenBGPD: large communities are not supported on versions prior
+    # to OpenBSD 6.1, so they are not taken into account when
+    # building the configuration. If supported by the release of
+    # OpenBGPD running on the route server, enable them by setting
+    # the configuration target version to a value greater than or
+    # equal to "6.1" (--target-version command line argument).
     # Moreover, ext communities that use the 'peer_as' macro can't
     # be scrubbed from outbound routes (routes announced by the
     # route server to the clients) because of lack of wildcard
