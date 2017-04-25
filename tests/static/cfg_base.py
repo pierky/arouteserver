@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 import yaml
 
 from pierky.arouteserver.errors import ConfigError, ARouteServerError
@@ -40,6 +41,7 @@ class TestConfigParserBase(ARouteServerTestCase):
             self.cfg.load(self.FILE_PATH)
 
     def _contains_err(self, err=None):
+        logging.info("-----------------------------------------------")
         self.clear_log()
 
         exception_raised = False

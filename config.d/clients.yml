@@ -149,6 +149,14 @@ clients:
       blackhole_filtering:
         #announce_to_client: True
 
+      # The list of custom BGP communities that will be added to
+      # routes received from this client.
+      # These custom BGP communities must be declared in the general
+      # configuration file.
+      #attach_custom_communities:
+      #  - "custom_community1_name"
+      #  - "custom_community2_name"
+
   - asn: 10745
 
     # Client's IP address.

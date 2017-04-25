@@ -304,3 +304,41 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertIs(client["cfg"]["blackhole_filtering"]["announce_to_client"], True)
         client = self.cfg[2]
         self.assertIs(client["cfg"]["blackhole_filtering"]["announce_to_client"], False)
+
+    def test_custom_bgp_communities_ok(self):
+        """{}: custom BGP communities"""
+        clients_config = [
+            "clients:",
+            "  - asn: 111",
+            "    ip: 192.0.2.11",
+            "  - asn: 222",
+            "    ip: 192.0.2.21",
+            "    cfg:",
+            "      attach_custom_communities:"
+        ]
+        yaml_lines = clients_config + [
+            "        - test1",
+            "        - test2",
+        ]
+
+        general = ConfigParserGeneral()
+        general._load_from_yaml("\n".join([
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  custom_communities:",
+            "    test1:",
+            "      std: '1:1'"
+        ]))
+        general.parse()
+
+        self.cfg = ConfigParserClients(general_cfg=general)
+        self.cfg._load_from_yaml("\n".join(yaml_lines))
+        self._contains_err("The custom BGP community test2 referenced on client AS222 192.0.2.21 is not declared on the general configuration.")
+
+        yaml_lines = clients_config + [
+            "        - test1",
+        ]
+        self.cfg = ConfigParserClients(general_cfg=general)
+        self.cfg._load_from_yaml("\n".join(yaml_lines))
+        self._contains_err()

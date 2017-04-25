@@ -100,6 +100,8 @@ class ConfigParserClients(ConfigParserBase):
                 "blackhole_filtering" : {
                    "announce_to_client": ValidatorBool(mandatory=False),
                 },
+                "attach_custom_communities": ValidatorListOf(ValidatorText,
+                                                             mandatory=False)
             }
         }
 
@@ -192,6 +194,22 @@ class ConfigParserClients(ConfigParserBase):
                                   client_descr
                                 ))
                 errors = True
+
+        # Custom BGP communities must be declared within the general cfg
+        for client in self.cfg["clients"]:
+            client_descr = get_client_descr(client)
+
+            if not client["cfg"]["attach_custom_communities"]:
+                continue
+
+            for comm in client["cfg"]["attach_custom_communities"]:
+                if comm not in self.general_cfg["custom_communities"]:
+                    logging.error("The custom BGP community {} "
+                                  "referenced on client {} is not declared on "
+                                  "the general configuration.".format(
+                                    comm, client_descr
+                                    ))
+                    errors = True
 
         if errors:
             raise ConfigError()

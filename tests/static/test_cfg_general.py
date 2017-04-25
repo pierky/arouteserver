@@ -382,6 +382,65 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._contains_err("'peer_as' macro can be used only in the last part of the value")
         self.cfg["communities"][comm]["lrg"] = None
 
+    def test_custom_communities_valid(self):
+        """{}: custom communities: valid"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+        ]
+        yaml_lines = tpl + [
+            "  custom_communities:",
+            "    test1:",
+            "      std: '1:1'",
+            "    test2:",
+            "      lrg: '2:2:2'",
+            "    test3:",
+            "      std: '3:3'",
+            "      lrg: '3:3:3'",
+            "      ext: 'rt:3:3'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err()
+
+    def test_custom_communities_reserved(self):
+        """{}: custom communities: reserved name"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+        ]
+        yaml_lines = tpl + [
+            "  custom_communities:",
+            "    blackholing:",
+            "      std: '1:1'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err("The custom community name 'blackholing' collides with a built-in community with the same name.")
+
+    def test_custom_communities_invalid(self):
+        """{}: custom communities: invalid"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+        ]
+        yaml_lines = tpl + [
+            "  custom_communities:",
+            "    test1:",
+            "      std: peer_as"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err("Error parsing 'std' at 'cfg.custom_communities.test1' level - Invalid BGP standard community: peer_as; it must be in the x:x format")
+
+        yaml_lines = tpl + [
+            "  custom_communities:",
+            "    test1:",
+            "      std: '1:peer_as'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err("Error parsing 'std' at 'cfg.custom_communities.test1' level - Invalid BGP standard community: 1:peer_as")
+
     def test_duplicate_communities(self):
         """{}: duplicate communities"""
         tpl = [
@@ -408,14 +467,25 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.load_config(yaml="\n".join(yaml_lines))
         self._contains_err("The 'prefix_not_present_in_as_set.lrg' community's value (999:2:2) has already been used for another community.")
 
-    def test_overlapping_communities(self):
-        """{}: overlapping communities"""
+        yaml_lines = tpl + [
+            "  custom_communities:",
+            "    test:",
+            "      std: '999:1'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err("The 'test.std' community's value (999:1) has already been used for another community.")
+
+    def test_overlapping_communities_out_in(self):
+        """{}: overlapping communities, outbound/inbound"""
         tpl = [
             "cfg:",
             "  rs_as: 999",
             "  router_id: 192.0.2.2",
             "  communities:"
         ]
+
+        # prefix_not_present_in_as_set: outbound
+        # do_not_announce_to_peer: inbound
         yaml_lines = tpl + [
             "    prefix_not_present_in_as_set:",
             "      std: '0:1'",
@@ -425,6 +495,62 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.load_config(yaml="\n".join(yaml_lines))
         self._contains_err("Community 'do_not_announce_to_peer' and 'prefix_not_present_in_as_set' overlap: 0:peer_as / 0:1. Inbound communities and outbound communities can't have overlapping values, otherwise they might be scrubbed.")
 
+        # Same as above, but with 0 in the prefix_not_present_in_as_set comm.
+        # No errors because 'peer_as' can't be 0.
+        yaml_lines = tpl + [
+            "    prefix_not_present_in_as_set:",
+            "      std: '0:0'",
+            "    do_not_announce_to_peer:",
+            "      std: '0:peer_as'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err()
+
+        # Same as above, but with 'rs_as' in the prefix_not_present_in_as_set comm.
+        # No errors because 'peer_as' can't be the route server's ASN itself.
+        yaml_lines = tpl + [
+            "    prefix_not_present_in_as_set:",
+            "      std: '0:rs_as'",
+            "    do_not_announce_to_peer:",
+            "      std: '0:peer_as'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err()
+
+        # Same as above, but with a private ASN in the prefix_not_present_in_as_set comm.
+        # No errors because 'peer_as' can't be a private ASN.
+        yaml_lines = tpl + [
+            "    prefix_not_present_in_as_set:",
+            "      std: '0:65501'",
+            "    do_not_announce_to_peer:",
+            "      std: '0:peer_as'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err()
+
+        # Testing with allow_private_asns=False...
+        with self.assertRaises(ConfigError):
+            self.cfg.check_overlapping_communities(allow_private_asns=False)
+        exp_err_msg_found = False
+        for line in self.logger_handler.msgs:
+            if "Community 'do_not_announce_to_peer' and 'prefix_not_present_in_as_set' overlap: 0:peer_as / 0:65501. Inbound communities and outbound communities can't have overlapping values, otherwise they might be scrubbed." in line:
+                exp_err_msg_found = True
+                break
+
+        if not exp_err_msg_found:
+            self.fail("Expected error message not found")
+
+    def test_overlapping_communities_in_in(self):
+        """{}: overlapping communities, inbound/inbound"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  communities:"
+        ]
+
+        # blackholing: inbound
+        # do_not_announce_to_peer: inbound
         yaml_lines = tpl + [
             "    blackholing:",
             "      std: '0:666'",
@@ -432,7 +558,29 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "      std: '0:peer_as'"
         ]
         self.load_config(yaml="\n".join(yaml_lines))
-        self._contains_err("Community 'do_not_announce_to_peer' and 'blackholing' overlap: 0:peer_as / 0:666. Inbound communities can't have overlapping values, otherwise their meaning could be uncertain.")
+        self._contains_err("Community 'blackholing' and 'do_not_announce_to_peer' overlap: 0:666 / 0:peer_as. Inbound communities can't have overlapping values, otherwise their meaning could be uncertain.")
+
+        # Same as above, but with 0 in the last part of blackholing
+        # No errors because 'peer_as' can't be 0.
+        yaml_lines = tpl + [
+            "    blackholing:",
+            "      std: '0:0'",
+            "    do_not_announce_to_peer:",
+            "      std: '0:peer_as'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err()
+
+        # Same as above, but with rs_as in the last part of blackholing
+        # No errors because 'peer_as' can't be the route server's ASN itself.
+        yaml_lines = tpl + [
+            "    blackholing:",
+            "      std: '0:rs_as'",
+            "    do_not_announce_to_peer:",
+            "      std: '0:peer_as'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err()
 
         # Same as above, but with a private ASN in the last part of
         # blackholing community.
@@ -445,14 +593,60 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.load_config(yaml="\n".join(yaml_lines))
         self._contains_err()
 
+        # Testing with allow_private_asns=False...
+        with self.assertRaises(ConfigError):
+            self.cfg.check_overlapping_communities(allow_private_asns=False)
+        exp_err_msg_found = False
+        for line in self.logger_handler.msgs:
+            if "Community 'blackholing' and 'do_not_announce_to_peer' overlap: 0:65501 / 0:peer_as. Inbound communities can't have overlapping values, otherwise" in line:
+                exp_err_msg_found = True
+                break
+
+        if not exp_err_msg_found:
+            self.fail("Expected error message not found")
+
+    def test_overlapping_communities_in_cust(self):
+        """{}: overlapping communities, inbound/custom"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  communities:"
+        ]
+
+        # Custom community overlaps
         yaml_lines = tpl + [
-            "    blackholing:",
-            "      std: '666:666'",
             "    do_not_announce_to_peer:",
-            "      std: '666:peer_as'"
+            "      std: '1:peer_as'",
+            "  custom_communities:",
+            "    test1:",
+            "      std: '1:1'"
         ]
         self.load_config(yaml="\n".join(yaml_lines))
-        self._contains_err("Community 'blackholing' and 'do_not_announce_to_peer' overlap: 666:666 / 666:peer_as. Inbound communities can't have overlapping values, otherwise their meaning could be uncertain.")
+        self._contains_err("Community 'do_not_announce_to_peer' and 'test1' overlap: 1:peer_as / 1:1. Inbound communities and custom communities can't have overlapping values, otherwise they might be scrubbed.")
+
+        # Private ASNs
+        yaml_lines = tpl + [
+            "    do_not_announce_to_peer:",
+            "      std: '1:peer_as'",
+            "  custom_communities:",
+            "    test1:",
+            "      std: '1:65501'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err()
+
+        # Testing with allow_private_asns=False...
+        with self.assertRaises(ConfigError):
+            self.cfg.check_overlapping_communities(allow_private_asns=False)
+        exp_err_msg_found = False
+        for line in self.logger_handler.msgs:
+            if "Community 'do_not_announce_to_peer' and 'test1' overlap: 1:peer_as / 1:65501. Inbound communities and custom communities can't have overlapping values, otherwise they might be scrubbed." in line:
+                exp_err_msg_found = True
+                break
+
+        if not exp_err_msg_found:
+            self.fail("Expected error message not found")
 
     def test_max_pref_action(self):
         """{}: max_prefix action"""
@@ -584,6 +778,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
 
         self.maxDiff = None
         del self.cfg["communities"]
+        del self.cfg["custom_communities"]
         self.assertMultiLineEqual(
             yaml.safe_dump(self.cfg.cfg, default_flow_style=False),
             yaml.safe_dump({"cfg": exp_res}, default_flow_style=False)

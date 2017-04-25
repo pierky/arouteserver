@@ -53,6 +53,17 @@ class ConfigParserGeneral(ConfigParserBase):
         "add_noadvertise_to_peer": { "type": "inbound", "peer_as": True },
     }
 
+    @staticmethod
+    def new_community_validator(rs_as_macro, peer_as):
+        return {
+            "std": ValidatorCommunityStd(rs_as_macro, mandatory=False,
+                                         peer_as_macro_needed=peer_as),
+            "lrg": ValidatorCommunityLrg(rs_as_macro, mandatory=False,
+                                         peer_as_macro_needed=peer_as),
+            "ext": ValidatorCommunityExt(rs_as_macro, mandatory=False,
+                                         peer_as_macro_needed=peer_as),
+        }
+
     def parse(self):
         """
         Contents of cfg dict is updated/normalized by validators.
@@ -135,6 +146,8 @@ class ConfigParserGeneral(ConfigParserBase):
                     "add_noexport": ValidatorBool(default=True),
                 },
                 "communities": {
+                },
+                "custom_communities": {
                 }
             }
         }
@@ -144,17 +157,28 @@ class ConfigParserGeneral(ConfigParserBase):
         else:
             rs_as_macro = None
 
+        # Built-in communities validation schema
         for comm in self.COMMUNITIES_SCHEMA:
             peer_as = self.COMMUNITIES_SCHEMA[comm].get("peer_as", False)
 
-            schema["cfg"]["communities"][comm] = {
-                "std": ValidatorCommunityStd(rs_as_macro, mandatory=False,
-                                             peer_as_macro_needed=peer_as),
-                "lrg": ValidatorCommunityLrg(rs_as_macro, mandatory=False,
-                                             peer_as_macro_needed=peer_as),
-                "ext": ValidatorCommunityExt(rs_as_macro, mandatory=False,
-                                             peer_as_macro_needed=peer_as),
-            }
+            schema["cfg"]["communities"][comm] = self.new_community_validator(
+                rs_as_macro, peer_as
+            )
+
+        # Custom communities validation schema
+        if "custom_communities" in self.cfg["cfg"]:
+
+            custom_comms = self.cfg["cfg"]["custom_communities"]
+            if not isinstance(custom_comms, dict):
+                raise ConfigError(
+                    "The custom_communities section must be a dictionary."
+                )
+
+            for comm in custom_comms:
+                # Add the validator for the custom community to the
+                # validation schema.
+                schema["cfg"]["custom_communities"][comm] = \
+                    self.new_community_validator(rs_as_macro, peer_as)
 
         try:
             # Convert next_hop_policy (< v0.6.0) into the new format
@@ -210,33 +234,115 @@ class ConfigParserGeneral(ConfigParserBase):
                         )
                     )
 
+        # Custom communities with same name of built-in communities?
+        custom_comms = self.cfg["cfg"]["custom_communities"]
+        for comm in custom_comms:
+            if comm in schema["cfg"]["communities"]:
+                errors = True
+                logging.error("The custom community name '{}' collides "
+                                "with a built-in community with the same "
+                                "name.".format(comm))
+
         # Duplicate communities?
         unique_communities = []
-        for comm_tag in self.cfg["cfg"]["communities"]:
-            comm = self.cfg["cfg"]["communities"][comm_tag]
-            for fmt in ("std", "lrg", "ext"):
-                if comm[fmt]:
-                    if comm[fmt] in unique_communities:
-                        errors = True
-                        logging.error(
-                            "The '{}.{}' community's value ({}) "
-                            "has already been used for another "
-                            "community.".format(comm_tag, fmt, comm[fmt])
-                        )
-                    else:
-                        unique_communities.append(comm[fmt])
+        for comms in (self.cfg["cfg"]["communities"],
+                      self.cfg["cfg"]["custom_communities"]):
+            for comm_tag in comms:
+                comm = comms[comm_tag]
+                for fmt in ("std", "lrg", "ext"):
+                    if comm[fmt]:
+                        if comm[fmt] in unique_communities:
+                            errors = True
+                            logging.error(
+                                "The '{}.{}' community's value ({}) "
+                                "has already been used for another "
+                                "community.".format(comm_tag, fmt, comm[fmt])
+                            )
+                        else:
+                            unique_communities.append(comm[fmt])
 
         # Overlapping communities?
-        #TODO: improve! When peer_as matches a value in the
-        # range 64512..65534 / 4200000000..4294967294 it
-        # should be fine, because a peer's ASN can't be in that
-        # range. It should be tuned on the communities scrubbing
-        # functions on BIRD templates too.
+        try:
+            self.check_overlapping_communities()
+        except ARouteServerError as e:
+            errors = True
+            if str(e):
+                logging.error(str(e))
 
-        def communities_overlap(communities, comm1_tag, comm2_tag,
-                                allow_private_asns=False):
-            comm1 = communities[comm1_tag]
-            comm2 = communities[comm2_tag]
+        if errors:
+            raise ConfigError()
+
+    def check_overlapping_communities(self, allow_private_asns=True):
+        """Check if a 'peer_as' BGP community overlaps with others.
+
+        This function is also called from whitin the OpenBGPD builder
+        class. See remarks about 'allow_private_asns' below.
+
+        Remember: 'peer_as' is allowed only in the last part of a
+        community's value.
+
+        Definitions of communities:
+        - outbound c.   communities used by the route server to signal
+                        something to its clients: origin_present_in_as_set,
+                        prefix_present_in_as_set, custom communities, ...
+
+        - inbound c.    communities sent by clients to the route server
+                        to ask it to perform some action: blackholing,
+                        do_something_to_peer, do_something_to_any, ...
+
+        - peer_as c.    communities whose last part is a variable integer
+                        that identifies the target ASN for which an action
+                        is requested
+
+        When a route leaves the route server, the route server scrubs any
+        'inbound' community attached to it, so any 'outbound' community whose
+        first part matches an 'inbound' 'peer_as' community would be deleted
+        as well.
+
+        Example:
+        - inbound community "announce_to_peer" x:peer_as
+        - outbound custom community "test" x:1
+
+            route enters the rs: add "test" x:1
+            route leaves the rs: delete "announce_to_peer" x:*
+            the "test" community is removed
+
+        The following corner-cases are allowed:
+        - the 'peer_as' part doesn't collide with 'rs_as' part;
+          a peer's ASN can't be the same of the route server one's
+          example: 0:rs_as and 0:peer_as are fine.
+        - the 'peer_as' part doesn't collide with 0;
+          a peer's ASN can't be zero
+          example: 65501:0 and 65501:peer_as are fine.
+
+        The 'allow_private_asns' argument allows to add another case:
+        - if allow_private_asns is True, the 'peer_as' part doesn't
+          collide with private ASN ranges
+
+        Example:
+        - inbound community "announce_to_peer" x:peer_as
+        - outbound custom community "test" x:65501
+
+            route enters the rs: add "test" x:65501
+            route leaves the rs: delete "announce_to_peer" x:[<64512]
+            the "test" community is kept
+
+        This argument can be set to True only when the route server is able
+        to remove communities using numeric ranges, that is when it can scrub
+        'peer_as' communities having the last part in the range of globally
+        routable ASN only.
+        In that case, any 'outbound' community whose first part matches an
+        'inbound' 'peer_as' community and whose last part falls  within the
+        private ASNs range would not be removed.
+        Unfortunately, while BIRD allows this behaviour, OpenBGPD seems to be
+        able to delete communities using wildcard only, and not ranges.
+
+        This function is called from the config parser class with
+        'allow_private_asns' set to True and also from OpenBGPD builder class
+        with 'allow_private_asns' set to False.
+        """
+
+        def communities_overlap(comm1_tag, comm1, comm2_tag, comm2):
             rs_as = self.cfg["cfg"]["rs_as"]
 
             err_msg = ("Community '{comm1_tag}' and '{comm2_tag}' "
@@ -251,25 +357,30 @@ class ConfigParserGeneral(ConfigParserBase):
                 comm2_val = comm2[fmt]
                 comm1_parts = comm1_val.split(":")
                 comm2_parts = comm2_val.split(":")
-                part_idx = 0
                 for part_idx in range(len(comm1_parts)):
-                    part1 = comm1_parts[part_idx]
-                    part2 = comm2_parts[part_idx]
+                    comm1_part = comm1_parts[part_idx]
+                    comm2_part = comm2_parts[part_idx]
                     try:
+                        # the value that is not 'peer_as'
                         not_peer_as = None
-                        if part1 == "peer_as":
-                            not_peer_as = int(part2)
-                        if part2 == "peer_as":
-                            not_peer_as = int(part1)
+                        if comm1_part == "peer_as":
+                            not_peer_as = int(comm2_part)
+                        if comm2_part == "peer_as":
+                            not_peer_as = int(comm1_part)
+
+                        # If none of the two communities use 'peer_as'
+                        # they can't be overlapping.
+                        # At most, they can be equal, but this is
+                        # handled in a different place in the code.
                         if not_peer_as is not None:
                             if not_peer_as == rs_as:
                                 continue
                             if not_peer_as == 0:
                                 continue
                             if allow_private_asns:
-                                if not_peer_as >= 64512 and not_peer_as <= 65534:
+                                if 64512 <= not_peer_as <= 65534:
                                     continue
-                                if not_peer_as >= 4200000000 and not_peer_as <= 4294967294:
+                                if 4200000000 <= not_peer_as <= 4294967294:
                                     continue
                             raise ConfigError()
                     except ConfigError:
@@ -277,45 +388,54 @@ class ConfigParserGeneral(ConfigParserBase):
                             comm1_tag=comm1_tag, comm2_tag=comm2_tag,
                             comm1_val=comm1_val, comm2_val=comm2_val)
                         )
-                    if part1 != part2:
+                    if comm1_part != comm2_part:
                         break
 
-        outbound_communities = \
-            [c for c in self.COMMUNITIES_SCHEMA
-             if self.COMMUNITIES_SCHEMA[c]["type"] == "outbound"]
-        inbound_communities = \
-            [c for c in self.COMMUNITIES_SCHEMA
-             if self.COMMUNITIES_SCHEMA[c]["type"] == "inbound"]
+        def compare_communities(comms1, comms2, reason_text):
+            for tag1 in comms1:
+                for tag2 in comms2:
+                    if tag1 == tag2:
+                        continue
+                    try:
+                        communities_overlap(
+                            tag1, comms1[tag1],
+                            tag2, comms2[tag2]
+                        )
+                    except ConfigError as e:
+                        logging.error(str(e) + " " + reason_text)
+                        return False
+            return True
 
-        for comm1_tag in inbound_communities:
-            for comm2_tag in outbound_communities:
-                if comm1_tag == comm2_tag:
-                    continue
-                try:
-                    communities_overlap(
-                        self.cfg["cfg"]["communities"], comm1_tag, comm2_tag
-                    )
-                except ConfigError as e:
-                    errors = True
-                    logging.error(str(e) + " " +
-                        "Inbound communities and outbound communities "
-                        "can't have overlapping values, otherwise they "
-                        "might be scrubbed.")
+        errors = False
 
-        for comm1_tag in inbound_communities:
-            for comm2_tag in inbound_communities:
-                if comm1_tag == comm2_tag:
-                    continue
-                try:
-                    communities_overlap(
-                        self.cfg["cfg"]["communities"], comm1_tag, comm2_tag,
-                        allow_private_asns=True
-                    )
-                except ConfigError as e:
-                    errors = True
-                    logging.error(str(e) + " " +
-                        "Inbound communities can't have overlapping values, "
-                        "otherwise their meaning could be uncertain.")
+        outbound_communities = {
+            comm_name: self.cfg["cfg"]["communities"][comm_name]
+            for comm_name in self.COMMUNITIES_SCHEMA
+            if self.COMMUNITIES_SCHEMA[comm_name]["type"] == "outbound"
+        }
+        inbound_communities = {
+            comm_name: self.cfg["cfg"]["communities"][comm_name]
+            for comm_name in self.COMMUNITIES_SCHEMA
+            if self.COMMUNITIES_SCHEMA[comm_name]["type"] == "inbound"
+        }
+        custom_communities = self.cfg["cfg"]["custom_communities"]
+
+        errors = errors or not compare_communities(
+            inbound_communities, outbound_communities,
+            "Inbound communities and outbound communities "
+            "can't have overlapping values, otherwise they "
+            "might be scrubbed.")
+
+        errors = errors or not compare_communities(
+            inbound_communities, custom_communities,
+            "Inbound communities and custom communities "
+            "can't have overlapping values, otherwise they "
+            "might be scrubbed.")
+
+        errors = errors or not compare_communities(
+            inbound_communities, inbound_communities,
+            "Inbound communities can't have overlapping values, "
+            "otherwise their meaning could be uncertain.")
 
         if errors:
             raise ConfigError()

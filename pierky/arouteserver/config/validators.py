@@ -459,6 +459,9 @@ class ValidatorCommunityStd(ValidatorCommunity):
     EXPECTED_PARTS_CNT = 2
 
     def _validate(self, v):
+        if not isinstance(v, str):
+            raise ConfigError("value must be a string")
+
         val = self._expand_rs_as_macro(v)
 
         try:
@@ -494,6 +497,9 @@ class ValidatorCommunityLrg(ValidatorCommunity):
     EXPECTED_PARTS_CNT = 3
 
     def _validate(self, v):
+        if not isinstance(v, str):
+            raise ConfigError("value must be a string")
+
         val = self._expand_rs_as_macro(v)
 
         try:
@@ -524,6 +530,9 @@ class ValidatorCommunityExt(ValidatorCommunity):
     EXPECTED_PARTS_CNT = 3
 
     def _validate(self, v):
+        if not isinstance(v, str):
+            raise ConfigError("value must be a string")
+
         val = self._expand_rs_as_macro(v)
 
         # TODO: should be improved
@@ -553,4 +562,3 @@ class ValidatorCommunityExt(ValidatorCommunity):
                     v, " - {}".format(str(e)) if str(e) else ""
                 )
             )
-

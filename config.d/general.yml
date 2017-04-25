@@ -519,3 +519,25 @@ cfg:
       #std:
       #lrg:
       #ext:
+
+  #custom_communities:
+    # Custom BGP communities can be added to routes that enter the
+    # route server from clients.
+    # Each client can be configured with a set of custom communities
+    # that are added to the routes it announces to the route
+    # server; these communities will be then propagated to other
+    # clients as the routes leave the server.
+    #
+    # The name of a custom BGP community can't be the same of any
+    # built-in community.
+    #
+    # The 'rs_as' macro can be used here.
+    #
+    #custom_community1_name:
+    #  #std:
+    #  #lrg:
+    #  #ext:
+    #custom_community2_name:
+    #  #std:
+    #  #lrg:
+    #  #ext:
