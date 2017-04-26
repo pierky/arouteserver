@@ -33,7 +33,7 @@
 {% macro write_community(comm, replace_peer_as=False) %}
 {{- "(" -}}
 {% for part in comm.split(":") %}
-{% if part == "peer_as" and replace_peer_as %}{{ "*" }}{% else %}{{ part }}{% endif %}{% if not loop.last %}, {% endif %}
+{% if part == "peer_as" and replace_peer_as %}{{ replace_peer_as }}{% else %}{{ part }}{% endif %}{% if not loop.last %}, {% endif %}
 {% endfor %}
 {{- ")" -}}
 {% endmacro %}
@@ -41,13 +41,27 @@
 {% macro del_communities(comm, replace_peer_as=False) %}
 {% if comm %}
 {%	if comm.std %}
-        bgp_community.delete([{{ write_community(comm.std, replace_peer_as) }}]);
+{%		if replace_peer_as %}
+        bgp_community.delete([{{ write_community(comm.std, "1..64511") }}]);
+{%		else %}
+        bgp_community.delete([{{ write_community(comm.std) }}]);
+{%		endif %}
 {%	endif %}
 {%	if comm.lrg %}
-        bgp_large_community.delete([{{ write_community(comm.lrg, replace_peer_as) }}]);
+{%		if replace_peer_as %}
+        bgp_large_community.delete([{{ write_community(comm.lrg, "1..64511") }}]);
+        bgp_large_community.delete([{{ write_community(comm.lrg, "131072..4199999999") }}]);
+{%		else %}
+        bgp_large_community.delete([{{ write_community(comm.lrg) }}]);
+{%		endif %}
 {%	endif %}
 {%	if comm.ext %}
-        bgp_ext_community.delete([{{ write_community(comm.ext, replace_peer_as) }}]);
+{%		if replace_peer_as %}
+        bgp_ext_community.delete([{{ write_community(comm.ext, "1..64511") }}]);
+        bgp_ext_community.delete([{{ write_community(comm.ext, "131072..4199999999") }}]);
+{%		else %}
+        bgp_ext_community.delete([{{ write_community(comm.ext) }}]);
+{%		endif %}
 {%	endif %}
 {% endif %}
 {% endmacro %}

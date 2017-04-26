@@ -82,7 +82,7 @@ class BGPCommunitiesScenario(LiveScenario):
         self.session_is_up(self.rs, self.AS2)
         self.session_is_up(self.rs, self.AS131073)
 
-    def test_020_only_to_AS1_std(self):
+    def test_031_only_to_AS1_std(self):
         """{}: announce to AS1 only (std)"""
         pref = self.DATA["AS2_only_to_AS1_s"]
         self.receive_route(self.rs, pref, self.AS2,
@@ -97,7 +97,7 @@ class BGPCommunitiesScenario(LiveScenario):
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
         self.log_contains(self.rs, msg, {"inst": self.AS131073})
 
-    def test_021_only_to_AS1_ext(self):
+    def test_031_only_to_AS1_ext(self):
         """{}: announce to AS1 only (ext)"""
         pref = self.DATA["AS2_only_to_AS1_e"]
         self.receive_route(self.rs, pref, self.AS2,
@@ -119,7 +119,7 @@ class BGPCommunitiesScenario(LiveScenario):
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
         self.log_contains(self.rs, msg, {"inst": self.AS131073})
 
-    def test_022_only_to_AS1_lrg(self):
+    def test_031_only_to_AS1_lrg(self):
         """{}: announce to AS1 only (lrg)"""
         if isinstance(self.rs, OpenBGPD60Instance):
             raise unittest.SkipTest("Large comms not supported by OpenBGPD 6.0")
@@ -137,7 +137,7 @@ class BGPCommunitiesScenario(LiveScenario):
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
         self.log_contains(self.rs, msg, {"inst": self.AS131073})
 
-    def test_030_only_to_AS131073_ext(self):
+    def test_032_only_to_AS131073_ext(self):
         """{}: announce to AS131073 only (ext)"""
         pref = self.DATA["AS2_only_to_AS131073_e"]
         self.receive_route(self.rs, pref, self.AS2,
@@ -159,7 +159,7 @@ class BGPCommunitiesScenario(LiveScenario):
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
         self.log_contains(self.rs, msg, {"inst": self.AS1})
 
-    def test_031_only_to_AS131073_lrg(self):
+    def test_032_only_to_AS131073_lrg(self):
         """{}: announce to AS131073 only (lrg)"""
         if isinstance(self.rs, OpenBGPD60Instance):
             raise unittest.SkipTest("Large comms not supported by OpenBGPD 6.0")
@@ -183,6 +183,34 @@ class BGPCommunitiesScenario(LiveScenario):
         msg = ("route didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
         self.log_contains(self.rs, msg, {"inst": self.AS1})
+
+    def test_040_custom_bgp_community_std(self):
+        """{}: custom BGP community (std)"""
+        for inst in (self.AS2, self.AS131073):
+            self.receive_route(inst, self.DATA["AS1_good1"], self.rs,
+                               std_comms=["65501:65501"])
+
+    def test_040_custom_bgp_community_ext(self):
+        """{}: custom BGP community (ext)"""
+        for inst in (self.AS2, self.AS131073):
+            self.receive_route(inst, self.DATA["AS1_good1"], self.rs,
+                               ext_comms=["rt:65501:65501"])
+
+    def test_040_custom_bgp_community_lrg(self):
+        """{}: custom BGP community (lrg)"""
+        if isinstance(self.rs, OpenBGPD60Instance):
+            raise unittest.SkipTest("Large comms not supported by OpenBGPD 6.0")
+        for inst in (self.AS2, self.AS131073):
+            self.receive_route(inst, self.DATA["AS1_good1"], self.rs,
+                               lrg_comms=["999:65501:65501"])
+
+    def test_041_custom_bgp_community_scrubbed_inbound(self):
+        """{}: custom BGP community scrubbed"""
+        self.receive_route(self.rs, self.DATA["AS2_bad_cust_comm1"], self.AS2,
+                           std_comms=[])
+        for inst in (self.AS1, self.AS131073):
+            self.receive_route(inst, self.DATA["AS2_bad_cust_comm1"], self.rs,
+                               std_comms=[])
 
 class BGPCommunitiesScenarioBIRD(BGPCommunitiesScenario):
     __test__ = False

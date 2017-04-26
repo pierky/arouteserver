@@ -98,6 +98,12 @@ function scrub_communities_in() {
 {{ del_communities(cfg.communities[name]) }}
 {% endif %}
 {% endfor %}
+{% for name in cfg.custom_communities %}
+{% if cfg.custom_communities[name]|community_is_set %}
+	# {{ name }}
+{{ del_communities(cfg.custom_communities[name]) }}
+{% endif %}
+{% endfor %}
 {% if "scrub_communities_in"|hook_is_set %}
 	hook_scrub_communities_in();
 {% endif %}

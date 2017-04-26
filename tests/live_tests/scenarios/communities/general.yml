@@ -23,3 +23,8 @@ cfg:
                         std: "0:rs_as"
                         ext: "rt:0:rs_as"
                         lrg: "rs_as:0:rs_as"
+        custom_communities:
+                cust_comm1:
+                        std: "65501:65501"
+                        lrg: "rs_as:65501:65501"
+                        ext: "rt:65501:65501"

@@ -21,9 +21,12 @@ class BGPCommunitiesScenario_Data6(object):
         "AS2_IPAddress":            "2001:db8:1:1::22",
         "AS131073_IPAddress":       "2001:db8:1:1::33",
 
+        "AS1_good1":                "2a01:1::/32",
+
         "AS2_only_to_AS1_s":        "2a00:1::/32",
         "AS2_only_to_AS1_e":        "2a00:2::/32",
         "AS2_only_to_AS1_l":        "2a00:3::/32",
         "AS2_only_to_AS131073_e":   "2a00:4::/32",
         "AS2_only_to_AS131073_l":   "2a00:5::/32",
+        "AS2_bad_cust_comm1":       "2a00:6::/32",
     }

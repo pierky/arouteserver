@@ -3,6 +3,9 @@ clients:
           ip:
           - "192.0.2.11"
           - "2001:db8:1:1::11"
+          cfg:
+                  attach_custom_communities:
+                  - "cust_comm1"
         - asn: 2
           ip:
           - "192.0.2.22"

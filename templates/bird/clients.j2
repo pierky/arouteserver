@@ -84,6 +84,13 @@ filter receive_from_{{ client.id }} {
 
 	scrub_communities_in();
 
+	{% if client.cfg.attach_custom_communities %}
+	# Attach custom BGP communities
+	{% for name in client.cfg.attach_custom_communities %}
+	{{ add_communities(cfg.custom_communities[name]) }}
+	{% endfor %}
+	{% endif %}
+
 	# NEXT_HOP
 	if !next_hop_is_valid_for_{{ client.id }}() then
 		reject "NEXT_HOP [", bgp_next_hop, "] not allowed - REJECTING ", net;

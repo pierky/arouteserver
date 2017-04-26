@@ -6,11 +6,20 @@ debug protocols all;
 
 protocol device { }
 
+protocol static own_prefixes {
+	route {{ data.AS1_good1 }} reject;
+}
+
+filter to_the_rs {
+	if proto = "own_prefixes" then accept;
+	reject;
+}
+
 protocol bgp the_rs {
 	local as 1;
 	neighbor {{ data.rs_IPAddress }} as 999;
 	import all;
-	export none;
+	export filter to_the_rs;
 	connect delay time 1;
 	connect retry time 1;
 }

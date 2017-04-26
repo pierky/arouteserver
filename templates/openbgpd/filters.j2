@@ -100,6 +100,12 @@ transit_free_asns="{ {{ cfg.filtering.transit_free.asns|join(", ") }} }"
 {{ del_communities("match from group clients", cfg.communities[name]) -}}
 {%	endif %}
 {% endfor %}
+{% for name in cfg.custom_communities %}
+{%	if cfg.custom_communities[name]|community_is_set %}
+# {{ name }}
+{{ del_communities("match from group clients", cfg.custom_communities[name]) -}}
+{%	endif %}
+{% endfor %}
 
 # AS_PATH: length
 {{ deny_inbound_route("from group clients max-as-len " ~ cfg.filtering.max_as_path_len, 1) }}
@@ -126,6 +132,13 @@ match from group clients prefix 2000::/3 or-longer set community delete NO_ADVER
 {{ deny_inbound_route("from " ~ client.ip ~ " inet6", 4) }}
 {% else %}
 {{ deny_inbound_route("from " ~ client.ip ~ " inet", 4) }}
+{% endif %}
+
+{% if client.cfg.attach_custom_communities %}
+# Attach custom BGP communities
+{%	for name in client.cfg.attach_custom_communities %}
+{{ add_communities("match from " ~ client.ip, cfg.custom_communities[name]) -}}
+{%	endfor %}
 {% endif %}
 
 # NEXT_HOP

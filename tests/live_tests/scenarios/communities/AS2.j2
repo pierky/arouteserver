@@ -12,6 +12,7 @@ protocol static own_prefixes {
 	route {{ data.AS2_only_to_AS1_l }} reject;
 	route {{ data.AS2_only_to_AS131073_e }} reject;
 	route {{ data.AS2_only_to_AS131073_l }} reject;
+	route {{ data.AS2_bad_cust_comm1 }} reject;
 }
 
 filter to_the_rs {
@@ -34,6 +35,9 @@ filter to_the_rs {
 	if net = {{ data.AS2_only_to_AS131073_l }} then {
 		bgp_large_community.add((999,0,999));
 		bgp_large_community.add((999,999,131073));
+	}
+	if net = {{ data.AS2_bad_cust_comm1 }} then {
+		bgp_community.add((65501,65501));
 	}
 	accept;
 }
