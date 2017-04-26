@@ -11,6 +11,7 @@ Bogons config parser: unknown statement ... ok
 Bogons config parser: valid configuration ... ok
 Clients config parser: AS number ... ok
 Clients config parser: inherit from general cfg - blackhole filtering ... ok
+Clients config parser: custom BGP communities ... ok
 Clients config parser: duplicate IP addresses ... ok
 Clients config parser: inherit from general cfg ... ok
 Clients config parser: IP address ... ok
@@ -32,6 +33,9 @@ General config parser: blackhole_filtering, policy_ipv6 ... ok
 General config parser: extended BGP communities ... ok
 General config parser: large BGP communities ... ok
 General config parser: standard BGP communities ... ok
+General config parser: custom communities: invalid ... ok
+General config parser: custom communities: reserved name ... ok
+General config parser: custom communities: valid ... ok
 General config parser: minimal config ... ok
 General config parser: duplicate communities ... ok
 General config parser: enforce_origin_in_as_set ... ok
@@ -47,7 +51,9 @@ General config parser: max_prefix general_limit_ipv4 ... ok
 General config parser: max_prefix general_limit_ipv6 ... ok
 General config parser: max_prefix PeeringDB ... ok
 General config parser: next_hop_policy (pre v0.6.0 format) ... ok
-General config parser: overlapping communities ... ok
+General config parser: overlapping communities, inbound/custom ... ok
+General config parser: overlapping communities, inbound/inbound ... ok
+General config parser: overlapping communities, outbound/inbound ... ok
 General config parser: passive ... ok
 General config parser: path_hiding ... ok
 General config parser: peer_as macro usage in communities ... ok
@@ -83,57 +89,81 @@ Live test, BIRD, hooks example, IPv6: instances setup ... ok
 Live test, BIRD, hooks example, IPv6: stopping instances...
 Live test, BIRD, BGP communities, IPv4: setting instances up...
 Live test, BIRD, BGP communities, IPv4: instances setup ... ok
-Live test, BIRD, BGP communities, IPv4: announce to AS1 only (std) ... ok
 Live test, BIRD, BGP communities, IPv4: sessions are up ... ok
 Live test, BIRD, BGP communities, IPv4: announce to AS1 only (ext) ... ok
 Live test, BIRD, BGP communities, IPv4: announce to AS1 only (lrg) ... ok
+Live test, BIRD, BGP communities, IPv4: announce to AS1 only (std) ... ok
 Live test, BIRD, BGP communities, IPv4: announce to AS131073 only (ext) ... ok
 Live test, BIRD, BGP communities, IPv4: announce to AS131073 only (lrg) ... ok
+Live test, BIRD, BGP communities, IPv4: custom BGP community (ext) ... ok
+Live test, BIRD, BGP communities, IPv4: custom BGP community (lrg) ... ok
+Live test, BIRD, BGP communities, IPv4: custom BGP community (std) ... ok
+Live test, BIRD, BGP communities, IPv4: custom BGP community scrubbed ... ok
 Live test, BIRD, BGP communities, IPv4: stopping instances...
 Live test, BIRD, BGP communities, IPv6: setting instances up...
 Live test, BIRD, BGP communities, IPv6: instances setup ... ok
-Live test, BIRD, BGP communities, IPv6: announce to AS1 only (std) ... ok
 Live test, BIRD, BGP communities, IPv6: sessions are up ... ok
 Live test, BIRD, BGP communities, IPv6: announce to AS1 only (ext) ... ok
 Live test, BIRD, BGP communities, IPv6: announce to AS1 only (lrg) ... ok
+Live test, BIRD, BGP communities, IPv6: announce to AS1 only (std) ... ok
 Live test, BIRD, BGP communities, IPv6: announce to AS131073 only (ext) ... ok
 Live test, BIRD, BGP communities, IPv6: announce to AS131073 only (lrg) ... ok
+Live test, BIRD, BGP communities, IPv6: custom BGP community (ext) ... ok
+Live test, BIRD, BGP communities, IPv6: custom BGP community (lrg) ... ok
+Live test, BIRD, BGP communities, IPv6: custom BGP community (std) ... ok
+Live test, BIRD, BGP communities, IPv6: custom BGP community scrubbed ... ok
 Live test, BIRD, BGP communities, IPv6: stopping instances...
 Live test, OpenBGPD 6.0, BGP communities, IPv4: setting instances up...
 Live test, OpenBGPD 6.0, BGP communities, IPv4: instances setup ... ok
-Live test, OpenBGPD 6.0, BGP communities, IPv4: announce to AS1 only (std) ... ok
 Live test, OpenBGPD 6.0, BGP communities, IPv4: sessions are up ... ok
 Live test, OpenBGPD 6.0, BGP communities, IPv4: announce to AS1 only (ext) ... ok
 Live test, OpenBGPD 6.0, BGP communities, IPv4: announce to AS1 only (lrg) ... SKIP: Large comms not supported by OpenBGPD 6.0
+Live test, OpenBGPD 6.0, BGP communities, IPv4: announce to AS1 only (std) ... ok
 Live test, OpenBGPD 6.0, BGP communities, IPv4: announce to AS131073 only (ext) ... ok
 Live test, OpenBGPD 6.0, BGP communities, IPv4: announce to AS131073 only (lrg) ... SKIP: Large comms not supported by OpenBGPD 6.0
+Live test, OpenBGPD 6.0, BGP communities, IPv4: custom BGP community (ext) ... ok
+Live test, OpenBGPD 6.0, BGP communities, IPv4: custom BGP community (lrg) ... SKIP: Large comms not supported by OpenBGPD 6.0
+Live test, OpenBGPD 6.0, BGP communities, IPv4: custom BGP community (std) ... ok
+Live test, OpenBGPD 6.0, BGP communities, IPv4: custom BGP community scrubbed ... ok
 Live test, OpenBGPD 6.0, BGP communities, IPv4: stopping instances...
 Live test, OpenBGPD 6.0, BGP communities, IPv6: setting instances up...
 Live test, OpenBGPD 6.0, BGP communities, IPv6: instances setup ... ok
-Live test, OpenBGPD 6.0, BGP communities, IPv6: announce to AS1 only (std) ... ok
 Live test, OpenBGPD 6.0, BGP communities, IPv6: sessions are up ... ok
 Live test, OpenBGPD 6.0, BGP communities, IPv6: announce to AS1 only (ext) ... ok
 Live test, OpenBGPD 6.0, BGP communities, IPv6: announce to AS1 only (lrg) ... SKIP: Large comms not supported by OpenBGPD 6.0
+Live test, OpenBGPD 6.0, BGP communities, IPv6: announce to AS1 only (std) ... ok
 Live test, OpenBGPD 6.0, BGP communities, IPv6: announce to AS131073 only (ext) ... ok
 Live test, OpenBGPD 6.0, BGP communities, IPv6: announce to AS131073 only (lrg) ... SKIP: Large comms not supported by OpenBGPD 6.0
+Live test, OpenBGPD 6.0, BGP communities, IPv6: custom BGP community (ext) ... ok
+Live test, OpenBGPD 6.0, BGP communities, IPv6: custom BGP community (lrg) ... SKIP: Large comms not supported by OpenBGPD 6.0
+Live test, OpenBGPD 6.0, BGP communities, IPv6: custom BGP community (std) ... ok
+Live test, OpenBGPD 6.0, BGP communities, IPv6: custom BGP community scrubbed ... ok
 Live test, OpenBGPD 6.0, BGP communities, IPv6: stopping instances...
 Live test, OpenBGPD 6.1, BGP communities, IPv4: setting instances up...
 Live test, OpenBGPD 6.1, BGP communities, IPv4: instances setup ... ok
-Live test, OpenBGPD 6.1, BGP communities, IPv4: announce to AS1 only (std) ... ok
 Live test, OpenBGPD 6.1, BGP communities, IPv4: sessions are up ... ok
 Live test, OpenBGPD 6.1, BGP communities, IPv4: announce to AS1 only (ext) ... ok
 Live test, OpenBGPD 6.1, BGP communities, IPv4: announce to AS1 only (lrg) ... ok
+Live test, OpenBGPD 6.1, BGP communities, IPv4: announce to AS1 only (std) ... ok
 Live test, OpenBGPD 6.1, BGP communities, IPv4: announce to AS131073 only (ext) ... ok
 Live test, OpenBGPD 6.1, BGP communities, IPv4: announce to AS131073 only (lrg) ... ok
+Live test, OpenBGPD 6.1, BGP communities, IPv4: custom BGP community (ext) ... ok
+Live test, OpenBGPD 6.1, BGP communities, IPv4: custom BGP community (lrg) ... ok
+Live test, OpenBGPD 6.1, BGP communities, IPv4: custom BGP community (std) ... ok
+Live test, OpenBGPD 6.1, BGP communities, IPv4: custom BGP community scrubbed ... ok
 Live test, OpenBGPD 6.1, BGP communities, IPv4: stopping instances...
 Live test, OpenBGPD 6.1, BGP communities, IPv6: setting instances up...
 Live test, OpenBGPD 6.1, BGP communities, IPv6: instances setup ... ok
-Live test, OpenBGPD 6.1, BGP communities, IPv6: announce to AS1 only (std) ... ok
 Live test, OpenBGPD 6.1, BGP communities, IPv6: sessions are up ... ok
 Live test, OpenBGPD 6.1, BGP communities, IPv6: announce to AS1 only (ext) ... ok
 Live test, OpenBGPD 6.1, BGP communities, IPv6: announce to AS1 only (lrg) ... ok
+Live test, OpenBGPD 6.1, BGP communities, IPv6: announce to AS1 only (std) ... ok
 Live test, OpenBGPD 6.1, BGP communities, IPv6: announce to AS131073 only (ext) ... ok
 Live test, OpenBGPD 6.1, BGP communities, IPv6: announce to AS131073 only (lrg) ... ok
+Live test, OpenBGPD 6.1, BGP communities, IPv6: custom BGP community (ext) ... ok
+Live test, OpenBGPD 6.1, BGP communities, IPv6: custom BGP community (lrg) ... ok
+Live test, OpenBGPD 6.1, BGP communities, IPv6: custom BGP community (std) ... ok
+Live test, OpenBGPD 6.1, BGP communities, IPv6: custom BGP community scrubbed ... ok
 Live test, OpenBGPD 6.1, BGP communities, IPv6: stopping instances...
 Live test, BIRD, default config, IPv4: setting instances up...
 Live test, BIRD, default config, IPv4: instances setup ... ok
@@ -825,6 +855,6 @@ Live test, OpenBGPD 6.1, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin
 Live test, OpenBGPD 6.1, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 717 tests in 3570.415s
+Ran 747 tests in 3593.604s
 
-OK (SKIP=54)
+OK (SKIP=56)

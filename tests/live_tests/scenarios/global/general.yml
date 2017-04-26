@@ -44,9 +44,9 @@ cfg:
                         ext: "rt:0:peer_as"
                         lrg: "rs_as:0:peer_as"
                 announce_to_peer:
-                        std: "rs_as:peer_as"
-                        ext: "rt:rs_as:peer_as"
-                        lrg: "rs_as:rs_as:peer_as"
+                        std: "65501:peer_as"
+                        ext: "rt:65501:peer_as"
+                        lrg: "rs_as:65501:peer_as"
                 do_not_announce_to_any:
                         std: "0:rs_as"
                         ext: "rt:0:rs_as"

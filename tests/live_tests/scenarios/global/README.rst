@@ -103,7 +103,7 @@ Built to group as many tests as possible in a single scenario.
     =================  ============ ================= ============================================
     AS3_blacklist1     3.0.1.0/24                     fail prefix_is_in_AS3_1_blacklist
 
-    AS3_cc_AS1only     3.0.2.0/24   0:999, 999:1      seen on AS1_1/_2 only
+    AS3_cc_AS1only     3.0.2.0/24   0:999, 65501:1    seen on AS1_1/_2 only
     AS3_cc_not_AS1     3.0.3.0/24   0:1               seen on AS2 only
     AS3_cc_none        3.0.4.0/24   0:999             not seen
     AS3_prepend1any    3.0.5.0/24   999:65501         AS_PATH 3, 3

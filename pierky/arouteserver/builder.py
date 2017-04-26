@@ -35,7 +35,7 @@ from .enrichers.peeringdb import PeeringDBConfigEnricher
 from .errors import MissingDirError, MissingFileError, BuilderError, \
                     ARouteServerError, PeeringDBError, PeeringDBNoInfoError, \
                     MissingArgumentError, TemplateRenderingError, \
-                    CompatibilityIssuesError
+                    CompatibilityIssuesError, ConfigError
 from .irrdb import ASSet, RSet, IRRDBTools
 from .cached_objects import CachedObject
 from .peering_db import PeeringDBNet
@@ -854,6 +854,20 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                 )
             ):
                 res = False
+
+        try:
+            self.cfg_general.check_overlapping_communities(
+                allow_private_asns=False)
+        except ConfigError as e:
+            res = False
+            logging.error("{}OpenBGPD doesn't allow to delete BGP "
+                          "communities using ranges of values, but only "
+                          "using the wildcard ('*'), so also "
+                          "outbound communities whose last part contain "
+                          "private ASNs collide with inbound communities "
+                          "that use the 'peer_as' macro.".format(
+                              str(e) + " " if str(e) else ""
+                            ))
 
         return res
 

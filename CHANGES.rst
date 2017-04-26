@@ -7,6 +7,9 @@ next release
 ------------
 
 - New feature: custom BGP communities can be configured on a client-by-client basis to tag routes entering the route server (for example, for informative purposes).
+- Fix: validation of BGP communities configuration for OpenBGPD.
+
+  Error is given if a peer-AS-specific BGP community overlaps with another community, even if the last part of the latter is a private/reserved ASN.
 
 v0.6.0
 ------

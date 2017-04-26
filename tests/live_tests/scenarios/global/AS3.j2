@@ -24,7 +24,7 @@ protocol static own_prefixes {
 
 filter to_rs {
 	if net = {{ data.AS3_cc_AS1only }} then {
-		bgp_community.add((999,1));
+		bgp_community.add((65501,1));
 		bgp_community.add((0,999));
 	}
 	if net = {{ data.AS3_cc_not_AS1 }} then {

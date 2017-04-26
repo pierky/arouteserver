@@ -54,7 +54,7 @@ TITLE="clients-from-euroix"
 
 # 0.4 schema version:
 SUB_TEST="$LINENO"
-run_cmd "clients-from-euroix" --url https://my.ams-ix.net/api/v1/members.json 1 | must_contain "description: Akamai"
+run_cmd "clients-from-euroix" --url https://my.ams-ix.net/api/v1/members.json 2 | must_contain "description: Akamai"
 # 0.5 schema version:
 SUB_TEST="$LINENO"
 run_cmd "clients-from-euroix" --url https://portal.lonap.net/apiv1/member-list/list 1 | must_contain "AS-APPLE"
@@ -118,6 +118,25 @@ build_cmd "openbgpd" --target-version 6.1 | must_not_contain "Compatibility issu
 
 SUB_TEST="$LINENO"
 build_cmd "openbgpd" --ignore-issues "blackhole_filtering_rewrite_ipv6_nh" | must_not_contain "'do_not_announce_to_peer'"
+
+# ---------------------------------------------
+TITLE="OpenBGPD peer_as communities with private ASNs"
+GENERAL="tests/var/general.yml"
+cat << EOF > $GENERAL
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+  communities:
+    blackholing:
+      std: "999:65501"
+    do_not_announce_to_peer:
+      std: "999:peer_as"
+EOF
+
+EXP_ERR="OpenBGPD doesn't allow to delete BGP communities using ranges of values, but only using the wildcard"
+
+SUB_TEST="$LINENO"
+build_cmd "openbgpd" | must_contain "$EXP_ERR"
 
 # ---------------------------------------------
 reset
