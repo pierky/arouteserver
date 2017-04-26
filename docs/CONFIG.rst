@@ -143,6 +143,64 @@ BGP Communities
 BGP communities can be used for many features in the configurations built using ARouteServer: blackhole filtering, AS_PATH prepending, announcement control, various informative purposes (valid origin ASN, valid prefix, ...) and more. All these communities are referenced by *name* (or *tag*) in the configuration files and their real values are reported only once, in the ``communities`` section of the ``general.yml`` file.
 For each community, values can be set for any of the three *formats*: standard (`RFC1997 <https://tools.ietf.org/html/rfc1997>`_), extended (`RFC4360 <https://tools.ietf.org/html/rfc4360>`_/`RFC5668 <https://tools.ietf.org/html/rfc5668>`_) and large (`RFC8092 <https://tools.ietf.org/html/rfc8092>`_).
 
+Custom BGP Communities
+~~~~~~~~~~~~~~~~~~~~~~
+
+Custom, locally significant BGP communities can also be used for informational purposes, for example to keep track of the geographical origin of a route or the nature of the relation with the announcing route server client.
+
+Custom communities are declared once in the ``general.yml`` configuration file and then are referenced by clients definitions in the ``clients.yml`` file.
+
+Example:
+
+**general.yml**
+
+.. code:: yaml
+
+   cfg:
+     rs_as: 6777
+     router_id: "80.249.208.255"
+   custom_communities:
+     colo_digitalrealty_ams01:
+       std: "65501:1"
+       lrg: "6777:65501:1"
+     colo_equinix_am3:
+       std: "65501:2"
+       lrg: "6777:65501:2"
+     colo_evoswitch:
+       std: "65501:3"
+       lrg: "6777:65501:3"
+     member_type_peering:
+       std: "65502:1"
+       lrg: "6777:65502:1"
+     member_type_probono:
+       std: "65502:2"
+       lrg: "6777:65502:2"
+
+**clients.yml**
+
+.. code:: yaml
+
+   clients:
+     - asn: 112
+       ip: "192.0.2.112"
+       cfg:
+         attach_custom_communities:
+         - "colo_digitalrealty_ams01"
+         - "member_type_probono"
+     - asn: 22
+       ip: "192.0.2.22"
+       passive: False
+       cfg:
+         attach_custom_communities:
+         - "colo_equinix_am3"
+         - "member_type_peering"
+     - asn: 33
+       ip: "192.0.2.33"
+       cfg:
+         attach_custom_communities:
+         - "colo_evoswitch"
+         - "member_type_peering"
+
 .. _site-specific-custom-config:
 
 Site-specific custom configuration files

@@ -4,7 +4,6 @@ Future work
 Short term
 ----------
 
-- New feature: custom informative BGP communities
 - Packaging: a command to upgrade the program
 
 Mid term
