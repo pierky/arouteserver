@@ -1,7 +1,13 @@
 clients:
   - asn: 3333
     ip: "192.0.2.11"
+    cfg:
+      attach_custom_communities:
+      - "from_europe"
   - asn: 10745
     ip:
     - "192.0.2.22"
     - "2001:db:1:1::22"
+    cfg:
+      attach_custom_communities:
+      - "from_usa"

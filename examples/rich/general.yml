@@ -131,3 +131,12 @@ cfg:
       std: "65510:peer_as"
       ext: "rt:65510:peer_as"
       lrg: "rs_as:65510:peer_as"
+  custom_communities:
+    from_europe:
+      std: "65534:1"
+      ext: "rt:65534:1"
+      lrg: "rs_as:65534:1"
+    from_usa:
+      std: "65534:2"
+      ext: "rt:65534:2"
+      lrg: "rs_as:65534:2"
