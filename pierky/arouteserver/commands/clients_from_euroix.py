@@ -77,6 +77,18 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
             dest="routeserver_only")
 
         parser.add_argument(
+            "--guess-custom-bgp-communities",
+            nargs="+",
+            choices=EuroIXMemberList.CUSTOM_COMMUNITIES,
+            help="If set, clients will be configured to attach custom "
+                 "informational BGP communities to the routes they "
+                 "announce to the route server. These communities will "
+                 "be guessed on the basis of the available attributes "
+                 "from the Euro-IX JSON file (member type, switch ID, "
+                 "city, ...).",
+            dest="guess_custom_bgp_communities")
+
+        parser.add_argument(
             "-o", "--output",
             type=argparse.FileType('w'),
             help="Output file. Default: stdout.",
@@ -89,7 +101,8 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
         if self.args.ixp_id:
             clients = euro_ix.get_clients(
                 self.args.ixp_id, vlan_id=self.args.vlan_id,
-                routeserver_only=self.args.routeserver_only)
+                routeserver_only=self.args.routeserver_only,
+                guess_custom_bgp_communities=self.args.guess_custom_bgp_communities)
             res = {"clients": clients}
 
             comments = []
@@ -102,6 +115,22 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
                 comments.append("# VLAN ID: {}".format(self.args.vlan_id))
             self.args.output_file.write("\n".join(comments) + "\n")
             yaml.safe_dump(res, self.args.output_file, default_flow_style=False)
+
+            if self.args.guess_custom_bgp_communities and \
+                euro_ix.unique_custom_communities:
+                comments = []
+                comments.append("# The following custom BGP communities must")
+                comments.append("# be declared within the general.yml file:")
+                comments.append("#  custom_communities:")
+                for prefix in euro_ix.unique_custom_communities:
+                    comms = euro_ix.unique_custom_communities[prefix]
+                    if comms:
+                        for comm in comms:
+                            comments.append("#    {}:".format(comm))
+                            comments.append("#      std:")
+                            comments.append("#      ext:")
+                            comments.append("#      lrg:")
+                self.args.output_file.write("\n".join(comments) + "\n")
         else:
             euro_ix.print_infrastructure_list(self.args.output_file)
 

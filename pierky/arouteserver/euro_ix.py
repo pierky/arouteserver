@@ -15,6 +15,7 @@
 
 import logging
 import json
+import re
 try:
     # For Python 3.0 and later
     from urllib.request import urlopen
@@ -27,6 +28,17 @@ from .errors import EuroIXError, EuroIXSchemaError
 class EuroIXMemberList(object):
 
     TESTED_EUROIX_SCHEMA_VERSIONS = ("0.4", "0.5", "0.6")
+
+    CUSTOM_COMMUNITIES = ["switch_id", "switch_name", "colocation", "city",
+                          "country", "member_type"]
+    MEMBER_TYPES = ["peering", "ixp", "routeserver", "probono", "other"]
+    EUROIX_SWITCH_ATTRIBUTES_COMMUNITIES_MAP = [
+        ("id", "switch_id"),
+        ("name", "switch_name"),
+        ("colo", "colocation"),
+        ("city", "city"),
+        ("country", "country")
+    ]
 
     def __init__(self, input_object):
         self.raw_data = None
@@ -54,6 +66,9 @@ class EuroIXMemberList(object):
                 raise EuroIXSchemaError(
                     "Error while processing JSON data: {}".format(str(e))
                 )
+
+        self.switches = None
+        self.unique_custom_communities = None
 
         self.check_schema_version()
 
@@ -104,7 +119,8 @@ class EuroIXMemberList(object):
                             ))
 
     def get_clients(self, ixp_id, vlan_id=None,
-                    routeserver_only=False):
+                    routeserver_only=False,
+                    guess_custom_bgp_communities=[]):
 
         def new_client(asn, description):
             client = {}
@@ -145,16 +161,72 @@ class EuroIXMemberList(object):
             else:
                 return "unknown"
 
-        def process_member(member, clients):
+        def normalize_bgp_community(s):
+            res = s
+            res = res.encode("ascii", "ignore")
+            res = res.lower()
+            res = re.sub("[\\/\[ \]+-]", "_", res)
+            res = re.sub("[^0-9a-zA-Z_]", "", res)
+            return res
+
+        def attach_custom_bgp_community(client, prefix, name):
+            community_tag = normalize_bgp_community(name)
+
+            if "cfg" not in client:
+                client["cfg"] = {}
+
+            if "attach_custom_communities" not in client["cfg"]:
+                client["cfg"]["attach_custom_communities"] = []
+
+            if community_tag not in client["cfg"]["attach_custom_communities"]:
+                client["cfg"]["attach_custom_communities"].append(
+                    "{}_{}".format(prefix, community_tag)
+                )
+
+        def enrich_with_custom_bgp_communities(clients, connection):
+            if not guess_custom_bgp_communities:
+                return
+
+            if_list = self._get_item("if_list", connection, list, True)
+            if not if_list:
+                return
+
+            for if_list_entry in if_list:
+                switch_id = self._get_item("switch_id", if_list_entry, int, True)
+                if not switch_id:
+                    return
+
+                if not str(switch_id) in self.switches:
+                    print("D")
+                    return
+
+                switch_info = self.switches[str(switch_id)]
+
+                for attribute, prefix in self.EUROIX_SWITCH_ATTRIBUTES_COMMUNITIES_MAP:
+                    if not prefix in guess_custom_bgp_communities:
+                        continue
+                    if not attribute in switch_info:
+                        continue
+                    attribute_val = switch_info[attribute]
+
+                    for client in clients:
+                        attach_custom_bgp_community(client, prefix, attribute_val)
+
+        def process_member(member):
             if self._get_item("member_type", member, str, True) == "routeserver":
                 # Member is a route server itself.
                 return
 
+            clients = []
             connection_list = self._get_item("connection_list", member, list)
 
             for connection in connection_list:
                 try:
-                    process_connection(member, connection, clients)
+                    new_clients = process_connection(member, connection)
+                    if new_clients:
+                        enrich_with_custom_bgp_communities(new_clients,
+                                                           connection)
+                        clients.extend(new_clients)
                 except EuroIXError as e:
                     if str(e):
                         logging.error(
@@ -164,15 +236,20 @@ class EuroIXMemberList(object):
                         )
                     raise EuroIXError()
 
-        def process_connection(member, connection, clients):
+            return clients
+
+        def process_connection(member, connection):
             self._check_type(connection, "connection", dict)
 
             if self._get_item("ixp_id", connection, int) != ixp_id:
                 return
 
             # Member has a connection to the selected IXP infrastructure.
+
+            clients = []
             asnum = self._get_item("asnum", member, int)
             name = self._get_item("name", member, str, True)
+            member_type = self._get_item("type", member, str, True)
 
             vlan_list = self._get_item("vlan_list", connection, list, True)
 
@@ -230,8 +307,72 @@ class EuroIXMemberList(object):
                         client["cfg"]["filtering"]["max_prefix"] = {
                             "limit_ipv{}".format(ip_ver): max_prefix
                         }
+                    if guess_custom_bgp_communities and \
+                        "member_type" in guess_custom_bgp_communities:
+                        if member_type:
+                            if member_type not in self.MEMBER_TYPES:
+                                raise EuroIXSchemaError(
+                                    "Unexpected member type: '{}'".format(
+                                        member_type
+                                    )
+                                )
+
+                            attach_custom_bgp_community(client, "member_type", member_type)
 
                     clients.append(client)
+
+                return clients
+
+        def get_custom_bgp_comms_data(ixp):
+            raw_switches = self._get_item("switch", ixp, list, True)
+            if not raw_switches:
+                return
+
+            # switches = {
+            #   "<switch_id>": {
+            #     "<switch_attr_name>": <value>
+            #   }
+            # }
+            self.switches = {}
+
+            # unique_custom_communities = {
+            #   "<custom_community_prefix>": set of unique values
+            # }
+            self.unique_custom_communities = {
+                cust_comm_prefix: set()
+                for cust_comm_prefix in self.CUSTOM_COMMUNITIES
+            }
+
+            if "member_type" in guess_custom_bgp_communities:
+                self.unique_custom_communities["member_types"] = set(
+                    ["member_type_{}".format(t) for t in self.MEMBER_TYPES]
+                )
+
+            for switch in raw_switches:
+                switch_id = self._get_item("id", switch, int, True)
+
+                if not switch_id:
+                    continue
+
+                self.switches[str(switch_id)] = {}
+
+                for attribute_name, prefix in self.EUROIX_SWITCH_ATTRIBUTES_COMMUNITIES_MAP:
+                    attribute_val = self._get_item(attribute_name, switch,
+                                                   optional=True)
+                    if not attribute_val:
+                        continue
+
+                    if isinstance(attribute_val, int):
+                        attribute_val = str(attribute_val)
+                    attribute_val = attribute_val.encode("ascii", "replace")
+
+                    if prefix in guess_custom_bgp_communities:
+                        self.unique_custom_communities[prefix].add(
+                            "{}_{}".format(prefix,
+                                           normalize_bgp_community(attribute_val)
+                                        )
+                        )
+                    self.switches[str(switch_id)][attribute_name] = attribute_val
 
         data = self.raw_data
 
@@ -250,11 +391,16 @@ class EuroIXMemberList(object):
             raise EuroIXError(
                 "IXP ID {} not found".format(ixp_id))
 
+        if guess_custom_bgp_communities:
+            get_custom_bgp_comms_data(ixp)
+
         raw_clients = []
         for member in member_list:
             try:
                 self._check_type(member, "member", dict)
-                process_member(member, raw_clients)
+                new_clients = process_member(member)
+                if new_clients:
+                    raw_clients.extend(new_clients)
             except EuroIXError as e:
                 if str(e):
                     logging.error(
