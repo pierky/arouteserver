@@ -48,21 +48,38 @@ function must_not_contain() {
 }
 
 # ---------------------------------------------
-# clients-from-euroix
+# YAML include files
 reset
-TITLE="clients-from-euroix"
+TITLE="Configuration !include"
+GENERAL_RS1="tests/var/general-rs1.yml"
+cat << EOF > $GENERAL_RS1
+cfg:
+  router_id: "192.0.2.1"
+  !include general-shared.yml
+EOF
+GENERAL_RS2="tests/var/general-rs2.yml"
+cat << EOF > $GENERAL_RS2
+cfg:
+  router_id: "192.0.2.2"
+  !include general-shared.yml
+EOF
+GENERAL_SHARED="tests/var/general-shared.yml"
+cat << EOF > $GENERAL_SHARED
+  rs_as: 999
+  passive: True
+  gtsm: True
+EOF
+SUB_TEST="$LINENO"
+GENERAL="$GENERAL_RS1"
+build_cmd "bird" --ip-ver 4 | must_contain "router id 192.0.2.1"
+SUB_TEST="$LINENO"
+GENERAL="$GENERAL_RS2"
+build_cmd "bird" --ip-ver 4 | must_contain "router id 192.0.2.2"
 
-# 0.4 schema version:
-SUB_TEST="$LINENO"
-run_cmd "clients-from-euroix" --url https://my.ams-ix.net/api/v1/members.json 2 | must_contain "description: Akamai"
-# 0.5 schema version:
-SUB_TEST="$LINENO"
-run_cmd "clients-from-euroix" --url https://portal.lonap.net/apiv1/member-list/list 1 | must_contain "AS-APPLE"
-# 0.6 schema version:
-SUB_TEST="$LINENO"
-run_cmd "clients-from-euroix" --url https://www.swissix.ch/euroix/create-json-ixp-member-list.php 1 | must_contain "description: Microsoft"
-
+# ---------------------------------------------
 # custom BGP communities
+reset
+TITLE="Custom BGP communities"
 SUB_TEST="$LINENO"
 GENERAL="tests/var/general.yml"
 cat << EOF > $GENERAL
@@ -188,6 +205,21 @@ build_cmd "openbgpd" --target-version 6.0 --ignore-issues "large_communities" | 
 
 SUB_TEST="$LINENO"
 build_cmd "openbgpd" --ignore-issues "large_communities" | must_not_contain "'do_not_announce_to_peer'"
+
+# ---------------------------------------------
+# clients-from-euroix
+reset
+TITLE="clients-from-euroix"
+
+# 0.4 schema version:
+SUB_TEST="$LINENO"
+run_cmd "clients-from-euroix" --url https://my.ams-ix.net/api/v1/members.json 2 | must_contain "description: Akamai"
+# 0.5 schema version:
+SUB_TEST="$LINENO"
+run_cmd "clients-from-euroix" --url https://portal.lonap.net/apiv1/member-list/list 1 | must_contain "AS-APPLE"
+# 0.6 schema version:
+SUB_TEST="$LINENO"
+run_cmd "clients-from-euroix" --url https://www.swissix.ch/euroix/create-json-ixp-member-list.php 1 | must_contain "description: Microsoft"
 
 # ---------------------------------------------
 ERROR=`cat $RES_FILE`

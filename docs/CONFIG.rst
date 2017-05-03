@@ -32,6 +32,41 @@ Details about some particular topics are reported below.
 .. contents::
    :local:
 
+YAML files inclusion
+********************
+
+YAML configuration files can contain a custom directive (``!include <filepath>``) that can be used to include other files.
+This can be useful, for example, when the same configuration is shared by two route servers that differ only in their router ID:
+
+**general-rs1.yml**
+
+.. code:: yaml
+
+   cfg:
+     router_id: "192.0.2.1"
+     !include general-shared.yml
+
+**general-rs2.yml**
+
+.. code:: yaml
+
+   cfg:
+     router_id: "192.0.2.2"
+     !include general-shared.yml
+
+**general-shared.yml**
+
+.. code:: yaml
+
+   #cfg:
+   # keep the indentation level of the line where
+   # the !include statement is placed
+     rs_as: 999
+     passive: True
+     gtsm: True
+     filtering:
+       [...]
+
 Client-level options inheritance
 ********************************
 

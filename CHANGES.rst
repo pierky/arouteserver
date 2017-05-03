@@ -10,6 +10,9 @@ next release
 - Fix: validation of BGP communities configuration for OpenBGPD.
 
   Error is given if a peer-AS-specific BGP community overlaps with another community, even if the last part of the latter is a private/reserved ASN.
+- Improvement: the custom ``!include <filepath>`` statement can be used now in YAML configuration files to include other files.
+
+  More details `here <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#yaml-files-inclusion>`_.
 
 v0.6.0
 ------

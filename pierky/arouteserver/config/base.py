@@ -28,6 +28,7 @@ class ConfigParserBase(object):
 
     def __init__(self):
         self.cfg = None
+        self.file_dir = None
 
     def __contains__(self, name):
         return name in self.cfg[self.ROOT]
@@ -42,8 +43,42 @@ class ConfigParserBase(object):
         del self.cfg[self.ROOT][name]
 
     def _load_from_yaml(self, doc):
+
+        def expand_include(lines):
+            res = ""
+            for line in lines:
+                if not line:
+                    continue
+
+                if not line.strip():
+                    continue
+
+                if res:
+                    res += "\n"
+
+                if line.strip().startswith("!include"):
+                    filepath = line.strip().split(" ")[1]
+                    filepath = os.path.expanduser(filepath)
+
+                    if not os.path.isabs(filepath):
+                        if self.file_dir:
+                            filepath = os.path.join(self.file_dir, filepath)
+
+                    with open(filepath) as inputfile:
+                        raw = inputfile.read()
+
+                    res += expand_include(raw.split("\n"))
+                    continue
+
+                res += line
+
+            return res
+
+        lines = doc.split("\n")
+        expanded_doc = expand_include(lines)
+
         try:
-            self.cfg = yaml.safe_load(doc)
+            self.cfg = yaml.safe_load(expanded_doc)
         except Exception as e:
             raise ConfigError(
                 "Can't parse YAML file: {}".format(str(e))
@@ -52,6 +87,8 @@ class ConfigParserBase(object):
     def _load_from_yaml_file(self, cfg_path):
         if not os.path.isfile(cfg_path):
             raise MissingFileError(cfg_path)
+
+        self.file_dir = os.path.dirname(cfg_path)
 
         with open(cfg_path, "r") as f:
             self._load_from_yaml(f.read())
