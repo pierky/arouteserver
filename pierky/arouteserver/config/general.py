@@ -108,6 +108,7 @@ class ConfigParserGeneral(ConfigParserBase):
                     "irrdb": {
                         "enforce_origin_in_as_set": ValidatorBool(default=True),
                         "enforce_prefix_in_as_set": ValidatorBool(default=True),
+                        "allow_longer_prefixes": ValidatorBool(default=False),
                         "tag_as_set": ValidatorBool(default=True)
                     },
                     "rpki": {

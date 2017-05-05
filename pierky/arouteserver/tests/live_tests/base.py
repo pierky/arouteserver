@@ -277,13 +277,14 @@ class LiveScenario(ARouteServerTestCase):
     @classmethod
     def mock_irrdb(cls):
     
-        def add_prefix_to_list(prefix_name, lst):
+        def add_prefix_to_list(prefix_name, allow_longer_prefixes, lst):
             obj = ipaddr.IPNetwork(cls.DATA[prefix_name])
             lst.append(
                 ValidatorPrefixListEntry().validate({
                     "prefix": str(obj.ip),
                     "length": obj.prefixlen,
-                    "comment": prefix_name
+                    "comment": prefix_name,
+                    "exact": not allow_longer_prefixes
                 })
             )
 
@@ -297,12 +298,14 @@ class LiveScenario(ARouteServerTestCase):
 
         def _mock_RSet(self):
             self.prepare()
+            allow_longer_prefixes = self.builder.cfg_general["filtering"]["irrdb"]["allow_longer_prefixes"]
             for as_set_id in self.builder.as_sets:
                 as_set = self.builder.as_sets[as_set_id]
                 as_set_name = as_set["name"]
                 if as_set_name in cls.R_SET:
                     for prefix_name in cls.R_SET[as_set_name]:
-                        add_prefix_to_list(prefix_name, as_set["prefixes"])
+                        add_prefix_to_list(prefix_name, allow_longer_prefixes,
+                                           as_set["prefixes"])
 
         mock_ASSet = mock.patch.object(
             IRRDBConfigEnricher_OriginASNs, "enrich", autospec=True

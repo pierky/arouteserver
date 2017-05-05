@@ -111,6 +111,9 @@ Origin ASN validity is
 <strong>not enforced</strong>
 {% else %}
 <strong>enforced</strong>. Routes whose prefix is not part of the client's AS-SET are rejected.
+{%	if cfg.filtering.irrdb.allow_longer_prefixes %}
+Longer prefixes that are covered by one entry of the resulting route set are accepted.
+{%	endif %}
 {% endif %}
 </p></li>
 

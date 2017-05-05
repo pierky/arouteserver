@@ -13,6 +13,7 @@ next release
 - Improvement: the custom ``!include <filepath>`` statement can be used now in YAML configuration files to include other files.
 
   More details `here <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#yaml-files-inclusion>`_.
+- Improvement: IRRDB-based filters can be configured to allow more specific prefixes (``allow_longer_prefixes`` option).
 
 v0.6.0
 ------

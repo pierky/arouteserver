@@ -13,6 +13,7 @@ Clients config parser: AS number ... ok
 Clients config parser: inherit from general cfg - blackhole filtering ... ok
 Clients config parser: custom BGP communities ... ok
 Clients config parser: duplicate IP addresses ... ok
+Clients config parser: global only option ... ok
 Clients config parser: inherit from general cfg ... ok
 Clients config parser: IP address ... ok
 Clients config parser: clients with multiple IP addresses ... ok
@@ -25,6 +26,7 @@ Clients config parser: next_hop.policy != authorized_addresses, list given ... o
 Clients config parser: unknown statement ... ok
 Clients config parser: valid configuration ... ok
 General config parser: add_path ... ok
+General config parser: allow_longer_prefixes ... ok
 General config parser: blackhole_filtering, announce_to_client ... ok
 General config parser: blackhole_filtering, rewrite_next_hop, ipv4 ... ok
 General config parser: blackhole_filtering, rewrite_next_hop, ipv6 ... ok
@@ -68,6 +70,9 @@ General config parser: transit free, action ... ok
 General config parser: transit free, ASNs list ... ok
 General config parser: unknown statement ... ok
 General config parser: valid configuration ... ok
+YAML !include: general config, 1 !include statement ... ok
+YAML !include: general config, 2 !include statements ... ok
+YAML !include: general config, 3 !include statements, 2 levels ... ok
 Prefix list parser: bad 'le' and 'ge' ... ok
 Prefix list parser: bad prefix list entries ... ok
 Prefix list parser: valid prefix list entries ... ok
@@ -855,6 +860,6 @@ Live test, OpenBGPD 6.1, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin
 Live test, OpenBGPD 6.1, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 747 tests in 3593.604s
+Ran 752 tests in 3596.391s
 
 OK (SKIP=56)

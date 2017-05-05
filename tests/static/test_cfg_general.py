@@ -217,6 +217,12 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._test_bool_val(self.cfg["filtering"]["irrdb"], "enforce_prefix_in_as_set")
         self._test_mandatory(self.cfg["filtering"]["irrdb"], "enforce_prefix_in_as_set", has_default=True)
 
+    def test_allow_longer_prefixes(self):
+        """{}: allow_longer_prefixes"""
+        self.assertEqual(self.cfg["filtering"]["irrdb"]["allow_longer_prefixes"], False)
+        self._test_bool_val(self.cfg["filtering"]["irrdb"], "allow_longer_prefixes")
+        self._test_mandatory(self.cfg["filtering"]["irrdb"], "allow_longer_prefixes", has_default=True)
+
     def test_rpki_enabled(self):
         """{}: rpki, enabled"""
         self.assertEqual(self.cfg["filtering"]["rpki"]["enabled"], False)
@@ -752,7 +758,8 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 "irrdb": {
                     "tag_as_set": True,
                     "enforce_origin_in_as_set": True,
-                    "enforce_prefix_in_as_set": True
+                    "enforce_prefix_in_as_set": True,
+                    "allow_longer_prefixes": False
                 },
                 "rpki": {
                     "enabled": False,

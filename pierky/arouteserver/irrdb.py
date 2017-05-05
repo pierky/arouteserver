@@ -89,11 +89,12 @@ class ASSet(IRRDBTools):
 
 class RSet(IRRDBTools):
 
-    def __init__(self, object_name, ip_ver, **kwargs):
+    def __init__(self, object_name, ip_ver, allow_longer_prefixes, **kwargs):
         IRRDBTools.__init__(self, **kwargs)
         self.object_name = object_name
         assert ip_ver in (4, 6)
         self.ip_ver = ip_ver
+        self.allow_longer_prefixes = allow_longer_prefixes
 
         logging.debug("Getting prefixes for {} IPv{} "
                       "from IRRdb".format(self.object_name, self.ip_ver))
@@ -115,6 +116,9 @@ class RSet(IRRDBTools):
         cmd += ["-A"]
         cmd += ["-j"]
         cmd += ["-l", "prefix_list"]
+        if self.allow_longer_prefixes:
+            cmd += ["-R"]
+            cmd += ["32"] if self.ip_ver == 4 else ["128"]
         cmd += [self.object_name]
 
         try:

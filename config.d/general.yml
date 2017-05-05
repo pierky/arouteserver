@@ -176,6 +176,20 @@ cfg:
       # Default: True
       enforce_prefix_in_as_set: True
 
+      # By default, only prefixes that have a strict correspondence
+      # in the route-set obtained by expading the AS-SET are
+      # allowed.
+      # If this is set to True, more specific prefixes that don't
+      # have a strict correspondence with but that are covered by a
+      # prefix from the route-set are accepted as well.
+      #
+      # After changing this setting the cache must be cleared,
+      # otherwise the new setting will be taken into account only
+      # once the cached results are expired.
+      #
+      # Default: False
+      allow_longer_prefixes: False
+
       # Tag routes whose prefix is (not) present in a client's AS-SET.
       # If a client's 'enforce_[origin|prefix]in_as_set' is True
       # then unauthorized prefixes are rejected and not tagged.

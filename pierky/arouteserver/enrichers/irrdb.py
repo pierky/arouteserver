@@ -237,3 +237,8 @@ class IRRDBConfigEnricher_OriginASNs(IRRDBConfigEnricher):
 class IRRDBConfigEnricher_Prefixes(IRRDBConfigEnricher):
 
     WORKER_THREAD_CLASS = IRRDBConfigEnricher_WorkerThread_Prefixes
+
+    def _config_thread(self, thread):
+        IRRDBConfigEnricher._config_thread(self, thread)
+        thread.irrdbtools_cfg["allow_longer_prefixes"] = \
+            self.builder.cfg_general["filtering"]["irrdb"]["allow_longer_prefixes"]

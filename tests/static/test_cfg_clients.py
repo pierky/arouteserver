@@ -342,3 +342,27 @@ class TestConfigParserClients(TestConfigParserBase):
         self.cfg = ConfigParserClients(general_cfg=general)
         self.cfg._load_from_yaml("\n".join(yaml_lines))
         self._contains_err()
+
+    def test_global_only_option(self):
+        """{}: global only option"""
+        clients_config = [
+            "clients:",
+            "  - asn: 222",
+            "    ip: 192.0.2.21",
+            "    cfg:",
+            "      filtering:",
+            "        irrdb:",
+            "          allow_longer_prefixes: True"
+        ]
+
+        general = ConfigParserGeneral()
+        general._load_from_yaml("\n".join([
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+        ]))
+        general.parse()
+
+        self.cfg = ConfigParserClients(general_cfg=general)
+        self.cfg._load_from_yaml("\n".join(clients_config))
+        self._contains_err("Unknown statement at 'clients.cfg.filtering.irrdb' level: 'allow_longer_prefixes'")

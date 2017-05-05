@@ -21,6 +21,7 @@ cfg:
                   asns: 174, 3
                 irrdb:
                         tag_as_set: False
+                        allow_longer_prefixes: True
                 rpki:
                         enabled: True
         blackhole_filtering:
