@@ -3,8 +3,8 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`_ section of the documentation.
 
-next release
-------------
+v0.7.0
+------
 
 - New feature: `custom BGP communities <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#custom-bgp-communities>`_ can be configured on a client-by-client basis to tag routes entering the route server (for example, for informative purposes).
 - Fix: validation of BGP communities configuration for OpenBGPD.

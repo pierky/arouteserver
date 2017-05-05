@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ -n "$PYTHONPATH" ]; then
+	echo "PYTHONPATH is set."
+	exit
+fi
 if [ "`pwd`" != `echo ~` ]; then
 	echo "The script must be executed from within the user's home directory."
 	exit
@@ -21,13 +25,20 @@ function run() {
 	CFG_FILE=$DEST_DIR/arouteserver.yml
 
 	if [ $IS_UPGR -eq 0 ]; then
+		echo "Removing $DEST_DIR and $VENV_DIR..."
+		echo
+		echo
 		rm -r $DEST_DIR
 		rm -r $VENV_DIR
 	fi
 
+	echo "Creating $DEST_DIR and $VENV_DIR..."
+	echo
+	echo
 	mkdir -p $DEST_DIR
 	mkdir -p $VENV_DIR
 
+	echo "Activating venv $VENV_DIR..."
 	virtualenv $VENV_DIR
 	source $VENV_DIR/bin/activate
 	echo

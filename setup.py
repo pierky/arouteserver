@@ -22,6 +22,8 @@ New release procedure
 
 - python setup.py sdist
 
+- ~$ ./arouteserver/utils/test_new_rel
+
 - twine upload dist/*
 
 - git push
