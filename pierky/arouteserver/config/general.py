@@ -291,12 +291,12 @@ class ConfigParserGeneral(ConfigParserBase):
             raise ConfigError()
 
     def check_overlapping_communities(self, allow_private_asns=True):
-        """Check if a 'peer_as' BGP community overlaps with others.
+        """Check if a 'dynamic' BGP community overlaps with others.
 
         This function is also called from whitin the OpenBGPD builder
         class. See remarks about 'allow_private_asns' below.
 
-        Remember: 'peer_as' is allowed only in the last part of a
+        Remember: dynamic values are allowed only in the last part of a
         community's value.
 
         Definitions of communities:
@@ -308,9 +308,24 @@ class ConfigParserGeneral(ConfigParserBase):
                         to ask it to perform some action: blackholing,
                         do_something_to_peer, do_something_to_any, ...
 
+        - internal c.   communities used internally by the route server;
+                        they can't be neither accepted on routes entering
+                        the server nor attached to routes leaving the server
+
         - peer_as c.    communities whose last part is a variable integer
                         that identifies the target ASN for which an action
                         is requested
+
+        - dyn_val c.    communities whose last part is a variable integer
+                        locally significant to the function the BGP community
+                        is responsible for
+
+        - dynamic c.    communities whose last part is a variable integer;
+                        this is equal to 'peer_as' communities + 'dyn_val'
+                        communities
+
+        The 'dyn_val' 'internal' communities overlap with any other BGP
+        community whose first part matches its first part.
 
         When a route leaves the route server, the route server scrubs any
         'inbound' community attached to it, so any 'outbound' community whose
@@ -379,6 +394,18 @@ class ConfigParserGeneral(ConfigParserBase):
                     comm1_part = comm1_parts[part_idx]
                     comm2_part = comm2_parts[part_idx]
                     try:
+                        # Remember: 'peer_as' and 'dyn_val' macros
+                        # can be used only in the last part of a community,
+                        # so if during the current 'for' iteration any of the
+                        # two parts is one of these macros it means that the
+                        # previous parts are already matching.
+
+                        # If any of the two parts is 'dyn_val',
+                        # the two communities are overlapping.
+                        if comm1_part == "dyn_val" or \
+                            comm2_part == "dyn_val":
+                            raise ConfigError()
+
                         # the value that is not 'peer_as'
                         not_peer_as = None
                         if comm1_part == "peer_as":
@@ -436,6 +463,11 @@ class ConfigParserGeneral(ConfigParserBase):
             for comm_name in self.COMMUNITIES_SCHEMA
             if self.COMMUNITIES_SCHEMA[comm_name]["type"] == "inbound"
         }
+        internal_communities = {
+            comm_name: self.cfg["cfg"]["communities"][comm_name]
+            for comm_name in self.COMMUNITIES_SCHEMA
+            if self.COMMUNITIES_SCHEMA[comm_name]["type"] == "internal"
+        }
         custom_communities = self.cfg["cfg"]["custom_communities"]
 
         errors = errors or not compare_communities(
@@ -454,6 +486,15 @@ class ConfigParserGeneral(ConfigParserBase):
             inbound_communities, inbound_communities,
             "Inbound communities can't have overlapping values, "
             "otherwise their meaning could be uncertain.")
+
+        not_internal_communities = {}
+        not_internal_communities.update(inbound_communities)
+        not_internal_communities.update(outbound_communities)
+        not_internal_communities.update(custom_communities)
+        errors = errors or not compare_communities(
+            internal_communities, not_internal_communities,
+            "Internal communities can't have overlapping values with any "
+            "other community.")
 
         if errors:
             raise ConfigError()
