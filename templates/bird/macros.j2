@@ -30,19 +30,25 @@
 {% endif %}
 {% endmacro %}
 
-{% macro write_community(comm, replace_peer_as=False) %}
+{% macro write_community(comm, replace_peer_as=False, replace_dyn_val=False) %}
 {{- "(" -}}
 {% for part in comm.split(":") %}
-{% if part == "peer_as" and replace_peer_as %}{{ replace_peer_as }}{% else %}{{ part }}{% endif %}{% if not loop.last %}, {% endif %}
+{%-	if part == "peer_as" and replace_peer_as %}{{ replace_peer_as }}
+{%-	elif part == "dyn_val" and replace_dyn_val %}{{ replace_dyn_val }}
+{%-	else %}{{ part }}
+{%-	endif %}
+{%-	if not loop.last %}, {% endif %}
 {% endfor %}
 {{- ")" -}}
 {% endmacro %}
 
-{% macro del_communities(comm, replace_peer_as=False) %}
+{% macro del_communities(comm, replace_peer_as=False, replace_dyn_val=False) %}
 {% if comm %}
 {%	if comm.std %}
 {%		if replace_peer_as %}
         bgp_community.delete([{{ write_community(comm.std, "1..64511") }}]);
+{%		elif replace_dyn_val %}
+        bgp_community.delete([{{ write_community(comm.std, replace_dyn_val=replace_dyn_val) }}]);
 {%		else %}
         bgp_community.delete([{{ write_community(comm.std) }}]);
 {%		endif %}
@@ -51,6 +57,8 @@
 {%		if replace_peer_as %}
         bgp_large_community.delete([{{ write_community(comm.lrg, "1..64511") }}]);
         bgp_large_community.delete([{{ write_community(comm.lrg, "131072..4199999999") }}]);
+{%		elif replace_dyn_val %}
+        bgp_large_community.delete([{{ write_community(comm.lrg, replace_dyn_val=replace_dyn_val) }}]);
 {%		else %}
         bgp_large_community.delete([{{ write_community(comm.lrg) }}]);
 {%		endif %}
@@ -59,6 +67,8 @@
 {%		if replace_peer_as %}
         bgp_ext_community.delete([{{ write_community(comm.ext, "1..64511") }}]);
         bgp_ext_community.delete([{{ write_community(comm.ext, "131072..4199999999") }}]);
+{%		elif replace_dyn_val %}
+        bgp_ext_community.delete([{{ write_community(comm.ext, replace_dyn_val=replace_dyn_val) }}]);
 {%		else %}
         bgp_ext_community.delete([{{ write_community(comm.ext) }}]);
 {%		endif %}
@@ -81,7 +91,7 @@
 {% endif %}
 {% endmacro %}
 
-{% macro match_communities(comm, if_match) %}
+{% macro match_communities(comm, if_match, replace_dyn_val=False) %}
 
 {% if comm %}
 {%	if comm.std %}
@@ -91,16 +101,16 @@
 			{{ if_match }}
 	}
 {%		else %}
-	if {{ write_community(comm.std) }} ~ bgp_community then
+	if {{ write_community(comm.std, replace_dyn_val=replace_dyn_val) }} ~ bgp_community then
 		{{ if_match }}
 {%		endif %}
 {%	endif %}
 {%	if comm.lrg %}
-	if {{ write_community(comm.lrg) }} ~ bgp_large_community then
+	if {{ write_community(comm.lrg, replace_dyn_val=replace_dyn_val) }} ~ bgp_large_community then
 		{{ if_match }}
 {% 	endif %}
 {%	if comm.ext %}
-	if {{ write_community(comm.ext) }} ~ bgp_ext_community then
+	if {{ write_community(comm.ext, replace_dyn_val=replace_dyn_val) }} ~ bgp_ext_community then
 		{{ if_match }}
 {% 	endif %}
 {% endif %}

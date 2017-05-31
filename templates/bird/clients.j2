@@ -1,11 +1,20 @@
 {% from 'macros.j2' import write_prefix_list %}
 {% from 'macros.j2' import add_communities %}
+{% from 'macros.j2' import match_communities %}
 
 {% macro write_max_pref_action(action) %}
 {% if action == "shutdown" %}disable;
 {% elif action == "restart" %}restart;
 {% elif action == "block" %}block;
 {% else %}warn;
+{% endif %}
+{% endmacro %}
+
+{% macro reject(client, cause, err_msg, avoid_braces=False) %}
+{% if client.cfg.filtering.reject_policy.policy == "reject" %}
+reject {{ err_msg }};
+{% else %}
+{%	if not avoid_braces %}{{ "{ " }}{% endif %}tag_and_reject({{ cause}}); print {{ err_msg }}; accept;{% if not avoid_braces %}{{ " }" }}{% endif %}
 {% endif %}
 {% endmacro %}
 # ---------------------------------------------------------
@@ -75,11 +84,11 @@ prefix set {{ client.id }}_blacklist;
 
 filter receive_from_{{ client.id }} {
 	if !(source = RTS_BGP ) then
-		reject "source != RTS_BGP - REJECTING ", net;
+		{{ reject(client, 65535, '"source != RTS_BGP - REJECTING ", net') }}
 
 	{% if "pre_receive_from_client"|hook_is_set %}
 	if !hook_pre_receive_from_client({{ client.asn }}, {{ client.ip }}, "{{ client.id }}") then
-		reject "hook_pre_receive_from_client returned false - REJECTING ", net;
+		{{ reject(client, 65535, '"hook_pre_receive_from_client returned false - REJECTING ", net') }}
 	{% endif %}
 
 	scrub_communities_in();
@@ -94,27 +103,27 @@ filter receive_from_{{ client.id }} {
 
 	# NEXT_HOP
 	if !next_hop_is_valid_for_{{ client.id }}() then
-		reject "NEXT_HOP [", bgp_next_hop, "] not allowed - REJECTING ", net;
+		{{ reject(client, 5, '"NEXT_HOP [", bgp_next_hop, "] not allowed - REJECTING ", net') }}
 
 	# AS_PATH: length
 	if bgp_path.len > {{ cfg.filtering.max_as_path_len }} then
-		reject "AS_PATH len [", bgp_path.len ,"] longer than {{ cfg.filtering.max_as_path_len }} - REJECTING ", net;
+		{{ reject(client, 1, '"AS_PATH len [", bgp_path.len ,"] longer than ' ~ cfg.filtering.max_as_path_len ~ ' - REJECTING ", net') }}
 
 	# AS_PATH: left-most ASN
 	if bgp_path.first != {{ client.asn }} then
-		reject "invalid left-most ASN [", bgp_path.first, "] - REJECTING ", net;
+		{{ reject(client, 6, '"invalid left-most ASN [", bgp_path.first, "] - REJECTING ", net') }}
 
 	{% if client.cfg.filtering.reject_invalid_as_in_as_path %}
 	# AS_PATH: invalid ASNs
 	if as_path_contains_invalid_asn() then
-		reject "AS_PATH [", bgp_path ,"] contains invalid ASN - REJECTING ", net;
+		{{ reject(client, 7, '"AS_PATH [", bgp_path ,"] contains invalid ASN - REJECTING ", net') }}
 	{% endif %}
 
 	{% if cfg.filtering.transit_free.action %}
 	# AS_PATH: transit-free ASNs
 	if as_path_contains_transit_free_asn() then
 	{%	if cfg.filtering.transit_free.action == "reject" %}
-		reject "AS_PATH [", bgp_path ,"] contains transit-free ASN - REJECTING ", net;
+		{{ reject(client, 8, '"AS_PATH [", bgp_path ,"] contains transit-free ASN - REJECTING ", net') }}
 	{%	else %}
 		print "AS_PATH [", bgp_path ,"] contains transit-free ASN - REJECTING ", net;
 	{%	endif %}
@@ -124,7 +133,7 @@ filter receive_from_{{ client.id }} {
 	# AS_PATH: enforce origin via AS-SET (or tag)
 	if !origin_as_is_in_{{ client.id }}_as_set() then {
 	{%	if client.cfg.filtering.irrdb.enforce_origin_in_as_set %}
-		reject "origin ASN [", bgp_path.last, "] not in allowed as-sets - REJECTING ", net;
+		{{ reject(client, 9, '"origin ASN [", bgp_path.last, "] not in allowed as-sets - REJECTING ", net', avoid_braces=True) }}
 	{%	else %}
 	{%		if cfg.communities.origin_not_present_in_as_set|community_is_set %}
 		{{ add_communities(cfg.communities.origin_not_present_in_as_set) }}
@@ -142,28 +151,28 @@ filter receive_from_{{ client.id }} {
 	{% if ip_ver == 6 %}
 	# Prefix: only IPv6 Global Unicast space allowed
 	if net !~ [2000::/3+] then
-		reject "prefix is not in IPv6 Global Unicast space - REJECTING ", net;
+		{{ reject(client, 10, '"prefix is not in IPv6 Global Unicast space - REJECTING ", net') }}
 	{% endif %}
 
 	# Prefix: global blacklist
 	if prefix_is_in_global_blacklist() then
-		reject "prefix is in global blacklist - REJECTING ", net;
+		{{ reject(client, 3, '"prefix is in global blacklist - REJECTING ", net') }}
 
 	{% if client.cfg.filtering.black_list_pref %}
 	# Prefix: client's blacklist
 	if prefix_is_in_{{ client.id }}_blacklist() then
-		reject "prefix is in client's blacklist - REJECTING ", net;
+		{{ reject(client, 11, '"prefix is in client\'s blacklist - REJECTING ", net') }}
 	{% endif %}
 
 	# Prefix: bogon
 	if prefix_is_bogon() then
-		reject "prefix is bogon - REJECTING ", net;
+		{{ reject(client, 2, '"prefix is bogon - REJECTING ", net') }}
 
 	{% if client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}
 	# Prefix: enforce prefix via AS-SET (or tag)
 	if !prefix_is_in_{{ client.id }}_as_set() then {
 	{%	if client.cfg.filtering.irrdb.enforce_prefix_in_as_set %}
-		reject "prefix not in client's r_set - REJECTING ", net;
+		{{ reject(client, 12, '"prefix not in client\'s r_set - REJECTING ", net', avoid_braces=True) }}
 	{%	else %}
 	{%		if cfg.communities.prefix_not_present_in_as_set|community_is_set %}
 		{{ add_communities(cfg.communities.prefix_not_present_in_as_set) }}
@@ -187,7 +196,7 @@ filter receive_from_{{ client.id }} {
 
 		{%	if client.cfg.filtering.rpki.reject_invalid %}
 		if route_is_rpki_invalid() then
-			reject "RPKI, route is INVALID - REJECTING ", net;
+			{{ reject(client, 14, '"RPKI, route is INVALID - REJECTING ", net') }}
 		{%	endif %}
 		{% endif %}
 
@@ -200,12 +209,12 @@ filter receive_from_{{ client.id }} {
 		{% set max_pref_len = client.cfg.filtering.ipv6_pref_len.max %}
 		{% endif %}
 		if !prefix_len_is_valid({{ min_pref_len }}, {{ max_pref_len }}) then
-			reject "prefix len [", net.len, "] not in {{ min_pref_len }}-{{ max_pref_len }} - REJECTING ", net;
+			{{ reject(client, 13, '"prefix len [", net.len, "] not in ' ~ min_pref_len ~ '-' ~ max_pref_len ~ ' - REJECTING ", net') }}
 	}
 
 	{% if "post_receive_from_client"|hook_is_set %}
 	if !hook_post_receive_from_client({{ client.asn }}, {{ client.ip }}, "{{ client.id }}") then
-		reject "hook_post_receive_from_client returned false - REJECTING ", net;
+		{{ reject(client, 65535, '"hook_post_receive_from_client returned false - REJECTING ", net') }}
 	{% endif %}
 
 	accept;
@@ -215,6 +224,10 @@ filter announce_to_{{ client.id }} {
 	{% if "pre_announce_to_client"|hook_is_set %}
 	if !hook_pre_announce_to_client({{ client.asn }}, {{ client.ip }}, "{{ client.id }}") then
 		reject "hook_pre_announce_to_client returned false - NOT ANNOUNCING ", net, " TO {{ client.id}}";
+	{% endif %}
+
+	{% if cfg.communities.reject_cause|community_is_set %}
+	{{- match_communities(cfg.communities.reject_cause, "reject;", replace_dyn_val="0") }}
 	{% endif %}
 
 	# Blackhole request?
