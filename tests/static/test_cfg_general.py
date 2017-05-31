@@ -386,6 +386,14 @@ class TestConfigParserGeneral(TestConfigParserBase):
             self._contains_err("'dyn_val' macro is mandatory in this community")
         self.cfg["communities"][comm]["ext"] = None
 
+    def test_reject_cause_community_with_no_reject_policy(self):
+        """{}: reject_cause can be set only with 'tag' reject_policy"""
+        self.cfg["communities"]["reject_cause"]["std"] = "0:dyn_val"
+        self._contains_err("The 'reject_cause' community can be set only if 'reject_policy.policy' is 'tag'.")
+
+        self.cfg["filtering"]["reject_policy"]["policy"] = "tag"
+        self._contains_err()
+
     def test_peer_as_usage_in_communities(self):
         """{}: peer_as macro usage in communities"""
 

@@ -279,6 +279,20 @@ class ConfigParserGeneral(ConfigParserBase):
                         else:
                             unique_communities.append(comm[fmt])
 
+        # The 'reject_cause' community can be set only if 'reject_policy'
+        # is 'tag'.
+        if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] != "tag":
+            reject_cause_is_set = False
+            for fmt in ("std", "ext", "lrg"):
+                if self.cfg["cfg"]["communities"]["reject_cause"][fmt]:
+                    reject_cause_is_set = True
+                    break
+            if reject_cause_is_set:
+                errors = True
+                logging.error(
+                    "The 'reject_cause' community can be set only if "
+                    "'reject_policy.policy' is 'tag'.")
+
         # Overlapping communities?
         try:
             self.check_overlapping_communities()
