@@ -28,9 +28,14 @@ class ConfigParserGeneral(ConfigParserBase):
     #            something to its clients
     # inbound    communities sent by clients to the route server
     #            to ask it to perform some action
+    # internal   communities used by the route server internally,
+    #            neither received nor propagated to clients
     # peer_as    the last part of the community must be the ASN
     #            with regards of which the requested action must
     #            be performed
+    # dyn_val    the last part of the community contains a value
+    #            that is locally significant to the function that
+    #            the BGP community is responsible for
     COMMUNITIES_SCHEMA = {
         "origin_present_in_as_set": { "type": "outbound" },
         "origin_not_present_in_as_set": { "type": "outbound" },
@@ -51,17 +56,22 @@ class ConfigParserGeneral(ConfigParserBase):
         "add_noadvertise_to_any": { "type": "inbound" },
         "add_noexport_to_peer": { "type": "inbound", "peer_as": True },
         "add_noadvertise_to_peer": { "type": "inbound", "peer_as": True },
+
+        "reject_cause": { "type": "internal", "dyn_val": True },
     }
 
     @staticmethod
-    def new_community_validator(rs_as_macro, peer_as):
+    def new_community_validator(rs_as_macro, peer_as=False, dyn_val=False):
         return {
-            "std": ValidatorCommunityStd(rs_as_macro, mandatory=False,
-                                         peer_as_macro_needed=peer_as),
-            "lrg": ValidatorCommunityLrg(rs_as_macro, mandatory=False,
-                                         peer_as_macro_needed=peer_as),
-            "ext": ValidatorCommunityExt(rs_as_macro, mandatory=False,
-                                         peer_as_macro_needed=peer_as),
+            comm_type: validator_class(
+                rs_as_macro, mandatory=False,
+                peer_as_macro_needed=peer_as,
+                dyn_val_macro_needed=dyn_val
+            ) for comm_type, validator_class in [
+                ("std", ValidatorCommunityStd),
+                ("lrg", ValidatorCommunityLrg),
+                ("ext", ValidatorCommunityExt)
+            ]
         }
 
     def parse(self):
@@ -129,6 +139,11 @@ class ConfigParserGeneral(ConfigParserBase):
                         "restart_after": ValidatorUInt(default=15,
                                                        mandatory=True)
                     },
+                    "reject_policy": {
+                        "policy": ValidatorOption("policy",
+                                                  ("reject", "tag"),
+                                                  default="reject")
+                        },
                 },
                 "blackhole_filtering": {
                     "announce_to_client": ValidatorBool(
@@ -159,11 +174,13 @@ class ConfigParserGeneral(ConfigParserBase):
             rs_as_macro = None
 
         # Built-in communities validation schema
-        for comm in self.COMMUNITIES_SCHEMA:
-            peer_as = self.COMMUNITIES_SCHEMA[comm].get("peer_as", False)
+        for comm_tag in self.COMMUNITIES_SCHEMA:
+            comm = self.COMMUNITIES_SCHEMA[comm_tag]
+            peer_as = comm.get("peer_as", False)
+            dyn_val = comm.get("dyn_val", False)
 
-            schema["cfg"]["communities"][comm] = self.new_community_validator(
-                rs_as_macro, peer_as
+            schema["cfg"]["communities"][comm_tag] = self.new_community_validator(
+                rs_as_macro, peer_as, dyn_val
             )
 
         # Custom communities validation schema
@@ -179,7 +196,7 @@ class ConfigParserGeneral(ConfigParserBase):
                 # Add the validator for the custom community to the
                 # validation schema.
                 schema["cfg"]["custom_communities"][comm] = \
-                    self.new_community_validator(rs_as_macro, False)
+                    self.new_community_validator(rs_as_macro)
 
         try:
             # Convert next_hop_policy (< v0.6.0) into the new format

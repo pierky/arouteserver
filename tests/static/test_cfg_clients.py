@@ -179,6 +179,8 @@ class TestConfigParserClients(TestConfigParserBase):
             "          peering_db: False",
             "          limit_ipv4: 10",
             "          limit_ipv6: 20",
+            "        reject_policy:",
+            "          policy: tag",
             "  - asn: 333",
             "    ip: 192.0.2.31",
             "    cfg:",
@@ -211,6 +213,7 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["limit_ipv4"], None)
         self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["limit_ipv6"], None)
         self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["peering_db"], True)
+        self.assertEqual(client["cfg"]["filtering"]["reject_policy"]["policy"], "reject")
 
         client = self.cfg[1]
         self.assertEqual(client["cfg"]["passive"], False)
@@ -230,6 +233,7 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["limit_ipv4"], 10)
         self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["limit_ipv6"], 20)
         self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["peering_db"], False)
+        self.assertEqual(client["cfg"]["filtering"]["reject_policy"]["policy"], "tag")
 
         client = self.cfg[2]
         self.assertEqual(client["cfg"]["filtering"]["next_hop"]["policy"], "authorized_addresses")

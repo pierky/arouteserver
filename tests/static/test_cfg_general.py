@@ -235,6 +235,12 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._test_bool_val(self.cfg["filtering"]["rpki"], "reject_invalid")
         self._test_optional(self.cfg["filtering"]["rpki"], "reject_invalid")
 
+    def test_reject_policy(self):
+        """{}: reject_policy"""
+        self.assertEqual(self.cfg["filtering"]["reject_policy"]["policy"], "reject")
+        self._test_option(self.cfg["filtering"]["reject_policy"], "policy", ("reject", "tag"))
+        self._test_mandatory(self.cfg["filtering"]["reject_policy"], "policy", has_default=True)
+
     def test_blackhole_announce_to_client(self):
         """{}: blackhole_filtering, announce_to_client"""
         self.assertEqual(self.cfg["blackhole_filtering"]["announce_to_client"], True)
@@ -751,6 +757,9 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 },
                 "max_as_path_len": 32,
                 "reject_invalid_as_in_as_path": True,
+                "reject_policy": {
+                    "policy": "reject"
+                },
                 "transit_free": {
                     "action": None,
                     "asns": None

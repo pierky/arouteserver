@@ -95,7 +95,12 @@ class ConfigParserClients(ConfigParserBase):
                         "peering_db": ValidatorBool(mandatory=False),
                         "limit_ipv4": ValidatorUInt(mandatory=False),
                         "limit_ipv6": ValidatorUInt(mandatory=False),
-                    }
+                    },
+                    "reject_policy": {
+                        "policy": ValidatorOption("reject_policy",
+                                                  ("reject", "tag"),
+                                                  mandatory=False)
+                    },
                 },
                 "blackhole_filtering" : {
                    "announce_to_client": ValidatorBool(mandatory=False),

@@ -277,6 +277,33 @@ cfg:
       #general_limit_ipv4: 170000
       #general_limit_ipv6:  12000
 
+    reject_policy:
+      # The route server can be configured to immediately discard the
+      # routes that are considered to be rejected or to keep them and
+      # tag them with a BGP community that describes the cause for
+      # which they are considered so. These routes are not propagated
+      # to other clients anyway, but they can be used for analysis,
+      # statistics or reports.
+      # A numeric value is used to identify the reason that led to
+      # consider them as invalid; this identifier is used in the last
+      # part of the 'reject_cause' BGP community, that is finally
+      # attached to the route.
+      # The LOCAL_PREF attribute is also set to a value lower than the
+      # default one, to avoid invalid routes to be preferred over
+      # valid ones even in cases where path-hiding mitigation is not
+      # enabled.
+      #
+      # If 'policy' is set to 'reject', invalid routes are
+      # immediately discarded as they enter the route server.
+      # If it is set to 'tag', they are tagged as described above
+      # (and not propagated anyway to other clients). In this case,
+      # the 'reject_cause' BGP community must be also set.
+      #
+      # Can be overwritten on a client-by-client basis.
+      #
+      # Default: reject
+      policy: "reject"
+
   blackhole_filtering:
     # Destination-based blackholing policy: if a policy is given,
     # accept prefixes of any length if they are tagged with the
@@ -350,6 +377,9 @@ cfg:
     # in cfg.rs_as.
     # The 'peer_as' macro, where allowed, is replaced with the ASN
     # of the client the route is announced to.
+    # The 'dyn_val' macro, where allowed, is replaced with a
+    # numeric value that is significant to the function the BGP
+    # community is responsible for.
     #
     # OpenBGPD: large communities are not supported on versions prior
     # to OpenBSD 6.1, so they are not taken into account when
@@ -357,9 +387,10 @@ cfg:
     # OpenBGPD running on the route server, enable them by setting
     # the configuration target version to a value greater than or
     # equal to "6.1" (--target-version command line argument).
-    # Moreover, ext communities that use the 'peer_as' macro can't
-    # be scrubbed from outbound routes (routes announced by the
-    # route server to the clients) because of lack of wildcard
+    # Moreover, ext communities that use the 'peer_as' macro or the
+    # 'dyn_val' macro can't be scrubbed from outbound routes
+    # (routes announced by the route server to the clients) because
+    # of lack of wildcard
     # matching.
 
     # Prefix/origin AS present in client's AS-SET.
@@ -530,6 +561,18 @@ cfg:
       #lrg:
       #ext:
     add_noadvertise_to_peer:
+      #std:
+      #lrg:
+      #ext:
+
+    # This BGP community is used when the 'reject_policy' option is
+    # set to 'tag'.
+    #
+    # The following communities are scrubbed from inbound routes.
+    #
+    # The 'rs_as' macro can be used here.
+    # The 'dyn_val' macro must appear in the last part of values.
+    reject_cause:
       #std:
       #lrg:
       #ext:
