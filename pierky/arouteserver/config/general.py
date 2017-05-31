@@ -179,7 +179,7 @@ class ConfigParserGeneral(ConfigParserBase):
                 # Add the validator for the custom community to the
                 # validation schema.
                 schema["cfg"]["custom_communities"][comm] = \
-                    self.new_community_validator(rs_as_macro, peer_as)
+                    self.new_community_validator(rs_as_macro, False)
 
         try:
             # Convert next_hop_policy (< v0.6.0) into the new format
