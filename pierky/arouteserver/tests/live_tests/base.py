@@ -19,6 +19,7 @@ import mock
 import os
 import re
 import time
+import yaml
 
 from docker import InstanceError
 
@@ -210,8 +211,12 @@ class LiveScenario(ARouteServerTestCase):
         return cfg_file_path
 
     @classmethod
+    def _get_cfg_general(cls):
+        return "general.yml"
+
+    @classmethod
     def build_rs_cfg(cls, tpl_dir_name, tpl_name, out_file_name, ip_ver,
-                      cfg_general="general.yml", cfg_bogons="bogons.yml",
+                      cfg_general=None, cfg_bogons="bogons.yml",
                       cfg_clients="clients.yml", cfg_roas=None, **kwargs):
         """Builds configuration file for the route server.
 
@@ -255,7 +260,8 @@ class LiveScenario(ARouteServerTestCase):
             template_dir="{}/{}".format(cls._get_module_dir(), tpl_dir_name),
             template_name=tpl_name,
             cache_dir=var_dir,
-            cfg_general="{}/{}".format(cls._get_module_dir(), cfg_general),
+            cfg_general="{}/{}".format(cls._get_module_dir(),
+                                       cfg_general or cls._get_cfg_general()),
             cfg_bogons="{}/{}".format(cls._get_module_dir(), cfg_bogons),
             cfg_clients="{}/{}".format(cls._get_module_dir(), cfg_clients),
             cfg_roas="{}/{}".format(cls._get_module_dir(), cfg_roas) if cfg_roas else None,
@@ -441,6 +447,9 @@ class LiveScenario(ARouteServerTestCase):
                 Valid codes follow:
 
                 - 0   special meaning: the route must be treat as rejected
+                      this is not a reason code, it is only used to add a
+                      community that means that this route must be treated
+                      as rejected
 
                 - 1   invalid AS_PATH length
                 - 2   prefix is bogon
@@ -753,3 +762,48 @@ class LiveScenario(ARouteServerTestCase):
         self.fail("BGP session between '{}' ({}) and '{}' ({}) is not up.".format(
             inst_a.name, inst_a.ip, inst_b.name, inst_b.ip
         ))
+
+class LiveScenario_TagRejectPolicy(object):
+    """Helper class to run a scenario as if reject_policy is set to 'tag'.
+
+    When a scenario inherits this class, its route server is configured as
+    if the ``reject_policy.policy`` is ``tag`` and the ``65520:dyn_val``
+    value is used for the ``reject_cause`` BGP community.
+
+    The ``general.yml`` file, or the file given in the ``orig_file`` argument
+    of ``_get_cfg_general`` method, is cloned and reconfigured with the
+    aforementioned settings.
+
+    This class is mostly used for OpenBGPD tests since the underlaying
+    mechanism allows to track the reason that brought to consider the route as
+    rejected and to test filters out during test cases execution.
+
+    This class should be used in multiple inheritance:
+
+    Example
+    ---------
+
+        ``class SkeletonScenario_OpenBGPDIPv4(LiveScenario_TagRejectPolicy, SkeletonScenario):``
+
+    """
+
+    REJECT_CAUSE_COMMUNITY = "^65520:(\d+)$"
+
+    @classmethod
+    def _get_cfg_general(cls, orig_file="general.yml"):
+        orig_path = "{}/{}".format(cls._get_module_dir(), orig_file)
+        dest_rel_path = "var/general.yml"
+        dest_path = "{}/{}".format(cls._get_module_dir(), dest_rel_path)
+
+        with open(orig_path, "r") as f:
+            cfg = yaml.safe_load(f.read())
+
+        cfg["cfg"]["filtering"]["reject_policy"] = {"policy": "tag"}
+        if "communities" not in cfg["cfg"]:
+            cfg["cfg"]["communities"] = {}
+        cfg["cfg"]["communities"]["reject_cause"] = {"std": "65520:dyn_val"}
+
+        with open(dest_path, "w") as f:
+            yaml.safe_dump(cfg, f, default_flow_style=False)
+
+        return dest_rel_path

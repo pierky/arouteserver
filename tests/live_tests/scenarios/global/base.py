@@ -15,10 +15,10 @@
 
 import ipaddr
 import unittest
-import yaml
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
-from pierky.arouteserver.tests.live_tests.base import LiveScenario
+from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
+                                                      LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
                                                           OpenBGPD60Instance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
@@ -750,26 +750,7 @@ class BasicScenario(LiveScenario):
         self.receive_route(self.AS3, self.DATA["AS101_bad_good_comms"], self.rs, as_path="999 2 101", next_hop=self.AS2,
                            std_comms=["777:0"], lrg_comms=["777:0:0"])
 
-class BasicScenario_TagRejectPolicy(object):
-
-    REJECT_CAUSE_COMMUNITY = "^65520:(\d+)$"
-
-    @classmethod
-    def _get_general_cfg(cls):
-        orig_path = "{}/general.yml".format(cls._get_module_dir())
-        dest_rel_path = "var/general.yml"
-        dest_path = "{}/{}".format(cls._get_module_dir(), dest_rel_path)
-
-        with open(orig_path, "r") as f:
-            cfg = yaml.safe_load(f.read())
-
-        cfg["cfg"]["filtering"]["reject_policy"] = {"policy": "tag"}
-        cfg["cfg"]["communities"]["reject_cause"] = {"std": "65520:dyn_val"}
-
-        with open(dest_path, "w") as f:
-            yaml.safe_dump(cfg, f, default_flow_style=False)
-
-        return dest_rel_path
+class BasicScenario_TagRejectPolicy(LiveScenario_TagRejectPolicy):
 
     def test_042_bad_prefixes_received_by_rs_bogon_wrong_tag(self):
         """{}: bad prefixes received by rs: bogon (wrong tag)"""
@@ -791,10 +772,6 @@ class BasicScenarioBIRD(BasicScenario):
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
 
     @classmethod
-    def _get_general_cfg(cls):
-        return "general.yml"
-
-    @classmethod
     def _setup_rs_instance(cls):
         return cls.RS_INSTANCE_CLASS(
             "rs",
@@ -802,7 +779,6 @@ class BasicScenarioBIRD(BasicScenario):
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                        cfg_general=cls._get_general_cfg(),
                                         cfg_roas="roas{}.yml".format(cls.IP_VER),
                                         local_files=["footer{}".format(cls.IP_VER)]),
                     "/etc/bird/bird.conf"
@@ -814,7 +790,7 @@ class BasicScenarioBIRD(BasicScenario):
             ],
         )
 
-class BasicScenarioOpenBGPD(BasicScenario):
+class BasicScenarioOpenBGPD(BasicScenario_TagRejectPolicy, BasicScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder

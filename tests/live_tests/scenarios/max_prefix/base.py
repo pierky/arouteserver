@@ -16,7 +16,8 @@
 import os
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
-from pierky.arouteserver.tests.live_tests.base import LiveScenario
+from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
+                                                      LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class MaxPrefixScenario(LiveScenario):
@@ -141,7 +142,7 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
         self.assertEqual(len(self._get_routes_from(3)), 2)
         self.assertEqual(len(self._get_routes_from(3, include_filtered=True)), 5)
 
-class MaxPrefixScenarioOpenBGPD(MaxPrefixScenario):
+class MaxPrefixScenarioOpenBGPD(LiveScenario_TagRejectPolicy, MaxPrefixScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
@@ -156,7 +157,7 @@ class MaxPrefixScenarioOpenBGPD(MaxPrefixScenario):
             [
                 (
                     cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
-                                     cfg_general="general_openbgpd.yml",
+                                     cfg_general=cls._get_cfg_general("general_openbgpd.yml"),
                                      target_version=cls.TARGET_VERSION),
                     "/etc/bgpd.conf"
                 )

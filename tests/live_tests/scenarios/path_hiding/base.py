@@ -16,7 +16,8 @@
 import unittest
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
-from pierky.arouteserver.tests.live_tests.base import LiveScenario
+from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
+                                                      LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
@@ -153,7 +154,7 @@ class PathHidingScenarioBIRD(PathHidingScenario):
             ]
         )
 
-class PathHidingScenarioOpenBGPD(PathHidingScenario):
+class PathHidingScenarioOpenBGPD(LiveScenario_TagRejectPolicy, PathHidingScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
@@ -168,7 +169,7 @@ class PathHidingScenarioOpenBGPD(PathHidingScenario):
             [
                 (
                     cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
-                                     cfg_general=cls.CFG_GENERAL,
+                                     cfg_general=cls._get_cfg_general(cls.CFG_GENERAL),
                                      target_version=cls.TARGET_VERSION),
                     "/etc/bgpd.conf"
                 )

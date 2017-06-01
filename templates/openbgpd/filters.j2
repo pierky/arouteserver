@@ -7,29 +7,20 @@
 # FILTERS
 
 # NO_ADVERTISE usage notes.
-{% if live_tests %}
-# The NO_ADVERTISE well-know community is used here to accept
-# routes that should be rejected. Those routes are also tagged
-# with an additional community in the format 0:<reject_cause>,
-# to track the reason why they should have been rejected, and
-# they are set with a localpref = 1, to avoid they are preferred
-# over other routes.
-# This is done in order to keep track of them for debug and
-# analysis purposes.
-{% else %}
 # The NO_ADVERTISE well-know community is used here to handle
 # filters that span over multiple steps. At first it is added
 # to any route, then it is removed as filters conditions are
 # satisfied. Finally, if it is still present, it means that
 # the route should be discarded.
-{% endif %}
 
-{% macro deny_inbound_route(condition, cause_code) %}
-{% if live_tests %}
-match quick {{ condition }} set { community NO_ADVERTISE community 0:{{ cause_code }} localpref 1 }
-{% else %}
+{% macro deny_inbound_route(tag_reject_policy, condition, cause_code) %}
+{%	if tag_reject_policy %}
+{{		add_communities("match " ~ condition, cfg.communities.reject_cause, dyn_val=0) -}}
+{{		add_communities("match " ~ condition, cfg.communities.reject_cause, dyn_val=cause_code) -}}
+match quick {{ condition }} set localpref 1
+{%	else %}
 deny quick {{ condition }}
-{% endif %}
+{%	endif %}
 {% endmacro %}
 
 {% macro irrdb_filter(client, enforce_object_in_as_set, tag_as_set, objects, comm_object_present_in_as_set, comm_object_not_present_in_as_set, reject_code) %}
@@ -70,7 +61,7 @@ match from {{ client.ip }} {{ matching_element }} set community delete NO_ADVERT
 {%      endif %}
 {%      if enforce_object_in_as_set %}
 # enforcing: if NO_ADVERTISE has not been removed then the route is not authorized
-{{ deny_inbound_route("from " ~ client.ip ~ " community NO_ADVERTISE", reject_code) }}
+{{ deny_inbound_route(client.cfg.filtering.reject_policy.policy == "tag", "from " ~ client.ip ~ " community NO_ADVERTISE", reject_code) }}
 {%	else %}
 # tag only: even if NO_ADVERTISE is still in place, remove it
 match from {{ client.ip }} community NO_ADVERTISE set community delete NO_ADVERTISE
@@ -108,30 +99,35 @@ transit_free_asns="{ {{ cfg.filtering.transit_free.asns|join(", ") }} }"
 {% endfor %}
 
 # AS_PATH: length
-{{ deny_inbound_route("from group clients max-as-len " ~ cfg.filtering.max_as_path_len, 1) }}
+{{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients max-as-len " ~ cfg.filtering.max_as_path_len, 1) }}
 
 {% if cfg.filtering.global_black_list_pref %}
 # Prefix: global blacklist
-{{ deny_inbound_route("from group clients prefix $global_black_list_pref", 3) }}
+{{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients prefix $global_black_list_pref", 3) }}
 {% endif %}
 
 # Prefix: only IPv6 Global Unicast space allowed
 match from group clients inet6 set community NO_ADVERTISE
 match from group clients prefix 2000::/3 or-longer set community delete NO_ADVERTISE
-{{ deny_inbound_route("from group clients community NO_ADVERTISE", 10) }}
+{{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients community NO_ADVERTISE", 10) }}
 
 # Prefix: bogon
-{{ deny_inbound_route("from group clients prefix $bogons", 2) }}
+{{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients prefix $bogons", 2) }}
 
 {% for client in clients if client.ip is current_ipver %}
 
 # ---------------------------------------------
 # client {{ client.id }}, inbound
 
+{% set client_uses_tag_reject_policy = False %}
+{% if client.cfg.filtering.reject_policy.policy == "tag" %}
+{%	set client_uses_tag_reject_policy = True %}
+{% endif %}
+
 {% if client.ip|ipaddr_ver == 4 %}
-{{ deny_inbound_route("from " ~ client.ip ~ " inet6", 4) }}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " inet6", 4) }}
 {% else %}
-{{ deny_inbound_route("from " ~ client.ip ~ " inet", 4) }}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " inet", 4) }}
 {% endif %}
 
 {% if client.cfg.attach_custom_communities %}
@@ -157,23 +153,23 @@ match from {{ client.ip }} nexthop {{ same_as_client.ip }} set community delete 
 {%		endfor %}
 {%	endfor %}
 {% endif %}
-{{ deny_inbound_route("from " ~ client.ip ~ " community NO_ADVERTISE", 5) }}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " community NO_ADVERTISE", 5) }}
 
 # AS_PATH: left-most ASN
-{{ deny_inbound_route("from " ~ client.ip ~ " peer-as != " ~ client.asn, 6) }}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " peer-as != " ~ client.asn, 6) }}
 
 {% if client.cfg.filtering.reject_invalid_as_in_as_path %}
 # AS_PATH: invalid ASNs
-{{ deny_inbound_route("from " ~ client.ip ~ " AS 0", 7) }}
-{{ deny_inbound_route("from " ~ client.ip ~ " AS 23456", 7) }}
-{{ deny_inbound_route("from " ~ client.ip ~ " AS 64496 - 64511", 7) }}
-{{ deny_inbound_route("from " ~ client.ip ~ " AS 64512 - 65534", 7) }}
-{{ deny_inbound_route("from " ~ client.ip ~ " AS 65535", 7) }}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 0", 7) }}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 23456", 7) }}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 64496 - 64511", 7) }}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 64512 - 65534", 7) }}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 65535", 7) }}
 
-{{ deny_inbound_route("from " ~ client.ip ~ " AS 65536 - 65551", 7) }}
-{{ deny_inbound_route("from " ~ client.ip ~ " AS 65552 - 131071", 7) }}
-{{ deny_inbound_route("from " ~ client.ip ~ " AS 4200000000 - 4294967294", 7) }}
-{{ deny_inbound_route("from " ~ client.ip ~ " AS 4294967295", 7) }}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 65536 - 65551", 7) }}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 65552 - 131071", 7) }}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 4200000000 - 4294967294", 7) }}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 4294967295", 7) }}
 {% endif %}
 
 {% if cfg.filtering.transit_free.action == "reject" and cfg.filtering.transit_free.asns %}
@@ -181,7 +177,7 @@ match from {{ client.ip }} nexthop {{ same_as_client.ip }} set community delete 
 {%	if client.asn in cfg.filtering.transit_free.asns %}
 # client's ASN is in the list of transit-free ASNs: not applying any filtering
 {%	else %}
-{{ deny_inbound_route("from " ~ client.ip ~ " AS $transit_free_asns", 8) }}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS $transit_free_asns", 8) }}
 {%	endif %}
 {% endif %}
 
@@ -195,7 +191,7 @@ match from {{ client.ip }} nexthop {{ same_as_client.ip }} set community delete 
 # Prefix: client's blacklist
 {%	set pref_list_name = "client_" ~ client.id ~ "_black_list_pref_ipv" ~ client.ip|ipaddr_ver %}
 {{ pref_list_name }} = "{ {{ write_prefix_list(client.cfg.filtering.black_list_pref, client.ip|ipaddr_ver) }} }"
-{{ deny_inbound_route("from " ~ client.ip ~ " prefix $" ~ pref_list_name, 11) }}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " prefix $" ~ pref_list_name, 11) }}
 {% endif %}
 
 # Prefix: enforce/tag prefix via AS-SET
@@ -215,17 +211,21 @@ allow quick from {{ client.ip }} community BLACKHOLE
 {% if client.ip|ipaddr_ver == 4 %}
 {% set min_pref_len = client.cfg.filtering.ipv4_pref_len.min %}
 {% set max_pref_len = client.cfg.filtering.ipv4_pref_len.max %}
-{{ deny_inbound_route("from " ~ client.ip ~ " prefix 0.0.0.0/0 prefixlen " ~ min_pref_len ~ " >< " ~ max_pref_len, 13) }}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " prefix 0.0.0.0/0 prefixlen " ~ min_pref_len ~ " >< " ~ max_pref_len, 13) }}
 {% else %}
 {% set min_pref_len = client.cfg.filtering.ipv6_pref_len.min %}
 {% set max_pref_len = client.cfg.filtering.ipv6_pref_len.max %}
-{{ deny_inbound_route("from " ~ client.ip ~ " prefix ::/0 prefixlen " ~ min_pref_len ~ " >< " ~ max_pref_len, 13) }}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " prefix ::/0 prefixlen " ~ min_pref_len ~ " >< " ~ max_pref_len, 13) }}
 {% endif %}
 
 allow quick from {{ client.ip }}
 
 # ---------------------------------------------
 # client {{ client.id }}, outbound
+
+{% if cfg.communities.reject_cause|community_is_set %}
+{{	match_communities("deny quick to " ~ client.ip, cfg.communities.reject_cause, "", dyn_val=0) }}
+{% endif %}
 
 # Blackhole request?
 {% if not client.cfg.blackhole_filtering.announce_to_client %}

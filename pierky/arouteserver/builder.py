@@ -879,7 +879,16 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                 parts[0], parts[1], parts[2]
             )
 
+        def at_least_one_client_uses_tag_reject_policy():
+            for client in self.cfg_clients.cfg["clients"]:
+                policy = client["cfg"]["filtering"]["reject_policy"]["policy"]
+                if policy == "tag":
+                    return True
+            return False
+
         env.filters["convert_ext_comm"] = convert_ext_comm
+        self.data["at_least_one_client_uses_tag_reject_policy"] = \
+            at_least_one_client_uses_tag_reject_policy()
 
 class TemplateContextDumper(ConfigBuilder):
 

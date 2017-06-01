@@ -424,6 +424,8 @@ class TestConfigParserGeneral(TestConfigParserBase):
 
         comm = "reject_cause"
 
+        self.cfg["filtering"]["reject_policy"]["policy"] = "tag"
+
         self.cfg["communities"][comm]["std"] = "rs_as:dyn_val"
         self._contains_err()
         self.cfg["communities"][comm]["std"] = None

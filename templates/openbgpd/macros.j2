@@ -23,7 +23,7 @@
 {% endfor %}
 {% endmacro %}
 
-{% macro match_communities(left, comm, right, peer_as=None) %}
+{% macro match_communities(left, comm, right, peer_as=None, dyn_val=None) %}
 {% if comm|community_is_set %}
 {%      if comm.std %}
 {%              if "peer_as" in comm.std %}
@@ -31,36 +31,36 @@
 {{ left }} community {{ comm.std|replace("peer_as", peer_as) }} {{ right }}
 {%			endif %}
 {%		else %}
-{{ left }} community {{ comm.std }} {{ right }}
+{{ left }} community {{ comm.std|replace("dyn_val", dyn_val) }} {{ right }}
 {%		endif %}
 {%	endif %}
 {%      if comm.ext %}
 {%              if "peer_as" in comm.ext %}
 {{ left }} ext-community {{ comm.ext|convert_ext_comm|replace("peer_as", peer_as) }} {{ right }}
 {%		else %}
-{{ left }} ext-community {{ comm.ext|convert_ext_comm }} {{ right }}
+{{ left }} ext-community {{ comm.ext|convert_ext_comm|replace("dyn_val", dyn_val) }} {{ right }}
 {%		endif %}
 {%	endif %}
 {%      if comm.lrg and "6.1"|target_version_ge %}
 {%              if "peer_as" in comm.lrg %}
 {{ left }} large-community {{ comm.lrg|replace("peer_as", peer_as) }} {{ right }}
 {%		else %}
-{{ left }} large-community {{ comm.lrg }} {{ right }}
+{{ left }} large-community {{ comm.lrg|replace("dyn_val", dyn_val) }} {{ right }}
 {%		endif %}
 {%	endif %}
 {% endif %}
 {% endmacro %}
 
-{% macro add_communities(left, comm) %}
+{% macro add_communities(left, comm, dyn_val=None) %}
 {% if comm %}
 {%      if comm.std %}
-{{ left }} set community {{ comm.std }}
+{{ left }} set community {{ comm.std|replace("dyn_val", dyn_val) }}
 {%	endif %}
 {%      if comm.ext %}
-{{ left }} set ext-community {{ comm.ext|convert_ext_comm }}
+{{ left }} set ext-community {{ comm.ext|convert_ext_comm|replace("dyn_val", dyn_val) }}
 {%	endif %}
 {%      if comm.lrg and "6.1"|target_version_ge %}
-{{ left }} set large-community {{ comm.lrg }}
+{{ left }} set large-community {{ comm.lrg|replace("dyn_val", dyn_val) }}
 {%	endif %}
 {% endif %}
 {% endmacro %}

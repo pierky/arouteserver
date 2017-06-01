@@ -14,7 +14,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
-from pierky.arouteserver.tests.live_tests.base import LiveScenario
+from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
+                                                      LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
@@ -273,7 +274,7 @@ class TagASSetScenarioBIRD(TagASSetScenario):
             ]
         )
 
-class TagASSetScenarioOpenBGPD(TagASSetScenario):
+class TagASSetScenarioOpenBGPD(LiveScenario_TagRejectPolicy, TagASSetScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder

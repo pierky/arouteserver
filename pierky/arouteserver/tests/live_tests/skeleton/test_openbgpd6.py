@@ -18,11 +18,13 @@ import unittest
 
 from base import SkeletonScenario
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder
+from pierky.arouteserver.tests.live_tests.base import LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
 
 @unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
-class SkeletonScenario_OpenBGPDIPv6(SkeletonScenario):
+class SkeletonScenario_OpenBGPDIPv6(LiveScenario_TagRejectPolicy,
+                                    SkeletonScenario):
     """BGP speaker specific and IP version specific derived class.
 
     Please see test_bird4.py for more information.
