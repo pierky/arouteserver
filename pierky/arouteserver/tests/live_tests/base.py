@@ -444,30 +444,8 @@ class LiveScenario(ARouteServerTestCase):
                 It can be also a set of codes: in this case, the route must
                 be rejected with one of those codes.
 
-                Valid codes follow:
-
-                - 0   special meaning: the route must be treat as rejected
-                      this is not a reason code, it is only used to add a
-                      community that means that this route must be treated
-                      as rejected
-
-                - 1   invalid AS_PATH length
-                - 2   prefix is bogon
-                - 3   prefix is in global blacklist
-                - 4   invalid AFI
-                - 5   invalid NEXT_HOP
-                - 6   invalid left-most ASN
-                - 7   invalid ASN in AS_PATH
-                - 8   transit-free ASN in AS_PATH
-                - 9   origin ASN not in IRRDB AS-SETs
-                - 10  IPv6 prefix not in global unicast space
-                - 11  prefis is in client blacklist
-                - 12  prefix not in IRRDB AS-SETs
-                - 13  invalid prefix length
-                - 14  RPKI INVALID route
-
-                - 65535  unknown
-
+                The list of valid codes is reported in docs/CONFIG.rst or at
+                https://arouteserver.readthedocs.io/en/latest/CONFIG.html#reject-policy
         """
         assert isinstance(inst, BGPSpeakerInstance), \
             "inst must be of class BGPSpeakerInstance"

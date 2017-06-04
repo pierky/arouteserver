@@ -1,6 +1,9 @@
 Configuration
 =============
 
+Program configuration
+---------------------
+
 ARouteServer needs the following files to read its own configuration and to determine the policies to be implemented in the route server:
 
 - ``arouteserver.yml``: the main ARouteServer configuration file; it contains options and paths to other files (templates, cache directory, external tools...). By default, ARouteServer looks for this file in ``~/arouteserver`` and ``/etc/arouteserver``. This path can be changed using the ``--cfg`` command line argument.
@@ -375,6 +378,44 @@ Example:
 Details about hook functions can be found in the :doc:`BIRD_HOOKS` page.
 
 An example (including functions' prototypes) is provided within the "examples/bird_hooks" directory (`also on GitHub <https://github.com/pierky/arouteserver/tree/master/examples/bird_hooks>`_).
+
+.. _reject-policy:
+
+Reject policy and invalid routes tracking
+*****************************************
+
+Invalid routes, that is those routes that failed the validation process, can be simply discarded as they enter the route server (default behaviour) or, optionally, they can be kept for troubleshooting purposes, analysis or statistic reporting.
+
+The `reject_policy` configuration option can be set to `tag` in order to have invalid routes tagged with a user-configurable BGP Community (`reject_reason`) whose purpose is to keep track of the reason for which they are considered to be invalid. These routes are also set with a low local-pref value (`1`) and tagged with a control BGP Community that prevents them from being exported to clients.
+
+The goal of this feature is to allow the deployment of route collectors that can be used to further process invalid routes announced by clients. These route collectors can be configured using :ref:`site-specific .local files <site-specific-custom-config>`.
+
+The reason that brought the server to reject the route is identified using a numeric value in the last part of the BGP Community; the list of reject reasons follow:
+
+  ===== =========================================================
+     ID Reason
+  ===== =========================================================
+      0 Special meaning: the route must be treat as rejected. *
+
+      1 Invalid AS_PATH length
+      2 Prefix is bogon
+      3 Prefix is in global blacklist
+      4 Invalid AFI
+      5 Invalid NEXT_HOP
+      6 Invalid left-most ASN
+      7 Invalid ASN in AS_PATH
+      8 Transit-free ASN in AS_PATH
+      9 Origin ASN not in IRRDB AS-SETs
+     10 IPv6 prefix not in global unicast space
+     11 Prefix is in client blacklist
+     12 Prefix not in IRRDB AS-SETs
+     13 Invalid prefix length
+     14 RPKI INVALID route
+
+  65535 Unknown
+  ===== =========================================================
+
+\* This is not really a reject reason code, it only means that the route must be treated as rejected and must not be propagated to clients.
 
 Caveats and limitations
 ***********************
