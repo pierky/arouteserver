@@ -185,6 +185,9 @@ class Route(object):
             the "[rt|ro]:x:y" format).
 
         localpref (int): local-pref.
+
+        reject_reasons (list): list of integers that identify the reasons
+            for which the route is considered to be rejected.
     """
 
     def _parse_bgp_communities(self, communities):
@@ -224,11 +227,45 @@ class Route(object):
         if self.localpref:
             self.localpref = int(self.localpref)
         self.filtered = kwargs.get("filtered", False)
-        self.reject_reason = kwargs.get("reject_reason", None)
         self.best = kwargs.get("best", None)
         self.std_comms = self._parse_std_bgp_communities(kwargs.get("std_comms", None))
         self.lrg_comms = self._parse_lrg_bgp_communities(kwargs.get("lrg_comms", None))
         self.ext_comms = self._parse_ext_bgp_communities(kwargs.get("ext_comms", None))
+        self.reject_reasons = []
+
+    def process_reject_cause(self, re_pattern):
+        # If a route is marked to be rejected using the 'reject_cause'
+        # community it must be also set with LOCAL_PREF == 0.
+        if self.localpref != 1:
+            return
+
+        reject_cause_zero_found = False
+        reasons = []
+
+        # Iterating over the original list (from which the 'reject_cause'
+        # community will be removed) and its copy (to keep consistent the
+        # set of values over which iterate).
+        for orig_list, dup_list in [(self.std_comms, list(self.std_comms)),
+                                    (self.lrg_comms, list(self.lrg_comms)),
+                                    (self.ext_comms, list(self.ext_comms))]:
+            for comm in dup_list:
+                match = re_pattern.match(comm)
+
+                if not match:
+                    continue
+
+                reason = int(match.group(1))
+
+                if reason == 0:
+                    reject_cause_zero_found = True
+                else:
+                    reasons.append(reason)
+
+                orig_list.remove(comm)
+
+        if reject_cause_zero_found:
+            self.reject_reasons = reasons
+            self.filtered = True
 
     def __str__(self):
         return str({
@@ -238,7 +275,7 @@ class Route(object):
             "next_hop": self.next_hop,
             "localpref": self.localpref,
             "filtered": self.filtered,
-            "reject_reason": self.reject_reason,
+            "reject_reasons": ", ".join(map(str, self.reject_reasons)),
             "best": self.best,
             "std_comms": self.std_comms,
             "lrg_comms": self.lrg_comms,

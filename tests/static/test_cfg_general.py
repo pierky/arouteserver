@@ -235,6 +235,12 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._test_bool_val(self.cfg["filtering"]["rpki"], "reject_invalid")
         self._test_optional(self.cfg["filtering"]["rpki"], "reject_invalid")
 
+    def test_reject_policy(self):
+        """{}: reject_policy"""
+        self.assertEqual(self.cfg["filtering"]["reject_policy"]["policy"], "reject")
+        self._test_option(self.cfg["filtering"]["reject_policy"], "policy", ("reject", "tag"))
+        self._test_mandatory(self.cfg["filtering"]["reject_policy"], "policy", has_default=True)
+
     def test_blackhole_announce_to_client(self):
         """{}: blackhole_filtering, announce_to_client"""
         self.assertEqual(self.cfg["blackhole_filtering"]["announce_to_client"], True)
@@ -363,6 +369,31 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 self._contains_err("'peer_as' macro is mandatory in this community")
             self.cfg["communities"][comm]["ext"] = None
 
+    def test_mandatory_dyn_val_communities(self):
+        """{}: communities that need dyn_val macro"""
+
+        comm = "reject_cause"
+        for c in self.VALID_STD_COMMS:
+            self.cfg["communities"][comm]["std"] = c
+            self._contains_err("'dyn_val' macro is mandatory in this community")
+        self.cfg["communities"][comm]["std"] = None
+        for c in self.VALID_LRG_COMMS:
+            self.cfg["communities"][comm]["lrg"] = c
+            self._contains_err("'dyn_val' macro is mandatory in this community")
+        self.cfg["communities"][comm]["lrg"] = None
+        for c in self.VALID_EXT_COMMS:
+            self.cfg["communities"][comm]["ext"] = c
+            self._contains_err("'dyn_val' macro is mandatory in this community")
+        self.cfg["communities"][comm]["ext"] = None
+
+    def test_reject_cause_community_with_no_reject_policy(self):
+        """{}: reject_cause can be set only with 'tag' reject_policy"""
+        self.cfg["communities"]["reject_cause"]["std"] = "0:dyn_val"
+        self._contains_err("The 'reject_cause' community can be set only if 'reject_policy.policy' is 'tag'.")
+
+        self.cfg["filtering"]["reject_policy"]["policy"] = "tag"
+        self._contains_err()
+
     def test_peer_as_usage_in_communities(self):
         """{}: peer_as macro usage in communities"""
 
@@ -386,6 +417,33 @@ class TestConfigParserGeneral(TestConfigParserBase):
 
         self.cfg["communities"][comm]["lrg"] = "rs_as:peer_as:0"
         self._contains_err("'peer_as' macro can be used only in the last part of the value")
+        self.cfg["communities"][comm]["lrg"] = None
+
+    def test_dyn_val_usage_in_communities(self):
+        """{}: dyn_val macro usage in communities"""
+
+        comm = "reject_cause"
+
+        self.cfg["filtering"]["reject_policy"]["policy"] = "tag"
+
+        self.cfg["communities"][comm]["std"] = "rs_as:dyn_val"
+        self._contains_err()
+        self.cfg["communities"][comm]["std"] = None
+
+        self.cfg["communities"][comm]["std"] = "dyn_val:rs_as"
+        self._contains_err("'dyn_val' macro can be used only in the last part of the value")
+        self.cfg["communities"][comm]["std"] = None
+
+        self.cfg["communities"][comm]["lrg"] = "rs_as:rs_as:dyn_val"
+        self._contains_err()
+        self.cfg["communities"][comm]["lrg"] = None
+
+        self.cfg["communities"][comm]["lrg"] = "dyn_val:rs_as:0"
+        self._contains_err("'dyn_val' macro can be used only in the last part of the value")
+        self.cfg["communities"][comm]["lrg"] = None
+
+        self.cfg["communities"][comm]["lrg"] = "rs_as:dyn_val:0"
+        self._contains_err("'dyn_val' macro can be used only in the last part of the value")
         self.cfg["communities"][comm]["lrg"] = None
 
     def test_custom_communities_valid(self):
@@ -480,6 +538,42 @@ class TestConfigParserGeneral(TestConfigParserBase):
         ]
         self.load_config(yaml="\n".join(yaml_lines))
         self._contains_err("The 'test.std' community's value (999:1) has already been used for another community.")
+
+    def test_overlapping_communities_internal(self):
+        """{}: overlapping communities, internal"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  communities:",
+            "    reject_cause:",
+            "      std: 1:dyn_val"
+        ]
+
+        # internal/outbound (prefix_not_present_in_as_set)
+        yaml_lines = tpl + [
+            "    prefix_not_present_in_as_set:",
+            "      std: '1:1'",
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err("Community 'reject_cause' and 'prefix_not_present_in_as_set' overlap: 1:dyn_val / 1:1. Internal communities can't have overlapping values with any other community.")
+
+        # internal/inbound (do_not_announce_to_peer)
+        yaml_lines = tpl + [
+            "    do_not_announce_to_peer:",
+            "      std: '1:peer_as'",
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err("Community 'reject_cause' and 'do_not_announce_to_peer' overlap: 1:dyn_val / 1:peer_as. Internal communities can't have overlapping values with any other community.")
+
+        # internal/custom
+        yaml_lines = tpl + [
+            "  custom_communities:",
+            "    test:",
+            "      std: '1:0'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err("Community 'reject_cause' and 'test' overlap: 1:dyn_val / 1:0. Internal communities can't have overlapping values with any other community.")
 
     def test_overlapping_communities_out_in(self):
         """{}: overlapping communities, outbound/inbound"""
@@ -751,6 +845,9 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 },
                 "max_as_path_len": 32,
                 "reject_invalid_as_in_as_path": True,
+                "reject_policy": {
+                    "policy": "reject"
+                },
                 "transit_free": {
                     "action": None,
                     "asns": None

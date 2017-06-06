@@ -44,16 +44,6 @@ class OpenBGPDRoute(Route):
             res.append("{}:{}".format(parts[0], parts[1]))
         return res
 
-    def __init__(self, *args, **kwargs):
-        Route.__init__(self, *args, **kwargs)
-        if "NO_ADVERTISE" in self.std_comms and self.localpref == 1:
-            self.std_comms.remove("NO_ADVERTISE")
-            self.filtered = True
-            for comm in self.std_comms:
-                if comm.startswith("0:"):
-                    self.reject_reason = int(comm.split(":")[1])
-                    self.std_comms.remove(comm)
-
 class OpenBGPDInstance(KVMInstance):
     """This class implements OpenBGPD-specific methods.
 

@@ -146,6 +146,9 @@ clients:
           #limit_ipv4: 170000
           #limit_ipv6:  12000
 
+        reject_policy:
+          #policy: "reject"
+
       blackhole_filtering:
         #announce_to_client: True
 

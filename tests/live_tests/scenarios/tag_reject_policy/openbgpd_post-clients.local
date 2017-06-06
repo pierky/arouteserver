@@ -1,0 +1,18 @@
+# File used in both the global and the tag_reject_policy scenarios
+
+	neighbor 192.0.2.99 {
+		descr "Routes collector"
+		remote-as 65534
+		announce all
+		set nexthop no-modify
+		transparent-as yes
+		announce as-4byte yes
+	}
+	neighbor 2001:db8:1:1::999 {
+		descr "Routes collector"
+		remote-as 65534
+		announce all
+		set nexthop no-modify
+		transparent-as yes
+		announce as-4byte yes
+	}

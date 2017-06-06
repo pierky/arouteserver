@@ -418,6 +418,7 @@ class ValidatorCommunity(ConfigParserValidator):
         ConfigParserValidator.__init__(self, **kwargs)
         self.rs_as = rs_as
         self.peer_as_macro_needed = kwargs.get("peer_as_macro_needed", False)
+        self.dyn_val_macro_needed = kwargs.get("dyn_val_macro_needed", False)
 
     def _expand_rs_as_macro(self, v):
         if "rs_as" in v:
@@ -436,22 +437,28 @@ class ValidatorCommunity(ConfigParserValidator):
         if len(parts) != self.EXPECTED_PARTS_CNT:
             raise ConfigError()
 
-        # peer_as macro usage checks
-        peer_as_macro_found = False
-        for part_idx in range(len(parts)):
-            if parts[part_idx] != "peer_as":
-                continue
-            if self.peer_as_macro_needed:
-                peer_as_macro_found = True
-                if part_idx != len(parts) - 1:
-                    # peer_as macro allowed only in the last part
-                    raise ConfigError("'peer_as' macro can be used only "
-                                      "in the last part of the value")
-            else:
-                raise ConfigError("'peer_as' macro not allowed")
-        if self.peer_as_macro_needed and not peer_as_macro_found:
-            raise ConfigError("'peer_as' macro is mandatory in this "
-                              "community")
+        def check_dynamic_part(macro_name, needed):
+            # dynamic part macro usage checks
+            macro_found = False
+            for part_idx in range(len(parts)):
+                if parts[part_idx] != macro_name:
+                    continue
+                if needed:
+                    macro_found = True
+                    if part_idx != len(parts) - 1:
+                        # dynamic macros allowed only in the last part
+                        raise ConfigError("'{}' macro can be used only "
+                                          "in the last part of the value".format(
+                                              macro_name))
+                else:
+                    raise ConfigError("'{}' macro not allowed".format(macro_name))
+            if needed and not macro_found:
+                raise ConfigError("'{}' macro is mandatory in this "
+                                  "community".format(macro_name))
+
+        check_dynamic_part("peer_as", self.peer_as_macro_needed)
+        check_dynamic_part("dyn_val", self.dyn_val_macro_needed)
+
         return parts
 
 class ValidatorCommunityStd(ValidatorCommunity):
@@ -468,8 +475,8 @@ class ValidatorCommunityStd(ValidatorCommunity):
             validated_parts = []
             parts = self._get_parts(val)
             for part in parts:
-                if part.strip() == "peer_as":
-                    validated_parts.append("peer_as")
+                if part.strip() in ["peer_as", "dyn_val"]:
+                    validated_parts.append(part.strip())
                     continue
                 part_val = ValidatorUInt().validate(part)
                 if part_val < 0 or part_val > 65535:
@@ -506,8 +513,8 @@ class ValidatorCommunityLrg(ValidatorCommunity):
             validated_parts = []
             parts = self._get_parts(val)
             for part in parts:
-                if part.strip() == "peer_as":
-                    validated_parts.append("peer_as")
+                if part.strip() in ["peer_as", "dyn_val"]:
+                    validated_parts.append(part.strip())
                     continue
                 part_val = ValidatorUInt().validate(part)
                 if part_val < 0 or part_val > 4294967295:
@@ -543,8 +550,8 @@ class ValidatorCommunityExt(ValidatorCommunity):
                 raise ConfigError()
             validated_parts.append(parts[0].strip().lower())
             for part in parts[1:]:
-                if part.strip() == "peer_as":
-                    validated_parts.append("peer_as")
+                if part.strip() in ["peer_as", "dyn_val"]:
+                    validated_parts.append(part.strip())
                     continue
                 part_val = ValidatorUInt().validate(part)
                 if part_val < 0 or part_val > 4294967295:

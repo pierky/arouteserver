@@ -17,7 +17,9 @@ import ipaddr
 from jinja2 import Environment, FileSystemLoader
 import mock
 import os
+import re
 import time
+import yaml
 
 from docker import InstanceError
 
@@ -93,6 +95,20 @@ class LiveScenario(ARouteServerTestCase):
             ]
         }
 
+    - optionally, if it's needed by the scenario, the derived classes
+      can also set the ``REJECT_CAUSE_COMMUNITY`` attribute with the
+      pattern followed by BGP communities used to tag routes that are
+      considered to be rejected (see the ``filtering.reject_policy``
+      general configuration section and the ``reject_cause``
+      community).
+      The value of this attribute must be a regular expression that
+      matches the standard, extended or large BGP communities used to
+      tag invalid routes. For example, if the standard BGP community
+      ``65520:dyn_val`` is used, the value must be ``^65520:(\d+)$``.
+      If this attribute is not None, routes that have LOCAL_PREF == 1
+      and the ``reject_cause`` BGP community with ``dyn_val == 0``
+      are considered as filtered.
+
     - implement the ``set_instance_variables`` method, used to set
       local instance attributes for the instances used within the
       tests functions.
@@ -123,6 +139,9 @@ class LiveScenario(ARouteServerTestCase):
     DO_NOT_STOP_INSTANCES = False
 
     CONFIG_BUILDER_CLASS = None
+
+    # regex: for example ^65520:(\d+)$
+    REJECT_CAUSE_COMMUNITY = None
 
     @classmethod
     def _get_module_dir(cls):
@@ -192,8 +211,12 @@ class LiveScenario(ARouteServerTestCase):
         return cfg_file_path
 
     @classmethod
+    def _get_cfg_general(cls):
+        return "general.yml"
+
+    @classmethod
     def build_rs_cfg(cls, tpl_dir_name, tpl_name, out_file_name, ip_ver,
-                      cfg_general="general.yml", cfg_bogons="bogons.yml",
+                      cfg_general=None, cfg_bogons="bogons.yml",
                       cfg_clients="clients.yml", cfg_roas=None, **kwargs):
         """Builds configuration file for the route server.
 
@@ -237,7 +260,8 @@ class LiveScenario(ARouteServerTestCase):
             template_dir="{}/{}".format(cls._get_module_dir(), tpl_dir_name),
             template_name=tpl_name,
             cache_dir=var_dir,
-            cfg_general="{}/{}".format(cls._get_module_dir(), cfg_general),
+            cfg_general="{}/{}".format(cls._get_module_dir(),
+                                       cfg_general or cls._get_cfg_general()),
             cfg_bogons="{}/{}".format(cls._get_module_dir(), cfg_bogons),
             cfg_clients="{}/{}".format(cls._get_module_dir(), cfg_clients),
             cfg_roas="{}/{}".format(cls._get_module_dir(), cfg_roas) if cfg_roas else None,
@@ -372,6 +396,12 @@ class LiveScenario(ARouteServerTestCase):
 
         self.set_instance_variables()
 
+    def process_reject_cause_routes(self, routes):
+        if self.REJECT_CAUSE_COMMUNITY is not None:
+            re_pattern = re.compile(self.REJECT_CAUSE_COMMUNITY)
+            for route in routes:
+                route.process_reject_cause(re_pattern)
+
     def receive_route(self, inst, prefix, other_inst=None, as_path=None,
                       next_hop=None, std_comms=None, lrg_comms=None,
                       ext_comms=None, local_pref=None,
@@ -413,24 +443,9 @@ class LiveScenario(ARouteServerTestCase):
                 the route must be reject with this reason code.
                 It can be also a set of codes: in this case, the route must
                 be rejected with one of those codes.
-                Currently implemented on OpenBGPD only.
 
-                Valid codes follow:
-
-                - 1   invalid AS_PATH length
-                - 2   prefix is bogon
-                - 3   prefix is in global blacklist
-                - 4   invalid AFI
-                - 5   invalid NEXT_HOP
-                - 6   invalid left-most ASN
-                - 7   invalid ASN in AS_PATH
-                - 8   transit-free ASN in AS_PATH
-                - 9   origin ASN not in IRRDB AS-SETs
-                - 10  IPv6 prefix not in global unicast space
-                - 11  prefis is in client blacklist
-                - 12  prefix not in IRRDB AS-SETs
-                - 13  invalid prefix length
-
+                The list of valid codes is reported in docs/CONFIG.rst or at
+                https://arouteserver.readthedocs.io/en/latest/CONFIG.html#reject-policy
         """
         assert isinstance(inst, BGPSpeakerInstance), \
             "inst must be of class BGPSpeakerInstance"
@@ -501,7 +516,7 @@ class LiveScenario(ARouteServerTestCase):
             else:
                 reject_reasons = list(reject_reason)
             for code in reject_reasons:
-                assert code in range(1,14), "invalid reject_reason"
+                assert code in range(1,15), "invalid reject_reason"
 
         include_filtered = filtered if filtered is not None else False
         best_only = only_best if only_best is not None else False
@@ -509,6 +524,7 @@ class LiveScenario(ARouteServerTestCase):
         routes = inst.get_routes(prefix,
                                  include_filtered=include_filtered,
                                  only_best=best_only)
+        self.process_reject_cause_routes(routes)
 
         errors = []
         if not routes:
@@ -550,21 +566,27 @@ class LiveScenario(ARouteServerTestCase):
                     )
                     err = True
                 if filtered is True and route.filtered and \
-                    reject_reasons is not None and route.reject_reason is not None and \
-                    route.reject_reason not in reject_reasons:
-                    errors.append(
-                        "{{inst}} receives {{prefix}} from {via}, AS_PATH {as_path}, NEXT_HOP {next_hop}, "
-                        "it is filtered but reject reasons don't match: it is {reason} while "
-                        "it is expected to be {exp_reason}.".format(
-                            via=route.via,
-                            as_path=route.as_path,
-                            next_hop=route.next_hop,
-                            reason=route.reject_reason,
-                            exp_reason=reject_reasons[0] if len(reject_reasons) == 1 else
-                                       "one of {}".format(", ".join(map(str, reject_reasons)))
+                    reject_reasons is not None and len(route.reject_reasons) > 0:
+
+                    reject_reason_found = False
+                    for real_reason in route.reject_reasons:
+                        if real_reason in reject_reasons:
+                            reject_reason_found = True
+
+                    if not reject_reason_found:
+                        errors.append(
+                            "{{inst}} receives {{prefix}} from {via}, AS_PATH {as_path}, NEXT_HOP {next_hop}, "
+                            "it is filtered but reject reasons don't match: real reasons {reason}, "
+                            "expected reason {exp_reason}.".format(
+                                via=route.via,
+                                as_path=route.as_path,
+                                next_hop=route.next_hop,
+                                reason=", ".join(map(str, route.reject_reasons)),
+                                exp_reason=reject_reasons[0] if len(reject_reasons) == 1 else
+                                        "one of {}".format(", ".join(map(str, reject_reasons)))
+                            )
                         )
-                    )
-                    err = True
+                        err = True
                 if not err:
                     return
 
@@ -718,3 +740,48 @@ class LiveScenario(ARouteServerTestCase):
         self.fail("BGP session between '{}' ({}) and '{}' ({}) is not up.".format(
             inst_a.name, inst_a.ip, inst_b.name, inst_b.ip
         ))
+
+class LiveScenario_TagRejectPolicy(object):
+    """Helper class to run a scenario as if reject_policy is set to 'tag'.
+
+    When a scenario inherits this class, its route server is configured as
+    if the ``reject_policy.policy`` is ``tag`` and the ``65520:dyn_val``
+    value is used for the ``reject_cause`` BGP community.
+
+    The ``general.yml`` file, or the file given in the ``orig_file`` argument
+    of ``_get_cfg_general`` method, is cloned and reconfigured with the
+    aforementioned settings.
+
+    This class is mostly used for OpenBGPD tests since the underlaying
+    mechanism allows to track the reason that brought to consider the route as
+    rejected and to test filters out during test cases execution.
+
+    This class should be used in multiple inheritance:
+
+    Example
+    ---------
+
+        ``class SkeletonScenario_OpenBGPDIPv4(LiveScenario_TagRejectPolicy, SkeletonScenario):``
+
+    """
+
+    REJECT_CAUSE_COMMUNITY = "^65520:(\d+)$"
+
+    @classmethod
+    def _get_cfg_general(cls, orig_file="general.yml"):
+        orig_path = "{}/{}".format(cls._get_module_dir(), orig_file)
+        dest_rel_path = "var/general.yml"
+        dest_path = "{}/{}".format(cls._get_module_dir(), dest_rel_path)
+
+        with open(orig_path, "r") as f:
+            cfg = yaml.safe_load(f.read())
+
+        cfg["cfg"]["filtering"]["reject_policy"] = {"policy": "tag"}
+        if "communities" not in cfg["cfg"]:
+            cfg["cfg"]["communities"] = {}
+        cfg["cfg"]["communities"]["reject_cause"] = {"std": "65520:dyn_val"}
+
+        with open(dest_path, "w") as f:
+            yaml.safe_dump(cfg, f, default_flow_style=False)
+
+        return dest_rel_path

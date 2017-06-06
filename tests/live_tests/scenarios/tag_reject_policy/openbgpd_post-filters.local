@@ -1,0 +1,5 @@
+# File used in both the global and the tag_reject_policy scenarios
+allow quick to 192.0.2.99 community 65520:0
+allow quick to 2001:db8:1:1::999 community 65520:0
+deny quick to 192.0.2.99
+deny quick to 2001:db8:1:1::999

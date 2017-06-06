@@ -17,7 +17,8 @@ import ipaddr
 import unittest
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
-from pierky.arouteserver.tests.live_tests.base import LiveScenario
+from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
+                                                      LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
                                                           OpenBGPD60Instance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
@@ -140,7 +141,7 @@ class BasicScenario(LiveScenario):
 
         # A dummy session is configured using local include files.
         # The following tests if those files are really included.
-        self.session_exists(self.rs, self.DATA["Dummy"])
+        self.session_exists(self.rs, self.DATA["RoutesCollector_IPAddress"])
 
     def test_030_good_prefixes_received_by_rs(self):
         """{}: good prefixes received by rs"""
@@ -749,6 +750,22 @@ class BasicScenario(LiveScenario):
         self.receive_route(self.AS3, self.DATA["AS101_bad_good_comms"], self.rs, as_path="999 2 101", next_hop=self.AS2,
                            std_comms=["777:0"], lrg_comms=["777:0:0"])
 
+class BasicScenario_TagRejectPolicy(LiveScenario_TagRejectPolicy):
+
+    def test_042_bad_prefixes_received_by_rs_bogon_wrong_tag(self):
+        """{}: bad prefixes received by rs: bogon (wrong tag)"""
+        with self.assertRaisesRegexp(AssertionError, "real reasons 2, expected reason 1."):
+            self.receive_route(self.rs, self.DATA["bogon1"], self.AS1_1,
+                               as_path="1", next_hop=self.AS1_1,
+                               filtered=True, reject_reason=1)
+
+    def test_042_bad_prefixes_received_by_rs_global_blacklist_wrong_tag(self):
+        """{}: bad prefixes received by rs: global blacklist (wrong tag)"""
+        with self.assertRaisesRegexp(AssertionError, "real reasons 3, expected reason 1."):
+            self.receive_route(self.rs, self.DATA["local1"], self.AS1_1,
+                               as_path="1", next_hop=self.AS1_1,
+                               filtered=True, reject_reason=1)
+
 class BasicScenarioBIRD(BasicScenario):
     __test__ = False
 
@@ -773,7 +790,7 @@ class BasicScenarioBIRD(BasicScenario):
             ],
         )
 
-class BasicScenarioOpenBGPD(BasicScenario):
+class BasicScenarioOpenBGPD(BasicScenario_TagRejectPolicy, BasicScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
@@ -788,13 +805,17 @@ class BasicScenarioOpenBGPD(BasicScenario):
                 (
                     cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
                                      local_files_dir="/etc/bgpd",
-                                     local_files=["post-clients"],
+                                     local_files=["post-clients", "post-filters"],
                                      target_version=cls.TARGET_VERSION),
                     "/etc/bgpd.conf"
                 ),
                 (
                     cls.use_static_file("openbgpd_post-clients.local"),
                     "/etc/bgpd/post-clients.local"
+                ),
+                (
+                    cls.use_static_file("openbgpd_post-filters.local"),
+                    "/etc/bgpd/post-filters.local"
                 )
             ]
         )

@@ -28,9 +28,14 @@ class ConfigParserGeneral(ConfigParserBase):
     #            something to its clients
     # inbound    communities sent by clients to the route server
     #            to ask it to perform some action
+    # internal   communities used by the route server internally,
+    #            neither received nor propagated to clients
     # peer_as    the last part of the community must be the ASN
     #            with regards of which the requested action must
     #            be performed
+    # dyn_val    the last part of the community contains a value
+    #            that is locally significant to the function that
+    #            the BGP community is responsible for
     COMMUNITIES_SCHEMA = {
         "origin_present_in_as_set": { "type": "outbound" },
         "origin_not_present_in_as_set": { "type": "outbound" },
@@ -51,17 +56,22 @@ class ConfigParserGeneral(ConfigParserBase):
         "add_noadvertise_to_any": { "type": "inbound" },
         "add_noexport_to_peer": { "type": "inbound", "peer_as": True },
         "add_noadvertise_to_peer": { "type": "inbound", "peer_as": True },
+
+        "reject_cause": { "type": "internal", "dyn_val": True },
     }
 
     @staticmethod
-    def new_community_validator(rs_as_macro, peer_as):
+    def new_community_validator(rs_as_macro, peer_as=False, dyn_val=False):
         return {
-            "std": ValidatorCommunityStd(rs_as_macro, mandatory=False,
-                                         peer_as_macro_needed=peer_as),
-            "lrg": ValidatorCommunityLrg(rs_as_macro, mandatory=False,
-                                         peer_as_macro_needed=peer_as),
-            "ext": ValidatorCommunityExt(rs_as_macro, mandatory=False,
-                                         peer_as_macro_needed=peer_as),
+            comm_type: validator_class(
+                rs_as_macro, mandatory=False,
+                peer_as_macro_needed=peer_as,
+                dyn_val_macro_needed=dyn_val
+            ) for comm_type, validator_class in [
+                ("std", ValidatorCommunityStd),
+                ("lrg", ValidatorCommunityLrg),
+                ("ext", ValidatorCommunityExt)
+            ]
         }
 
     def parse(self):
@@ -129,6 +139,11 @@ class ConfigParserGeneral(ConfigParserBase):
                         "restart_after": ValidatorUInt(default=15,
                                                        mandatory=True)
                     },
+                    "reject_policy": {
+                        "policy": ValidatorOption("policy",
+                                                  ("reject", "tag"),
+                                                  default="reject")
+                        },
                 },
                 "blackhole_filtering": {
                     "announce_to_client": ValidatorBool(
@@ -159,11 +174,13 @@ class ConfigParserGeneral(ConfigParserBase):
             rs_as_macro = None
 
         # Built-in communities validation schema
-        for comm in self.COMMUNITIES_SCHEMA:
-            peer_as = self.COMMUNITIES_SCHEMA[comm].get("peer_as", False)
+        for comm_tag in self.COMMUNITIES_SCHEMA:
+            comm = self.COMMUNITIES_SCHEMA[comm_tag]
+            peer_as = comm.get("peer_as", False)
+            dyn_val = comm.get("dyn_val", False)
 
-            schema["cfg"]["communities"][comm] = self.new_community_validator(
-                rs_as_macro, peer_as
+            schema["cfg"]["communities"][comm_tag] = self.new_community_validator(
+                rs_as_macro, peer_as, dyn_val
             )
 
         # Custom communities validation schema
@@ -179,7 +196,7 @@ class ConfigParserGeneral(ConfigParserBase):
                 # Add the validator for the custom community to the
                 # validation schema.
                 schema["cfg"]["custom_communities"][comm] = \
-                    self.new_community_validator(rs_as_macro, False)
+                    self.new_community_validator(rs_as_macro)
 
         try:
             # Convert next_hop_policy (< v0.6.0) into the new format
@@ -262,6 +279,20 @@ class ConfigParserGeneral(ConfigParserBase):
                         else:
                             unique_communities.append(comm[fmt])
 
+        # The 'reject_cause' community can be set only if 'reject_policy'
+        # is 'tag'.
+        if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] != "tag":
+            reject_cause_is_set = False
+            for fmt in ("std", "ext", "lrg"):
+                if self.cfg["cfg"]["communities"]["reject_cause"][fmt]:
+                    reject_cause_is_set = True
+                    break
+            if reject_cause_is_set:
+                errors = True
+                logging.error(
+                    "The 'reject_cause' community can be set only if "
+                    "'reject_policy.policy' is 'tag'.")
+
         # Overlapping communities?
         try:
             self.check_overlapping_communities()
@@ -274,12 +305,12 @@ class ConfigParserGeneral(ConfigParserBase):
             raise ConfigError()
 
     def check_overlapping_communities(self, allow_private_asns=True):
-        """Check if a 'peer_as' BGP community overlaps with others.
+        """Check if a 'dynamic' BGP community overlaps with others.
 
         This function is also called from whitin the OpenBGPD builder
         class. See remarks about 'allow_private_asns' below.
 
-        Remember: 'peer_as' is allowed only in the last part of a
+        Remember: dynamic values are allowed only in the last part of a
         community's value.
 
         Definitions of communities:
@@ -291,9 +322,24 @@ class ConfigParserGeneral(ConfigParserBase):
                         to ask it to perform some action: blackholing,
                         do_something_to_peer, do_something_to_any, ...
 
+        - internal c.   communities used internally by the route server;
+                        they can't be neither accepted on routes entering
+                        the server nor attached to routes leaving the server
+
         - peer_as c.    communities whose last part is a variable integer
                         that identifies the target ASN for which an action
                         is requested
+
+        - dyn_val c.    communities whose last part is a variable integer
+                        locally significant to the function the BGP community
+                        is responsible for
+
+        - dynamic c.    communities whose last part is a variable integer;
+                        this is equal to 'peer_as' communities + 'dyn_val'
+                        communities
+
+        The 'dyn_val' 'internal' communities overlap with any other BGP
+        community whose first part matches its first part.
 
         When a route leaves the route server, the route server scrubs any
         'inbound' community attached to it, so any 'outbound' community whose
@@ -362,6 +408,18 @@ class ConfigParserGeneral(ConfigParserBase):
                     comm1_part = comm1_parts[part_idx]
                     comm2_part = comm2_parts[part_idx]
                     try:
+                        # Remember: 'peer_as' and 'dyn_val' macros
+                        # can be used only in the last part of a community,
+                        # so if during the current 'for' iteration any of the
+                        # two parts is one of these macros it means that the
+                        # previous parts are already matching.
+
+                        # If any of the two parts is 'dyn_val',
+                        # the two communities are overlapping.
+                        if comm1_part == "dyn_val" or \
+                            comm2_part == "dyn_val":
+                            raise ConfigError()
+
                         # the value that is not 'peer_as'
                         not_peer_as = None
                         if comm1_part == "peer_as":
@@ -419,6 +477,11 @@ class ConfigParserGeneral(ConfigParserBase):
             for comm_name in self.COMMUNITIES_SCHEMA
             if self.COMMUNITIES_SCHEMA[comm_name]["type"] == "inbound"
         }
+        internal_communities = {
+            comm_name: self.cfg["cfg"]["communities"][comm_name]
+            for comm_name in self.COMMUNITIES_SCHEMA
+            if self.COMMUNITIES_SCHEMA[comm_name]["type"] == "internal"
+        }
         custom_communities = self.cfg["cfg"]["custom_communities"]
 
         errors = errors or not compare_communities(
@@ -437,6 +500,15 @@ class ConfigParserGeneral(ConfigParserBase):
             inbound_communities, inbound_communities,
             "Inbound communities can't have overlapping values, "
             "otherwise their meaning could be uncertain.")
+
+        not_internal_communities = {}
+        not_internal_communities.update(inbound_communities)
+        not_internal_communities.update(outbound_communities)
+        not_internal_communities.update(custom_communities)
+        errors = errors or not compare_communities(
+            internal_communities, not_internal_communities,
+            "Internal communities can't have overlapping values with any "
+            "other community.")
 
         if errors:
             raise ConfigError()
