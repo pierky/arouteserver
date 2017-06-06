@@ -3,6 +3,11 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`_ section of the documentation.
 
+next release
+------------
+
+- New feature: `reject policy <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#reject-policy>`_ configuration option, to control how invalid routes must be treated: immediately discarded or kept for troubleshooting purposes, analysis or statistic reporting.
+
 v0.7.0
 ------
 
