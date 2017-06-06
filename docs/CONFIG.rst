@@ -386,7 +386,7 @@ Reject policy and invalid routes tracking
 
 Invalid routes, that is those routes that failed the validation process, can be simply discarded as they enter the route server (default behaviour) or, optionally, they can be kept for troubleshooting purposes, analysis or statistic reporting.
 
-The `reject_policy` configuration option can be set to `tag` in order to have invalid routes tagged with a user-configurable BGP Community (`reject_reason`) whose purpose is to keep track of the reason for which they are considered to be invalid. These routes are also set with a low local-pref value (`1`) and tagged with a control BGP Community that prevents them from being exported to clients.
+The ``reject_policy`` configuration option can be set to ``tag`` in order to have invalid routes tagged with a user-configurable BGP Community (``reject_reason``) whose purpose is to keep track of the reason for which they are considered to be invalid. These routes are also set with a low local-pref value (``1``) and tagged with a control BGP Community that prevents them from being exported to clients.
 
 The goal of this feature is to allow the deployment of route collectors that can be used to further process invalid routes announced by clients. These route collectors can be configured using :ref:`site-specific .local files <site-specific-custom-config>`.
 
