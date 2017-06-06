@@ -993,8 +993,82 @@ Live test, OpenBGPD 6.1, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (
 Live test, OpenBGPD 6.1, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ko ... ok
 Live test, OpenBGPD 6.1, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ok ... ok
 Live test, OpenBGPD 6.1, tag prefix/origin in AS-SET, IPv6: stopping instances...
+Live test, BIRD, 'tag' reject policy scenario, IPv4: setting instances up...
+Live test, BIRD, 'tag' reject policy scenario, IPv4: instances setup ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv4: sessions are up ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv4: AS_PATH too long ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv4: bogon prefix ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv4: prefix in client's blacklist ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv4: invalid ASN in AS_PATH ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv4: invalid NEXT_HOP ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv4: local black list ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv4: prefix is not in IPv6 global unicast space ... SKIP: IPv6 only test
+Live test, BIRD, 'tag' reject policy scenario, IPv4: origin not in as-macro ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv4: invalid left-most ASN ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv4: prefix length ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv4: prefix not in as-macro ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv4: RPKI INVALID route ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv4: transit-free ASN in AS_PATH ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv4: good routes not received ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv4: stopping instances...
+Live test, BIRD, 'tag' reject policy scenario, IPv6: setting instances up...
+Live test, BIRD, 'tag' reject policy scenario, IPv6: instances setup ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv6: sessions are up ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv6: AS_PATH too long ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv6: bogon prefix ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv6: prefix in client's blacklist ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv6: invalid ASN in AS_PATH ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv6: invalid NEXT_HOP ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv6: local black list ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv6: prefix is not in IPv6 global unicast space ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv6: origin not in as-macro ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv6: invalid left-most ASN ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv6: prefix length ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv6: prefix not in as-macro ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv6: RPKI INVALID route ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv6: transit-free ASN in AS_PATH ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv6: good routes not received ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv6: stopping instances...
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: setting instances up...
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: instances setup ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: sessions are up ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: AS_PATH too long ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: bogon prefix ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: prefix in client's blacklist ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: invalid ASN in AS_PATH ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: invalid NEXT_HOP ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: local black list ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: prefix is not in IPv6 global unicast space ... SKIP: IPv6 only test
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: origin not in as-macro ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: invalid left-most ASN ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: prefix length ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: prefix not in as-macro ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: RPKI INVALID route ... SKIP: RPKI not supported by OpenBGPD
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: transit-free ASN in AS_PATH ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: blackhole req. using (unsupported) large comms ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: good routes not received ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: stopping instances...
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: setting instances up...
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: instances setup ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: sessions are up ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: AS_PATH too long ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: bogon prefix ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: prefix in client's blacklist ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: invalid ASN in AS_PATH ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: invalid NEXT_HOP ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: local black list ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: prefix is not in IPv6 global unicast space ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: origin not in as-macro ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: invalid left-most ASN ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: prefix length ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: prefix not in as-macro ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: RPKI INVALID route ... SKIP: RPKI not supported by OpenBGPD
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: transit-free ASN in AS_PATH ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: blackhole req. using (unsupported) large comms ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: good routes not received ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 883 tests in 3723.092s
+Ran 949 tests in 4019.562s
 
-OK (SKIP=58)
+OK (SKIP=62)

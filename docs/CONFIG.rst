@@ -395,7 +395,7 @@ The reason that brought the server to reject the route is identified using a num
   ===== =========================================================
      ID Reason
   ===== =========================================================
-      0 Special meaning: the route must be treat as rejected. *
+      0 Special meaning: the route must be treated as rejected. *
 
       1 Invalid AS_PATH length
       2 Prefix is bogon

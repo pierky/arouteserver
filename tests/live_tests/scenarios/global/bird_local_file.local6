@@ -1,7 +1,1 @@
-# This is only used to verify that local files are included properly.
-protocol bgp Dummy {
-	local as 999;
-	neighbor 2001:db8:1:1::999 as 65535;
-	import none;
-	export all;
-}
+../tag_reject_policy/bird_local_file.local6

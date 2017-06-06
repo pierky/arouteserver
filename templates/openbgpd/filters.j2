@@ -17,7 +17,7 @@
 {%	if tag_reject_policy %}
 {{		add_communities("match " ~ condition, cfg.communities.reject_cause, dyn_val=0) -}}
 {{		add_communities("match " ~ condition, cfg.communities.reject_cause, dyn_val=cause_code) -}}
-match quick {{ condition }} set localpref 1
+match quick {{ condition }} set { localpref 1 community delete NO_ADVERTISE }
 {%	else %}
 deny quick {{ condition }}
 {%	endif %}

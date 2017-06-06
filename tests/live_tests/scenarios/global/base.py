@@ -141,7 +141,7 @@ class BasicScenario(LiveScenario):
 
         # A dummy session is configured using local include files.
         # The following tests if those files are really included.
-        self.session_exists(self.rs, self.DATA["Dummy"])
+        self.session_exists(self.rs, self.DATA["RoutesCollector_IPAddress"])
 
     def test_030_good_prefixes_received_by_rs(self):
         """{}: good prefixes received by rs"""
@@ -805,13 +805,17 @@ class BasicScenarioOpenBGPD(BasicScenario_TagRejectPolicy, BasicScenario):
                 (
                     cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
                                      local_files_dir="/etc/bgpd",
-                                     local_files=["post-clients"],
+                                     local_files=["post-clients", "post-filters"],
                                      target_version=cls.TARGET_VERSION),
                     "/etc/bgpd.conf"
                 ),
                 (
                     cls.use_static_file("openbgpd_post-clients.local"),
                     "/etc/bgpd/post-clients.local"
+                ),
+                (
+                    cls.use_static_file("openbgpd_post-filters.local"),
+                    "/etc/bgpd/post-filters.local"
                 )
             ]
         )
