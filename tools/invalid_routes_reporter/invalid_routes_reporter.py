@@ -421,6 +421,14 @@ class LoggerThread(NotifierThread):
                 self.template = ("{id},{ts},{prefix},{as_path},{next_hop},"
                                  "{reject_reason_code},{reject_reason}")
 
+            if len(self.cfg["recipients"]) > 1 and \
+                "*" in self.cfg["recipients"]:
+
+                raise ValueError(
+                    "when the wildcard recipient '*' is used, no other "
+                    "recipients can be used"
+                )
+
         except ValueError as e:
             raise ValueError(
                 "Error in the configuration of the alerter: {}".format(
