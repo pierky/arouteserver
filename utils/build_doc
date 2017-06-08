@@ -146,6 +146,38 @@ cd $ROOT
 
 # ----------------------------------------------------
 
+echo "Building tools"
+DST_FILE="$DOCS_DIR/TOOLS.rst"
+rm $DST_FILE
+
+echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > $DST_FILE
+echo "" >> $DST_FILE
+echo "Tools" >> $DST_FILE
+echo "=====" >> $DST_FILE
+
+echo ".. include:: TOOLS_invalid_routes_reporter.rst" >> $DST_FILE
+
+## docs file
+#DST_FILE="$DOCS_DIR/TOOLS_invalid_routes_reporter.rst"
+#echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > $DST_FILE
+#cat docs/TOOLS_invalid_routes_reporter-README.txt > $DST_FILE
+cp tools/invalid_routes_reporter/diagram.png docs/_static/invalid_routes_reporter.png
+#echo "" >> $DST_FILE
+#echo ".. image:: _static/invalid_routes_reporter.png" >> $DST_FILE
+#echo "" >> $DST_FILE
+#cat docs/TOOLS_invalid_routes_reporter-FULL.txt >> $DST_FILE
+
+# README.rst
+DST_FILE="tools/invalid_routes_reporter/README.rst"
+echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > $DST_FILE
+cat docs/TOOLS_invalid_routes_reporter-README.txt >> $DST_FILE
+echo "" >> $DST_FILE
+echo ".. image:: img/data_flow.png" >> $DST_FILE
+echo "" >> $DST_FILE
+echo "For more information: https://arouteserver.readthedocs.io/en/latest/TOOLS.html" >> $DST_FILE
+
+# ----------------------------------------------------
+
 echo "Building README.rst"
 
 echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > README.rst
