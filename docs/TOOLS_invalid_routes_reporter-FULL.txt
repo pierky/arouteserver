@@ -1,18 +1,20 @@
 How it works
 ++++++++++++
 
-1. The script uses an user configurable regular espression pattern to determine if the routes it receives carry the expected reject reason BGP community, then it extracts the reason code from them.
+1. The script uses an user configurable regular espression pattern to determine if the routes it receives from the route server carry the expected reject reason BGP community, then it extracts the reason code from them.
    
    Example:
 
-   - pattern ``^65520:(\d+)$``
-   - route tagged with ``65520:7``
+   - pattern: ``^65520:(\d+)$``
+   - route tagged with: ``65520:7``
    - resulting reason code: ``7`` (that means "Invalid ASN in AS_PATH")
 
-   The list of codes and their meaning is reported within :ref:`Reject policy and invalid routes tracking`.
+   The list of codes and their meaning is reported within the :ref:`Reject policy and invalid routes tracking` section.
 
-2. Then it performs a lookup on a list of *networks* in search of 1) the left-most ASN in the AS_PATH attribute and 2) the IP address used in the NEXT_HOP attribute.
+2. For those routes that are tagged with a reject reason BGP community, it performs a lookup on a list of *networks* in search of 1) the left-most ASN in the AS_PATH attribute and 2) the IP address used in the NEXT_HOP attribute.
    The result of this lookup identifies the *recipients* of the alert that will be generated.
+
+   .. note:: Please note that this lookup's result does not always determine the network that announced the invalid route: for example, in case of a network that announces a route with an unauthorized left-most ASN or NEXT_HOP address the result of the lookup will be the networks of which the ASN and the peer's address have been used.
 
    Example of the networks list:
 
@@ -47,17 +49,7 @@ An ExaBGP configuration example follows:
 .. code::
 
    neighbor 192.0.2.2 {
-           router-id 192.0.2.99;
-           local-address 192.0.2.99;
-           local-as 65534;
-           peer-as 999;
-           group-updates false;
-           add-path receive;
-   
-           family {
-                   ipv4 unicast;
-                   ipv6 unicast;
-           }
+	   [...]
    
            process invalid_routes_reporter {
                    run /etc/exabgp/invalid_routes_reporter.py /etc/exabgp/networks.json /etc/exabgp/log.alerter.json /etc/exabgp/email.alerter.json
@@ -74,7 +66,7 @@ Configuration
 
 .. note::
 
-   The configuration files used by this script can be automatically generated starting from the ``clients.yml`` file used by ARouteServer to build configurations for the route server. This topic is further expanded in the rest of the document.
+   The configuration files used by this script can be automatically generated starting from the ``clients.yml`` file used by ARouteServer to build configuration for the route server. This topic is further expanded in the rest of the document.
 
 Details about the configuration of this script follow. An example can be found within the `tools/invalid_routes_reporter/example <https://github.com/pierky/arouteserver/tree/master/tools/invalid_routes_reporter/example>`_ directory on GitHub.
 
@@ -104,8 +96,8 @@ There are more kinds of *alerters* that implement different actions, but they sh
      "type": "ALERTER_TYPE",
 
      // The following settings are ment to be interpreted on a
-     // recipient-by-recipient basis. General values can be configured
-     // here and they are inherited by recipients, but each
+     // recipient-by-recipient basis. Global values can be configured
+     // here and they are then inherited by recipients, but each
      // recipient can also be configured with its own values.
 
      // Optional.
@@ -118,8 +110,8 @@ There are more kinds of *alerters* that implement different actions, but they sh
      // recipient.
      // When this buffer is full, perform the action implemented by
      // the alerter, unless the "min_wait" timer has not expired.
-     // If the "min_wait" timer is not expired, any further route
-     // will not be buffered and will be lost.
+     // If the "min_wait" timer is not expired and the buffer is full,
+     // any further route will not be buffered and will be lost.
      "max_routes": 30,
 
      // Optional.
@@ -133,9 +125,10 @@ There are more kinds of *alerters* that implement different actions, but they sh
        // Recipient ID must be given in the format "AS<n>" and must
        // match the ASN reported in the networks configuration file.
        "recipient ID": {
+
          // Optional.
          // Recipients inherit settings from the general configuration
-         // above, or they may have their own settings.
+         // above, or they may have their own settings configured here.
          //"max_routes": 30,
          //"max_wait": 900,
          //"min_wait": 300,
@@ -292,3 +285,82 @@ Examples:
      "template_file": "/etc/exabgp/template",
      "from_addr": "noc@acme-ix.net"
    }
+
+Integration with ARouteServer
++++++++++++++++++++++++++++++
+
+- In order to have the route server announcing invalid routes to ``invalid_routes_reporter``, ARouteServer is set to use the `"tag" reject policy option <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#reject-policy>`_ and a `.local site-specific file <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#site-specific-custom-config>`_ where the session to ExaBGP is configured.
+  
+  - ARouteServer ``general.yml`` configuration file:
+    
+    .. code:: yaml
+
+       cfg:
+         [...]
+         filtering:
+           reject_policy:
+             policy: tag
+         [...]
+         communities:
+           reject_cause:
+             std: 65520:dyn_val
+
+  - Content of ``/etc/bird/footer4.local`` on the route server:
+  
+    .. code::
+  
+       filter invalid_routes_only {
+          if ((65520, 0) ~ bgp_community) then
+             accept;
+          reject;
+       }
+       protocol bgp InvalidRoutesCollector {
+          local as 999;
+          neighbor 192.0.2.99 as 65534;
+          rs client;
+          add paths tx;
+          secondary;
+       
+          import none;
+          export filter invalid_routes_only;
+       }
+  
+  - Command to build the route server's configuration:
+  
+    .. code::
+  
+       $ arouteserver bird --ip-ver 4 --use-local-files footer4
+
+- The ExaBGP side is configured with a session to the route server and a process that executes the ``invalid_routes_reporter`` script:
+
+  - content of ``exabgp.conf``:
+
+    .. code:: 
+
+       neighbor 192.0.2.2 {
+               router-id 192.0.2.99;
+               local-address 192.0.2.99;
+               local-as 65534;
+               peer-as 999;
+               group-updates false;
+               add-path receive;
+       
+               family {
+                       ipv4 unicast;
+                       ipv6 unicast;
+               }
+       
+               process invalid_routes_reporter {
+                       run /etc/exabgp/invalid_routes_reporter.py /etc/exabgp/networks.json /etc/exabgp/log.alerter.json /etc/exabgp/email.alerter.json
+                       encoder json;
+                       receive {
+                               update;
+                               parsed;
+                       }
+               }
+       }
+
+Status
+++++++
+
+Currently this tool is in a beta status and needs testing. Please consider this before using it in production!
