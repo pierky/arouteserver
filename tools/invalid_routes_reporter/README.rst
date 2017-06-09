@@ -8,6 +8,6 @@ Invalid routes are those routes that, for some reason, didn't pass the route ser
 
 A session with an ExaBGP-based route collector can be used to announce invalid routes to this script, that finally processes them, extracts the reject reason and uses this information to log a record or to send an email alert to the involved networks.
 
-.. image:: img/data_flow.png
+.. image:: diagram.png
 
 For more information: https://arouteserver.readthedocs.io/en/latest/TOOLS.html
