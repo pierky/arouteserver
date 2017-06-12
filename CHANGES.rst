@@ -8,6 +8,8 @@ next release
 
 - New feature: `reject policy <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#reject-policy>`_ configuration option, to control how invalid routes must be treated: immediately discarded or kept for troubleshooting purposes, analysis or statistic reporting.
 
+- New tool: invalid routes reporter.
+
 v0.7.0
 ------
 
