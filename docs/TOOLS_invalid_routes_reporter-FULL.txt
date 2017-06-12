@@ -360,6 +360,12 @@ Integration with ARouteServer
                }
        }
 
+An integration diagram follows (click to enlarge).
+
+.. image:: _static/invalid_routes_reporter_integration.png
+    :scale: 30%
+    :align: center
+
 Status
 ++++++
 

@@ -160,6 +160,7 @@ echo "=====" >> $DST_FILE
 echo ".. include:: TOOLS_invalid_routes_reporter.rst" >> $DST_FILE
 
 cp tools/invalid_routes_reporter/diagram.png docs/_static/invalid_routes_reporter.png
+cp tools/invalid_routes_reporter/integration.png docs/_static/invalid_routes_reporter_integration.png
 
 # README.rst
 DST_FILE="tools/invalid_routes_reporter/README.rst"
