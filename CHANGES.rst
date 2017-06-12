@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`_ section of the documentation.
 
+next release
+------------
+
+- New feature: `reject policy <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#reject-policy>`_ configuration option, to control how invalid routes must be treated: immediately discarded or kept for troubleshooting purposes, analysis or statistic reporting.
+
+- New tool: `invalid routes reporter <https://arouteserver.readthedocs.io/en/latest/TOOLS.html>`_.
+
+- Fix: the following networks have been removed from the bogons.yml file: 193.239.116.0/22, 80.249.208.0/21, 164.138.24.80/29.
+
 v0.7.0
 ------
 

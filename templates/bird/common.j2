@@ -98,6 +98,12 @@ function scrub_communities_in() {
 {{ del_communities(cfg.communities[name]) }}
 {% endif %}
 {% endfor %}
+{% for name in cfg.communities if cfg.communities[name].type == "internal" %}
+{% if cfg.communities[name]|community_is_set %}
+	# {{ name }}
+{{ del_communities(cfg.communities[name], replace_dyn_val="*") }}
+{% endif %}
+{% endfor %}
 {% for name in cfg.custom_communities %}
 {% if cfg.custom_communities[name]|community_is_set %}
 	# {{ name }}
@@ -117,6 +123,12 @@ function scrub_communities_out() {
 {% if cfg.communities[name]|community_is_set %}
 	# {{ name }}
 {{ del_communities(cfg.communities[name], cfg.communities[name].peer_as) }}
+{% endif %}
+{% endfor %}
+{% for name in cfg.communities if cfg.communities[name].type == "internal" %}
+{% if cfg.communities[name]|community_is_set %}
+	# {{ name }}
+{{ del_communities(cfg.communities[name], replace_dyn_val="*") }}
 {% endif %}
 {% endfor %}
 {% if "scrub_communities_out"|hook_is_set %}
@@ -292,3 +304,19 @@ function add_noexport_noadvertise(int peer_as) {
 	{{ match_communities(cfg.communities.add_noadvertise_to_peer, "{ bgp_community.add((65535, 65282)); }") }}
 	{% endif %}
 }
+
+{% if cfg.communities.reject_cause|community_is_set %}
+function tag_and_reject(int cause)
+int dyn_val;
+{
+	# 0: the route must be treated as discarded
+	dyn_val = 0;
+	{{ add_communities(cfg.communities.reject_cause) }}
+
+	# cause: the real cause
+	dyn_val = cause;
+	{{ add_communities(cfg.communities.reject_cause) }}
+
+	bgp_local_pref = 1;
+}
+{% endif %}

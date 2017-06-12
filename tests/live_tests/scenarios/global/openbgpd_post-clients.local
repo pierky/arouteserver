@@ -1,12 +1,1 @@
-# local file
-
-	neighbor 192.0.2.99 {
-		descr "Dummy"
-		remote-as 65535
-		passive
-	}
-	neighbor 2001:db8:1:1::999 {
-		descr "Dummy"
-		remote-as 65535
-		passive
-	}
+../tag_reject_policy/openbgpd_post-clients.local

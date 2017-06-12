@@ -1,0 +1,13 @@
+Hello,
+
+this is the staff of ACME-IX.
+
+It seems that your ASN or one of your IP addresses are involved in an event that brought the route server to receive one or more routes that it considers as invalid.
+
+The list of these routes follow:
+
+{routes_list}
+
+Bests,
+
+the ACME-IX staff

@@ -38,7 +38,7 @@ else
 	kvm_instance_is_running "$INSTANCE_NAME"
 
 	if [ $? -eq 0 ]; then
-		ssh -o BatchMode=yes -o ConnectTimeout=5 -o ServerAliveInterval=10 root@192.0.2.2 -i ~/.ssh/arouteserver "$@"
+		ssh -o BatchMode=yes -o ConnectTimeout=5 -o ServerAliveInterval=10 -o StrictHostKeyChecking=no root@192.0.2.2 -i ~/.ssh/arouteserver "$@"
 	else
 		echo "Instance not running."
 	fi

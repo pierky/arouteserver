@@ -93,20 +93,21 @@ fi
 # ----------------------------------------------------
 
 echo "Building Live tests scenarios TOC"
+DST_FILE="$DOCS_DIR/LIVETESTS_SCENARIOS.rst"
 rm $DOCS_DIR/LIVETESTS_SCENARIOS_*.rst
 
-echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > $DOCS_DIR/LIVETESTS_SCENARIOS.rst
-echo "" >> $DOCS_DIR/LIVETESTS_SCENARIOS.rst
-echo ".. toctree::" >> $DOCS_DIR/LIVETESTS_SCENARIOS.rst
-echo "   :maxdepth: 1" >> $DOCS_DIR/LIVETESTS_SCENARIOS.rst
-echo "" >> $DOCS_DIR/LIVETESTS_SCENARIOS.rst
+echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > $DST_FILE
+echo "" >> $DST_FILE
+echo ".. toctree::" >> $DST_FILE
+echo "   :maxdepth: 1" >> $DST_FILE
+echo "" >> $DST_FILE
 
 cd tests/live_tests/scenarios/
 for d in */; do
 	SCENARIO_NAME=`basename $d`
 	if [ -e "$SCENARIO_NAME/README.rst" ]; then
 		echo ".. include:: ../tests/live_tests/scenarios/$SCENARIO_NAME/README.rst" > $DOCS_DIR/LIVETESTS_SCENARIOS_$SCENARIO_NAME.rst
-		echo "   LIVETESTS_SCENARIOS_$SCENARIO_NAME" >> $DOCS_DIR/LIVETESTS_SCENARIOS.rst
+		echo "   LIVETESTS_SCENARIOS_$SCENARIO_NAME" >> $DST_FILE
 	fi
 done
 
@@ -115,28 +116,29 @@ cd $ROOT
 # ----------------------------------------------------
 
 echo "Building examples"
-rm $DOCS_DIR/EXAMPLES.rst
+DST_FILE="$DOCS_DIR/EXAMPLES.rst"
+rm $DST_FILE
 
-echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > $DOCS_DIR/EXAMPLES.rst
-echo "" >> $DOCS_DIR/EXAMPLES.rst
-echo "Examples of configurations" >> $DOCS_DIR/EXAMPLES.rst
-echo "==========================" >> $DOCS_DIR/EXAMPLES.rst
+echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > $DST_FILE
+echo "" >> $DST_FILE
+echo "Examples of configurations" >> $DST_FILE
+echo "==========================" >> $DST_FILE
 
 cd examples
 for d in default rich bird_hooks clients-from-euroix; do
 	EXAMPLE_NAME="$d"
 	if [ -e "$EXAMPLE_NAME/README.rst" ]; then
-		echo "" >> $DOCS_DIR/EXAMPLES.rst
-		cat $d/README.rst >> $DOCS_DIR/EXAMPLES.rst
-		echo "" >> $DOCS_DIR/EXAMPLES.rst
-		echo "https://github.com/pierky/arouteserver/blob/master/examples/$EXAMPLE_NAME" >> $DOCS_DIR/EXAMPLES.rst
+		echo "" >> $DST_FILE
+		cat $d/README.rst >> $DST_FILE
+		echo "" >> $DST_FILE
+		echo "https://github.com/pierky/arouteserver/blob/master/examples/$EXAMPLE_NAME" >> $DST_FILE
 
 		set +e
 		ls $d/*.html &>/dev/null
 		if [ $? -eq 0 ]; then
 			set -e
-			echo "" >> $DOCS_DIR/EXAMPLES.rst
-			echo "See the \`textual representation of this configuration <_static/examples_$EXAMPLE_NAME.html>\`_." >> $DOCS_DIR/EXAMPLES.rst
+			echo "" >> $DST_FILE
+			echo "See the \`textual representation of this configuration <_static/examples_$EXAMPLE_NAME.html>\`_." >> $DST_FILE
 		fi
 		set -e
 	fi
@@ -146,15 +148,41 @@ cd $ROOT
 
 # ----------------------------------------------------
 
-echo "Building README.rst"
+echo "Building tools"
+DST_FILE="$DOCS_DIR/TOOLS.rst"
+rm $DST_FILE
 
-echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > README.rst
-echo "" >> README.rst
-cat $DOCS_DIR/README_header.txt >> README.rst
-cat $DOCS_DIR/FEATURES.rst >> README.rst
-cat $DOCS_DIR/README_fulldocs.txt >> README.rst
-cat $DOCS_DIR/STATUS.txt >> README.rst
-cat $DOCS_DIR/README_footer.txt >> README.rst
+echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > $DST_FILE
+echo "" >> $DST_FILE
+echo "Tools" >> $DST_FILE
+echo "=====" >> $DST_FILE
+
+echo ".. include:: TOOLS_invalid_routes_reporter.rst" >> $DST_FILE
+
+cp tools/invalid_routes_reporter/diagram.png docs/_static/invalid_routes_reporter.png
+cp tools/invalid_routes_reporter/integration.png docs/_static/invalid_routes_reporter_integration.png
+
+# README.rst
+DST_FILE="tools/invalid_routes_reporter/README.rst"
+echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > $DST_FILE
+cat docs/TOOLS_invalid_routes_reporter-README.txt >> $DST_FILE
+echo "" >> $DST_FILE
+echo ".. image:: diagram.png" >> $DST_FILE
+echo "" >> $DST_FILE
+echo "For more information: https://arouteserver.readthedocs.io/en/latest/TOOLS.html" >> $DST_FILE
+
+# ----------------------------------------------------
+
+echo "Building README.rst"
+DST_FILE="README.rst"
+
+echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > $DST_FILE
+echo "" >> $DST_FILE
+cat $DOCS_DIR/README_header.txt >> $DST_FILE
+cat $DOCS_DIR/FEATURES.rst >> $DST_FILE
+cat $DOCS_DIR/README_fulldocs.txt >> $DST_FILE
+cat $DOCS_DIR/STATUS.txt >> $DST_FILE
+cat $DOCS_DIR/README_footer.txt >> $DST_FILE
 
 # ----------------------------------------------------
 

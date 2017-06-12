@@ -39,15 +39,6 @@ bogons:
   - prefix: "100.64.0.0"
     length: 10
     comment: "RFC 6598 - Shared Address Space"
-  - prefix: "193.239.116.0"
-    length: 22
-    comment: "IXP: NL-IX Public Peering LAN"
-  - prefix: "80.249.208.0"
-    length: 21
-    comment: "IXP: AMS-IX Public Peering LAN"
-  - prefix: "164.138.24.80"
-    length: 29
-    comment: "Tilaa OOB"
   - prefix: "::"
     length: 0
     comment: "Default route"

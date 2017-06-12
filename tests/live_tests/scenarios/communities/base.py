@@ -16,7 +16,8 @@
 import unittest
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
-from pierky.arouteserver.tests.live_tests.base import LiveScenario
+from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
+                                                      LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
                                                           OpenBGPD60Instance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
@@ -230,7 +231,8 @@ class BGPCommunitiesScenarioBIRD(BGPCommunitiesScenario):
             ]
         )
 
-class BGPCommunitiesScenarioOpenBGPD(BGPCommunitiesScenario):
+class BGPCommunitiesScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
+                                     BGPCommunitiesScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder

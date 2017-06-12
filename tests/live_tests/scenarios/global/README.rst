@@ -140,7 +140,7 @@ Built to group as many tests as possible in a single scenario.
   ====================  ==============   ========== ==================================================================================
   Prefix ID             Prefix           AS_PATH    Expected result
   ====================  ==============   ========== ==================================================================================
-  AS101_good1           101.0.1.0/24                fail next_hop_is_valid_for_AS1_2 (for the prefix announce by AS101 to AS1_2)
+  AS101_good1           101.0.1.0/24                fail next_hop_is_valid_for_AS1_2 (for the prefix announced by AS101 to AS1_2)
   AS101_no_rset         101.1.0.0/24                fail prefix_is_in_AS1_1_r_set and prefix_is_in_AS2_1_r_set
   AS102_no_asset        102.0.1.0/24     [101 102]  fail origin_as_in_AS1_1_as_set and origin_as_in_AS2_1_as_set
 
