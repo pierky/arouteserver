@@ -10,6 +10,8 @@ next release
 
 - New tool: invalid routes reporter.
 
+- Fix: the following networks have been removed from the bogons.yml file: 193.239.116.0/22, 80.249.208.0/21, 164.138.24.80/29.
+
 v0.7.0
 ------
 
