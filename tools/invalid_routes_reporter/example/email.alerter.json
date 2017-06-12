@@ -1,0 +1,35 @@
+{
+  "type": "email",
+
+  "host": "smtp_server_address",
+  "from_addr": "noc@acme-ix.net",
+  "template_file": "/etc/exabgp/template",
+
+  "recipients": {
+    "*": {
+      "info": {
+        "email": ["noc@rs.net"]
+      }
+    },
+    "AS1": {
+      "info": {
+        "email": ["noc@as1.net"]
+      }
+    },
+    "AS2": {
+      "info": {
+        "email": ["noc@as2.net"]
+      }
+    },
+    "AS3": {
+      "info": {
+        "email": ["noc@as3.net"]
+      }
+    },
+    "AS23" : {
+      "info": {
+        "email": ["noc@as23net"]
+      }
+    }
+  }
+}
