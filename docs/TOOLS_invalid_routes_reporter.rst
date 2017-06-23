@@ -1,5 +1,6 @@
-.. include:: TOOLS_invalid_routes_reporter-README.txt
+Invalid routes reporter
+-----------------------
 
-.. image:: _static/invalid_routes_reporter.png
+This script is intended to be used as an `ExaBGP <https://github.com/Exa-Networks/exabgp>`_ process to elaborate and report/log invalid routes received by route servers that have been previously configured using the `"tag" reject policy option <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#reject-policy>`_ of ARouteServer.
 
-.. include:: TOOLS_invalid_routes_reporter-FULL.txt
+For more information: https://invalidroutesreporter.readthedocs.io

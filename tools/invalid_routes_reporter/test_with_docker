@@ -1,8 +1,0 @@
-docker run \
-	--rm -it \
-	--network=arouteserver --ip=192.0.2.99 \
-	--name=ars_rc \
-	-v `pwd`/example:/etc/exabgp \
-	-v `pwd`/invalid_routes_reporter.py:/etc/exabgp/invalid_routes_reporter.py \
-	pierky/exabgp:3.4.19 \
-	env exabgp.log.destination=stdout exabgp.log.routes=false exabgp.daemon.user=root exabgp /etc/exabgp/exabgp.conf

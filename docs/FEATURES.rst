@@ -85,9 +85,9 @@ Features
   - `integration <https://arouteserver.readthedocs.io/en/latest/USAGE.html#ixp-manager-integration>`_ with **IXP-Manager**;
   - `fetch lists <https://arouteserver.readthedocs.io/en/latest/USAGE.html#automatic-clients>`_ from **PeeringDB** records and **Euro-IX member list JSON** files.
 
-- Built-in tools:
+- Related tools:
 
-  - `Invalid routes reporter <https://arouteserver.readthedocs.io/en/latest/TOOLS.html>`_, to log or report rejected routes and the reject reason.
+  - `Invalid routes reporter <https://arouteserver.readthedocs.io/en/latest/TOOLS.html#invalid-routes-reporter>`_, to log or report invalid routes and their reject reason.
 
 A comprehensive list of features can be found within the comments of the distributed configuration file on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`_.
 

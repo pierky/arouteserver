@@ -148,31 +148,6 @@ cd $ROOT
 
 # ----------------------------------------------------
 
-echo "Building tools"
-DST_FILE="$DOCS_DIR/TOOLS.rst"
-rm $DST_FILE
-
-echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > $DST_FILE
-echo "" >> $DST_FILE
-echo "Tools" >> $DST_FILE
-echo "=====" >> $DST_FILE
-
-echo ".. include:: TOOLS_invalid_routes_reporter.rst" >> $DST_FILE
-
-cp tools/invalid_routes_reporter/diagram.png docs/_static/invalid_routes_reporter.png
-cp tools/invalid_routes_reporter/integration.png docs/_static/invalid_routes_reporter_integration.png
-
-# README.rst
-DST_FILE="tools/invalid_routes_reporter/README.rst"
-echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > $DST_FILE
-cat docs/TOOLS_invalid_routes_reporter-README.txt >> $DST_FILE
-echo "" >> $DST_FILE
-echo ".. image:: diagram.png" >> $DST_FILE
-echo "" >> $DST_FILE
-echo "For more information: https://arouteserver.readthedocs.io/en/latest/TOOLS.html" >> $DST_FILE
-
-# ----------------------------------------------------
-
 echo "Building README.rst"
 DST_FILE="README.rst"
 
