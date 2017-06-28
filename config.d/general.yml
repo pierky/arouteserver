@@ -566,13 +566,28 @@ cfg:
       #ext:
 
     # This BGP community is used when the 'reject_policy' option is
-    # set to 'tag'.
+    # set to 'tag'. It is used to track the code of the reason that
+    # led the route to be considered as invalid.
     #
-    # The following communities are scrubbed from inbound routes.
+    # The following community is scrubbed from inbound routes.
     #
     # The 'rs_as' macro can be used here.
     # The 'dyn_val' macro must appear in the last part of values.
     reject_cause:
+      #std:
+      #lrg:
+      #ext:
+
+    # This BGP community is used when the 'reject_policy' option is
+    # set to 'tag'. If configured, it is used to track the ASN
+    # of the peer that announced the invalid route to the route
+    # server.
+    #
+    # The following community is scrubbed from inbound routes.
+    #
+    # The 'rs_as' macro can be used here.
+    # The 'dyn_val' macro must appear in the last part of values.
+    rejected_route_announced_by:
       #std:
       #lrg:
       #ext:

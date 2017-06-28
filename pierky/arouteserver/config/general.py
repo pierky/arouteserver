@@ -58,6 +58,7 @@ class ConfigParserGeneral(ConfigParserBase):
         "add_noadvertise_to_peer": { "type": "inbound", "peer_as": True },
 
         "reject_cause": { "type": "internal", "dyn_val": True },
+        "rejected_route_announced_by": { "type": "internal", "dyn_val": True },
     }
 
     @staticmethod
@@ -279,18 +280,32 @@ class ConfigParserGeneral(ConfigParserBase):
                         else:
                             unique_communities.append(comm[fmt])
 
-        # The 'reject_cause' community can be set only if 'reject_policy'
-        # is 'tag'.
+        # The 'reject_cause' and 'rejected_route_announced_by' communities
+        # can be set only if 'reject_policy' is 'tag'.
         if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] != "tag":
-            reject_cause_is_set = False
+            for comm in ("reject_cause", "rejected_route_announced_by"):
+                reject_comm_is_set = False
+                for fmt in ("std", "ext", "lrg"):
+                    if self.cfg["cfg"]["communities"][comm][fmt]:
+                        reject_comm_is_set = True
+                        break
+                if reject_comm_is_set:
+                    errors = True
+                    logging.error(
+                        "The '{}' community can be set only if "
+                        "'reject_policy.policy' is 'tag'.".format(comm))
+
+        # The 'reject_cause' comm is mandatory when 'reject_policy' is 'tag'.
+        if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] == "tag":
+            reject_comm_is_set = False
             for fmt in ("std", "ext", "lrg"):
                 if self.cfg["cfg"]["communities"]["reject_cause"][fmt]:
-                    reject_cause_is_set = True
+                    reject_comm_is_set = True
                     break
-            if reject_cause_is_set:
+            if not reject_comm_is_set:
                 errors = True
                 logging.error(
-                    "The 'reject_cause' community can be set only if "
+                    "The 'reject_cause' community must be configured when "
                     "'reject_policy.policy' is 'tag'.")
 
         # Overlapping communities?
