@@ -59,7 +59,7 @@ class ConfigBuilder(object):
 
         Returns:
             True if there are no compatibility issues;
-            False if there are compatibility issues that can be acknowledge
+            False if there are compatibility issues that can be acknowledged
             via command line argument.
         Raises exception in case of blocking errors.
         """
@@ -638,68 +638,24 @@ class BIRDConfigBuilder(ConfigBuilder):
         env.filters["hook_is_set"] = hook_is_set
 
 class GoBGPConfigBuilder(ConfigBuilder):
-    """BIRD configuration builder.
+    """GoBGP configuration builder.
+
+    This implementation of a configuration builder does not use jinja2 templates
+    as the GoBGP configuration file is pure YAML/TOML.
 
     The ``kwargs`` parameter of the ``__init__`` method can be used
     to pass the following additional arguments.
 
-    Args:
-
-        hooks (list): list of hook IDs for which to enable hooks in
-            the output configuration. Details: https://arouteserver.readthedocs.io/en/latest/CONFIG.html#bird-hooks
+    None.
     """
 
-    LOCAL_FILES_IDS = ["header", "header4", "header6",
-                       "footer", "footer4", "footer6",
-                       "client", "client4", "client6"]
-    LOCAL_FILES_BASE_DIR = "/etc/bird"
-
-    HOOKS = ["pre_receive_from_client", "post_receive_from_client",
-             "pre_announce_to_client", "post_announce_to_client",
-             "route_can_be_announced_to", "announce_rpki_invalid_to_client",
-             "scrub_communities_in", "scrub_communities_out",
-             "apply_blackhole_filtering_policy"]
-
-    AVAILABLE_VERSION = ["1.6.3"]
-    DEFAULT_VERSION = "1.6.3"
+    AVAILABLE_VERSION = ["v1.21"]
+    DEFAULT_VERSION = "v1.21"
 
     def validate_bgpspeaker_specific_configuration(self):
-        if self.ip_ver is None:
-            raise BuilderError(
-                "An explicit target IP version is needed "
-                "to build BIRD configuration. Use the "
-                "--ip-ver command line argument to supply one."
-            )
-
-        hooks = self.kwargs.get("hooks", [])
-        if hooks:
-            if not isinstance(hooks, list):
-                raise BuilderError(
-                    "hooks must be a list of hook names"
-                )
-
+        # TODO
         return True
 
-    def _include_local_file(self, local_file_id):
-        return 'include "{}";\n\n'.format(
-            os.path.join(
-                self.local_files_dir or self.LOCAL_FILES_BASE_DIR,
-                "{}.local".format(local_file_id)
-            )
-        )
-
-    def enrich_j2_environment(self, env):
-
-        def hook_is_set(hook_name):
-            if hook_name not in self.HOOKS:
-                raise AssertionError(
-                    "Hook '{}' is referenced in J2 "
-                    "templates but is not in HOOKS.".format(hook_name)
-                )
-            hooks = self.kwargs.get("hooks", []) or []
-            return hook_name in hooks
-
-        env.filters["hook_is_set"] = hook_is_set
 
 class OpenBGPDConfigBuilder(ConfigBuilder):
     """OpenBGPD configuration builder.
