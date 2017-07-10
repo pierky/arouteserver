@@ -38,11 +38,11 @@ How it works
               - "AS-AS111MAIN"
         ...
 
-#. ARouteServer acquires external information to enrich them: `bgpq3`_ for IRRDb data, `PeeringDB`_ for max-prefix limit, ...
+#. ARouteServer acquires external information to enrich them: i.e. `bgpq3`_ for IRRDb data, `PeeringDB`_ for max-prefix limit, ...
 
 #. `Jinja2`_ built-in templates are used to render the final route server's configuration file.
 
-   Currently, **BIRD** (1.6.3) and **OpenBGPD** (OpenBSD 6.0 and 6.1) are supported.
+   Currently, **BIRD** (1.6.3), **GoBGP** (v1.21 and master) and **OpenBGPD** (OpenBSD 6.0 and 6.1) are supported.
 
 **Validation** and testing are performed using the built-in **live tests** framework: `Docker`_ instances are used to simulate several scenarios, and more custom scenarios can be built on the basis of the user's needs. More details on the `Live tests <https://arouteserver.readthedocs.io/en/latest/LIVETESTS.html>`_ section.
 
