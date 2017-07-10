@@ -5,6 +5,7 @@ Short term
 ----------
 
 - Packaging: a command to upgrade the program
+- New feature: CLI option to build configs based on templates/groups only and avoid client specific settings
 
 Mid term
 --------
