@@ -649,6 +649,9 @@ class GoBGPConfigBuilder(ConfigBuilder):
     None.
     """
 
+    LOCAL_FILES_IDS = []
+    LOCAL_FILES_BASE_DIR = None
+    HOOKS = []
     AVAILABLE_VERSION = ["v1.21"]
     DEFAULT_VERSION = "v1.21"
 
@@ -656,6 +659,64 @@ class GoBGPConfigBuilder(ConfigBuilder):
         # TODO
         return True
 
+    def render_template(self, output_file=None):
+        self.data = {}
+        self.data["global"] = {}
+        self.data["global"]["config"] = {}
+        self.data["global"]["config"]["as"] = self.cfg_general["rs_as"]
+        self.data["global"]["config"]["router-id"] = self.cfg_general["router_id"]
+
+        self.data["neighbors"] = []
+        for client in self.cfg_clients.cfg["clients"]:
+            neighbor = {}
+            neighbor["config"] = {}
+            neighbor["config"]["neighbor-address"] = client["ip"]
+            neighbor["config"]["peer-as"] = client["asn"]
+            neighbor["config"]["description"] = client["description"]
+            neighbor["config"]["auth-password"] = client["password"]
+            neighbor["config"]["admin-down"] = False
+            neighbor["timers"] = {}
+            neighbor["timers"]["config"] = {}
+            neighbor["timers"]["config"]["hold-time"] = 90
+            neighbor["timers"]["config"]["keepalive-interval"] = 30
+            neighbor["transport"] = {}
+            neighbor["transport"]["config"] = {}
+            neighbor["transport"]["config"]["passive-mode"] = client["cfg"]["passive"]
+            neighbor["route-server"] = {}
+            neighbor["route-server"]["config"] = {}
+            neighbor["route-server"]["config"]["route-server-client"] = True
+
+            ip_version = ipaddr.IPAddress(client["ip"]).version
+            afisafiname = "ipv{0}-unicast".format(ip_version)
+
+            neighbor["afi-safis"] = []
+            afisafi = {}
+            afisafi["config"] = {}
+            afisafi["config"]["afi-safi-name"] = afisafiname
+            limit_ipvx = "limit_ipv{0}".format(ip_version)
+            prefix_limit = client["cfg"]["filtering"]["max_prefix"][limit_ipvx]
+            if prefix_limit:
+                afisafi["prefix-limit"] = {}
+                afisafi["prefix-limit"]["config"] = {}
+                afisafi["prefix-limit"]["config"]["max-prefixes"] = prefix_limit
+            neighbor["afi-safis"].append(afisafi)
+
+            neighbor["apply-policy"] = {}
+            neighbor["apply-policy"]["config"] = {}
+            neighbor["apply-policy"]["config"] = {}
+            neighbor["apply-policy"]["config"]["in-policy-list"] = []
+            neighbor["apply-policy"]["config"]["default-in-policy"] = "accept-route"
+            neighbor["apply-policy"]["config"]["import-policy-list"] = []
+            neighbor["apply-policy"]["config"]["default-import-policy"] = "accept-route"
+            neighbor["apply-policy"]["config"]["export-policy-list"] = []
+            neighbor["apply-policy"]["config"]["default-export-policy"] = "accept-route"
+
+            self.data["neighbors"].append(neighbor)
+
+        if output_file:
+            output_file.write(yaml.dump(self.data, default_flow_style=False))
+        else:
+            print(yaml.dump(self.data, default_flow_style=False))
 
 class OpenBGPDConfigBuilder(ConfigBuilder):
     """OpenBGPD configuration builder.
