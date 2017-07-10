@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from tpl_rendering import HTMLCommand, DumpTemplateContextCommand, \
-                          BIRDCommand, OpenBGPDCommand, BuildCommand
+                          BIRDCommand, OpenBGPDCommand, GoBGPCommand, BuildCommand
 from clients_from_peeringdb import ClientsFromPeeringDBCommand
 from clients_from_euroix import ClientsFromEuroIXCommand
 from setup import SetupCommand
@@ -26,6 +26,7 @@ all_commands = [
     BuildCommand,
     BIRDCommand,
     OpenBGPDCommand,
+    GoBGPCommand,
     HTMLCommand,
     DumpTemplateContextCommand,
     ClientsFromPeeringDBCommand,

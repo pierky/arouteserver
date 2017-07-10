@@ -20,7 +20,8 @@ import sys
 
 from .base import ARouteServerCommand
 from ..builder import ConfigBuilder, BIRDConfigBuilder, \
-                      OpenBGPDConfigBuilder, TemplateContextDumper
+                      OpenBGPDConfigBuilder, GoBGPConfigBuilder, \
+                      TemplateContextDumper
 from ..config.program import program_config
 from ..errors import ARouteServerError, TemplateRenderingError
 
@@ -144,7 +145,7 @@ class TemplateRenderingCommands(ARouteServerCommand):
         self._set_cfg_builder_params()
 
         builder_class = self.BUILDER_CLASS
-        
+
         template_sub_dir = self._get_template_sub_dir()
         if template_sub_dir:
             self.cfg_builder_params["template_dir"] = os.path.join(
@@ -274,6 +275,39 @@ class BIRDCommand(ConfigRenderingCommand):
 
     def _set_cfg_builder_params(self):
         super(BIRDCommand, self)._set_cfg_builder_params()
+
+        self.cfg_builder_params["hooks"] = self.args.hooks
+
+class GoBGPCommand(ConfigRenderingCommand):
+
+    COMMAND_NAME = "gobgp"
+    COMMAND_HELP = "Build route server configuration for GoBGP."
+
+    BUILDER_CLASS = GoBGPConfigBuilder
+
+    def _get_template_sub_dir(self):
+        return "gobgp"
+
+    @classmethod
+    def add_arguments(cls, parser):
+        super(GoBGPCommand, cls).add_arguments(parser)
+
+        cls.customization_group.add_argument(
+            "--use-hooks",
+            help="Enable the use of function hooks to add custom "
+                 "functionalities. Hooks must be implemented in .local "
+                 "files, accordingly to specifications documented at the "
+                 "URL shown above."
+                 "The list of available hooks follows: {}".format(
+                     ", ".join(cls.BUILDER_CLASS.HOOKS)
+                 ),
+            nargs="*",
+            choices=cls.BUILDER_CLASS.HOOKS,
+            metavar="HOOK_NAME",
+            dest="hooks")
+
+    def _set_cfg_builder_params(self):
+        super(GoBGPCommand, self)._set_cfg_builder_params()
 
         self.cfg_builder_params["hooks"] = self.args.hooks
 
