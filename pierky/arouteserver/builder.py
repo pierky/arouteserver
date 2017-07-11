@@ -660,11 +660,66 @@ class GoBGPConfigBuilder(ConfigBuilder):
         return True
 
     def render_template(self, output_file=None):
+
+        def ip_version(ip):
+            return ipaddr.IPAddress(ip).version
+
         self.data = {}
         self.data["global"] = {}
         self.data["global"]["config"] = {}
         self.data["global"]["config"]["as"] = self.cfg_general["rs_as"]
         self.data["global"]["config"]["router-id"] = self.cfg_general["router_id"]
+
+        self.data["defined-sets"] = {
+            "prefix-sets": [],
+            "bgp-defined-sets": {
+                "community-sets": [],
+                "as-path-sets": [],
+            },
+        }
+        self.data["policy-definitions"] = []
+
+        # bogons
+        bogon_prefix_set = {}
+        for ip_ver in ["4", "6"]:
+            bogon_prefix_set[ip_ver] = {
+                "prefix-set-name": "BOGON-V{0}".format(ip_ver),
+                "prefixes": [],
+            }
+        for b in self.cfg_bogons.cfg["bogons"]:
+            ip_ver = str(ip_version(b["prefix"]))
+            bogon_prefix_set[ip_ver]["prefixes"].append({
+                "ip-prefix": str(b["prefix"]),
+                "mask-length-range": "{0}..{1}".format(b["length"], b["max_length"]),
+            })
+        for ip_ver in ["4", "6"]:
+            self.data["defined-sets"]["prefix-sets"].append(bogon_prefix_set[ip_ver])
+
+        for as_set, as_set_data in self.as_sets.iteritems():
+            # generate prefix-sets
+            prefix_set = {}
+            for ip_ver in ["4", "6"]:
+                prefix_set[ip_ver] = {
+                    "prefix-set-name": "{0}-PREFIX-V{1}".format(as_set_data["id"], ip_ver),
+                    "prefixes": [],
+                }
+            for p in as_set_data["prefixes"]:
+                ip_ver = str(ip_version(p["prefix"]))
+                prefix_set[ip_ver]["prefixes"].append({
+                    "ip-prefix": str(p["prefix"]),
+                    "mask-length-range": "{0}..{1}".format(p["length"], p["max_length"]),
+                })
+            for ip_ver in ["4", "6"]:
+                self.data["defined-sets"]["prefix-sets"].append(prefix_set[ip_ver])
+
+            # generate as-path-sets
+            as_path_set = {
+                "as-path-set-name": "{0}-PATH".format(as_set_data["id"]),
+                "as-path-list": [],
+            }
+            for a in as_set_data["asns"]:
+                as_path_set["as-path-list"].append("_{0}$".format(a))
+            self.data["defined-sets"]["bgp-defined-sets"]["as-path-sets"].append(as_path_set)
 
         self.data["neighbors"] = []
         for client in self.cfg_clients.cfg["clients"]:
@@ -686,14 +741,14 @@ class GoBGPConfigBuilder(ConfigBuilder):
             neighbor["route-server"]["config"] = {}
             neighbor["route-server"]["config"]["route-server-client"] = True
 
-            ip_version = ipaddr.IPAddress(client["ip"]).version
-            afisafiname = "ipv{0}-unicast".format(ip_version)
+            ip_ver = ip_version(client["ip"])
+            afisafiname = "ipv{0}-unicast".format(ip_ver)
 
             neighbor["afi-safis"] = []
             afisafi = {}
             afisafi["config"] = {}
             afisafi["config"]["afi-safi-name"] = afisafiname
-            limit_ipvx = "limit_ipv{0}".format(ip_version)
+            limit_ipvx = "limit_ipv{0}".format(ip_ver)
             prefix_limit = client["cfg"]["filtering"]["max_prefix"][limit_ipvx]
             if prefix_limit:
                 afisafi["prefix-limit"] = {}
@@ -704,12 +759,41 @@ class GoBGPConfigBuilder(ConfigBuilder):
             neighbor["apply-policy"] = {}
             neighbor["apply-policy"]["config"] = {}
             neighbor["apply-policy"]["config"] = {}
-            neighbor["apply-policy"]["config"]["in-policy-list"] = []
-            neighbor["apply-policy"]["config"]["default-in-policy"] = "accept-route"
+            neighbor["apply-policy"]["config"]["in-policy-list"] = ["AS{0}-IN-V{1}".format(client["asn"], ip_ver)]
+            neighbor["apply-policy"]["config"]["default-in-policy"] = "reject-route"
             neighbor["apply-policy"]["config"]["import-policy-list"] = []
             neighbor["apply-policy"]["config"]["default-import-policy"] = "accept-route"
             neighbor["apply-policy"]["config"]["export-policy-list"] = []
             neighbor["apply-policy"]["config"]["default-export-policy"] = "accept-route"
+
+            # generate policy-definitions
+            in_policy_definition = {
+                "name": "AS{0}-IN-V{1}".format(client["asn"], ip_ver),
+                "statements": [
+                    {
+                        "conditions": {"match-prefix-set": {
+                            "prefix-set": "BOGON-V{0}".format(ip_ver)
+                        }},
+                        "actions": {"route-disposition": "reject-route"},
+                    }
+                ]
+            }
+            for as_set_id in client["cfg"]["filtering"]["irrdb"]["as_set_ids"]:
+                in_policy_definition["statements"].append({
+                    "conditions": {"bgp-conditions": {"match-as-path-set": {
+                        "as-path-set": "{0}-PATH".format(as_set_id),
+                        "match-set-options": "invert",
+                    }}},
+                    "actions": {"route-disposition": "reject-route"},
+                })
+            for as_set_id in client["cfg"]["filtering"]["irrdb"]["as_set_ids"]:
+                in_policy_definition["statements"].append({
+                    "conditions": {"match-prefix-set": {
+                        "prefix-set": "{0}-PREFIX-V{1}".format(as_set_id, ip_ver),
+                    }},
+                    "actions": {"route-disposition": "accept-route"},
+                })
+            self.data["policy-definitions"].append(in_policy_definition)
 
             self.data["neighbors"].append(neighbor)
 
