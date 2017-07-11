@@ -306,7 +306,7 @@ function add_noexport_noadvertise(int peer_as) {
 }
 
 {% if cfg.communities.reject_cause|community_is_set %}
-function tag_and_reject(int cause)
+function tag_and_reject(int cause; int announcing_asn)
 int dyn_val;
 {
 	# 0: the route must be treated as discarded
@@ -316,6 +316,12 @@ int dyn_val;
 	# cause: the real cause
 	dyn_val = cause;
 	{{ add_communities(cfg.communities.reject_cause) }}
+
+{%	if cfg.communities.rejected_route_announced_by|community_is_set %}
+	# announcing_asn: the ASN of the peer that announced the route
+	dyn_val = announcing_asn;
+	{{ add_communities(cfg.communities.rejected_route_announced_by) }}
+{%	endif %}
 
 	bgp_local_pref = 1;
 }

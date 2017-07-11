@@ -98,6 +98,16 @@ transit_free_asns="{ {{ cfg.filtering.transit_free.asns|join(", ") }} }"
 {%	endif %}
 {% endfor %}
 
+{% if cfg.communities.rejected_route_announced_by|community_is_set %}
+# Set the 'rejected_route_announced_by' community for all the clients.
+# It will be removed later if the route is not invalid
+{%	for client in clients if client.ip is current_ipver %}
+{%		if client.cfg.filtering.reject_policy.policy == "tag" %}
+{{			add_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, dyn_val=client.asn) }}
+{%		endif %}
+{%	endfor %}
+{% endif %}
+
 # AS_PATH: length
 {{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients max-as-len " ~ cfg.filtering.max_as_path_len, 1) }}
 
@@ -203,8 +213,10 @@ match from {{ client.ip }} nexthop {{ same_as_client.ip }} set community delete 
 # Blackhole request?
 {% if ( client.ip|ipaddr_ver == 4 and cfg.blackhole_filtering.policy_ipv4 ) or
       ( client.ip|ipaddr_ver == 6 and cfg.blackhole_filtering.policy_ipv6 ) %}
+{{ del_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, replace_dyn_val=client.asn) }}
 allow quick from {{ client.ip }} community BLACKHOLE
 {{ match_communities("allow quick from " ~ client.ip, cfg.communities.blackholing, "") }}
+{{ add_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, dyn_val=client.asn) }}
 {% endif %}
 
 # Prefix: length
@@ -218,6 +230,7 @@ allow quick from {{ client.ip }} community BLACKHOLE
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " prefix ::/0 prefixlen " ~ min_pref_len ~ " >< " ~ max_pref_len, 13) }}
 {% endif %}
 
+{{ del_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, replace_dyn_val=client.asn) }}
 allow quick from {{ client.ip }}
 
 # ---------------------------------------------

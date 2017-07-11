@@ -3,6 +3,13 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`_ section of the documentation.
 
+next release
+------------
+
+- Improvement: in conjunction with the "tag" reject policy, the ``rejected_route_announced_by`` BGP community can be used to track the ASN of the client that announced an invalid route to the server.
+
+- Fix: when the "tag" reject policy is used, verify that the ``reject_cause`` BGP community is also set.
+
 v0.8.0
 ------
 

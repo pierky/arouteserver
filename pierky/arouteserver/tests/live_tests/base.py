@@ -108,6 +108,9 @@ class LiveScenario(ARouteServerTestCase):
       If this attribute is not None, routes that have LOCAL_PREF == 1
       and the ``reject_cause`` BGP community with ``dyn_val == 0``
       are considered as filtered.
+      The ``REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY`` attribute can also
+      be set to match the community used to track the announcing ASN of
+      invalid routes.
 
     - implement the ``set_instance_variables`` method, used to set
       local instance attributes for the instances used within the
@@ -142,6 +145,7 @@ class LiveScenario(ARouteServerTestCase):
 
     # regex: for example ^65520:(\d+)$
     REJECT_CAUSE_COMMUNITY = None
+    REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY = None
 
     @classmethod
     def _get_module_dir(cls):
@@ -399,8 +403,14 @@ class LiveScenario(ARouteServerTestCase):
     def process_reject_cause_routes(self, routes):
         if self.REJECT_CAUSE_COMMUNITY is not None:
             re_pattern = re.compile(self.REJECT_CAUSE_COMMUNITY)
+            rejected_route_announced_by_pattern = None
+            if self.REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY:
+                rejected_route_announced_by_pattern = \
+                    re.compile(self.REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY)
+
             for route in routes:
-                route.process_reject_cause(re_pattern)
+                route.process_reject_cause(re_pattern,
+                                           rejected_route_announced_by_pattern)
 
     def receive_route(self, inst, prefix, other_inst=None, as_path=None,
                       next_hop=None, std_comms=None, lrg_comms=None,
@@ -745,8 +755,9 @@ class LiveScenario_TagRejectPolicy(object):
     """Helper class to run a scenario as if reject_policy is set to 'tag'.
 
     When a scenario inherits this class, its route server is configured as
-    if the ``reject_policy.policy`` is ``tag`` and the ``65520:dyn_val``
-    value is used for the ``reject_cause`` BGP community.
+    if the ``reject_policy.policy`` is ``tag``, the ``65520:dyn_val``
+    value is used for the ``reject_cause`` BGP community and the
+    ``rt:65520:dyn_val`` value for the ``rejected_route_announced_by`` one.
 
     The ``general.yml`` file, or the file given in the ``orig_file`` argument
     of ``_get_cfg_general`` method, is cloned and reconfigured with the
@@ -766,6 +777,7 @@ class LiveScenario_TagRejectPolicy(object):
     """
 
     REJECT_CAUSE_COMMUNITY = "^65520:(\d+)$"
+    REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY = "^rt:65520:(\d+)$"
 
     @classmethod
     def _get_cfg_general(cls, orig_file="general.yml"):
@@ -780,6 +792,7 @@ class LiveScenario_TagRejectPolicy(object):
         if "communities" not in cfg["cfg"]:
             cfg["cfg"]["communities"] = {}
         cfg["cfg"]["communities"]["reject_cause"] = {"std": "65520:dyn_val"}
+        cfg["cfg"]["communities"]["rejected_route_announced_by"] = {"ext": "rt:65520:dyn_val"}
 
         with open(dest_path, "w") as f:
             yaml.safe_dump(cfg, f, default_flow_style=False)

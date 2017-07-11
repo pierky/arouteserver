@@ -233,7 +233,7 @@ class Route(object):
         self.ext_comms = self._parse_ext_bgp_communities(kwargs.get("ext_comms", None))
         self.reject_reasons = []
 
-    def process_reject_cause(self, re_pattern):
+    def process_reject_cause(self, re_pattern, announced_by_pattern):
         # If a route is marked to be rejected using the 'reject_cause'
         # community it must be also set with LOCAL_PREF == 0.
         if self.localpref != 1:
@@ -245,6 +245,7 @@ class Route(object):
         # Iterating over the original list (from which the 'reject_cause'
         # community will be removed) and its copy (to keep consistent the
         # set of values over which iterate).
+        # Looking for reject reason community.
         for orig_list, dup_list in [(self.std_comms, list(self.std_comms)),
                                     (self.lrg_comms, list(self.lrg_comms)),
                                     (self.ext_comms, list(self.ext_comms))]:
@@ -263,9 +264,20 @@ class Route(object):
 
                 orig_list.remove(comm)
 
-        if reject_cause_zero_found:
+        if reject_cause_zero_found and announced_by_pattern:
             self.reject_reasons = reasons
             self.filtered = True
+
+            # Looking for rejected_route_announce_by community.
+            for orig_list, dup_list in [(self.std_comms, list(self.std_comms)),
+                                        (self.lrg_comms, list(self.lrg_comms)),
+                                        (self.ext_comms, list(self.ext_comms))]:
+                for comm in dup_list:
+                    match = announced_by_pattern.match(comm)
+
+                    if match:
+                        orig_list.remove(comm)
+                        return
 
     def __str__(self):
         return str({

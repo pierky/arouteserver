@@ -238,7 +238,18 @@ class TestConfigParserGeneral(TestConfigParserBase):
     def test_reject_policy(self):
         """{}: reject_policy"""
         self.assertEqual(self.cfg["filtering"]["reject_policy"]["policy"], "reject")
-        self._test_option(self.cfg["filtering"]["reject_policy"], "policy", ("reject", "tag"))
+        self._contains_err()
+
+        self.cfg["communities"]["reject_cause"]["std"] = "65520:dyn_val"
+        self.cfg["filtering"]["reject_policy"]["policy"] = "tag"
+        self._contains_err()
+
+        del self.cfg["communities"]["reject_cause"]["std"]
+        self.cfg["filtering"]["reject_policy"]["policy"] = "tag"
+        self._contains_err("The 'reject_cause' community must be configured when 'reject_policy.policy' is 'tag'.")
+
+        self._test_option(self.cfg["filtering"]["reject_policy"], "policy", ())
+
         self._test_mandatory(self.cfg["filtering"]["reject_policy"], "policy", has_default=True)
 
     def test_blackhole_announce_to_client(self):
@@ -372,24 +383,33 @@ class TestConfigParserGeneral(TestConfigParserBase):
     def test_mandatory_dyn_val_communities(self):
         """{}: communities that need dyn_val macro"""
 
-        comm = "reject_cause"
-        for c in self.VALID_STD_COMMS:
-            self.cfg["communities"][comm]["std"] = c
-            self._contains_err("'dyn_val' macro is mandatory in this community")
-        self.cfg["communities"][comm]["std"] = None
-        for c in self.VALID_LRG_COMMS:
-            self.cfg["communities"][comm]["lrg"] = c
-            self._contains_err("'dyn_val' macro is mandatory in this community")
-        self.cfg["communities"][comm]["lrg"] = None
-        for c in self.VALID_EXT_COMMS:
-            self.cfg["communities"][comm]["ext"] = c
-            self._contains_err("'dyn_val' macro is mandatory in this community")
-        self.cfg["communities"][comm]["ext"] = None
+        for comm in ("reject_cause", "rejected_route_announced_by"):
+            for c in self.VALID_STD_COMMS:
+                self.cfg["communities"][comm]["std"] = c
+                self._contains_err("'dyn_val' macro is mandatory in this community")
+            self.cfg["communities"][comm]["std"] = None
+            for c in self.VALID_LRG_COMMS:
+                self.cfg["communities"][comm]["lrg"] = c
+                self._contains_err("'dyn_val' macro is mandatory in this community")
+            self.cfg["communities"][comm]["lrg"] = None
+            for c in self.VALID_EXT_COMMS:
+                self.cfg["communities"][comm]["ext"] = c
+                self._contains_err("'dyn_val' macro is mandatory in this community")
+            self.cfg["communities"][comm]["ext"] = None
 
     def test_reject_cause_community_with_no_reject_policy(self):
         """{}: reject_cause can be set only with 'tag' reject_policy"""
         self.cfg["communities"]["reject_cause"]["std"] = "0:dyn_val"
         self._contains_err("The 'reject_cause' community can be set only if 'reject_policy.policy' is 'tag'.")
+
+        self.cfg["filtering"]["reject_policy"]["policy"] = "tag"
+        self._contains_err()
+
+    def test_rejected_route_announced_by_with_no_reject_policy(self):
+        """{}: rejected_route_announced_by can be set only with 'tag' reject_policy"""
+        self.cfg["communities"]["reject_cause"]["std"] = "65520:dyn_val"
+        self.cfg["communities"]["rejected_route_announced_by"]["std"] = "0:dyn_val"
+        self._contains_err("The 'rejected_route_announced_by' community can be set only if 'reject_policy.policy' is 'tag'.")
 
         self.cfg["filtering"]["reject_policy"]["policy"] = "tag"
         self._contains_err()

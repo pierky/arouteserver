@@ -66,6 +66,7 @@ General config parser: prepend_rs_as ... ok
 General config parser: reject_cause can be set only with 'tag' reject_policy ... ok
 General config parser: reject_invalid_as_in_as_path ... ok
 General config parser: reject_policy ... ok
+General config parser: rejected_route_announced_by can be set only with 'tag' reject_policy ... ok
 General config parser: router_id ... ok
 General config parser: rpki, enabled ... ok
 General config parser: rpki, reject_invalid ... ok
@@ -998,6 +999,7 @@ Live test, BIRD, 'tag' reject policy scenario, IPv4: instances setup ... ok
 Live test, BIRD, 'tag' reject policy scenario, IPv4: sessions are up ... ok
 Live test, BIRD, 'tag' reject policy scenario, IPv4: AS_PATH too long ... ok
 Live test, BIRD, 'tag' reject policy scenario, IPv4: bogon prefix ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv4: bogon prefix, wrong announcing ASN ... ok
 Live test, BIRD, 'tag' reject policy scenario, IPv4: prefix in client's blacklist ... ok
 Live test, BIRD, 'tag' reject policy scenario, IPv4: invalid ASN in AS_PATH ... ok
 Live test, BIRD, 'tag' reject policy scenario, IPv4: invalid NEXT_HOP ... ok
@@ -1010,12 +1012,16 @@ Live test, BIRD, 'tag' reject policy scenario, IPv4: prefix not in as-macro ... 
 Live test, BIRD, 'tag' reject policy scenario, IPv4: RPKI INVALID route ... ok
 Live test, BIRD, 'tag' reject policy scenario, IPv4: transit-free ASN in AS_PATH ... ok
 Live test, BIRD, 'tag' reject policy scenario, IPv4: good routes not received ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS1_1 ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS1_2 ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS2 ... ok
 Live test, BIRD, 'tag' reject policy scenario, IPv4: stopping instances...
 Live test, BIRD, 'tag' reject policy scenario, IPv6: setting instances up...
 Live test, BIRD, 'tag' reject policy scenario, IPv6: instances setup ... ok
 Live test, BIRD, 'tag' reject policy scenario, IPv6: sessions are up ... ok
 Live test, BIRD, 'tag' reject policy scenario, IPv6: AS_PATH too long ... ok
 Live test, BIRD, 'tag' reject policy scenario, IPv6: bogon prefix ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv6: bogon prefix, wrong announcing ASN ... ok
 Live test, BIRD, 'tag' reject policy scenario, IPv6: prefix in client's blacklist ... ok
 Live test, BIRD, 'tag' reject policy scenario, IPv6: invalid ASN in AS_PATH ... ok
 Live test, BIRD, 'tag' reject policy scenario, IPv6: invalid NEXT_HOP ... ok
@@ -1028,12 +1034,16 @@ Live test, BIRD, 'tag' reject policy scenario, IPv6: prefix not in as-macro ... 
 Live test, BIRD, 'tag' reject policy scenario, IPv6: RPKI INVALID route ... ok
 Live test, BIRD, 'tag' reject policy scenario, IPv6: transit-free ASN in AS_PATH ... ok
 Live test, BIRD, 'tag' reject policy scenario, IPv6: good routes not received ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS1_1 ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS1_2 ... ok
+Live test, BIRD, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS2 ... ok
 Live test, BIRD, 'tag' reject policy scenario, IPv6: stopping instances...
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: setting instances up...
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: instances setup ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: sessions are up ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: AS_PATH too long ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: bogon prefix ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: bogon prefix, wrong announcing ASN ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: prefix in client's blacklist ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: invalid ASN in AS_PATH ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: invalid NEXT_HOP ... ok
@@ -1047,12 +1057,16 @@ Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: RPKI INVALID route 
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: transit-free ASN in AS_PATH ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: blackhole req. using (unsupported) large comms ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: good routes not received ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS1_1 ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS1_2 ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS2 ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: stopping instances...
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: setting instances up...
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: sessions are up ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: AS_PATH too long ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: bogon prefix ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: bogon prefix, wrong announcing ASN ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: prefix in client's blacklist ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: invalid ASN in AS_PATH ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: invalid NEXT_HOP ... ok
@@ -1066,9 +1080,12 @@ Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: RPKI INVALID route 
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: transit-free ASN in AS_PATH ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: blackhole req. using (unsupported) large comms ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: good routes not received ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS1_1 ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS1_2 ... ok
+Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS2 ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 949 tests in 4019.562s
+Ran 966 tests in 4035.286s
 
 OK (SKIP=62)
