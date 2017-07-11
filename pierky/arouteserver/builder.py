@@ -32,6 +32,7 @@ from .config.roa import ConfigParserROAEntries
 from .enrichers.irrdb import IRRDBConfigEnricher_OriginASNs, \
                              IRRDBConfigEnricher_Prefixes
 from .enrichers.peeringdb import PeeringDBConfigEnricher
+from .enrichers.rtt import RTTGetterConfigEnricher
 from .errors import MissingDirError, MissingFileError, BuilderError, \
                     ARouteServerError, PeeringDBError, PeeringDBNoInfoError, \
                     MissingArgumentError, TemplateRenderingError, \
@@ -120,7 +121,8 @@ class ConfigBuilder(object):
     def __init__(self, template_dir=None, template_name=None,
                  cache_dir=None, cache_expiry=CachedObject.DEFAULT_EXPIRY,
                  bgpq3_path="bgpq3", bgpq3_host=IRRDBTools.BGPQ3_DEFAULT_HOST,
-                 bgpq3_sources=IRRDBTools.BGPQ3_DEFAULT_SOURCES, threads=4,
+                 bgpq3_sources=IRRDBTools.BGPQ3_DEFAULT_SOURCES,
+                 rtt_getter_path=None, threads=4,
                  ip_ver=None, ignore_errors=[], live_tests=False,
                  local_files=[], local_files_dir=None, target_version=None,
                  cfg_general=None, cfg_bogons=None, cfg_clients=None,
@@ -288,6 +290,15 @@ class ConfigBuilder(object):
 
                 - *bgpq3_sources* program's configuration file option.
 
+            rtt_getter_path (str): path to the program that is executed to
+                determine the RTT of a peer.
+                Syntax and details can be found at the following URL:
+                https://arouteserver.readthedocs.io/en/latest/RTT_GETTER.html
+
+                Same of:
+
+                - *rtt_getter_path* program's configuration file option.
+
             threads (int): number of concurrent threads used to gather
                 additional data from external sources (bgpq3, PeeringDB, ...)
 
@@ -325,6 +336,8 @@ class ConfigBuilder(object):
         self.bgpq3_path = bgpq3_path
         self.bgpq3_host = bgpq3_host
         self.bgpq3_sources = bgpq3_sources
+
+        self.rtt_getter_path = rtt_getter_path
 
         self.threads = threads
 
@@ -450,7 +463,8 @@ class ConfigBuilder(object):
         # Enrichers
         for enricher_class in (IRRDBConfigEnricher_OriginASNs,
                                IRRDBConfigEnricher_Prefixes,
-                               PeeringDBConfigEnricher):
+                               PeeringDBConfigEnricher,
+                               RTTGetterConfigEnricher):
             enricher = enricher_class(self, threads=self.threads)
             try:
                 enricher.enrich()

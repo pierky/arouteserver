@@ -135,6 +135,7 @@ class TemplateRenderingCommands(ARouteServerCommand):
             "bgpq3_path": program_config.get("bgpq3_path"),
             "bgpq3_host": program_config.get("bgpq3_host"),
             "bgpq3_sources": program_config.get("bgpq3_sources"),
+            "rtt_getter_path": program_config.get("rtt_getter_path"),
             "template_dir": program_config.get("templates_dir"),
             "template_name": program_config.get("template_name"),
             "ip_ver": self.args.ip_ver,
