@@ -383,7 +383,17 @@ class TestConfigParserGeneral(TestConfigParserBase):
     def test_mandatory_dyn_val_communities(self):
         """{}: communities that need dyn_val macro"""
 
-        for comm in ("reject_cause", "rejected_route_announced_by"):
+        for comm in ("reject_cause", "rejected_route_announced_by",
+                     "do_not_announce_to_peers_with_rtt_lower_than",
+                     "do_not_announce_to_peers_with_rtt_higher_than",
+                     "announce_to_peers_with_rtt_lower_than",
+                     "announce_to_peers_with_rtt_higher_than",
+                     "prepend_once_to_peers_with_rtt_lower_than",
+                     "prepend_twice_to_peers_with_rtt_lower_than",
+                     "prepend_thrice_to_peers_with_rtt_lower_than",
+                     "prepend_once_to_peers_with_rtt_higher_than",
+                     "prepend_twice_to_peers_with_rtt_higher_than",
+                     "prepend_thrice_to_peers_with_rtt_higher_than"):
             for c in self.VALID_STD_COMMS:
                 self.cfg["communities"][comm]["std"] = c
                 self._contains_err("'dyn_val' macro is mandatory in this community")
@@ -724,6 +734,57 @@ class TestConfigParserGeneral(TestConfigParserBase):
 
         if not exp_err_msg_found:
             self.fail("Expected error message not found")
+
+    def test_overlapping_communities_in_in_dyn_val(self):
+        """{}: overlapping communities, inbound/inbound (dyn_val)"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  communities:"
+        ]
+
+        # blackholing: inbound
+        # do_not_announce_to_peers_with_rtt_lower_than: inbound with dyn_val
+        yaml_lines = tpl + [
+            "    blackholing:",
+            "      std: '0:666'",
+            "    do_not_announce_to_peers_with_rtt_lower_than:",
+            "      std: '0:dyn_val'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err("Community 'blackholing' and 'do_not_announce_to_peers_with_rtt_lower_than' overlap: 0:666 / 0:dyn_val. Inbound communities can't have overlapping values, otherwise their meaning could be uncertain.")
+
+        # do_not_announce_to_peer: inbound with peer_as
+        # do_not_announce_to_peers_with_rtt_lower_than: inbound with dyn_val
+        yaml_lines = tpl + [
+            "    do_not_announce_to_peer:",
+            "      std: '0:peer_as'",
+            "    do_not_announce_to_peers_with_rtt_lower_than:",
+            "      std: '0:dyn_val'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err("Community 'do_not_announce_to_peer' and 'do_not_announce_to_peers_with_rtt_lower_than' overlap: 0:peer_as / 0:dyn_val. Inbound communities can't have overlapping values, otherwise their meaning could be uncertain.")
+
+    def test_overlapping_communities_out_in_dyn_val(self):
+        """{}: overlapping communities, outbound/inbound (dyn_val)"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  communities:"
+        ]
+
+        # prefix_not_present_in_as_set: outbound
+        # do_not_announce_to_peers_with_rtt_lower_than: inbound with dyn_val
+        yaml_lines = tpl + [
+            "    prefix_not_present_in_as_set:",
+            "      std: '0:1'",
+            "    do_not_announce_to_peers_with_rtt_lower_than:",
+            "      std: '0:dyn_val'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err("Community 'do_not_announce_to_peers_with_rtt_lower_than' and 'prefix_not_present_in_as_set' overlap: 0:dyn_val / 0:1. Inbound communities and outbound communities can't have overlapping values, otherwise they might be scrubbed.")
 
     def test_overlapping_communities_in_cust(self):
         """{}: overlapping communities, inbound/custom"""

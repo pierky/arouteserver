@@ -43,15 +43,28 @@ class ConfigParserGeneral(ConfigParserBase):
         "prefix_not_present_in_as_set": { "type": "outbound" },
 
         "blackholing": { "type": "inbound" },
+
         "do_not_announce_to_any": { "type": "inbound" },
         "do_not_announce_to_peer": { "type": "inbound", "peer_as": True },
         "announce_to_peer": { "type": "inbound", "peer_as": True },
+        "do_not_announce_to_peers_with_rtt_lower_than": { "type": "inbound", "dyn_val": True },
+        "do_not_announce_to_peers_with_rtt_higher_than": { "type": "inbound", "dyn_val": True },
+        "announce_to_peers_with_rtt_lower_than": { "type": "inbound", "dyn_val": True },
+        "announce_to_peers_with_rtt_higher_than": { "type": "inbound", "dyn_val": True },
+
         "prepend_once_to_any": { "type": "inbound" },
         "prepend_twice_to_any": { "type": "inbound" },
         "prepend_thrice_to_any": { "type": "inbound" },
         "prepend_once_to_peer": { "type": "inbound", "peer_as": True },
         "prepend_twice_to_peer": { "type": "inbound", "peer_as": True },
         "prepend_thrice_to_peer": { "type": "inbound", "peer_as": True },
+        "prepend_once_to_peers_with_rtt_lower_than": { "type": "inbound", "dyn_val": True },
+        "prepend_twice_to_peers_with_rtt_lower_than": { "type": "inbound", "dyn_val": True },
+        "prepend_thrice_to_peers_with_rtt_lower_than": { "type": "inbound", "dyn_val": True },
+        "prepend_once_to_peers_with_rtt_higher_than": { "type": "inbound", "dyn_val": True },
+        "prepend_twice_to_peers_with_rtt_higher_than": { "type": "inbound", "dyn_val": True },
+        "prepend_thrice_to_peers_with_rtt_higher_than": { "type": "inbound", "dyn_val": True },
+
         "add_noexport_to_any": { "type": "inbound" },
         "add_noadvertise_to_any": { "type": "inbound" },
         "add_noexport_to_peer": { "type": "inbound", "peer_as": True },
@@ -466,8 +479,8 @@ class ConfigParserGeneral(ConfigParserBase):
                         break
 
         def compare_communities(comms1, comms2, reason_text):
-            for tag1 in comms1:
-                for tag2 in comms2:
+            for tag1 in sorted(comms1):
+                for tag2 in sorted(comms2):
                     if tag1 == tag2:
                         continue
                     try:
