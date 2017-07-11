@@ -3,6 +3,11 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`_ section of the documentation.
 
+v0.8.1
+------
+
+- Fix: default user configuration path not working.
+
 v0.8.0
 ------
 
