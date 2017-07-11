@@ -684,13 +684,13 @@ class GoBGPConfigBuilder(ConfigBuilder):
         for ip_ver in ["4", "6"]:
             bogon_prefix_set[ip_ver] = {
                 "prefix-set-name": "BOGON-V{0}".format(ip_ver),
-                "prefixes": [],
+                "prefix-list": [],
             }
         for b in self.cfg_bogons.cfg["bogons"]:
             ip_ver = str(ip_version(b["prefix"]))
-            bogon_prefix_set[ip_ver]["prefixes"].append({
+            bogon_prefix_set[ip_ver]["prefix-list"].append({
                 "ip-prefix": str(b["prefix"]),
-                "mask-length-range": "{0}..{1}".format(b["length"], b["max_length"]),
+                "masklength-range": "{0}..{1}".format(b["length"], b["max_length"]),
             })
         for ip_ver in ["4", "6"]:
             self.data["defined-sets"]["prefix-sets"].append(bogon_prefix_set[ip_ver])
@@ -701,13 +701,13 @@ class GoBGPConfigBuilder(ConfigBuilder):
             for ip_ver in ["4", "6"]:
                 prefix_set[ip_ver] = {
                     "prefix-set-name": "{0}-PREFIX-V{1}".format(as_set_data["id"], ip_ver),
-                    "prefixes": [],
+                    "prefix-list": [],
                 }
             for p in as_set_data["prefixes"]:
                 ip_ver = str(ip_version(p["prefix"]))
-                prefix_set[ip_ver]["prefixes"].append({
+                prefix_set[ip_ver]["prefix-list"].append({
                     "ip-prefix": str(p["prefix"]),
-                    "mask-length-range": "{0}..{1}".format(p["length"], p["max_length"]),
+                    "masklength-range": "{0}..{1}".format(p["length"], p["max_length"]),
                 })
             for ip_ver in ["4", "6"]:
                 self.data["defined-sets"]["prefix-sets"].append(prefix_set[ip_ver])
