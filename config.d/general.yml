@@ -365,6 +365,29 @@ cfg:
     # tagged routes before announcing them to clients.
     #add_noexport: True
 
+  # Thresholds used for actions that are performed on the basis
+  # of clients RTT, triggered using RTT-based BGP communities.
+  #
+  # Used only if one or more of those BGP communities are set.
+  #
+  # The value in the last part of the community identifies the
+  # threshold for which the action is requested; the first threshold
+  # is the number 1.
+  # If the last part of the community contains a value that is out
+  # of range, the action is not performed.
+  #
+  # Lower-than actions are inclusive, higher-than are exclusive.
+  #
+  # Some examples (based on the default values below):
+  #
+  # - ID 3, lower-than: action is performed for peers with RTT <= 15
+  # - ID 5, higher-than: action is performed for peers with RTT > 30
+  # - ID 1000, out of range, action not performed
+  # - ID 0, out of range, action not performed
+  #
+  # The values must be provided in ascending order.
+  rtt_thresholds: 5, 10, 15, 20, 30, 50, 100, 200, 500
+
   communities:
     # For each community name below, Standard, Large and Extended
     # BGP Communities can be provided in the 'std', 'lrg' and 'ext'
@@ -489,12 +512,16 @@ cfg:
 
     # Routes that are tagged with the following community are not
     # announced to clients that have a RTT lower/higher than the
-    # value given in the last part of the community.
+    # value of the threshold identified by the last part of the
+    # community.
     #
     # The following communities are scrubbed from outbound routes.
     #
     # The 'rs_as' macro can be used here.
     # The 'dyn_val' macro must appear in the last part of values.
+    # The 'dyn_val' macro's value must represent the index in the
+    # 'rtt_thresholds' lists that identifies the RTT value for
+    # which the action is requested. Index is 1-based.
     do_not_announce_to_peers_with_rtt_lower_than:
       #std:
       #lrg:
@@ -506,8 +533,9 @@ cfg:
 
     # Routes that are tagged with the following community are
     # announced to clients that have a RTT lower/higher than the
-    # value given in the last part of the community, even if they
-    # are tagged with the 'do_not_announce_to_any' community.
+    # value of the threshold identified by the last part of the
+    # community, even if they are tagged with the
+    # 'do_not_announce_to_any' community.
     # If a route is also tagged with the 'do_not_announce_to_peer'
     # community it is not advertised to the client even if it
     # matches the RTT criterion.
@@ -516,6 +544,9 @@ cfg:
     #
     # The 'rs_as' macro can be used here.
     # The 'dyn_val' macro must appear in the last part of values.
+    # The 'dyn_val' macro's value must represent the index in the
+    # 'rtt_thresholds' lists that identifies the RTT value for
+    # which the action is requested. Index is 1-based.
     announce_to_peers_with_rtt_lower_than:
       #std:
       #lrg:
@@ -582,15 +613,18 @@ cfg:
 
     # Routes that are tagged with the following communities are
     # propagated to clients having a RTT lower/higher than the value
-    # given in the last part of the community with an AS_PATH
-    # prepended once, twice or thrice with the announcing client's
-    # ASN.
+    # of the threshold identified by the last part of the community
+    # with an AS_PATH prepended once, twice or thrice with the
+    # announcing client's ASN.
     #
     # The following communities are scrubbed from outbound routes.
     # The 'peer_as' macro must appear in the last part of values.
     #
     # The 'rs_as' macro can be used here.
     # The 'dyn_val' macro must appear in the last part of values.
+    # The 'dyn_val' macro's value must represent the index in the
+    # 'rtt_thresholds' lists that identifies the RTT value for
+    # which the action is requested. Index is 1-based.
     prepend_once_to_peers_with_rtt_lower_than:
       #std:
       #lrg:

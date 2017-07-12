@@ -298,6 +298,57 @@ class TestConfigParserGeneral(TestConfigParserBase):
             self._contains_err("Error parsing 'rewrite_next_hop_ipv4' at 'cfg.blackhole_filtering' level - Invalid IPv4 address: {}.".format(ip))
         self._test_optional(self.cfg["blackhole_filtering"], "rewrite_next_hop_ipv4")
 
+    def test_rtt_thresholds_str(self):
+        """{}: RTT thresholds as comma separated string"""
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: 192.0.2.2\n"
+            "  rtt_thresholds: '1, 2, 3'"
+        )
+        self._contains_err()
+
+    def test_rtt_thresholds_int(self):
+        """{}: RTT thresholds as list of int"""
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: 192.0.2.2\n"
+            "  rtt_thresholds: 1, 2, 3"
+        )
+        self._contains_err()
+
+    def test_rtt_thresholds_empty(self):
+        """{}: RTT thresholds, empty"""
+
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: 192.0.2.2\n"
+            "  rtt_thresholds: "
+        )
+        self._contains_err()
+
+    def test_rtt_thresholds_invalid(self):
+        """{}: RTT thresholds, invalid values"""
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: 192.0.2.2\n"
+            "  rtt_thresholds: 1, 2a, 3"
+        )
+        self._contains_err("RTT thresholds list items must be positive integers:  2a")
+
+    def test_rtt_thresholds_order(self):
+        """{}: RTT thresholds, out of order"""
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: 192.0.2.2\n"
+            "  rtt_thresholds: 3, 2, 1"
+        )
+        self._contains_err("RTT thresholds list items must be provided in ascending order: 2 < 3")
+
     def test_blackhole_filtering_ipv6(self):
         """{}: blackhole_filtering, rewrite_next_hop, ipv6"""
         self.load_config(file_name="{}/test_cfg_general_blackhole_filtering.yml".format(os.path.dirname(__file__)))
@@ -951,6 +1002,80 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "general_limit_ipv6": 12000
                 },
             },
+            "rtt_thresholds": None,
+            "blackhole_filtering": {
+                "policy_ipv4": None,
+                "policy_ipv6": None,
+                "rewrite_next_hop_ipv4": None,
+                "rewrite_next_hop_ipv6": None,
+                "announce_to_client": True,
+                "add_noexport": True,
+            }
+        }
+
+        self.maxDiff = None
+        del self.cfg["communities"]
+        del self.cfg["custom_communities"]
+        self.assertMultiLineEqual(
+            yaml.safe_dump(self.cfg.cfg, default_flow_style=False),
+            yaml.safe_dump({"cfg": exp_res}, default_flow_style=False)
+        )
+
+    def test_distrib_config(self):
+        """{}: distributed config"""
+        self.load_config(file_name="config.d/general.yml")
+        self.cfg.parse()
+        self._contains_err()
+
+        exp_res = {
+            "rs_as": 999,
+            "router_id": "192.0.2.2",
+            "prepend_rs_as": False,
+            "path_hiding": True,
+            "passive": True,
+            "gtsm": False,
+            "add_path": False,
+            "filtering": {
+                "next_hop": {
+                    "policy": "strict"
+                },
+                "global_black_list_pref": None,
+                "ipv4_pref_len": {
+                    "min": 8,
+                    "max": 24
+                },
+                "ipv6_pref_len": {
+                    "min": 12,
+                    "max": 48
+                },
+                "max_as_path_len": 32,
+                "reject_invalid_as_in_as_path": True,
+                "reject_policy": {
+                    "policy": "reject"
+                },
+                "transit_free": {
+                    "action": None,
+                    "asns": [174, 209, 286, 701, 1239, 1299, 2828, 2914, 3257, 3320, 3356, 3549, 5511, 6453, 6461, 6762, 6830, 7018, 12956]
+                },
+                "irrdb": {
+                    "tag_as_set": True,
+                    "enforce_origin_in_as_set": True,
+                    "enforce_prefix_in_as_set": True,
+                    "allow_longer_prefixes": False
+                },
+                "rpki": {
+                    "enabled": False,
+                    "reject_invalid": True,
+                },
+                "max_prefix": {
+                    "action": None,
+                    "restart_after": 15,
+                    "peering_db": True,
+                    "general_limit_ipv4": 170000,
+                    "general_limit_ipv6": 12000
+                },
+            },
+            "rtt_thresholds": [5, 10, 15, 20, 30, 50, 100, 200, 500],
             "blackhole_filtering": {
                 "policy_ipv4": None,
                 "policy_ipv6": None,
