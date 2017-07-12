@@ -78,26 +78,13 @@ class RTTGetter_WorkerThread(BaseConfigEnricherThread):
     def save_data(self, task, data):
         client = task
         rtt = data
-        client["cfg"]["rtt"] = rtt
+        client["rtt"] = rtt
 
 class RTTGetterConfigEnricher(BaseConfigEnricher):
 
     WORKER_THREAD_CLASS = RTTGetter_WorkerThread
 
     def prepare(self):
-        self.used = False
-
-        for comm_name in self.builder.cfg_general["communities"]:
-            comm = self.builder.cfg_general["communities"][comm_name]
-            if "rtt" in comm_name and self.builder.community_is_set(comm):
-                self.used = True
-                break
-
-        if not self.used:
-            logging.info("RTT getter enricher not needed because no RTT-based "
-                         "communities are used.")
-            return
-
         path = self.builder.rtt_getter_path
         if path:
             if not os.path.exists(path):
@@ -113,9 +100,6 @@ class RTTGetterConfigEnricher(BaseConfigEnricher):
         thread.rtt_getter_path = self.builder.rtt_getter_path
 
     def add_tasks(self):
-        if not self.used:
-            return
-
         # Enqueuing tasks.
         for client in self.builder.cfg_clients.cfg["clients"]:
             self.tasks_q.put(client)

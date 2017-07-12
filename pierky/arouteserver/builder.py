@@ -461,10 +461,13 @@ class ConfigBuilder(object):
             self.cfg_general["communities"][comm_name]["peer_as"] = comm.get("peer_as", False)
 
         # Enrichers
-        for enricher_class in (IRRDBConfigEnricher_OriginASNs,
-                               IRRDBConfigEnricher_Prefixes,
-                               PeeringDBConfigEnricher,
-                               RTTGetterConfigEnricher):
+        used_enricher_classes = [IRRDBConfigEnricher_OriginASNs,
+                                 IRRDBConfigEnricher_Prefixes,
+                                 PeeringDBConfigEnricher]
+        if self.rtt_based_functions_are_used():
+            used_enricher_classes.append(RTTGetterConfigEnricher)
+
+        for enricher_class in used_enricher_classes:
             enricher = enricher_class(self, threads=self.threads)
             try:
                 enricher.enrich()
@@ -475,6 +478,13 @@ class ConfigBuilder(object):
 
         if errors:
             raise BuilderError()
+
+    def rtt_based_functions_are_used(self):
+        for comm_name in self.cfg_general["communities"]:
+            comm = self.cfg_general["communities"][comm_name]
+            if "rtt" in comm_name and self.community_is_set(comm):
+                return True
+        return False
 
     @staticmethod
     def community_is_set(comm):
@@ -522,6 +532,8 @@ class ConfigBuilder(object):
         self.data["as_sets"] = self.as_sets
         self.data["roas"] = self.cfg_roas
         self.data["live_tests"] = self.live_tests
+        self.data["rtt_based_functions_are_used"] = \
+            self.rtt_based_functions_are_used()
 
         def ipaddr_ver(ip):
             return ipaddr.IPAddress(ip).version
