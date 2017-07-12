@@ -481,9 +481,14 @@ class ConfigBuilder(object):
 
     def rtt_based_functions_are_used(self):
         for comm_name in self.cfg_general["communities"]:
+            comm_schema = ConfigParserGeneral.COMMUNITIES_SCHEMA[comm_name]
+            if not comm_schema.get("rtt", False):
+                continue
+
             comm = self.cfg_general["communities"][comm_name]
-            if "rtt" in comm_name and self.community_is_set(comm):
+            if self.community_is_set(comm):
                 return True
+
         return False
 
     @staticmethod
