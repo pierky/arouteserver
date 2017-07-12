@@ -330,6 +330,27 @@ class ConfigParserGeneral(ConfigParserBase):
             if str(e):
                 logging.error(str(e))
 
+        # Are RTT-based functions used?
+        self.rtt_based_functions_are_used = False
+        for comm_name in self.cfg["cfg"]["communities"]:
+            comm_schema = self.COMMUNITIES_SCHEMA[comm_name]
+            if not comm_schema.get("rtt", False):
+                continue
+
+            comm = self.cfg["cfg"]["communities"][comm_name]
+            if comm["std"] or comm["ext"] or comm["lrg"]:
+                self.rtt_based_functions_are_used = True
+                break
+
+        # RTT-based functions are used: is RTT thresholds list set?
+        if self.rtt_based_functions_are_used:
+            if not self.cfg["cfg"]["rtt_thresholds"]:
+                errors = True
+                logging.error(
+                    "Some RTT-based functions are configured but the "
+                    "RTT thresholds list is empty."
+                )
+
         if errors:
             raise ConfigError()
 

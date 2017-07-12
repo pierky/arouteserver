@@ -880,6 +880,31 @@ class TestConfigParserGeneral(TestConfigParserBase):
         if not exp_err_msg_found:
             self.fail("Expected error message not found")
 
+    def test_rtt_based_communities_without_rtt_thresholds(self):
+        """{}: RTT-based communities without RTT thresholds"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  communities:",
+            "    do_not_announce_to_peers_with_rtt_lower_than:",
+            "      std: '0:dyn_val'"
+        ]
+        self.load_config(yaml="\n".join(tpl))
+        self._contains_err("Some RTT-based functions are configured but the RTT thresholds list is empty.")
+
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  rtt_thresholds: 1, 2",
+            "  communities:",
+            "    do_not_announce_to_peers_with_rtt_lower_than:",
+            "      std: '0:dyn_val'"
+        ]
+        self.load_config(yaml="\n".join(tpl))
+        self._contains_err()
+
     def test_max_pref_action(self):
         """{}: max_prefix action"""
         self.assertEqual(self.cfg["filtering"]["max_prefix"]["action"], None)
