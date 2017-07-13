@@ -761,6 +761,32 @@ class BasicScenario(LiveScenario):
             with self.assertRaisesRegexp(AssertionError, "Routes not found."):
                 self.receive_route(inst, pref)
 
+    def test_085_control_communities_rtt_prep3x_gt_100_2x_gt_10(self):
+        """{}: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms"""
+        pref = self.DATA["AS4_rtt_8"]
+        self.receive_route(self.rs, pref, self.AS4,
+                           std_comms=["64539:7", "64538:2"])
+        for inst in [self.AS1_1, self.AS1_2]:
+            self.receive_route(inst, pref, self.rs, as_path="4",
+                               std_comms=[], lrg_comms=[], ext_comms=[])
+        self.receive_route(self.AS2, pref, self.rs, as_path="4 4 4",
+                            std_comms=[], lrg_comms=[], ext_comms=[])
+        self.receive_route(self.AS3, pref, self.rs, as_path="999 4 4 4 4",
+                            std_comms=[], lrg_comms=[], ext_comms=[])
+
+    def test_085_control_communities_rtt_prep3x_lt_5_2x_lt_20_1x_any(self):
+        """{}: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any"""
+        pref = self.DATA["AS4_rtt_9"]
+        self.receive_route(self.rs, pref, self.AS4,
+                           std_comms=["64536:1", "64535:4", "999:65501"])
+        for inst in [self.AS1_1, self.AS1_2]:
+            self.receive_route(inst, pref, self.rs, as_path="4 4 4 4",
+                               std_comms=[], lrg_comms=[], ext_comms=[])
+        self.receive_route(self.AS2, pref, self.rs, as_path="4 4 4",
+                            std_comms=[], lrg_comms=[], ext_comms=[])
+        self.receive_route(self.AS3, pref, self.rs, as_path="999 4 4",
+                            std_comms=[], lrg_comms=[], ext_comms=[])
+
     def test_100_prefixes_received_by_clients_AS1_1(self):
         """{}: prefixes received by clients: AS1_1"""
         self.receive_route(self.AS1_1, self.DATA["AS2_good1"], self.rs, as_path="2", next_hop=self.AS2)

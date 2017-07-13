@@ -70,6 +70,9 @@ class BasicScenario_Data6(object):
         "AS4_rtt_5":                "2a04:0:5::/48",
         "AS4_rtt_6":                "2a04:0:6::/48",
         "AS4_rtt_7":                "2a04:0:7::1/128",
+        "AS4_rtt_8":                "2a04:0:8::/48",
+        "AS4_rtt_9":                "2a04:0:9::/48",
+        "AS4_rtt_10":               "2a04:0:A::/48",
 
         "AS101_allowed_prefixes":   "3101:0::/32",
         "AS101_good1":              "3101:0:1::/48",

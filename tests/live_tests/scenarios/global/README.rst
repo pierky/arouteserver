@@ -139,23 +139,28 @@ Built to group as many tests as possible in a single scenario.
 
     Originated prefixes:
 
-    =================  ============ ================= ============================================ ===============
-    Prefix ID          Prefix       Communities       Expected result                              Who receives it
-    =================  ============ ================= ============================================ ===============
-    AS4_rtt_1          4.0.1.0/24   0:999 64532:3     Do not announce to any + announce to peers   AS1_1, AS1_2
-                                                      with RTT <= 15 ms
-    AS4_rtt_2          4.0.2.0/24   0:999 64532:1     Do not announce to any + announce to peers   AS1_1, AS1_2
-                                                      with RTT <= 5 ms
-    AS4_rtt_3          4.0.3.0/24   64531:3           Do not announce to peers with RTT > 15 ms    AS1_1, AS1_2
-    AS4_rtt_4          4.0.4.0/24   64531:1           Do not announce to peers with RTT > 5 ms     AS1_1, AS1_2
-    AS4_rtt_5          4.0.5.0/24   64531:1 65501:3   Do not announce to peers with RTT > 5 ms but AS1_1, AS1_2,
-                                                      announce to AS3                              AS3
-    AS4_rtt_6          4.0.6.0/24   64530:1 64531:7   Do not announce to peers with RTT <= 5 and   AS2
-                                                      Do not announce to peers with RTT > 100
-    AS4_rtt_7          4.0.7.1/32   65535:666 64531:4 BLACKHOLE request, do not announce to peers  AS1_1, AS2
-                                                      with RTT > 20 (AS1_2 not enabled to receive
-                                                      blackhole requests)
-    =================  ============ ================= ============================================ ===============
+    ==========  ============ ================= ============================================ ========================
+    Prefix ID   Prefix       Communities       Goal                                         Who receives it
+    ==========  ============ ================= ============================================ ========================
+    AS4_rtt_1   4.0.1.0/24   0:999 64532:3     Do not announce to any + announce to peers   AS1_1, AS1_2
+                                               with RTT <= 15 ms
+    AS4_rtt_2   4.0.2.0/24   0:999 64532:1     Do not announce to any + announce to peers   AS1_1, AS1_2
+                                               with RTT <= 5 ms
+    AS4_rtt_3   4.0.3.0/24   64531:3           Do not announce to peers with RTT > 15 ms    AS1_1, AS1_2
+    AS4_rtt_4   4.0.4.0/24   64531:1           Do not announce to peers with RTT > 5 ms     AS1_1, AS1_2
+    AS4_rtt_5   4.0.5.0/24   64531:1 65501:3   Do not announce to peers with RTT > 5 ms but AS1_1, AS1_2, AS3
+                                               announce to AS3
+    AS4_rtt_6   4.0.6.0/24   64530:1 64531:7   Do not announce to peers with RTT <= 5 and   AS2
+                                               Do not announce to peers with RTT > 100
+    AS4_rtt_7   4.0.7.1/32   65535:666 64531:4 BLACKHOLE request, do not announce to peers  AS1_1, AS2
+                                               with RTT > 20                                (AS1_2 not enabled to
+                                                                                            receive blackhole
+                                                                                            requests)
+    AS4_rtt_8   4.0.8.0/24   64539:7 64538:2   Prepend 3x to > 100 ms, 2x to > 10 ms        AS1_1, AS1_2,
+                                                                                            AS2 2x, AS3 3x
+    AS4_rtt_9   4.0.9.0/24   64536:1 64535:4   Prepend 3x to <= 5 ms, 2x to <= 20, 1x to    AS1_1 & AS1_2 3x,
+                             999:65501         any                                          AS2 2x, AS3 1x
+    ==========  ============ ================= ============================================ ========================
 
 - **AS101**:
 

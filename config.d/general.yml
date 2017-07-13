@@ -561,8 +561,10 @@ cfg:
     # The 3 "flavors" of prepending actions (to_peer, rtt
     # based and to_any) are applied in the following order:
     # - prepend_x_to_peer
-    # - prepend_x_to_peers_with_rtt_[lower|higher]_than
+    # - prepend_x_to_peers_with_rtt_higher_than (RTTs in desc order)
+    # - prepend_x_to_peers_with_rtt_lower_than (RTTs in asc order)
     # - prepend_x_to_any
+    # (x is always in the ascending order: once, twice, thrice).
     #
     # For example, if a route is tagged with both a
     # 'prepend_x_to_any' and a 'prepend_x_to_peer' community, only

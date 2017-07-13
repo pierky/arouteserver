@@ -14,6 +14,9 @@ protocol static own_prefixes {
 	route {{ data.AS4_rtt_5 }} reject;
 	route {{ data.AS4_rtt_6 }} reject;
 	route {{ data.AS4_rtt_7 }} reject;
+	route {{ data.AS4_rtt_8 }} reject;
+	route {{ data.AS4_rtt_9 }} reject;
+	route {{ data.AS4_rtt_10 }} reject;
 }
 
 filter to_rs {
@@ -42,6 +45,15 @@ filter to_rs {
 	if net = {{ data.AS4_rtt_7 }} then {
 		bgp_community.add((65535,666));
 		bgp_community.add((64531,4));
+	}
+	if net = {{ data.AS4_rtt_8 }} then {
+		bgp_community.add((64539,7));
+		bgp_community.add((64538,2));
+	}
+	if net = {{ data.AS4_rtt_9 }} then {
+		bgp_community.add((64536,1));
+		bgp_community.add((64535,4));
+		bgp_community.add((999,65501));
 	}
 	
 	accept;

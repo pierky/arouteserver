@@ -284,13 +284,20 @@ int client_rtt;
 	client_rtt = get_peer_rtt(client_ip);
 
 	if client_rtt > 0 then {
-{%	for lower_higher, op in [("lower", "<="), ("higher", ">")] %}
-{%		for times in ["once", "twice", "thrice"] %}
-{%			set comm_name = "prepend_" ~ times ~ "_to_peers_with_rtt_" ~ lower_higher ~ "_than" %}
-{%			if cfg.communities[comm_name]|community_is_set %}
-		# {{ comm_name }}
-{{ 		match_rtt_communities(cfg.rtt_thresholds, cfg.communities[comm_name], "client_rtt", op, "{ do_prepend(" ~ loop.index ~ "); return true; }", tabs=2) }}
-{%			endif %}
+{%	for lower_higher, op, order in [("higher", ">", "desc"), ("lower", "<=", "asc")] %}
+{%		for threshold_val in cfg.rtt_thresholds|sort(reverse=(order == "desc")) %}
+{%			if order == "asc" %}
+{%                      	set threshold_index = loop.index %}
+{%              	else %}
+{%                      	set threshold_index = loop.revindex %}
+{%              	endif %}
+{%			for times in ["once", "twice", "thrice"] %}
+{%				set comm_name = "prepend_" ~ times ~ "_to_peers_with_rtt_" ~ lower_higher ~ "_than" %}
+{%				if cfg.communities[comm_name]|community_is_set %}
+		# {{ comm_name }} {{ threshold_val }} ms
+{{-             match_communities(cfg.communities[comm_name], "{ if client_rtt " ~ op ~ " " ~ threshold_val ~ " then\n\t\t\t{ do_prepend(" ~ loop.index ~ "); return true; } }", replace_dyn_val=threshold_index, tabs=2 ) }}
+{%				endif %}
+{%			endfor %}
 {%		endfor %}
 {%	endfor %}
 	}
