@@ -6,6 +6,9 @@
 group "clients" {
 {% for client in clients if client.ip is current_ipver %}
 
+{%	if "rtt" in client and client["rtt"] %}
+	# RTT: {{ client["rtt"] }} ms
+{%	endif %}
 	neighbor {{ client.ip }} {
 		{{ "client"|include_local_file -}}
 

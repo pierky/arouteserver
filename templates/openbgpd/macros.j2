@@ -80,7 +80,11 @@
 {%		if replace_peer_as %}
 # {{ comm.ext }} ext comm skipped: can't delete ext comms using wildcard
 {%		elif replace_dyn_val %}
+{%			if replace_dyn_val == "*" %}
+# {{ comm.ext }} ext comm skipped: can't delete ext comms using wildcard
+{%			else %}
 {{ left }} set ext-community delete {{ comm.ext|convert_ext_comm|replace("dyn_val", replace_dyn_val) }}
+{%			endif %}
 {%		else %}
 {{ left }} set ext-community delete {{ comm.ext|convert_ext_comm }}
 {%		endif %}
@@ -103,19 +107,21 @@
 {%		set comm = comms[comm_name] %}
 {%		if comm|community_is_set %}
 {%			if comm.std %}
-{{				" community delete " ~ comm.std|replace("peer_as", asn) -}}
+{{				" community delete " ~ comm.std|replace("peer_as", asn)|replace("dyn_val", "*") -}}
 {%			endif %}
 {%			if comm.ext %}
+{%				if "dyn_val" not in comm.ext %}
 {{				" ext-community delete " ~ comm.ext|convert_ext_comm|replace("peer_as", asn) -}}
+{%				endif %}
 {%			endif %}
 {%			if comm.lrg and "6.1"|target_version_ge %}
-{{				" large-community delete " ~ comm.lrg|replace("peer_as", asn) -}}
+{{				" large-community delete " ~ comm.lrg|replace("peer_as", asn)|replace("dyn_val", "*") -}}
 {%			endif %}
 {%		endif %}
 {%	endif %}
 {% endfor %}
 {% endmacro %}
 
-{% macro remove_prepending_comms(left, if_comm, comms, asn=None) %}
-{{ match_communities(left, if_comm, "set { " ~ list_prepending_comms(comms, asn) ~ " }", peer_as=asn) }}
+{% macro remove_prepending_comms(left, if_comm, comms, asn=None, dyn_val=None) %}
+{{ match_communities(left, if_comm, "set { " ~ list_prepending_comms(comms, asn) ~ " }", peer_as=asn, dyn_val=dyn_val) }}
 {% endmacro %}
