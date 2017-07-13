@@ -1,0 +1,56 @@
+router id 192.0.2.41;
+
+log "/var/log/bird.log" all;
+log syslog all;
+debug protocols all;
+
+protocol device { }
+
+protocol static own_prefixes {
+	route {{ data.AS4_rtt_1 }} reject;
+	route {{ data.AS4_rtt_2 }} reject;
+	route {{ data.AS4_rtt_3 }} reject;
+	route {{ data.AS4_rtt_4 }} reject;
+	route {{ data.AS4_rtt_5 }} reject;
+	route {{ data.AS4_rtt_6 }} reject;
+	route {{ data.AS4_rtt_7 }} reject;
+}
+
+filter to_rs {
+	if net = {{ data.AS4_rtt_1 }} then {
+		bgp_community.add((0,999));
+		bgp_community.add((64532,3));
+	}
+	if net = {{ data.AS4_rtt_2 }} then {
+		bgp_community.add((0,999));
+		bgp_community.add((64532,1));
+	}
+	if net = {{ data.AS4_rtt_3 }} then {
+		bgp_community.add((64531,3));
+	}
+	if net = {{ data.AS4_rtt_4 }} then {
+		bgp_community.add((64531,1));
+	}
+	if net = {{ data.AS4_rtt_5 }} then {
+		bgp_community.add((64531,1));
+		bgp_community.add((65501,3));
+	}
+	if net = {{ data.AS4_rtt_6 }} then {
+		bgp_community.add((64530,1));
+		bgp_community.add((64531,7));
+	}
+	if net = {{ data.AS4_rtt_7 }} then {
+		bgp_community.add((65535,666));
+		bgp_community.add((64531,4));
+	}
+	
+	accept;
+}
+protocol bgp the_rs {
+	local as 4;
+	neighbor {{ data.rs_IPAddress }} as 999;
+	import all;
+	export filter to_rs;
+	connect delay time 1;
+	connect retry time 1;
+}

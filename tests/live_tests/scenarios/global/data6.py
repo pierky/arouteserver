@@ -19,10 +19,11 @@ class BasicScenario_Data6(object):
         "rs_IPAddress":             "2001:db8:1:1::2",
         "blackhole_IP":             "2001:db8:1:1::66",
 
-        "AS3_1_IPAddress":          "2001:db8:1:1::31",
         "AS1_1_IPAddress":          "2001:db8:1:1::11",
         "AS1_2_IPAddress":          "2001:db8:1:1::12",
         "AS2_1_IPAddress":          "2001:db8:1:1::21",
+        "AS3_1_IPAddress":          "2001:db8:1:1::31",
+        "AS4_1_IPAddress":          "2001:db8:1:1::41",
         "AS101_IPAddress":          "2001:db8:1:1::101",
         "RoutesCollector_IPAddress":"2001:db8:1:1::999",
 
@@ -61,6 +62,14 @@ class BasicScenario_Data6(object):
         "AS3_prep3AS1_1any":        "2a03:0:A::/48",
         "AS3_noexport_any":         "2a03:0:B::/48",
         "AS3_noexport_AS1":         "2a03:0:C::/48",
+
+        "AS4_rtt_1":                "2a04:0:1::/48",
+        "AS4_rtt_2":                "2a04:0:2::/48",
+        "AS4_rtt_3":                "2a04:0:3::/48",
+        "AS4_rtt_4":                "2a04:0:4::/48",
+        "AS4_rtt_5":                "2a04:0:5::/48",
+        "AS4_rtt_6":                "2a04:0:6::/48",
+        "AS4_rtt_7":                "2a04:0:7::1/128",
 
         "AS101_allowed_prefixes":   "3101:0::/32",
         "AS101_good1":              "3101:0:1::/48",

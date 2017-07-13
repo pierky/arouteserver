@@ -38,6 +38,11 @@ class RichConfigExampleScenario(LiveScenario):
             "AS3333_allowed_prefixes"
         ],
     }
+    RTT = {
+        "192.0.2.11": 114,
+        "192.0.2.22": 224,
+        "2001:db8:1:1::22": 226
+    }
 
     @classmethod
     def _setup_instances(cls):

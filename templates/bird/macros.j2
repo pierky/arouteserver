@@ -91,27 +91,36 @@
 {% endif %}
 {% endmacro %}
 
-{% macro match_communities(comm, if_match, replace_dyn_val=False) %}
+{% macro match_communities(comm, if_match, replace_dyn_val=False, tabs=1) %}
+{% set indent = "\t" * tabs %}
 
 {% if comm %}
 {%	if comm.std %}
 {%		if "peer_as" in comm.std %}
-	if peer_as <= 65535 then {
-		if {{ write_community(comm.std) }} ~ bgp_community then
-			{{ if_match }}
-	}
+{{ indent }}if peer_as <= 65535 then {
+{{ indent }}	if {{ write_community(comm.std) }} ~ bgp_community then
+{{ indent }}		{{ if_match }}
+{{ indent }}}
 {%		else %}
-	if {{ write_community(comm.std, replace_dyn_val=replace_dyn_val) }} ~ bgp_community then
-		{{ if_match }}
+{{ indent }}if {{ write_community(comm.std, replace_dyn_val=replace_dyn_val) }} ~ bgp_community then
+{{ indent }}	{{ if_match }}
 {%		endif %}
 {%	endif %}
 {%	if comm.lrg %}
-	if {{ write_community(comm.lrg, replace_dyn_val=replace_dyn_val) }} ~ bgp_large_community then
-		{{ if_match }}
+{{ indent }}if {{ write_community(comm.lrg, replace_dyn_val=replace_dyn_val) }} ~ bgp_large_community then
+{{ indent }}	{{ if_match }}
 {% 	endif %}
 {%	if comm.ext %}
-	if {{ write_community(comm.ext, replace_dyn_val=replace_dyn_val) }} ~ bgp_ext_community then
-		{{ if_match }}
+{{ indent }}if {{ write_community(comm.ext, replace_dyn_val=replace_dyn_val) }} ~ bgp_ext_community then
+{{ indent }}	{{ if_match }}
 {% 	endif %}
 {% endif %}
+{% endmacro %}
+
+{% macro match_rtt_communities(rtt_thresholds, comm, rtt_var_name, op, if_match, tabs=1) %}
+
+{%	for threshold_val in rtt_thresholds %}
+{{ "\t" * tabs }}# {{ threshold_val }} ms
+{{- match_communities(comm, "{ if " ~ rtt_var_name ~ " " ~ op ~ " " ~ threshold_val ~ " then\n\t\t\t" ~ if_match ~ " }", replace_dyn_val=loop.index, tabs=tabs) }}
+{%	endfor %}
 {% endmacro %}

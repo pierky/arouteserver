@@ -19,10 +19,11 @@ class BasicScenario_Data4(object):
         "rs_IPAddress":             "192.0.2.2",
         "blackhole_IP":             "192.0.2.66",
 
-        "AS3_1_IPAddress":          "192.0.2.31",
         "AS1_1_IPAddress":          "192.0.2.11",
         "AS1_2_IPAddress":          "192.0.2.12",
         "AS2_1_IPAddress":          "192.0.2.21",
+        "AS3_1_IPAddress":          "192.0.2.31",
+        "AS4_1_IPAddress":          "192.0.2.41",
         "AS101_IPAddress":          "192.0.2.101",
         "RoutesCollector_IPAddress":"192.0.2.99",
 
@@ -61,6 +62,14 @@ class BasicScenario_Data4(object):
         "AS3_prep3AS1_1any":        "3.0.10.0/24",
         "AS3_noexport_any":         "3.0.11.0/24",
         "AS3_noexport_AS1":         "3.0.12.0/24",
+
+        "AS4_rtt_1":                "4.0.1.0/24",
+        "AS4_rtt_2":                "4.0.2.0/24",
+        "AS4_rtt_3":                "4.0.3.0/24",
+        "AS4_rtt_4":                "4.0.4.0/24",
+        "AS4_rtt_5":                "4.0.5.0/24",
+        "AS4_rtt_6":                "4.0.6.0/24",
+        "AS4_rtt_7":                "4.0.7.1/32",
 
         "AS101_allowed_prefixes":   "101.0.0.0/16",
         "AS101_good1":              "101.0.1.0/24",

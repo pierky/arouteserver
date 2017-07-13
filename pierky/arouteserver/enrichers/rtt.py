@@ -95,6 +95,8 @@ class RTTGetterConfigEnricher(BaseConfigEnricher):
                     "The file {} used for rtt_getter_path is not "
                     "executable.".format(path)
                 )
+        else:
+            raise BuilderError("Path of the RTT getter program is missing.")
 
     def _config_thread(self, thread):
         thread.rtt_getter_path = self.builder.rtt_getter_path
