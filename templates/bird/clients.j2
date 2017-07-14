@@ -273,7 +273,7 @@ filter announce_to_{{ client.id }} {
 }
 
 {% if "rtt" in client and client["rtt"] %}
-# RTT: {{ client["rtt"] }} ms
+# RTT: {{ client["rtt"] }} ms (normalized value: {{ client["rtt"]|get_normalized_rtt }})
 {% endif %}
 protocol bgp {{ client.id }} {
 	{% if client.description %}

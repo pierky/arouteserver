@@ -95,8 +95,8 @@ int set transit_free_asns;
 function get_peer_rtt(ip client_ip) {
 	case client_ip {
 {%	for client in clients if client.ip is current_ipver %}
-{%		if "rtt" in client and client["rtt"] %}
-		{{ client["ip"] }} : return {% if client["rtt"] < 1 %}{{ "1" }}{% else %}{{ client["rtt"]|round|int }}{% endif %}; # {{ client["rtt"] }}
+{%		if "rtt" in client and client["rtt"]|get_normalized_rtt %}
+		{{ client["ip"] }} : return {{ client["rtt"]|get_normalized_rtt }}; # {{ client["rtt"] }}
 {%		endif %}
 {%	endfor %}
 	}

@@ -554,6 +554,15 @@ class ConfigBuilder(object):
                 return version.parse(self.target_version) >= version.parse(v)
             return False
 
+        def get_normalized_rtt(v):
+            if not v:
+                return 0
+            if v < 1:
+                return 1
+            if v > 60000:
+                return 60000
+            return int(round(v))
+
         env = Environment(
             loader=FileSystemLoader(self.template_dir),
             trim_blocks=True,
@@ -565,6 +574,7 @@ class ConfigBuilder(object):
         env.filters["ipaddr_ver"] = ipaddr_ver
         env.filters["include_local_file"] = include_local_file
         env.filters["target_version_ge"] = target_version_ge
+        env.filters["get_normalized_rtt"] = get_normalized_rtt
 
         self.enrich_j2_environment(env)
 
