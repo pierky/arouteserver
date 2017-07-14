@@ -160,6 +160,8 @@ Built to group as many tests as possible in a single scenario.
                                                                                             AS2 2x, AS3 3x
     AS4_rtt_9   4.0.9.0/24   64536:1 64535:4   Prepend 3x to <= 5 ms, 2x to <= 20, 1x to    AS1_1 & AS1_2 3x,
                              999:65501         any                                          AS2 2x, AS3 1x
+    AS4_rtt_10  4.0.10.0/24  rt:64537:2        Prepend 1x to > 10 ms, 2x to > 20 ms         AS1_1 & AS1_2 no prep,
+                             rt:64538:4                                                     AS2 1x, AS3 2x
     ==========  ============ ================= ============================================ ========================
 
 - **AS101**:

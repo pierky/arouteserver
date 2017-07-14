@@ -787,6 +787,19 @@ class BasicScenario(LiveScenario):
         self.receive_route(self.AS3, pref, self.rs, as_path="999 4 4",
                             std_comms=[], lrg_comms=[], ext_comms=[])
 
+    def test_085_control_communities_rtt_ext_comms_prep1x_gt_10_2x_gt_20(self):
+        """{}: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms"""
+        pref = self.DATA["AS4_rtt_10"]
+        self.receive_route(self.rs, pref, self.AS4,
+                           std_comms=[], ext_comms=["rt:64537:2", "rt:64538:4"])
+        for inst in [self.AS1_1, self.AS1_2]:
+            self.receive_route(inst, pref, self.rs, as_path="4",
+                               std_comms=[], lrg_comms=[], ext_comms=[])
+        self.receive_route(self.AS2, pref, self.rs, as_path="4 4",
+                            std_comms=[], lrg_comms=[], ext_comms=[])
+        self.receive_route(self.AS3, pref, self.rs, as_path="999 4 4 4",
+                            std_comms=[], lrg_comms=[], ext_comms=[])
+
     def test_100_prefixes_received_by_clients_AS1_1(self):
         """{}: prefixes received by clients: AS1_1"""
         self.receive_route(self.AS1_1, self.DATA["AS2_good1"], self.rs, as_path="2", next_hop=self.AS2)

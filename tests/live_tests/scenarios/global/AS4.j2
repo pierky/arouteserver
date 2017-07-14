@@ -55,6 +55,10 @@ filter to_rs {
 		bgp_community.add((64535,4));
 		bgp_community.add((999,65501));
 	}
+	if net = {{ data.AS4_rtt_10 }} then {
+		bgp_ext_community.add((rt,64537,2));
+		bgp_ext_community.add((rt,64538,4));
+	}
 	
 	accept;
 }
