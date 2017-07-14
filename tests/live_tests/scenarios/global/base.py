@@ -789,9 +789,15 @@ class BasicScenario(LiveScenario):
 
     def test_085_control_communities_rtt_ext_comms_prep1x_gt_10_2x_gt_20(self):
         """{}: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms"""
+        if isinstance(self.rs, BIRDInstance):
+            ext_comm_rpki_unknown = ["generic:0x43000000:0x1"]
+        else:
+            ext_comm_rpki_unknown = []
         pref = self.DATA["AS4_rtt_10"]
         self.receive_route(self.rs, pref, self.AS4,
-                           std_comms=[], ext_comms=["rt:64537:2", "rt:64538:4"])
+                           std_comms=[],
+                           ext_comms=ext_comm_rpki_unknown + ["rt:64537:2",
+                                                              "rt:64538:4"])
         for inst in [self.AS1_1, self.AS1_2]:
             self.receive_route(inst, pref, self.rs, as_path="4",
                                std_comms=[], lrg_comms=[], ext_comms=[])
