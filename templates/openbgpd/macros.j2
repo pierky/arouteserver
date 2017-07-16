@@ -109,7 +109,7 @@
 {%		if comm.ext %}
 {%			if "dyn_val" in comm.ext %}
 {%				for threshold_val in rtt_thresholds %}
-{{-					" ext-community delete " ~ comm.ext|convert_ext_comm|replace("peer_as", asn)|replace("dyn_val", loop.index) -}}
+{{-					" ext-community delete " ~ comm.ext|convert_ext_comm|replace("peer_as", asn)|replace("dyn_val", threshold_val) -}}
 {%				endfor %}
 {%			else %}
 {{-				" ext-community delete " ~ comm.ext|convert_ext_comm|replace("peer_as", asn) -}}

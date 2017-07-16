@@ -319,9 +319,9 @@ allow to {{ client.ip }}
 					   (lower_higher == "higher" and client["rtt"]|get_normalized_rtt > threshold_val) %}
 # {{ comm_name }} {{ threshold_val }} ms
 {%						if ann_do_not == "announce" %}
-{{							match_communities("allow to " ~ client.ip, cfg.communities[comm_name], "", dyn_val=loop.index) }}
+{{							match_communities("allow to " ~ client.ip, cfg.communities[comm_name], "", dyn_val=threshold_val) }}
 {%						else %}
-{{							match_communities("deny to " ~ client.ip, cfg.communities[comm_name], "", dyn_val=loop.index) }}
+{{							match_communities("deny to " ~ client.ip, cfg.communities[comm_name], "", dyn_val=threshold_val) }}
 {%						endif %}
 {%					endif %}
 {%				endfor %}
@@ -354,19 +354,14 @@ allow to {{ client.ip }}
 	"rtt" in client and client["rtt"]|get_normalized_rtt > 0 %}
 {%	for lower_higher in ["higher", "lower"] %}
 {%		for threshold_val in cfg.rtt_thresholds|sort(reverse=(lower_higher == "higher")) %}
-{%                      if lower_higher == "lower" %}
-{%                              set threshold_index = loop.index %}
-{%                      else %}
-{%                              set threshold_index = loop.revindex %}
-{%                      endif %}
 {%                      for times, times_num in [("once", 1), ("twice", 2), ("thrice", 3)] %}
 {%				set comm_name = "prepend_" ~ times ~ "_to_peers_with_rtt_" ~ lower_higher ~ "_than" %}
 {%				if cfg.communities[comm_name]|community_is_set %}
 {%					if (lower_higher == "lower" and client["rtt"]|get_normalized_rtt <= threshold_val) or
 				           (lower_higher == "higher" and client["rtt"]|get_normalized_rtt > threshold_val) %}
 # {{ comm_name }} {{ threshold_val }} ms; remove further "prepend" communities from matching routes
-{{						match_communities("match to " ~ client.ip, cfg.communities[comm_name], "set prepend-neighbor " ~ times_num, dyn_val=threshold_index) }}
-{{						remove_prepending_comms("match to " ~ client.ip, cfg.communities[comm_name], cfg.communities, client.asn, cfg.rtt_thresholds, if_comm_dyn_val=threshold_index) -}}
+{{						match_communities("match to " ~ client.ip, cfg.communities[comm_name], "set prepend-neighbor " ~ times_num, dyn_val=threshold_val) }}
+{{						remove_prepending_comms("match to " ~ client.ip, cfg.communities[comm_name], cfg.communities, client.asn, cfg.rtt_thresholds, if_comm_dyn_val=threshold_val) -}}
 {%					endif %}
 {%				endif %}
 {%			endfor %}

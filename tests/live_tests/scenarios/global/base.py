@@ -699,35 +699,35 @@ class BasicScenario(LiveScenario):
         """{}: control communities, RTT, only peers <= 15 ms"""
         pref = self.DATA["AS4_rtt_1"]
         self.receive_route(self.rs, pref, self.AS4,
-                           std_comms=["0:999", "64532:3"])
+                           std_comms=["0:999", "64532:15"])
         self._test_084_AS1_1_and_AS1_2_only(pref)
 
     def test_084_control_communities_rtt_AS4_only_peers_lt_5(self):
         """{}: control communities, RTT, only peers <= 5 ms"""
         pref = self.DATA["AS4_rtt_2"]
         self.receive_route(self.rs, pref, self.AS4,
-                           std_comms=["0:999", "64532:1"])
+                           std_comms=["0:999", "64532:5"])
         self._test_084_AS1_1_and_AS1_2_only(pref)
 
     def test_084_control_communities_rtt_AS4_not_peers_gt_15(self):
         """{}: control communities, RTT, not peers > 15 ms"""
         pref = self.DATA["AS4_rtt_3"]
         self.receive_route(self.rs, pref, self.AS4,
-                           std_comms=["64531:3"])
+                           std_comms=["64531:15"])
         self._test_084_AS1_1_and_AS1_2_only(pref)
 
     def test_084_control_communities_rtt_AS4_not_peers_gt_5(self):
         """{}: control communities, RTT, not peers > 5 ms"""
         pref = self.DATA["AS4_rtt_4"]
         self.receive_route(self.rs, pref, self.AS4,
-                           std_comms=["64531:1"])
+                           std_comms=["64531:5"])
         self._test_084_AS1_1_and_AS1_2_only(pref)
 
     def test_084_control_communities_rtt_AS4_not_peers_gt_5_but_AS3(self):
         """{}: control communities, RTT, not peers > 5 ms + AS3"""
         pref = self.DATA["AS4_rtt_5"]
         self.receive_route(self.rs, pref, self.AS4,
-                           std_comms=["65501:3", "64531:1"])
+                           std_comms=["65501:3", "64531:5"])
         for inst in (self.AS1_1, self.AS1_2, self.AS3):
             self.receive_route(inst, pref, self.rs,
                                std_comms=[], lrg_comms=[], ext_comms=[])
@@ -739,7 +739,7 @@ class BasicScenario(LiveScenario):
         """{}: control communities, RTT, not peers <= 5 and > 100 ms"""
         pref = self.DATA["AS4_rtt_6"]
         self.receive_route(self.rs, pref, self.AS4,
-                           std_comms=["64530:1", "64531:7"])
+                           std_comms=["64530:5", "64531:100"])
         for inst in [self.AS2]:
             self.receive_route(inst, pref, self.rs,
                                std_comms=[], lrg_comms=[], ext_comms=[])
@@ -749,12 +749,19 @@ class BasicScenario(LiveScenario):
 
     def test_084_control_communities_rtt_AS4_blackhole_not_to_peers_gt_20(self):
         """{}: control communities, RTT, blackhole, not peers > 20 ms"""
+        if isinstance(self.rs, OpenBGPD60Instance) and ":" in self.DATA["AS2_blackhole1"]:
+            # OpenBGPD < 6.1 bug: https://github.com/pierky/arouteserver/issues/3
+            # fixed by https://github.com/openbsd/src/commit/f1385c8f4f9b9e193ff65d9f2039862d3e230a45
+            expected_bh_next_hop=None
+        else:
+            expected_bh_next_hop = self.DATA["blackhole_IP"]
+
         pref = self.DATA["AS4_rtt_7"]
         self.receive_route(self.rs, pref, self.AS4,
-                           std_comms=["65535:666", "64531:4"])
+                           std_comms=["65535:666", "64531:20"])
         for inst in [self.AS1_1, self.AS2]:
             self.receive_route(inst, pref, self.rs,
-                               next_hop=self.DATA["blackhole_IP"],
+                               next_hop=expected_bh_next_hop,
                                std_comms=["65535:666", "65535:65281"],
                                lrg_comms=[], ext_comms=[])
         for inst in [self.AS1_2, self.AS3]:
@@ -765,7 +772,7 @@ class BasicScenario(LiveScenario):
         """{}: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms"""
         pref = self.DATA["AS4_rtt_8"]
         self.receive_route(self.rs, pref, self.AS4,
-                           std_comms=["64539:7", "64538:2"])
+                           std_comms=["64539:100", "64538:10"])
         for inst in [self.AS1_1, self.AS1_2]:
             self.receive_route(inst, pref, self.rs, as_path="4",
                                std_comms=[], lrg_comms=[], ext_comms=[])
@@ -778,7 +785,7 @@ class BasicScenario(LiveScenario):
         """{}: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any"""
         pref = self.DATA["AS4_rtt_9"]
         self.receive_route(self.rs, pref, self.AS4,
-                           std_comms=["64536:1", "64535:4", "999:65501"])
+                           std_comms=["64536:5", "64535:20", "999:65501"])
         for inst in [self.AS1_1, self.AS1_2]:
             self.receive_route(inst, pref, self.rs, as_path="4 4 4 4",
                                std_comms=[], lrg_comms=[], ext_comms=[])
@@ -796,8 +803,8 @@ class BasicScenario(LiveScenario):
         pref = self.DATA["AS4_rtt_10"]
         self.receive_route(self.rs, pref, self.AS4,
                            std_comms=[],
-                           ext_comms=ext_comm_rpki_unknown + ["rt:64537:2",
-                                                              "rt:64538:4"])
+                           ext_comms=ext_comm_rpki_unknown + ["rt:64537:10",
+                                                              "rt:64538:20"])
         for inst in [self.AS1_1, self.AS1_2]:
             self.receive_route(inst, pref, self.rs, as_path="4",
                                std_comms=[], lrg_comms=[], ext_comms=[])

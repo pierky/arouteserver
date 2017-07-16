@@ -371,19 +371,18 @@ cfg:
   # Used only if one or more of those BGP communities are set.
   #
   # The value in the last part of the community identifies the
-  # threshold for which the action is requested; the first threshold
-  # is the number 1.
-  # If the last part of the community contains a value that is out
-  # of range, the action is not performed.
+  # threshold for which the action is requested; only values from
+  # the 'rtt_thresholds' are taken into account and actually used
+  # to understand if the desired action should be performed.
   #
   # Lower-than actions are inclusive, higher-than are exclusive.
   #
   # Some examples (based on the default values below):
   #
-  # - ID 3, lower-than: action is performed for peers with RTT <= 15
-  # - ID 5, higher-than: action is performed for peers with RTT > 30
-  # - ID 1000, out of range, action not performed
-  # - ID 0, out of range, action not performed
+  # - 15, lower-than: action is performed for peers with RTT <= 15
+  # - 30, higher-than: action is performed for peers with RTT > 30
+  # - 1000, not in 'rtt_thresholds', action not performed
+  # - 0, not in 'rtt_thresholds', action not performed
   #
   # The values must be provided in ascending order.
   rtt_thresholds: 5, 10, 15, 20, 30, 50, 100, 200, 500
@@ -519,9 +518,9 @@ cfg:
     #
     # The 'rs_as' macro can be used here.
     # The 'dyn_val' macro must appear in the last part of values.
-    # The 'dyn_val' macro's value must represent the index in the
-    # 'rtt_thresholds' lists that identifies the RTT value for
-    # which the action is requested. Index is 1-based.
+    # The 'dyn_val' macro must contain a value from the
+    # 'rtt_thresholds' list that identifies the RTT value for
+    # which the action is requested.
     do_not_announce_to_peers_with_rtt_lower_than:
       #std:
       #lrg:
@@ -544,9 +543,9 @@ cfg:
     #
     # The 'rs_as' macro can be used here.
     # The 'dyn_val' macro must appear in the last part of values.
-    # The 'dyn_val' macro's value must represent the index in the
-    # 'rtt_thresholds' lists that identifies the RTT value for
-    # which the action is requested. Index is 1-based.
+    # The 'dyn_val' macro must contain a value from the
+    # 'rtt_thresholds' list that identifies the RTT value for
+    # which the action is requested.
     announce_to_peers_with_rtt_lower_than:
       #std:
       #lrg:
@@ -624,9 +623,9 @@ cfg:
     #
     # The 'rs_as' macro can be used here.
     # The 'dyn_val' macro must appear in the last part of values.
-    # The 'dyn_val' macro's value must represent the index in the
-    # 'rtt_thresholds' lists that identifies the RTT value for
-    # which the action is requested. Index is 1-based.
+    # The 'dyn_val' macro must contain a value from the
+    # 'rtt_thresholds' list that identifies the RTT value for
+    # which the action is requested.
     prepend_once_to_peers_with_rtt_lower_than:
       #std:
       #lrg:

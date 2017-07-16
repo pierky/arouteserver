@@ -121,6 +121,6 @@
 
 {%	for threshold_val in rtt_thresholds %}
 {{ "\t" * tabs }}# {{ threshold_val }} ms
-{{- match_communities(comm, "{ if " ~ rtt_var_name ~ " " ~ op ~ " " ~ threshold_val ~ " then\n\t\t\t" ~ if_match ~ " }", replace_dyn_val=loop.index, tabs=tabs) }}
+{{- match_communities(comm, "{ if " ~ rtt_var_name ~ " " ~ op ~ " " ~ threshold_val ~ " then\n\t\t\t" ~ if_match ~ " }", replace_dyn_val=threshold_val, tabs=tabs) }}
 {%	endfor %}
 {% endmacro %}
