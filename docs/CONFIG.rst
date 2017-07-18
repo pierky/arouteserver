@@ -6,21 +6,21 @@ Program configuration
 
 ARouteServer needs the following files to read its own configuration and to determine the policies to be implemented in the route server:
 
-- ``arouteserver.yml``: the main ARouteServer configuration file; it contains options and paths to other files (templates, cache directory, external tools...). By default, ARouteServer looks for this file in ``~/arouteserver`` and ``/etc/arouteserver``. This path can be changed using the ``--cfg`` command line argument. See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/arouteserver.yml>`_.
+- ``arouteserver.yml``: the main ARouteServer configuration file; it contains options and paths to other files (templates, cache directory, external tools...). By default, ARouteServer looks for this file in ``~/arouteserver`` and ``/etc/arouteserver``. This path can be changed using the ``--cfg`` command line argument. See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/arouteserver.yml>`__.
 
   For details regarding the ``rtt_getter_path`` option please see :doc:`RTT_GETTER`.
 
 - ``general.yml``: this is the most important configuration file, where the route server's options and policies are configured.
   By default, it is located in the same directory of the main configuration file; its path can be set with the ``cfg_general`` option in ``arouteserver.yml``.
-  See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`_.
+  See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`__.
 
 - ``clients.yml``: the list of route server's clients and their options and policies.
   By default, it is located in the same directory of the main configuration file; its path can be set with the ``cfg_clients`` option in ``arouteserver.yml``.
-  See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/clients.yml>`_.
+  See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/clients.yml>`__.
 
 - ``bogons.yml``: the list of bogon prefixes automatically discarded by the route server.
   By default, it is located in the same directory of the main configuration file; its path can be set with the ``cfg_bogons`` option in ``arouteserver.yml``.
-  See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/bogons.yml>`_.
+  See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/bogons.yml>`__.
 
 The ``arouteserver setup`` command can be used to setup the environment where ARouteServer is executed and to install the aforementioned files in the proper places.
 
@@ -29,7 +29,7 @@ Route server's configuration
 
 Route server's general configuration and policies are outlined in the ``general.yml`` file. 
 
-Configuration details and options can be found within the distributed `general <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`_ and `clients <https://github.com/pierky/arouteserver/blob/master/config.d/clients.yml>`_ configuration files on GitHub.
+Configuration details and options can be found within the distributed `general <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`__ and `clients <https://github.com/pierky/arouteserver/blob/master/config.d/clients.yml>`__ configuration files on GitHub.
 
 Details about some particular topics are reported below.
 
@@ -172,7 +172,7 @@ RFC8097 BGP extended communities are used to mark routes on the basis of their v
 Depending on the ``reject_invalid`` configuration, INVALID routes can be rejected before entering the route server or accepted for further processing from external tools or functions provided within :ref:`.local files <site-specific-custom-config>`.
 INVALID routes are not propagated to clients.
 
-- To acquire RPKI data and load them into BIRD, a couple of external tools from the `rtrlib <http://rpki.realmv6.org/>`_ suite are used: `rtrlib <https://github.com/rtrlib>`_ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`_. One or more trusted local validating caches should be used to get and validate RPKI data before pushing them to BIRD. An overview is provided on the `rtrlib GitHub wiki <https://github.com/rtrlib/rtrlib/wiki/Background>`_, where also an `usage guide <https://github.com/rtrlib/rtrlib/wiki/Usage-of-the-RTRlib>`_ can be found.
+- To acquire RPKI data and load them into BIRD, a couple of external tools from the `rtrlib <http://rpki.realmv6.org/>`_ suite are used: `rtrlib <https://github.com/rtrlib>`__ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`__. One or more trusted local validating caches should be used to get and validate RPKI data before pushing them to BIRD. An overview is provided on the `rtrlib GitHub wiki <https://github.com/rtrlib/rtrlib/wiki/Background>`__, where also an `usage guide <https://github.com/rtrlib/rtrlib/wiki/Usage-of-the-RTRlib>`__ can be found.
 
 - RPKI validation is not supported by OpenBGPD.
 

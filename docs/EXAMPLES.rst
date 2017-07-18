@@ -10,7 +10,7 @@ Configurations built using the default ``general.yml`` and ``clients.yml`` files
 
 https://github.com/pierky/arouteserver/blob/master/examples/default
 
-See the `textual representation of this configuration <_static/examples_default.html>`_.
+See the `textual representation of this configuration <_static/examples_default.html>`__.
 
 Feature-rich example
 --------------------
@@ -29,7 +29,7 @@ Configurations built using the files provided in the ``examples/rich`` directory
 
 https://github.com/pierky/arouteserver/blob/master/examples/rich
 
-See the `textual representation of this configuration <_static/examples_rich.html>`_.
+See the `textual representation of this configuration <_static/examples_rich.html>`__.
 
 BIRD hooks example
 ------------------
