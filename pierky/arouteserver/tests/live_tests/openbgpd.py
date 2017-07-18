@@ -248,7 +248,7 @@ class OpenBGPDInstance(KVMInstance):
         res = []
 
         for route in self.routes["main"]:
-            if route.prefix != prefix:
+            if route.prefix.lower() != prefix.lower():
                 continue
             if only_best and not route.best:
                 continue

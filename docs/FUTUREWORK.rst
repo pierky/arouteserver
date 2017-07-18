@@ -4,7 +4,8 @@ Future work
 Short term
 ----------
 
-- Packaging: a command to upgrade the program
+- RTT-based communities: extend support to add NO_EXPORT / NO_ADVERTISE
+- Informative community with the measured RTT of the announcing peer
 
 Mid term
 --------

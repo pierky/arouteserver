@@ -26,6 +26,7 @@ from docker import InstanceError
 from pierky.arouteserver.config.validators import ValidatorPrefixListEntry
 from pierky.arouteserver.enrichers.irrdb import IRRDBConfigEnricher_OriginASNs, \
                                                 IRRDBConfigEnricher_Prefixes
+from pierky.arouteserver.enrichers.rtt import RTTGetterConfigEnricher
 from pierky.arouteserver.tests.base import ARouteServerTestCase
 from pierky.arouteserver.tests.mock_peeringdb import mock_peering_db
 from pierky.arouteserver.tests.live_tests.instances import BGPSpeakerInstance
@@ -96,6 +97,19 @@ class LiveScenario(ARouteServerTestCase):
         }
 
     - optionally, if it's needed by the scenario, the derived classes
+      can also set the ``RTT`` dictionary with the values of the RTTs
+      of the clients. Keys can be IP addresses of clients or the
+      prefix IDs used in the ``DATA`` dictionary to represent them.
+
+      Example::
+
+        RTT = {
+            "192.0.2.11": 14,
+            "2001:db8::11": 165,
+            "AS1_IPAddress": 44
+        }
+
+    - optionally, if it's needed by the scenario, the derived classes
       can also set the ``REJECT_CAUSE_COMMUNITY`` attribute with the
       pattern followed by BGP communities used to tag routes that are
       considered to be rejected (see the ``filtering.reject_policy``
@@ -136,6 +150,7 @@ class LiveScenario(ARouteServerTestCase):
     DATA = {}
     AS_SET = {}
     R_SET = {}
+    RTT = {}
     INSTANCES = []
 
     DEBUG = False
@@ -303,6 +318,27 @@ class LiveScenario(ARouteServerTestCase):
         return var_path
 
     @classmethod
+    def mock_rttgetter(cls):
+
+        def _mock_RTTGetter(self):
+            rtts = {}
+            for k in cls.RTT:
+                if k in cls.DATA:
+                    # it is a prefix ID and not an IP address
+                    rtts[cls.DATA[k]] = cls.RTT[k]
+                else:
+                    rtts[k] = cls.RTT[k]
+
+            for client in self.builder.cfg_clients.cfg["clients"]:
+                if client["ip"] in rtts:
+                    client["rtt"] = rtts[client["ip"]]
+
+        mock_RTTGetter = mock.patch.object(
+            RTTGetterConfigEnricher, "enrich", autospec=True
+        ).start()
+        mock_RTTGetter.side_effect = _mock_RTTGetter
+
+    @classmethod
     def mock_irrdb(cls):
     
         def add_prefix_to_list(prefix_name, allow_longer_prefixes, lst):
@@ -351,6 +387,7 @@ class LiveScenario(ARouteServerTestCase):
 
         mock_peering_db(cls._get_module_dir() + "/peeringdb_data")
         cls.mock_irrdb()
+        cls.mock_rttgetter()
         cls._setup_instances()
 
         if cls._do_not_run_instances():

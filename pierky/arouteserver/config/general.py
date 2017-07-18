@@ -43,15 +43,28 @@ class ConfigParserGeneral(ConfigParserBase):
         "prefix_not_present_in_as_set": { "type": "outbound" },
 
         "blackholing": { "type": "inbound" },
+
         "do_not_announce_to_any": { "type": "inbound" },
         "do_not_announce_to_peer": { "type": "inbound", "peer_as": True },
         "announce_to_peer": { "type": "inbound", "peer_as": True },
+        "do_not_announce_to_peers_with_rtt_lower_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "do_not_announce_to_peers_with_rtt_higher_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "announce_to_peers_with_rtt_lower_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "announce_to_peers_with_rtt_higher_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+
         "prepend_once_to_any": { "type": "inbound" },
         "prepend_twice_to_any": { "type": "inbound" },
         "prepend_thrice_to_any": { "type": "inbound" },
         "prepend_once_to_peer": { "type": "inbound", "peer_as": True },
         "prepend_twice_to_peer": { "type": "inbound", "peer_as": True },
         "prepend_thrice_to_peer": { "type": "inbound", "peer_as": True },
+        "prepend_once_to_peers_with_rtt_lower_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "prepend_twice_to_peers_with_rtt_lower_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "prepend_thrice_to_peers_with_rtt_lower_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "prepend_once_to_peers_with_rtt_higher_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "prepend_twice_to_peers_with_rtt_higher_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "prepend_thrice_to_peers_with_rtt_higher_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+
         "add_noexport_to_any": { "type": "inbound" },
         "add_noadvertise_to_any": { "type": "inbound" },
         "add_noexport_to_peer": { "type": "inbound", "peer_as": True },
@@ -162,6 +175,7 @@ class ConfigParserGeneral(ConfigParserBase):
                     "rewrite_next_hop_ipv6": ValidatorIPv6Addr(mandatory=False),
                     "add_noexport": ValidatorBool(default=True),
                 },
+                "rtt_thresholds": ValidatorRTTThresholds(mandatory=False),
                 "communities": {
                 },
                 "custom_communities": {
@@ -316,6 +330,27 @@ class ConfigParserGeneral(ConfigParserBase):
             if str(e):
                 logging.error(str(e))
 
+        # Are RTT-based functions used?
+        self.rtt_based_functions_are_used = False
+        for comm_name in self.cfg["cfg"]["communities"]:
+            comm_schema = self.COMMUNITIES_SCHEMA[comm_name]
+            if not comm_schema.get("rtt", False):
+                continue
+
+            comm = self.cfg["cfg"]["communities"][comm_name]
+            if comm["std"] or comm["ext"] or comm["lrg"]:
+                self.rtt_based_functions_are_used = True
+                break
+
+        # RTT-based functions are used: is RTT thresholds list set?
+        if self.rtt_based_functions_are_used:
+            if not self.cfg["cfg"]["rtt_thresholds"]:
+                errors = True
+                logging.error(
+                    "Some RTT-based functions are configured but the "
+                    "RTT thresholds list is empty."
+                )
+
         if errors:
             raise ConfigError()
 
@@ -466,8 +501,8 @@ class ConfigParserGeneral(ConfigParserBase):
                         break
 
         def compare_communities(comms1, comms2, reason_text):
-            for tag1 in comms1:
-                for tag2 in comms2:
+            for tag1 in sorted(comms1):
+                for tag2 in sorted(comms2):
                     if tag1 == tag2:
                         continue
                     try:

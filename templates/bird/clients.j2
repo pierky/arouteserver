@@ -253,7 +253,7 @@ filter announce_to_{{ client.id }} {
 	if !route_can_be_announced_to({{ client.asn }}, {{ client.ip }}, "{{ client.id }}") then
 		reject "route didn't pass control communities checks - NOT ANNOUNCING ", net, " TO {{ client.id }}";
 
-	apply_prepend({{ client.asn }});
+	apply_prepend({{ client.asn }}, {{ client.ip }});
 
 	{% if client.cfg.prepend_rs_as %}
 	# {{ client.id }} has been configured with 'prepend_rs_as'
@@ -272,6 +272,9 @@ filter announce_to_{{ client.id }} {
 	accept;
 }
 
+{% if "rtt" in client and client["rtt"] %}
+# RTT: {{ client["rtt"] }} ms (normalized value: {{ client["rtt"]|get_normalized_rtt }})
+{% endif %}
 protocol bgp {{ client.id }} {
 	{% if client.description %}
 	description "{{ client.description }}";

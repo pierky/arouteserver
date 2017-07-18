@@ -298,6 +298,57 @@ class TestConfigParserGeneral(TestConfigParserBase):
             self._contains_err("Error parsing 'rewrite_next_hop_ipv4' at 'cfg.blackhole_filtering' level - Invalid IPv4 address: {}.".format(ip))
         self._test_optional(self.cfg["blackhole_filtering"], "rewrite_next_hop_ipv4")
 
+    def test_rtt_thresholds_str(self):
+        """{}: RTT thresholds as comma separated string"""
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: 192.0.2.2\n"
+            "  rtt_thresholds: '1, 2, 3'"
+        )
+        self._contains_err()
+
+    def test_rtt_thresholds_int(self):
+        """{}: RTT thresholds as list of int"""
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: 192.0.2.2\n"
+            "  rtt_thresholds: 1, 2, 3"
+        )
+        self._contains_err()
+
+    def test_rtt_thresholds_empty(self):
+        """{}: RTT thresholds, empty"""
+
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: 192.0.2.2\n"
+            "  rtt_thresholds: "
+        )
+        self._contains_err()
+
+    def test_rtt_thresholds_invalid(self):
+        """{}: RTT thresholds, invalid values"""
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: 192.0.2.2\n"
+            "  rtt_thresholds: 1, 2a, 3"
+        )
+        self._contains_err("RTT thresholds list items must be positive integers:  2a")
+
+    def test_rtt_thresholds_order(self):
+        """{}: RTT thresholds, out of order"""
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: 192.0.2.2\n"
+            "  rtt_thresholds: 3, 2, 1"
+        )
+        self._contains_err("RTT thresholds list items must be provided in ascending order: 2 < 3")
+
     def test_blackhole_filtering_ipv6(self):
         """{}: blackhole_filtering, rewrite_next_hop, ipv6"""
         self.load_config(file_name="{}/test_cfg_general_blackhole_filtering.yml".format(os.path.dirname(__file__)))
@@ -383,7 +434,17 @@ class TestConfigParserGeneral(TestConfigParserBase):
     def test_mandatory_dyn_val_communities(self):
         """{}: communities that need dyn_val macro"""
 
-        for comm in ("reject_cause", "rejected_route_announced_by"):
+        for comm in ("reject_cause", "rejected_route_announced_by",
+                     "do_not_announce_to_peers_with_rtt_lower_than",
+                     "do_not_announce_to_peers_with_rtt_higher_than",
+                     "announce_to_peers_with_rtt_lower_than",
+                     "announce_to_peers_with_rtt_higher_than",
+                     "prepend_once_to_peers_with_rtt_lower_than",
+                     "prepend_twice_to_peers_with_rtt_lower_than",
+                     "prepend_thrice_to_peers_with_rtt_lower_than",
+                     "prepend_once_to_peers_with_rtt_higher_than",
+                     "prepend_twice_to_peers_with_rtt_higher_than",
+                     "prepend_thrice_to_peers_with_rtt_higher_than"):
             for c in self.VALID_STD_COMMS:
                 self.cfg["communities"][comm]["std"] = c
                 self._contains_err("'dyn_val' macro is mandatory in this community")
@@ -725,6 +786,57 @@ class TestConfigParserGeneral(TestConfigParserBase):
         if not exp_err_msg_found:
             self.fail("Expected error message not found")
 
+    def test_overlapping_communities_in_in_dyn_val(self):
+        """{}: overlapping communities, inbound/inbound (dyn_val)"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  communities:"
+        ]
+
+        # blackholing: inbound
+        # do_not_announce_to_peers_with_rtt_lower_than: inbound with dyn_val
+        yaml_lines = tpl + [
+            "    blackholing:",
+            "      std: '0:666'",
+            "    do_not_announce_to_peers_with_rtt_lower_than:",
+            "      std: '0:dyn_val'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err("Community 'blackholing' and 'do_not_announce_to_peers_with_rtt_lower_than' overlap: 0:666 / 0:dyn_val. Inbound communities can't have overlapping values, otherwise their meaning could be uncertain.")
+
+        # do_not_announce_to_peer: inbound with peer_as
+        # do_not_announce_to_peers_with_rtt_lower_than: inbound with dyn_val
+        yaml_lines = tpl + [
+            "    do_not_announce_to_peer:",
+            "      std: '0:peer_as'",
+            "    do_not_announce_to_peers_with_rtt_lower_than:",
+            "      std: '0:dyn_val'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err("Community 'do_not_announce_to_peer' and 'do_not_announce_to_peers_with_rtt_lower_than' overlap: 0:peer_as / 0:dyn_val. Inbound communities can't have overlapping values, otherwise their meaning could be uncertain.")
+
+    def test_overlapping_communities_out_in_dyn_val(self):
+        """{}: overlapping communities, outbound/inbound (dyn_val)"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  communities:"
+        ]
+
+        # prefix_not_present_in_as_set: outbound
+        # do_not_announce_to_peers_with_rtt_lower_than: inbound with dyn_val
+        yaml_lines = tpl + [
+            "    prefix_not_present_in_as_set:",
+            "      std: '0:1'",
+            "    do_not_announce_to_peers_with_rtt_lower_than:",
+            "      std: '0:dyn_val'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err("Community 'do_not_announce_to_peers_with_rtt_lower_than' and 'prefix_not_present_in_as_set' overlap: 0:dyn_val / 0:1. Inbound communities and outbound communities can't have overlapping values, otherwise they might be scrubbed.")
+
     def test_overlapping_communities_in_cust(self):
         """{}: overlapping communities, inbound/custom"""
         tpl = [
@@ -767,6 +879,31 @@ class TestConfigParserGeneral(TestConfigParserBase):
 
         if not exp_err_msg_found:
             self.fail("Expected error message not found")
+
+    def test_rtt_based_communities_without_rtt_thresholds(self):
+        """{}: RTT-based communities without RTT thresholds"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  communities:",
+            "    do_not_announce_to_peers_with_rtt_lower_than:",
+            "      std: '0:dyn_val'"
+        ]
+        self.load_config(yaml="\n".join(tpl))
+        self._contains_err("Some RTT-based functions are configured but the RTT thresholds list is empty.")
+
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  rtt_thresholds: 1, 2",
+            "  communities:",
+            "    do_not_announce_to_peers_with_rtt_lower_than:",
+            "      std: '0:dyn_val'"
+        ]
+        self.load_config(yaml="\n".join(tpl))
+        self._contains_err()
 
     def test_max_pref_action(self):
         """{}: max_prefix action"""
@@ -890,6 +1027,80 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "general_limit_ipv6": 12000
                 },
             },
+            "rtt_thresholds": None,
+            "blackhole_filtering": {
+                "policy_ipv4": None,
+                "policy_ipv6": None,
+                "rewrite_next_hop_ipv4": None,
+                "rewrite_next_hop_ipv6": None,
+                "announce_to_client": True,
+                "add_noexport": True,
+            }
+        }
+
+        self.maxDiff = None
+        del self.cfg["communities"]
+        del self.cfg["custom_communities"]
+        self.assertMultiLineEqual(
+            yaml.safe_dump(self.cfg.cfg, default_flow_style=False),
+            yaml.safe_dump({"cfg": exp_res}, default_flow_style=False)
+        )
+
+    def test_distrib_config(self):
+        """{}: distributed config"""
+        self.load_config(file_name="config.d/general.yml")
+        self.cfg.parse()
+        self._contains_err()
+
+        exp_res = {
+            "rs_as": 999,
+            "router_id": "192.0.2.2",
+            "prepend_rs_as": False,
+            "path_hiding": True,
+            "passive": True,
+            "gtsm": False,
+            "add_path": False,
+            "filtering": {
+                "next_hop": {
+                    "policy": "strict"
+                },
+                "global_black_list_pref": None,
+                "ipv4_pref_len": {
+                    "min": 8,
+                    "max": 24
+                },
+                "ipv6_pref_len": {
+                    "min": 12,
+                    "max": 48
+                },
+                "max_as_path_len": 32,
+                "reject_invalid_as_in_as_path": True,
+                "reject_policy": {
+                    "policy": "reject"
+                },
+                "transit_free": {
+                    "action": None,
+                    "asns": [174, 209, 286, 701, 1239, 1299, 2828, 2914, 3257, 3320, 3356, 3549, 5511, 6453, 6461, 6762, 6830, 7018, 12956]
+                },
+                "irrdb": {
+                    "tag_as_set": True,
+                    "enforce_origin_in_as_set": True,
+                    "enforce_prefix_in_as_set": True,
+                    "allow_longer_prefixes": False
+                },
+                "rpki": {
+                    "enabled": False,
+                    "reject_invalid": True,
+                },
+                "max_prefix": {
+                    "action": None,
+                    "restart_after": 15,
+                    "peering_db": True,
+                    "general_limit_ipv4": 170000,
+                    "general_limit_ipv6": 12000
+                },
+            },
+            "rtt_thresholds": [5, 10, 15, 20, 30, 50, 100, 200, 500],
             "blackhole_filtering": {
                 "policy_ipv4": None,
                 "policy_ipv6": None,

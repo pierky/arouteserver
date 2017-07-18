@@ -32,6 +32,7 @@ from .config.roa import ConfigParserROAEntries
 from .enrichers.irrdb import IRRDBConfigEnricher_OriginASNs, \
                              IRRDBConfigEnricher_Prefixes
 from .enrichers.peeringdb import PeeringDBConfigEnricher
+from .enrichers.rtt import RTTGetterConfigEnricher
 from .errors import MissingDirError, MissingFileError, BuilderError, \
                     ARouteServerError, PeeringDBError, PeeringDBNoInfoError, \
                     MissingArgumentError, TemplateRenderingError, \
@@ -120,7 +121,8 @@ class ConfigBuilder(object):
     def __init__(self, template_dir=None, template_name=None,
                  cache_dir=None, cache_expiry=CachedObject.DEFAULT_EXPIRY,
                  bgpq3_path="bgpq3", bgpq3_host=IRRDBTools.BGPQ3_DEFAULT_HOST,
-                 bgpq3_sources=IRRDBTools.BGPQ3_DEFAULT_SOURCES, threads=4,
+                 bgpq3_sources=IRRDBTools.BGPQ3_DEFAULT_SOURCES,
+                 rtt_getter_path=None, threads=4,
                  ip_ver=None, ignore_errors=[], live_tests=False,
                  local_files=[], local_files_dir=None, target_version=None,
                  cfg_general=None, cfg_bogons=None, cfg_clients=None,
@@ -288,6 +290,15 @@ class ConfigBuilder(object):
 
                 - *bgpq3_sources* program's configuration file option.
 
+            rtt_getter_path (str): path to the program that is executed to
+                determine the RTT of a peer.
+                Syntax and details can be found at the following URL:
+                https://arouteserver.readthedocs.io/en/latest/RTT_GETTER.html
+
+                Same of:
+
+                - *rtt_getter_path* program's configuration file option.
+
             threads (int): number of concurrent threads used to gather
                 additional data from external sources (bgpq3, PeeringDB, ...)
 
@@ -325,6 +336,8 @@ class ConfigBuilder(object):
         self.bgpq3_path = bgpq3_path
         self.bgpq3_host = bgpq3_host
         self.bgpq3_sources = bgpq3_sources
+
+        self.rtt_getter_path = rtt_getter_path
 
         self.threads = threads
 
@@ -448,9 +461,13 @@ class ConfigBuilder(object):
             self.cfg_general["communities"][comm_name]["peer_as"] = comm.get("peer_as", False)
 
         # Enrichers
-        for enricher_class in (IRRDBConfigEnricher_OriginASNs,
-                               IRRDBConfigEnricher_Prefixes,
-                               PeeringDBConfigEnricher):
+        used_enricher_classes = [IRRDBConfigEnricher_OriginASNs,
+                                 IRRDBConfigEnricher_Prefixes,
+                                 PeeringDBConfigEnricher]
+        if self.cfg_general.rtt_based_functions_are_used:
+            used_enricher_classes.append(RTTGetterConfigEnricher)
+
+        for enricher_class in used_enricher_classes:
             enricher = enricher_class(self, threads=self.threads)
             try:
                 enricher.enrich()
@@ -508,6 +525,8 @@ class ConfigBuilder(object):
         self.data["as_sets"] = self.as_sets
         self.data["roas"] = self.cfg_roas
         self.data["live_tests"] = self.live_tests
+        self.data["rtt_based_functions_are_used"] = \
+            self.cfg_general.rtt_based_functions_are_used
 
         def ipaddr_ver(ip):
             return ipaddr.IPAddress(ip).version
@@ -535,6 +554,15 @@ class ConfigBuilder(object):
                 return version.parse(self.target_version) >= version.parse(v)
             return False
 
+        def get_normalized_rtt(v):
+            if not v:
+                return 0
+            if v < 1:
+                return 1
+            if v > 60000:
+                return 60000
+            return int(round(v))
+
         env = Environment(
             loader=FileSystemLoader(self.template_dir),
             trim_blocks=True,
@@ -546,6 +574,7 @@ class ConfigBuilder(object):
         env.filters["ipaddr_ver"] = ipaddr_ver
         env.filters["include_local_file"] = include_local_file
         env.filters["target_version_ge"] = target_version_ge
+        env.filters["get_normalized_rtt"] = get_normalized_rtt
 
         self.enrich_j2_environment(env)
 

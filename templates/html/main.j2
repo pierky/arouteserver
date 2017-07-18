@@ -285,15 +285,30 @@ The NO_EXPORT well-known community is also added.
   <tbody>
   {{ write_communities_table_row(cfg.communities.do_not_announce_to_any, "Do not announce to any client") }}
   {{ write_communities_table_row(cfg.communities.announce_to_peer, "Announce to peer, even if tagged with the previous community") }}
+{% for ann_do_not, descr in [("do_not_announce", "Do not announce"), ("announce", "Announce")] %}
+{%	for lower_higher, op in [("lower", "<="), ("higher", ">")] %}
+{%		set comm = cfg.communities[ann_do_not ~ "_to_peers_with_rtt_" ~ lower_higher ~ "_than"] %}
+  {{ write_communities_table_row(comm, descr ~ "_to peers with RTT " ~ op ~ " than <em>X</em> ms (*)", dyn_val="X") }}
+{%	endfor %}
+{% endfor %}
   {{ write_communities_table_row(cfg.communities.do_not_announce_to_peer, "Do not announce to peer") }}
-
-  {{ write_communities_table_row(cfg.communities.prepend_once_to_any, "Prepend the announcing ASN once to any") }}
-  {{ write_communities_table_row(cfg.communities.prepend_twice_to_any, "Prepend the announcing ASN twice to any") }}
-  {{ write_communities_table_row(cfg.communities.prepend_thrice_to_any, "Prepend the announcing ASN thrice to any") }}
 
   {{ write_communities_table_row(cfg.communities.prepend_once_to_peer, "Prepend the announcing ASN once to peer") }}
   {{ write_communities_table_row(cfg.communities.prepend_twice_to_peer, "Prepend the announcing ASN twice to peer") }}
   {{ write_communities_table_row(cfg.communities.prepend_thrice_to_peer, "Prepend the announcing ASN thrice to peer") }}
+
+{% for lower_higher, op in [("higher", ">"), ("lower", "<=")] %}
+{%	for times, times_num in [("once", 1), ("twice", 2), ("thrice", 3)] %}
+{%		set comm = cfg.communities["prepend_" ~ times ~ "_to_peers_with_rtt_" ~ lower_higher ~ "_than"] %}
+{%		if comm|community_is_set %}
+  {{ write_communities_table_row(comm, "Prepend " ~ times ~ " to peers with RTT " ~ op ~ " than <em>X</em> ms (*)", dyn_val="X") }}
+{%		endif %}
+{%	endfor %}
+{% endfor %}
+
+  {{ write_communities_table_row(cfg.communities.prepend_once_to_any, "Prepend the announcing ASN once to any") }}
+  {{ write_communities_table_row(cfg.communities.prepend_twice_to_any, "Prepend the announcing ASN twice to any") }}
+  {{ write_communities_table_row(cfg.communities.prepend_thrice_to_any, "Prepend the announcing ASN thrice to any") }}
 
   {{ write_communities_table_row(cfg.communities.add_noexport_to_any, "Add NO_EXPORT to any") }}
   {{ write_communities_table_row(cfg.communities.add_noadvertise_to_any, "Add NO_ADVERTISE to any") }}
@@ -302,6 +317,13 @@ The NO_EXPORT well-known community is also added.
 
   </tbody>
 </table>
+
+{% if rtt_based_functions_are_used %}
+* For RTT-based communities, the following values can be used for <em>X</em>: 
+{%	for threshold_val in cfg.rtt_thresholds %}
+{{ threshold_val }}{% if not loop.last %}, {% endif %}
+{%	endfor %}
+{% endif %}
 
 
 </div>

@@ -30,6 +30,7 @@ cfg:
                 policy_ipv6: "rewrite-next-hop"
                 rewrite_next_hop_ipv6: "2001:db8:1:1::66"
                 add_noexport: True
+        rtt_thresholds: 5, 10, 15, 20, 30, 50, 100, 200, 500
         communities:
                 blackholing:
                         std: "65534:0"
@@ -92,4 +93,44 @@ cfg:
                         std: "65510:peer_as"
                         ext: "rt:65510:peer_as"
                         lrg: "rs_as:65510:peer_as"
+                do_not_announce_to_peers_with_rtt_lower_than:
+                        std: "64530:dyn_val"
+                        ext: "rt:64530:dyn_val"
+                        lrg: "rs_as:64530:dyn_val"
+                do_not_announce_to_peers_with_rtt_higher_than:
+                        std: "64531:dyn_val"
+                        ext: "rt:64531:dyn_val"
+                        lrg: "rs_as:64531:dyn_val"
+                announce_to_peers_with_rtt_lower_than:
+                        std: "64532:dyn_val"
+                        ext: "rt:64532:dyn_val"
+                        lrg: "rs_as:64532:dyn_val"
+                announce_to_peers_with_rtt_higher_than:
+                        std: "64533:dyn_val"
+                        ext: "rt:64533:dyn_val"
+                        lrg: "rs_as:64533:dyn_val"
+                prepend_once_to_peers_with_rtt_lower_than:
+                        std: "64534:dyn_val"
+                        ext: "rt:64534:dyn_val"
+                        lrg: "rs_as:64534:dyn_val"
+                prepend_twice_to_peers_with_rtt_lower_than:
+                        std: "64535:dyn_val"
+                        ext: "rt:64535:dyn_val"
+                        lrg: "rs_as:64535:dyn_val"
+                prepend_thrice_to_peers_with_rtt_lower_than:
+                        std: "64536:dyn_val"
+                        ext: "rt:64536:dyn_val"
+                        lrg: "rs_as:64536:dyn_val"
+                prepend_once_to_peers_with_rtt_higher_than:
+                        std: "64537:dyn_val"
+                        ext: "rt:64537:dyn_val"
+                        lrg: "rs_as:64537:dyn_val"
+                prepend_twice_to_peers_with_rtt_higher_than:
+                        std: "64538:dyn_val"
+                        ext: "rt:64538:dyn_val"
+                        lrg: "rs_as:64538:dyn_val"
+                prepend_thrice_to_peers_with_rtt_higher_than:
+                        std: "64539:dyn_val"
+                        ext: "rt:64539:dyn_val"
+                        lrg: "rs_as:64539:dyn_val"
 

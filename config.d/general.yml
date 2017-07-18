@@ -365,6 +365,28 @@ cfg:
     # tagged routes before announcing them to clients.
     #add_noexport: True
 
+  # Thresholds used for actions that are performed on the basis
+  # of clients RTT, triggered using RTT-based BGP communities.
+  #
+  # Used only if one or more of those BGP communities are set.
+  #
+  # The value in the last part of the community identifies the
+  # threshold for which the action is requested; only values from
+  # the 'rtt_thresholds' are taken into account and actually used
+  # to understand if the desired action should be performed.
+  #
+  # Lower-than actions are inclusive, higher-than are exclusive.
+  #
+  # Some examples (based on the default values below):
+  #
+  # - 15, lower-than: action is performed for peers with RTT <= 15
+  # - 30, higher-than: action is performed for peers with RTT > 30
+  # - 1000, not in 'rtt_thresholds', action not performed
+  # - 0, not in 'rtt_thresholds', action not performed
+  #
+  # The values must be provided in ascending order.
+  rtt_thresholds: 5, 10, 15, 20, 30, 50, 100, 200, 500
+
   communities:
     # For each community name below, Standard, Large and Extended
     # BGP Communities can be provided in the 'std', 'lrg' and 'ext'
@@ -438,7 +460,7 @@ cfg:
       #lrg:
       #ext:
  
-    # Control communities
+    # Control communities.
     # 
     # Routes that are tagged with the following community are not
     # announced to any client, unless they are also tagged with the
@@ -487,13 +509,70 @@ cfg:
       #lrg:
       #ext:
 
+    # Routes that are tagged with the following community are not
+    # announced to clients that have a RTT lower/higher than the
+    # value of the threshold identified by the last part of the
+    # community.
+    #
+    # The following communities are scrubbed from outbound routes.
+    #
+    # The 'rs_as' macro can be used here.
+    # The 'dyn_val' macro must appear in the last part of values.
+    # The 'dyn_val' macro must contain a value from the
+    # 'rtt_thresholds' list that identifies the RTT value for
+    # which the action is requested.
+    do_not_announce_to_peers_with_rtt_lower_than:
+      #std:
+      #lrg:
+      #ext:
+    do_not_announce_to_peers_with_rtt_higher_than:
+      #std:
+      #lrg:
+      #ext:
+
+    # Routes that are tagged with the following community are
+    # announced to clients that have a RTT lower/higher than the
+    # value of the threshold identified by the last part of the
+    # community, even if they are tagged with the
+    # 'do_not_announce_to_any' community.
+    # If a route is also tagged with the 'do_not_announce_to_peer'
+    # community it is not advertised to the client even if it
+    # matches the RTT criterion.
+    #
+    # The following communities are scrubbed from outbound routes.
+    #
+    # The 'rs_as' macro can be used here.
+    # The 'dyn_val' macro must appear in the last part of values.
+    # The 'dyn_val' macro must contain a value from the
+    # 'rtt_thresholds' list that identifies the RTT value for
+    # which the action is requested.
+    announce_to_peers_with_rtt_lower_than:
+      #std:
+      #lrg:
+      #ext:
+    announce_to_peers_with_rtt_higher_than:
+      #std:
+      #lrg:
+      #ext:
+
+    # Prepending communities.
+    #
+    # The 3 "flavors" of prepending actions (to_peer, rtt
+    # based and to_any) are applied in the following order:
+    # - prepend_x_to_peer
+    # - prepend_x_to_peers_with_rtt_higher_than (RTTs in desc order)
+    # - prepend_x_to_peers_with_rtt_lower_than (RTTs in asc order)
+    # - prepend_x_to_any
+    # (x is always in the ascending order: once, twice, thrice).
+    #
+    # For example, if a route is tagged with both a
+    # 'prepend_x_to_any' and a 'prepend_x_to_peer' community, only
+    # the latter will be considered when announcing to the clients
+    # whose ASN match the one given in its value.
+
     # Routes that are tagged with the following communities are
     # propagated to all the clients with an AS_PATH prepended once,
     # twice or thrice with the announcing client's ASN.
-    # If a route is tagged with both a 'prepend_x_to_any' and a
-    # 'prepend_x_to_peer' community, only the latter will be
-    # considered when announcing to the clients whose ASN match the
-    # one given in its value.
     #
     # The following communities are scrubbed from outbound routes.
     #
@@ -515,10 +594,6 @@ cfg:
     # propagated to the clients whose ASN matches the one given in
     # the community with an AS_PATH prepended once, twice or thrice
     # with the announcing client's ASN.
-    # If a route is tagged with both a 'prepend_x_to_any' and a
-    # 'prepend_x_to_peer' community, only the latter will be
-    # considered when announcing to the clients whose ASN match the
-    # one given in its value.
     #
     # The following communities are scrubbed from outbound routes.
     #
@@ -533,6 +608,45 @@ cfg:
       #lrg:
       #ext:
     prepend_thrice_to_peer:
+      #std:
+      #lrg:
+      #ext:
+
+    # Routes that are tagged with the following communities are
+    # propagated to clients having a RTT lower/higher than the value
+    # of the threshold identified by the last part of the community
+    # with an AS_PATH prepended once, twice or thrice with the
+    # announcing client's ASN.
+    #
+    # The following communities are scrubbed from outbound routes.
+    # The 'peer_as' macro must appear in the last part of values.
+    #
+    # The 'rs_as' macro can be used here.
+    # The 'dyn_val' macro must appear in the last part of values.
+    # The 'dyn_val' macro must contain a value from the
+    # 'rtt_thresholds' list that identifies the RTT value for
+    # which the action is requested.
+    prepend_once_to_peers_with_rtt_lower_than:
+      #std:
+      #lrg:
+      #ext:
+    prepend_twice_to_peers_with_rtt_lower_than:
+      #std:
+      #lrg:
+      #ext:
+    prepend_thrice_to_peers_with_rtt_lower_than:
+      #std:
+      #lrg:
+      #ext:
+    prepend_once_to_peers_with_rtt_higher_than:
+      #std:
+      #lrg:
+      #ext:
+    prepend_twice_to_peers_with_rtt_higher_than:
+      #std:
+      #lrg:
+      #ext:
+    prepend_thrice_to_peers_with_rtt_higher_than:
       #std:
       #lrg:
       #ext:

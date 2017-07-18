@@ -59,11 +59,13 @@ class ConfigParserProgram(object):
         "bgpq3_host": IRRDBTools.BGPQ3_DEFAULT_HOST,
         "bgpq3_sources": IRRDBTools.BGPQ3_DEFAULT_SOURCES,
 
+        "rtt_getter_path": "",
+
         "threads": 4,
     }
 
     PATH_KEYS = ("logging_config_file", "cfg_general", "cfg_clients",
-                 "cfg_bogons", "templates_dir", "cache_dir")
+                 "cfg_bogons", "templates_dir", "cache_dir", "rtt_getter_path")
 
     FINGERPRINTS_FILENAME = "fingerprints.yml"
 
@@ -103,6 +105,8 @@ class ConfigParserProgram(object):
 
         # relative path -> absolute path
         for cfg_key in self.PATH_KEYS:
+            if not self.cfg[cfg_key]:
+                continue
             val = os.path.expanduser(self.cfg[cfg_key])
             if not os.path.isabs(val):
                 self.cfg[cfg_key] = os.path.join(self.cfg["cfg_dir"], val)
@@ -122,7 +126,9 @@ class ConfigParserProgram(object):
                 self.cfg[option_name] = args_dict[option_name]
 
     def get(self, cfg_key):
-        return self.expanduser(cfg_key)
+        if self.cfg[cfg_key]:
+            return self.expanduser(cfg_key)
+        return None
 
     @staticmethod
     def mk_dir(d):

@@ -2,6 +2,7 @@
 {% from 'macros.j2' import del_communities %}
 {% from 'macros.j2' import match_communities %}
 {% from 'macros.j2' import add_communities %}
+{% from 'macros.j2' import match_rtt_communities %}
 # ---------------------------------------------------------
 # COMMON
 
@@ -88,6 +89,22 @@ int set transit_free_asns;
 {% endif %}
 }
 
+{% if rtt_based_functions_are_used %}
+# This function returns the RTT measured for the peer given in client_ip.
+# If the RTT is not available it returns 0.
+function get_peer_rtt(ip client_ip) {
+	case client_ip {
+{%	for client in clients if client.ip is current_ipver %}
+{%		if "rtt" in client and client["rtt"]|get_normalized_rtt %}
+		{{ client["ip"] }} : return {{ client["rtt"]|get_normalized_rtt }}; # {{ client["rtt"] }}
+{%		endif %}
+{%	endfor %}
+	}
+
+	return 0;
+}
+{% endif %}
+
 # This function scrubs BGP communities used by the route server
 # for signaling purpose toward its clients. (RFC7454, Section 11)
 # It must be applied on routes entering the route server.
@@ -122,7 +139,7 @@ function scrub_communities_out() {
 {% for name in cfg.communities if cfg.communities[name].type == "inbound" %}
 {% if cfg.communities[name]|community_is_set %}
 	# {{ name }}
-{{ del_communities(cfg.communities[name], cfg.communities[name].peer_as) }}
+{{ del_communities(cfg.communities[name], cfg.communities[name].peer_as, replace_dyn_val="*") }}
 {% endif %}
 {% endfor %}
 {% for name in cfg.communities if cfg.communities[name].type == "internal" %}
@@ -192,54 +209,104 @@ function apply_blackhole_filtering_policy() {
 # This function verifies if the current route can be announced to
 # the given client on the basis of the attached control BGP
 # communities.
-function route_can_be_announced_to(int peer_as; ip client_ip; string client_id) {
-	{% if "route_can_be_announced_to"|hook_is_set %}
+function route_can_be_announced_to(int peer_as; ip client_ip; string client_id)
+int client_rtt;
+{
+{% if "route_can_be_announced_to"|hook_is_set %}
 	return hook_route_can_be_announced_to(peer_as, client_ip, client_id);
-	{% else %}
-	{% if cfg.communities.do_not_announce_to_peer|community_is_set %}
+{% else %}
+{%	if cfg.communities.do_not_announce_to_peer|community_is_set %}
 	# do_not_announce_to_peer
-	{{- match_communities(cfg.communities.do_not_announce_to_peer, "return false;") }}
-	{% endif %}
-	{% if cfg.communities.announce_to_peer|community_is_set %}
+{{-		match_communities(cfg.communities.do_not_announce_to_peer, "return false;") }}
+{%	endif %}
+{%	if cfg.communities.announce_to_peer|community_is_set %}
 	# announce_to_peer
-	{{- match_communities(cfg.communities.announce_to_peer, "return true;") }}
-	{% endif %}
-	{% if cfg.communities.do_not_announce_to_any|community_is_set %}
+{{-		match_communities(cfg.communities.announce_to_peer, "return true;") }}
+{%	endif %}
+{%	if rtt_based_functions_are_used and
+	   ( cfg.communities.do_not_announce_to_peers_with_rtt_higher_than|community_is_set or
+	     cfg.communities.do_not_announce_to_peers_with_rtt_lower_than|community_is_set or
+	     cfg.communities.announce_to_peers_with_rtt_higher_than|community_is_set or
+	     cfg.communities.announce_to_peers_with_rtt_lower_than|community_is_set ) %}
+	client_rtt = get_peer_rtt(client_ip);
+
+	if client_rtt > 0 then {
+{%		if cfg.communities.do_not_announce_to_peers_with_rtt_higher_than|community_is_set %}
+		# do_not_announce_to_peers_with_rtt_higher_than
+{{			match_rtt_communities(cfg.rtt_thresholds, cfg.communities.do_not_announce_to_peers_with_rtt_higher_than, "client_rtt", ">", "return false;", tabs=2) }}
+{%		endif %}
+{%		if cfg.communities.do_not_announce_to_peers_with_rtt_lower_than|community_is_set %}
+		# do_not_announce_to_peers_with_rtt_lower_than
+{{			match_rtt_communities(cfg.rtt_thresholds, cfg.communities.do_not_announce_to_peers_with_rtt_lower_than, "client_rtt", "<=", "return false;", tabs=2) }}
+{%		endif %}
+{%		if cfg.communities.announce_to_peers_with_rtt_higher_than|community_is_set %}
+		# announce_to_peers_with_rtt_higher_than
+{{			match_rtt_communities(cfg.rtt_thresholds, cfg.communities.announce_to_peers_with_rtt_higher_than, "client_rtt", ">", "return true;", tabs=2) }}
+{%		endif %}
+{%		if cfg.communities.announce_to_peers_with_rtt_lower_than|community_is_set %}
+		# announce_to_peers_with_rtt_lower_than
+{{			match_rtt_communities(cfg.rtt_thresholds, cfg.communities.announce_to_peers_with_rtt_lower_than, "client_rtt", "<=", "return true;", tabs=2) }}
+{%		endif %}
+	}
+
+{%	endif %}
+{%	if cfg.communities.do_not_announce_to_any|community_is_set %}
 	# do_not_announce_to_any
-	{{- match_communities(cfg.communities.do_not_announce_to_any, "return false;") }}
-	{% endif %}
+{{-		match_communities(cfg.communities.do_not_announce_to_any, "return false;") }}
+{%	endif %}
 	return true;
-	{% endif %}
+{% endif %}
+}
+
+# This function prepends the left-most ASN <times> times.
+function do_prepend(int times) {
+	case times {
+		1: bgp_path.prepend(bgp_path.first);
+		2: bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first);
+		3: bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first);
+	}
 }
 
 # This function verifies if the current route matches one of the
 # control communities in charge of prepending client's ASN.
-function apply_prepend(int peer_as) {
-	{% if cfg.communities.prepend_once_to_peer|community_is_set %}
-	# prepend_once_to_peer
-	{{ match_communities(cfg.communities.prepend_once_to_peer, "{ bgp_path.prepend(bgp_path.first); return true; }") }}
-	{% endif %}
-	{% if cfg.communities.prepend_twice_to_peer|community_is_set %}
-	# prepend_twice_to_peer
-	{{ match_communities(cfg.communities.prepend_twice_to_peer, "{ bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); return true; }") }}
-	{% endif %}
-	{% if cfg.communities.prepend_thrice_to_peer|community_is_set %}
-	# prepend_thrice_to_peer
-	{{ match_communities(cfg.communities.prepend_thrice_to_peer, "{ bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); return true; }") }}
-	{% endif %}
+function apply_prepend(int peer_as; ip client_ip)
+int client_rtt;
+{
+{% for times in ["once", "twice", "thrice"] %}
+{%	set comm_name = "prepend_" ~ times ~ "_to_peer" %}
+{%	if cfg.communities[comm_name]|community_is_set %}
+	# {{ comm_name }}
+{{-	match_communities(cfg.communities[comm_name], "{ do_prepend(" ~ loop.index ~ "); return true; }") }}
+{%	endif %}
+{% endfor %}
 
-	{% if cfg.communities.prepend_once_to_any|community_is_set %}
-	# prepend_once_to_any
-	{{ match_communities(cfg.communities.prepend_once_to_any, "{ bgp_path.prepend(bgp_path.first); return true; }") }}
-	{% endif %}
-	{% if cfg.communities.prepend_twice_to_any|community_is_set %}
-	# prepend_twice_to_any
-	{{ match_communities(cfg.communities.prepend_twice_to_any, "{ bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); return true; }") }}
-	{% endif %}
-	{% if cfg.communities.prepend_thrice_to_any|community_is_set %}
-	# prepend_thrice_to_any
-	{{ match_communities(cfg.communities.prepend_thrice_to_any, "{ bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); return true; }") }}
-	{% endif %}
+{% if rtt_based_functions_are_used %}
+	client_rtt = get_peer_rtt(client_ip);
+
+	if client_rtt > 0 then {
+{%	for lower_higher, op, order in [("higher", ">", "desc"), ("lower", "<=", "asc")] %}
+{%		for threshold_val in cfg.rtt_thresholds|sort(reverse=(order == "desc")) %}
+{%			for times in ["once", "twice", "thrice"] %}
+{%				set comm_name = "prepend_" ~ times ~ "_to_peers_with_rtt_" ~ lower_higher ~ "_than" %}
+{%				if cfg.communities[comm_name]|community_is_set %}
+		# {{ comm_name }} {{ threshold_val }} ms
+{{-             match_communities(cfg.communities[comm_name], "{ if client_rtt " ~ op ~ " " ~ threshold_val ~ " then\n\t\t\t{ do_prepend(" ~ loop.index ~ "); return true; } }", replace_dyn_val=threshold_val, tabs=2 ) }}
+{%				endif %}
+{%			endfor %}
+{%		endfor %}
+{%	endfor %}
+	}
+{% endif %}
+
+{% for times in ["once", "twice", "thrice"] %}
+{%	set comm_name = "prepend_" ~ times ~ "_to_any" %}
+{%	if cfg.communities[comm_name]|community_is_set %}
+	# {{ comm_name }}
+{{-	match_communities(cfg.communities[comm_name], "{ do_prepend(" ~ loop.index ~ "); return true; }") }}
+{%	endif %}
+{% endfor %}
+
+	return true;
 }
 
 {% if cfg.filtering.rpki.enabled %}
