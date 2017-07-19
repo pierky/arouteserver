@@ -1,0 +1,12 @@
+Route server configuration - options and features
+=================================================
+
+This is the *reStructuredText* representation of the content of the ``general.yml`` configuration file.
+
+Here you can find all the options and settings that can be configured on a route server by using this tool, along with the comments needed to understand how to properly edit that file.
+
+The YAML version of the ``general.yml`` configuration file can be found on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`__.
+
+.. contents::
+   :local:
+

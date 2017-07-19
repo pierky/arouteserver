@@ -14,6 +14,8 @@ ARouteServer needs the following files to read its own configuration and to dete
   By default, it is located in the same directory of the main configuration file; its path can be set with the ``cfg_general`` option in ``arouteserver.yml``.
   See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`__.
 
+  An automatically generated *reStructuredText* version of the file with all its options and comments can be found in the :doc:`GENERAL` page.
+
 - ``clients.yml``: the list of route server's clients and their options and policies.
   By default, it is located in the same directory of the main configuration file; its path can be set with the ``cfg_clients`` option in ``arouteserver.yml``.
   See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/clients.yml>`__.
@@ -29,7 +31,7 @@ Route server's configuration
 
 Route server's general configuration and policies are outlined in the ``general.yml`` file. 
 
-Configuration details and options can be found within the distributed `general <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`__ and `clients <https://github.com/pierky/arouteserver/blob/master/config.d/clients.yml>`__ configuration files on GitHub.
+Configuration details and options can be found within the distributed `general <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`__ and `clients <https://github.com/pierky/arouteserver/blob/master/config.d/clients.yml>`__ configuration files on GitHub or in the :doc:`GENERAL` page.
 
 Details about some particular topics are reported below.
 
