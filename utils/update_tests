@@ -61,9 +61,7 @@ fi
 
 if [[ -z "$1" || `echo "$1" | grep -P "\bcli\b"` ]]; then
 	echo -n "Testing CLI commands... "
-	# Commented out because a duplicate IP address appeared in AMS-IX EuroIX JSON file
-	#./tests/cli
-	echo "OK" # <<<<<<<<<<
+	./tests/cli
 fi
 
 if [[ -z "$1" || `echo "$1" | grep -P "\bstatic\b"` ]]; then

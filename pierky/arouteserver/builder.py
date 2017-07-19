@@ -60,7 +60,7 @@ class ConfigBuilder(object):
 
         Returns:
             True if there are no compatibility issues;
-            False if there are compatibility issues that can be acknowledge
+            False if there are compatibility issues that can be acknowledged
             via command line argument.
         Raises exception in case of blocking errors.
         """
