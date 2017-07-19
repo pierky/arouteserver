@@ -78,11 +78,11 @@ class ConfigParserProgram(object):
     def load(self, path):
         self._reset_to_default()
 
-        if not os.path.exists(path):
+        if not os.path.exists(os.path.expanduser(path)):
             raise MissingFileError(path)
 
         try:
-            with open(path, "r") as f:
+            with open(os.path.expanduser(path), "r") as f:
                 cfg_from_file = yaml.safe_load(f.read())
                 if cfg_from_file:
                     for key in cfg_from_file:
@@ -101,7 +101,7 @@ class ConfigParserProgram(object):
         if self.cfg["cfg_dir"]:
             self.cfg["cfg_dir"] = os.path.expanduser(self.cfg["cfg_dir"])
         else:
-            self.cfg["cfg_dir"] = os.path.dirname(path)
+            self.cfg["cfg_dir"] = os.path.dirname(os.path.expanduser(path))
 
         # relative path -> absolute path
         for cfg_key in self.PATH_KEYS:

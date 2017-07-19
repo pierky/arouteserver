@@ -6,6 +6,7 @@ Short term
 
 - RTT-based communities: extend support to add NO_EXPORT / NO_ADVERTISE
 - Informative community with the measured RTT of the announcing peer
+- New feature: CLI option to build configs based on templates/groups only and avoid client specific settings
 
 Mid term
 --------
