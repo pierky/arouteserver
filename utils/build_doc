@@ -16,7 +16,7 @@ CFG_FILE="var/build_doc.yml"
 # ----------------------------------------------------
 
 echo "Rendering GENERAL.rst from config.d/general.yml"
-./utils/build_general.py
+./utils/make_general.py
 
 echo "Generating examples configurations"
 

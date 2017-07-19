@@ -68,8 +68,8 @@ Features
 
   - prefix/origin ASN present/not present in **IRRDB data**;
   - routes **RPKI** validity state;
-  - do (not) announce to any / **peer**;
-  - **prepend** to any / **peer**;
+  - do (not) announce to any / **peer** / on **RTT basis**;
+  - **prepend** to any / **peer** / on **RTT basis**;
   - add **NO_EXPORT** / **NO_ADVERTISE** to any / **peer**;
   - custom informational BGP communities.
 
