@@ -24,7 +24,7 @@ New release procedure
 
 - ~$ ./arouteserver/utils/test_new_rel
 
-- twine upload dist/*
+- ~/.local/bin/twine upload dist/*
 
 - git push
 
