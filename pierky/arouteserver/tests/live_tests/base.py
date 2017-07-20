@@ -26,6 +26,7 @@ from docker import InstanceError
 from pierky.arouteserver.config.validators import ValidatorPrefixListEntry
 from pierky.arouteserver.enrichers.irrdb import IRRDBConfigEnricher_OriginASNs, \
                                                 IRRDBConfigEnricher_Prefixes
+from pierky.arouteserver.enrichers.rtt import RTTGetterConfigEnricher
 from pierky.arouteserver.tests.base import ARouteServerTestCase
 from pierky.arouteserver.tests.mock_peeringdb import mock_peering_db
 from pierky.arouteserver.tests.live_tests.instances import BGPSpeakerInstance
@@ -96,6 +97,19 @@ class LiveScenario(ARouteServerTestCase):
         }
 
     - optionally, if it's needed by the scenario, the derived classes
+      can also set the ``RTT`` dictionary with the values of the RTTs
+      of the clients. Keys can be IP addresses of clients or the
+      prefix IDs used in the ``DATA`` dictionary to represent them.
+
+      Example::
+
+        RTT = {
+            "192.0.2.11": 14,
+            "2001:db8::11": 165,
+            "AS1_IPAddress": 44
+        }
+
+    - optionally, if it's needed by the scenario, the derived classes
       can also set the ``REJECT_CAUSE_COMMUNITY`` attribute with the
       pattern followed by BGP communities used to tag routes that are
       considered to be rejected (see the ``filtering.reject_policy``
@@ -108,6 +122,9 @@ class LiveScenario(ARouteServerTestCase):
       If this attribute is not None, routes that have LOCAL_PREF == 1
       and the ``reject_cause`` BGP community with ``dyn_val == 0``
       are considered as filtered.
+      The ``REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY`` attribute can also
+      be set to match the community used to track the announcing ASN of
+      invalid routes.
 
     - implement the ``set_instance_variables`` method, used to set
       local instance attributes for the instances used within the
@@ -133,6 +150,7 @@ class LiveScenario(ARouteServerTestCase):
     DATA = {}
     AS_SET = {}
     R_SET = {}
+    RTT = {}
     INSTANCES = []
 
     DEBUG = False
@@ -142,6 +160,7 @@ class LiveScenario(ARouteServerTestCase):
 
     # regex: for example ^65520:(\d+)$
     REJECT_CAUSE_COMMUNITY = None
+    REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY = None
 
     @classmethod
     def _get_module_dir(cls):
@@ -299,6 +318,27 @@ class LiveScenario(ARouteServerTestCase):
         return var_path
 
     @classmethod
+    def mock_rttgetter(cls):
+
+        def _mock_RTTGetter(self):
+            rtts = {}
+            for k in cls.RTT:
+                if k in cls.DATA:
+                    # it is a prefix ID and not an IP address
+                    rtts[cls.DATA[k]] = cls.RTT[k]
+                else:
+                    rtts[k] = cls.RTT[k]
+
+            for client in self.builder.cfg_clients.cfg["clients"]:
+                if client["ip"] in rtts:
+                    client["rtt"] = rtts[client["ip"]]
+
+        mock_RTTGetter = mock.patch.object(
+            RTTGetterConfigEnricher, "enrich", autospec=True
+        ).start()
+        mock_RTTGetter.side_effect = _mock_RTTGetter
+
+    @classmethod
     def mock_irrdb(cls):
     
         def add_prefix_to_list(prefix_name, allow_longer_prefixes, lst):
@@ -347,6 +387,7 @@ class LiveScenario(ARouteServerTestCase):
 
         mock_peering_db(cls._get_module_dir() + "/peeringdb_data")
         cls.mock_irrdb()
+        cls.mock_rttgetter()
         cls._setup_instances()
 
         if cls._do_not_run_instances():
@@ -399,8 +440,14 @@ class LiveScenario(ARouteServerTestCase):
     def process_reject_cause_routes(self, routes):
         if self.REJECT_CAUSE_COMMUNITY is not None:
             re_pattern = re.compile(self.REJECT_CAUSE_COMMUNITY)
+            rejected_route_announced_by_pattern = None
+            if self.REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY:
+                rejected_route_announced_by_pattern = \
+                    re.compile(self.REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY)
+
             for route in routes:
-                route.process_reject_cause(re_pattern)
+                route.process_reject_cause(re_pattern,
+                                           rejected_route_announced_by_pattern)
 
     def receive_route(self, inst, prefix, other_inst=None, as_path=None,
                       next_hop=None, std_comms=None, lrg_comms=None,
@@ -745,8 +792,9 @@ class LiveScenario_TagRejectPolicy(object):
     """Helper class to run a scenario as if reject_policy is set to 'tag'.
 
     When a scenario inherits this class, its route server is configured as
-    if the ``reject_policy.policy`` is ``tag`` and the ``65520:dyn_val``
-    value is used for the ``reject_cause`` BGP community.
+    if the ``reject_policy.policy`` is ``tag``, the ``65520:dyn_val``
+    value is used for the ``reject_cause`` BGP community and the
+    ``rt:65520:dyn_val`` value for the ``rejected_route_announced_by`` one.
 
     The ``general.yml`` file, or the file given in the ``orig_file`` argument
     of ``_get_cfg_general`` method, is cloned and reconfigured with the
@@ -766,6 +814,7 @@ class LiveScenario_TagRejectPolicy(object):
     """
 
     REJECT_CAUSE_COMMUNITY = "^65520:(\d+)$"
+    REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY = "^rt:65520:(\d+)$"
 
     @classmethod
     def _get_cfg_general(cls, orig_file="general.yml"):
@@ -780,6 +829,7 @@ class LiveScenario_TagRejectPolicy(object):
         if "communities" not in cfg["cfg"]:
             cfg["cfg"]["communities"] = {}
         cfg["cfg"]["communities"]["reject_cause"] = {"std": "65520:dyn_val"}
+        cfg["cfg"]["communities"]["rejected_route_announced_by"] = {"ext": "rt:65520:dyn_val"}
 
         with open(dest_path, "w") as f:
             yaml.safe_dump(cfg, f, default_flow_style=False)

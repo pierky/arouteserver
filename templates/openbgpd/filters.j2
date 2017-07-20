@@ -2,6 +2,7 @@
 {% from 'macros.j2' import match_communities %}
 {% from 'macros.j2' import add_communities %}
 {% from 'macros.j2' import del_communities %}
+{% from 'macros.j2' import write_prepending_comm %}
 {% from 'macros.j2' import remove_prepending_comms %}
 # ---------------------------------------------------------
 # FILTERS
@@ -97,6 +98,16 @@ transit_free_asns="{ {{ cfg.filtering.transit_free.asns|join(", ") }} }"
 {{ del_communities("match from group clients", cfg.custom_communities[name]) -}}
 {%	endif %}
 {% endfor %}
+
+{% if cfg.communities.rejected_route_announced_by|community_is_set %}
+# Set the 'rejected_route_announced_by' community for all the clients.
+# It will be removed later if the route is not invalid
+{%	for client in clients if client.ip is current_ipver %}
+{%		if client.cfg.filtering.reject_policy.policy == "tag" %}
+{{			add_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, dyn_val=client.asn) }}
+{%		endif %}
+{%	endfor %}
+{% endif %}
 
 # AS_PATH: length
 {{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients max-as-len " ~ cfg.filtering.max_as_path_len, 1) }}
@@ -203,8 +214,10 @@ match from {{ client.ip }} nexthop {{ same_as_client.ip }} set community delete 
 # Blackhole request?
 {% if ( client.ip|ipaddr_ver == 4 and cfg.blackhole_filtering.policy_ipv4 ) or
       ( client.ip|ipaddr_ver == 6 and cfg.blackhole_filtering.policy_ipv6 ) %}
+{{ del_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, replace_dyn_val=client.asn) }}
 allow quick from {{ client.ip }} community BLACKHOLE
 {{ match_communities("allow quick from " ~ client.ip, cfg.communities.blackholing, "") }}
+{{ add_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, dyn_val=client.asn) }}
 {% endif %}
 
 # Prefix: length
@@ -218,6 +231,7 @@ allow quick from {{ client.ip }} community BLACKHOLE
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " prefix ::/0 prefixlen " ~ min_pref_len ~ " >< " ~ max_pref_len, 13) }}
 {% endif %}
 
+{{ del_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, replace_dyn_val=client.asn) }}
 allow quick from {{ client.ip }}
 
 # ---------------------------------------------
@@ -290,6 +304,31 @@ allow to {{ client.ip }}
 # do_not_announce_to_peer
 {{	match_communities("deny quick to " ~ client.ip, cfg.communities.do_not_announce_to_peer, "", client.asn) -}}
 {% endif %}
+{% if rtt_based_functions_are_used and
+	"rtt" in client and client["rtt"]|get_normalized_rtt > 0 and
+	( cfg.communities.do_not_announce_to_peers_with_rtt_higher_than|community_is_set or
+	  cfg.communities.do_not_announce_to_peers_with_rtt_lower_than|community_is_set or
+	  cfg.communities.announce_to_peers_with_rtt_higher_than|community_is_set or
+	  cfg.communities.announce_to_peers_with_rtt_lower_than|community_is_set ) %}
+{%	for lower_higher in ["lower", "higher"] %}
+{%		for ann_do_not in ["do_not_announce", "announce"] %}
+{%			set comm_name = ann_do_not ~ "_to_peers_with_rtt_" ~ lower_higher ~ "_than" %}
+{%			if cfg.communities[comm_name]|community_is_set %}
+{%				for threshold_val in cfg.rtt_thresholds %}
+{%					if (lower_higher == "lower" and client["rtt"]|get_normalized_rtt <= threshold_val) or
+					   (lower_higher == "higher" and client["rtt"]|get_normalized_rtt > threshold_val) %}
+# {{ comm_name }} {{ threshold_val }} ms
+{%						if ann_do_not == "announce" %}
+{{							match_communities("allow to " ~ client.ip, cfg.communities[comm_name], "", dyn_val=threshold_val) }}
+{%						else %}
+{{							match_communities("deny to " ~ client.ip, cfg.communities[comm_name], "", dyn_val=threshold_val) }}
+{%						endif %}
+{%					endif %}
+{%				endfor %}
+{%			endif %}
+{%		endfor %}
+{%	endfor %}
+{% endif %}
 {% if cfg.communities.announce_to_peer|community_is_set %}
 # announce_to_peer
 {{	match_communities("allow to " ~ client.ip, cfg.communities.announce_to_peer, "", client.asn) -}}
@@ -298,33 +337,52 @@ allow to {{ client.ip }}
 {% if cfg.communities.prepend_once_to_peer|community_is_set %}
 # prepend_once_to_peer; remove further "prepend" communities from matching routes
 {{	match_communities("match to " ~ client.ip, cfg.communities.prepend_once_to_peer, "set prepend-neighbor 1", client.asn) -}}
-{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_once_to_peer, cfg.communities, client.asn) -}}
+{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_once_to_peer, cfg.communities, client.asn, cfg.rtt_thresholds) -}}
 {% endif %}
 {% if cfg.communities.prepend_twice_to_peer|community_is_set %}
 # prepend_twice_to_peer; remove further "prepend" communities from matching routes
 {{	match_communities("match to " ~ client.ip, cfg.communities.prepend_twice_to_peer, "set prepend-neighbor 2", client.asn) -}}
-{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_twice_to_peer, cfg.communities, client.asn) -}}
+{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_twice_to_peer, cfg.communities, client.asn, cfg.rtt_thresholds) -}}
 {% endif %}
 {% if cfg.communities.prepend_thrice_to_peer|community_is_set %}
 # prepend_thrice_to_peer; remove further "prepend" communities from matching routes
 {{	match_communities("match to " ~ client.ip, cfg.communities.prepend_thrice_to_peer, "set prepend-neighbor 3", client.asn) -}}
-{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_thrice_to_peer, cfg.communities, client.asn) -}}
+{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_thrice_to_peer, cfg.communities, client.asn, cfg.rtt_thresholds) -}}
+{% endif %}
+
+{% if rtt_based_functions_are_used and
+	"rtt" in client and client["rtt"]|get_normalized_rtt > 0 %}
+{%	for lower_higher in ["higher", "lower"] %}
+{%		for threshold_val in cfg.rtt_thresholds|sort(reverse=(lower_higher == "higher")) %}
+{%                      for times, times_num in [("once", 1), ("twice", 2), ("thrice", 3)] %}
+{%				set comm_name = "prepend_" ~ times ~ "_to_peers_with_rtt_" ~ lower_higher ~ "_than" %}
+{%				if cfg.communities[comm_name]|community_is_set %}
+{%					if (lower_higher == "lower" and client["rtt"]|get_normalized_rtt <= threshold_val) or
+				           (lower_higher == "higher" and client["rtt"]|get_normalized_rtt > threshold_val) %}
+# {{ comm_name }} {{ threshold_val }} ms; remove further "prepend" communities from matching routes
+{{						match_communities("match to " ~ client.ip, cfg.communities[comm_name], "set prepend-neighbor " ~ times_num, dyn_val=threshold_val) }}
+{{						remove_prepending_comms("match to " ~ client.ip, cfg.communities[comm_name], cfg.communities, client.asn, cfg.rtt_thresholds, if_comm_dyn_val=threshold_val) -}}
+{%					endif %}
+{%				endif %}
+{%			endfor %}
+{%		endfor %}
+{%	endfor %}
 {% endif %}
 
 {% if cfg.communities.prepend_once_to_any|community_is_set %}
 # prepend_once_to_any; remove further "prepend" communities from matching routes
 {{	match_communities("match to " ~ client.ip, cfg.communities.prepend_once_to_any, "set prepend-neighbor 1") -}}
-{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_once_to_any, cfg.communities, client.asn) -}}
+{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_once_to_any, cfg.communities, client.asn, cfg.rtt_thresholds) -}}
 {% endif %}
 {% if cfg.communities.prepend_twice_to_any|community_is_set %}
 # prepend_twice_to_any; remove further "prepend" communities from matching routes
 {{	match_communities("match to " ~ client.ip, cfg.communities.prepend_twice_to_any, "set prepend-neighbor 2") -}}
-{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_twice_to_any, cfg.communities, client.asn) -}}
+{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_twice_to_any, cfg.communities, client.asn, cfg.rtt_thresholds) -}}
 {% endif %}
 {% if cfg.communities.prepend_thrice_to_any|community_is_set %}
 # prepend_thrice_to_any; remove further "prepend" communities from matching routes
 {{	match_communities("match to " ~ client.ip, cfg.communities.prepend_thrice_to_any, "set prepend-neighbor 3") -}}
-{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_thrice_to_any, cfg.communities, client.asn) -}}
+{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_thrice_to_any, cfg.communities, client.asn, cfg.rtt_thresholds) -}}
 {% endif %}
 {% endfor %}
 
@@ -332,8 +390,13 @@ allow to {{ client.ip }}
 {% for name in cfg.communities if cfg.communities[name].type == "inbound" %}
 {%	if cfg.communities[name]|community_is_set %}
 # {{ name }}
-{{ del_communities("match to group clients", cfg.communities[name], cfg.communities[name].peer_as) -}}
+{{ del_communities("match to group clients", cfg.communities[name], cfg.communities[name].peer_as, replace_dyn_val="*") -}}
 {%	endif %}
+{% endfor %}
+
+# Scrub prepending communities
+{% for comm_name in cfg.communities if "prepend" in comm_name and cfg.communities[comm_name]|community_is_set %}
+match to group clients set { {{ write_prepending_comm(cfg.communities[comm_name], 0, cfg.rtt_thresholds) }} }
 {% endfor %}
 
 {{ "post-filters"|include_local_file -}}

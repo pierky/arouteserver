@@ -569,3 +569,45 @@ class ValidatorCommunityExt(ValidatorCommunity):
                     v, " - {}".format(str(e)) if str(e) else ""
                 )
             )
+
+class ValidatorRTTThresholds(ConfigParserValidator):
+
+    def _validate(self, v):
+        if isinstance(v, str):
+            lst = v.split(",")
+        elif isinstance(v, list):
+            lst = v
+            pass
+        else:
+            raise ConfigError(
+                "Invalid type: {} - it must be a list of integers".format(
+                    type(v)
+                )
+            )
+
+        res = []
+        for x in lst:
+            try:
+                rtt = ValidatorUInt().validate(x)
+            except:
+                raise ConfigError(
+                    "RTT thresholds list items must be "
+                    "positive integers: {}".format(x)
+                )
+            if not res:
+                res.append(rtt)
+                continue
+            if rtt in res:
+                raise ConfigError(
+                    "Duplicate RTT value found: {}".format(rtt)
+                )
+            if rtt < res[-1]:
+                raise ConfigError(
+                    "RTT thresholds list items must be "
+                    "provided in ascending order: {} < {}".format(
+                        rtt, res[-1]
+                    )
+                )
+            res.append(rtt)
+
+        return res

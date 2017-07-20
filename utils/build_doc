@@ -15,6 +15,9 @@ CFG_FILE="var/build_doc.yml"
 
 # ----------------------------------------------------
 
+echo "Rendering GENERAL.rst from config.d/general.yml"
+./utils/make_general.py
+
 echo "Generating examples configurations"
 
 function RenderExample() {
@@ -138,7 +141,7 @@ for d in default rich bird_hooks clients-from-euroix; do
 		if [ $? -eq 0 ]; then
 			set -e
 			echo "" >> $DST_FILE
-			echo "See the \`textual representation of this configuration <_static/examples_$EXAMPLE_NAME.html>\`_." >> $DST_FILE
+			echo "See the \`textual representation of this configuration <_static/examples_$EXAMPLE_NAME.html>\`__." >> $DST_FILE
 		fi
 		set -e
 	fi

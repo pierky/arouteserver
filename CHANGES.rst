@@ -1,7 +1,16 @@
 Change log
 ==========
 
-.. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`_ section of the documentation.
+.. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
+
+next release
+------------
+
+- New feature: RTT-based communities to control propagation of routes on the basis of peers round trip time.
+
+- Improvement: in conjunction with the "tag" reject policy, the ``rejected_route_announced_by`` BGP community can be used to track the ASN of the client that announced an invalid route to the server.
+
+- Fix: when the "tag" reject policy is used, verify that the ``reject_cause`` BGP community is also set.
 
 v0.8.1
 ------
@@ -26,7 +35,7 @@ v0.7.0
   Error is given if a peer-AS-specific BGP community overlaps with another community, even if the last part of the latter is a private/reserved ASN.
 - Improvement: the custom ``!include <filepath>`` statement can be used now in YAML configuration files to include other files.
 
-  More details `here <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#yaml-files-inclusion>`_.
+  More details `here <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#yaml-files-inclusion>`__.
 - Improvement: IRRDB-based filters can be configured to allow more specific prefixes (``allow_longer_prefixes`` option).
 
 v0.6.0
@@ -97,7 +106,7 @@ v0.1.2
 - Fix local files usage among IPv4/IPv6 processes.
 
   Before of this release, only *.local* files were included into the route server configuration, for both the IPv4 and IPv6 configurations.
-  After this, *.local* files continue to be used for both the address families but *.local4* and *.local6* files can also be used to include IP version specific options, depending on the IP version used to build the configuration. Details `here <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#site-specific-custom-configuration-files>`_.
+  After this, *.local* files continue to be used for both the address families but *.local4* and *.local6* files can also be used to include IP version specific options, depending on the IP version used to build the configuration. Details `here <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#site-specific-custom-configuration-files>`__.
 
 To upgrade:
 

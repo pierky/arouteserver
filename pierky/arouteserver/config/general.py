@@ -43,21 +43,35 @@ class ConfigParserGeneral(ConfigParserBase):
         "prefix_not_present_in_as_set": { "type": "outbound" },
 
         "blackholing": { "type": "inbound" },
+
         "do_not_announce_to_any": { "type": "inbound" },
         "do_not_announce_to_peer": { "type": "inbound", "peer_as": True },
         "announce_to_peer": { "type": "inbound", "peer_as": True },
+        "do_not_announce_to_peers_with_rtt_lower_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "do_not_announce_to_peers_with_rtt_higher_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "announce_to_peers_with_rtt_lower_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "announce_to_peers_with_rtt_higher_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+
         "prepend_once_to_any": { "type": "inbound" },
         "prepend_twice_to_any": { "type": "inbound" },
         "prepend_thrice_to_any": { "type": "inbound" },
         "prepend_once_to_peer": { "type": "inbound", "peer_as": True },
         "prepend_twice_to_peer": { "type": "inbound", "peer_as": True },
         "prepend_thrice_to_peer": { "type": "inbound", "peer_as": True },
+        "prepend_once_to_peers_with_rtt_lower_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "prepend_twice_to_peers_with_rtt_lower_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "prepend_thrice_to_peers_with_rtt_lower_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "prepend_once_to_peers_with_rtt_higher_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "prepend_twice_to_peers_with_rtt_higher_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "prepend_thrice_to_peers_with_rtt_higher_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+
         "add_noexport_to_any": { "type": "inbound" },
         "add_noadvertise_to_any": { "type": "inbound" },
         "add_noexport_to_peer": { "type": "inbound", "peer_as": True },
         "add_noadvertise_to_peer": { "type": "inbound", "peer_as": True },
 
         "reject_cause": { "type": "internal", "dyn_val": True },
+        "rejected_route_announced_by": { "type": "internal", "dyn_val": True },
     }
 
     @staticmethod
@@ -161,6 +175,7 @@ class ConfigParserGeneral(ConfigParserBase):
                     "rewrite_next_hop_ipv6": ValidatorIPv6Addr(mandatory=False),
                     "add_noexport": ValidatorBool(default=True),
                 },
+                "rtt_thresholds": ValidatorRTTThresholds(mandatory=False),
                 "communities": {
                 },
                 "custom_communities": {
@@ -279,18 +294,32 @@ class ConfigParserGeneral(ConfigParserBase):
                         else:
                             unique_communities.append(comm[fmt])
 
-        # The 'reject_cause' community can be set only if 'reject_policy'
-        # is 'tag'.
+        # The 'reject_cause' and 'rejected_route_announced_by' communities
+        # can be set only if 'reject_policy' is 'tag'.
         if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] != "tag":
-            reject_cause_is_set = False
+            for comm in ("reject_cause", "rejected_route_announced_by"):
+                reject_comm_is_set = False
+                for fmt in ("std", "ext", "lrg"):
+                    if self.cfg["cfg"]["communities"][comm][fmt]:
+                        reject_comm_is_set = True
+                        break
+                if reject_comm_is_set:
+                    errors = True
+                    logging.error(
+                        "The '{}' community can be set only if "
+                        "'reject_policy.policy' is 'tag'.".format(comm))
+
+        # The 'reject_cause' comm is mandatory when 'reject_policy' is 'tag'.
+        if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] == "tag":
+            reject_comm_is_set = False
             for fmt in ("std", "ext", "lrg"):
                 if self.cfg["cfg"]["communities"]["reject_cause"][fmt]:
-                    reject_cause_is_set = True
+                    reject_comm_is_set = True
                     break
-            if reject_cause_is_set:
+            if not reject_comm_is_set:
                 errors = True
                 logging.error(
-                    "The 'reject_cause' community can be set only if "
+                    "The 'reject_cause' community must be configured when "
                     "'reject_policy.policy' is 'tag'.")
 
         # Overlapping communities?
@@ -300,6 +329,27 @@ class ConfigParserGeneral(ConfigParserBase):
             errors = True
             if str(e):
                 logging.error(str(e))
+
+        # Are RTT-based functions used?
+        self.rtt_based_functions_are_used = False
+        for comm_name in self.cfg["cfg"]["communities"]:
+            comm_schema = self.COMMUNITIES_SCHEMA[comm_name]
+            if not comm_schema.get("rtt", False):
+                continue
+
+            comm = self.cfg["cfg"]["communities"][comm_name]
+            if comm["std"] or comm["ext"] or comm["lrg"]:
+                self.rtt_based_functions_are_used = True
+                break
+
+        # RTT-based functions are used: is RTT thresholds list set?
+        if self.rtt_based_functions_are_used:
+            if not self.cfg["cfg"]["rtt_thresholds"]:
+                errors = True
+                logging.error(
+                    "Some RTT-based functions are configured but the "
+                    "RTT thresholds list is empty."
+                )
 
         if errors:
             raise ConfigError()
@@ -451,8 +501,8 @@ class ConfigParserGeneral(ConfigParserBase):
                         break
 
         def compare_communities(comms1, comms2, reason_text):
-            for tag1 in comms1:
-                for tag2 in comms2:
+            for tag1 in sorted(comms1):
+                for tag2 in sorted(comms2):
                     if tag1 == tag2:
                         continue
                     try:

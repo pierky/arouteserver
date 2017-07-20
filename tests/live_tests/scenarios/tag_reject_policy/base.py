@@ -152,67 +152,86 @@ class TagRejectPolicyScenario(LiveScenario):
         """{}: bogon prefix"""
         self.receive_route(self.rc, self.DATA["bogon1"],
                 self.rs, next_hop=self.AS1_1,
-                filtered=False, std_comms=["65520:0", "65520:2"])
+                filtered=False, std_comms=["65520:0", "65520:2"],
+                ext_comms=["rt:65520:1"])
+
+    def test_040_bogon1_wrong_announcing_asn(self):
+        """{}: bogon prefix, wrong announcing ASN"""
+        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+            self.receive_route(self.rc, self.DATA["bogon1"],
+                    self.rs, next_hop=self.AS1_1,
+                    filtered=False, std_comms=["65520:0", "65520:2"],
+                    ext_comms=["rt:65520:111"])
 
     def test_040_local1(self):
         """{}: local black list"""
         self.receive_route(self.rc, self.DATA["local1"],
                 self.rs, next_hop=self.AS1_1,
-                filtered=False, std_comms=["65520:0", "65520:3"])
+                filtered=False, std_comms=["65520:0", "65520:3"],
+                ext_comms=["rt:65520:1"])
 
     def test_040_pref_len1(self):
         """{}: prefix length"""
         self.receive_route(self.rc, self.DATA["pref_len1"],
                 self.rs, next_hop=self.AS1_1,
-                filtered=False, std_comms=["65520:0", "65520:13"])
+                filtered=False, std_comms=["65520:0", "65520:13"],
+                ext_comms=["rt:65520:1"])
 
     def test_040_peer_as1(self):
         """{}: invalid left-most ASN"""
         self.receive_route(self.rc, self.DATA["peer_as1"],
                 self.rs, next_hop=self.AS1_1,
-                filtered=False, std_comms=["65520:0", "65520:6"])
+                filtered=False, std_comms=["65520:0", "65520:6"],
+                ext_comms=["rt:65520:1"])
 
     def test_040_invalid_asn1(self):
         """{}: invalid ASN in AS_PATH"""
         self.receive_route(self.rc, self.DATA["invalid_asn1"],
                 self.rs, next_hop=self.AS1_1,
-                filtered=False, std_comms=["65520:0", "65520:7"])
+                filtered=False, std_comms=["65520:0", "65520:7"],
+                ext_comms=["rt:65520:1"])
 
     def test_040_aspath_len1(self):
         """{}: AS_PATH too long"""
         self.receive_route(self.rc, self.DATA["aspath_len1"],
                 self.rs, next_hop=self.AS1_1,
-                filtered=False, std_comms=["65520:0", "65520:1"])
+                filtered=False, std_comms=["65520:0", "65520:1"],
+                ext_comms=["rt:65520:1"])
 
     def test_040_invalid_nexthop(self):
         """{}: invalid NEXT_HOP"""
         self.receive_route(self.rc, self.DATA["AS2_nonclient_nexthop2"],
                 self.rs, next_hop=self.DATA["AS2_nonclient_nexthop2_nh"],
-                filtered=False, std_comms=["65520:0", "65520:5"])
+                filtered=False, std_comms=["65520:0", "65520:5"],
+                ext_comms=["rt:65520:2"])
 
     def test_040_transitfree_asn(self):
         """{}: transit-free ASN in AS_PATH"""
         self.receive_route(self.rc, self.DATA["AS101_transitfree_1"],
                 self.rs, next_hop=self.AS1_1,
-                filtered=False, std_comms=["65520:0", "65520:8"])
+                filtered=False, std_comms=["65520:0", "65520:8"],
+                ext_comms=["rt:65520:1"])
 
     def test_040_client_blacklist(self):
         """{}: prefix in client's blacklist"""
         self.receive_route(self.rc, self.DATA["AS3_blacklist1"],
                 self.rs, next_hop=self.AS3,
-                filtered=False, std_comms=["65520:0", "65520:11"])
+                filtered=False, std_comms=["65520:0", "65520:11"],
+                ext_comms=["rt:65520:3"])
 
     def test_040_prefix_not_in_asset(self):
         """{}: prefix not in as-macro"""
         self.receive_route(self.rc, self.DATA["AS101_no_rset"],
                 self.rs, next_hop=self.AS1_1,
-                filtered=False, std_comms=["65520:0", "65520:12"])
+                filtered=False, std_comms=["65520:0", "65520:12"],
+                ext_comms=["rt:65520:1"])
 
     def test_040_origin_not_in_asset(self):
         """{}: origin not in as-macro"""
         self.receive_route(self.rc, self.DATA["AS102_no_asset"],
                 self.rs, next_hop=self.AS1_1,
-                filtered=False, std_comms=["65520:0", "65520:9"])
+                filtered=False, std_comms=["65520:0", "65520:9"],
+                ext_comms=["rt:65520:1"])
 
     def test_040_no_ipv6_global_unicast(self):
         """{}: prefix is not in IPv6 global unicast space"""
@@ -220,7 +239,8 @@ class TagRejectPolicyScenario(LiveScenario):
             raise unittest.SkipTest("IPv6 only test")
         self.receive_route(self.rc, self.DATA["AS101_no_ipv6_gl_uni"],
                 self.rs, next_hop=self.AS1_1,
-                filtered=False, std_comms=["65520:0", "65520:10"])
+                filtered=False, std_comms=["65520:0", "65520:10"],
+                ext_comms=["rt:65520:1"])
 
     def test_040_rpki_invalid(self):
         """{}: RPKI INVALID route"""
@@ -229,7 +249,8 @@ class TagRejectPolicyScenario(LiveScenario):
 
         self.receive_route(self.rc, self.DATA["AS101_roa_invalid1"],
                 self.rs, next_hop=self.AS1_1,
-                filtered=False, std_comms=["65520:0", "65520:14"])
+                filtered=False, std_comms=["65520:0", "65520:14"],
+                ext_comms=["rt:65520:1"])
 
     def test_100_good_routes_not_seen_by_rc(self):
         """{}: good routes not received"""
@@ -244,6 +265,38 @@ class TagRejectPolicyScenario(LiveScenario):
             with self.assertRaisesRegexp(AssertionError, "Routes not found."):
                 self.receive_route(self.rc, self.DATA[prefix])
 
+    def test_100_prefixes_received_by_clients_AS1_1(self):
+        """{}: prefixes received by clients: AS1_1"""
+        self.receive_route(self.AS1_1, self.DATA["AS2_good1"], self.rs, as_path="2", next_hop=self.AS2,
+                           std_comms=[], ext_comms=[], lrg_comms=[])
+        self.receive_route(self.AS1_1, self.DATA["AS2_good2"], self.rs, as_path="2", next_hop=self.AS2,
+                           std_comms=[], ext_comms=[], lrg_comms=[])
+        self.receive_route(self.AS1_1, self.DATA["AS2_nonclient_nexthop1"],
+                           self.rs, as_path="2",
+                           next_hop=self.DATA["AS2_nonclient_nexthop1_nh"],
+                           std_comms=[], ext_comms=[], lrg_comms=[])
+
+    def test_100_prefixes_received_by_clients_AS1_2(self):
+        """{}: prefixes received by clients: AS1_2"""
+
+        self.receive_route(self.AS1_2, self.DATA["AS2_good1"], self.rs, as_path="2", next_hop=self.AS2,
+                           std_comms=[], ext_comms=[], lrg_comms=[])
+        self.receive_route(self.AS1_2, self.DATA["AS2_good2"], self.rs, as_path="2", next_hop=self.AS2,
+                           std_comms=[], ext_comms=[], lrg_comms=[])
+        self.receive_route(self.AS1_2, self.DATA["AS2_nonclient_nexthop1"],
+                           self.rs, as_path="2",
+                           next_hop=self.DATA["AS2_nonclient_nexthop1_nh"],
+                           std_comms=[], ext_comms=[], lrg_comms=[])
+
+    def test_100_prefixes_received_by_clients_AS2(self):
+        """{}: prefixes received by clients: AS2"""
+
+        self.receive_route(self.AS2, self.DATA["AS1_good1"], self.rs, as_path="1", next_hop=self.AS1_1,
+                           std_comms=[], ext_comms=[], lrg_comms=[])
+        self.receive_route(self.AS2, self.DATA["AS1_good2"], self.rs, as_path="1", next_hop=self.AS1_1,
+                           std_comms=[], ext_comms=[], lrg_comms=[])
+        self.receive_route(self.AS2, self.DATA["AS1_good3"], self.rs, as_path="1", next_hop=self.AS1_1,
+                           std_comms=[], ext_comms=[], lrg_comms=[])
 
 class TagRejectPolicyScenarioBIRD(LiveScenario_TagRejectPolicy, TagRejectPolicyScenario):
     __test__ = False
@@ -308,7 +361,8 @@ class TagRejectPolicyScenarioOpenBGPD(LiveScenario_TagRejectPolicy, TagRejectPol
         # invalid because of prefix length.
         self.receive_route(self.rc, self.DATA["AS2_blackhole3"],
                 self.rs, next_hop=self.AS2,
-                filtered=False, std_comms=["65520:0", "65520:13"])
+                filtered=False, std_comms=["65520:0", "65520:13"],
+                ext_comms=["rt:65520:2"])
 
 class TagRejectPolicyScenarioOpenBGPD60(TagRejectPolicyScenarioOpenBGPD):
     __test__ = False

@@ -18,7 +18,7 @@ cfg:
   # hiding mitigation.
   # (https://tools.ietf.org/html/rfc7947#section-2.3.1)
   #
-  # BIRD: the 'secondary' option is used.
+  # BIRD: the "secondary" option is used.
   #   "Usually, if an export filter rejects a selected route, no
   #   other route is propagated for that network. This option
   #   allows to try the next route in order until one that is
@@ -46,7 +46,7 @@ cfg:
   gtsm: False
 
   # Use ADD-PATH (RFC7911).
-  # The router server will be configure as "able to send multiple
+  # The route server will be configure as "able to send multiple
   # paths to its peer".
   #
   # OpenBGPD: not supported.
@@ -58,35 +58,36 @@ cfg:
 
   filtering:
     # NEXT_HOP checks
-    # The 'policy' option can be set using the following values:
-    # - strict: "check that the BGP NEXT_HOP attribute for BGP
-    #   routes received from a route server client matches the
-    #   interface address of the client."
-    # - same-as: permit next-hop rewriting for the same AS; this
-    #   "allows an organization with multiple connections into an
-    #   IXP configured with different IP addresses to direct traffic
-    #   off the IXP infrastructure through any of their connections
-    #   for traffic engineering or other purposes."
-    #   In this mode, all the IP addresses of clients that fall
-    #   under the same ASN will be allowed. This is limited to the
-    #   IP addresses of known clients configured in the 'clients.yml'
-    #   file.
-    # - authorized_addresses: check that the BGP NEXT_HOP attribute
-    #   for routes received from a route server client matches one
-    #   of the IP addresses reported in the client-specific
-    #   'authorized_addresses_list' option.
-    #   This allows a route server client to announce routes whose
-    #   NEXT_HOP attribute is the IP address of a non-client router.
-    #   The 'authorized_addresses_list' option must be configured
-    #   in the 'clients.yml' file for those clients that have
-    #   'policy' set to 'authorized_addresses'.
     #
-    # https://tools.ietf.org/html/rfc7948#section-4.8
-    #
-    # Can be overwritten on a client-by-client basis.
-    #
-    # Default: strict
     next_hop:
+      # The 'policy' option can be set using the following values:
+      # - 'strict': "check that the BGP NEXT_HOP attribute for BGP
+      #   routes received from a route server client matches the
+      #   interface address of the client."
+      # - 'same-as': permit next-hop rewriting for the same AS; this
+      #   "allows an organization with multiple connections into an
+      #   IXP configured with different IP addresses to direct traffic
+      #   off the IXP infrastructure through any of their connections
+      #   for traffic engineering or other purposes."
+      #   In this mode, all the IP addresses of clients that fall
+      #   under the same ASN will be allowed. This is limited to the
+      #   IP addresses of known clients configured in the 'clients.yml'
+      #   file.
+      # - 'authorized_addresses': check that the BGP NEXT_HOP attribute
+      #   for routes received from a route server client matches one
+      #   of the IP addresses reported in the client-specific
+      #   'authorized_addresses_list' option.
+      #   This allows a route server client to announce routes whose
+      #   NEXT_HOP attribute is the IP address of a non-client router.
+      #   The 'authorized_addresses_list' option must be configured
+      #   in the 'clients.yml' file for those clients that have
+      #   'policy' set to 'authorized_addresses'.
+      #
+      # https://tools.ietf.org/html/rfc7948#section-4.8
+      #
+      # Can be overwritten on a client-by-client basis.
+      #
+      # Default: strict
       policy: "strict"
 
     # Min and max prefix length for IPv4 and IPv6 prefixes accepted
@@ -98,6 +99,7 @@ cfg:
     ipv4_pref_len:
       min: 8
       max: 24
+
     ipv6_pref_len:
       min: 12
       max: 48
@@ -105,10 +107,13 @@ cfg:
     # List of prefixes that are unconditionally rejected.
     # For example: local networks.
     #
+    # A list of prefixes is expected to be found here, like the one
+    # reported in the 'bogons.yml' file.
+    #
     # Default: none
     global_black_list_pref:
-      #- prefix: ""
-      #  length:
+      #- prefix: "192.0.2.0"
+      #  length: 24
       #  comment: "Local network"
 
     # Max length of AS_PATH attribute.
@@ -130,13 +135,13 @@ cfg:
     transit_free:
       # Transit-free networks' ASNs should appear in AS_PATH only
       # in the left-most position.
-      #
+
       # If a policy is given here, it is applied to routes whose
       # AS_PATH contains one of the following ASN in any position
       # different from the first:
       #
-      # - reject: the route is discarded.
-      # - warning: a warning is logged.
+      # - 'reject': the route is discarded.
+      # - 'warning': a warning is logged.
       #
       # OpenBGPD: used only if action is 'reject'.
       #
@@ -242,7 +247,7 @@ cfg:
       #
       # Default: none
       #action: "shutdown"
-      #
+
       # OpenBGPD only: for the 'restart' action, sessions will be
       # restarted after 'restart_after' minutes.
       #restart_after: 15
@@ -318,13 +323,13 @@ cfg:
     # not implemented in the route server.
     #
     # Options:
-    # - propagate-unchanged: the route is accepted and propagated
+    # - 'propagate-unchanged': the route is accepted and propagated
     #   to clients unchanged. If missing, the BLACKHOLE well-known
     #   community 65535:666 is added. Other local 'blackholing'
     #   communities are scrubbed.
     #   It's up to the receiving client to accept the route and to
     #   discard traffic toward its prefix.
-    # - rewrite-next-hop: same behaviour of 'propagate-unchanged'
+    # - 'rewrite-next-hop': same behaviour of 'propagate-unchanged'
     #   option; in addition, the route server rewrites the NEXT_HOP
     #   attribute of the advertised route with the address of the
     #   blackhole next-hop (BN). BN should have a unique MAC
@@ -343,8 +348,8 @@ cfg:
     # IP addresses of BN used for 'rewrite-next-hop' option:
     #
     # Default: none
-    #rewrite_next_hop_ipv4: ""
-    #rewrite_next_hop_ipv6: ""
+    #rewrite_next_hop_ipv4: "192.0.2.66"
+    #rewrite_next_hop_ipv6: "2001:db8::66"
 
     # How tagged routes should be propagated to clients.
     # This configuration statement works together with the same
@@ -365,6 +370,28 @@ cfg:
     # tagged routes before announcing them to clients.
     #add_noexport: True
 
+  # Thresholds used for actions that are performed on the basis
+  # of clients RTT, triggered using RTT-based BGP communities.
+  #
+  # Used only if one or more of those BGP communities are set.
+  #
+  # The value in the last part of the community identifies the
+  # threshold for which the action is requested; only values from
+  # the 'rtt_thresholds' are taken into account and actually used
+  # to understand if the desired action should be performed.
+  #
+  # Lower-than actions are inclusive, higher-than are exclusive.
+  #
+  # Some examples (based on the default values below):
+  #
+  # - 15, lower-than: action is performed for peers with RTT <= 15
+  # - 30, higher-than: action is performed for peers with RTT > 30
+  # - 1000, not in 'rtt_thresholds', action not performed
+  # - 0, not in 'rtt_thresholds', action not performed
+  #
+  # The values must be provided in ascending order.
+  rtt_thresholds: 5, 10, 15, 20, 30, 50, 100, 200, 500
+
   communities:
     # For each community name below, Standard, Large and Extended
     # BGP Communities can be provided in the 'std', 'lrg' and 'ext'
@@ -373,8 +400,9 @@ cfg:
     # - 'std': 'x:x'
     # - 'lrg': 'x:x:x'
     # - 'ext': '[rt|ro]:x:x'
+    #
     # The 'rs_as' macro is replaced with the route server ASN given
-    # in cfg.rs_as.
+    # in 'cfg.rs_as'.
     # The 'peer_as' macro, where allowed, is replaced with the ASN
     # of the client the route is announced to.
     # The 'dyn_val' macro, where allowed, is replaced with a
@@ -438,7 +466,7 @@ cfg:
       #lrg:
       #ext:
  
-    # Control communities
+    # Control communities.
     # 
     # Routes that are tagged with the following community are not
     # announced to any client, unless they are also tagged with the
@@ -487,13 +515,70 @@ cfg:
       #lrg:
       #ext:
 
+    # Routes that are tagged with the following community are not
+    # announced to clients that have a RTT lower/higher than the
+    # value of the threshold identified by the last part of the
+    # community.
+    #
+    # The following communities are scrubbed from outbound routes.
+    #
+    # The 'rs_as' macro can be used here.
+    # The 'dyn_val' macro must appear in the last part of values.
+    # The 'dyn_val' macro must contain a value from the
+    # 'rtt_thresholds' list that identifies the RTT value for
+    # which the action is requested.
+    do_not_announce_to_peers_with_rtt_lower_than:
+      #std:
+      #lrg:
+      #ext:
+    do_not_announce_to_peers_with_rtt_higher_than:
+      #std:
+      #lrg:
+      #ext:
+
+    # Routes that are tagged with the following community are
+    # announced to clients that have a RTT lower/higher than the
+    # value of the threshold identified by the last part of the
+    # community, even if they are tagged with the
+    # 'do_not_announce_to_any' community.
+    # If a route is also tagged with the 'do_not_announce_to_peer'
+    # community it is not advertised to the client even if it
+    # matches the RTT criterion.
+    #
+    # The following communities are scrubbed from outbound routes.
+    #
+    # The 'rs_as' macro can be used here.
+    # The 'dyn_val' macro must appear in the last part of values.
+    # The 'dyn_val' macro must contain a value from the
+    # 'rtt_thresholds' list that identifies the RTT value for
+    # which the action is requested.
+    announce_to_peers_with_rtt_lower_than:
+      #std:
+      #lrg:
+      #ext:
+    announce_to_peers_with_rtt_higher_than:
+      #std:
+      #lrg:
+      #ext:
+
+    # Prepending communities.
+    #
+    # The 3 "flavors" of prepending actions (to_peer, rtt
+    # based and to_any) are applied in the following order:
+    # - prepend_x_to_peer
+    # - prepend_x_to_peers_with_rtt_higher_than (RTTs in desc order)
+    # - prepend_x_to_peers_with_rtt_lower_than (RTTs in asc order)
+    # - prepend_x_to_any
+    # (x is always in the ascending order: once, twice, thrice).
+    #
+    # For example, if a route is tagged with both a
+    # 'prepend_x_to_any' and a 'prepend_x_to_peer' community, only
+    # the latter will be considered when announcing to the clients
+    # whose ASN match the one given in its value.
+
     # Routes that are tagged with the following communities are
     # propagated to all the clients with an AS_PATH prepended once,
     # twice or thrice with the announcing client's ASN.
-    # If a route is tagged with both a 'prepend_x_to_any' and a
-    # 'prepend_x_to_peer' community, only the latter will be
-    # considered when announcing to the clients whose ASN match the
-    # one given in its value.
     #
     # The following communities are scrubbed from outbound routes.
     #
@@ -515,10 +600,6 @@ cfg:
     # propagated to the clients whose ASN matches the one given in
     # the community with an AS_PATH prepended once, twice or thrice
     # with the announcing client's ASN.
-    # If a route is tagged with both a 'prepend_x_to_any' and a
-    # 'prepend_x_to_peer' community, only the latter will be
-    # considered when announcing to the clients whose ASN match the
-    # one given in its value.
     #
     # The following communities are scrubbed from outbound routes.
     #
@@ -533,6 +614,45 @@ cfg:
       #lrg:
       #ext:
     prepend_thrice_to_peer:
+      #std:
+      #lrg:
+      #ext:
+
+    # Routes that are tagged with the following communities are
+    # propagated to clients having a RTT lower/higher than the value
+    # of the threshold identified by the last part of the community
+    # with an AS_PATH prepended once, twice or thrice with the
+    # announcing client's ASN.
+    #
+    # The following communities are scrubbed from outbound routes.
+    # The 'peer_as' macro must appear in the last part of values.
+    #
+    # The 'rs_as' macro can be used here.
+    # The 'dyn_val' macro must appear in the last part of values.
+    # The 'dyn_val' macro must contain a value from the
+    # 'rtt_thresholds' list that identifies the RTT value for
+    # which the action is requested.
+    prepend_once_to_peers_with_rtt_lower_than:
+      #std:
+      #lrg:
+      #ext:
+    prepend_twice_to_peers_with_rtt_lower_than:
+      #std:
+      #lrg:
+      #ext:
+    prepend_thrice_to_peers_with_rtt_lower_than:
+      #std:
+      #lrg:
+      #ext:
+    prepend_once_to_peers_with_rtt_higher_than:
+      #std:
+      #lrg:
+      #ext:
+    prepend_twice_to_peers_with_rtt_higher_than:
+      #std:
+      #lrg:
+      #ext:
+    prepend_thrice_to_peers_with_rtt_higher_than:
       #std:
       #lrg:
       #ext:
@@ -566,13 +686,28 @@ cfg:
       #ext:
 
     # This BGP community is used when the 'reject_policy' option is
-    # set to 'tag'.
+    # set to 'tag'. It is used to track the code of the reason that
+    # led the route to be considered as invalid.
     #
-    # The following communities are scrubbed from inbound routes.
+    # The following community is scrubbed from inbound routes.
     #
     # The 'rs_as' macro can be used here.
     # The 'dyn_val' macro must appear in the last part of values.
     reject_cause:
+      #std:
+      #lrg:
+      #ext:
+
+    # This BGP community is used when the 'reject_policy' option is
+    # set to 'tag'. If configured, it is used to track the ASN
+    # of the peer that announced the invalid route to the route
+    # server.
+    #
+    # The following community is scrubbed from inbound routes.
+    #
+    # The 'rs_as' macro can be used here.
+    # The 'dyn_val' macro must appear in the last part of values.
+    rejected_route_announced_by:
       #std:
       #lrg:
       #ext:

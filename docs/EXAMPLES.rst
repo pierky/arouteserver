@@ -10,7 +10,7 @@ Configurations built using the default ``general.yml`` and ``clients.yml`` files
 
 https://github.com/pierky/arouteserver/blob/master/examples/default
 
-See the `textual representation of this configuration <_static/examples_default.html>`_.
+See the `textual representation of this configuration <_static/examples_default.html>`__.
 
 Feature-rich example
 --------------------
@@ -23,13 +23,13 @@ Configurations built using the files provided in the ``examples/rich`` directory
 - RPKI-based route validation is enabled; INVALID routes are rejected.
 - A max-prefix limit is enforced on the basis of PeeringDB information.
 - Blackhole filtering is implemented with a rewrite-next-hop policy and can be triggered with BGP communities BLACKHOLE, 65534:0 and 999:666:0.
-- Control communities allow selective announcement control and prepending.
+- Control communities allow selective announcement control and prepending, also on the basis of peers RTT.
 - Client timers are configured using the custom, site-specific .local file.
 - Informational custom BGP communities are used to tag routes from European or American clients.
 
 https://github.com/pierky/arouteserver/blob/master/examples/rich
 
-See the `textual representation of this configuration <_static/examples_rich.html>`_.
+See the `textual representation of this configuration <_static/examples_rich.html>`__.
 
 BIRD hooks example
 ------------------

@@ -62,3 +62,13 @@ clients:
                                 - prefix: "2a03:0:1::"
                                   length: 48
                                   comment: "bad network"
+        - asn: 4
+          ip:
+          - "192.0.2.41"
+          - "2001:db8:1:1::41"
+          description: "AS4_1 client"
+          cfg:
+                filtering:
+                        irrdb:
+                                enforce_origin_in_as_set: False
+                                enforce_prefix_in_as_set: False

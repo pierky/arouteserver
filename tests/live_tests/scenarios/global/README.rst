@@ -12,7 +12,7 @@ Built to group as many tests as possible in a single scenario.
 
   clients:
 
-  - AS1_1 (192.0.2.11)
+  - AS1_1 (192.0.2.11, RTT 0.1 ms)
 
     - next-hop-self configured in AS1_1.conf
     - next_hop.policy: strict (inherited from general config)
@@ -33,10 +33,11 @@ Built to group as many tests as possible in a single scenario.
     aspath_len1    128.0.0.0/10  [1, 2x6]      fail bgp_path.len > 6
     ============   ============  ============  ====================================
 
-  - AS1_2 (192.0.2.12)
+  - AS1_2 (192.0.2.12, RTT 5 ms)
 
     - NO next-hop-self in AS1_2.conf (next-hop of AS101 used for AS101_good == 101.0.1.0/24)
     - next_hop.policy: same-as (from clients config)
+    - not enabled to receive blackhole requests
 
     Originated prefixes:
 
@@ -57,7 +58,7 @@ Built to group as many tests as possible in a single scenario.
 
   clients:
 
-  - AS2 (192.0.2.21)
+  - AS2 (192.0.2.21, RTT 17.3 ms)
 
     - next-hop-self configured in AS2.conf
     - next_hop.policy: authorized_addresses (from clients config)
@@ -89,7 +90,7 @@ Built to group as many tests as possible in a single scenario.
 
   clients:
 
-  - AS3 (192.0.2.31)
+  - AS3 (192.0.2.31, RTT 123.8)
 
     - no enforcing of origin in AS-SET
     - no enforcing of prefix in AS-SET
@@ -118,6 +119,50 @@ Built to group as many tests as possible in a single scenario.
                                                       NO_EXPORT
     Default_route      0.0.0.0/0                      rejected by rs
     =================  ============ ================= ============================================
+
+- **AS4**:
+
+  AS-SETs: none
+
+  clients:
+
+  - AS4 (192.0.2.41, RTT 600)
+
+    - no enforcing of origin in AS-SET
+    - no enforcing of prefix in AS-SET
+    - RTT thresholds configured on rs: 5, 10, 15, 20, 30, 50, 100, 200, 500
+    - other peers RTTs:
+      - AS1_1: 0.1
+      - AS1_2: 5
+      - AS2: 17.3
+      - AS3: 123.8
+
+    Originated prefixes:
+
+    ==========  ============ ================= ============================================ ========================
+    Prefix ID   Prefix       Communities       Goal                                         Who receives it
+    ==========  ============ ================= ============================================ ========================
+    AS4_rtt_1   4.0.1.0/24   0:999 64532:15    Do not announce to any + announce to peers   AS1_1, AS1_2
+                                               with RTT <= 15 ms
+    AS4_rtt_2   4.0.2.0/24   0:999 64532:5     Do not announce to any + announce to peers   AS1_1, AS1_2
+                                               with RTT <= 5 ms
+    AS4_rtt_3   4.0.3.0/24   64531:15          Do not announce to peers with RTT > 15 ms    AS1_1, AS1_2
+    AS4_rtt_4   4.0.4.0/24   64531:5           Do not announce to peers with RTT > 5 ms     AS1_1, AS1_2
+    AS4_rtt_5   4.0.5.0/24   64531:5 65501:3   Do not announce to peers with RTT > 5 ms but AS1_1, AS1_2, AS3
+                                               announce to AS3
+    AS4_rtt_6   4.0.6.0/24   64530:5 64531:100 Do not announce to peers with RTT <= 5 and   AS2
+                                               Do not announce to peers with RTT > 100
+    AS4_rtt_7   4.0.7.1/32   65535:666         BLACKHOLE request, do not announce to peers  AS1_1, AS2
+                             64531:20          with RTT > 20                                (AS1_2 not enabled to
+                                                                                            receive blackhole
+                                                                                            requests)
+    AS4_rtt_8   4.0.8.0/24   64539:100         Prepend 3x to > 100 ms, 2x to > 10 ms        AS1_1, AS1_2,
+                             64538:10                                                       AS2 2x, AS3 3x
+    AS4_rtt_9   4.0.9.0/24   64536:5 64535:20  Prepend 3x to <= 5 ms, 2x to <= 20, 1x to    AS1_1 & AS1_2 3x,
+                             999:65501         any                                          AS2 2x, AS3 1x
+    AS4_rtt_10  4.0.10.0/24  rt:64537:10       Prepend 1x to > 10 ms, 2x to > 20 ms         AS1_1 & AS1_2 no prep,
+                             rt:64538:20                                                    AS2 1x, AS3 2x
+    ==========  ============ ================= ============================================ ========================
 
 - **AS101**:
 

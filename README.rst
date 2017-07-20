@@ -38,7 +38,7 @@ How it works
               - "AS-AS111MAIN"
         ...
 
-#. ARouteServer acquires external information to enrich them: `bgpq3`_ for IRRDb data, `PeeringDB`_ for max-prefix limit, ...
+#. ARouteServer acquires external information to enrich them: i.e. `bgpq3`_ for IRRDb data, `PeeringDB`_ for max-prefix limit, ...
 
 #. `Jinja2`_ built-in templates are used to render the final route server's configuration file.
 
@@ -78,8 +78,8 @@ Features
 
   - prefix/origin ASN present/not present in **IRRDB data**;
   - routes **RPKI** validity state;
-  - do (not) announce to any / **peer**;
-  - **prepend** to any / **peer**;
+  - do (not) announce to any / **peer** / on **RTT basis**;
+  - **prepend** to any / **peer** / on **RTT basis**;
   - add **NO_EXPORT** / **NO_ADVERTISE** to any / **peer**;
   - custom informational BGP communities.
 
@@ -92,16 +92,16 @@ Features
 
 - Automatic building of clients list:
 
-  - `integration <https://arouteserver.readthedocs.io/en/latest/USAGE.html#ixp-manager-integration>`_ with **IXP-Manager**;
-  - `fetch lists <https://arouteserver.readthedocs.io/en/latest/USAGE.html#automatic-clients>`_ from **PeeringDB** records and **Euro-IX member list JSON** files.
+  - `integration <https://arouteserver.readthedocs.io/en/latest/USAGE.html#ixp-manager-integration>`__ with **IXP-Manager**;
+  - `fetch lists <https://arouteserver.readthedocs.io/en/latest/USAGE.html#automatic-clients>`__ from **PeeringDB** records and **Euro-IX member list JSON** files.
 
 - Related tools:
 
-  - `Invalid routes reporter <https://arouteserver.readthedocs.io/en/latest/TOOLS.html#invalid-routes-reporter>`_, to log or report invalid routes and their reject reason.
+  - `Invalid routes reporter <https://arouteserver.readthedocs.io/en/latest/TOOLS.html#invalid-routes-reporter>`__, to log or report invalid routes and their reject reason.
 
-A comprehensive list of features can be found within the comments of the distributed configuration file on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`_.
+A comprehensive list of features can be found within the comments of the distributed configuration file on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`__ or on the `documentation web page <https://arouteserver.readthedocs.io/en/latest/GENERAL.html>`__.
 
-More feature are already planned: see the `Future work <https://arouteserver.readthedocs.io/en/latest/FUTUREWORK.html>`_ section for more details.
+More feature are already planned: see the `Future work <https://arouteserver.readthedocs.io/en/latest/FUTUREWORK.html>`__ section for more details.
 
 .. _RFC7947: https://tools.ietf.org/html/rfc7947
 .. _RFC7948: https://tools.ietf.org/html/rfc7948
@@ -117,8 +117,8 @@ Full documentation can be found on ReadTheDocs: https://arouteserver.readthedocs
 Presentations
 -------------
 
-- RIPE74, 10 May 2017, Connect Working Group: `video <https://ripe74.ripe.net/archives/video/87/>`_ (9:53), `slides <https://ripe74.ripe.net/presentations/22-RIPE74-ARouteServer.pdf>`_ (PDF)
-- Salottino MIX, 30 May 2017: `slides <https://www.slideshare.net/PierCarloChiodi/salottino-mix-2017-arouteserver-ixp-automation-made-easy>`_
+- RIPE74, 10 May 2017, Connect Working Group: `video <https://ripe74.ripe.net/archives/video/87/>`__ (9:53), `slides <https://ripe74.ripe.net/presentations/22-RIPE74-ARouteServer.pdf>`__ (PDF)
+- Salottino MIX, 30 May 2017: `slides <https://www.slideshare.net/PierCarloChiodi/salottino-mix-2017-arouteserver-ixp-automation-made-easy>`__
 
 Status
 ------
