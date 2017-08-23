@@ -16,6 +16,8 @@ next release
 
 - Fix: OpenBGPD, large prefix lists were causing a "string too long" error.
 
+- Fix: OpenBGPD, clients descriptions longer than 31 characters were not properly truncated.
+
 v0.9.0
 ------
 
