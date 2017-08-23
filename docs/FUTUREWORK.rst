@@ -11,6 +11,7 @@ Short term
 Mid term
 --------
 
+- OpenBGPD: consider dropping the use of macros for ASN and prefix lists
 - New feature: group clients by AFI/ASN (OpenBGPD only)
 - Split configuration in multiple files
 - Doc: better documentation

@@ -1,0 +1,57 @@
+#!/bin/bash
+
+function usage() {
+	echo "utils/test_config [bird4 | bird6 | openbgpd] <config_file_path>"
+}
+
+if [ ! -e "setup.py" ]; then
+	echo "The script must be executed from within the repository's root directory."
+	exit
+fi
+
+if [ $# -ne 2 ]; then
+	usage
+	exit
+fi
+
+abs_path=`echo "$(dirname $(readlink -e $2))/$(basename $2)"`
+
+if [ "$1" == "bird4" ]; then
+	docker run \
+		--rm -it \
+		--net=arouteserver \
+		--ip=192.0.2.2 \
+		--name=ars_rs \
+		-v$abs_path:/etc/bird/bird.conf \
+		pierky/bird:1.6.3 \
+		bird -c /etc/bird/bird.conf -d
+
+elif [ "$1" == "bird6" ]; then
+	docker run \
+		--rm -it \
+		--net=arouteserver \
+		--ip6=2001:db8:1:1::2 \
+		--name=ars_rs \
+		-v$abs_path:/etc/bird/bird.conf \
+		pierky/bird:1.6.3 \
+		bird6 -c /etc/bird/bird.conf -d
+
+elif [ "$1" == "openbgpd" ]; then
+	virsh \
+		start arouteserver_openbgpd60
+	echo "When started..."
+	echo "scp -i ~/.ssh/arouteserver -o StrictHostKeyChecking=no $2 root@192.0.2.2:/etc/bgpd.conf"
+	echo "ssh -i ~/.ssh/arouteserver -o StrictHostKeyChecking=no root@192.0.2.2"
+	echo "/etc/rc.d/bgpd stop ; bgpd -vdn && /etc/rc.d/bgpd start"
+	echo "bgpctl"
+	echo ""
+	virsh list
+	echo ""
+	while true; do
+		ssh -i ~/.ssh/arouteserver -o StrictHostKeyChecking=no -o ConnectTimeout=5 -o ServerAliveInterval=10 root@192.0.2.2 echo "Up!"
+		sleep 5
+	done
+else
+	echo "Unknown target"
+	usage
+fi

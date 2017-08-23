@@ -3,6 +3,21 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- Improvement: BIRD, new default debug options (``states, routes, filters, interfaces, events``, was ``all``).
+
+  If needed, they can be overwritten using the ``header`` `custom .local file <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#site-specific-custom-config>`_.
+
+- Fix: *enrichers* errors handling reported a generic message with no further details.
+
+- Fix: HTTP 404 error handling for "Entity not found" error from PeeringDB.
+
+- Fix: OpenBGPD, large prefix lists were causing a "string too long" error.
+
+- Fix: OpenBGPD, clients descriptions longer than 31 characters were not properly truncated.
+
 v0.9.0
 ------
 

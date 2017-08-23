@@ -51,8 +51,8 @@ class BaseConfigEnricherThread(threading.Thread):
                     with self.lock:
                         self.save_data(task, data)
             except Exception as e:
-                if not isinstance(e, ARouteServerError):
-                    logging.debug("{} thread {} error: {}".format(
+                if str(e):
+                    logging.error("{} thread {} error: {}".format(
                         self.DESCR, self.name, str(e)))
                 try:
                     self.errors_q.put_nowait(True)

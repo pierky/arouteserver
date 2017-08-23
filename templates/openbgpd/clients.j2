@@ -14,7 +14,7 @@ group "clients" {
 
 		softreconfig in yes
 {%	if client.description %}
-		descr "{{ client.description|truncate(31) }}"
+		descr "{{ client.description|truncate(31, true, "...", 0) }}"
 {%	endif %}
 		remote-as {{ client.asn }}
 {%	if client.cfg.passive %}
