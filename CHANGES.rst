@@ -10,6 +10,8 @@ next release
 
   If needed, they can be overwritten using the ``header`` `custom .local file <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#site-specific-custom-config>`_.
 
+- Fix: *enrichers* errors handling reported a generic message with no further details.
+
 v0.9.0
 ------
 

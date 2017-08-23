@@ -83,12 +83,13 @@ class PeeringDBConfigEnricher_WorkerThread(BaseConfigEnricherThread):
                               "max-prefix limit.".format(client["asn"]))
                 pass
             except PeeringDBError as e:
-                raise BuilderError(
+                logging.error(
                     "An error occurred while retrieving info from PeeringDB "
                     "for ASN {}: {}".format(
                         client["asn"], str(e) or "error unknown"
                     )
                 )
+                raise BuilderError()
 
         return res["limit4"], res["limit6"]
 
