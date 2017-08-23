@@ -14,6 +14,8 @@ next release
 
 - Fix: HTTP 404 error handling for "Entity not found" error from PeeringDB.
 
+- Fix: OpenBGPD, large prefix lists were causing a "string too long" error.
+
 v0.9.0
 ------
 
