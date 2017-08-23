@@ -12,6 +12,8 @@ next release
 
 - Fix: *enrichers* errors handling reported a generic message with no further details.
 
+- Fix: HTTP 404 error handling for "Entity not found" error from PeeringDB.
+
 v0.9.0
 ------
 

@@ -16,12 +16,7 @@
 import logging
 import json
 import subprocess
-try:
-    # For Python 3.0 and later
-    from urllib.request import urlopen
-except ImportError:
-    # Fall back to Python 2's urllib2
-    from urllib2 import urlopen
+from urllib2 import urlopen, HTTPError
 
 
 from .cached_objects import CachedObject
@@ -37,6 +32,16 @@ class PeeringDBInfo(CachedObject):
     def _read_from_url(url):
         try:
             response = urlopen(url)
+        except HTTPError as e:
+            if e.code == 404:
+                return "{}"
+            else:
+                raise PeeringDBError(
+                    "HTTP error while retrieving info from PeeringDB: "
+                    "core: {}, reason: {} - {}".format(
+                        e.code, e.reason, str(e)
+                    )
+                )
         except Exception as e:
             raise PeeringDBError(
                 "Error while retrieving info from PeeringDB: {}".format(
