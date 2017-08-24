@@ -3,16 +3,20 @@
 {%-		if not entry.exact -%}
 {{ " prefixlen " }}
 {%-			if entry.ge -%}
-{{ 				entry.ge }}
+{%-				set prefixlen_start = entry.ge %}
 {%-			else -%}
-{{				entry.length }}
+{%-				set prefixlen_start = entry.length %}
 {%-			endif -%}
-{{			" - " }}
 {%-			if entry.le -%}
-{{				entry.le }}
+{%-				set prefixlen_end = entry.le %}
 {%- 			else -%}
-{{				entry.max_length }}
+{%-				set prefixlen_end = entry.max_length %}
 {%- 			endif -%}
+{%-			if prefixlen_start != prefixlen_end %}
+{{				prefixlen_start ~ " - " ~ prefixlen_end }}
+{%-			else %}
+{{				"= " ~ prefixlen_start }}
+{%-			endif %}
 {%-		endif -%}
 {% endmacro %}
 

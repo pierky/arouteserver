@@ -8,6 +8,8 @@ next release
 
 - Fix: remove quotes from clients description.
 
+- Fix: OpenBGPD, syntax error for prefix lists with 'range X - X' format.
+
 v0.9.1
 ------
 
