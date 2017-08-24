@@ -1013,7 +1013,8 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "tag_as_set": True,
                     "enforce_origin_in_as_set": True,
                     "enforce_prefix_in_as_set": True,
-                    "allow_longer_prefixes": False
+                    "allow_longer_prefixes": False,
+                    "peering_db": False
                 },
                 "rpki": {
                     "enabled": False,
@@ -1086,7 +1087,8 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "tag_as_set": True,
                     "enforce_origin_in_as_set": True,
                     "enforce_prefix_in_as_set": True,
-                    "allow_longer_prefixes": False
+                    "allow_longer_prefixes": False,
+                    "peering_db": False,
                 },
                 "rpki": {
                     "enabled": False,

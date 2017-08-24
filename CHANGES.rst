@@ -3,6 +3,13 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New feature: when IRRDB-based filters are enabled and no AS-SETs are configured for a client, if the ``cfg.filtering.irrdb.peering_db`` option is set ARouteServer tries to fetch their values from the client's ASN record on PeeringDB.
+
+  Related: `issue #7 on GitHub <https://github.com/pierky/arouteserver/issues/7>`_.
+
 v0.9.1
 ------
 

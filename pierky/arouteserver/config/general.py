@@ -133,7 +133,8 @@ class ConfigParserGeneral(ConfigParserBase):
                         "enforce_origin_in_as_set": ValidatorBool(default=True),
                         "enforce_prefix_in_as_set": ValidatorBool(default=True),
                         "allow_longer_prefixes": ValidatorBool(default=False),
-                        "tag_as_set": ValidatorBool(default=True)
+                        "tag_as_set": ValidatorBool(default=True),
+                        "peering_db": ValidatorBool(default=False)
                     },
                     "rpki": {
                         "enabled": ValidatorBool(default=False),

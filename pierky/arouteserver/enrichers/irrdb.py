@@ -192,6 +192,20 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
                     )
                 continue
 
+            # If one or more AS-SETs have been found on PeeringDB, use them.
+            as_sets_from_pdb = client.get("as_sets_from_pdb", None)
+            if as_sets_from_pdb:
+                logging.info("No AS-SET provided for the '{}' client. "
+                             "Using those obtained from PeeringDB: {}.".format(
+                                    client["id"], ", ".join(as_sets_from_pdb)
+                                ))
+                for as_set_from_pdb in as_sets_from_pdb:
+                    client_irrdb["as_set_ids"].append(
+                        use_as_set(as_set_from_pdb,
+                                   "client {}".format(client["id"]))
+                    )
+                continue
+
             # No AS-SETs found for the client's ASN in the 'asns' section.
             logging.warning("No AS-SET provided for the '{}' client. "
                             "Only AS{} will be expanded.".format(

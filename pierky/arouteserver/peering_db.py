@@ -88,7 +88,10 @@ class PeeringDBNet(PeeringDBInfo):
     
         self.info_prefixes4 = self.raw_data[0].get("info_prefixes4", None)
         self.info_prefixes6 = self.raw_data[0].get("info_prefixes6", None)
-        self.irr_as_set = self.raw_data[0].get("irr_as_set", None)
+        self.irr_as_sets = []
+        raw_irr_as_sets = self.raw_data[0].get("irr_as_set", None)
+        if raw_irr_as_sets and raw_irr_as_sets.strip():
+            self.irr_as_sets = [_.strip() for _ in raw_irr_as_sets.split("/")]
 
     def _get_object_filename(self):
         return "peeringdb_net_{}.json".format(self.asn)
@@ -136,14 +139,8 @@ def clients_from_peeringdb(netixlanid, cache_dir):
         asn = client["asn"]
         net = PeeringDBNet(asn)
 
-        irr_as_sets = net.irr_as_set
-        if not irr_as_sets:
+        if not net.irr_as_sets:
             continue
-
-        if "/" in irr_as_sets:
-            irr_as_sets = irr_as_sets.split("/")
-        else:
-            irr_as_sets = [irr_as_sets]
 
         key = "AS{}".format(asn)
         if key not in asns:
@@ -151,7 +148,7 @@ def clients_from_peeringdb(netixlanid, cache_dir):
                 "as_sets": []
             }
 
-        for irr_as_set in irr_as_sets:
+        for irr_as_set in net.irr_as_sets:
             irr_as_set = irr_as_set.strip()
             if irr_as_set not in asns[key]["as_sets"]:
                 asns[key]["as_sets"].append(irr_as_set.encode("ascii", "ignore"))
