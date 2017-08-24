@@ -277,7 +277,7 @@ filter announce_to_{{ client.id }} {
 {% endif %}
 protocol bgp {{ client.id }} {
 	{% if client.description %}
-	description "{{ client.description }}";
+	description "{{ client.description|replace("\"", "") }}";
 	{% endif %}
 
 	local as {{ cfg.rs_as }};
