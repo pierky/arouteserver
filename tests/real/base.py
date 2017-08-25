@@ -147,7 +147,7 @@ class TestRealConfigs(ARouteServerTestCase):
                                     else "/etc/bgpd.conf")],
             remote_ip=remote_ip
         )
-        inst.set_var_dir(self.var_dir)
+        inst.set_var_dir(self.rs_config_dir)
         inst.start()
         inst.stop()
 

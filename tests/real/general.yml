@@ -21,6 +21,7 @@ cfg:
       enforce_prefix_in_as_set: True
       allow_longer_prefixes: False
       tag_as_set: True
+      peering_db: True
     rpki:
       enabled: False
     max_prefix:
