@@ -37,3 +37,19 @@ class TestPeeringDBInfo(unittest.TestCase):
         """PeeringDB network: missing data"""
         with self.assertRaises(PeeringDBNoInfoError):
             net = PeeringDBNet(2)
+
+    def test_parse_as_sets(self):
+        """PeeringDB: AS-SETs parsing"""
+        net = PeeringDBNet(1)
+        self.assertEqual(net.parse_as_sets("AS-1"), ["AS-1"])
+        self.assertEqual(net.parse_as_sets("AS-1, AS-2"), ["AS-1", "AS-2"])
+        self.assertEqual(net.parse_as_sets("AS-1 / AS-2\nAS-3"), ["AS-1", "AS-2", "AS-3"])
+        self.assertEqual(net.parse_as_sets("AS-"), [])
+        self.assertEqual(net.parse_as_sets("AS-A_BB, as-b"), ["AS-A_BB", "as-b"])
+        self.assertEqual(net.parse_as_sets("AA-B"), [])
+        self.assertEqual(net.parse_as_sets("RIPE:AS-B"), ["RIPE:AS-B"])
+        self.assertEqual(net.parse_as_sets("RIPE::AS-B"), ["AS-B"])
+        self.assertEqual(net.parse_as_sets("RIPE: AS-B"), ["AS-B"])
+        self.assertEqual(net.parse_as_sets("RIPE: AA:AS-B:CC, ARIN: CC:AS-1-CUST"), ["AA:AS-B:CC", "CC:AS-1-CUST"])
+        self.assertEqual(net.parse_as_sets("ipv4:AS-B"), ["AS-B"])
+        self.assertEqual(net.parse_as_sets("ripe: AS-A, RaDB: AS-ONE"), ["AS-A", "AS-ONE"])
