@@ -15,6 +15,7 @@
 
 import logging
 import json
+import re
 import subprocess
 from urllib2 import urlopen, HTTPError
 
@@ -88,7 +89,78 @@ class PeeringDBNet(PeeringDBInfo):
     
         self.info_prefixes4 = self.raw_data[0].get("info_prefixes4", None)
         self.info_prefixes6 = self.raw_data[0].get("info_prefixes6", None)
-        self.irr_as_set = self.raw_data[0].get("irr_as_set", None)
+        self.irr_as_sets = self.parse_as_sets(
+            self.raw_data[0].get("irr_as_set", None)
+        )
+
+    def parse_as_sets(self, raw_irr_as_sets):
+        res = []
+        if raw_irr_as_sets and raw_irr_as_sets.strip():
+            raw_irr_as_sets = re.split("[/,&\s]", raw_irr_as_sets)
+            for raw_irr_as_set in raw_irr_as_sets:
+                irr_as_set = self.parse_as_set(raw_irr_as_set)
+                if irr_as_set and irr_as_set not in res:
+                    res.append(irr_as_set)
+        return res
+
+    def parse_as_set(self, in_value):
+        v = in_value.strip()
+
+        if not v:
+            return None
+
+        guessed = False
+
+        # Removing things like "<registry>::" and "<registry>: ".
+        pattern = re.compile("^(?:RIPE|APNIC|AFRINIC|ARIN|NTTCOM|"
+                             "ALTDB|BBOI|BELL|GT|JPIRR|LEVEL3|RADB|"
+                             "RGNET|SAVVIS|TC):[:\s]", flags=re.IGNORECASE)
+        v, number_of_subs_made = pattern.subn("", v)
+        if number_of_subs_made > 0:
+            v = v.strip()
+            guessed = True
+        if not v:
+            return None
+
+        # Removing "ipv4:" and "ipv6:".
+        pattern = re.compile("^(?:ipv4|ipv6):", flags=re.IGNORECASE)
+        v, number_of_subs_made = pattern.subn("", v)
+        if number_of_subs_made > 0:
+            v = v.strip()
+            guessed = True
+        if not v:
+            return None
+
+        # "At least one component of such a name must be an actual
+        # set name (i.e. start with one of the prefixes above)."
+        # https://datatracker.ietf.org/doc/html/rfc2622#section-5
+        as_dash_found = False
+        parts = []
+        for name in v.split(":"):
+            if name.strip().upper().startswith("AS-"):
+                as_dash_found = True
+            parts.append(name.strip())
+        v = ":".join(parts)
+
+        if not as_dash_found:
+            logging.debug("AS-SET from PeeringDB for AS{}: "
+                          "ignoring {}, no ""AS-"" found".format(
+                              self.asn, v))
+            return None
+
+        for name in v.split(":"):
+            if not re.match("^[a-z][a-z0-9_\-]*[a-z0-9]$", name, flags=re.I):
+                logging.debug("AS-SET from PeeringDB for AS{}: "
+                              "ignoring {}, invalid name {}".format(
+                                  self.asn, v, name))
+                return None
+
+        if guessed:
+            logging.info("AS-SET from PeeringDB for AS{}: "
+                         "guessed {} from {}".format(
+                             self.asn, v, in_value))
+
+        return v
 
     def _get_object_filename(self):
         return "peeringdb_net_{}.json".format(self.asn)
@@ -136,14 +208,8 @@ def clients_from_peeringdb(netixlanid, cache_dir):
         asn = client["asn"]
         net = PeeringDBNet(asn)
 
-        irr_as_sets = net.irr_as_set
-        if not irr_as_sets:
+        if not net.irr_as_sets:
             continue
-
-        if "/" in irr_as_sets:
-            irr_as_sets = irr_as_sets.split("/")
-        else:
-            irr_as_sets = [irr_as_sets]
 
         key = "AS{}".format(asn)
         if key not in asns:
@@ -151,7 +217,7 @@ def clients_from_peeringdb(netixlanid, cache_dir):
                 "as_sets": []
             }
 
-        for irr_as_set in irr_as_sets:
+        for irr_as_set in net.irr_as_sets:
             irr_as_set = irr_as_set.strip()
             if irr_as_set not in asns[key]["as_sets"]:
                 asns[key]["as_sets"].append(irr_as_set.encode("ascii", "ignore"))

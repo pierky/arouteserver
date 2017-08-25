@@ -124,7 +124,8 @@ One or more AS-SETs can be used to gather information about authorized origin AS
 
 - for each client, one or more AS-SETs can be configured in the ``cfg.filtering.irrdb`` section.
 
-To gather information from the IRRDBs, at first the script uses the AS-SETs provided in the client-level configuration; if no AS-SETs are provided there, it looks to the ASN configuration. If no AS-SETs are found in both the client and the ASN configuration, only the ASN's autnum object will be used.
+To gather information from the IRRDBs, at first the script uses the AS-SETs provided in the client-level configuration; if no AS-SETs are provided there, it looks to the ASN configuration.
+If no AS-SETs are found in both the client and the ASN configuration, if the ``cfg.filtering.irrdb.peering_db`` option is set to True the AS-SET from PeeringDB is used ("IRR Record" field), otherwise only the ASN's autnum object will be used.
 
 Example:
 
@@ -164,7 +165,7 @@ With this configuration, the following values will be used to run the bgpq3 prog
 - **AS-AS11NETS** will be used for 192.0.2.11 (it's configured at client-level for that client);
 - **AS-AS22MAIN** for the 192.0.2.22 client (it's inherited from the ``asns``-level configuration of AS22, client's AS);
 - **AS-AS33CUSTOMERS** for the 192.0.2.33 client (the ``asns``-level configuration is ignored because a more specific one is given at client-level);
-- **AS44** for the 192.0.2.44 client, because no AS-SETs are given at any level.
+- **AS44** for the 192.0.2.44 client, because no AS-SETs are given at any level. In this case, if the ``cfg.filtering.irrdb.peering_db`` was set to True, the AS-SET from PeeringDB would be used.
 
 RPKI-based filtering
 ********************

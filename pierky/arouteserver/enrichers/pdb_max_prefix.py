@@ -20,9 +20,9 @@ from ..errors import BuilderError, ARouteServerError, \
                     PeeringDBError, PeeringDBNoInfoError
 from ..peering_db import PeeringDBNet
 
-class PeeringDBConfigEnricher_WorkerThread(BaseConfigEnricherThread):
+class PeeringDBConfigEnricher_MaxPrefix_WorkerThread(BaseConfigEnricherThread):
 
-    DESCR = "PeeringDB"
+    DESCR = "PeeringDB max-prefix"
 
     def __init__(self, *args, **kwargs):
         BaseConfigEnricherThread.__init__(self, *args, **kwargs)
@@ -101,9 +101,9 @@ class PeeringDBConfigEnricher_WorkerThread(BaseConfigEnricherThread):
         if limit6:
             client["cfg"]["filtering"]["max_prefix"]["limit_ipv6"] = limit6
 
-class PeeringDBConfigEnricher(BaseConfigEnricher):
+class PeeringDBConfigEnricher_MaxPrefix(BaseConfigEnricher):
 
-    WORKER_THREAD_CLASS = PeeringDBConfigEnricher_WorkerThread
+    WORKER_THREAD_CLASS = PeeringDBConfigEnricher_MaxPrefix_WorkerThread
 
     def _config_thread(self, thread):
         thread.ip_ver = self.builder.ip_ver

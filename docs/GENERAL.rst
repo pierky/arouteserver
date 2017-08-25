@@ -325,6 +325,9 @@ is given in the clients configuration file for the
 specific client nor for its AS, then only the ASN
 of the announcing client is expanded and used to gather
 authorized origin ASNs and prefixes.
+If the **peering_db** option below within this section is set
+to True, ARouteServer acquires the AS-SET of the client ASN
+from PeeringDB.
 
 
 More details on the Configuration page on ReadTheDocs:
@@ -405,6 +408,25 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
   .. code:: yaml
 
      tag_as_set: True
+
+
+
+- ``peering_db``:
+  If this option is set to True and no AS-SETs are given for
+  a client nor for its ASN then ARouteServer tries to acquire
+  the AS-SET from PeeringDB.
+  Please note that data quality in PeeringDB has large
+  variations; setting this option to True could lead to
+  unwanted and unpredictable behaviours.
+
+
+  Default: **False**
+
+  Example:
+
+  .. code:: yaml
+
+     peering_db: False
 
 
 

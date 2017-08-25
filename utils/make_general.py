@@ -282,7 +282,8 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
                 CfgStatement("enforce_origin_in_as_set", pre_comment=True),
                 CfgStatement("enforce_prefix_in_as_set", pre_comment=True),
                 CfgStatement("allow_longer_prefixes", pre_comment=True),
-                CfgStatement("tag_as_set", pre_comment=True)
+                CfgStatement("tag_as_set", pre_comment=True),
+                CfgStatement("peering_db", pre_comment=True)
             ]),
             CfgStatement("rpki", t="RPKI", sub=[
                 CfgStatement("enabled", pre_comment=True),
