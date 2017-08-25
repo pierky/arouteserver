@@ -53,8 +53,10 @@ class KVMInstance(BGPSpeakerInstance):
 
         # If set, the VM is always considered up and SSH connections
         # are established toward this IP address.
-        self.remote_ip = kwargs.get("remote_ip", "").strip()
-        self.is_remote = self.remote_ip != ""
+        self.remote_ip = kwargs.get("remote_ip", None)
+        if self.remote_ip:
+            self.remote_ip = self.remote_ip.strip()
+        self.is_remote = self.remote_ip != "" and self.remote_ip
 
     @classmethod
     def _run(cls, cmd):

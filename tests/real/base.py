@@ -17,10 +17,9 @@ import json
 import logging
 from logging.config import fileConfig
 import os
+import subprocess
 import unittest
 
-from pierky.arouteserver.builder import BIRDConfigBuilder, \
-                                        OpenBGPDConfigBuilder
 from pierky.arouteserver.tests.base import ARouteServerTestCase
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance, \
                                                           OpenBGPD61Instance
@@ -77,32 +76,24 @@ class TestRealConfigs(ARouteServerTestCase):
     def build_config(self, bgp_speaker, target_ver, ip_ver):
         cwd = os.path.dirname(__file__)
 
-        if bgp_speaker == "bird":
-            builder_class = BIRDConfigBuilder
-        elif bgp_speaker == "openbgpd":
-            builder_class = OpenBGPDConfigBuilder
-        else:
+        if bgp_speaker not in ("bird", "openbgpd"):
             raise ValueError("Unknown bgp_speaker: {}".format(bgp_speaker))
-
-        builder = builder_class(
-            template_dir=os.path.join(cwd, "templates", bgp_speaker),
-            template_name="main.j2",
-            cache_dir=self.cache_dir,
-            ip_ver=ip_ver,
-            ignore_errors=["path_hiding"],
-            target_version=target_ver,
-            cfg_general=os.path.join(cwd, "general.yml"),
-            cfg_bogons=os.path.join(cwd, "bogons.yml"),
-            cfg_clients=os.path.join(cwd, "clients", self.CLIENTS_FILE)
-        )
 
         rs_config_file_path = self.get_rs_config_file_path(
             bgp_speaker, target_ver, ip_ver)
 
-        with open(rs_config_file_path, "w") as f:
-            builder.render_template(f)
+        cmd = ["./scripts/arouteserver"]
+        cmd += [bgp_speaker]
+        cmd += ["--cfg", os.path.join(cwd, "arouteserver.yml")]
+        cmd += ["--output", rs_config_file_path]
+        cmd += ["--ignore-issues", "path_hiding"]
+        if target_ver:
+            cmd += ["--target-version", target_ver]
+        cmd += ["--clients", os.path.join(cwd, "clients", self.CLIENTS_FILE)]
+        if ip_ver:
+            cmd += ["--ip-ver", str(ip_ver)]
 
-        del builder
+        subprocess.check_output(cmd)
 
     def load_config(self, bgp_speaker, target_ver, ip_ver):
         remote_ip = os.environ.get("REMOTE_IP", "").strip()
