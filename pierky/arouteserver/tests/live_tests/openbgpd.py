@@ -85,11 +85,12 @@ class OpenBGPDInstance(KVMInstance):
         self._mount_files()
 
         self.run_cmd("chmod 0600 /etc/bgpd.conf")
+        self.run_cmd("touch /etc/bgpd/placeholder")
         self.run_cmd("chmod 0600 /etc/bgpd/*")
 
         self.run_cmd("/etc/rc.d/bgpd stop")
         time.sleep(5)
-        self.run_cmd("bgpd -vdn")
+        self.run_cmd("bgpd -dn")
         self.run_cmd("/etc/rc.d/bgpd start")
         time.sleep(5)
 

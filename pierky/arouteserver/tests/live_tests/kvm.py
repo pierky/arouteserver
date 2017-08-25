@@ -51,6 +51,11 @@ class KVMInstance(BGPSpeakerInstance):
         super(KVMInstance, self).__init__(*args, **kwargs)
         self.domain_name = self._get_virsh_domainname()
 
+        # If set, the VM is always considered up and SSH connections
+        # are established toward this IP address.
+        self.remote_ip = kwargs.get("remote_ip", "").strip()
+        self.is_remote = self.remote_ip != ""
+
     @classmethod
     def _run(cls, cmd):
         cls.debug("Executing '{}'".format(cmd))
@@ -69,29 +74,33 @@ class KVMInstance(BGPSpeakerInstance):
             )
 
     def is_running(self):
+        if self.is_remote:
+            return True
+
         res = self._run("virsh list --name --state-running")
         return self.domain_name in res
 
     def _check_env(self):
-        vms_list_raw = self._run("virsh list --name --all")
-        vms_list = vms_list_raw.split("\n")
-        found = False
-        for vm in vms_list:
-            if vm.strip() == self.domain_name:
-                found = True
-                break
-        if not found:
-            raise Exception(
-                "The virsh domain '{}' does not appear to "
-                "be in the list of configured domains: "
-                "'virsh list --all'. Please check that the KVM "
-                "virtual machine used by the live test framework "
-                "is configured correctly. To use a different "
-                "VM name, set the VIRSH_DOMAINNAME environment "
-                "variable before running the tests.".format(
-                    self.domain_name
+        if not self.is_remote:
+            vms_list_raw = self._run("virsh list --name --all")
+            vms_list = vms_list_raw.split("\n")
+            found = False
+            for vm in vms_list:
+                if vm.strip() == self.domain_name:
+                    found = True
+                    break
+            if not found:
+                raise Exception(
+                    "The virsh domain '{}' does not appear to "
+                    "be in the list of configured domains: "
+                    "'virsh list --all'. Please check that the KVM "
+                    "virtual machine used by the live test framework "
+                    "is configured correctly. To use a different "
+                    "VM name, set the VIRSH_DOMAINNAME environment "
+                    "variable before running the tests.".format(
+                        self.domain_name
+                    )
                 )
-            )
 
         key_file = self._get_ssh_key_path()
         if not os.path.exists(key_file) or not os.path.isfile(key_file):
@@ -104,7 +113,10 @@ class KVMInstance(BGPSpeakerInstance):
             )
 
     def start(self):
-        if not self.is_running():
+        if not self.is_remote:
+            if self.is_running():
+                raise InstanceError("Instance '{}' already running.".format(self.name))
+
             self._check_env()
 
             res = self._run("virsh start {}".format(self.domain_name))
@@ -115,8 +127,8 @@ class KVMInstance(BGPSpeakerInstance):
                     "an error occurred while starting virsh domain '{}':\n"
                     "{}".format(self.name, self.domain_name, res)
                 )
-
             time.sleep(3)
+
             if not self.is_running():
                 raise InstanceError(
                     "The virsh domain '{}' failed to start".format(
@@ -141,18 +153,19 @@ class KVMInstance(BGPSpeakerInstance):
                     )
                 )
 
-            # The VM is now up and bgpd should be started too,
-            # but configuration files have not been updated yet,
-            # so call reload_config() in order to push them
-            # to the VM and reload the daemon.
-            self.reload_config()
-        else:
-            raise InstanceError("Instance '{}' already running.".format(self.name))
+        # The VM is now up and bgpd should be started too,
+        # but configuration files have not been updated yet,
+        # so call reload_config() in order to push them
+        # to the VM and reload the daemon.
+        self.reload_config()
 
     def _graceful_shutdown(self):
         return False
 
     def stop(self):
+        if self.is_remote:
+            return
+
         if not self.is_running():
             return
 
@@ -164,7 +177,7 @@ class KVMInstance(BGPSpeakerInstance):
                 return
             time.sleep(5)
 
-        if self.is_running():
+        if self.is_running() and not self.is_remote:
             try:
                 self._run("virsh shutdown {}".format(self.domain_name))
                 for i in range(30 / 5):
@@ -174,7 +187,7 @@ class KVMInstance(BGPSpeakerInstance):
             except:
                 pass
 
-        if self.is_running():
+        if self.is_running() and not self.is_remote:
             try:
                 self._run("virsh destroy {}".format(self.domain_name))
             except:
@@ -189,7 +202,7 @@ class KVMInstance(BGPSpeakerInstance):
                "-o ServerAliveInterval=10 {user}@{ip} -i {path_to_key} "
                "{cmd}").format(
             user=self._get_ssh_user(),
-            ip=self.ip,
+            ip=self.remote_ip if self.is_remote else self.ip,
             path_to_key=self._get_ssh_key_path(),
             cmd=" ".join(args) if isinstance(args, list) else args
         )
@@ -198,12 +211,13 @@ class KVMInstance(BGPSpeakerInstance):
 
     def _mount_files(self):
         for mount in self.get_mounts():
+            ip = self.remote_ip if self.is_remote else self.ip
             cmd = ("scp -i {path_to_key} "
                    "-o StrictHostKeyChecking=no "
                    "{host_file} {user}@{ip}:{container_file} ".format(
                        host_file=mount["host"],
                        user=self._get_ssh_user(),
-                       ip="[{}]".format(self.ip) if ":" in self.ip else self.ip,
+                       ip="[{}]".format(ip) if ":" in ip else ip,
                        container_file=mount["container"],
                        path_to_key=self._get_ssh_key_path()
                     ))
