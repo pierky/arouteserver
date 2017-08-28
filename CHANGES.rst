@@ -10,6 +10,8 @@ next release
 
   Related: `issue #7 on GitHub <https://github.com/pierky/arouteserver/issues/7>`_.
 
+- Improvement: config building process, reduced memory consumption by moving IRRDB information from memory to temporary files.
+
 - Fix: remove quotes from clients description.
 
 - Fix: OpenBGPD, syntax error for prefix lists with 'range X - X' format.

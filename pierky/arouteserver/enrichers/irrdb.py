@@ -13,14 +13,68 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import atexit
+import cPickle
 import ipaddr
 import logging
 import re
+import shutil
+import tempfile
 
 from .base import BaseConfigEnricher, BaseConfigEnricherThread
 from ..errors import BuilderError, ARouteServerError
 from ..irrdb import ASSet, RSet, IRRDBTools
 
+
+irrdb_pickle_dir = None
+def setup_irrdb_pickle_dir():
+    global irrdb_pickle_dir
+
+    if irrdb_pickle_dir:
+        return irrdb_pickle_dir
+
+    irrdb_pickle_dir = tempfile.mkdtemp(suffix="_arouteserver")
+    atexit.register(clear_irrdb_pickle_dir, target_dir=irrdb_pickle_dir)
+    return irrdb_pickle_dir
+
+def clear_irrdb_pickle_dir(target_dir):
+    shutil.rmtree(target_dir, ignore_errors=True)
+
+class AS_SET(object):
+
+    def __init__(self, id, name, used_by):
+        self.id = id
+        self.name = name
+        self.used_by = used_by
+
+        self.irrdb_pickle_dir = setup_irrdb_pickle_dir()
+        self.saved_objects = []
+
+    def get_path(self, objects):
+        return "{}/pickle_{}.{}".format(self.irrdb_pickle_dir, self.id, objects)
+
+    def save(self, objects, data):
+        if objects in ("asns", "prefixes"):
+            with open(self.get_path(objects), "w") as f:
+                cPickle.dump(data, f, cPickle.HIGHEST_PROTOCOL)
+            self.saved_objects += [objects]
+        else:
+            raise ValueError("Unknown objects: {}".format(objects))
+
+    def load(self, objects):
+        if objects in self.saved_objects:
+            with open(self.get_path(objects), "r") as f:
+                return cPickle.load(f)
+        else:
+            return []
+
+    @property
+    def asns(self):
+        return self.load("asns")
+
+    @property
+    def prefixes(self):
+        return self.load("prefixes")
 
 class IRRDBConfigEnricher_WorkerThread(BaseConfigEnricherThread):
 
@@ -39,9 +93,7 @@ class IRRDBConfigEnricher_WorkerThread(BaseConfigEnricherThread):
 
     def save_data(self, task, data):
         as_set, _, _ = task
-        as_set[self.TARGET_FIELD].extend(
-            [_ for _ in data if _ not in as_set[self.TARGET_FIELD]]
-        )
+        as_set.save(self.TARGET_FIELD, data)
 
 class IRRDBConfigEnricher_WorkerThread_Prefixes(IRRDBConfigEnricher_WorkerThread):
 
@@ -116,9 +168,9 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
 
         def get_as_set_by_name(name, used_by_client=None):
             for as_set in as_sets:
-                if as_set["name"] == name:
+                if as_set.name == name:
                     if used_by_client:
-                        as_set["used_by"].append(used_by_client)
+                        as_set.used_by.append(used_by_client)
                     return as_set
             return None
 
@@ -127,17 +179,15 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
             existing = get_as_set_by_name(as_set_name)
             if existing:
                 if used_by_client:
-                    existing["used_by"].append(used_by_client)
-                return existing["id"]
+                    existing.used_by.append(used_by_client)
+                return existing.id
 
             new_as_set_id = normalize_as_set_id(as_set_name)
-            as_sets.append({
-                "id": new_as_set_id,
-                "name": as_set_name,
-                "asns": [],
-                "prefixes": [],
-                "used_by": [used_by_client] if used_by_client else []
-            })
+            as_sets.append(AS_SET(
+                new_as_set_id,
+                as_set_name,
+                [used_by_client] if used_by_client else []
+            ))
             return new_as_set_id
 
         # Add to as_sets all the AS-SETs reported in the 'asns' section.
@@ -219,14 +269,14 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
 
         # Removing unreferenced AS-SETs.
         for as_set in as_sets:
-            if not as_set["used_by"]:
+            if not as_set.used_by:
                 logging.debug("Removing unreferenced AS-SET: "
-                              "{}".format(as_set["name"]))
-        as_sets = [as_set for as_set in as_sets if as_set["used_by"]]
+                              "{}".format(as_set.name))
+        as_sets = [as_set for as_set in as_sets if as_set.used_by]
 
         self.builder.as_sets = {}
         for as_set in as_sets:
-            self.builder.as_sets[as_set["id"]] = as_set
+            self.builder.as_sets[as_set.id] = as_set
 
     def _config_thread(self, thread):
         thread.ip_ver = self.builder.ip_ver
@@ -241,8 +291,8 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
     def add_tasks(self):
         # Enqueuing tasks.
         for as_set_id, as_set in self.builder.as_sets.items():
-            used_by = ", ".join(as_set["used_by"])
-            self.tasks_q.put((as_set, used_by, as_set["name"]))
+            used_by = ", ".join(as_set.used_by)
+            self.tasks_q.put((as_set, used_by, as_set.name))
 
 class IRRDBConfigEnricher_OriginASNs(IRRDBConfigEnricher):
 
