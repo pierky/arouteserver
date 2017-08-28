@@ -27,6 +27,6 @@ class RichConfigExampleScenarioOpenBGPD_IPv4(RichConfigExampleScenario_Data4,
     __test__ = True
     SKIP_ON_TRAVIS = True
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.0, examples, rich config, IPv6"
+    SHORT_DESCR = "Live test, OpenBGPD 6.0, examples, rich config, IPv4"
     RS_INSTANCE_CLASS = OpenBGPD60Instance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
