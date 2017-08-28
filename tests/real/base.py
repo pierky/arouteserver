@@ -31,6 +31,7 @@ class TestRealConfigs(ARouteServerTestCase):
 
     IXP = None
     CLIENTS_FILE = None
+    IP_VER = None
 
     # Set to True for those tests that don't run locally on my machine,
     # because of lack of resources!!! If True, the REMOTE_IP env var is
@@ -150,20 +151,28 @@ class TestRealConfigs_IXP(TestRealConfigs):
 
     def test_bird4_010_build(self):
         """BIRD, IPv4, build"""
+        if self.IP_VER and self.IP_VER != 4:
+            self.skipTest("IPv{} only".format(self.IP_VER))
         self.build_config("bird", None, 4)
 
     def test_bird4_020_load(self):
         """BIRD, IPv4, load"""
+        if self.IP_VER and self.IP_VER != 4:
+            self.skipTest("IPv{} only".format(self.IP_VER))
         if "BUILD_ONLY" in os.environ:
             self.skipTest("Build only")
         self.load_config("bird", None, 4)
 
     def test_bird6_010_build(self):
         """BIRD, IPv6, build"""
+        if self.IP_VER and self.IP_VER != 6:
+            self.skipTest("IPv{} only".format(self.IP_VER))
         self.build_config("bird", None, 6)
 
     def test_bird6_020_load(self):
         """BIRD, IPv6, load"""
+        if self.IP_VER and self.IP_VER != 6:
+            self.skipTest("IPv{} only".format(self.IP_VER))
         if "BUILD_ONLY" in os.environ:
             self.skipTest("Build only")
         self.load_config("bird", None, 6)

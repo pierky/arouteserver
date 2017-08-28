@@ -16,8 +16,16 @@
 from base import TestRealConfigs_IXP
 
 
-class TestRealConfigs_BIX(TestRealConfigs_IXP):
+class TestRealConfigs_BIX_IPv4(TestRealConfigs_IXP):
     __test__ = True
 
-    IXP = "BIX"
-    CLIENTS_FILE = "bix.yml"
+    IXP = "BIX (IPv4)"
+    CLIENTS_FILE = "bix-ipv4.yml"
+    IP_VER = 4
+
+class TestRealConfigs_BIX_IPv6(TestRealConfigs_IXP):
+    __test__ = True
+
+    IXP = "BIX (IPv6)"
+    CLIENTS_FILE = "bix-ipv6.yml"
+    IP_VER = 6
