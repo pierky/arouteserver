@@ -10,6 +10,8 @@ v0.9.1
 
 - Fix: OpenBGPD, syntax error for prefix lists with 'range X - X' format.
 
+- Fix: ``clients-from-euroix`` command, members with multiple ``vlan`` objects with the same ``vlan_id`` were not properly listed in the output, only the first object was used.
+
 v0.9.1
 ------
 

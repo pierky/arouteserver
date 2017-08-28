@@ -89,7 +89,7 @@ echo "Build clients from Euro-IX files? [yes/NO] "
 read YES_NO
 
 if [ "$YES_NO" == "yes" ]; then
-	ClientsFromEuroIX "https://my.ams-ix.net/api/v1/members.json" 1 "examples/clients-from-euroix/amsix.yml" 502
+	ClientsFromEuroIX "https://my.ams-ix.net/api/v1/members.json" 2 "examples/clients-from-euroix/amsix.yml" 502
 	ClientsFromEuroIX "https://www.inex.ie/ixp/apiv1/member-list/list" 1 "examples/clients-from-euroix/inex.yml" 2
 fi
 
