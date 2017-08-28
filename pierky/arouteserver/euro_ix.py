@@ -327,7 +327,7 @@ class EuroIXMemberList(object):
 
                     clients.append(client)
 
-                return clients
+            return clients
 
         def get_custom_bgp_comms_data(ixp):
             raw_switches = self._get_item("switch", ixp, list, True)
