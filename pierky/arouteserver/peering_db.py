@@ -131,15 +131,32 @@ class PeeringDBNet(PeeringDBInfo):
         if not v:
             return None
 
-        # "At least one component of such a name must be an actual
+        # "Many objects in RPSL have a name.  An <object-name> is
+        # made up of letters, digits, the character underscore "_",
+        # and the character hyphen "-"; the first character of a
+        # name must be a letter, and the last character of a name
+        # must be a letter or a digit.
+        # An AS number x is represented as the string "ASx".  That
+        # is, the AS 226 is represented as AS226."
+        # https://datatracker.ietf.org/doc/html/rfc2622#section-2
+        #
+        # "A hierarchical set name is a sequence of set names and
+        # AS numbers separated by colons ":".
+        # At least one component of such a name must be an actual
         # set name (i.e. start with one of the prefixes above)."
         # https://datatracker.ietf.org/doc/html/rfc2622#section-5
         as_dash_found = False
         parts = []
-        for name in v.split(":"):
-            if name.strip().upper().startswith("AS-"):
+        for part in v.split(":"):
+            name = part.strip().upper()
+            if not re.match("^(?:AS[\d]+|AS-[A-Z0-9_\-]*[A-Z0-9])$", name):
+                logging.debug("AS-SET from PeeringDB for AS{}: "
+                              "ignoring {}, invalid name {}".format(
+                                  self.asn, v, name))
+                return None
+            if name.startswith("AS-"):
                 as_dash_found = True
-            parts.append(name.strip())
+            parts.append(name)
         v = ":".join(parts)
 
         if not as_dash_found:
@@ -147,13 +164,6 @@ class PeeringDBNet(PeeringDBInfo):
                           "ignoring {}, no ""AS-"" found".format(
                               self.asn, v))
             return None
-
-        for name in v.split(":"):
-            if not re.match("^[a-z][a-z0-9_\-]*[a-z0-9]$", name, flags=re.I):
-                logging.debug("AS-SET from PeeringDB for AS{}: "
-                              "ignoring {}, invalid name {}".format(
-                                  self.asn, v, name))
-                return None
 
         if guessed:
             logging.info("AS-SET from PeeringDB for AS{}: "
