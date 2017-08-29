@@ -6,6 +6,13 @@ Change log
 v0.9.1
 ------
 
+- Fix: remove quotes from clients description.
+
+- Fix: OpenBGPD, syntax error for prefix lists with 'range X - X' format.
+
+v0.9.1
+------
+
 - Improvement: BIRD, new default debug options (``states, routes, filters, interfaces, events``, was ``all``).
 
   If needed, they can be overwritten using the ``header`` `custom .local file <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#site-specific-custom-config>`_.
