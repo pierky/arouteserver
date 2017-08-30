@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+v0.9.2
+------
+
+- Fix: remove quotes from clients description.
+
+- Fix: OpenBGPD, syntax error for prefix lists with 'range X - X' format.
+
+- Fix: ``clients-from-euroix`` command, members with multiple ``vlan`` objects with the same ``vlan_id`` were not properly listed in the output, only the first object was used.
+
 v0.9.1
 ------
 

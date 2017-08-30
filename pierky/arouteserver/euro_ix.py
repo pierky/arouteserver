@@ -197,7 +197,6 @@ class EuroIXMemberList(object):
                     return
 
                 if not str(switch_id) in self.switches:
-                    print("D")
                     return
 
                 switch_info = self.switches[str(switch_id)]
@@ -226,7 +225,14 @@ class EuroIXMemberList(object):
                     if new_clients:
                         enrich_with_custom_bgp_communities(new_clients,
                                                            connection)
-                        clients.extend(new_clients)
+                        for new_client in new_clients:
+                            duplicate_found = False
+                            for existing_client in clients:
+                                if new_client == existing_client:
+                                    duplicate_found = True
+                                    break
+                            if not duplicate_found:
+                                clients.append(new_client)
                 except EuroIXError as e:
                     if str(e):
                         logging.error(
@@ -321,7 +327,7 @@ class EuroIXMemberList(object):
 
                     clients.append(client)
 
-                return clients
+            return clients
 
         def get_custom_bgp_comms_data(ixp):
             raw_switches = self._get_item("switch", ixp, list, True)

@@ -49,9 +49,11 @@ class CachedObject(object):
         try:
             with open(file_path, "r") as f:
                 data = json.load(f)
-        except:
+        except Exception as e:
             logging.error(
-                "Error while reading data from cache: {}".format(file_path)
+                "Error while reading data from cache: {} - {}".format(
+                    file_path, str(e)
+                )
             )
             return False
 

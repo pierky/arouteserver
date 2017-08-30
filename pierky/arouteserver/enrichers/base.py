@@ -51,9 +51,22 @@ class BaseConfigEnricherThread(threading.Thread):
                     with self.lock:
                         self.save_data(task, data)
             except Exception as e:
-                if str(e):
-                    logging.error("{} thread {} error: {}".format(
-                        self.DESCR, self.name, str(e)))
+                if str(e) and isinstance(e, ARouteServerError):
+                    logging.error(
+                        "{} thread {} error: {}".format(
+                            self.DESCR, self.name,
+                            str(e)
+                        )
+                    )
+                else:
+                    logging.error(
+                        "{} thread {} unhandled exception: {}".format(
+                            self.DESCR, self.name,
+                            str(e) if str(e) else "error unknown"
+                        ),
+                        exc_info=True
+                    )
+
                 try:
                     self.errors_q.put_nowait(True)
                 except Full:
