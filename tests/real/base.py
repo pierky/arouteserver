@@ -44,6 +44,9 @@ class TestRealConfigs(ARouteServerTestCase):
     # test is skipped.
     REMOTE_IP_NEEDED = True
 
+    def setUp(self):
+        self.skipTest("Work in progress on 'dev' branch")
+
     @classmethod
     def _setUpClass(cls):
         cwd = os.path.dirname(__file__)

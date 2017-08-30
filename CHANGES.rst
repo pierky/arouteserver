@@ -12,6 +12,9 @@ next release
 
 - Improvement: config building process, reduced memory consumption by moving IRRDB information from memory to temporary files.
 
+v0.9.2
+------
+
 - Fix: remove quotes from clients description.
 
 - Fix: OpenBGPD, syntax error for prefix lists with 'range X - X' format.
