@@ -12,6 +12,8 @@ next release
 
 - Improvement: config building process, reduced memory consumption by moving IRRDB information from memory to temporary files.
 
+- Fix: OpenBGPD, an issue was causing values > 65535 to be used in standard BGP communities matching.
+
 v0.9.2
 ------
 
