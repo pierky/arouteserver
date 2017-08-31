@@ -13,19 +13,46 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import TestRealConfigs_IXP
+from base import *
 
 
-class TestRealConfigs_BIX_IPv4(TestRealConfigs_IXP):
-    __test__ = True
+class TestRealConfigs_BIX_IPv4(object):
 
-    IXP = "BIX (IPv4)"
+    IXP = "BIX_IPv4"
     CLIENTS_FILE = "bix-ipv4.yml"
     IP_VER = 4
 
-class TestRealConfigs_BIX_IPv6(TestRealConfigs_IXP):
+class TestRealConfigs_BIX_IPv4_BIRD(TestRealConfigs_BIX_IPv4,
+                                    TestRealConfigs_BIRD):
     __test__ = True
 
-    IXP = "BIX (IPv6)"
+class TestRealConfigs_BIX_IPv4_OpenBGPD60(TestRealConfigs_BIX_IPv4,
+                                          TestRealConfigs_OpenBGPD60):
+    __test__ = True
+
+class TestRealConfigs_BIX_IPv4_OpenBGPD61(TestRealConfigs_BIX_IPv4,
+                                          TestRealConfigs_OpenBGPD61):
+    __test__ = True
+
+    SKIP_LOAD_NO_RESOURCES = True
+
+
+class TestRealConfigs_BIX_IPv6(object):
+
+    IXP = "BIX_IPv6"
     CLIENTS_FILE = "bix-ipv6.yml"
     IP_VER = 6
+
+class TestRealConfigs_BIX_IPv6_BIRD(TestRealConfigs_BIX_IPv6,
+                                    TestRealConfigs_BIRD):
+    __test__ = True
+
+class TestRealConfigs_BIX_IPv6_OpenBGPD60(TestRealConfigs_BIX_IPv6,
+                                          TestRealConfigs_OpenBGPD60):
+    __test__ = True
+
+class TestRealConfigs_BIX_IPv6_OpenBGPD61(TestRealConfigs_BIX_IPv6,
+                                          TestRealConfigs_OpenBGPD61):
+    __test__ = True
+
+    SKIP_LOAD_NO_RESOURCES = True

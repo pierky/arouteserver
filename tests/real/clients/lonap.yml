@@ -1,0 +1,4300 @@
+# Data fetched from https://portal.lonap.net/apiv1/member-list/list at 2017-08-30T16:21:13.901641 UTC
+# IXP ID: 1
+# VLAN ID: 1
+clients:
+- asn: 42
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+      max_prefix:
+        limit_ipv4: 100
+  description: Packet Clearing House AS42
+  ip: 5.57.80.238
+- asn: 42
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+      max_prefix:
+        limit_ipv6: 100
+  description: Packet Clearing House AS42
+  ip: 2001:7f8:17::2a:1
+- asn: 714
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-APPLE
+      max_prefix:
+        limit_ipv4: 1000
+  description: Apple Europe Ltd
+  ip: 5.57.81.57
+- asn: 714
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-APPLE
+      max_prefix:
+        limit_ipv6: 1000
+  description: Apple Europe Ltd
+  ip: 2001:7f8:17::2ca:3
+- asn: 714
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-APPLE
+      max_prefix:
+        limit_ipv4: 1000
+  description: Apple Europe Ltd
+  ip: 5.57.81.58
+- asn: 714
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-APPLE
+      max_prefix:
+        limit_ipv6: 1000
+  description: Apple Europe Ltd
+  ip: 2001:7f8:17::2ca:4
+- asn: 2529
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-DEMON
+      max_prefix:
+        limit_ipv4: 100
+  description: Thus Plc
+  ip: 5.57.80.10
+- asn: 2818
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BBC
+      max_prefix:
+        limit_ipv4: 100
+  description: BBC (ATOS IT Services UK Ltd)
+  ip: 5.57.80.90
+- asn: 2818
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BBC
+      max_prefix:
+        limit_ipv6: 100
+  description: BBC (ATOS IT Services UK Ltd)
+  ip: 2001:7f8:17::b02:1
+- asn: 2818
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BBC
+      max_prefix:
+        limit_ipv4: 100
+  description: BBC (ATOS IT Services UK Ltd)
+  ip: 5.57.80.91
+- asn: 2818
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BBC
+      max_prefix:
+        limit_ipv6: 100
+  description: BBC (ATOS IT Services UK Ltd)
+  ip: 2001:7f8:17::b02:2
+- asn: 2906
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NFLX
+      max_prefix:
+        limit_ipv4: 100
+  description: Netflix
+  ip: 5.57.80.229
+- asn: 2906
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NFLX
+      max_prefix:
+        limit_ipv6: 100
+  description: Netflix
+  ip: 2001:7f8:17::b5a:1
+- asn: 3213
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BOGONS
+      max_prefix:
+        limit_ipv4: 100
+  description: Bogons
+  ip: 5.57.80.153
+- asn: 3213
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BOGONS
+      max_prefix:
+        limit_ipv6: 100
+  description: Bogons
+  ip: 2001:7f8:17::c8d:2
+- asn: 3856
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+      max_prefix:
+        limit_ipv4: 100
+  description: Packet Clearing House AS3856
+  ip: 5.57.80.239
+- asn: 3856
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+      max_prefix:
+        limit_ipv6: 100
+  description: Packet Clearing House AS3856
+  ip: 2001:7f8:17::f10:1
+- asn: 5413
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS5413:AS-CUSTOMER
+      max_prefix:
+        limit_ipv4: 100
+  description: Daisy Communications
+  ip: 5.57.80.14
+- asn: 5413
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS5413:AS-CUSTOMER
+      max_prefix:
+        limit_ipv6: 100
+  description: Daisy Communications
+  ip: 2001:7f8:17::1525:1
+- asn: 5503
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-RMIFL
+      max_prefix:
+        limit_ipv4: 100
+  description: RM Education Plc
+  ip: 5.57.80.75
+- asn: 5503
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-RMIFL
+      max_prefix:
+        limit_ipv6: 100
+  description: RM Education Plc
+  ip: 2001:7f8:17::157f:2
+- asn: 5503
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-RMIFL
+      max_prefix:
+        limit_ipv4: 100
+  description: RM Education Plc
+  ip: 5.57.80.74
+- asn: 5503
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-RMIFL
+      max_prefix:
+        limit_ipv6: 100
+  description: RM Education Plc
+  ip: 2001:7f8:17::157f:1
+- asn: 5607
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BSKYB-BROADBAND
+      max_prefix:
+        limit_ipv4: 100
+  description: Sky UK Ltd
+  ip: 5.57.81.128
+- asn: 5607
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BSKYB-BROADBAND
+      max_prefix:
+        limit_ipv6: 100
+  description: Sky UK Ltd
+  ip: 2001:7f8:17::15e7:1
+- asn: 6067
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ONYX
+      max_prefix:
+        limit_ipv4: 100
+  description: Onyx Internet
+  ip: 5.57.80.88
+- asn: 6067
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ONYX
+      max_prefix:
+        limit_ipv6: 100
+  description: Onyx Internet
+  ip: 2001:7f8:17::17b3:2
+- asn: 6067
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ONYX
+      max_prefix:
+        limit_ipv4: 100
+  description: Onyx Internet
+  ip: 5.57.80.89
+- asn: 6067
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ONYX
+      max_prefix:
+        limit_ipv6: 100
+  description: Onyx Internet
+  ip: 2001:7f8:17::17b3:1
+- asn: 6507
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-RIOT
+      max_prefix:
+        limit_ipv4: 100
+  description: Riot Games
+  ip: 5.57.81.93
+- asn: 6774
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS6774:AS-BICS-LONAP
+      max_prefix:
+        limit_ipv4: 100
+  description: Belgacom ICS
+  ip: 5.57.80.170
+- asn: 6774
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS6774:AS-BICS-LONAP
+      max_prefix:
+        limit_ipv6: 100
+  description: Belgacom ICS
+  ip: 2001:7f8:17::1a76:1
+- asn: 6908
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-6DG
+      max_prefix:
+        limit_ipv4: 400
+  description: Six Degrees Managed Data
+  ip: 5.57.81.21
+- asn: 6908
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-6DG
+      max_prefix:
+        limit_ipv6: 400
+  description: Six Degrees Managed Data
+  ip: 2001:7f8:17::1afc:1
+- asn: 6939
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-HURRICANE
+      max_prefix:
+        limit_ipv4: 30000
+  description: Hurricane Electric
+  ip: 5.57.80.128
+- asn: 6939
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-HURRICANE
+      max_prefix:
+        limit_ipv6: 30000
+  description: Hurricane Electric
+  ip: 2001:7f8:17::1b1b:1
+- asn: 7342
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GTLD
+      max_prefix:
+        limit_ipv4: 150
+  description: VeriSign, Inc.
+  ip: 5.57.80.30
+- asn: 7342
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GTLD
+      max_prefix:
+        limit_ipv6: 150
+  description: VeriSign, Inc.
+  ip: 2001:7f8:17::1cae:1
+- asn: 7713
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS7713:AS-TELKOM-TRANSIT
+      max_prefix:
+        limit_ipv4: 5000
+  description: TELIN
+  ip: 5.57.81.126
+- asn: 7713
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS7713:AS-TELKOM-TRANSIT
+      max_prefix:
+        limit_ipv6: 5000
+  description: TELIN
+  ip: 2001:7f8:17::1e21:1
+- asn: 8075
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MICROSOFT
+      max_prefix:
+        limit_ipv4: 500
+  description: Microsoft UK Ltd
+  ip: 5.57.81.17
+- asn: 8075
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MICROSOFT
+      max_prefix:
+        limit_ipv6: 500
+  description: Microsoft UK Ltd
+  ip: 2001:7f8:17::1f8b:1
+- asn: 8190
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EASYNET
+      max_prefix:
+        limit_ipv4: 100
+  description: MDNX
+  ip: 5.57.80.38
+- asn: 8190
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EASYNET
+      max_prefix:
+        limit_ipv6: 100
+  description: MDNX
+  ip: 2001:7f8:17::1ffe:1
+- asn: 8218
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NEOT
+      max_prefix:
+        limit_ipv4: 4000
+  description: Neo Telecoms
+  ip: 5.57.80.210
+- asn: 8218
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NEOT
+      max_prefix:
+        limit_ipv6: 4000
+  description: Neo Telecoms
+  ip: 2001:7f8:17::201a:1
+- asn: 8282
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FIDONET
+      max_prefix:
+        limit_ipv4: 150
+  description: Fidonet
+  ip: 5.57.80.66
+- asn: 8282
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FIDONET
+      max_prefix:
+        limit_ipv6: 150
+  description: Fidonet
+  ip: 2001:7f8:17::205a:1
+- asn: 8330
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LONAP
+      max_prefix:
+        limit_ipv4: 100
+  description: LONAP
+  ip: 5.57.80.253
+- asn: 8330
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LONAP
+      max_prefix:
+        limit_ipv6: 100
+  description: LONAP
+  ip: 2001:7f8:17::208a:253
+- asn: 8330
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LONAP
+      max_prefix:
+        limit_ipv4: 100
+  description: LONAP
+  ip: 5.57.80.250
+- asn: 8330
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LONAP
+      max_prefix:
+        limit_ipv6: 100
+  description: LONAP
+  ip: 2001:7f8:17::208a:250
+- asn: 8330
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LONAP
+      max_prefix:
+        limit_ipv4: 100
+  description: LONAP
+  ip: 5.57.81.3
+- asn: 8401
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MAILBOX
+      max_prefix:
+        limit_ipv4: 100
+  description: Mailbox Internet
+  ip: 5.57.80.28
+- asn: 8401
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MAILBOX
+      max_prefix:
+        limit_ipv4: 100
+  description: Mailbox Internet
+  ip: 5.57.80.29
+- asn: 8426
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CLARANET
+      max_prefix:
+        limit_ipv4: 300
+  description: Claranet
+  ip: 5.57.81.81
+- asn: 8426
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CLARANET
+      max_prefix:
+        limit_ipv6: 300
+  description: Claranet
+  ip: 2001:7f8:17::20ea:1
+- asn: 8468
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ENTANET
+      max_prefix:
+        limit_ipv4: 1000
+  description: Entanet
+  ip: 5.57.80.135
+- asn: 8468
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ENTANET
+      max_prefix:
+        limit_ipv6: 1000
+  description: Entanet
+  ip: 2001:7f8:17::2114:1
+- asn: 8530
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EXCELL
+      max_prefix:
+        limit_ipv4: 100
+  description: Excell Business Systems
+  ip: 5.57.80.108
+- asn: 8530
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EXCELL
+      max_prefix:
+        limit_ipv6: 100
+  description: Excell Business Systems
+  ip: 2001:7f8:17::2152:1
+- asn: 8550
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LONAP-MLP
+      max_prefix:
+        limit_ipv4: 20000
+  description: LONAP Route Servers
+  ip: 5.57.80.1
+- asn: 8550
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LONAP-MLP
+      max_prefix:
+        limit_ipv6: 20000
+  description: LONAP Route Servers
+  ip: 2001:7f8:17::1
+- asn: 8550
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LONAP-MLP
+      max_prefix:
+        limit_ipv4: 20000
+  description: LONAP Route Servers
+  ip: 5.57.80.2
+- asn: 8550
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LONAP-MLP
+      max_prefix:
+        limit_ipv6: 20000
+  description: LONAP Route Servers
+  ip: 2001:7f8:17::2
+- asn: 8553
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AVENSYS
+      max_prefix:
+        limit_ipv4: 100
+  description: Avensys Networks Ltd
+  ip: 5.57.80.110
+- asn: 8607
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TIMICO
+      max_prefix:
+        limit_ipv4: 100
+  description: Timico
+  ip: 5.57.80.78
+- asn: 8607
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TIMICO
+      max_prefix:
+        limit_ipv6: 100
+  description: Timico
+  ip: 2001:7f8:17::219f:1
+- asn: 8674
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NETNOD-ANYCAST
+      max_prefix:
+        limit_ipv4: 100
+  description: Netnod
+  ip: 5.57.81.61
+- asn: 8674
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NETNOD-ANYCAST
+      max_prefix:
+        limit_ipv6: 100
+  description: Netnod
+  ip: 2001:7f8:17::21e2:1
+- asn: 8674
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NETNOD-ANYCAST
+      max_prefix:
+        limit_ipv4: 100
+  description: Netnod
+  ip: 5.57.81.62
+- asn: 8674
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NETNOD-ANYCAST
+      max_prefix:
+        limit_ipv6: 100
+  description: Netnod
+  ip: 2001:7f8:17::21e2:2
+- asn: 8676
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PSYS
+      max_prefix:
+        limit_ipv4: 100
+  description: PRT Systems
+  ip: 5.57.80.150
+- asn: 8676
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PSYS
+      max_prefix:
+        limit_ipv6: 100
+  description: PRT Systems
+  ip: 2001:7f8:17::21e4:1
+- asn: 8676
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PSYS
+      max_prefix:
+        limit_ipv4: 100
+  description: PRT Systems
+  ip: 5.57.80.151
+- asn: 8676
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PSYS
+      max_prefix:
+        limit_ipv6: 100
+  description: PRT Systems
+  ip: 2001:7f8:17::21e4:2
+- asn: 8683
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NOMINET
+      max_prefix:
+        limit_ipv4: 100
+  description: Nominet
+  ip: 5.57.80.52
+- asn: 8838
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-Stripe21
+      max_prefix:
+        limit_ipv4: 100
+  description: Stripe21
+  ip: 5.57.80.123
+- asn: 8838
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-Stripe21
+      max_prefix:
+        limit_ipv6: 100
+  description: Stripe21
+  ip: 2001:7f8:17::2286:1
+- asn: 8838
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-Stripe21
+      max_prefix:
+        limit_ipv4: 100
+  description: Stripe21
+  ip: 5.57.80.122
+- asn: 8838
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-Stripe21
+      max_prefix:
+        limit_ipv6: 100
+  description: Stripe21
+  ip: 2001:7f8:17::2286:2
+- asn: 8897
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS8897
+      max_prefix:
+        limit_ipv4: 100
+  description: KCOM SPN (Mistral/Eclipse)
+  ip: 5.57.80.22
+- asn: 8897
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS8897
+      max_prefix:
+        limit_ipv6: 100
+  description: KCOM SPN (Mistral/Eclipse)
+  ip: 2001:7f8:17::22c1:1
+- asn: 8897
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS8897
+      max_prefix:
+        limit_ipv4: 100
+  description: KCOM SPN (Mistral/Eclipse)
+  ip: 5.57.80.23
+- asn: 8897
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS8897
+      max_prefix:
+        limit_ipv6: 100
+  description: KCOM SPN (Mistral/Eclipse)
+  ip: 2001:7f8:17::22c1:2
+- asn: 8916
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PORTFAST
+      max_prefix:
+        limit_ipv4: 100
+  description: Portfast
+  ip: 5.57.80.100
+- asn: 8916
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PORTFAST
+      max_prefix:
+        limit_ipv6: 100
+  description: Portfast
+  ip: 2001:7f8:17::22d4:1
+- asn: 8966
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EMIX
+      max_prefix:
+        limit_ipv4: 100
+  description: Etisalat
+  ip: 5.57.81.101
+- asn: 8966
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EMIX
+      max_prefix:
+        limit_ipv6: 100
+  description: Etisalat
+  ip: 2001:7f8:17::2306:1
+- asn: 9009
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GBXS
+      max_prefix:
+        limit_ipv4: 5000
+  description: M247 Ltd
+  ip: 5.57.81.200
+- asn: 9009
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GBXS6
+      max_prefix:
+        limit_ipv6: 5000
+  description: M247 Ltd
+  ip: 2001:7f8:17::2331:1
+- asn: 10310
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-YAHOO
+      max_prefix:
+        limit_ipv4: 1000
+  description: Yahoo Inc.
+  ip: 5.57.81.130
+- asn: 10310
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-YAHOO
+      max_prefix:
+        limit_ipv6: 1000
+  description: Yahoo Inc.
+  ip: 2001:7f8:17::2846:1
+- asn: 10310
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-YAHOO
+      max_prefix:
+        limit_ipv4: 1000
+  description: Yahoo Inc.
+  ip: 5.57.81.131
+- asn: 10310
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-YAHOO
+      max_prefix:
+        limit_ipv6: 1000
+  description: Yahoo Inc.
+  ip: 2001:7f8:17::2846:2
+- asn: 12041
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS12041:AS-AFILIAS
+      max_prefix:
+        limit_ipv4: 200
+  description: Afilias
+  ip: 5.57.80.227
+- asn: 12041
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS12041:AS-AFILIAS
+      max_prefix:
+        limit_ipv6: 200
+  description: Afilias
+  ip: 2001:7f8:17::2f09:1
+- asn: 12200
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-RACKSPACE
+      max_prefix:
+        limit_ipv4: 150
+  description: Rackspace Ltd
+  ip: 5.57.81.27
+- asn: 12200
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-RACKSPACE
+      max_prefix:
+        limit_ipv6: 150
+  description: Rackspace Ltd
+  ip: 2001:7f8:17::2fa8:1
+- asn: 12390
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-KINGSTONUK
+      max_prefix:
+        limit_ipv4: 300
+  description: Kcom Group
+  ip: 5.57.80.18
+- asn: 12390
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-KINGSTONUK
+      max_prefix:
+        limit_ipv6: 300
+  description: Kcom Group
+  ip: 2001:7f8:17::3066:1
+- asn: 12496
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IDNET
+      max_prefix:
+        limit_ipv4: 100
+  description: IDnet
+  ip: 5.57.80.133
+- asn: 12496
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IDNET
+      max_prefix:
+        limit_ipv6: 100
+  description: IDnet
+  ip: 2001:7f8:17::30d0:2
+- asn: 12496
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IDNET
+      max_prefix:
+        limit_ipv4: 100
+  description: IDnet
+  ip: 5.57.80.132
+- asn: 12496
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IDNET
+      max_prefix:
+        limit_ipv6: 100
+  description: IDnet
+  ip: 2001:7f8:17::30d0:1
+- asn: 12519
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FASTNET
+      max_prefix:
+        limit_ipv4: 100
+  description: FastNet International
+  ip: 5.57.80.121
+- asn: 12519
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FASTNET
+      max_prefix:
+        limit_ipv6: 100
+  description: FastNet International
+  ip: 2001:7f8:17::30e7:2
+- asn: 12519
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FASTNET
+      max_prefix:
+        limit_ipv4: 100
+  description: FastNet International
+  ip: 5.57.80.120
+- asn: 12519
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FASTNET
+      max_prefix:
+        limit_ipv6: 100
+  description: FastNet International
+  ip: 2001:7f8:17::30e7:1
+- asn: 12536
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ALLEGRO
+      max_prefix:
+        limit_ipv4: 100
+  description: Console Technology Services Ltd
+  ip: 5.57.81.30
+- asn: 12536
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ALLEGRO
+      max_prefix:
+        limit_ipv6: 100
+  description: Console Technology Services Ltd
+  ip: 2001:7f8:17::30f8:1
+- asn: 12775
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-JPCI
+      max_prefix:
+        limit_ipv4: 100
+  description: JPC Infonet
+  ip: 5.57.80.225
+- asn: 12775
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-JPCI
+      max_prefix:
+        limit_ipv6: 100
+  description: JPC Infonet
+  ip: 2001:7f8:17::31e7:1
+- asn: 13009
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-REDCENTRIC
+      max_prefix:
+        limit_ipv4: 100
+  description: Redcentric
+  ip: 5.57.81.188
+- asn: 13009
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-REDCENTRIC
+      max_prefix:
+        limit_ipv6: 100
+  description: Redcentric
+  ip: 2001:7f8:17::32d1:1
+- asn: 13009
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-REDCENTRIC
+      max_prefix:
+        limit_ipv4: 100
+  description: Redcentric
+  ip: 5.57.81.189
+- asn: 13009
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-REDCENTRIC
+      max_prefix:
+        limit_ipv6: 100
+  description: Redcentric
+  ip: 2001:7f8:17::32d1:2
+- asn: 13030
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-INIT7
+  description: Init7 (Switzerland) Ltd
+  ip: 5.57.81.7
+- asn: 13030
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-INIT7
+  description: Init7 (Switzerland) Ltd
+  ip: 2001:7f8:17::32e6:1
+- asn: 13037
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ZEN
+      max_prefix:
+        limit_ipv4: 100
+  description: Zen Internet
+  ip: 5.57.80.48
+- asn: 13037
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ZEN
+      max_prefix:
+        limit_ipv6: 100
+  description: Zen Internet
+  ip: 2001:7f8:17::32ed:1
+- asn: 13335
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CLOUDFLARE
+      max_prefix:
+        limit_ipv4: 1050
+  description: CloudFlare
+  ip: 5.57.81.75
+- asn: 13335
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CLOUDFLARE
+      max_prefix:
+        limit_ipv6: 1050
+  description: CloudFlare
+  ip: 2001:7f8:17::3417:1
+- asn: 13414
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TWITTER
+      max_prefix:
+        limit_ipv4: 100
+  description: Twitter UK Ltd
+  ip: 5.57.81.31
+- asn: 13414
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TWITTER
+      max_prefix:
+        limit_ipv6: 100
+  description: Twitter UK Ltd
+  ip: 2001:7f8:17::3466:1
+- asn: 13414
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TWITTER
+      max_prefix:
+        limit_ipv4: 100
+  description: Twitter UK Ltd
+  ip: 5.57.81.32
+- asn: 13414
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TWITTER
+      max_prefix:
+        limit_ipv6: 100
+  description: Twitter UK Ltd
+  ip: 2001:7f8:17::3466:2
+- asn: 14413
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LINKEDIN
+      max_prefix:
+        limit_ipv4: 100
+  description: Linkedin IE
+  ip: 5.57.81.88
+- asn: 14413
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LINKEDIN
+      max_prefix:
+        limit_ipv6: 100
+  description: Linkedin IE
+  ip: 2001:7f8:17::384d:1
+- asn: 14492
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-DATAPIPE
+      max_prefix:
+        limit_ipv4: 100
+  description: Datapipe Europe Limited
+  ip: 5.57.81.19
+- asn: 14492
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-DATAPIPE
+      max_prefix:
+        limit_ipv6: 100
+  description: Datapipe Europe Limited
+  ip: 2001:7f8:17::389c:1
+- asn: 15169
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GOOGLE
+      max_prefix:
+        limit_ipv4: 100
+  description: Google
+  ip: 5.57.80.136
+- asn: 15169
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GOOGLE
+      max_prefix:
+        limit_ipv6: 100
+  description: Google
+  ip: 2001:7f8:17::3b41:1
+- asn: 15830
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TELECITYGROUP
+      max_prefix:
+        limit_ipv4: 100
+  description: TelecityGroup UK Ltd
+  ip: 5.57.80.95
+- asn: 15830
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TELECITYGROUP
+      max_prefix:
+        limit_ipv6: 100
+  description: TelecityGroup UK Ltd
+  ip: 2001:7f8:17::3dd6:1
+- asn: 16162
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LONDONWEB
+      max_prefix:
+        limit_ipv4: 100
+  description: London Web Ltd
+  ip: 5.57.81.73
+- asn: 16162
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LONDONWEB
+      max_prefix:
+        limit_ipv4: 100
+  description: London Web Ltd
+  ip: 5.57.81.74
+- asn: 16265
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LEASEWEB
+      max_prefix:
+        limit_ipv4: 300
+  description: Fiberring
+  ip: 5.57.81.40
+- asn: 16353
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MERULA
+      max_prefix:
+        limit_ipv4: 100
+  description: Merula
+  ip: 5.57.80.139
+- asn: 16353
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MERULA
+      max_prefix:
+        limit_ipv6: 100
+  description: Merula
+  ip: 2001:7f8:17::3fe1:2
+- asn: 16353
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MERULA
+      max_prefix:
+        limit_ipv4: 100
+  description: Merula
+  ip: 5.57.80.138
+- asn: 16353
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MERULA
+      max_prefix:
+        limit_ipv6: 100
+  description: Merula
+  ip: 2001:7f8:17::3fe1:1
+- asn: 16509
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AMAZON
+      max_prefix:
+        limit_ipv4: 100
+  description: Amazon
+  ip: 5.57.80.8
+- asn: 16509
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AMAZON
+      max_prefix:
+        limit_ipv6: 100
+  description: Amazon
+  ip: 2001:7f8:17::407d:1
+- asn: 20562
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-OPENPEERING-EU
+      max_prefix:
+        limit_ipv4: 1500
+  description: Open Peering
+  ip: 5.57.80.6
+- asn: 20562
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-OPENPEERING-EU
+      max_prefix:
+        limit_ipv6: 1500
+  description: Open Peering
+  ip: 2001:7f8:17::5052:1
+- asn: 20712
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AA
+      max_prefix:
+        limit_ipv4: 150
+  description: Andrews & Arnold / AAISP
+  ip: 5.57.80.59
+- asn: 20712
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AA
+      max_prefix:
+        limit_ipv6: 150
+  description: Andrews & Arnold / AAISP
+  ip: 2001:7f8:17::50e8:2
+- asn: 20712
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AA
+      max_prefix:
+        limit_ipv4: 150
+  description: Andrews & Arnold / AAISP
+  ip: 5.57.80.58
+- asn: 20712
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AA
+      max_prefix:
+        limit_ipv6: 150
+  description: Andrews & Arnold / AAISP
+  ip: 2001:7f8:17::50e8:1
+- asn: 20712
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AA
+      max_prefix:
+        limit_ipv4: 150
+  description: Andrews & Arnold / AAISP
+  ip: 5.57.80.68
+- asn: 20712
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AA
+      max_prefix:
+        limit_ipv6: 150
+  description: Andrews & Arnold / AAISP
+  ip: 2001:7f8:17::50e8:3
+- asn: 20738
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WEBFUSION
+      max_prefix:
+        limit_ipv4: 100
+  description: 123-Reg Ltd
+  ip: 5.57.80.16
+- asn: 20738
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WEBFUSION
+      max_prefix:
+        limit_ipv6: 100
+  description: 123-Reg Ltd
+  ip: 2001:7f8:17::5102:1
+- asn: 20915
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-100PERCENT
+      max_prefix:
+        limit_ipv4: 100
+  description: 100 Percent IT
+  ip: 5.57.80.105
+- asn: 20915
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-100PERCENT
+      max_prefix:
+        limit_ipv6: 100
+  description: 100 Percent IT
+  ip: 2001:7f8:17::51b3:2
+- asn: 20915
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-100PERCENT
+      max_prefix:
+        limit_ipv4: 100
+  description: 100 Percent IT
+  ip: 5.57.80.104
+- asn: 20915
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-100PERCENT
+      max_prefix:
+        limit_ipv6: 100
+  description: 100 Percent IT
+  ip: 2001:7f8:17::51b3:1
+- asn: 20940
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AKAMAI
+      max_prefix:
+        limit_ipv4: 100
+  description: Akamai International B.V.
+  ip: 5.57.80.72
+- asn: 20940
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AKAMAI
+      max_prefix:
+        limit_ipv6: 100
+  description: Akamai International B.V.
+  ip: 2001:7f8:17::51cc:1
+- asn: 20940
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AKAMAI
+      max_prefix:
+        limit_ipv4: 100
+  description: Akamai International B.V.
+  ip: 5.57.80.73
+- asn: 20940
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AKAMAI
+      max_prefix:
+        limit_ipv6: 100
+  description: Akamai International B.V.
+  ip: 2001:7f8:17::51cc:2
+- asn: 20952
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VENUSBC
+      max_prefix:
+        limit_ipv4: 100
+  description: Venus
+  ip: 5.57.81.16
+- asn: 21321
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ALENTUSUK
+      max_prefix:
+        limit_ipv4: 250
+  description: Netuity Networks Sp z.o.o
+  ip: 5.57.80.54
+- asn: 21321
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ALENTUSUK
+      max_prefix:
+        limit_ipv6: 250
+  description: Netuity Networks Sp z.o.o
+  ip: 2001:7f8:17::5349:1
+- asn: 21345
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SYMC
+      max_prefix:
+        limit_ipv4: 100
+  description: MessageLabs
+  ip: 5.57.80.166
+- asn: 21345
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SYMC
+      max_prefix:
+        limit_ipv6: 100
+  description: MessageLabs
+  ip: 2001:7f8:17::5361:1
+- asn: 21371
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EQUINIX-EU
+      max_prefix:
+        limit_ipv4: 200
+  description: Equinix (UK)
+  ip: 5.57.80.187
+- asn: 21371
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EQUINIX-EU
+      max_prefix:
+        limit_ipv6: 200
+  description: Equinix (UK)
+  ip: 2001:7f8:17::537b:1
+- asn: 21396
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NETCONNEX
+      max_prefix:
+        limit_ipv4: 100
+  description: NetConnex Broadband Ltd
+  ip: 5.57.80.142
+- asn: 21396
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NETCONNEX
+      max_prefix:
+        limit_ipv6: 100
+  description: NetConnex Broadband Ltd
+  ip: 2001:7f8:17::5394:1
+- asn: 24482
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SGGS
+      max_prefix:
+        limit_ipv4: 4000
+  description: SG.GS Pte Ltd
+  ip: 5.57.81.136
+- asn: 24482
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SGGS
+      max_prefix:
+        limit_ipv6: 4000
+  description: SG.GS Pte Ltd
+  ip: 2001:7f8:17::5fa2:1
+- asn: 24916
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ORBITAL
+      max_prefix:
+        limit_ipv4: 100
+  description: OrbitalNet
+  ip: 5.57.80.240
+- asn: 24916
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ORBITAL
+      max_prefix:
+        limit_ipv6: 100
+  description: OrbitalNet
+  ip: 2001:7f8:17::6154:1
+- asn: 25061
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ANLX
+      max_prefix:
+        limit_ipv4: 100
+  description: Associated Networks / ANLX
+  ip: 5.57.80.149
+- asn: 25061
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ANLX
+      max_prefix:
+        limit_ipv6: 100
+  description: Associated Networks / ANLX
+  ip: 2001:7f8:17::61e5:2
+- asn: 25061
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ANLX
+      max_prefix:
+        limit_ipv4: 100
+  description: Associated Networks / ANLX
+  ip: 5.57.80.148
+- asn: 25061
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ANLX
+      max_prefix:
+        limit_ipv6: 100
+  description: Associated Networks / ANLX
+  ip: 2001:7f8:17::61e5:1
+- asn: 25152
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-KROOT
+      max_prefix:
+        limit_ipv4: 10
+  description: RIPE - k.root-servers.net
+  ip: 5.57.80.5
+- asn: 25152
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-KROOT
+      max_prefix:
+        limit_ipv6: 10
+  description: RIPE - k.root-servers.net
+  ip: 2001:7f8:17::6240:1
+- asn: 25160
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VORBOSS
+      max_prefix:
+        limit_ipv4: 100
+  description: Vorboss Ltd
+  ip: 5.57.81.33
+- asn: 25178
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-KEYCOM
+      max_prefix:
+        limit_ipv4: 100
+  description: Keycom PLC
+  ip: 5.57.81.45
+- asn: 25178
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-KEYCOM
+      max_prefix:
+        limit_ipv6: 100
+  description: Keycom PLC
+  ip: 2001:7f8:17::625a:1
+- asn: 25180
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EXPONENTIAL-e
+      max_prefix:
+        limit_ipv4: 100
+  description: Exponential-e
+  ip: 5.57.80.102
+- asn: 25180
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EXPONENTIAL-e
+      max_prefix:
+        limit_ipv6: 100
+  description: Exponential-e
+  ip: 2001:7f8:17::625c:1
+- asn: 25369
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BANDWIDTH
+      max_prefix:
+        limit_ipv4: 350
+  description: Bandwidth Technologies
+  ip: 5.57.80.242
+- asn: 25369
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BANDWIDTH
+      max_prefix:
+        limit_ipv6: 350
+  description: Bandwidth Technologies
+  ip: 2001:7f8:17::6319:1
+- asn: 25577
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-C4L
+      max_prefix:
+        limit_ipv4: 100
+  description: Connexions4London (C4L)
+  ip: 5.57.80.217
+- asn: 25577
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-C4L
+      max_prefix:
+        limit_ipv6: 100
+  description: Connexions4London (C4L)
+  ip: 2001:7f8:17::63e9:1
+- asn: 28792
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PUBLICINET
+      max_prefix:
+        limit_ipv4: 100
+  description: Public Internet
+  ip: 5.57.80.174
+- asn: 28792
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PUBLICINET
+      max_prefix:
+        limit_ipv6: 100
+  description: Public Internet
+  ip: 2001:7f8:17::7078:1
+- asn: 28792
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PUBLICINET
+      max_prefix:
+        limit_ipv4: 100
+  description: Public Internet
+  ip: 5.57.80.175
+- asn: 28792
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PUBLICINET
+      max_prefix:
+        limit_ipv6: 100
+  description: Public Internet
+  ip: 2001:7f8:17::7078:2
+- asn: 29017
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GYRON
+      max_prefix:
+        limit_ipv4: 100
+  description: Gyron Internet
+  ip: 5.57.80.211
+- asn: 29017
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GYRON
+      max_prefix:
+        limit_ipv6: 100
+  description: Gyron Internet
+  ip: 2001:7f8:17::7159:1
+- asn: 29129
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VISPA
+      max_prefix:
+        limit_ipv4: 100
+  description: VISPA
+  ip: 5.57.81.114
+- asn: 29550
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AS29550
+      max_prefix:
+        limit_ipv4: 250
+  description: Simply Transit
+  ip: 5.57.80.24
+- asn: 29550
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AS29550
+      max_prefix:
+        limit_ipv6: 250
+  description: Simply Transit
+  ip: 2001:7f8:17::736e:1
+- asn: 29611
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ELITE
+      max_prefix:
+        limit_ipv4: 100
+  description: Elite
+  ip: 5.57.80.47
+- asn: 29611
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ELITE
+      max_prefix:
+        limit_ipv6: 100
+  description: Elite
+  ip: 2001:7f8:17::73ab:2
+- asn: 29611
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ELITE
+      max_prefix:
+        limit_ipv4: 100
+  description: Elite
+  ip: 5.57.80.46
+- asn: 29611
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ELITE
+      max_prefix:
+        limit_ipv6: 100
+  description: Elite
+  ip: 2001:7f8:17::73ab:1
+- asn: 29676
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GRADWELL
+      max_prefix:
+        limit_ipv4: 100
+  description: gradwell dot com
+  ip: 5.57.80.202
+- asn: 30740
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EXA
+      max_prefix:
+        limit_ipv4: 100
+  description: Exa Networks
+  ip: 5.57.80.70
+- asn: 30740
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EXA
+      max_prefix:
+        limit_ipv6: 100
+  description: Exa Networks
+  ip: 2001:7f8:17::7814:1
+- asn: 30781
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-JAGUAR
+      max_prefix:
+        limit_ipv4: 2000
+  description: Jaguar Network
+  ip: 5.57.80.243
+- asn: 30781
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-JAGUAR
+      max_prefix:
+        limit_ipv6: 2000
+  description: Jaguar Network
+  ip: 2001:7f8:17::783d:1
+- asn: 30803
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS30803
+      max_prefix:
+        limit_ipv4: 100
+  description: Trident Net
+  ip: 5.57.80.87
+- asn: 30803
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS30803
+      max_prefix:
+        limit_ipv4: 100
+  description: Trident Net
+  ip: 5.57.80.86
+- asn: 31122
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-DIGIWEB
+      max_prefix:
+        limit_ipv4: 100
+  description: Viatel
+  ip: 5.57.81.70
+- asn: 31122
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-DIGIWEB
+      max_prefix:
+        limit_ipv6: 100
+  description: Viatel
+  ip: 2001:7f8:17::7992:1
+- asn: 31402
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS31402
+      max_prefix:
+        limit_ipv4: 100
+  description: Rank Interactive (Blue Square Limited)
+  ip: 5.57.80.235
+- asn: 31463
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-4D-DC
+      max_prefix:
+        limit_ipv4: 100
+  description: 4D Data Centres
+  ip: 5.57.80.32
+- asn: 31463
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-4D-DC
+      max_prefix:
+        limit_ipv6: 100
+  description: 4D Data Centres
+  ip: 2001:7f8:17::7ae7:1
+- asn: 31463
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-4D-DC
+      max_prefix:
+        limit_ipv4: 100
+  description: 4D Data Centres
+  ip: 5.57.80.33
+- asn: 31463
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-4D-DC
+      max_prefix:
+        limit_ipv6: 100
+  description: 4D Data Centres
+  ip: 2001:7f8:17::7ae7:2
+- asn: 31472
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VOICEHOST
+      max_prefix:
+        limit_ipv4: 100
+  description: VoiceHost
+  ip: 5.57.80.42
+- asn: 31472
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VOICEHOST
+      max_prefix:
+        limit_ipv6: 100
+  description: VoiceHost
+  ip: 2001:7f8:17::7af0:1
+- asn: 31472
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VOICEHOST
+      max_prefix:
+        limit_ipv4: 100
+  description: VoiceHost
+  ip: 5.57.80.43
+- asn: 31472
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VOICEHOST
+      max_prefix:
+        limit_ipv6: 100
+  description: VoiceHost
+  ip: 2001:7f8:17::7af0:2
+- asn: 31595
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AWELL
+      max_prefix:
+        limit_ipv4: 100
+  description: Redraw Internet / Datacentres Ltd
+  ip: 5.57.81.51
+- asn: 31595
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AWELL
+      max_prefix:
+        limit_ipv6: 100
+  description: Redraw Internet / Datacentres Ltd
+  ip: 2001:7f8:17::7b6b:1
+- asn: 31595
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AWELL
+      max_prefix:
+        limit_ipv4: 100
+  description: Redraw Internet / Datacentres Ltd
+  ip: 5.57.81.52
+- asn: 31595
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AWELL
+      max_prefix:
+        limit_ipv6: 100
+  description: Redraw Internet / Datacentres Ltd
+  ip: 2001:7f8:17::7b6b:2
+- asn: 31655
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GAMMATELECOM
+      max_prefix:
+        limit_ipv4: 100
+  description: Gamma Telecom
+  ip: 5.57.80.176
+- asn: 31712
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GIGASTREAM
+      max_prefix:
+        limit_ipv4: 100
+  description: Gigastream Plc
+  ip: 5.57.80.80
+- asn: 31712
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GIGASTREAM
+      max_prefix:
+        limit_ipv6: 100
+  description: Gigastream Plc
+  ip: 2001:7f8:17::7be0:1
+- asn: 31742
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SOTACONNECT
+      max_prefix:
+        limit_ipv4: 100
+  description: Sota Solutions Ltd
+  ip: 5.57.81.210
+- asn: 31742
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SOTACONNECT
+      max_prefix:
+        limit_ipv6: 100
+  description: Sota Solutions Ltd
+  ip: 2001:7f8:17::7bfe:1
+- asn: 32787
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PROLE
+      max_prefix:
+        limit_ipv4: 3000
+  description: Akamai Prolexic DDoS Mitigation
+  ip: 5.57.81.220
+- asn: 32787
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PROLE
+      max_prefix:
+        limit_ipv6: 3000
+  description: Akamai Prolexic DDoS Mitigation
+  ip: 2001:7f8:17::8013:1
+- asn: 33073
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS33073:AS-SET
+      max_prefix:
+        limit_ipv4: 100
+  description: ISC - f.root-servers.net
+  ip: 5.57.80.224
+- asn: 33073
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS33073:AS-SET
+      max_prefix:
+        limit_ipv6: 100
+  description: ISC - f.root-servers.net
+  ip: 2001:7f8:17::8131:1
+- asn: 33445
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-YELP
+      max_prefix:
+        limit_ipv4: 100
+  description: Yelp UK
+  ip: 5.57.81.95
+- asn: 33920
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AQNET
+      max_prefix:
+        limit_ipv4: 100
+  description: AQ Networks Ltd (AQL)
+  ip: 5.57.80.44
+- asn: 33920
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AQNET
+      max_prefix:
+        limit_ipv6: 100
+  description: AQ Networks Ltd (AQL)
+  ip: 2001:7f8:17::8480:1
+- asn: 33941
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GCONNECT
+      max_prefix:
+        limit_ipv4: 100
+  description: Challenger Technology Ltd
+  ip: 5.57.80.124
+- asn: 33941
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GCONNECT
+      max_prefix:
+        limit_ipv6: 100
+  description: Challenger Technology Ltd
+  ip: 2001:7f8:17::8495:1
+- asn: 33941
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GCONNECT
+      max_prefix:
+        limit_ipv4: 100
+  description: Challenger Technology Ltd
+  ip: 5.57.80.125
+- asn: 33941
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GCONNECT
+      max_prefix:
+        limit_ipv6: 100
+  description: Challenger Technology Ltd
+  ip: 2001:7f8:17::8495:2
+- asn: 34066
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TELAPPLIANT
+      max_prefix:
+        limit_ipv4: 100
+  description: Telappliant Ltd
+  ip: 5.57.80.233
+- asn: 34442
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AMATIS
+      max_prefix:
+        limit_ipv4: 100
+  description: Amatis Networks
+  ip: 5.57.81.65
+- asn: 34442
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AMATIS
+      max_prefix:
+        limit_ipv6: 100
+  description: Amatis Networks
+  ip: 2001:7f8:17::868a:1
+- asn: 34555
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CCSLEEDS
+      max_prefix:
+        limit_ipv4: 100
+  description: C.C.S (Leeds) Ltd
+  ip: 5.57.80.57
+- asn: 34555
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CCSLEEDS
+      max_prefix:
+        limit_ipv4: 100
+  description: C.C.S (Leeds) Ltd
+  ip: 5.57.80.56
+- asn: 34660
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IDAQ
+      max_prefix:
+        limit_ipv4: 100
+  description: Idaq Ltd
+  ip: 5.57.81.205
+- asn: 34660
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IDAQ
+      max_prefix:
+        limit_ipv6: 100
+  description: Idaq Ltd
+  ip: 2001:7f8:17::8764:1
+- asn: 34746
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EATONKAYE
+      max_prefix:
+        limit_ipv4: 100
+  description: AXA Insurance UK Plc
+  ip: 5.57.80.180
+- asn: 34746
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EATONKAYE
+      max_prefix:
+        limit_ipv4: 100
+  description: AXA Insurance UK Plc
+  ip: 5.57.80.181
+- asn: 35266
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EXN
+      max_prefix:
+        limit_ipv4: 100
+  description: EX Networks
+  ip: 5.57.81.216
+- asn: 35266
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EXN
+      max_prefix:
+        limit_ipv6: 100
+  description: EX Networks
+  ip: 2001:7f8:17::89c2:1
+- asn: 35425
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BYTEMARK
+      max_prefix:
+        limit_ipv4: 100
+  description: Bytemark Hosting
+  ip: 5.57.80.160
+- asn: 35425
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BYTEMARK
+      max_prefix:
+        limit_ipv6: 100
+  description: Bytemark Hosting
+  ip: 2001:7f8:17::8a61:1
+- asn: 35575
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VAIONI
+      max_prefix:
+        limit_ipv4: 100
+  description: Vaioni Group Limited
+  ip: 5.57.81.214
+- asn: 35575
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VAIONI
+      max_prefix:
+        limit_ipv6: 100
+  description: Vaioni Group Limited
+  ip: 2001:7f8:17::8af7:1
+- asn: 36692
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-OPENDNS
+      max_prefix:
+        limit_ipv4: 100
+  description: OpenDNS
+  ip: 5.57.80.198
+- asn: 36692
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-OPENDNS
+      max_prefix:
+        limit_ipv6: 100
+  description: OpenDNS
+  ip: 2001:7f8:17::8f54:1
+- asn: 37271
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WOLCOMM
+      max_prefix:
+        limit_ipv4: 100
+  description: Workonline Communications (Pty) Ltd
+  ip: 5.57.81.206
+- asn: 37271
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WOLCOMM
+      max_prefix:
+        limit_ipv6: 100
+  description: Workonline Communications (Pty) Ltd
+  ip: 2001:7f8:17::9197:1
+- asn: 39295
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SWITCHIP
+      max_prefix:
+        limit_ipv4: 100
+  description: Switch IP Ltd
+  ip: 5.57.80.162
+- asn: 39326
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GOSCOMB
+      max_prefix:
+        limit_ipv4: 100
+  description: Goscomb Technologies
+  ip: 5.57.80.196
+- asn: 39326
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GOSCOMB
+      max_prefix:
+        limit_ipv6: 100
+  description: Goscomb Technologies
+  ip: 2001:7f8:17::999e:2
+- asn: 39326
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GOSCOMB
+      max_prefix:
+        limit_ipv4: 100
+  description: Goscomb Technologies
+  ip: 5.57.80.197
+- asn: 39326
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GOSCOMB
+      max_prefix:
+        limit_ipv6: 100
+  description: Goscomb Technologies
+  ip: 2001:7f8:17::999e:1
+- asn: 39522
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CONVERGED-COMMUNICATION-SOLUTIONS
+      max_prefix:
+        limit_ipv4: 100
+  description: Converged Communication Solutions Ltd
+  ip: 5.57.81.122
+- asn: 39545
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FLUIDATA
+      max_prefix:
+        limit_ipv4: 100
+  description: FluidOne Ltd
+  ip: 5.57.80.76
+- asn: 39545
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FLUIDATA
+      max_prefix:
+        limit_ipv6: 100
+  description: FluidOne Ltd
+  ip: 2001:7f8:17::9a79:1
+- asn: 41000
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FREETHOUGHT
+      max_prefix:
+        limit_ipv4: 100
+  description: Freethought Internet
+  ip: 5.57.81.150
+- asn: 41000
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FREETHOUGHT
+      max_prefix:
+        limit_ipv6: 100
+  description: Freethought Internet
+  ip: 2001:7f8:17::a028:1
+- asn: 41103
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CLEARIP
+      max_prefix:
+        limit_ipv4: 100
+  description: teleBIZZ
+  ip: 5.57.80.183
+- asn: 41103
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CLEARIP
+      max_prefix:
+        limit_ipv6: 100
+  description: teleBIZZ
+  ip: 2001:7f8:17::a08f:2
+- asn: 41103
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CLEARIP
+      max_prefix:
+        limit_ipv4: 100
+  description: teleBIZZ
+  ip: 5.57.80.182
+- asn: 41103
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CLEARIP
+      max_prefix:
+        limit_ipv6: 100
+  description: teleBIZZ
+  ip: 2001:7f8:17::a08f:1
+- asn: 41230
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ASK4
+      max_prefix:
+        limit_ipv4: 100
+  description: Ask4 Ltd
+  ip: 5.57.80.184
+- asn: 41230
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ASK4
+      max_prefix:
+        limit_ipv6: 100
+  description: Ask4 Ltd
+  ip: 2001:7f8:17::a10e:1
+- asn: 41678
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TIBUS
+      max_prefix:
+        limit_ipv4: 100
+  description: Tibus
+  ip: 5.57.80.237
+- asn: 41678
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TIBUS
+      max_prefix:
+        limit_ipv6: 100
+  description: Tibus
+  ip: 2001:7f8:17::a2ce:1
+- asn: 41963
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS41963
+      max_prefix:
+        limit_ipv4: 100
+  description: Moneysupermarket
+  ip: 5.57.81.108
+- asn: 42010
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ITPS
+      max_prefix:
+        limit_ipv4: 100
+  description: IT Professional Services
+  ip: 5.57.80.7
+- asn: 42010
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ITPS
+      max_prefix:
+        limit_ipv6: 100
+  description: IT Professional Services
+  ip: 2001:7f8:17::a41a:1
+- asn: 42353
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SIMWOOD
+      max_prefix:
+        limit_ipv4: 100
+  description: Simwood eSMS
+  ip: 5.57.80.206
+- asn: 42353
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SIMWOOD
+      max_prefix:
+        limit_ipv6: 100
+  description: Simwood eSMS
+  ip: 2001:7f8:17::a571:1
+- asn: 42455
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WIMANX
+      max_prefix:
+        limit_ipv4: 100
+  description: Wi-Manx Limited
+  ip: 5.57.81.202
+- asn: 42455
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WIMANX
+      max_prefix:
+        limit_ipv6: 100
+  description: Wi-Manx Limited
+  ip: 2001:7f8:17::a5d7:1
+- asn: 42579
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SARGASSO-UK
+      max_prefix:
+        limit_ipv4: 100
+  description: Comtec / Sargasso Networks
+  ip: 5.57.80.209
+- asn: 42579
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SARGASSO-UK
+      max_prefix:
+        limit_ipv6: 100
+  description: Comtec / Sargasso Networks
+  ip: 2001:7f8:17::a653:2
+- asn: 42579
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SARGASSO-UK
+      max_prefix:
+        limit_ipv4: 100
+  description: Comtec / Sargasso Networks
+  ip: 5.57.80.208
+- asn: 42579
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SARGASSO-UK
+      max_prefix:
+        limit_ipv6: 100
+  description: Comtec / Sargasso Networks
+  ip: 2001:7f8:17::a653:1
+- asn: 42689
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS42689
+      max_prefix:
+        limit_ipv4: 100
+  description: Cablecom Networking Ltd
+  ip: 5.57.81.35
+- asn: 42689
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS42689
+      max_prefix:
+        limit_ipv6: 100
+  description: Cablecom Networking Ltd
+  ip: 2001:7f8:17::a6c1:1
+- asn: 42831
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-UKSERVERS
+      max_prefix:
+        limit_ipv4: 300
+  description: UK Dedicated Servers Ltd
+  ip: 5.57.81.166
+- asn: 42831
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-UKSERVERS
+      max_prefix:
+        limit_ipv6: 300
+  description: UK Dedicated Servers Ltd
+  ip: 2001:7f8:17::a74f:1
+- asn: 43013
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS43013
+      max_prefix:
+        limit_ipv4: 100
+  description: York Data Services
+  ip: 5.57.81.208
+- asn: 43100
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS43100:AS-MEMBERS
+      max_prefix:
+        limit_ipv4: 450
+  description: LyonIX
+  ip: 5.57.81.162
+- asn: 43100
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS43100:AS-MEMBERS
+      max_prefix:
+        limit_ipv6: 450
+  description: LyonIX
+  ip: 2001:7f8:17::a85c:1
+- asn: 43323
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VISION247
+      max_prefix:
+        limit_ipv4: 100
+  description: Vision IPTV
+  ip: 5.57.80.84
+- asn: 43323
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VISION247
+      max_prefix:
+        limit_ipv6: 100
+  description: Vision IPTV
+  ip: 2001:7f8:17::a93b:1
+- asn: 43531
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IXREACH
+      max_prefix:
+        limit_ipv4: 4000
+  description: Console Network Solutions Ltd
+  ip: 5.57.80.127
+- asn: 43531
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IXREACH
+      max_prefix:
+        limit_ipv6: 4000
+  description: Console Network Solutions Ltd
+  ip: 2001:7f8:17::aa0b:2
+- asn: 43531
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IXREACH
+      max_prefix:
+        limit_ipv4: 4000
+  description: Console Network Solutions Ltd
+  ip: 5.57.80.126
+- asn: 43531
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IXREACH
+      max_prefix:
+        limit_ipv6: 4000
+  description: Console Network Solutions Ltd
+  ip: 2001:7f8:17::aa0b:1
+- asn: 43545
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TELEDATAUK
+      max_prefix:
+        limit_ipv4: 100
+  description: Teledata UK Ltd
+  ip: 5.57.81.110
+- asn: 44444
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WHS-EU
+      max_prefix:
+        limit_ipv4: 100
+  description: Forcepoint
+  ip: 5.57.80.34
+- asn: 44444
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WHS-EU
+      max_prefix:
+        limit_ipv6: 100
+  description: Forcepoint
+  ip: 2001:7f8:17::ad9c:1
+- asn: 44611
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TALKINTERNET
+      max_prefix:
+        limit_ipv4: 100
+  description: Talk Internet
+  ip: 5.57.81.116
+- asn: 44611
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TALKINTERNET
+      max_prefix:
+        limit_ipv6: 100
+  description: Talk Internet
+  ip: 2001:7f8:17::ae43:1
+- asn: 44684
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MYTHIC
+      max_prefix:
+        limit_ipv4: 100
+  description: Mythic Beasts
+  ip: 5.57.80.222
+- asn: 44684
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MYTHIC
+      max_prefix:
+        limit_ipv6: 100
+  description: Mythic Beasts
+  ip: 2001:7f8:17::ae8c:2
+- asn: 44684
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MYTHIC
+      max_prefix:
+        limit_ipv4: 100
+  description: Mythic Beasts
+  ip: 5.57.80.221
+- asn: 44684
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MYTHIC
+      max_prefix:
+        limit_ipv6: 100
+  description: Mythic Beasts
+  ip: 2001:7f8:17::ae8c:1
+- asn: 45014
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-HOSTIT-MK
+      max_prefix:
+        limit_ipv4: 100
+  description: Host-it Internet Solutions
+  ip: 5.57.81.67
+- asn: 45014
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-HOSTIT-MK
+      max_prefix:
+        limit_ipv6: 100
+  description: Host-it Internet Solutions
+  ip: 2001:7f8:17::afd6:1
+- asn: 45430
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SBN-IIG
+      max_prefix:
+        limit_ipv4: 1000
+  description: AWN
+  ip: 5.57.81.140
+- asn: 45430
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SBN-IIG
+      max_prefix:
+        limit_ipv6: 1000
+  description: AWN
+  ip: 2001:7f8:17::b176:1
+- asn: 46489
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS46489
+      max_prefix:
+        limit_ipv4: 100
+  description: Twitch Interactive, Inc.
+  ip: 5.57.81.71
+- asn: 46489
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS46489
+      max_prefix:
+        limit_ipv6: 100
+  description: Twitch Interactive, Inc.
+  ip: 2001:7f8:17::b599:1
+- asn: 46489
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS46489
+      max_prefix:
+        limit_ipv4: 100
+  description: Twitch Interactive, Inc.
+  ip: 5.57.81.72
+- asn: 46489
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS46489
+      max_prefix:
+        limit_ipv6: 100
+  description: Twitch Interactive, Inc.
+  ip: 2001:7f8:17::b599:2
+- asn: 47474
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VIRTUAL1
+      max_prefix:
+        limit_ipv4: 100
+  description: Virtual1
+  ip: 5.57.80.249
+- asn: 47474
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VIRTUAL1
+      max_prefix:
+        limit_ipv6: 100
+  description: Virtual1
+  ip: 2001:7f8:17::b972:2
+- asn: 47480
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BTS
+      max_prefix:
+        limit_ipv4: 100
+  description: Blue Tiger Solutions
+  ip: 5.57.81.148
+- asn: 47480
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BTS
+      max_prefix:
+        limit_ipv6: 100
+  description: Blue Tiger Solutions
+  ip: 2001:7f8:17::b978:1
+- asn: 47866
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS47866
+      max_prefix:
+        limit_ipv4: 100
+  description: iBrowse
+  ip: 5.57.81.144
+- asn: 47866
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS47866
+      max_prefix:
+        limit_ipv6: 100
+  description: iBrowse
+  ip: 2001:7f8:17::bafa:1
+- asn: 47866
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS47866
+      max_prefix:
+        limit_ipv4: 100
+  description: iBrowse
+  ip: 5.57.81.145
+- asn: 47866
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS47866
+      max_prefix:
+        limit_ipv6: 100
+  description: iBrowse
+  ip: 2001:7f8:17::bafa:2
+- asn: 47998
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-OSCAR
+      max_prefix:
+        limit_ipv4: 100
+  description: Oscar Music & Media
+  ip: 5.57.81.50
+- asn: 47998
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-OSCAR
+      max_prefix:
+        limit_ipv6: 100
+  description: Oscar Music & Media
+  ip: 2001:7f8:17::bb7e:1
+- asn: 48620
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BEAMING
+      max_prefix:
+        limit_ipv4: 100
+  description: Beaming Ltd
+  ip: 5.57.81.212
+- asn: 48620
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BEAMING
+      max_prefix:
+        limit_ipv4: 100
+  description: Beaming Ltd
+  ip: 5.57.81.213
+- asn: 48973
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NETPLAN
+      max_prefix:
+        limit_ipv4: 100
+  description: Netplan Internet Solutions
+  ip: 5.57.80.82
+- asn: 48973
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NETPLAN
+      max_prefix:
+        limit_ipv4: 100
+  description: Netplan Internet Solutions
+  ip: 5.57.80.83
+- asn: 49158
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WIFINITY
+      max_prefix:
+        limit_ipv4: 100
+  description: Wifinity
+  ip: 5.57.81.14
+- asn: 49158
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WIFINITY
+      max_prefix:
+        limit_ipv6: 100
+  description: Wifinity
+  ip: 2001:7f8:17::c006:3
+- asn: 49344
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ZIRON
+      max_prefix:
+        limit_ipv4: 100
+  description: Ziron
+  ip: 5.57.81.120
+- asn: 49344
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ZIRON
+      max_prefix:
+        limit_ipv6: 100
+  description: Ziron
+  ip: 2001:7f8:17::c0c0:1
+- asn: 49375
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TRUNKNETWORKS
+      max_prefix:
+        limit_ipv4: 100
+  description: Trunk Networks
+  ip: 5.57.80.147
+- asn: 49375
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TRUNKNETWORKS
+      max_prefix:
+        limit_ipv6: 100
+  description: Trunk Networks
+  ip: 2001:7f8:17::c0df:2
+- asn: 49375
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TRUNKNETWORKS
+      max_prefix:
+        limit_ipv4: 100
+  description: Trunk Networks
+  ip: 5.57.80.146
+- asn: 49375
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TRUNKNETWORKS
+      max_prefix:
+        limit_ipv6: 100
+  description: Trunk Networks
+  ip: 2001:7f8:17::c0df:1
+- asn: 49544
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-INTERACTIVE3D
+      max_prefix:
+        limit_ipv4: 500
+  description: i3d B.V.
+  ip: 5.57.81.25
+- asn: 49544
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-INTERACTIVE3D
+      max_prefix:
+        limit_ipv6: 500
+  description: i3d B.V.
+  ip: 2001:7f8:17::c188:1
+- asn: 50056
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AI
+      max_prefix:
+        limit_ipv4: 100
+  description: Ai Networks Ltd
+  ip: 5.57.80.13
+- asn: 50056
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AI
+      max_prefix:
+        limit_ipv6: 100
+  description: Ai Networks Ltd
+  ip: 2001:7f8:17::c388:2
+- asn: 50056
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AI
+      max_prefix:
+        limit_ipv4: 100
+  description: Ai Networks Ltd
+  ip: 5.57.80.12
+- asn: 50056
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AI
+      max_prefix:
+        limit_ipv6: 100
+  description: Ai Networks Ltd
+  ip: 2001:7f8:17::c388:1
+- asn: 50300
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CUSTDC
+      max_prefix:
+        limit_ipv4: 250
+  description: Custodian Datacentre
+  ip: 5.57.80.96
+- asn: 50300
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CUSTDC
+      max_prefix:
+        limit_ipv6: 250
+  description: Custodian Datacentre
+  ip: 2001:7f8:17::c47c:1
+- asn: 50823
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS50823
+      max_prefix:
+        limit_ipv4: 100
+  description: PBX Hosting Ltd
+  ip: 5.57.81.198
+- asn: 50957
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MEMSET
+      max_prefix:
+        limit_ipv4: 100
+  description: Memset Ltd
+  ip: 5.57.81.37
+- asn: 50957
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MEMSET
+      max_prefix:
+        limit_ipv6: 100
+  description: Memset Ltd
+  ip: 2001:7f8:17::c70d:1
+- asn: 51043
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ASPIRE
+      max_prefix:
+        limit_ipv4: 100
+  description: Aspire Technology Solutions Ltd
+  ip: 5.57.81.91
+- asn: 51043
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ASPIRE
+      max_prefix:
+        limit_ipv6: 100
+  description: Aspire Technology Solutions Ltd
+  ip: 2001:7f8:17::c763:1
+- asn: 51043
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ASPIRE
+      max_prefix:
+        limit_ipv4: 100
+  description: Aspire Technology Solutions Ltd
+  ip: 5.57.81.92
+- asn: 51043
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ASPIRE
+      max_prefix:
+        limit_ipv6: 100
+  description: Aspire Technology Solutions Ltd
+  ip: 2001:7f8:17::c763:2
+- asn: 51263
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS51263
+      max_prefix:
+        limit_ipv4: 100
+  description: County Broadband
+  ip: 5.57.81.44
+- asn: 51263
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS51263
+      max_prefix:
+        limit_ipv6: 100
+  description: County Broadband
+  ip: 2001:7f8:17::c83f:2
+- asn: 51406
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-2CONNECTUK
+      max_prefix:
+        limit_ipv4: 100
+  description: 2Connect
+  ip: 5.57.80.165
+- asn: 51406
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-2CONNECTUK
+      max_prefix:
+        limit_ipv6: 100
+  description: 2Connect
+  ip: 2001:7f8:17::c8ce:1
+- asn: 51409
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SECTORSIX
+      max_prefix:
+        limit_ipv4: 100
+  description: SectorSix Limited
+  ip: 5.57.81.41
+- asn: 51561
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ICUK
+      max_prefix:
+        limit_ipv4: 100
+  description: ICUK Computing Services Ltd
+  ip: 5.57.81.134
+- asn: 51561
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ICUK
+      max_prefix:
+        limit_ipv6: 100
+  description: ICUK Computing Services Ltd
+  ip: 2001:7f8:17::c969:1
+- asn: 51762
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ADVSET
+      max_prefix:
+        limit_ipv4: 300
+  description: Redspam LLP
+  ip: 5.57.81.97
+- asn: 51782
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BUZCOM
+      max_prefix:
+        limit_ipv4: 100
+  description: BUZCOM
+  ip: 5.57.81.10
+- asn: 51782
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BUZCOM
+      max_prefix:
+        limit_ipv6: 100
+  description: BUZCOM
+  ip: 2001:7f8:17::ca46:1
+- asn: 51918
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CERBERUSNETWORKS
+      max_prefix:
+        limit_ipv4: 100
+  description: Cerberus Networks Ltd
+  ip: 5.57.80.205
+- asn: 51918
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CERBERUSNETWORKS
+      max_prefix:
+        limit_ipv6: 100
+  description: Cerberus Networks Ltd
+  ip: 2001:7f8:17::cace:1
+- asn: 51918
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CERBERUSNETWORKS
+      max_prefix:
+        limit_ipv4: 100
+  description: Cerberus Networks Ltd
+  ip: 5.57.80.204
+- asn: 51918
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CERBERUSNETWORKS
+      max_prefix:
+        limit_ipv6: 100
+  description: Cerberus Networks Ltd
+  ip: 2001:7f8:17::cace:2
+- asn: 51945
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CONNETU
+      max_prefix:
+        limit_ipv4: 100
+  description: ConnetU Ltd
+  ip: 5.57.81.53
+- asn: 51945
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CONNETU
+      max_prefix:
+        limit_ipv6: 100
+  description: ConnetU Ltd
+  ip: 2001:7f8:17::cae9:1
+- asn: 52075
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WIFIRST
+      max_prefix:
+        limit_ipv4: 100
+  description: Wifirst
+  ip: 5.57.81.146
+- asn: 52075
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WIFIRST
+      max_prefix:
+        limit_ipv6: 100
+  description: Wifirst
+  ip: 2001:7f8:17::cb6b:1
+- asn: 54104
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-STACKPATH
+      max_prefix:
+        limit_ipv4: 300
+  description: StackPath
+  ip: 5.57.81.152
+- asn: 54104
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-STACKPATH
+      max_prefix:
+        limit_ipv6: 300
+  description: StackPath
+  ip: 2001:7f8:17::d358:1
+- asn: 54113
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FASTLY
+      max_prefix:
+        limit_ipv4: 100
+  description: Fastly
+  ip: 5.57.81.59
+- asn: 54113
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FASTLY
+      max_prefix:
+        limit_ipv6: 100
+  description: Fastly
+  ip: 2001:7f8:17::d361:1
+- asn: 54113
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FASTLY
+      max_prefix:
+        limit_ipv4: 100
+  description: Fastly
+  ip: 5.57.81.60
+- asn: 54113
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FASTLY
+      max_prefix:
+        limit_ipv6: 100
+  description: Fastly
+  ip: 2001:7f8:17::d361:2
+- asn: 55195
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-55195
+      max_prefix:
+        limit_ipv4: 10
+  description: Canadian Internet Registration Authority
+  ip: 5.57.81.125
+- asn: 55195
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-55195
+      max_prefix:
+        limit_ipv6: 10
+  description: Canadian Internet Registration Authority
+  ip: 2001:7f8:17::d79b:1
+- asn: 56329
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS56329
+      max_prefix:
+        limit_ipv4: 100
+  description: Gigaclear plc
+  ip: 5.57.81.85
+- asn: 56478
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BCUBE
+      max_prefix:
+        limit_ipv4: 100
+  description: Hyperoptic
+  ip: 5.57.80.194
+- asn: 56478
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BCUBE
+      max_prefix:
+        limit_ipv6: 100
+  description: Hyperoptic
+  ip: 2001:7f8:17::dc9e:1
+- asn: 56478
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BCUBE
+      max_prefix:
+        limit_ipv4: 100
+  description: Hyperoptic
+  ip: 5.57.80.195
+- asn: 56478
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BCUBE
+      max_prefix:
+        limit_ipv6: 100
+  description: Hyperoptic
+  ip: 2001:7f8:17::dc9e:2
+- asn: 56595
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FLUENCY
+      max_prefix:
+        limit_ipv4: 100
+  description: Fluency Communications Ltd
+  ip: 5.57.80.216
+- asn: 56595
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FLUENCY
+      max_prefix:
+        limit_ipv6: 100
+  description: Fluency Communications Ltd
+  ip: 2001:7f8:17::dd13:2
+- asn: 56745
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS56745
+      max_prefix:
+        limit_ipv4: 100
+  description: Tamar Telecommunications
+  ip: 5.57.81.192
+- asn: 56745
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS56745
+      max_prefix:
+        limit_ipv6: 100
+  description: Tamar Telecommunications
+  ip: 2001:7f8:17::dda9:1
+- asn: 57099
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BOUNDLESSCOMMS
+      max_prefix:
+        limit_ipv4: 100
+  description: Boundless Communications Ltd
+  ip: 5.57.81.118
+- asn: 57099
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BOUNDLESSCOMMS
+      max_prefix:
+        limit_ipv6: 100
+  description: Boundless Communications Ltd
+  ip: 2001:7f8:17::df0b:1
+- asn: 57976
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BLIZZARD
+      max_prefix:
+        limit_ipv4: 200
+  description: Blizzard Entertainment
+  ip: 5.57.81.160
+- asn: 57976
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BLIZZARD
+      max_prefix:
+        limit_ipv6: 200
+  description: Blizzard Entertainment
+  ip: 2001:7f8:17::e278:1
+- asn: 59439
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS59439
+      max_prefix:
+        limit_ipv4: 100
+  description: The Voice Factory
+  ip: 5.57.81.190
+- asn: 59701
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LYTZENIT
+      max_prefix:
+        limit_ipv4: 100
+  description: Lytzen IT A/S
+  ip: 5.57.81.156
+- asn: 59701
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LYTZENIT
+      max_prefix:
+        limit_ipv6: 100
+  description: Lytzen IT A/S
+  ip: 2001:7f8:17::e935:1
+- asn: 59953
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS59953
+      max_prefix:
+        limit_ipv4: 100
+  description: Fibre Options
+  ip: 5.57.81.132
+- asn: 60257
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS60257
+      max_prefix:
+        limit_ipv4: 100
+  description: Origin Broadband
+  ip: 5.57.81.138
+- asn: 60257
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS60257
+      max_prefix:
+        limit_ipv6: 100
+  description: Origin Broadband
+  ip: 2001:7f8:17::eb61:1
+- asn: 60610
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EVERESTDATA
+      max_prefix:
+        limit_ipv4: 200
+  description: Everest Data Centres Ltd
+  ip: 5.57.81.80
+- asn: 60610
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EVERESTDATA
+      max_prefix:
+        limit_ipv6: 200
+  description: Everest Data Centres Ltd
+  ip: 2001:7f8:17::ecc2:1
+- asn: 60868
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS60868
+      max_prefix:
+        limit_ipv4: 100
+  description: Runtime Collective Ltd
+  ip: 5.57.81.104
+- asn: 60868
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS60868
+      max_prefix:
+        limit_ipv6: 100
+  description: Runtime Collective Ltd
+  ip: 2001:7f8:17::edc4:1
+- asn: 60868
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS60868
+      max_prefix:
+        limit_ipv4: 100
+  description: Runtime Collective Ltd
+  ip: 5.57.81.105
+- asn: 60868
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS60868
+      max_prefix:
+        limit_ipv6: 100
+  description: Runtime Collective Ltd
+  ip: 2001:7f8:17::edc4:2
+- asn: 61049
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EXASCALE
+      max_prefix:
+        limit_ipv4: 100
+  description: Exascale
+  ip: 5.57.81.154
+- asn: 61049
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EXASCALE
+      max_prefix:
+        limit_ipv6: 100
+  description: Exascale
+  ip: 2001:7f8:17::ee79:1
+- asn: 61124
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MARSTONS
+      max_prefix:
+        limit_ipv4: 100
+  description: Marston's Telecoms Ltd
+  ip: 5.57.81.78
+- asn: 63949
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LINODE
+      max_prefix:
+        limit_ipv4: 500
+  description: Linode
+  ip: 5.57.81.142
+- asn: 63949
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LINODE
+      max_prefix:
+        limit_ipv6: 500
+  description: Linode
+  ip: 2001:7f8:17::f9cd:1
+- asn: 197898
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IDSI
+      max_prefix:
+        limit_ipv4: 100
+  description: Integrated Digital Services Ltd
+  ip: 5.57.81.83
+- asn: 197898
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IDSI
+      max_prefix:
+        limit_ipv6: 100
+  description: Integrated Digital Services Ltd
+  ip: 2001:7f8:17::3:50a:1
+- asn: 197913
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CADENCE
+      max_prefix:
+        limit_ipv4: 100
+  description: Cadence Networks Ltd
+  ip: 5.57.81.158
+- asn: 197913
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CADENCE
+      max_prefix:
+        limit_ipv6: 100
+  description: Cadence Networks Ltd
+  ip: 2001:7f8:17::3:519:1
+- asn: 198440
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-M12
+      max_prefix:
+        limit_ipv4: 100
+  description: M12 Solutions Ltd
+  ip: 5.57.81.100
+- asn: 198440
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-M12
+      max_prefix:
+        limit_ipv6: 100
+  description: M12 Solutions Ltd
+  ip: 2001:7f8:17::3:728:1
+- asn: 199335
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TALKSTRAIGHT
+      max_prefix:
+        limit_ipv4: 100
+  description: Talk Straight Group Ltd
+  ip: 5.57.81.64
+- asn: 199659
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SURETEC
+      max_prefix:
+        limit_ipv4: 100
+  description: Suretec Systems Ltd / SureVoIP
+  ip: 5.57.81.47
+- asn: 199659
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SURETEC
+      max_prefix:
+        limit_ipv6: 100
+  description: Suretec Systems Ltd / SureVoIP
+  ip: 2001:7f8:17::3:beb:1
+- asn: 199659
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SURETEC
+      max_prefix:
+        limit_ipv4: 100
+  description: Suretec Systems Ltd / SureVoIP
+  ip: 5.57.81.48
+- asn: 199659
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SURETEC
+      max_prefix:
+        limit_ipv6: 100
+  description: Suretec Systems Ltd / SureVoIP
+  ip: 2001:7f8:17::3:beb:2
+- asn: 199713
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MLL
+      max_prefix:
+        limit_ipv4: 100
+  description: MLL Telecom
+  ip: 5.57.81.106
+- asn: 200052
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FERAL
+      max_prefix:
+        limit_ipv4: 100
+  description: Feral Hosting
+  ip: 5.57.81.90
+- asn: 200052
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FERAL
+      max_prefix:
+        limit_ipv6: 100
+  description: Feral Hosting
+  ip: 2001:7f8:17::3:d74:1
+- asn: 200612
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SETGBI
+      max_prefix:
+        limit_ipv4: 6000
+  description: Gulf Bridge International
+  ip: 5.57.81.218
+- asn: 200612
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SETGBI
+      max_prefix:
+        limit_ipv6: 6000
+  description: Gulf Bridge International
+  ip: 2001:7f8:17::3:fa4:1
+- asn: 200623
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CONNECTBIT
+      max_prefix:
+        limit_ipv4: 100
+  description: Ashgoal Ltd
+  ip: 5.57.81.164
+- asn: 200623
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CONNECTBIT
+      max_prefix:
+        limit_ipv6: 100
+  description: Ashgoal Ltd
+  ip: 2001:7f8:17::3:faf:1

@@ -1,0 +1,1263 @@
+# Data fetched from https://www.swissix.ch/euroix/create-json-ixp-member-list.php at 2017-08-30T16:21:20.334986 UTC
+# IXP ID: 1
+clients:
+- asn: 42
+  description: Packet Clearing House
+  ip: 91.206.52.12
+- asn: 42
+  description: Packet Clearing House
+  ip: 2001:7f8:24::c
+- asn: 112
+  description: SwissIX AS112 Service
+  ip: 91.206.52.250
+- asn: 112
+  description: SwissIX AS112 Service
+  ip: 2001:7f8:24::fa
+- asn: 559
+  description: SWITCH
+  ip: 91.206.52.53
+- asn: 559
+  description: SWITCH
+  ip: 2001:7f8:24::35
+- asn: 1764
+  description: next layer Telekommunikationsdienstleistungs- und Beratungs GmbH
+  ip: 91.206.52.10
+- asn: 1764
+  description: next layer Telekommunikationsdienstleistungs- und Beratungs GmbH
+  ip: 2001:7f8:24::a
+- asn: 1836
+  description: green.ch AG
+  ip: 91.206.52.94
+- asn: 1836
+  description: green.ch AG
+  ip: 2001:7f8:24::5e
+- asn: 2686
+  description: AT&T Global Network Services Switzerland GmbH
+  ip: 91.206.52.202
+- asn: 2686
+  description: AT&T Global Network Services Switzerland GmbH
+  ip: 2001:7f8:24::ca
+- asn: 2906
+  description: Netflix Streaming Services International B.V.
+  ip: 91.206.52.85
+- asn: 2906
+  description: Netflix Streaming Services International B.V.
+  ip: 2001:7f8:24::55
+- asn: 2906
+  description: Netflix Streaming Services International B.V.
+  ip: 91.206.52.86
+- asn: 2906
+  description: Netflix Streaming Services International B.V.
+  ip: 2001:7f8:24::56
+- asn: 3250
+  description: Netskin GmbH
+  ip: 91.206.52.208
+- asn: 3250
+  description: Netskin GmbH
+  ip: 2001:7f8:24::d0
+- asn: 3303
+  description: Swisscom (Schweiz) AG
+  ip: 91.206.52.171
+- asn: 3303
+  description: Swisscom (Schweiz) AG
+  ip: 2001:7f8:24::ab
+- asn: 3856
+  description: Packet Clearing House
+  ip: 91.206.52.24
+- asn: 3856
+  description: Packet Clearing House
+  ip: 2001:7f8:24::18
+- asn: 5400
+  description: British Telecommunications plc
+  ip: 91.206.52.138
+- asn: 5400
+  description: British Telecommunications plc
+  ip: 2001:7f8:24::8a
+- asn: 5580
+  description: Hibernia Networks
+  ip: 91.206.52.173
+- asn: 5580
+  description: Hibernia Networks
+  ip: 2001:7f8:24::ad
+- asn: 6507
+  description: Riot Games, Inc.
+  ip: 91.206.52.159
+- asn: 6507
+  description: Riot Games, Inc.
+  ip: 2001:7f8:24::9f
+- asn: 6730
+  description: Sunrise Communications AG
+  ip: 91.206.52.76
+- asn: 6730
+  description: Sunrise Communications AG
+  ip: 2001:7f8:24::4c
+- asn: 6772
+  description: ImproWare AG
+  ip: 91.206.52.20
+- asn: 6772
+  description: ImproWare AG
+  ip: 2001:7f8:24::14
+- asn: 6775
+  description: Fink Telecom Services
+  ip: 91.206.52.206
+- asn: 6775
+  description: Fink Telecom Services
+  ip: 2001:7f8:24::ce
+- asn: 6776
+  description: TheNet Internet Services AG
+  ip: 91.206.52.35
+- asn: 6776
+  description: TheNet Internet Services AG
+  ip: 2001:7f8:24::23
+- asn: 6898
+  description: InternetONE SA
+  ip: 91.206.52.190
+- asn: 6898
+  description: InternetONE SA
+  ip: 2001:7f8:24::be
+- asn: 6939
+  description: Hurricane Electric
+  ip: 91.206.52.170
+- asn: 6939
+  description: Hurricane Electric
+  ip: 2001:7f8:24::aa
+- asn: 7713
+  description: PT Telekomunikasi Indonesia International
+  ip: 91.206.52.181
+- asn: 7713
+  description: PT Telekomunikasi Indonesia International
+  ip: 2001:7f8:24::b5
+- asn: 8075
+  description: Microsoft
+  ip: 91.206.52.152
+- asn: 8075
+  description: Microsoft
+  ip: 2001:7f8:24::98
+- asn: 8218
+  description: Zayo France (was Neo Telecoms)
+  ip: 91.206.52.116
+- asn: 8218
+  description: Zayo France (was Neo Telecoms)
+  ip: 2001:7f8:24::74
+- asn: 8220
+  description: Colt Telecom
+  ip: 91.206.52.172
+- asn: 8220
+  description: Colt Telecom
+  ip: 2001:7f8:24::ac
+- asn: 8247
+  description: Calltrade Carrier Services AG
+  ip: 91.206.52.78
+- asn: 8247
+  description: Calltrade Carrier Services AG
+  ip: 2001:7f8:24::4e
+- asn: 8302
+  description: Zattoo Europe AG
+  ip: 91.206.52.75
+- asn: 8302
+  description: Zattoo Europe AG
+  ip: 2001:7f8:24::4b
+- asn: 8302
+  description: Zattoo Europe AG
+  ip: 91.206.52.23
+- asn: 8302
+  description: Zattoo Europe AG
+  ip: 2001:7f8:24::17
+- asn: 8453
+  description: Econis AG
+  ip: 91.206.52.163
+- asn: 8453
+  description: Econis AG
+  ip: 2001:7f8:24::a3
+- asn: 8758
+  description: iWay AG
+  ip: 91.206.52.2
+- asn: 8758
+  description: iWay AG
+  ip: 2001:7f8:24::2
+- asn: 8758
+  description: iWay AG
+  ip: 91.206.52.6
+- asn: 8758
+  description: iWay AG
+  ip: 2001:7f8:24::6
+- asn: 8821
+  description: WWZ Telekom AG
+  ip: 91.206.52.119
+- asn: 8821
+  description: WWZ Telekom AG
+  ip: 2001:7f8:24::77
+- asn: 8928
+  description: Interoute Managed Services S?rl
+  ip: 91.206.52.47
+- asn: 8928
+  description: Interoute Managed Services S?rl
+  ip: 2001:7f8:24::2f
+- asn: 8966
+  description: Emirates Telecommunications Corporation
+  ip: 91.206.52.26
+- asn: 8966
+  description: Emirates Telecommunications Corporation
+  ip: 2001:7f8:24::1a
+- asn: 9002
+  description: RETN Ltd.
+  ip: 91.206.52.143
+- asn: 9002
+  description: RETN Ltd.
+  ip: 2001:7f8:24::8f
+- asn: 9009
+  description: M247 Ltd.
+  ip: 91.206.52.137
+- asn: 9009
+  description: M247 Ltd.
+  ip: 2001:7f8:24::89
+- asn: 9044
+  description: BSE Software GmbH (SolNet)
+  ip: 91.206.52.14
+- asn: 9044
+  description: BSE Software GmbH (SolNet)
+  ip: 2001:7f8:24::e
+- asn: 9044
+  description: BSE Software GmbH (SolNet)
+  ip: 91.206.52.37
+- asn: 9044
+  description: BSE Software GmbH (SolNet)
+  ip: 2001:7f8:24::25
+- asn: 9092
+  description: Open Systems AG
+  ip: 91.206.52.34
+- asn: 9092
+  description: Open Systems AG
+  ip: 2001:7f8:24::22
+- asn: 9100
+  description: Aspectra AG
+  ip: 91.206.52.18
+- asn: 9100
+  description: Aspectra AG
+  ip: 2001:7f8:24::12
+- asn: 9153
+  description: Burstfire Networks Ltd.
+  ip: 91.206.52.80
+- asn: 9153
+  description: Burstfire Networks Ltd.
+  ip: 2001:7f8:24::50
+- asn: 12041
+  description: Afilias Ltd
+  ip: 91.206.52.61
+- asn: 12041
+  description: Afilias Ltd
+  ip: 2001:7f8:24::3d
+- asn: 12333
+  description: DFI Service SA
+  ip: 91.206.52.59
+- asn: 12333
+  description: DFI Service SA
+  ip: 2001:7f8:24::3b
+- asn: 12347
+  description: VirtualTec Solutions AG
+  ip: 91.206.52.139
+- asn: 12347
+  description: VirtualTec Solutions AG
+  ip: 2001:7f8:24::8b
+- asn: 12350
+  description: VTX Services SA
+  ip: 91.206.52.77
+- asn: 12350
+  description: VTX Services SA
+  ip: 2001:7f8:24::4d
+- asn: 12387
+  description: TON Total Optical Networks AG
+  ip: 91.206.52.155
+- asn: 12387
+  description: TON Total Optical Networks AG
+  ip: 2001:7f8:24::9b
+- asn: 12553
+  description: Andreas Grawehr
+  ip: 91.206.52.51
+- asn: 12553
+  description: Andreas Grawehr
+  ip: 2001:7f8:24::33
+- asn: 12654
+  description: RIPE RIS Collector
+  ip: 91.206.52.253
+- asn: 12654
+  description: RIPE RIS Collector
+  ip: 2001:7f8:24::fd
+- asn: 13030
+  description: Init Seven AG
+  ip: 91.206.52.3
+- asn: 13030
+  description: Init Seven AG
+  ip: 2001:7f8:24::3
+- asn: 13101
+  description: TNG AG
+  ip: 91.206.52.153
+- asn: 13101
+  description: TNG AG
+  ip: 2001:7f8:24::99
+- asn: 13250
+  description: Backbone Solutions AG
+  ip: 91.206.52.19
+- asn: 13250
+  description: Backbone Solutions AG
+  ip: 2001:7f8:24::13
+- asn: 13335
+  description: Cloudflare, Inc.
+  ip: 91.206.52.192
+- asn: 13335
+  description: Cloudflare, Inc.
+  ip: 2001:7f8:24::c0
+- asn: 14413
+  description: LinkedIN, Inc.
+  ip: 91.206.52.198
+- asn: 14413
+  description: LinkedIN, Inc.
+  ip: 2001:7f8:24::c6
+- asn: 15169
+  description: Google
+  ip: 91.206.52.74
+- asn: 15169
+  description: Google
+  ip: 2001:7f8:24::4a
+- asn: 15398
+  description: Werft22 AG
+  ip: 91.206.52.81
+- asn: 15398
+  description: Werft22 AG
+  ip: 2001:7f8:24::51
+- asn: 15479
+  description: euNetworks SA
+  ip: 91.206.52.42
+- asn: 15479
+  description: euNetworks SA
+  ip: 2001:7f8:24::2a
+- asn: 15517
+  description: Netstream AG
+  ip: 91.206.52.95
+- asn: 15517
+  description: Netstream AG
+  ip: 2001:7f8:24::5f
+- asn: 15517
+  description: Netstream AG
+  ip: 91.206.52.123
+- asn: 15517
+  description: Netstream AG
+  ip: 2001:7f8:24::7b
+- asn: 15547
+  description: netplus.ch AG
+  ip: 91.206.52.149
+- asn: 15547
+  description: netplus.ch AG
+  ip: 2001:7f8:24::95
+- asn: 15576
+  description: NTS Workspace AG
+  ip: 91.206.52.22
+- asn: 15576
+  description: NTS Workspace AG
+  ip: 2001:7f8:24::16
+- asn: 15600
+  description: Quickline AG
+  ip: 91.206.52.21
+- asn: 15600
+  description: Quickline AG
+  ip: 2001:7f8:24::15
+- asn: 15623
+  description: Cyberlink AG
+  ip: 91.206.52.15
+- asn: 15623
+  description: Cyberlink AG
+  ip: 2001:7f8:24::f
+- asn: 15623
+  description: Cyberlink AG
+  ip: 91.206.52.55
+- asn: 15623
+  description: Cyberlink AG
+  ip: 2001:7f8:24::37
+- asn: 15716
+  description: Adfinis SyGroup AG
+  ip: 91.206.52.156
+- asn: 15716
+  description: Adfinis SyGroup AG
+  ip: 2001:7f8:24::9c
+- asn: 16242
+  description: mhs@internet AG
+  ip: 91.206.52.44
+- asn: 16242
+  description: mhs@internet AG
+  ip: 2001:7f8:24::2c
+- asn: 16265
+  description: LeaseWeb B.V.
+  ip: 91.206.52.93
+- asn: 16265
+  description: LeaseWeb B.V.
+  ip: 2001:7f8:24::5d
+- asn: 16509
+  description: Amazon
+  ip: 91.206.52.107
+- asn: 16509
+  description: Amazon
+  ip: 2001:7f8:24::6b
+- asn: 20562
+  description: Open Peering BV
+  ip: 91.206.52.83
+- asn: 20562
+  description: Open Peering BV
+  ip: 2001:7f8:24::53
+- asn: 20612
+  description: SwissIX Internet Exchange (Infrastructure)
+  ip: 91.206.52.126
+- asn: 20612
+  description: SwissIX Internet Exchange (Infrastructure)
+  ip: 2001:7f8:24::7e
+- asn: 20612
+  description: SwissIX Internet Exchange (Infrastructure)
+  ip: 91.206.52.127
+- asn: 20612
+  description: SwissIX Internet Exchange (Infrastructure)
+  ip: 2001:7f8:24::7f
+- asn: 20634
+  description: Telecom Liechtenstein AG
+  ip: 91.206.52.8
+- asn: 20634
+  description: Telecom Liechtenstein AG
+  ip: 2001:7f8:24::8
+- asn: 20893
+  description: SYSTEM-CLINCH Internet Services GmbH
+  ip: 91.206.52.66
+- asn: 20893
+  description: SYSTEM-CLINCH Internet Services GmbH
+  ip: 2001:7f8:24::42
+- asn: 20932
+  description: SIG / IP-MAN
+  ip: 91.206.52.84
+- asn: 20932
+  description: SIG / IP-MAN
+  ip: 2001:7f8:24::54
+- asn: 20940
+  description: Akamai International B.V.
+  ip: 91.206.52.56
+- asn: 20940
+  description: Akamai International B.V.
+  ip: 2001:7f8:24::38
+- asn: 20984
+  description: Panalpina World Transport Ltd.
+  ip: 91.206.52.157
+- asn: 20984
+  description: Panalpina World Transport Ltd.
+  ip: 2001:7f8:24::9d
+- asn: 20984
+  description: Panalpina World Transport Ltd.
+  ip: 91.206.52.184
+- asn: 20984
+  description: Panalpina World Transport Ltd.
+  ip: 2001:7f8:24::b8
+- asn: 21040
+  description: Datapark AG
+  ip: 91.206.52.72
+- asn: 21040
+  description: Datapark AG
+  ip: 2001:7f8:24::48
+- asn: 21069
+  description: METANET AG
+  ip: 91.206.52.11
+- asn: 21069
+  description: METANET AG
+  ip: 2001:7f8:24::b
+- asn: 21232
+  description: GGA Maur
+  ip: 91.206.52.32
+- asn: 21232
+  description: GGA Maur
+  ip: 2001:7f8:24::20
+- asn: 21232
+  description: GGA Maur
+  ip: 91.206.52.100
+- asn: 21232
+  description: GGA Maur
+  ip: 2001:7f8:24::64
+- asn: 22822
+  description: Limelight Networks, Inc.
+  ip: 91.206.52.217
+- asn: 22822
+  description: Limelight Networks, Inc.
+  ip: 2001:7f8:24::d9
+- asn: 24482
+  description: SG.GS
+  ip: 91.206.52.205
+- asn: 24482
+  description: SG.GS
+  ip: 2001:7f8:24::cd
+- asn: 24889
+  description: Monzoon Networks AG
+  ip: 91.206.52.33
+- asn: 24889
+  description: Monzoon Networks AG
+  ip: 2001:7f8:24::21
+- asn: 24951
+  description: Everyware AG
+  ip: 91.206.52.29
+- asn: 24951
+  description: Everyware AG
+  ip: 2001:7f8:24::1d
+- asn: 25091
+  description: IP-Max SA
+  ip: 91.206.52.117
+- asn: 25091
+  description: IP-Max SA
+  ip: 2001:7f8:24::75
+- asn: 25152
+  description: RIPE k-root
+  ip: 91.206.52.254
+- asn: 25152
+  description: RIPE k-root
+  ip: 2001:7f8:24::fe
+- asn: 25291
+  description: SysEleven GmbH
+  ip: 91.206.52.168
+- asn: 25291
+  description: SysEleven GmbH
+  ip: 2001:7f8:24::a8
+- asn: 25375
+  description: Leunet AG
+  ip: 91.206.52.176
+- asn: 25375
+  description: Leunet AG
+  ip: 2001:7f8:24::b0
+- asn: 25435
+  description: META10 AG
+  ip: 91.206.52.178
+- asn: 25435
+  description: META10 AG
+  ip: 2001:7f8:24::b2
+- asn: 25563
+  description: Webland AG
+  ip: 91.206.52.110
+- asn: 25563
+  description: Webland AG
+  ip: 2001:7f8:24::6e
+- asn: 25581
+  description: GMG AG
+  ip: 91.206.52.131
+- asn: 25581
+  description: GMG AG
+  ip: 2001:7f8:24::83
+- asn: 26415
+  description: VeriSign Global Registry Services
+  ip: 91.206.52.7
+- asn: 26415
+  description: VeriSign Global Registry Services
+  ip: 2001:7f8:24::7
+- asn: 28859
+  description: ZUGERNET (acdalis informatik ag)
+  ip: 91.206.52.64
+- asn: 28859
+  description: ZUGERNET (acdalis informatik ag)
+  ip: 2001:7f8:24::40
+- asn: 28875
+  description: Innotronic Ingenieurb?ro GmbH
+  ip: 91.206.52.30
+- asn: 28875
+  description: Innotronic Ingenieurb?ro GmbH
+  ip: 2001:7f8:24::1e
+- asn: 29097
+  description: Hostpoint AG
+  ip: 91.206.52.4
+- asn: 29097
+  description: Hostpoint AG
+  ip: 2001:7f8:24::4
+- asn: 29169
+  description: Gandi SAS
+  ip: 91.206.52.204
+- asn: 29169
+  description: Gandi SAS
+  ip: 2001:7f8:24::cc
+- asn: 29222
+  description: Infomaniak Network SA
+  ip: 91.206.52.186
+- asn: 29222
+  description: Infomaniak Network SA
+  ip: 2001:7f8:24::ba
+- asn: 29383
+  description: Actelion Pharmaceuticals Ltd.
+  ip: 91.206.52.96
+- asn: 29383
+  description: Actelion Pharmaceuticals Ltd.
+  ip: 2001:7f8:24::60
+- asn: 29545
+  description: iPlace Internet & Network Services GmbH
+  ip: 91.206.52.209
+- asn: 29545
+  description: iPlace Internet & Network Services GmbH
+  ip: 2001:7f8:24::d1
+- asn: 29655
+  description: Trenka Informatik AG
+  ip: 91.206.52.108
+- asn: 29655
+  description: Trenka Informatik AG
+  ip: 2001:7f8:24::6c
+- asn: 29655
+  description: Trenka Informatik AG
+  ip: 91.206.52.28
+- asn: 29655
+  description: Trenka Informatik AG
+  ip: 2001:7f8:24::1c
+- asn: 29668
+  description: Qube Managed Services Ltd.
+  ip: 91.206.52.183
+- asn: 29668
+  description: Qube Managed Services Ltd.
+  ip: 2001:7f8:24::b7
+- asn: 29691
+  description: Nine Internet Solutions AG
+  ip: 91.206.52.9
+- asn: 29691
+  description: Nine Internet Solutions AG
+  ip: 2001:7f8:24::9
+- asn: 29691
+  description: Nine Internet Solutions AG
+  ip: 91.206.52.213
+- asn: 29691
+  description: Nine Internet Solutions AG
+  ip: 2001:7f8:24::d5
+- asn: 30419
+  description: MediaMath
+  ip: 91.206.52.196
+- asn: 30419
+  description: MediaMath
+  ip: 2001:7f8:24::c4
+- asn: 30727
+  description: syslink operations AG
+  ip: 91.206.52.182
+- asn: 30727
+  description: syslink operations AG
+  ip: 2001:7f8:24::b6
+- asn: 30781
+  description: Jaguar Network
+  ip: 91.206.52.67
+- asn: 30781
+  description: Jaguar Network
+  ip: 2001:7f8:24::43
+- asn: 30786
+  description: Swisscom Directories AG
+  ip: 91.206.52.132
+- asn: 30786
+  description: Swisscom Directories AG
+  ip: 2001:7f8:24::84
+- asn: 31424
+  description: nexellent ag
+  ip: 91.206.52.17
+- asn: 31424
+  description: nexellent ag
+  ip: 2001:7f8:24::11
+- asn: 31424
+  description: nexellent ag
+  ip: 91.206.52.49
+- asn: 31424
+  description: nexellent ag
+  ip: 2001:7f8:24::31
+- asn: 31662
+  description: connecta ag
+  ip: 91.206.52.63
+- asn: 31662
+  description: connecta ag
+  ip: 2001:7f8:24::3f
+- asn: 31662
+  description: connecta ag
+  ip: 91.206.52.27
+- asn: 31662
+  description: connecta ag
+  ip: 2001:7f8:24::1b
+- asn: 31736
+  description: senseLAN GmbH
+  ip: 91.206.52.25
+- asn: 31736
+  description: senseLAN GmbH
+  ip: 2001:7f8:24::19
+- asn: 33845
+  description: Swiss Federation represented by FOITT
+  ip: 91.206.52.46
+- asn: 33845
+  description: Swiss Federation represented by FOITT
+  ip: 2001:7f8:24::2e
+- asn: 33891
+  description: Core-Backbone GmbH
+  ip: 91.206.52.191
+- asn: 33891
+  description: Core-Backbone GmbH
+  ip: 2001:7f8:24::bf
+- asn: 33965
+  description: Litecom AG
+  ip: 91.206.52.144
+- asn: 33965
+  description: Litecom AG
+  ip: 2001:7f8:24::90
+- asn: 34146
+  description: ISP Solutions SA
+  ip: 91.206.52.177
+- asn: 34146
+  description: ISP Solutions SA
+  ip: 2001:7f8:24::b1
+- asn: 34288
+  description: Kantonsschule Zug
+  ip: 91.206.52.150
+- asn: 34288
+  description: Kantonsschule Zug
+  ip: 2001:7f8:24::96
+- asn: 34288
+  description: Kantonsschule Zug
+  ip: 91.206.52.71
+- asn: 34288
+  description: Kantonsschule Zug
+  ip: 2001:7f8:24::47
+- asn: 34309
+  description: Link11 GmbH
+  ip: 91.206.52.175
+- asn: 34309
+  description: Link11 GmbH
+  ip: 2001:7f8:24::af
+- asn: 34554
+  description: Antares Kommunikationstechnik AG
+  ip: 91.206.52.54
+- asn: 34554
+  description: Antares Kommunikationstechnik AG
+  ip: 2001:7f8:24::36
+- asn: 34578
+  description: Bedag Informatik AG
+  ip: 91.206.52.48
+- asn: 34578
+  description: Bedag Informatik AG
+  ip: 2001:7f8:24::30
+- asn: 34781
+  description: SIMA Lausanne
+  ip: 91.206.52.148
+- asn: 34781
+  description: SIMA Lausanne
+  ip: 2001:7f8:24::94
+- asn: 34960
+  description: Netcetera AG
+  ip: 91.206.52.89
+- asn: 34960
+  description: Netcetera AG
+  ip: 2001:7f8:24::59
+- asn: 35054
+  description: Equinix (Switzerland) GmbH
+  ip: 91.206.52.189
+- asn: 35054
+  description: Equinix (Switzerland) GmbH
+  ip: 2001:7f8:24::bd
+- asn: 35223
+  description: Hoi Internet AG
+  ip: 91.206.52.43
+- asn: 35223
+  description: Hoi Internet AG
+  ip: 2001:7f8:24::2b
+- asn: 39063
+  description: Leitwert GmbH
+  ip: 91.206.52.133
+- asn: 39063
+  description: Leitwert GmbH
+  ip: 2001:7f8:24::85
+- asn: 39764
+  description: Dolphin Systems AG
+  ip: 91.206.52.82
+- asn: 39764
+  description: Dolphin Systems AG
+  ip: 2001:7f8:24::52
+- asn: 40627
+  description: RingCentral CH GmbH
+  ip: 91.206.52.203
+- asn: 40627
+  description: RingCentral CH GmbH
+  ip: 2001:7f8:24::cb
+- asn: 41549
+  description: Elektrizit?ts- und Wasserwerk der Stadt Buchs SG
+  ip: 91.206.52.121
+- asn: 41549
+  description: Elektrizit?ts- und Wasserwerk der Stadt Buchs SG
+  ip: 2001:7f8:24::79
+- asn: 41549
+  description: Elektrizit?ts- und Wasserwerk der Stadt Buchs SG
+  ip: 91.206.52.158
+- asn: 41549
+  description: Elektrizit?ts- und Wasserwerk der Stadt Buchs SG
+  ip: 2001:7f8:24::9e
+- asn: 41562
+  description: Host4all Sarl
+  ip: 91.206.52.69
+- asn: 41562
+  description: Host4all Sarl
+  ip: 2001:7f8:24::45
+- asn: 41872
+  description: GIB-Solutions AG
+  ip: 91.206.52.13
+- asn: 41872
+  description: GIB-Solutions AG
+  ip: 2001:7f8:24::d
+- asn: 41913
+  description: Computerline GmbH
+  ip: 91.206.52.91
+- asn: 41913
+  description: Computerline GmbH
+  ip: 2001:7f8:24::5b
+- asn: 42085
+  description: Telconet AG
+  ip: 91.206.52.104
+- asn: 42085
+  description: Telconet AG
+  ip: 2001:7f8:24::68
+- asn: 42346
+  description: EBM Telecom AG
+  ip: 91.206.52.146
+- asn: 42346
+  description: EBM Telecom AG
+  ip: 2001:7f8:24::92
+- asn: 42473
+  description: ANEXIA Internetdienstleistungs GmbH
+  ip: 91.206.52.5
+- asn: 42473
+  description: ANEXIA Internetdienstleistungs GmbH
+  ip: 2001:7f8:24::5
+- asn: 42476
+  description: SwissIX Route Server
+  ip: 91.206.52.251
+- asn: 42476
+  description: SwissIX Route Server
+  ip: 2001:7f8:24::fb
+- asn: 42476
+  description: SwissIX Route Server
+  ip: 91.206.52.252
+- asn: 42476
+  description: SwissIX Route Server
+  ip: 2001:7f8:24::fc
+- asn: 42476
+  description: SwissIX Route Server
+  ip: 91.206.53.251
+- asn: 42476
+  description: SwissIX Route Server
+  ip: 2001:7f8:24::1fb
+- asn: 42476
+  description: SwissIX Route Server
+  ip: 91.206.53.252
+- asn: 42476
+  description: SwissIX Route Server
+  ip: 2001:7f8:24::1fc
+- asn: 42760
+  description: Abacus Research AG
+  ip: 91.206.52.120
+- asn: 42760
+  description: Abacus Research AG
+  ip: 2001:7f8:24::78
+- asn: 42909
+  description: Community DNS Ltd.
+  ip: 91.206.52.87
+- asn: 42909
+  description: Community DNS Ltd.
+  ip: 2001:7f8:24::57
+- asn: 43284
+  description: IWB
+  ip: 91.206.52.136
+- asn: 43284
+  description: IWB
+  ip: 2001:7f8:24::88
+- asn: 43284
+  description: IWB
+  ip: 91.206.52.70
+- asn: 43284
+  description: IWB
+  ip: 2001:7f8:24::46
+- asn: 43531
+  description: Console, Inc.
+  ip: 91.206.52.73
+- asn: 43531
+  description: Console, Inc.
+  ip: 2001:7f8:24::49
+- asn: 44160
+  description: Internet ONE SRL
+  ip: 91.206.52.115
+- asn: 44160
+  description: Internet ONE SRL
+  ip: 2001:7f8:24::73
+- asn: 44444
+  description: Forcepoint Cloud Ltd.
+  ip: 91.206.52.215
+- asn: 44444
+  description: Forcepoint Cloud Ltd.
+  ip: 2001:7f8:24::d7
+- asn: 44635
+  description: Comparis.ch AG
+  ip: 91.206.52.112
+- asn: 44635
+  description: Comparis.ch AG
+  ip: 2001:7f8:24::70
+- asn: 47176
+  description: Gas & Com AG
+  ip: 91.206.52.39
+- asn: 47176
+  description: Gas & Com AG
+  ip: 2001:7f8:24::27
+- asn: 47302
+  description: Cyon GmbH
+  ip: 91.206.52.114
+- asn: 47302
+  description: Cyon GmbH
+  ip: 2001:7f8:24::72
+- asn: 47337
+  description: Uplink AG / bloosite AG
+  ip: 91.206.52.151
+- asn: 47337
+  description: Uplink AG / bloosite AG
+  ip: 2001:7f8:24::97
+- asn: 47617
+  description: Wagner AG
+  ip: 91.206.52.147
+- asn: 47617
+  description: Wagner AG
+  ip: 2001:7f8:24::93
+- asn: 47692
+  description: Nessus GmbH
+  ip: 91.206.52.140
+- asn: 47692
+  description: Nessus GmbH
+  ip: 2001:7f8:24::8c
+- asn: 48027
+  description: Sitrox AG
+  ip: 91.206.52.160
+- asn: 48027
+  description: Sitrox AG
+  ip: 2001:7f8:24::a0
+- asn: 48362
+  description: Stadtwerke Feldkirch
+  ip: 91.206.52.40
+- asn: 48362
+  description: Stadtwerke Feldkirch
+  ip: 2001:7f8:24::28
+- asn: 48461
+  description: stepping stone GmbH
+  ip: 91.206.52.31
+- asn: 48461
+  description: stepping stone GmbH
+  ip: 2001:7f8:24::1f
+- asn: 48885
+  description: Neocarrier Communications Ltd.
+  ip: 91.206.52.165
+- asn: 48885
+  description: Neocarrier Communications Ltd.
+  ip: 2001:7f8:24::a5
+- asn: 48971
+  description: Datawire AG
+  ip: 91.206.52.193
+- asn: 48971
+  description: Datawire AG
+  ip: 2001:7f8:24::c1
+- asn: 48983
+  description: Weblink GmbH
+  ip: 91.206.52.162
+- asn: 48983
+  description: Weblink GmbH
+  ip: 2001:7f8:24::a2
+- asn: 49071
+  description: Swiss TXT AG
+  ip: 91.206.52.124
+- asn: 49071
+  description: Swiss TXT AG
+  ip: 2001:7f8:24::7c
+- asn: 49071
+  description: Swiss TXT AG
+  ip: 91.206.52.195
+- asn: 49071
+  description: Swiss TXT AG
+  ip: 2001:7f8:24::c3
+- asn: 49237
+  description: Dreamlab Technologies AG
+  ip: 91.206.52.164
+- asn: 49237
+  description: Dreamlab Technologies AG
+  ip: 2001:7f8:24::a4
+- asn: 49489
+  description: ClearMedia GmbH
+  ip: 91.206.52.167
+- asn: 49489
+  description: ClearMedia GmbH
+  ip: 2001:7f8:24::a7
+- asn: 49605
+  description: Digital Telecommunication Services S.r.l.
+  ip: 91.206.52.102
+- asn: 49605
+  description: Digital Telecommunication Services S.r.l.
+  ip: 2001:7f8:24::66
+- asn: 49867
+  description: X-NetConsulting GmbH
+  ip: 91.206.52.174
+- asn: 49867
+  description: X-NetConsulting GmbH
+  ip: 2001:7f8:24::ae
+- asn: 49983
+  description: Mironet AG
+  ip: 91.206.52.179
+- asn: 49983
+  description: Mironet AG
+  ip: 2001:7f8:24::b3
+- asn: 50837
+  description: CloudSigma AG
+  ip: 91.206.52.118
+- asn: 50837
+  description: CloudSigma AG
+  ip: 2001:7f8:24::76
+- asn: 51262
+  description: Internet Group GmbH
+  ip: 91.206.52.154
+- asn: 51262
+  description: Internet Group GmbH
+  ip: 2001:7f8:24::9a
+- asn: 51395
+  description: SOFTplus Entwicklungen GmbH
+  ip: 91.206.52.65
+- asn: 51395
+  description: SOFTplus Entwicklungen GmbH
+  ip: 2001:7f8:24::41
+- asn: 51768
+  description: Schweizerische Depeschenagentur AG
+  ip: 91.206.52.194
+- asn: 51768
+  description: Schweizerische Depeschenagentur AG
+  ip: 2001:7f8:24::c2
+- asn: 51852
+  description: Private Layer Inc.
+  ip: 91.206.52.188
+- asn: 51852
+  description: Private Layer Inc.
+  ip: 2001:7f8:24::bc
+- asn: 51873
+  description: Arcade Solutions AG
+  ip: 91.206.52.197
+- asn: 51873
+  description: Arcade Solutions AG
+  ip: 2001:7f8:24::c5
+- asn: 57118
+  description: CommunityRack.org
+  ip: 91.206.52.101
+- asn: 57118
+  description: CommunityRack.org
+  ip: 2001:7f8:24::65
+- asn: 57633
+  description: e-tera
+  ip: 91.206.52.201
+- asn: 57633
+  description: e-tera
+  ip: 2001:7f8:24::c9
+- asn: 58299
+  description: Openfactory GmbH
+  ip: 91.206.52.130
+- asn: 58299
+  description: Openfactory GmbH
+  ip: 2001:7f8:24::82
+- asn: 59414
+  description: cloudscale.ch AG
+  ip: 91.206.52.90
+- asn: 59414
+  description: cloudscale.ch AG
+  ip: 2001:7f8:24::5a
+- asn: 59622
+  description: tv factory AG
+  ip: 91.206.52.185
+- asn: 59622
+  description: tv factory AG
+  ip: 2001:7f8:24::b9
+- asn: 59758
+  description: VSHN AG
+  ip: 91.206.52.99
+- asn: 59758
+  description: VSHN AG
+  ip: 2001:7f8:24::63
+- asn: 59761
+  description: VSHN AG
+  ip: 91.206.52.98
+- asn: 59761
+  description: VSHN AG
+  ip: 2001:7f8:24::62
+- asn: 59824
+  description: Nashire AG
+  ip: 91.206.52.92
+- asn: 59824
+  description: Nashire AG
+  ip: 2001:7f8:24::5c
+- asn: 59890
+  description: Kabel-TV Lampert GmbH & CoKG
+  ip: 91.206.52.38
+- asn: 59890
+  description: Kabel-TV Lampert GmbH & CoKG
+  ip: 2001:7f8:24::26
+- asn: 59891
+  description: FSIT AG
+  ip: 91.206.52.141
+- asn: 59891
+  description: FSIT AG
+  ip: 2001:7f8:24::8d
+- asn: 59905
+  description: NTH AG
+  ip: 91.206.52.79
+- asn: 59905
+  description: NTH AG
+  ip: 2001:7f8:24::4f
+- asn: 60390
+  description: Orell F?ssli Dienstleistungs AG
+  ip: 91.206.52.41
+- asn: 60390
+  description: Orell F?ssli Dienstleistungs AG
+  ip: 2001:7f8:24::29
+- asn: 60486
+  description: Swiss Networking Solutions AG
+  ip: 91.206.52.122
+- asn: 60486
+  description: Swiss Networking Solutions AG
+  ip: 2001:7f8:24::7a
+- asn: 60804
+  description: Swiss Network SA
+  ip: 91.206.52.88
+- asn: 60804
+  description: Swiss Network SA
+  ip: 2001:7f8:24::58
+- asn: 61287
+  description: WLAN-Partner.com AG
+  ip: 91.206.52.211
+- asn: 61287
+  description: WLAN-Partner.com AG
+  ip: 2001:7f8:24::d3
+- asn: 61287
+  description: WLAN-Partner.com AG
+  ip: 91.206.52.210
+- asn: 61287
+  description: WLAN-Partner.com AG
+  ip: 2001:7f8:24::d2
+- asn: 62035
+  description: Byteworks GmbH
+  ip: 91.206.52.36
+- asn: 62035
+  description: Byteworks GmbH
+  ip: 2001:7f8:24::24
+- asn: 62512
+  description: Sandwich.Net, LLC
+  ip: 91.206.52.214
+- asn: 62512
+  description: Sandwich.Net, LLC
+  ip: 2001:7f8:24::d6
+- asn: 64396
+  description: Securosys SA
+  ip: 91.206.52.105
+- asn: 64396
+  description: Securosys SA
+  ip: 2001:7f8:24::69
+- asn: 64396
+  description: Securosys SA
+  ip: 91.206.52.50
+- asn: 64396
+  description: Securosys SA
+  ip: 2001:7f8:24::32
+- asn: 64463
+  description: Premium Routing GmbH
+  ip: 91.206.52.180
+- asn: 64463
+  description: Premium Routing GmbH
+  ip: 2001:7f8:24::b4
+- asn: 196621
+  description: FreeStone Systems
+  ip: 91.206.52.103
+- asn: 196621
+  description: FreeStone Systems
+  ip: 2001:7f8:24::67
+- asn: 197439
+  description: Sylon Hosting GmbH
+  ip: 91.206.52.187
+- asn: 197439
+  description: Sylon Hosting GmbH
+  ip: 2001:7f8:24::bb
+- asn: 198249
+  description: snowflake Ops AG
+  ip: 91.206.52.199
+- asn: 198249
+  description: snowflake Ops AG
+  ip: 2001:7f8:24::c7
+- asn: 198288
+  description: Newsnet AG
+  ip: 91.206.52.135
+- asn: 198288
+  description: Newsnet AG
+  ip: 2001:7f8:24::87
+- asn: 198385
+  description: AlpineDC SA
+  ip: 91.206.52.109
+- asn: 198385
+  description: AlpineDC SA
+  ip: 2001:7f8:24::6d
+- asn: 198738
+  description: CipherSpace GmbH
+  ip: 91.206.52.45
+- asn: 198738
+  description: CipherSpace GmbH
+  ip: 2001:7f8:24::2d
+- asn: 199403
+  description: Dr. B?hler Dropa AG
+  ip: 91.206.52.16
+- asn: 199403
+  description: Dr. B?hler Dropa AG
+  ip: 2001:7f8:24::10
+- asn: 199811
+  description: Wifx Sarl
+  ip: 91.206.52.218
+- asn: 199811
+  description: Wifx Sarl
+  ip: 2001:7f8:24::da
+- asn: 200759
+  description: innofield AG
+  ip: 91.206.52.169
+- asn: 200759
+  description: innofield AG
+  ip: 2001:7f8:24::a9
+- asn: 200924
+  description: Stiegeler Internet Service GmbH
+  ip: 91.206.52.111
+- asn: 200924
+  description: Stiegeler Internet Service GmbH
+  ip: 2001:7f8:24::6f
+- asn: 201505
+  description: tutti.ch AG
+  ip: 91.206.52.97
+- asn: 201505
+  description: tutti.ch AG
+  ip: 2001:7f8:24::61
+- asn: 202032
+  description: GOLINE SA
+  ip: 91.206.52.216
+- asn: 202032
+  description: GOLINE SA
+  ip: 2001:7f8:24::d8
+- asn: 202194
+  description: EDSI-Tech Sarl
+  ip: 91.206.52.60
+- asn: 202194
+  description: EDSI-Tech Sarl
+  ip: 2001:7f8:24::3c
+- asn: 202771
+  description: Codenmore Ltd.
+  ip: 91.206.52.145
+- asn: 202771
+  description: Codenmore Ltd.
+  ip: 2001:7f8:24::91
+- asn: 203340
+  description: Nine Internet Solutions AG
+  ip: 91.206.52.134
+- asn: 203340
+  description: Nine Internet Solutions AG
+  ip: 2001:7f8:24::86
+- asn: 203969
+  description: YMC AG
+  ip: 91.206.52.106
+- asn: 203969
+  description: YMC AG
+  ip: 2001:7f8:24::6a
+- asn: 204178
+  description: Winet Network Solutions AG
+  ip: 91.206.52.212
+- asn: 204178
+  description: Winet Network Solutions AG
+  ip: 2001:7f8:24::d4

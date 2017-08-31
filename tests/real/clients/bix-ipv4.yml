@@ -1,0 +1,244 @@
+# Data fetched from http://admin.bix.hu/ixfexport.php at 2017-08-30T16:21:06.974640 UTC
+# IXP ID: 1
+# VLAN ID: 1
+clients:
+- asn: 8990
+  description: Antenna Hung?ria
+  ip: 193.188.137.39
+- asn: 8990
+  description: Antenna Hung?ria
+  ip: 193.188.137.168
+- asn: 8990
+  description: Antenna Hung?ria
+  ip: 193.188.137.170
+- asn: 3244
+  description: 3C Telecom
+  ip: 193.188.137.18
+- asn: 3244
+  description: 3C Telecom
+  ip: 193.188.137.35
+- asn: 5400
+  description: British Telecom
+  ip: 193.188.137.53
+- asn: 15467
+  description: Enternet
+  ip: 193.188.137.63
+- asn: 12594
+  description: Externet
+  ip: 193.188.137.43
+- asn: 1955
+  description: Hungarnet
+  ip: 193.188.137.13
+- asn: 1955
+  description: Hungarnet
+  ip: 193.188.137.89
+- asn: 5483
+  description: Magyar Telekom
+  ip: 193.188.137.139
+- asn: 5483
+  description: Magyar Telekom
+  ip: 193.188.137.12
+- asn: 20523
+  description: Novotron
+  ip: 193.188.137.69
+- asn: 6830
+  description: Liberty Global
+  ip: 193.188.137.125
+- asn: 6830
+  description: Liberty Global
+  ip: 193.188.137.126
+- asn: 12301
+  description: Invitech
+  ip: 193.188.137.42
+- asn: 12301
+  description: Invitech
+  ip: 193.188.137.167
+- asn: 8448
+  description: Telenor
+  ip: 193.188.137.47
+- asn: 8448
+  description: Telenor
+  ip: 193.188.137.95
+- asn: 21229
+  description: Dr?vanet
+  ip: 193.188.137.77
+- asn: 12303
+  description: ISZT
+  ip: 193.188.137.9
+- asn: 12303
+  description: ISZT
+  ip: 193.188.137.7
+- asn: 8708
+  description: Romania Data Systems
+  ip: 193.188.137.74
+- asn: 21334
+  description: Vodafone
+  ip: 193.188.137.79
+- asn: 21334
+  description: Vodafone
+  ip: 193.188.137.84
+- asn: 15566
+  description: Infotechna Ltd.
+  ip: 193.188.137.87
+- asn: 20882
+  description: Inform Media
+  ip: 193.188.137.88
+- asn: 3340
+  description: GTS Hungary
+  ip: 193.188.137.25
+- asn: 3340
+  description: GTS Hungary
+  ip: 193.188.137.40
+- asn: 24822
+  description: Opticon
+  ip: 193.188.137.91
+- asn: 20845
+  description: DIGI
+  ip: 193.188.137.96
+- asn: 29278
+  description: Deninet
+  ip: 193.188.137.121
+- asn: 29278
+  description: Deninet
+  ip: 193.188.137.122
+- asn: 47381
+  description: DoclerNet Hosting
+  ip: 193.188.137.124
+- asn: 47381
+  description: DoclerNet Hosting
+  ip: 193.188.137.134
+- asn: 35311
+  description: PR-Telecom
+  ip: 193.188.137.135
+- asn: 8462
+  description: Tarr
+  ip: 193.188.137.173
+- asn: 8462
+  description: Tarr
+  ip: 193.188.137.172
+- asn: 24806
+  description: Internet CZ
+  ip: 193.188.137.140
+- asn: 8928
+  description: Interoute
+  ip: 193.188.137.127
+- asn: 42864
+  description: Giganet
+  ip: 193.188.137.141
+- asn: 43928
+  description: MVM Informatika
+  ip: 193.188.137.144
+- asn: 43928
+  description: MVM Informatika
+  ip: 193.188.137.143
+- asn: 44302
+  description: NETregator
+  ip: 193.188.137.145
+- asn: 47116
+  description: IntelliHome
+  ip: 193.188.137.147
+- asn: 35263
+  description: RS-COM
+  ip: 193.188.137.148
+- asn: 9050
+  description: Romtelecom
+  ip: 193.188.137.149
+- asn: 47169
+  description: MVMnet
+  ip: 193.188.137.154
+- asn: 47169
+  description: MVMnet
+  ip: 193.188.137.165
+- asn: 47169
+  description: MVMnet
+  ip: 193.188.137.164
+- asn: 16265
+  description: Leaseweb Network
+  ip: 193.188.137.151
+- asn: 9002
+  description: RETN
+  ip: 193.188.137.153
+- asn: 50031
+  description: Zalasz?m
+  ip: 193.188.137.156
+- asn: 50261
+  description: ACE Telecom
+  ip: 193.188.137.157
+- asn: 50261
+  description: ACE Telecom
+  ip: 193.188.137.158
+- asn: 12310
+  description: iNES Group
+  ip: 193.188.137.159
+- asn: 5580
+  description: Hibernia Networks (GTT Comm)
+  ip: 193.188.137.162
+- asn: 15169
+  description: Google
+  ip: 193.188.137.163
+- asn: 6663
+  description: T?rk Telekom International
+  ip: 193.188.137.20
+- asn: 59649
+  description: NMHH
+  ip: 193.188.137.166
+- asn: 59649
+  description: NMHH
+  ip: 193.188.137.174
+- asn: 6939
+  description: Hurricane Electric
+  ip: 193.188.137.175
+- asn: 29834
+  description: Ustream
+  ip: 193.188.137.155
+- asn: 9009
+  description: M247 Networks
+  ip: 193.188.137.176
+- asn: 62214
+  description: RackForest
+  ip: 193.188.137.46
+- asn: 62214
+  description: RackForest
+  ip: 193.188.137.45
+- asn: 62292
+  description: EZIT
+  ip: 193.188.137.61
+- asn: 62292
+  description: EZIT
+  ip: 193.188.137.60
+- asn: 8075
+  description: Microsoft
+  ip: 193.188.137.21
+- asn: 9146
+  description: BH Telecom
+  ip: 193.188.137.22
+- asn: 41627
+  description: PickUp
+  ip: 193.188.137.161
+- asn: 60673
+  description: ActivCom
+  ip: 193.188.137.23
+- asn: 57389
+  description: ZNET Telekom
+  ip: 193.188.137.44
+- asn: 29405
+  description: VNET
+  ip: 193.188.137.24
+- asn: 31042
+  description: Serbia BroadBand
+  ip: 193.188.137.26
+- asn: 30836
+  description: 23VNet
+  ip: 193.188.137.62
+- asn: 3216
+  description: VimpelCom
+  ip: 193.188.137.28
+- asn: 13335
+  description: Cloudflare
+  ip: 193.188.137.27
+- asn: 42624
+  description: Simple Carrier
+  ip: 193.188.137.29
+- asn: 20510
+  description: Nexum
+  ip: 193.188.137.32

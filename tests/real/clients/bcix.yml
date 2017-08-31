@@ -1,0 +1,1278 @@
+# Data fetched from https://www.bcix.de/ixp/api/v4/member-export/ixf/0.6 at 2017-08-30T16:21:06.065496 UTC
+# IXP ID: 1
+# VLAN ID: 1
+clients:
+- asn: 42
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+  ip: 193.178.185.27
+- asn: 42
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+  ip: 2001:7F8:19:1::2a:1
+- asn: 112
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS112
+  ip: 193.178.185.112
+- asn: 112
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS112
+  ip: 2001:7f8:19:1::70:1
+- asn: 250
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS250:AS-CUMULATIVE
+  ip: 193.178.185.23
+- asn: 250
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS250:AS-CUMULATIVE
+  ip: 2001:7F8:19:1::fa:1
+- asn: 286
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-KPN
+  ip: 193.178.185.65
+- asn: 286
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-KPN
+  ip: 2001:7f8:19:1::11e:1
+- asn: 680
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-DFNTOWINISP
+  ip: 193.178.185.42
+- asn: 680
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-DFNTOWINISP
+  ip: 2001:7f8:19:1::2a8:1
+- asn: 1547
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IDK
+  ip: 193.178.185.62
+- asn: 2906
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NFLX
+  ip: 193.178.185.80
+- asn: 2906
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NFLX
+  ip: 2001:7f8:19:1::b5a:1
+- asn: 2906
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NFLX
+  ip: 193.178.185.81
+- asn: 2906
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NFLX
+  ip: 2001:7f8:19:1::b5a:2
+- asn: 3216
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SOVAM
+  ip: 193.178.185.53
+- asn: 3216
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SOVAM-v6
+  ip: 2001:7f8:19:1::c90:1
+- asn: 3856
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+  ip: 193.178.185.28
+- asn: 3856
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+  ip: 2001:7F8:19:1::f10:1
+- asn: 6724
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-STRATORZ
+  ip: 193.178.185.54
+- asn: 6724
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-STRATORZ
+  ip: 2001:7f8:19:1::1a44:1
+- asn: 6805
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TDDE
+  ip: 193.178.185.108
+- asn: 6805
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TDDE
+  ip: 2001:7f8:19:1::1a95:1
+- asn: 6805
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TDDE
+  ip: 193.178.185.101
+- asn: 6805
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TDDE
+  ip: 2001:7F8:19:1::1a95:2
+- asn: 6939
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-HURRICANE
+  ip: 193.178.185.34
+- asn: 6939
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-HURRICANEv6
+  ip: 2001:7F8:19:1::1b1b:1
+- asn: 7713
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TELKOM-TRANSIT
+  ip: 193.178.185.3
+- asn: 7713
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TELKOM-TRANSIT
+  ip: 2001:7F8:19:1::1E21:1
+- asn: 8075
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MICROSOFT
+  ip: 193.178.185.84
+- asn: 8075
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MICROSOFT
+  ip: 2001:7F8:19:1::1F8B:1
+- asn: 8075
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MICROSOFT
+  ip: 193.178.185.104
+- asn: 8075
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MICROSOFT
+  ip: 2001:7F8:19:1::1F8B:2
+- asn: 8220
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-COLT
+  ip: 193.178.185.56
+- asn: 8220
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-COLT
+  ip: 2001:7f8:19:1::201c:1
+- asn: 8881
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VT-TRANSIT
+  ip: 193.178.185.15
+- asn: 8881
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VT-TRANSIT
+  ip: 2001:7F8:19:1::22b1:15
+- asn: 8928
+#  cfg:
+#    filtering:
+#      irrdb:
+#        as_sets:
+#        - RS-INTEROUTE
+  ip: 193.178.185.32
+- asn: 8928
+#  cfg:
+#    filtering:
+#      irrdb:
+#        as_sets:
+#        - RS-INTEROUTE
+  ip: 2001:7F8:19:1::22e0:1
+- asn: 9002
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-RETN
+  ip: 193.178.185.64
+- asn: 9002
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-RETN6
+  ip: 2001:7f8:19:1::232a:1
+- asn: 12337
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NORIS
+  ip: 193.178.185.76
+- asn: 12337
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NORIS
+  ip: 2001:7F8:19:1::3031:1
+- asn: 12512
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CBXNET
+  ip: 193.178.185.61
+- asn: 12693
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EDISCOM
+  ip: 193.178.185.20
+- asn: 12693
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EDISCOM
+  ip: 2001:7F8:19:1::3195:1
+- asn: 12732
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ALL
+  ip: 193.178.185.1
+- asn: 12732
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ALL
+  ip: 2001:7f8:19:1::31bc:1
+- asn: 12732
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ALL
+  ip: 193.178.185.97
+- asn: 12732
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ALL
+  ip: 2001:7f8:19:1::31bc:3
+- asn: 12732
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ALL
+  ip: 193.178.185.2
+- asn: 12732
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ALL
+  ip: 2001:7f8:19:1::31bc:2
+- asn: 12741
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NETIA
+  ip: 193.178.185.46
+- asn: 12741
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NETIA
+  ip: 2001:7f8:19:1::31c5:1
+- asn: 13030
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-INIT7
+  ip: 193.178.185.92
+- asn: 13030
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-INIT7
+  ip: 2001:7F8:19:1::32E6:1
+- asn: 13237
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LAMBDANET
+  ip: 193.178.185.39
+- asn: 13237
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LAMBDANET
+  ip: 2001:7F8:19:1::33b5:1
+- asn: 13335
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS13335
+  ip: 193.178.185.17
+- asn: 13335
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS13335
+  ip: 2001:7f8:19:1::3417:1
+- asn: 15169
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GOOGLE
+  ip: 193.178.185.100
+- asn: 15169
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GOOGLE
+  ip: 2001:7F8:19:1::3b41:1
+- asn: 15366
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-DNSNET
+  ip: 193.178.185.16
+- asn: 16075
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TAZ
+  ip: 193.178.185.91
+- asn: 16075
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TAZ
+  ip: 2001:7F8:19:1::3ECB:1
+- asn: 16097
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-HLKOMM
+  ip: 193.178.185.41
+- asn: 16097
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-HLKOMM
+  ip: 2001:7F8:19:1::3ee1:1
+- asn: 16374
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BCIX
+  ip: 193.178.185.6
+- asn: 16374
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BCIX
+  ip: 2001:7F8:19:1::3ff6:6
+- asn: 16374
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BCIX
+  ip: 193.178.185.5
+- asn: 16374
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BCIX
+  ip: 2001:7F8:19:1::3ff6:5
+- asn: 16509
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - as-amazon
+  ip: 193.178.185.95
+- asn: 16509
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - as-amazon
+  ip: 2001:7f8:19:1::407d:1
+- asn: 20647
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IPB
+  ip: 193.178.185.59
+- asn: 20647
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IPB
+  ip: 2001:7f8:19:1::50a7:1
+- asn: 20676
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-QSC
+  ip: 193.178.185.60
+- asn: 20676
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-QSC
+  ip: 2001:7f8:19:1::50c4:1
+- asn: 20880
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS20880
+  ip: 193.178.185.29
+- asn: 20880
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS20880
+  ip: 2001:7F8:19:1::5190:1
+- asn: 20880
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS20880
+  ip: 193.178.185.58
+- asn: 20880
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS20880
+  ip: 2001:7f8:19:1::5190:2
+- asn: 20940
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AKAMAI
+  ip: 193.178.185.22
+- asn: 20940
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AKAMAI
+  ip: 2001:7F8:19:1::51cc:1
+- asn: 22822
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LLNW
+  ip: 193.178.185.40
+- asn: 22822
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LLNW
+  ip: 2001:7f8:19:1::5926:1
+- asn: 24482
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SGGS
+  ip: 193.178.185.18
+- asn: 24482
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SGGS
+  ip: 2001:7f8:19:1::5fa2:1
+- asn: 24993
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS24993
+  ip: 193.178.185.75
+- asn: 24993
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS24993
+  ip: 2001:7F8:19:1::61a1:1
+- asn: 25220
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GLOBALNOC
+  ip: 193.178.185.90
+- asn: 25220
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GLOBALNOC
+  ip: 2001:7F8:19:1::6284:1
+- asn: 25291
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SYSELEVEN
+  ip: 193.178.185.48
+- asn: 25291
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SYSELEVEN
+  ip: 2001:7f8:19:1::62cb:2
+- asn: 25516
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS25516
+  ip: 193.178.185.99
+- asn: 25516
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS25516
+  ip: 193.178.185.98
+- asn: 25516
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS25516
+  ip: 2001:7f8:19:1::63ac:2
+- asn: 29014
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SCALEUP
+  ip: 193.178.185.69
+- asn: 29014
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SCALEUP
+  ip: 2001:7f8:19:1::7156:1
+- asn: 29551
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-HGC
+  ip: 193.178.185.55
+- asn: 29551
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-HGC
+  ip: 2001:7f8:19:1::736f:1
+- asn: 29670
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IN-BERLIN
+  ip: 193.178.185.50
+- asn: 29670
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IN-BERLIN
+  ip: 2001:7f8:19:1::73e6:1
+- asn: 29670
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IN-BERLIN
+  ip: 193.178.185.51
+- asn: 29670
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IN-BERLIN
+  ip: 2001:7f8:19:1::73e6:2
+- asn: 31334
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-KDG
+  ip: 193.178.185.36
+- asn: 31334
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-KDG
+  ip: 2001:7F8:19:1::7a66:1
+- asn: 31474
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS31474
+  ip: 193.178.185.25
+- asn: 31529
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-DENIC-ANY
+  ip: 193.178.185.66
+- asn: 31529
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-DENIC-ANY
+  ip: 2001:7F8:19:1::7b29:1
+- asn: 33811
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PIXEL-UP
+  ip: 193.178.185.73
+- asn: 33811
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PIXEL-UP
+  ip: 193.178.185.71
+- asn: 33891
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CORE-BACKBONE
+  ip: 193.178.185.44
+- asn: 33891
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CORE-BACKBONE
+  ip: 2001:7f8:19:1::8463:1
+- asn: 35205
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-RFT
+  ip: 193.178.185.67
+- asn: 35205
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-RFT
+  ip: 2001:7f8:19:1::8985:1
+- asn: 35366
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ISPPRO
+  ip: 193.178.185.35
+- asn: 35366
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ISPPRO
+  ip: 2001:7f8:19:1::8a26:1
+- asn: 35833
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MPEXNETWORKS
+  ip: 193.178.185.77
+- asn: 35833
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MPEXNETWORKS
+  ip: 2001:7F8:19:1::8bf9:1
+- asn: 35833
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MPEXNETWORKS
+  ip: 193.178.185.78
+- asn: 35833
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MPEXNETWORKS
+  ip: 2001:7F8:19:1::8bf9:2
+- asn: 36692
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-OPENDNS
+  ip: 193.178.185.88
+- asn: 36692
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-OPENDNS
+  ip: 2001:7f8:19:1::8f54:1
+- asn: 39373
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IMMOBILIENSCOUT
+  ip: 193.178.185.70
+- asn: 39373
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IMMOBILIENSCOUT
+  ip: 2001:7f8:19:1::99cd:1
+- asn: 43341
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MDLINK
+  ip: 193.178.185.31
+- asn: 43341
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MDLINK
+  ip: 2001:7f8:19:1::a94d:1
+- asn: 43503
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS43503
+  ip: 193.178.185.21
+- asn: 43503
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS43503
+  ip: 2001:7f8:19:1::a9ef:2
+- asn: 43503
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS43503
+  ip: 193.178.185.63
+- asn: 43503
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS43503
+  ip: 2001:7f8:19:1::a9ef:1
+- asn: 43531
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IXREACH
+  ip: 193.178.185.79
+- asn: 43531
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IXREACH
+  ip: 2001:7f8:19:1::aa0b:1
+- asn: 44050
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PIN-BCIX
+  ip: 193.178.185.83
+- asn: 44050
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PIN-BCIX
+  ip: 2001:7f8:19:1::AC12:1
+- asn: 44194
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FREIFUNK-BERLIN
+  ip: 193.178.185.82
+- asn: 44194
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FREIFUNK-BERLIN
+  ip: 2001:7f8:19:1::aca2:2
+- asn: 48145
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS48145
+  ip: 193.178.185.102
+- asn: 48145
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS48145
+  ip: 2001:7F8:19:1::BC11:1
+- asn: 48145
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS48145
+  ip: 193.178.185.103
+- asn: 48145
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS48145
+  ip: 2001:7F8:19:1::BC11:2
+- asn: 48173
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-UNBELIEVABLE
+  ip: 193.178.185.33
+- asn: 48173
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-UNBELIEVABLE
+  ip: 2001:7F8:19:1::bc2d:1
+- asn: 48519
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS48519
+  ip: 193.178.185.57
+- asn: 48519
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS48519
+  ip: 2001:7f8:19:1::bd87:1
+- asn: 49492
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS49492
+  ip: 193.178.185.49
+- asn: 49492
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS49492
+  ip: 2001:7f8:19:1::c154:1
+- asn: 50324
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS50324
+  ip: 193.178.185.45
+- asn: 50324
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS50324
+  ip: 2001:7F8:19:1::c494:1
+- asn: 50372
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PLANETARY
+  ip: 193.178.185.47
+- asn: 50372
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PLANETARY
+  ip: 2001:7F8:19:1::c4c4:1
+- asn: 50472
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CHAOS
+  ip: 193.178.185.105
+- asn: 50472
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CHAOS
+  ip: 2001:7f8:19:1::c528:1
+- asn: 50575
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS50575
+  ip: 193.178.185.43
+- asn: 50629
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LWL
+  ip: 193.178.185.11
+- asn: 50629
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LWL
+  ip: 2001:7F8:19:1::C5C5:1
+- asn: 50933
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS50933
+  ip: 193.178.185.37
+- asn: 50933
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS50933
+  ip: 2001:7F8:19:1::c6f5:1
+- asn: 51224
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS51224
+  ip: 193.178.185.26
+- asn: 51224
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS51224
+  ip: 2001:7f8:19:1::c818:1
+- asn: 51324
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EXARING
+  ip: 193.178.185.96
+- asn: 51324
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EXARING
+  ip: 2001:7F8:19:1::C87C:1
+- asn: 51922
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS51922
+  ip: 193.178.185.38
+- asn: 51922
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS51922
+  ip: 2001:7f8:19:1::cad2:1
+- asn: 58243
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TELEAG
+  ip: 193.178.185.93
+- asn: 58243
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TELEAG
+  ip: 2001:7F8:19:1::e383:1
+- asn: 60868
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS60868
+  ip: 193.178.185.52
+- asn: 60868
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS60868
+  ip: 2001:7f8:19:1::edc4:1
+- asn: 62193
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BER
+  ip: 193.178.185.14
+- asn: 62193
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BER
+  ip: 2001:7f8:19:1::f2f1:1
+- asn: 62310
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BX-MH
+  ip: 193.178.185.68
+- asn: 62310
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BX-MH
+  ip: 2001:7f8:19:1::f366:1
+- asn: 199118
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS199118
+  ip: 193.178.185.86
+- asn: 199118
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS199118
+  ip: 2001:7f8:19:1::3:09ce:1
+- asn: 199118
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS199118
+  ip: 193.178.185.87
+- asn: 199118
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS199118
+  ip: 2001:7f8:19:1::3:09ce:2
+- asn: 199645
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS199645
+  ip: 193.178.185.94
+- asn: 199645
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS199645
+  ip: 2001:7F8:19:1::3:0bdd:1
+- asn: 200921
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS200921
+  ip: 193.178.185.89
+- asn: 200921
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS200921
+  ip: 2001:7f8:19:1::3:10d9:1
+- asn: 201701
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FFRL
+  ip: 193.178.185.74
+- asn: 201701
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FFRL
+  ip: 2001:7f8:19:1::3:13e5:1

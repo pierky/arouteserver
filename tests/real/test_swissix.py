@@ -13,11 +13,24 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import TestRealConfigs_IXP
+from base import *
 
 
-class TestRealConfigs_SwissIX(TestRealConfigs_IXP):
-    __test__ = True
+class TestRealConfigs_SwissIX(object):
 
     IXP = "SwissIX"
     CLIENTS_FILE = "swissix.yml"
+
+class TestRealConfigs_SwissIX_BIRD(TestRealConfigs_SwissIX,
+                                   TestRealConfigs_BIRD):
+    __test__ = True
+
+class TestRealConfigs_SwissIX_OpenBGPD60(TestRealConfigs_SwissIX,
+                                         TestRealConfigs_OpenBGPD60):
+    __test__ = True
+
+class TestRealConfigs_SwissIX_OpenBGPD61(TestRealConfigs_SwissIX,
+                                         TestRealConfigs_OpenBGPD61):
+    __test__ = True
+
+    SKIP_LOAD_NO_RESOURCES = True

@@ -13,11 +13,24 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import TestRealConfigs_IXP
+from base import *
 
 
-class TestRealConfigs_SIX(TestRealConfigs_IXP):
-    __test__ = True
+class TestRealConfigs_SIX(object):
 
     IXP = "SIX"
     CLIENTS_FILE = "six.yml"
+
+class TestRealConfigs_SIX_BIRD(TestRealConfigs_SIX,
+                               TestRealConfigs_BIRD):
+    __test__ = True
+
+class TestRealConfigs_SIX_OpenBGPD60(TestRealConfigs_SIX,
+                                     TestRealConfigs_OpenBGPD60):
+    __test__ = True
+
+class TestRealConfigs_SIX_OpenBGPD61(TestRealConfigs_SIX,
+                                     TestRealConfigs_OpenBGPD61):
+    __test__ = True
+
+    SKIP_LOAD_NO_RESOURCES = True

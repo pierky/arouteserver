@@ -18,6 +18,7 @@ import logging
 from logging.config import fileConfig
 import os
 import subprocess
+import time
 import unittest
 
 from pierky.arouteserver.tests.base import ARouteServerTestCase
@@ -36,16 +37,12 @@ class TestRealConfigs(ARouteServerTestCase):
     # Set to True for those tests that don't run locally on my machine,
     # because of lack of resources!!! If True, the REMOTE_IP env var is
     # used to get the IP address of a remote host where OpenBGPD is
-    # running; if the REMOTE_IP env var is not found, then the file at
-    # ~/ars_remote_ip is used to load a dictionary containing similar
-    # data:
-    # {"openbgpd_6.0": "A.B.C.D", "openbgpd_6.1": "w.x.y.z"}
+    # running.
     # If REMOTE_IP_NEEDED is True and no remote IP can be found, the
     # test is skipped.
-    REMOTE_IP_NEEDED = True
+    REMOTE_IP_NEEDED = False
 
-    def setUp(self):
-        self.skipTest("Work in progress on 'dev' branch")
+    SKIP_LOAD_NO_RESOURCES = False
 
     @classmethod
     def _setUpClass(cls):
@@ -68,6 +65,12 @@ class TestRealConfigs(ARouteServerTestCase):
         if not os.path.exists(cls.rs_config_dir):
             os.makedirs(cls.rs_config_dir)
 
+    @classmethod
+    def _tearDownClass(cls):
+        print("")
+        print("")
+        print("======================================================================")
+
     def get_rs_config_file_path(self, bgp_speaker, target_ver, ip_ver):
         filename = "{ixp}_{bgp_speaker}{bgp_speaker_version}{ip_ver}.conf".format(
             ixp=self.IXP,
@@ -76,6 +79,16 @@ class TestRealConfigs(ARouteServerTestCase):
             ip_ver="_ipv{}".format(ip_ver) if ip_ver else ""
         )
         return os.path.join(self.rs_config_dir, filename)
+
+    def print_duration(self, descr, bgp_speaker, target_ver, ip_ver, duration):
+        msg = "{descr} for {daemon}, {ip_ver}: {duration} seconds".format(
+            descr=descr,
+            daemon="{} {}".format(bgp_speaker, target_ver) if target_ver
+                                                           else bgp_speaker,
+            ip_ver="IPv{}".format(ip_ver) if ip_ver else "IPv4 & IPv6",
+            duration=duration
+        )
+        print(msg)
 
     def build_config(self, bgp_speaker, target_ver, ip_ver):
         cwd = os.path.dirname(__file__)
@@ -90,25 +103,28 @@ class TestRealConfigs(ARouteServerTestCase):
         cmd += [bgp_speaker]
         cmd += ["--cfg", os.path.join(cwd, "arouteserver.yml")]
         cmd += ["--output", rs_config_file_path]
-        cmd += ["--ignore-issues", "path_hiding"]
+        cmd += ["--ignore-issues", "*"]
         if target_ver:
             cmd += ["--target-version", target_ver]
         cmd += ["--clients", os.path.join(cwd, "clients", self.CLIENTS_FILE)]
         if ip_ver:
             cmd += ["--ip-ver", str(ip_ver)]
 
+        time_a = int(time.time())
         subprocess.check_output(cmd)
+        time_b = int(time.time())
+        self.print_duration("Building config", bgp_speaker, target_ver, ip_ver,
+                            time_b - time_a)
 
     def load_config(self, bgp_speaker, target_ver, ip_ver):
-        remote_ip = os.environ.get("REMOTE_IP", "").strip()
+        if self.SKIP_LOAD_NO_RESOURCES:
+            self.skipTest("Lack of resources")
 
-        if not remote_ip:
-            remote_ip_key = "{}_{}".format(bgp_speaker, target_ver)
-            remote_ip_file = os.path.expanduser("~/ars_remote_ip")
-            if os.path.exists(remote_ip_file):
-                with open(remote_ip_file, "r") as f:
-                    remote_ip_file_data = json.load(f)
-                remote_ip = remote_ip_file_data.get(remote_ip_key, None)
+        remote_ip = os.environ.get("REMOTE_IP", None)
+        if remote_ip:
+            remote_ip = remote_ip.strip()
+        if not remote_ip and self.REMOTE_IP_NEEDED:
+            self.skipTest("Remote IP not found")
 
         if bgp_speaker == "bird":
             if ip_ver == 4:
@@ -118,9 +134,6 @@ class TestRealConfigs(ARouteServerTestCase):
             else:
                 raise ValueError("Unknown ip_ver: {}".format(ip_ver))
         elif bgp_speaker == "openbgpd":
-            if not remote_ip and self.REMOTE_IP_NEEDED:
-                self.skipTest("Remote IP not found")
-
             if target_ver == "6.0":
                 inst_class = OpenBGPD60Instance
             elif target_ver == "6.1":
@@ -143,22 +156,29 @@ class TestRealConfigs(ARouteServerTestCase):
             remote_ip=remote_ip
         )
         inst.set_var_dir(self.rs_config_dir)
+
+        time_a = int(time.time())
         inst.start()
         inst.stop()
+        time_b = int(time.time())
+        self.print_duration("Loading config", bgp_speaker, target_ver, ip_ver,
+                            time_b - time_a)
 
     def shortDescription(self):
         return "Real configs: {}, {}".format(self.IXP, self._testMethodDoc)
 
-class TestRealConfigs_IXP(TestRealConfigs):
+class TestRealConfigs_BIRD(TestRealConfigs):
     __test__ = False
 
-    def test_bird4_010_build(self):
+    REMOTE_IP_NEEDED = False
+
+    def test_bird163_4_010_build(self):
         """BIRD, IPv4, build"""
         if self.IP_VER and self.IP_VER != 4:
             self.skipTest("IPv{} only".format(self.IP_VER))
         self.build_config("bird", None, 4)
 
-    def test_bird4_020_load(self):
+    def test_bird163_4_020_load(self):
         """BIRD, IPv4, load"""
         if self.IP_VER and self.IP_VER != 4:
             self.skipTest("IPv{} only".format(self.IP_VER))
@@ -166,13 +186,13 @@ class TestRealConfigs_IXP(TestRealConfigs):
             self.skipTest("Build only")
         self.load_config("bird", None, 4)
 
-    def test_bird6_010_build(self):
+    def test_bird163_6_010_build(self):
         """BIRD, IPv6, build"""
         if self.IP_VER and self.IP_VER != 6:
             self.skipTest("IPv{} only".format(self.IP_VER))
         self.build_config("bird", None, 6)
 
-    def test_bird6_020_load(self):
+    def test_bird163_6_020_load(self):
         """BIRD, IPv6, load"""
         if self.IP_VER and self.IP_VER != 6:
             self.skipTest("IPv{} only".format(self.IP_VER))
@@ -180,23 +200,33 @@ class TestRealConfigs_IXP(TestRealConfigs):
             self.skipTest("Build only")
         self.load_config("bird", None, 6)
 
-    def test_openbgpd60_010_build(self):
+class TestRealConfigs_OpenBGPD60(TestRealConfigs):
+    __test__ = False
+
+    REMOTE_IP_NEEDED = True
+
+    def test_openbgpd60_any_010_build(self):
         """OpenBGPD 6.0, build"""
         self.build_config("openbgpd", "6.0", None)
 
     @unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
-    def test_openbgpd60_020_load(self):
+    def test_openbgpd60_any_020_load(self):
         """OpenBGPD 6.0, load"""
         if "BUILD_ONLY" in os.environ:
             self.skipTest("Build only")
         self.load_config("openbgpd", "6.0", None)
 
-    def test_openbgpd61_010_build(self):
+class TestRealConfigs_OpenBGPD61(TestRealConfigs):
+    __test__ = False
+
+    REMOTE_IP_NEEDED = False
+
+    def test_openbgpd61_any_010_build(self):
         """OpenBGPD 6.1, build"""
         self.build_config("openbgpd", "6.1", None)
 
     @unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
-    def test_openbgpd61_020_load(self):
+    def test_openbgpd61_any_020_load(self):
         """OpenBGPD 6.1, load"""
         if "BUILD_ONLY" in os.environ:
             self.skipTest("Build only")

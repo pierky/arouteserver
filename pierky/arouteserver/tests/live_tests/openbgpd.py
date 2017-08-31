@@ -90,7 +90,6 @@ class OpenBGPDInstance(KVMInstance):
 
         self.run_cmd("/etc/rc.d/bgpd stop")
         time.sleep(5)
-        self.run_cmd("bgpd -dn")
         self.run_cmd("/etc/rc.d/bgpd -f start")
         time.sleep(5)
 

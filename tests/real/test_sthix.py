@@ -13,10 +13,24 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import TestRealConfigs_IXP
+from base import *
 
-class TestRealConfigs_STHIX(TestRealConfigs_IXP):
-    __test__ = True
+
+class TestRealConfigs_STHIX(object):
 
     IXP = "STHIX"
     CLIENTS_FILE = "sthix.yml"
+
+class TestRealConfigs_STHIX_BIRD(TestRealConfigs_STHIX,
+                                 TestRealConfigs_BIRD):
+    __test__ = True
+
+class TestRealConfigs_STHIX_OpenBGPD60(TestRealConfigs_STHIX,
+                                       TestRealConfigs_OpenBGPD60):
+    __test__ = True
+
+class TestRealConfigs_STHIX_OpenBGPD61(TestRealConfigs_STHIX,
+                                       TestRealConfigs_OpenBGPD61):
+    __test__ = True
+
+    SKIP_LOAD_NO_RESOURCES = True

@@ -13,11 +13,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import TestRealConfigs_IXP
+from base import *
 
 
-class TestRealConfigs_GR_IX(TestRealConfigs_IXP):
-    __test__ = True
+class TestRealConfigs_GR_IX(object):
 
     IXP = "GR-IX"
     CLIENTS_FILE = "gr-ix.yml"
+
+class TestRealConfigs_GR_IX_BIRD(TestRealConfigs_GR_IX,
+                                 TestRealConfigs_BIRD):
+    __test__ = True
+
+class TestRealConfigs_GR_IX_OpenBGPD60(TestRealConfigs_GR_IX,
+                                       TestRealConfigs_OpenBGPD60):
+    __test__ = True
+
+class TestRealConfigs_GR_IX_OpenBGPD61(TestRealConfigs_GR_IX,
+                                       TestRealConfigs_OpenBGPD61):
+    __test__ = True

@@ -13,11 +13,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import TestRealConfigs_IXP
+from base import *
 
 
-class TestRealConfigs_INEX(TestRealConfigs_IXP):
-    __test__ = True
+class TestRealConfigs_INEX(object):
 
     IXP = "INEX"
     CLIENTS_FILE = "inex.yml"
+
+class TestRealConfigs_INEX_BIRD(TestRealConfigs_INEX,
+                                TestRealConfigs_BIRD):
+    __test__ = True
+
+class TestRealConfigs_INEX_OpenBGPD60(TestRealConfigs_INEX,
+                                      TestRealConfigs_OpenBGPD60):
+    __test__ = True
+
+class TestRealConfigs_INEX_OpenBGPD61(TestRealConfigs_INEX,
+                                      TestRealConfigs_OpenBGPD61):
+    __test__ = True

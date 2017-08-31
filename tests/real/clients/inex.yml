@@ -1,0 +1,1204 @@
+# Data fetched from https://www.inex.ie/ixp/api/v4/member-export/ixf/0.6 at 2017-08-30T16:21:11.345984 UTC
+# IXP ID: 1
+# VLAN ID: 2
+clients:
+- asn: 42
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+  description: Packet Clearing House DNS
+  ip: 185.6.36.60
+- asn: 42
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+  description: Packet Clearing House DNS
+  ip: 2001:7f8:18::60
+- asn: 112
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS112
+  description: AS112 Reverse DNS
+  ip: 185.6.36.6
+- asn: 112
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS112
+  description: AS112 Reverse DNS
+  ip: 2001:7f8:18::6
+- asn: 702
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS702
+  description: Verizon Business
+  ip: 185.6.36.37
+- asn: 1213
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-HEANET
+  description: HEAnet
+  ip: 185.6.36.16
+- asn: 1213
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-HEANET
+  description: HEAnet
+  ip: 2001:7f8:18::1:0:1
+- asn: 1273
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CWW
+  description: Cable & Wireless Worldwide
+  ip: 185.6.36.81
+- asn: 1273
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CWW
+  description: Cable & Wireless Worldwide
+  ip: 2001:7f8:18::81
+- asn: 2110
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BTIRE
+  description: BT Ireland
+  ip: 185.6.36.17
+- asn: 2110
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BTIRE
+  description: BT Ireland
+  ip: 2001:7f8:18::2:0:1
+- asn: 2128
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-INEXIE
+  description: INEX
+  ip: 185.6.36.126
+- asn: 2128
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-INEXIE
+  description: INEX
+  ip: 2001:7f8:18::f:0:1
+- asn: 2128
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-INEXIE
+  description: INEX
+  ip: 185.6.36.2
+- asn: 2128
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-INEXIE
+  description: INEX
+  ip: 2001:7f8:18::2
+- asn: 2906
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NFLX
+  description: Netflix
+  ip: 185.6.36.85
+- asn: 2906
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NFLX
+  description: Netflix
+  ip: 2001:7f8:18::85
+- asn: 3856
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS3856
+  description: PCH Route Collector
+  ip: 185.6.36.61
+- asn: 3856
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS3856
+  description: PCH Route Collector
+  ip: 2001:7f8:18::61
+- asn: 5400
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BT-EU
+  description: BT AS5400
+  ip: 185.6.36.116
+- asn: 5400
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BT-EU
+  description: BT AS5400
+  ip: 2001:7f8:18::116
+- asn: 5466
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EIRCOM
+  description: Eircom Net
+  ip: 185.6.36.82
+- asn: 5466
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EIRCOM
+  description: Eircom Net
+  ip: 2001:7f8:18::4:0:2
+- asn: 6507
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-RIOT
+  description: Riot Games
+  ip: 185.6.36.105
+- asn: 6830
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AORTAIE
+  description: Virgin Media Ireland Ltd
+  ip: 185.6.36.39
+- asn: 6830
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AORTAIE
+  description: Virgin Media Ireland Ltd
+  ip: 2001:7f8:18::39
+- asn: 6939
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NULL
+  description: Hurricane Electric
+  ip: 185.6.36.69
+- asn: 6939
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NULL
+  description: Hurricane Electric
+  ip: 2001:7f8:18::69
+- asn: 8075
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MICROSOFT
+  description: Microsoft
+  ip: 185.6.36.28
+- asn: 8075
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MICROSOFT
+  description: Microsoft
+  ip: 2001:7f8:18::28
+- asn: 8220
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-COLT
+  description: Colt Technology Services
+  ip: 185.6.36.86
+- asn: 8220
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-COLT
+  description: Colt Technology Services
+  ip: 2001:7f8:18::86
+- asn: 10310
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-YAHOO
+  description: Yahoo!
+  ip: 185.6.36.77
+- asn: 10310
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-YAHOO
+  description: Yahoo!
+  ip: 2001:7f8:18::77
+- asn: 10310
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-YAHOO
+  description: Yahoo!
+  ip: 185.6.36.65
+- asn: 10310
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-YAHOO
+  description: Yahoo!
+  ip: 2001:7f8:18::65
+- asn: 12041
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS12041
+  description: Afilias
+  ip: 185.6.36.114
+- asn: 12041
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS12041
+  description: Afilias
+  ip: 2001:7f8:18::114
+- asn: 12388
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CABLESURF
+  description: Cablesurf
+  ip: 185.6.36.62
+- asn: 13237
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LAMBDANET
+  description: euNetworks
+  ip: 185.6.36.79
+- asn: 13237
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LAMBDANET
+  description: euNetworks
+  ip: 2001:7f8:18::79
+- asn: 13335
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS13335
+  description: Cloudflare
+  ip: 185.6.36.76
+- asn: 13335
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS13335
+  description: Cloudflare
+  ip: 2001:7f8:18::76
+- asn: 14413
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LINKEDIN
+  description: LinkedIn
+  ip: 185.6.36.107
+- asn: 14413
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LINKEDIN
+  description: LinkedIn
+  ip: 2001:7f8:18::107
+- asn: 14537
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CONTINENT8
+  description: Continent 8 Technologies
+  ip: 185.6.36.121
+- asn: 14537
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CONTINENT8
+  description: Continent 8 Technologies
+  ip: 2001:7f8:18::121
+- asn: 15169
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GOOGLE
+  description: Google
+  ip: 185.6.36.57
+- asn: 15169
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GOOGLE
+  description: Google
+  ip: 2001:7f8:18::57
+- asn: 15502
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VFIE
+  description: Vodafone Ireland Limited
+  ip: 185.6.36.43
+- asn: 15533
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SASIRELAND
+  description: SunGard (AS15533)
+  ip: 185.6.36.110
+- asn: 15533
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SASIRELAND
+  description: SunGard (AS15533)
+  ip: 2001:7f8:18::110
+- asn: 15612
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SERVECENTRIC
+  description: Servecentric
+  ip: 185.6.36.44
+- asn: 15806
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IE-GOVERNMENT
+  description: OGCIO
+  ip: 185.6.36.33
+- asn: 15806
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IE-GOVERNMENT
+  description: OGCIO
+  ip: 2001:7f8:18::33
+- asn: 16171
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-STRENCOM
+  description: Strencom
+  ip: 185.6.36.29
+- asn: 16171
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-STRENCOM
+  description: Strencom
+  ip: 2001:7f8:18::29
+- asn: 16509
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ADSI
+  description: Amazon.com
+  ip: 185.6.36.50
+- asn: 16509
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ADSI
+  description: Amazon.com
+  ip: 2001:7f8:18::50
+- asn: 20940
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AKAMAI
+  description: Akamai Technologies
+  ip: 185.6.36.55
+- asn: 20940
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AKAMAI
+  description: Akamai Technologies
+  ip: 2001:7f8:18::55
+- asn: 21320
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GEANT-EUPEER
+  description: GEANT
+  ip: 185.6.36.108
+- asn: 21320
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GEANT-EUPEER
+  description: GEANT
+  ip: 2001:7f8:18::108
+- asn: 22822
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LLNW
+  description: Limelight Networks
+  ip: 185.6.36.75
+- asn: 22822
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LLNW
+  description: Limelight Networks
+  ip: 2001:7f8:18::75
+- asn: 24637
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WEBDISCOUNT
+  description: Webdiscount
+  ip: 185.6.36.99
+- asn: 25441
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IBIS
+  description: Imagine
+  ip: 185.6.36.19
+- asn: 25441
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IBIS
+  description: Imagine
+  ip: 2001:7f8:18::5:0:1
+- asn: 26415
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GTLD
+  description: Verisign J Root & com/net
+  ip: 185.6.36.40
+- asn: 26415
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GTLD
+  description: Verisign J Root & com/net
+  ip: 2001:7f8:18::40
+- asn: 29644
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AIRSPEED
+  description: Airspeed Telecom
+  ip: 185.6.36.67
+- asn: 29644
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AIRSPEED
+  description: Airspeed Telecom
+  ip: 2001:7f8:18::67
+- asn: 30900
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WEBWORLD-SET
+  description: Web World Ireland
+  ip: 185.6.36.51
+- asn: 31084
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS31084
+  description: Magrathea
+  ip: 185.6.36.83
+- asn: 31084
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS31084
+  description: Magrathea
+  ip: 2001:7f8:18::83
+- asn: 31122
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-DIGIWEB
+  description: Viatel
+  ip: 185.6.36.20
+- asn: 31122
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-DIGIWEB
+  description: Viatel
+  ip: 2001:7f8:18::20
+- asn: 31641
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS31641
+  description: Atlas Communications
+  ip: 185.6.36.27
+- asn: 34218
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-H3GIE
+  description: 3 Ireland
+  ip: 185.6.36.58
+- asn: 34245
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MAGNETLOCAL
+  description: Magnet Networks
+  ip: 185.6.36.32
+- asn: 34245
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MAGNETLOCAL
+  description: Magnet Networks
+  ip: 2001:7f8:18::32
+- asn: 34505
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VISTATEC
+  description: Vistatec
+  ip: 185.6.36.38
+- asn: 34505
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VISTATEC
+  description: Vistatec
+  ip: 2001:7f8:18::38
+- asn: 35226
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-RIPPLECOM
+  description: Ripple Communications Limited
+  ip: 185.6.36.72
+- asn: 35226
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-RIPPLECOM
+  description: Ripple Communications Limited
+  ip: 2001:7f8:18::72
+- asn: 39093
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WESTNET
+  description: WestNet
+  ip: 185.6.36.46
+- asn: 39093
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WESTNET
+  description: WestNet
+  ip: 2001:7f8:18::46
+- asn: 39122
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BLACKNIGHT
+  description: Blacknight
+  ip: 185.6.36.35
+- asn: 39122
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BLACKNIGHT
+  description: Blacknight
+  ip: 2001:7f8:18::21:0:1
+- asn: 39233
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BFACE
+  description: Blueface
+  ip: 185.6.36.36
+- asn: 39319
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-QZE
+  description: Questzones (Europe) Ltd
+  ip: 185.6.36.66
+- asn: 39319
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-QZE
+  description: Questzones (Europe) Ltd
+  ip: 2001:7f8:18::66
+- asn: 39449
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FASTCOM
+  description: Fastcom Broadband Ltd
+  ip: 185.6.36.41
+- asn: 41073
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS41073
+  description: RTE
+  ip: 185.6.36.42
+- asn: 41073
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS41073
+  description: RTE
+  ip: 2001:7f8:18::42
+- asn: 41678
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TIBUS
+  description: Tibus
+  ip: 185.6.36.45
+- asn: 41811
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CONVERGENCE
+  description: Convergence Group
+  ip: 185.6.36.103
+- asn: 41811
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CONVERGENCE
+  description: Convergence Group
+  ip: 2001:7f8:18::103
+- asn: 42227
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AIRWIRE
+  description: Airwire
+  ip: 185.6.36.54
+- asn: 42227
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AIRWIRE
+  description: Airwire
+  ip: 2001:7f8:18::54
+- asn: 42310
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IEDR
+  description: IE Domain Registry
+  ip: 185.6.36.47
+- asn: 42310
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IEDR
+  description: IE Domain Registry
+  ip: 2001:7f8:18::47
+- asn: 43192
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IMS-GROUP
+  description: Integrated Media Solutions
+  ip: 185.6.36.113
+- asn: 43406
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS43406
+  description: Lightnet
+  ip: 185.6.36.89
+- asn: 43406
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS43406
+  description: Lightnet
+  ip: 2001:7f8:18::89
+- asn: 43531
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IXREACH
+  description: Console Network Solutions
+  ip: 185.6.36.84
+- asn: 43531
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IXREACH
+  description: Console Network Solutions
+  ip: 2001:7f8:18::84
+- asn: 43599
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS43599
+  description: Bluebox Broadband
+  ip: 185.6.36.73
+- asn: 43760
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SET-INEX-RS
+  description: INEX Route Servers
+  ip: 185.6.36.8
+- asn: 43760
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SET-INEX-RS
+  description: INEX Route Servers
+  ip: 2001:7f8:18::8
+- asn: 43760
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SET-INEX-RS
+  description: INEX Route Servers
+  ip: 185.6.36.9
+- asn: 43760
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SET-INEX-RS
+  description: INEX Route Servers
+  ip: 2001:7f8:18::9
+- asn: 44212
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ADELPHINET1
+  description: Net1
+  ip: 185.6.36.53
+- asn: 44212
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-ADELPHINET1
+  description: Net1
+  ip: 2001:7f8:18::53
+- asn: 44384
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS44384
+  description: CableComm
+  ip: 185.6.36.87
+- asn: 44451
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS44451
+  description: Skytel
+  ip: 185.6.36.92
+- asn: 47580
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS47580
+  description: SunGard (AS47580)
+  ip: 185.6.36.94
+- asn: 47680
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NHCS
+  description: BBnet
+  ip: 185.6.36.64
+- asn: 47720
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CIX1
+  description: CIX
+  ip: 185.6.36.106
+- asn: 47720
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CIX1
+  description: CIX
+  ip: 2001:7f8:18::106
+- asn: 47762
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS47762
+  description: West Unified Communications Services
+  ip: 185.6.36.102
+- asn: 48142
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS48142
+  description: permaNET
+  ip: 185.6.36.115
+- asn: 49567
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS49567
+  description: Aptus Broadband
+  ip: 185.6.36.63
+- asn: 49567
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS49567
+  description: Aptus Broadband
+  ip: 2001:7f8:18::63
+- asn: 50088
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EGENERAIE
+  description: Egenera
+  ip: 185.6.36.48
+- asn: 50326
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS50326
+  description: IP Telecom
+  ip: 185.6.36.71
+- asn: 51677
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS51677
+  description: Digital Planet
+  ip: 185.6.36.97
+- asn: 56767
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS56767
+  description: Airfibre
+  ip: 185.6.36.119
+- asn: 60277
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TELCOM
+  description: Telcom
+  ip: 185.6.36.90
+- asn: 61145
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS61145
+  description: Real Broadband
+  ip: 185.6.36.93
+- asn: 61186
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS61186
+  description: Zendesk
+  ip: 185.6.36.18
+- asn: 61194
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NETWORKRECOVERY
+  description: CTI Global
+  ip: 185.6.36.74
+- asn: 61337
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GXT
+  description: Electronic Communities
+  ip: 185.6.36.101
+- asn: 61337
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GXT
+  description: Electronic Communities
+  ip: 2001:7f8:18::101
+- asn: 62059
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS62059
+  description: Conway Broadband
+  ip: 185.6.36.95
+- asn: 62059
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS62059
+  description: Conway Broadband
+  ip: 2001:7f8:18::95
+- asn: 62455
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS62455
+  description: Wicklow Broadband
+  ip: 185.6.36.96
+- asn: 62455
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS62455
+  description: Wicklow Broadband
+  ip: 2001:7f8:18::96
+- asn: 197853
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS197853
+  description: Irish Telecom
+  ip: 185.6.36.104
+- asn: 197853
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS197853
+  description: Irish Telecom
+  ip: 2001:7f8:18::104
+- asn: 198988
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WIRELESSCONNECT
+  description: Wireless Connect (AS198988)
+  ip: 185.6.36.91
+- asn: 199256
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-HOSTIRELAND
+  description: Host Ireland
+  ip: 185.6.36.88
+- asn: 199256
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-HOSTIRELAND
+  description: Host Ireland
+  ip: 2001:7f8:18::88
+- asn: 199346
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS199346
+  description: Kerry Broadband
+  ip: 185.6.36.109
+- asn: 200562
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS200562
+  description: Welltel
+  ip: 185.6.36.78
+- asn: 201607
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS201607
+  description: Celtic Broadband
+  ip: 185.6.36.112
+- asn: 203754
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS203754
+  description: Phone Pulse
+  ip: 185.6.36.59
+- asn: 206663
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MTS-GROUP
+  description: MTS Media
+  ip: 185.6.36.111
+- asn: 206723
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS206723
+  description: Carnsore Broadband
+  ip: 185.6.36.118
+- asn: 206723
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS206723
+  description: Carnsore Broadband
+  ip: 2001:7f8:18::118

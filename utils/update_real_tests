@@ -1,0 +1,338 @@
+#!/bin/bash
+echo "Current PID: $$"
+set -e
+
+THESE_TESTS_ONLY="build load"
+THESE_IXP_IDS_ONLY="ams_ix bcix bix gr_ix inex lonap six sthix swissix"
+THESE_DAEMONS_ONLY="bird163 openbgpd61 openbgpd60"
+JOIN_ONLY=0
+DESTROY_VULTR_SERVER_ON_EXIT=0
+DESTROY_VULTR_SERVER_ONLY=0
+LAST_RESULTS_DIR_OK=0
+
+function on_exit() {
+	# ding ding ding ding
+	echo -ne '\007' ; sleep 0.1 ; echo -ne '\007' ; sleep 0.1 ; echo -ne '\007' ; sleep 0.1 ; echo -ne '\007' ; sleep 0.1 ;
+
+	if [ $DESTROY_VULTR_SERVER_ON_EXIT -ne 1 ]; then
+		return
+	fi
+	if [ -n "$VULTR_API_KEY" ]; then
+		vultr_destroy
+	fi
+}
+trap on_exit EXIT
+
+if [ ! -e "setup.py" ]; then
+	echo "The script must be executed from within the repository's root directory."
+	exit
+fi
+
+VULTR_API_KEY_FILE=~/.config/arouteserver_vultr_api_key
+if [ ! -e "$VULTR_API_KEY_FILE" ]; then
+	echo "Can't find Vultr API key in $VULTR_API_KEY_FILE"
+	exit
+fi
+VULTR_API_KEY="`cat $VULTR_API_KEY_FILE`"
+
+export PYTHONPATH="`pwd`"
+ROOT="`pwd`"
+
+TESTS_DIR="`pwd`/tests/real"
+LAST_RESULTS_DIR="$TESTS_DIR/last_results"
+LAST_RESULTS_FILE="$TESTS_DIR/last.`date +%Y%m%d_%H%M%S`"
+
+function usage() {
+	echo "Arguments:"
+	echo "  --last-results-dir-ok"
+	echo "  --destroy-vultr-server-on-exit"
+	echo "  --these-tests-only \"$THESE_TESTS_ONLY\""
+	echo "  --these-ixp-ids-only \"$THESE_IXP_IDS_ONLY\""
+	echo "  --these-daemons-only \"$THESE_DAEMONS_ONLY\""
+	echo "  --join-only"
+	echo "  --destroy-only"
+	exit
+}
+
+while [[ $# -gt 0 ]]
+do
+	key="$1"
+	shift
+	case $key in
+		--last-results-dir-ok)
+			LAST_RESULTS_DIR_OK=1
+			;;
+		--destroy-vultr-server-on-exit)
+			DESTROY_VULTR_SERVER_ON_EXIT=1
+			;;
+		--these-tests-only)
+			THESE_TESTS_ONLY="$1"
+			shift
+			;;
+		--these-ixp-ids-only)
+			THESE_IXP_IDS_ONLY="$1"
+			shift
+			;;
+		--these-daemons-only)
+			THESE_DAEMONS_ONLY="$1"
+			shift
+			;;
+		--join-only)
+			JOIN_ONLY=1
+			;;
+		--destroy-only)
+			DESTROY_VULTR_SERVER_ONLY=1
+			;;
+		*)
+			usage
+			;;
+	esac
+done
+
+if [[ -d "$LAST_RESULTS_DIR" && $LAST_RESULTS_DIR_OK -eq 0 ]]; then
+	echo "Last results directory already existing: please check it, remove it - rmdir $LAST_RESULTS_DIR - or acknowledge it with --last-results-dir-ok"
+	exit
+fi
+
+mkdir -p $LAST_RESULTS_DIR
+
+function join_result() {
+	# $1	filename ("test_ams_ix.py")
+
+	echo "Joining ${1}..."
+
+	for ext in .build.bird163 .build.openbgpd60 .build.openbgpd61 .load.bird163 .load.openbgpd60 .load.openbgpd61; do
+		result_file="${1}${ext}"
+		if [ ! -e $LAST_RESULTS_DIR/$result_file ]; then
+			echo "ERROR: $result_file missing"
+			exit 1
+		fi
+		cat $LAST_RESULTS_DIR/$result_file >> $LAST_RESULTS_FILE
+	done
+}
+
+function join_last_results() {
+	for f in $TESTS_DIR/test_*.py; do
+		TARGET_FILE="`basename $f`"
+		join_result "$TARGET_FILE"
+	done
+
+	echo "Consider removing $LAST_RESULTS_DIR"
+}
+
+function build() {
+	IXP_ID="$1"
+	DAEMON="$2"
+	nosetests -vs $TESTS_DIR/test_${IXP_ID}.py -m "test_${DAEMON}.*_010_build" 2>&1 | tee $LAST_RESULTS_DIR/test_${IXP_ID}.py.build.$DAEMON
+}
+
+function load() {
+	IXP_ID="$1"
+	DAEMON="$2"
+	if [ -n "$3" ]; then
+		echo "Using remote host $3"
+	fi
+	REMOTE_IP="$3" nosetests -vs $TESTS_DIR/test_${IXP_ID}.py -m "test_${DAEMON}.*_020_load" 2>&1 | tee $LAST_RESULTS_DIR/test_${IXP_ID}.py.load.$DAEMON
+}
+
+function vultr_get_sshkeyid() {
+	curl -s -H "API-Key: ${VULTR_API_KEY}" https://api.vultr.com/v1/sshkey/list | \
+		python -c '
+import sys;
+import json;
+s = sys.stdin.read();
+d = json.loads(s);
+for k in d:
+  if d[k]["name"] == "arouteserver":
+    print d[k]["SSHKEYID"]'
+}
+
+function vultr_destroy() {
+	EXISTING_HOST="`vultr_get_host`"
+	if [ -z "$EXISTING_HOST" ]; then
+		return
+	fi
+
+	SUBID="`echo "$EXISTING_HOST" | egrep "^SUBID:" | cut -d ":" -f 2`"
+
+	echo -n "Destroying Vultr server ${SUBID}... "
+	curl -H "API-Key: ${VULTR_API_KEY}" https://api.vultr.com/v1/server/destroy \
+		--data "SUBID=$SUBID"
+	if [ $? -ne 0 ]; then
+		echo ""
+		echo "Can't destroy Vultr server"
+	fi
+	echo "Done!"
+}
+
+function vultr_create() {
+	echo -n "Checking if a server is already running... "
+	EXISTING_HOST="`vultr_get_host`"
+	if [ -n "$EXISTING_HOST" ]; then
+		echo "OK (a Vultr server already exists)"
+	else
+		echo "OK (no servers found)"
+
+		echo -n "Getting SSH key ID for 'arouteserver'... "
+		SSHKEYID="`vultr_get_sshkeyid`"
+		if [ -z "$SSHKEYID" ]; then
+			echo ""
+			echo "Missing SSHKEYID for 'arouteserver'"
+			exit 1
+		fi
+		echo "OK"
+
+		VULTR_DCID=9		# 24 = Paris
+					#  9 = Frankfurt
+
+		VULTR_VPSPLANID=205	# 204 = 4 CPU, 8192 MB RAM,100 GB SSD,4.00 TB BW
+					# 205 = 6 CPU, 16384 MB RAM,200 GB SSD,5.00 TB BW
+					# 206 = 8 CPU, 32768 MB RAM,300 GB SSD,6.00 TB BW
+
+		VULTR_OSID=234		# OpenBSD 6 x64
+
+		echo -n "Creating Vultr server... "
+		curl -s -H "API-Key: ${VULTR_API_KEY}" https://api.vultr.com/v1/server/create \
+			--data "DCID=$VULTR_DCID" \
+			--data "VPSPLANID=$VULTR_VPSPLANID" \
+			--data "OSID=$VULTR_OSID" \
+			--data "enable_ipv6=yes" \
+			--data "label=arouteserver update_real_tests `date --iso-8601=seconds`" \
+			--data "hostname=ars_real_tests" \
+			--data "tag=ars_real_tests" \
+			--data "SSHKEYID=$SSHKEYID" \
+			--data "notify_activate=yes" >/dev/null
+		if [ $? -ne 0 ]; then
+			echo ""
+			echo "Can't create Vultr server"
+			exit 1
+		fi
+		echo "OK"
+	fi
+
+	attempts=1
+	server_up=0
+	echo -n "Waiting for the server... "
+	while [[ $attempts -le 24 && $server_up -eq 0 ]]
+	do
+		sleep 5
+
+		HOST_DATA="`vultr_get_host`"
+		if [ -z "$HOST_DATA" ]; then
+			echo "Vultr server not found"
+			exit 1
+		fi
+
+		server_status="`echo "$HOST_DATA" | egrep "^status:" | cut -d ":" -f 2`"
+		server_power_status="`echo "$HOST_DATA" | egrep "^power_status:" | cut -d ":" -f 2`"
+		server_state="`echo "$HOST_DATA" | egrep "^server_state:" | cut -d ":" -f 2`"
+		if [[ "$server_status" == "active" && "$server_power_status" == "running" && "$server_state" == "ok" ]]; then
+			server_up=1
+		else
+			echo -n ". "
+		fi
+
+		attempts=`expr $attempts + 1`
+	done
+
+	if [ $server_up -eq 0 ]; then
+		echo ""
+		echo "Vultr server not running"
+		exit 1
+	fi
+	echo "OK"
+
+	REMOTE_IP="`echo "$HOST_DATA" | egrep "^main_ip:" | cut -d ":" -f 2`"
+	echo "Server IP: $REMOTE_IP"
+
+	attempts=1
+	server_ready=0
+	echo -n "Testing server reachability... "
+	while [[ $attempts -le 24 && $server_ready -eq 0 ]]
+	do
+		set +e
+		ssh -i ~/.ssh/arouteserver \
+			-o StrictHostKeyChecking=no \
+			-o BatchMode=yes \
+			-o ConnectTimeout=5 \
+			-o ServerAliveInterval=10 \
+			root@$REMOTE_IP true &>/dev/null
+
+		if [ $? -eq 0 ]; then
+			server_ready=1
+		else
+			echo -n ". "
+		fi
+		set -e
+
+		attempts=`expr $attempts + 1`
+	done
+
+	if [ $server_ready -eq 0 ]; then
+		echo ""
+		echo "Vultr server not responding"
+		exit 1
+	fi
+	echo "OK"
+}
+
+function vultr_get_host() {
+	curl -s -H "API-Key: ${VULTR_API_KEY}" https://api.vultr.com/v1/server/list | \
+		python -c '
+import sys;
+import json;
+s = sys.stdin.read();
+d = json.loads(s);
+for k in d:
+  if d[k]["tag"] == "ars_real_tests":
+    for attr in ["SUBID", "main_ip", "status", "power_status", "server_state"]:
+      print("{}:{}".format(attr, d[k][attr]))'
+}
+
+# -------------------------------------------------------------------
+
+if [ $DESTROY_VULTR_SERVER_ONLY -eq 1 ]; then
+	DESTROY_VULTR_SERVER_ON_EXIT=1
+	exit
+fi
+
+if [ $JOIN_ONLY -eq 1 ]; then
+	join_last_results
+	exit
+fi
+
+echo "Verifying no Docker containers are running..."
+if [ "`docker ps | wc -l`" != "1" ]; then
+	echo "One or more Docker containers are already running"
+	exit
+fi
+
+echo "Verifying no VMs are running..."
+if [ "`virsh list --name --state-running | wc -w`" != "0" ]; then
+	echo "One or more VMs are already running"
+	exit
+fi
+
+if [[ `echo "$THESE_TESTS_ONLY" | grep -P "\bbuild\b"` ]]; then
+	for ixp_id in $THESE_IXP_IDS_ONLY; do
+		for daemon_id in $THESE_DAEMONS_ONLY; do
+			echo "Building configs for ${ixp_id}, ${daemon_id}... "
+			build "$ixp_id" "$daemon_id"
+		done
+	done
+fi
+
+if [[ `echo "$THESE_TESTS_ONLY" | grep -P "\bload\b"` ]]; then
+	for daemon_id in $THESE_DAEMONS_ONLY; do
+		REMOTE_IP=""
+		if [ "$daemon_id" == "openbgpd60" ]; then
+			vultr_create
+		fi
+		for ixp_id in $THESE_IXP_IDS_ONLY; do
+			echo "Loading configs for ${ixp_id}, ${daemon_id}... "
+			load "$ixp_id" "$daemon_id" "$REMOTE_IP"
+		done
+	done
+fi
+
+join_last_results

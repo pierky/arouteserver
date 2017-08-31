@@ -1,0 +1,196 @@
+# Data fetched from http://admin.bix.hu/ixfexport.php at 2017-08-30T16:21:07.757800 UTC
+# IXP ID: 1
+# VLAN ID: 2
+clients:
+- asn: 8990
+  description: Antenna Hung?ria
+  ip: 2001:7F8:35::8990:1
+- asn: 8990
+  description: Antenna Hung?ria
+  ip: 2001:7F8:35::8990:3
+- asn: 8990
+  description: Antenna Hung?ria
+  ip: 2001:7F8:35::8990:2
+- asn: 5400
+  description: British Telecom
+  ip: 2001:7F8:35::5400:1
+- asn: 12594
+  description: Externet
+  ip: 2001:7F8:35::1:2594:1
+- asn: 1955
+  description: Hungarnet
+  ip: 2001:7F8:35::1955:1
+- asn: 1955
+  description: Hungarnet
+  ip: 2001:7F8:35::1955:2
+- asn: 5483
+  description: Magyar Telekom
+  ip: 2001:7F8:35::5483:2
+- asn: 5483
+  description: Magyar Telekom
+  ip: 2001:7F8:35::5483:1
+- asn: 6830
+  description: Liberty Global
+  ip: 2001:7F8:35::6830:1
+- asn: 6830
+  description: Liberty Global
+  ip: 2001:7F8:35::6830:2
+- asn: 12301
+  description: Invitech
+  ip: 2001:7F8:35::1:2301:1
+- asn: 12301
+  description: Invitech
+  ip: 2001:7F8:35::1:2301:2
+- asn: 8448
+  description: Telenor
+  ip: 2001:7F8:35::8448:1
+- asn: 8448
+  description: Telenor
+  ip: 2001:7F8:35::8448:2
+- asn: 21229
+  description: Dr?vanet
+  ip: 2001:7F8:35::19:7248:1
+- asn: 12303
+  description: ISZT
+  ip: 2001:7F8:35::1:2303:2
+- asn: 12303
+  description: ISZT
+  ip: 2001:7F8:35::1:2303:1
+- asn: 8708
+  description: Romania Data Systems
+  ip: 2001:7F8:35::8708:1
+- asn: 21334
+  description: Vodafone
+  ip: 2001:7F8:35::2:1334:2
+- asn: 21334
+  description: Vodafone
+  ip: 2001:7F8:35::2:1334:1
+- asn: 15566
+  description: Infotechna Ltd.
+  ip: 2001:7F8:35::1:5566:1
+- asn: 3340
+  description: GTS Hungary
+  ip: 2001:7F8:35::5588:1
+- asn: 20845
+  description: DIGI
+  ip: 2001:7F8:35::2:845:1
+- asn: 29278
+  description: Deninet
+  ip: 2001:7F8:35::2:9278:2
+- asn: 29278
+  description: Deninet
+  ip: 2001:7F8:35::2:9278:1
+- asn: 47381
+  description: DoclerNet Hosting
+  ip: 2001:7F8:35::4:7381:2
+- asn: 47381
+  description: DoclerNet Hosting
+  ip: 2001:7F8:35::4:7381:1
+- asn: 35311
+  description: PR-Telecom
+  ip: 2001:7F8:35::3:5311:1
+- asn: 8462
+  description: Tarr
+  ip: 2001:7F8:35::8462:2
+- asn: 8462
+  description: Tarr
+  ip: 2001:7F8:35::8462:1
+- asn: 24806
+  description: Internet CZ
+  ip: 2001:7F8:35::2:4806:1
+- asn: 42864
+  description: Giganet
+  ip: 2001:7F8:35::4:2864:1
+- asn: 43928
+  description: MVM Informatika
+  ip: 2001:7F8:35::4:3928:1
+- asn: 43928
+  description: MVM Informatika
+  ip: 2001:7F8:35::4:3928:2
+- asn: 47116
+  description: IntelliHome
+  ip: 2001:7F8:35::4:7116:1
+- asn: 47169
+  description: MVMnet
+  ip: 2001:7F8:35::4:7169:1
+- asn: 47169
+  description: MVMnet
+  ip: 2001:7F8:35::4:7169:2
+- asn: 47169
+  description: MVMnet
+  ip: 2001:7F8:35::4:7169:3
+- asn: 16265
+  description: Leaseweb Network
+  ip: 2001:7F8:35::1:6265:1
+- asn: 9002
+  description: RETN
+  ip: 2001:7F8:35::9002:1
+- asn: 50031
+  description: Zalasz?m
+  ip: 2001:7F8:35::5:31:1
+- asn: 50261
+  description: ACE Telecom
+  ip: 2001:7F8:35::5:261:1
+- asn: 50261
+  description: ACE Telecom
+  ip: 2001:7F8:35::5:261:2
+- asn: 5580
+  description: Hibernia Networks (GTT Comm)
+  ip: 2001:7F8:35::5580:1
+- asn: 15169
+  description: Google
+  ip: 2001:7F8:35::1:5169:1
+- asn: 59649
+  description: NMHH
+  ip: 2001:7F8:35::5:9649:2
+- asn: 6939
+  description: Hurricane Electric
+  ip: 2001:7F8:35::6939:1
+- asn: 29834
+  description: Ustream
+  ip: 2001:7F8:35::2:9834:1
+- asn: 9009
+  description: M247 Networks
+  ip: 2001:7F8:35::9009:1
+- asn: 62214
+  description: RackForest
+  ip: 2001:7F8:35::6:2214:2
+- asn: 62214
+  description: RackForest
+  ip: 2001:7F8:35::6:2214:1
+- asn: 62292
+  description: EZIT
+  ip: 2001:7F8:35::6:2292:2
+- asn: 62292
+  description: EZIT
+  ip: 2001:7F8:35::6:2292:1
+- asn: 8075
+  description: Microsoft
+  ip: 2001:7F8:35::8075:1
+- asn: 9146
+  description: BH Telecom
+  ip: 2001:7F8:35::9146:1
+- asn: 57389
+  description: ZNET Telekom
+  ip: 2001:7F8:35::5:7389:1
+- asn: 29405
+  description: VNET
+  ip: 2001:7F8:35::2:9405:1
+- asn: 31042
+  description: Serbia BroadBand
+  ip: 2001:7F8:35::3:1042:1
+- asn: 30836
+  description: 23VNet
+  ip: 2001:7F8:35::3:836:1
+- asn: 3216
+  description: VimpelCom
+  ip: 2001:7F8:35::3216:1
+- asn: 13335
+  description: Cloudflare
+  ip: 2001:7F8:35::1:3335:1
+- asn: 42624
+  description: Simple Carrier
+  ip: 2001:7F8:35::4:2624:1
+- asn: 20510
+  description: Nexum
+  ip: 2001:7F8:35::2:510:1
