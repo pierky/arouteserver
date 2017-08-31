@@ -356,20 +356,22 @@ class LiveScenario(ARouteServerTestCase):
             self.prepare()
             for as_set_id in self.builder.as_sets:
                 as_set = self.builder.as_sets[as_set_id]
-                as_set_name = as_set["name"]
+                as_set_name = as_set.name
                 if as_set_name in cls.AS_SET:
-                    as_set["asns"].extend(cls.AS_SET[as_set_name])
+                    as_set.save("asns", cls.AS_SET[as_set_name])
 
         def _mock_RSet(self):
             self.prepare()
             allow_longer_prefixes = self.builder.cfg_general["filtering"]["irrdb"]["allow_longer_prefixes"]
             for as_set_id in self.builder.as_sets:
                 as_set = self.builder.as_sets[as_set_id]
-                as_set_name = as_set["name"]
+                as_set_name = as_set.name
                 if as_set_name in cls.R_SET:
+                    lst = []
                     for prefix_name in cls.R_SET[as_set_name]:
                         add_prefix_to_list(prefix_name, allow_longer_prefixes,
-                                           as_set["prefixes"])
+                                           lst)
+                    as_set.save("prefixes", lst)
 
         mock_ASSet = mock.patch.object(
             IRRDBConfigEnricher_OriginASNs, "enrich", autospec=True
