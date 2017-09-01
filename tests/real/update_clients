@@ -7,7 +7,7 @@ fi
 
 export PYTHONPATH="`pwd`"
 
-cmd="./scripts/arouteserver clients-from-euroix --cfg tests/real/arouteserver.yml"
+cmd="./scripts/arouteserver clients-from-euroix --cfg tests/real/arouteserver.yml --merge-from-peeringdb as-set max-prefix"
 dst_dir="tests/real/clients"
 
 mkdir -p $dst_dir

@@ -12,6 +12,8 @@ next release
 
 - Improvement: config building process, reduced memory consumption by moving IRRDB information from memory to temporary files.
 
+- Improvement: ``clients-from-euroix`` command, the new ``--merge-from-peeringdb`` option can be used to integrate missing information into the output clients list by fetching AS-SETs and max-prefix limit from PeeringDB.
+
 - Fix: OpenBGPD, an issue was causing values > 65535 to be used in standard BGP communities matching.
 
 v0.9.2
