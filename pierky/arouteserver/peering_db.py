@@ -26,6 +26,8 @@ from .errors import PeeringDBError, PeeringDBNoInfoError
 
 class PeeringDBInfo(CachedObject):
 
+    MISSING_INFO_EXCEPTION = PeeringDBNoInfoError
+
     def _get_peeringdb_url(self):
         raise NotImplementedError()
 
@@ -86,7 +88,7 @@ class PeeringDBNet(PeeringDBInfo):
         logging.debug("Getting data from PeeringDB: net {}".format(self.asn))
 
         self.load_data()
-    
+
         self.info_prefixes4 = self.raw_data[0].get("info_prefixes4", None)
         self.info_prefixes6 = self.raw_data[0].get("info_prefixes6", None)
         self.irr_as_sets = self.parse_as_sets(
