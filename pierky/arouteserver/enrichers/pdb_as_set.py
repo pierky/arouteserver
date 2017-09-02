@@ -32,22 +32,22 @@ class PeeringDBConfigEnricher_ASSet_WorkerThread(BaseConfigEnricherThread):
         self.cache_expiry = None
 
     def do_task(self, task):
-        client = task
+        asn, _ = task
         try:
-            net = PeeringDBNet(client["asn"],
+            net = PeeringDBNet(asn,
                                cache_dir=self.cache_dir,
                                cache_expiry=self.cache_expiry)
         except PeeringDBNoInfoError:
             # No data found on PeeringDB.
             logging.debug("No data found on PeeringDB "
                           "for AS{} while looking for "
-                          "AS-SET.".format(client["asn"]))
+                          "AS-SET.".format(asn))
             return None
         except PeeringDBError as e:
             logging.error(
                 "An error occurred while retrieving info from PeeringDB "
                 "for ASN {}: {}".format(
-                    client["asn"], str(e) or "error unknown"
+                    asn, str(e) or "error unknown"
                 )
             )
             raise BuilderError()
@@ -55,10 +55,11 @@ class PeeringDBConfigEnricher_ASSet_WorkerThread(BaseConfigEnricherThread):
         return deepcopy(net.irr_as_sets)
 
     def save_data(self, task, data):
-        client = task
+        _, clients = task
         as_sets = data
         if as_sets:
-            client["as_sets_from_pdb"] = as_sets
+            for client in clients:
+                client["as_sets_from_pdb"] = as_sets
 
 class PeeringDBConfigEnricher_ASSet(BaseConfigEnricher):
 
@@ -69,6 +70,9 @@ class PeeringDBConfigEnricher_ASSet(BaseConfigEnricher):
         thread.cache_expiry = self.builder.cache_expiry
 
     def add_tasks(self):
+        # "<asn>": <clients>
+        tasks = {}
+
         # Enqueuing tasks.
         for client in self.builder.cfg_clients.cfg["clients"]:
             client_irrdb = client["cfg"]["filtering"]["irrdb"]
@@ -90,4 +94,10 @@ class PeeringDBConfigEnricher_ASSet(BaseConfigEnricher):
                 self.builder.cfg_asns.cfg["asns"][asn]["as_sets"]:
                 continue
 
-            self.tasks_q.put(client)
+            asn = str(client["asn"])
+            if asn not in tasks:
+                tasks[asn] = []
+            tasks[asn].append(client)
+
+        for asn in tasks:
+            self.tasks_q.put((int(asn), tasks[asn]))

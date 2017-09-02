@@ -31,87 +31,99 @@ class PeeringDBConfigEnricher_MaxPrefix_WorkerThread(BaseConfigEnricherThread):
         self.cfg_general = None
         self.cache_dir = None
         self.cache_expiry = None
+        self.general_limits = None
 
     def do_task(self, task):
-        client = task
+        asn, _ = task
 
-        client_max_prefix = client["cfg"]["filtering"]["max_prefix"]
-        if not client_max_prefix["action"]:
-            # No max-prefix action given for this client:
-            # no needs to know its max-pref limit.
-            return None
+        try:
+            net = PeeringDBNet(asn,
+                               cache_dir=self.cache_dir,
+                               cache_expiry=self.cache_expiry)
 
-        res = {"limit4": None, "limit6": None}
+            return net.info_prefixes4 or self.general_limits["ipv4"], \
+                    net.info_prefixes6 or self.general_limits["ipv6"]
 
-        for ip_ver in (4, 6):
-            if self.ip_ver is not None and self.ip_ver != ip_ver:
-                # The current AF is not used.
-                continue
-
-            if client_max_prefix["limit_ipv{}".format(ip_ver)]:
-                # Client uses a specific limit:
-                # no needs to gather info from PeeringDB for
-                # the current address family.
-                res["limit{}".format(ip_ver)] = \
-                    client_max_prefix["limit_ipv{}".format(ip_ver)]
-                continue
-
-            general_limit = self.cfg_general["filtering"]["max_prefix"]["general_limit_ipv{}".format(ip_ver)]
-
-            if not client_max_prefix["peering_db"]:
-                # PeeringDB disabled for this client:
-                # using general limit.
-                res["limit{}".format(ip_ver)] = general_limit
-                continue
-
-            try:
-                peeringdb_limit = None
-                net = PeeringDBNet(client["asn"],
-                                   cache_dir=self.cache_dir,
-                                   cache_expiry=self.cache_expiry)
-                if ip_ver == 4:
-                    peeringdb_limit = net.info_prefixes4
-                else:
-                    peeringdb_limit = net.info_prefixes6
-
-                res["limit{}".format(ip_ver)] = peeringdb_limit or general_limit
-
-            except PeeringDBNoInfoError:
-                # No data found on PeeringDB.
-                logging.debug("No data found on PeeringDB "
-                              "for AS{} while looking for "
-                              "max-prefix limit.".format(client["asn"]))
-                pass
-            except PeeringDBError as e:
-                logging.error(
-                    "An error occurred while retrieving info from PeeringDB "
-                    "for ASN {}: {}".format(
-                        client["asn"], str(e) or "error unknown"
-                    )
+        except PeeringDBNoInfoError:
+            # No data found on PeeringDB.
+            logging.debug("No data found on PeeringDB "
+                          "for AS{} while looking for "
+                          "max-prefix limit.".format(asn))
+            pass
+        except PeeringDBError as e:
+            logging.error(
+                "An error occurred while retrieving info from PeeringDB "
+                "for ASN {}: {}".format(
+                    asn, str(e) or "error unknown"
                 )
-                raise BuilderError()
-
-        return res["limit4"], res["limit6"]
+            )
+            raise BuilderError()
 
     def save_data(self, task, data):
-        client = task
+        _, clients = task
         limit4, limit6 = data
-        if limit4:
-            client["cfg"]["filtering"]["max_prefix"]["limit_ipv4"] = limit4
-        if limit6:
-            client["cfg"]["filtering"]["max_prefix"]["limit_ipv6"] = limit6
+        for client in clients:
+            client_max_prefix = client["cfg"]["filtering"]["max_prefix"]
+            if limit4 and not client_max_prefix["limit_ipv4"]:
+                client["cfg"]["filtering"]["max_prefix"]["limit_ipv4"] = limit4
+            if limit6 and not client_max_prefix["limit_ipv6"]:
+                client["cfg"]["filtering"]["max_prefix"]["limit_ipv6"] = limit6
 
 class PeeringDBConfigEnricher_MaxPrefix(BaseConfigEnricher):
 
     WORKER_THREAD_CLASS = PeeringDBConfigEnricher_MaxPrefix_WorkerThread
+
+    def _get_general_limit(self, ip_ver):
+        return self.builder.cfg_general["filtering"]["max_prefix"]["general_limit_ipv{}".format(ip_ver)]
 
     def _config_thread(self, thread):
         thread.ip_ver = self.builder.ip_ver
         thread.cfg_general = self.builder.cfg_general
         thread.cache_dir = self.builder.cache_dir
         thread.cache_expiry = self.builder.cache_expiry
+        thread.general_limits = {
+            "ipv4": self._get_general_limit(4),
+            "ipv6": self._get_general_limit(6)
+        }
 
     def add_tasks(self):
+        # "<asn>": <clients>
+        tasks = {}
+
         # Enqueuing tasks.
         for client in self.builder.cfg_clients.cfg["clients"]:
-            self.tasks_q.put(client)
+            client_max_prefix = client["cfg"]["filtering"]["max_prefix"]
+
+            if not client_max_prefix["action"]:
+                # No max-prefix action given for this client:
+                # no needs to know its max-pref limit.
+                continue
+
+            afis = [4, 6] if self.builder.ip_ver is None else [self.builder.ip_ver]
+
+            pdb_info_needed = False
+
+            for ip_ver in afis:
+                if client_max_prefix["limit_ipv{}".format(ip_ver)]:
+                    # Client uses a specific limit:
+                    # no needs to gather info from PeeringDB for
+                    # the current address family.
+                    continue
+
+                if not client_max_prefix["peering_db"]:
+                    # PeeringDB disabled for this client:
+                    # using general limit.
+                    client_max_prefix["limit_ipv{}".format(ip_ver)] = \
+                        self._get_general_limit(ip_ver)
+                    continue
+
+                pdb_info_needed = True
+
+            if pdb_info_needed:
+                asn = str(client["asn"])
+                if asn not in tasks:
+                    tasks[asn] = []
+                tasks[asn].append(client)
+
+        for asn in tasks:
+            self.tasks_q.put((int(asn), tasks[asn]))

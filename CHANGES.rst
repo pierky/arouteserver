@@ -10,7 +10,13 @@ next release
 
   Related: `issue #7 on GitHub <https://github.com/pierky/arouteserver/issues/7>`_.
 
-- Improvement: config building process, reduced memory consumption by moving IRRDB information from memory to temporary files.
+- Improvement: config building process performances,
+
+  - reduced memory consumption by moving IRRDB information from memory to temporary files;
+
+  - responses for empty/missing resources are also cached;
+
+  - fix a wrong behaviour that led to multiple PeeringDB requests for the same ASN.
 
 - Improvement: ``clients-from-euroix`` command, the new ``--merge-from-peeringdb`` option can be used to integrate missing information into the output clients list by fetching AS-SETs and max-prefix limit from PeeringDB.
 

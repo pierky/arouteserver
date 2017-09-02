@@ -53,8 +53,11 @@ if [ "$1" == "join_only" ]; then
 	exit
 fi
 
-echo "Restarting docker..."
-sudo service docker restart
+echo "Verifying no Docker instances are running..."
+if [ "`docker ps | wc -l`" != "1" ]; then
+	echo "One or more Docker instances are already running"
+	exit
+fi
 
 echo "Verifying no VMs are running..."
 if [ "`virsh list --name --state-running | wc -w`" != "0" ]; then
