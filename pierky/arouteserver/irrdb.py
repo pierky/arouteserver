@@ -32,8 +32,6 @@ class IRRDBTools(CachedObject):
                              "BBOI,BELL,GT,JPIRR,LEVEL3,RADB,RGNET,"
                              "SAVVIS,TC")
 
-    MISSING_INFO_EXCEPTION = IRRDBToolsError
-
     def __init__(self, *args, **kwargs):
         CachedObject.__init__(self, *args, **kwargs)
         self.bgpq3_path = kwargs.get("bgpq3_path")

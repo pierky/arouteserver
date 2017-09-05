@@ -51,13 +51,14 @@ class BaseConfigEnricherThread(threading.Thread):
                     with self.lock:
                         self.save_data(task, data)
             except Exception as e:
-                if str(e) and isinstance(e, ARouteServerError):
-                    logging.error(
-                        "{} thread {} error: {}".format(
-                            self.DESCR, self.name,
-                            str(e)
+                if isinstance(e, ARouteServerError):
+                    if str(e):
+                        logging.error(
+                            "{} thread {} error: {}".format(
+                                self.DESCR, self.name,
+                                str(e)
+                            )
                         )
-                    )
                 else:
                     logging.error(
                         "{} thread {} unhandled exception: {}".format(

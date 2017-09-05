@@ -61,7 +61,7 @@ class CachedObjectsError(ARouteServerError):
 class ExternalDataNoInfoError(ARouteServerError):
     pass
 
-class IRRDBToolsError(ExternalDataNoInfoError):
+class IRRDBToolsError(ARouteServerError):
     pass
 
 class PeeringDBError(ARouteServerError):
