@@ -373,9 +373,6 @@ clients:
 - asn: 8928
   cfg:
     filtering:
-      irrdb:
-        as_sets:
-        - RS-INTEROUTE
       max_prefix:
         limit_ipv4: 8500
         limit_ipv6: 425
@@ -383,9 +380,6 @@ clients:
 - asn: 8928
   cfg:
     filtering:
-      irrdb:
-        as_sets:
-        - RS-INTEROUTE
       max_prefix:
         limit_ipv4: 8500
         limit_ipv6: 425
