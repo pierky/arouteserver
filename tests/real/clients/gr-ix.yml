@@ -1,4 +1,4 @@
-# Data fetched from https://portal.gr-ix.gr/participants.json at 2017-08-30T16:21:09.208364 UTC
+# Data fetched from https://portal.gr-ix.gr/participants.json at 2017-09-05T18:12:54.808781 UTC
 # IXP ID: 1
 clients:
 - asn: 702
@@ -19,6 +19,7 @@ clients:
         - AS1241:AS-TO-AIX
       max_prefix:
         limit_ipv4: 300
+        limit_ipv6: 20
   description: Forthnet
   ip: 176.126.38.3
 - asn: 1241
@@ -28,6 +29,7 @@ clients:
         as_sets:
         - AS1241:AS-TO-AIX
       max_prefix:
+        limit_ipv4: 200
         limit_ipv6: 300
   description: Forthnet
   ip: 2001:7f8:6e::3
@@ -39,6 +41,7 @@ clients:
         - AS1241:AS-TO-AIX
       max_prefix:
         limit_ipv4: 300
+        limit_ipv6: 20
   description: Forthnet
   ip: 176.126.38.33
 - asn: 1241
@@ -48,6 +51,7 @@ clients:
         as_sets:
         - AS1241:AS-TO-AIX
       max_prefix:
+        limit_ipv4: 200
         limit_ipv6: 300
   description: Forthnet
   ip: 2001:7f8:6e::33
@@ -59,6 +63,7 @@ clients:
         - AS3329:AS-TO-AIX
       max_prefix:
         limit_ipv4: 500
+        limit_ipv6: 30
   description: Vodafone
   ip: 176.126.38.2
 - asn: 3329
@@ -68,6 +73,7 @@ clients:
         as_sets:
         - AS3329:AS-TO-AIX
       max_prefix:
+        limit_ipv4: 150
         limit_ipv6: 500
   description: Vodafone
   ip: 2001:7f8:6e::2
@@ -79,6 +85,7 @@ clients:
         - AS3329:AS-TO-AIX
       max_prefix:
         limit_ipv4: 500
+        limit_ipv6: 30
   description: Vodafone
   ip: 176.126.38.32
 - asn: 3329
@@ -88,6 +95,7 @@ clients:
         as_sets:
         - AS3329:AS-TO-AIX
       max_prefix:
+        limit_ipv4: 150
         limit_ipv6: 500
   description: Vodafone
   ip: 2001:7f8:6e::32
@@ -99,6 +107,7 @@ clients:
         - AS5408:AS-TO-AIX
       max_prefix:
         limit_ipv4: 200
+        limit_ipv6: 20
   description: Greek Research & Technology Network
   ip: 176.126.38.1
 - asn: 5408
@@ -108,6 +117,7 @@ clients:
         as_sets:
         - AS5408:AS-TO-AIX
       max_prefix:
+        limit_ipv4: 400
         limit_ipv6: 200
   description: Greek Research & Technology Network
   ip: 2001:7f8:6e::1
@@ -119,6 +129,7 @@ clients:
         - AS5408:AS-TO-AIX
       max_prefix:
         limit_ipv4: 200
+        limit_ipv6: 20
   description: Greek Research & Technology Network
   ip: 176.126.38.31
 - asn: 5408
@@ -128,6 +139,7 @@ clients:
         as_sets:
         - AS5408:AS-TO-AIX
       max_prefix:
+        limit_ipv4: 400
         limit_ipv6: 200
   description: Greek Research & Technology Network
   ip: 2001:7f8:6e::31
@@ -139,6 +151,7 @@ clients:
         - AS-RIOT
       max_prefix:
         limit_ipv4: 500
+        limit_ipv6: 3
   description: Riot Games
   ip: 176.126.38.29
 - asn: 6507
@@ -148,6 +161,7 @@ clients:
         as_sets:
         - AS-RIOT
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 500
   description: Riot Games
   ip: 2001:7f8:6e::29
@@ -159,6 +173,7 @@ clients:
         - AS6799:AS-TO-AIX
       max_prefix:
         limit_ipv4: 300
+        limit_ipv6: 15
   description: OTE
   ip: 176.126.38.34
 - asn: 6799
@@ -168,6 +183,7 @@ clients:
         as_sets:
         - AS6799:AS-TO-AIX
       max_prefix:
+        limit_ipv4: 200
         limit_ipv6: 300
   description: OTE
   ip: 2001:7f8:6e::34
@@ -179,6 +195,7 @@ clients:
         - AS6799:AS-TO-AIX
       max_prefix:
         limit_ipv4: 300
+        limit_ipv6: 15
   description: OTE
   ip: 176.126.38.24
 - asn: 6799
@@ -188,6 +205,7 @@ clients:
         as_sets:
         - AS6799:AS-TO-AIX
       max_prefix:
+        limit_ipv4: 200
         limit_ipv6: 300
   description: OTE
   ip: 2001:7f8:6e::24
@@ -199,6 +217,7 @@ clients:
         - AS-CYTAHELLAS
       max_prefix:
         limit_ipv4: 2000
+        limit_ipv6: 40
   description: Cyta Hellas
   ip: 176.126.38.37
 - asn: 6866
@@ -208,6 +227,7 @@ clients:
         as_sets:
         - AS-CYTAHELLAS
       max_prefix:
+        limit_ipv4: 800
         limit_ipv6: 2000
   description: Cyta Hellas
   ip: 2001:7f8:6e::37
@@ -219,6 +239,7 @@ clients:
         - AS-MICROSOFT
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 250
   description: Microsoft
   ip: 176.126.38.18
 - asn: 8075
@@ -228,6 +249,7 @@ clients:
         as_sets:
         - AS-MICROSOFT
       max_prefix:
+        limit_ipv4: 1000
         limit_ipv6: 100
   description: Microsoft
   ip: 2001:7f8:6e::18
@@ -239,6 +261,7 @@ clients:
         - AS-MICROSOFT
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 250
   description: Microsoft
   ip: 176.126.38.28
 - asn: 8075
@@ -248,6 +271,7 @@ clients:
         as_sets:
         - AS-MICROSOFT
       max_prefix:
+        limit_ipv4: 1000
         limit_ipv6: 100
   description: Microsoft
   ip: 2001:7f8:6e::28
@@ -279,6 +303,7 @@ clients:
         - AS-CLOUDFLARE
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 100
   description: CloudFlare
   ip: 176.126.38.5
 - asn: 13335
@@ -288,6 +313,7 @@ clients:
         as_sets:
         - AS-CLOUDFLARE
       max_prefix:
+        limit_ipv4: 500
         limit_ipv6: 100
   description: CloudFlare
   ip: 2001:7f8:6e::5
@@ -299,6 +325,7 @@ clients:
         - AS15544:AS-TO-AIX
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: Dataways
   ip: 176.126.38.8
 - asn: 15544
@@ -308,6 +335,7 @@ clients:
         as_sets:
         - AS15544:AS-TO-AIX
       max_prefix:
+        limit_ipv4: 30
         limit_ipv6: 100
   description: Dataways
   ip: 2001:7f8:6e::8
@@ -319,6 +347,7 @@ clients:
         - AS15544:AS-TO-AIX
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: Dataways
   ip: 176.126.38.38
 - asn: 15544
@@ -328,6 +357,7 @@ clients:
         as_sets:
         - AS15544:AS-TO-AIX
       max_prefix:
+        limit_ipv4: 30
         limit_ipv6: 100
   description: Dataways
   ip: 2001:7f8:6e::38
@@ -339,6 +369,7 @@ clients:
         - AS25152
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: K-root nameserver (operated by RIPE)
   ip: 176.126.38.125
 - asn: 25152
@@ -348,6 +379,7 @@ clients:
         as_sets:
         - AS25152
       max_prefix:
+        limit_ipv4: 5
         limit_ipv6: 100
   description: K-root nameserver (operated by RIPE)
   ip: 2001:7f8:6e::125
@@ -359,6 +391,7 @@ clients:
         - AS25472:AS-TO-AIX
       max_prefix:
         limit_ipv4: 300
+        limit_ipv6: 1
   description: Wind
   ip: 176.126.38.9
 - asn: 25472
@@ -368,6 +401,7 @@ clients:
         as_sets:
         - AS25472:AS-TO-AIX
       max_prefix:
+        limit_ipv4: 60
         limit_ipv6: 300
   description: Wind
   ip: 2001:7f8:6e::9
@@ -379,6 +413,7 @@ clients:
         - AS25472:AS-TO-AIX
       max_prefix:
         limit_ipv4: 300
+        limit_ipv6: 1
   description: Wind
   ip: 176.126.38.19
 - asn: 25472
@@ -388,6 +423,7 @@ clients:
         as_sets:
         - AS25472:AS-TO-AIX
       max_prefix:
+        limit_ipv4: 60
         limit_ipv6: 300
   description: Wind
   ip: 2001:7f8:6e::19
@@ -399,6 +435,7 @@ clients:
         - AS26415
       max_prefix:
         limit_ipv4: 10
+        limit_ipv6: 50
   description: Verisign Internet Resolution Service
   ip: 176.126.38.124
 - asn: 26415
@@ -408,6 +445,7 @@ clients:
         as_sets:
         - AS26415
       max_prefix:
+        limit_ipv4: 300
         limit_ipv6: 10
   description: Verisign Internet Resolution Service
   ip: 2001:7f8:6e::124
@@ -419,6 +457,7 @@ clients:
         - AS48053
       max_prefix:
         limit_ipv4: 10
+        limit_ipv6: 1
   description: Foundation for Research & Technology - Hellas
   ip: 176.126.38.25
 - asn: 48053
@@ -428,6 +467,7 @@ clients:
         as_sets:
         - AS48053
       max_prefix:
+        limit_ipv4: 1
         limit_ipv6: 10
   description: Foundation for Research & Technology - Hellas
   ip: 2001:7f8:6e::25
@@ -447,6 +487,8 @@ clients:
       irrdb:
         as_sets:
         - AS50520
+      max_prefix:
+        limit_ipv4: 4
   description: Hostmein
   ip: 176.126.38.6
 - asn: 50520
@@ -455,6 +497,8 @@ clients:
       irrdb:
         as_sets:
         - AS50520
+      max_prefix:
+        limit_ipv4: 4
   description: Hostmein
   ip: 2001:7f8:6e::6
 - asn: 50520
@@ -463,6 +507,8 @@ clients:
       irrdb:
         as_sets:
         - AS50520
+      max_prefix:
+        limit_ipv4: 4
   description: Hostmein
   ip: 176.126.38.26
 - asn: 50520
@@ -471,6 +517,8 @@ clients:
       irrdb:
         as_sets:
         - AS50520
+      max_prefix:
+        limit_ipv4: 4
   description: Hostmein
   ip: 2001:7f8:6e::26
 - asn: 56910
@@ -481,6 +529,7 @@ clients:
         - AS56910:AS-TO-AIX
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 1
   description: Lamda Hellix
   ip: 176.126.38.13
 - asn: 56910
@@ -490,6 +539,7 @@ clients:
         as_sets:
         - AS56910:AS-TO-AIX
       max_prefix:
+        limit_ipv4: 15
         limit_ipv6: 100
   description: Lamda Hellix
   ip: 2001:7f8:6e::13
@@ -501,6 +551,7 @@ clients:
         - AS56910:AS-TO-AIX
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 1
   description: Lamda Hellix
   ip: 176.126.38.43
 - asn: 56910
@@ -510,6 +561,7 @@ clients:
         as_sets:
         - AS56910:AS-TO-AIX
       max_prefix:
+        limit_ipv4: 15
         limit_ipv6: 100
   description: Lamda Hellix
   ip: 2001:7f8:6e::43
@@ -519,6 +571,9 @@ clients:
       irrdb:
         as_sets:
         - AS-NETIX-INT
+      max_prefix:
+        limit_ipv4: 2500
+        limit_ipv6: 125
   description: Netix
   ip: 176.126.38.4
 - asn: 57463
@@ -527,6 +582,9 @@ clients:
       irrdb:
         as_sets:
         - AS-NETIX-INT
+      max_prefix:
+        limit_ipv4: 2500
+        limit_ipv6: 125
   description: Netix
   ip: 2001:7f8:6e::4
 - asn: 60725
@@ -537,6 +595,7 @@ clients:
         - AS-O3B
       max_prefix:
         limit_ipv4: 300
+        limit_ipv6: 18
   description: O3B Networks
   ip: 176.126.38.17
 - asn: 197580
@@ -547,6 +606,7 @@ clients:
         - AS197580:AS-TO-AIX
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 100
   description: Connecticore
   ip: 176.126.38.16
 - asn: 197580
@@ -556,6 +616,7 @@ clients:
         as_sets:
         - AS197580:AS-TO-AIX
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 100
   description: Connecticore
   ip: 2001:7f8:6e::16
@@ -585,6 +646,8 @@ clients:
       irrdb:
         as_sets:
         - AS199246
+      max_prefix:
+        limit_ipv4: 3
   description: Top.Host
   ip: 176.126.38.27
 - asn: 199246
@@ -593,6 +656,8 @@ clients:
       irrdb:
         as_sets:
         - AS199246
+      max_prefix:
+        limit_ipv4: 3
   description: Top.Host
   ip: 2001:7f8:6e::27
 - asn: 199246
@@ -601,6 +666,8 @@ clients:
       irrdb:
         as_sets:
         - AS199246
+      max_prefix:
+        limit_ipv4: 3
   description: Top.Host
   ip: 176.126.38.57
 - asn: 199246
@@ -609,6 +676,8 @@ clients:
       irrdb:
         as_sets:
         - AS199246
+      max_prefix:
+        limit_ipv4: 3
   description: Top.Host
   ip: 2001:7f8:6e::57
 - asn: 199399
@@ -665,6 +734,8 @@ clients:
       irrdb:
         as_sets:
         - AS202042:AS-TO-AIX
+      max_prefix:
+        limit_ipv4: 4
   description: skroutz
   ip: 176.126.38.11
 - asn: 202042
@@ -673,6 +744,8 @@ clients:
       irrdb:
         as_sets:
         - AS202042:AS-TO-AIX
+      max_prefix:
+        limit_ipv4: 4
   description: skroutz
   ip: 2001:7f8:6e::11
 - asn: 202042
@@ -681,6 +754,8 @@ clients:
       irrdb:
         as_sets:
         - AS202042:AS-TO-AIX
+      max_prefix:
+        limit_ipv4: 4
   description: skroutz
   ip: 176.126.38.41
 - asn: 202042
@@ -689,6 +764,8 @@ clients:
       irrdb:
         as_sets:
         - AS202042:AS-TO-AIX
+      max_prefix:
+        limit_ipv4: 4
   description: skroutz
   ip: 2001:7f8:6e::41
 - asn: 203348
@@ -699,6 +776,7 @@ clients:
         - AS203348
       max_prefix:
         limit_ipv4: 10
+        limit_ipv6: 1
   description: Hellenic Telecommunications and Post Commission
   ip: 176.126.38.23
 - asn: 203348
@@ -708,6 +786,7 @@ clients:
         as_sets:
         - AS203348
       max_prefix:
+        limit_ipv4: 1
         limit_ipv6: 10
   description: Hellenic Telecommunications and Post Commission
   ip: 2001:7f8:6e::23

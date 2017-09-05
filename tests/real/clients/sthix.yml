@@ -1,4 +1,4 @@
-# Data fetched from https://portal.sthix.net/api/v4/member-export/ixf/0.6 at 2017-08-30T16:21:19.230061 UTC
+# Data fetched from https://portal.sthix.net/api/v4/member-export/ixf/0.6 at 2017-09-05T18:44:39.917017 UTC
 # IXP ID: 1
 clients:
 - asn: 250
@@ -7,6 +7,8 @@ clients:
       irrdb:
         as_sets:
         - AS250:AS-CUMULATIVE
+      max_prefix:
+        limit_ipv4: 5
   ip: 192.121.80.235
 - asn: 250
   cfg:
@@ -14,6 +16,8 @@ clients:
       irrdb:
         as_sets:
         - AS250:AS-CUMULATIVE
+      max_prefix:
+        limit_ipv4: 5
   ip: 2001:7f8:3e:0:a500:0:250:1
 - asn: 2603
   cfg:
@@ -21,6 +25,9 @@ clients:
       irrdb:
         as_sets:
         - AS-NORDUNET
+      max_prefix:
+        limit_ipv4: 7000
+        limit_ipv6: 600
   ip: 192.121.80.45
 - asn: 2603
   cfg:
@@ -28,6 +35,9 @@ clients:
       irrdb:
         as_sets:
         - AS-NORDUNET
+      max_prefix:
+        limit_ipv4: 7000
+        limit_ipv6: 600
   ip: 2001:7f8:3e:0:a500:0:2603:1
 - asn: 2603
   cfg:
@@ -35,6 +45,9 @@ clients:
       irrdb:
         as_sets:
         - AS-NORDUNET
+      max_prefix:
+        limit_ipv4: 7000
+        limit_ipv6: 600
   ip: 192.121.80.74
 - asn: 2603
   cfg:
@@ -42,6 +55,9 @@ clients:
       irrdb:
         as_sets:
         - AS-NORDUNET
+      max_prefix:
+        limit_ipv4: 7000
+        limit_ipv6: 600
   ip: 2001:7f8:3e:0:a500:0:2603:2
 - asn: 2863
   cfg:
@@ -49,6 +65,8 @@ clients:
       irrdb:
         as_sets:
         - AS-SPRITELINK
+      max_prefix:
+        limit_ipv4: 1
   ip: 192.121.80.144
 - asn: 2863
   cfg:
@@ -56,6 +74,8 @@ clients:
       irrdb:
         as_sets:
         - AS-SPRITELINK
+      max_prefix:
+        limit_ipv4: 1
   ip: 2001:7f8:3e:0:a500:0:2863:1
 - asn: 2906
   cfg:
@@ -63,6 +83,9 @@ clients:
       irrdb:
         as_sets:
         - AS-NFLX
+      max_prefix:
+        limit_ipv4: 250
+        limit_ipv6: 13
   ip: 192.121.80.237
 - asn: 2906
   cfg:
@@ -70,6 +93,9 @@ clients:
       irrdb:
         as_sets:
         - AS-NFLX
+      max_prefix:
+        limit_ipv4: 250
+        limit_ipv6: 13
   ip: 2001:7f8:3e:0:a500:0:2906:1
 - asn: 2906
   cfg:
@@ -77,6 +103,9 @@ clients:
       irrdb:
         as_sets:
         - AS-NFLX
+      max_prefix:
+        limit_ipv4: 250
+        limit_ipv6: 13
   ip: 192.121.80.33
 - asn: 2906
   cfg:
@@ -84,6 +113,9 @@ clients:
       irrdb:
         as_sets:
         - AS-NFLX
+      max_prefix:
+        limit_ipv4: 250
+        limit_ipv6: 13
   ip: 2001:7f8:3e:0:a500:0:2906:2
 - asn: 6507
   cfg:
@@ -91,6 +123,9 @@ clients:
       irrdb:
         as_sets:
         - AS-RIOT
+      max_prefix:
+        limit_ipv4: 50
+        limit_ipv6: 3
   ip: 192.121.80.35
 - asn: 6507
   cfg:
@@ -98,6 +133,9 @@ clients:
       irrdb:
         as_sets:
         - AS-RIOT
+      max_prefix:
+        limit_ipv4: 50
+        limit_ipv6: 3
   ip: 2001:7f8:3e:0:a500:0:6507:1
 - asn: 6667
   cfg:
@@ -105,6 +143,9 @@ clients:
       irrdb:
         as_sets:
         - AS-EUNETIP
+      max_prefix:
+        limit_ipv4: 750
+        limit_ipv6: 100
   ip: 192.121.80.213
 - asn: 6667
   cfg:
@@ -112,6 +153,9 @@ clients:
       irrdb:
         as_sets:
         - AS-EUNETIP
+      max_prefix:
+        limit_ipv4: 750
+        limit_ipv6: 100
   ip: 2001:7f8:3e:0:a500:0:6667:1
 - asn: 6762
   cfg:
@@ -119,6 +163,9 @@ clients:
       irrdb:
         as_sets:
         - AS-SEABONE
+      max_prefix:
+        limit_ipv4: 140000
+        limit_ipv6: 2650
   ip: 192.121.80.63
 - asn: 6762
   cfg:
@@ -126,6 +173,9 @@ clients:
       irrdb:
         as_sets:
         - AS-SEABONE
+      max_prefix:
+        limit_ipv4: 140000
+        limit_ipv6: 2650
   ip: 2001:7f8:3e:0:a500:0:6762:1
 - asn: 6939
   cfg:
@@ -133,6 +183,9 @@ clients:
       irrdb:
         as_sets:
         - AS-HURRICANE
+      max_prefix:
+        limit_ipv4: 165000
+        limit_ipv6: 25000
   ip: 192.121.80.162
 - asn: 6939
   cfg:
@@ -140,6 +193,9 @@ clients:
       irrdb:
         as_sets:
         - AS-HURRICANEv6
+      max_prefix:
+        limit_ipv4: 165000
+        limit_ipv6: 25000
   ip: 2001:7f8:3e:0:a500:0:6939:1
 - asn: 8075
   cfg:
@@ -147,6 +203,9 @@ clients:
       irrdb:
         as_sets:
         - AS-MICROSOFT
+      max_prefix:
+        limit_ipv4: 1000
+        limit_ipv6: 250
   ip: 192.121.80.59
 - asn: 8075
   cfg:
@@ -154,6 +213,9 @@ clients:
       irrdb:
         as_sets:
         - AS-MICROSOFT
+      max_prefix:
+        limit_ipv4: 1000
+        limit_ipv6: 250
   ip: 2001:7f8:3e:0:a500:0:8075:1
 - asn: 8403
   cfg:
@@ -161,6 +223,9 @@ clients:
       irrdb:
         as_sets:
         - AS-SPOTIFY
+      max_prefix:
+        limit_ipv4: 50
+        limit_ipv6: 3
   ip: 192.121.80.70
 - asn: 8403
   cfg:
@@ -168,6 +233,9 @@ clients:
       irrdb:
         as_sets:
         - AS-SPOTIFY
+      max_prefix:
+        limit_ipv4: 50
+        limit_ipv6: 3
   ip: 2001:7f8:3e:0:a500:0:8403:1
 - asn: 8674
   cfg:
@@ -175,6 +243,9 @@ clients:
       irrdb:
         as_sets:
         - AS-NETNOD-ANYCAST
+      max_prefix:
+        limit_ipv4: 500
+        limit_ipv6: 25
   ip: 192.121.80.73
 - asn: 8674
   cfg:
@@ -182,6 +253,9 @@ clients:
       irrdb:
         as_sets:
         - AS-NETNOD-ANYCAST
+      max_prefix:
+        limit_ipv4: 500
+        limit_ipv6: 25
   ip: 2001:7f8:3e:0:a500:0:8674:1
 - asn: 8896
   cfg:
@@ -189,6 +263,9 @@ clients:
       irrdb:
         as_sets:
         - AS-XFIBER
+      max_prefix:
+        limit_ipv4: 80
+        limit_ipv6: 20
   ip: 192.121.80.170
 - asn: 8896
   cfg:
@@ -196,6 +273,9 @@ clients:
       irrdb:
         as_sets:
         - AS-XFIBER
+      max_prefix:
+        limit_ipv4: 80
+        limit_ipv6: 20
   ip: 2001:7f8:3e:0:a500:0:8896:1
 - asn: 12381
   cfg:
@@ -203,6 +283,9 @@ clients:
       irrdb:
         as_sets:
         - AS-RESILANS
+      max_prefix:
+        limit_ipv4: 15
+        limit_ipv6: 1
   ip: 192.121.80.147
 - asn: 12381
   cfg:
@@ -210,6 +293,9 @@ clients:
       irrdb:
         as_sets:
         - AS-RESILANS
+      max_prefix:
+        limit_ipv4: 15
+        limit_ipv6: 1
   ip: 2001:7f8:3e:0:a500:1:2381:1
 - asn: 12578
   cfg:
@@ -217,6 +303,9 @@ clients:
       irrdb:
         as_sets:
         - AS-LATTELEKOM
+      max_prefix:
+        limit_ipv4: 900
+        limit_ipv6: 45
   ip: 192.121.80.38
 - asn: 12578
   cfg:
@@ -224,6 +313,9 @@ clients:
       irrdb:
         as_sets:
         - AS-LATTELEKOM
+      max_prefix:
+        limit_ipv4: 900
+        limit_ipv6: 45
   ip: 2001:7f8:3e:0:a500:1:2578:1
 - asn: 12597
   cfg:
@@ -231,6 +323,9 @@ clients:
       irrdb:
         as_sets:
         - AS-GOTANET
+      max_prefix:
+        limit_ipv4: 30
+        limit_ipv6: 5
   ip: 192.121.80.173
 - asn: 12597
   cfg:
@@ -238,6 +333,9 @@ clients:
       irrdb:
         as_sets:
         - AS-GOTANET
+      max_prefix:
+        limit_ipv4: 30
+        limit_ipv6: 5
   ip: 2001:7f8:3e:0:a500:1:2597:1
 - asn: 12939
   cfg:
@@ -259,6 +357,9 @@ clients:
       irrdb:
         as_sets:
         - AS13335
+      max_prefix:
+        limit_ipv4: 500
+        limit_ipv6: 100
   ip: 192.121.80.23
 - asn: 13335
   cfg:
@@ -266,6 +367,9 @@ clients:
       irrdb:
         as_sets:
         - AS13335
+      max_prefix:
+        limit_ipv4: 500
+        limit_ipv6: 100
   ip: 2001:7f8:3e:0:a500:1:3335:1
 - asn: 15169
   cfg:
@@ -273,6 +377,9 @@ clients:
       irrdb:
         as_sets:
         - AS-GOOGLE
+      max_prefix:
+        limit_ipv4: 15000
+        limit_ipv6: 750
   ip: 192.121.80.47
 - asn: 15169
   cfg:
@@ -280,6 +387,9 @@ clients:
       irrdb:
         as_sets:
         - AS-GOOGLE
+      max_prefix:
+        limit_ipv4: 15000
+        limit_ipv6: 750
   ip: 2001:7f8:3e:0:a500:1:5169:1
 - asn: 15830
   cfg:
@@ -287,6 +397,9 @@ clients:
       irrdb:
         as_sets:
         - AS-TELECITYGROUP
+      max_prefix:
+        limit_ipv4: 500
+        limit_ipv6: 60
   ip: 192.121.80.207
 - asn: 15830
   cfg:
@@ -294,6 +407,9 @@ clients:
       irrdb:
         as_sets:
         - AS-TELECITYGROUP
+      max_prefix:
+        limit_ipv4: 500
+        limit_ipv6: 60
   ip: 2001:7f8:3e:0:a500:1:5830:1
 - asn: 16086
   cfg:
@@ -301,6 +417,9 @@ clients:
       irrdb:
         as_sets:
         - AS16086:AS-CUST
+      max_prefix:
+        limit_ipv4: 800
+        limit_ipv6: 100
   ip: 192.121.80.248
 - asn: 16086
   cfg:
@@ -308,6 +427,9 @@ clients:
       irrdb:
         as_sets:
         - AS16086:AS-CUST
+      max_prefix:
+        limit_ipv4: 800
+        limit_ipv6: 100
   ip: 2001:7f8:3e:0:a500:1:6086:1
 - asn: 16086
   cfg:
@@ -315,6 +437,9 @@ clients:
       irrdb:
         as_sets:
         - AS16086:AS-CUST
+      max_prefix:
+        limit_ipv4: 800
+        limit_ipv6: 100
   ip: 192.121.80.54
 - asn: 16086
   cfg:
@@ -322,6 +447,9 @@ clients:
       irrdb:
         as_sets:
         - AS16086:AS-CUST
+      max_prefix:
+        limit_ipv4: 800
+        limit_ipv6: 100
   ip: 2001:7f8:3e:0:a500:1:6086:2
 - asn: 16265
   cfg:
@@ -329,6 +457,9 @@ clients:
       irrdb:
         as_sets:
         - AS-FIBERRING-BB
+      max_prefix:
+        limit_ipv4: 350
+        limit_ipv6: 100
   ip: 192.121.80.32
 - asn: 16265
   cfg:
@@ -336,6 +467,9 @@ clients:
       irrdb:
         as_sets:
         - AS-FIBERRING-BB
+      max_prefix:
+        limit_ipv4: 350
+        limit_ipv6: 100
   ip: 2001:7f8:3e:0:a500:1:6265:1
 - asn: 20940
   cfg:
@@ -343,6 +477,9 @@ clients:
       irrdb:
         as_sets:
         - AS-AKAMAI
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 20
   ip: 192.121.80.57
 - asn: 20940
   cfg:
@@ -350,6 +487,9 @@ clients:
       irrdb:
         as_sets:
         - AS-AKAMAI
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 20
   ip: 2001:7f8:3e:0:a500:2:0940:1
 - asn: 21195
   cfg:
@@ -357,6 +497,9 @@ clients:
       irrdb:
         as_sets:
         - AS-DGCSYSTEMS
+      max_prefix:
+        limit_ipv4: 250
+        limit_ipv6: 50
   ip: 192.121.80.217
 - asn: 21195
   cfg:
@@ -364,6 +507,9 @@ clients:
       irrdb:
         as_sets:
         - AS-DGCSYSTEMS
+      max_prefix:
+        limit_ipv4: 250
+        limit_ipv6: 50
   ip: 2001:7f8:3e:0:a500:2:1195:1
 - asn: 21227
   cfg:
@@ -385,6 +531,9 @@ clients:
       irrdb:
         as_sets:
         - AS-TYFON
+      max_prefix:
+        limit_ipv4: 20
+        limit_ipv6: 1
   ip: 192.121.80.138
 - asn: 21250
   cfg:
@@ -392,6 +541,9 @@ clients:
       irrdb:
         as_sets:
         - AS-TYFON
+      max_prefix:
+        limit_ipv4: 20
+        limit_ipv6: 1
   ip: 2001:7f8:3e:0:a500:2:1250:1
 - asn: 21485
   cfg:
@@ -399,6 +551,9 @@ clients:
       irrdb:
         as_sets:
         - AS-FOILHAT
+      max_prefix:
+        limit_ipv4: 35
+        limit_ipv6: 15
   ip: 192.121.80.44
 - asn: 21485
   cfg:
@@ -406,6 +561,9 @@ clients:
       irrdb:
         as_sets:
         - AS-FOILHAT
+      max_prefix:
+        limit_ipv4: 35
+        limit_ipv6: 15
   ip: 2001:7f8:3e:0:a500:2:1485:1
 - asn: 24668
   cfg:
@@ -441,6 +599,9 @@ clients:
       irrdb:
         as_sets:
         - AS-HETZNER
+      max_prefix:
+        limit_ipv4: 500
+        limit_ipv6: 100
   ip: 192.121.80.78
 - asn: 24940
   cfg:
@@ -448,6 +609,9 @@ clients:
       irrdb:
         as_sets:
         - AS-HETZNER
+      max_prefix:
+        limit_ipv4: 500
+        limit_ipv6: 100
   ip: 2001:7f8:3e:0:a500:2:4940:1
 - asn: 25473
   cfg:
@@ -455,6 +619,9 @@ clients:
       irrdb:
         as_sets:
         - AS-SYSTEAM
+      max_prefix:
+        limit_ipv4: 21
+        limit_ipv6: 2
   ip: 192.121.80.141
 - asn: 25473
   cfg:
@@ -462,6 +629,9 @@ clients:
       irrdb:
         as_sets:
         - AS-SYSTEAM
+      max_prefix:
+        limit_ipv4: 21
+        limit_ipv6: 2
   ip: 2001:7f8:3e:0:a500:2:5473:1
 - asn: 28908
   cfg:
@@ -469,6 +639,9 @@ clients:
       irrdb:
         as_sets:
         - AS-T3
+      max_prefix:
+        limit_ipv4: 1000
+        limit_ipv6: 250
   ip: 192.121.80.176
 - asn: 28908
   cfg:
@@ -476,6 +649,9 @@ clients:
       irrdb:
         as_sets:
         - AS-T3
+      max_prefix:
+        limit_ipv4: 1000
+        limit_ipv6: 250
   ip: 2001:7f8:3e:0:a500:2:8908:1
 - asn: 28931
   cfg:
@@ -483,6 +659,9 @@ clients:
       irrdb:
         as_sets:
         - AS-TRIOPTIMA
+      max_prefix:
+        limit_ipv4: 1
+        limit_ipv6: 1
   ip: 192.121.80.64
 - asn: 28931
   cfg:
@@ -490,6 +669,9 @@ clients:
       irrdb:
         as_sets:
         - AS-TRIOPTIMA
+      max_prefix:
+        limit_ipv4: 1
+        limit_ipv6: 1
   ip: 2001:7f8:3e:0:a500:2:8931:1
 - asn: 28931
   cfg:
@@ -497,6 +679,9 @@ clients:
       irrdb:
         as_sets:
         - AS-TRIOPTIMA
+      max_prefix:
+        limit_ipv4: 1
+        limit_ipv6: 1
   ip: 192.121.80.65
 - asn: 28931
   cfg:
@@ -504,6 +689,9 @@ clients:
       irrdb:
         as_sets:
         - AS-TRIOPTIMA
+      max_prefix:
+        limit_ipv4: 1
+        limit_ipv6: 1
   ip: 2001:7f8:3e:0:a500:2:8931:2
 - asn: 30880
   cfg:
@@ -511,6 +699,9 @@ clients:
       irrdb:
         as_sets:
         - AS-SPACEDUMP
+      max_prefix:
+        limit_ipv4: 30
+        limit_ipv6: 2
   ip: 192.121.80.132
 - asn: 30880
   cfg:
@@ -518,6 +709,9 @@ clients:
       irrdb:
         as_sets:
         - AS-SPACEDUMP
+      max_prefix:
+        limit_ipv4: 30
+        limit_ipv6: 2
   ip: 2001:7f8:3e:0:a500:3:0880:1
 - asn: 30880
   cfg:
@@ -525,6 +719,9 @@ clients:
       irrdb:
         as_sets:
         - AS-SPACEDUMP
+      max_prefix:
+        limit_ipv4: 30
+        limit_ipv6: 2
   ip: 192.121.80.156
 - asn: 30880
   cfg:
@@ -532,6 +729,9 @@ clients:
       irrdb:
         as_sets:
         - AS-SPACEDUMP
+      max_prefix:
+        limit_ipv4: 30
+        limit_ipv6: 2
   ip: 2001:7f8:3e:0:a500:3:0880:3
 - asn: 30880
   cfg:
@@ -539,6 +739,9 @@ clients:
       irrdb:
         as_sets:
         - AS-SPACEDUMP
+      max_prefix:
+        limit_ipv4: 30
+        limit_ipv6: 2
   ip: 192.121.80.171
 - asn: 30880
   cfg:
@@ -546,6 +749,9 @@ clients:
       irrdb:
         as_sets:
         - AS-SPACEDUMP
+      max_prefix:
+        limit_ipv4: 30
+        limit_ipv6: 2
   ip: 2001:7f8:3e:0:a500:3:0880:2
 - asn: 31027
   cfg:
@@ -553,6 +759,9 @@ clients:
       irrdb:
         as_sets:
         - AS-NIANET
+      max_prefix:
+        limit_ipv4: 500
+        limit_ipv6: 50
   ip: 192.121.80.211
 - asn: 31027
   cfg:
@@ -560,6 +769,9 @@ clients:
       irrdb:
         as_sets:
         - AS-NIANET
+      max_prefix:
+        limit_ipv4: 500
+        limit_ipv6: 50
   ip: 2001:7f8:3e:0:a500:3:1027:1
 - asn: 32590
   cfg:
@@ -567,6 +779,9 @@ clients:
       irrdb:
         as_sets:
         - AS-VALVE
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 50
   ip: 192.121.80.243
 - asn: 32590
   cfg:
@@ -574,6 +789,9 @@ clients:
       irrdb:
         as_sets:
         - AS-VALVE
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 50
   ip: 2001:7f8:3e:0:a500:3:2590:1
 - asn: 32590
   cfg:
@@ -581,6 +799,9 @@ clients:
       irrdb:
         as_sets:
         - AS-VALVE
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 50
   ip: 192.121.80.48
 - asn: 32590
   cfg:
@@ -588,6 +809,9 @@ clients:
       irrdb:
         as_sets:
         - AS-VALVE
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 50
   ip: 2001:7f8:3e:0:a500:3:2590:2
 - asn: 32934
   cfg:
@@ -595,6 +819,9 @@ clients:
       irrdb:
         as_sets:
         - AS-FACEBOOK
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 100
   ip: 192.121.80.76
 - asn: 32934
   cfg:
@@ -602,6 +829,9 @@ clients:
       irrdb:
         as_sets:
         - AS-FACEBOOK
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 100
   ip: 2001:7f8:3e:0:a500:3:2934:1
 - asn: 32934
   cfg:
@@ -609,6 +839,9 @@ clients:
       irrdb:
         as_sets:
         - AS-FACEBOOK
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 100
   ip: 192.121.80.77
 - asn: 32934
   cfg:
@@ -616,6 +849,9 @@ clients:
       irrdb:
         as_sets:
         - AS-FACEBOOK
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 100
   ip: 2001:7f8:3e:0:a500:3:2934:2
 - asn: 33886
   cfg:
@@ -623,6 +859,9 @@ clients:
       irrdb:
         as_sets:
         - AS33886
+      max_prefix:
+        limit_ipv4: 1
+        limit_ipv6: 1
   ip: 192.121.80.129
 - asn: 33886
   cfg:
@@ -630,6 +869,9 @@ clients:
       irrdb:
         as_sets:
         - AS33886
+      max_prefix:
+        limit_ipv4: 1
+        limit_ipv6: 1
   ip: 2001:7f8:3e:0:a500:3:3886:1
 - asn: 33886
   cfg:
@@ -637,6 +879,9 @@ clients:
       irrdb:
         as_sets:
         - AS33886
+      max_prefix:
+        limit_ipv4: 1
+        limit_ipv6: 1
   ip: 192.121.80.130
 - asn: 33886
   cfg:
@@ -644,6 +889,9 @@ clients:
       irrdb:
         as_sets:
         - AS33886
+      max_prefix:
+        limit_ipv4: 1
+        limit_ipv6: 1
   ip: 2001:7f8:3e:0:a500:3:3886:2
 - asn: 33891
   cfg:
@@ -651,6 +899,9 @@ clients:
       irrdb:
         as_sets:
         - AS-CORE-BACKBONE
+      max_prefix:
+        limit_ipv4: 5000
+        limit_ipv6: 1000
   ip: 192.121.80.18
 - asn: 33891
   cfg:
@@ -658,6 +909,9 @@ clients:
       irrdb:
         as_sets:
         - AS-CORE-BACKBONE
+      max_prefix:
+        limit_ipv4: 5000
+        limit_ipv6: 1000
   ip: 2001:7f8:3e:0:a500:3:3891:1
 - asn: 34087
   cfg:
@@ -665,6 +919,9 @@ clients:
       irrdb:
         as_sets:
         - AS-NTE
+      max_prefix:
+        limit_ipv4: 25
+        limit_ipv6: 3
   ip: 192.121.80.75
 - asn: 34087
   cfg:
@@ -672,6 +929,9 @@ clients:
       irrdb:
         as_sets:
         - AS-NTE
+      max_prefix:
+        limit_ipv4: 25
+        limit_ipv6: 3
   ip: 2001:7f8:3e:0:a500:3:4087:1
 - asn: 34610
   cfg:
@@ -679,6 +939,8 @@ clients:
       irrdb:
         as_sets:
         - AS-RIKSNET
+      max_prefix:
+        limit_ipv4: 5
   ip: 192.121.80.194
 - asn: 34610
   cfg:
@@ -686,6 +948,8 @@ clients:
       irrdb:
         as_sets:
         - AS-RIKSNET
+      max_prefix:
+        limit_ipv4: 5
   ip: 2001:7f8:3e:0:a500:3:4610:1
 - asn: 37560
   cfg:
@@ -707,6 +971,8 @@ clients:
       irrdb:
         as_sets:
         - AS-FLATTR
+      max_prefix:
+        limit_ipv4: 5
   ip: 192.121.80.159
 - asn: 39287
   cfg:
@@ -714,6 +980,8 @@ clients:
       irrdb:
         as_sets:
         - AS-FLATTR
+      max_prefix:
+        limit_ipv4: 5
   ip: 2001:7f8:3e:0:a500:3:9287:1
 - asn: 39351
   cfg:
@@ -721,6 +989,9 @@ clients:
       irrdb:
         as_sets:
         - AS-ESAB
+      max_prefix:
+        limit_ipv4: 10
+        limit_ipv6: 10
   ip: 192.121.80.246
 - asn: 39351
   cfg:
@@ -728,6 +999,9 @@ clients:
       irrdb:
         as_sets:
         - AS-ESAB
+      max_prefix:
+        limit_ipv4: 10
+        limit_ipv6: 10
   ip: 2001:7f8:3e:0:a500:3:9351:1
 - asn: 39651
   cfg:
@@ -735,6 +1009,9 @@ clients:
       irrdb:
         as_sets:
         - AS-COMHEM
+      max_prefix:
+        limit_ipv4: 200
+        limit_ipv6: 10
   ip: 192.121.80.24
 - asn: 39651
   cfg:
@@ -742,6 +1019,9 @@ clients:
       irrdb:
         as_sets:
         - AS-COMHEM
+      max_prefix:
+        limit_ipv4: 200
+        limit_ipv6: 10
   ip: 2001:7f8:3e:0:a500:3:9651:1
 - asn: 39651
   cfg:
@@ -749,6 +1029,9 @@ clients:
       irrdb:
         as_sets:
         - AS-COMHEM
+      max_prefix:
+        limit_ipv4: 200
+        limit_ipv6: 10
   ip: 192.121.80.25
 - asn: 39651
   cfg:
@@ -756,6 +1039,9 @@ clients:
       irrdb:
         as_sets:
         - AS-COMHEM
+      max_prefix:
+        limit_ipv4: 200
+        limit_ipv6: 10
   ip: 2001:7f8:3e:0:a500:3:9651:2
 - asn: 39806
   cfg:
@@ -777,6 +1063,9 @@ clients:
       irrdb:
         as_sets:
         - AS-NETSCALE
+      max_prefix:
+        limit_ipv4: 15
+        limit_ipv6: 1
   ip: 192.121.80.230
 - asn: 41281
   cfg:
@@ -784,13 +1073,33 @@ clients:
       irrdb:
         as_sets:
         - AS-NETSCALE
+      max_prefix:
+        limit_ipv4: 15
+        limit_ipv6: 1
   ip: 2001:7f8:3e:0:a500:4:1281:1
+- asn: 41753
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TELELOCATION
+  ip: 192.121.80.143
+- asn: 41753
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TELELOCATION
+  ip: 2001:7f8:3e:0:a500:4:1753:1
 - asn: 42303
   cfg:
     filtering:
       irrdb:
         as_sets:
         - AS-FD
+      max_prefix:
+        limit_ipv4: 15
+        limit_ipv6: 1
   ip: 192.121.80.189
 - asn: 42303
   cfg:
@@ -798,6 +1107,9 @@ clients:
       irrdb:
         as_sets:
         - AS-FD
+      max_prefix:
+        limit_ipv4: 15
+        limit_ipv6: 1
   ip: 2001:7f8:3e:0:a500:4:2303:1
 - asn: 42303
   cfg:
@@ -805,6 +1117,9 @@ clients:
       irrdb:
         as_sets:
         - AS-FD
+      max_prefix:
+        limit_ipv4: 15
+        limit_ipv6: 1
   ip: 192.121.80.190
 - asn: 42303
   cfg:
@@ -812,6 +1127,9 @@ clients:
       irrdb:
         as_sets:
         - AS-FD
+      max_prefix:
+        limit_ipv4: 15
+        limit_ipv6: 1
   ip: 2001:7f8:3e:0:a500:4:2303:2
 - asn: 42649
   cfg:
@@ -819,6 +1137,9 @@ clients:
       irrdb:
         as_sets:
         - AS-BAFFIN
+      max_prefix:
+        limit_ipv4: 250
+        limit_ipv6: 50
   ip: 192.121.80.79
 - asn: 42649
   cfg:
@@ -826,6 +1147,9 @@ clients:
       irrdb:
         as_sets:
         - AS-BAFFIN
+      max_prefix:
+        limit_ipv4: 250
+        limit_ipv6: 50
   ip: 2001:7f8:3e:0:a500:4:2649:1
 - asn: 42695
   cfg:
@@ -833,6 +1157,9 @@ clients:
       irrdb:
         as_sets:
         - AS-CITYNETWORK
+      max_prefix:
+        limit_ipv4: 60
+        limit_ipv6: 20
   ip: 192.121.80.20
 - asn: 42695
   cfg:
@@ -840,6 +1167,9 @@ clients:
       irrdb:
         as_sets:
         - AS-CITYNETWORK
+      max_prefix:
+        limit_ipv4: 60
+        limit_ipv6: 20
   ip: 2001:7f8:3e:0:a500:4:2695:1
 - asn: 42708
   cfg:
@@ -847,6 +1177,9 @@ clients:
       irrdb:
         as_sets:
         - AS-PORTLANE
+      max_prefix:
+        limit_ipv4: 2000
+        limit_ipv6: 500
   ip: 192.121.80.140
 - asn: 42708
   cfg:
@@ -854,6 +1187,9 @@ clients:
       irrdb:
         as_sets:
         - AS-PORTLANE
+      max_prefix:
+        limit_ipv4: 2000
+        limit_ipv6: 500
   ip: 2001:7f8:3e:0:a500:4:2708:1
 - asn: 43893
   cfg:
@@ -861,6 +1197,9 @@ clients:
       irrdb:
         as_sets:
         - AS-MAINLOOP
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 25
   ip: 192.121.80.154
 - asn: 43893
   cfg:
@@ -868,6 +1207,9 @@ clients:
       irrdb:
         as_sets:
         - AS-MAINLOOP
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 25
   ip: 2001:7f8:3e:0:a500:4:3893:1
 - asn: 43948
   cfg:
@@ -875,6 +1217,9 @@ clients:
       irrdb:
         as_sets:
         - AS-GLESYS
+      max_prefix:
+        limit_ipv4: 200
+        limit_ipv6: 10
   ip: 192.121.80.183
 - asn: 43948
   cfg:
@@ -882,6 +1227,9 @@ clients:
       irrdb:
         as_sets:
         - AS-GLESYS
+      max_prefix:
+        limit_ipv4: 200
+        limit_ipv6: 10
   ip: 2001:7f8:3e:0:a500:4:3948:2
 - asn: 44034
   cfg:
@@ -889,6 +1237,9 @@ clients:
       irrdb:
         as_sets:
         - AS-HI3G
+      max_prefix:
+        limit_ipv4: 20
+        limit_ipv6: 20
   ip: 192.121.80.231
 - asn: 44034
   cfg:
@@ -896,6 +1247,9 @@ clients:
       irrdb:
         as_sets:
         - AS-HI3G
+      max_prefix:
+        limit_ipv4: 20
+        limit_ipv6: 20
   ip: 2001:7f8:3e:0:a500:4:4034:1
 - asn: 44123
   cfg:
@@ -903,6 +1257,8 @@ clients:
       irrdb:
         as_sets:
         - AS-TELAVOX
+      max_prefix:
+        limit_ipv4: 1
   ip: 192.121.80.197
 - asn: 44123
   cfg:
@@ -910,6 +1266,8 @@ clients:
       irrdb:
         as_sets:
         - AS-TELAVOX
+      max_prefix:
+        limit_ipv4: 1
   ip: 2001:7f8:3e:0:a500:4:4123:1
 - asn: 44444
   cfg:
@@ -917,6 +1275,9 @@ clients:
       irrdb:
         as_sets:
         - AS-WHS-EU
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 5
   ip: 192.121.80.68
 - asn: 44444
   cfg:
@@ -924,6 +1285,9 @@ clients:
       irrdb:
         as_sets:
         - AS-WHS-EU
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 5
   ip: 2001:7f8:3e:0:a500:4:4444:1
 - asn: 44581
   cfg:
@@ -931,6 +1295,9 @@ clients:
       irrdb:
         as_sets:
         - AS-ALLTELE
+      max_prefix:
+        limit_ipv4: 1000
+        limit_ipv6: 250
   ip: 192.121.80.148
 - asn: 44581
   cfg:
@@ -938,6 +1305,9 @@ clients:
       irrdb:
         as_sets:
         - AS-ALLTELE
+      max_prefix:
+        limit_ipv4: 1000
+        limit_ipv6: 250
   ip: 2001:7f8:3e:0:a500:4:4581:1
 - asn: 44581
   cfg:
@@ -945,6 +1315,9 @@ clients:
       irrdb:
         as_sets:
         - AS-ALLTELE
+      max_prefix:
+        limit_ipv4: 1000
+        limit_ipv6: 250
   ip: 192.121.80.149
 - asn: 44581
   cfg:
@@ -952,6 +1325,9 @@ clients:
       irrdb:
         as_sets:
         - AS-ALLTELE
+      max_prefix:
+        limit_ipv4: 1000
+        limit_ipv6: 250
   ip: 2001:7f8:3e:0:a500:4:4581:2
 - asn: 46489
   cfg:
@@ -959,6 +1335,9 @@ clients:
       irrdb:
         as_sets:
         - AS46489:AS-JUSTINTV
+      max_prefix:
+        limit_ipv4: 30
+        limit_ipv6: 10
   ip: 192.121.80.30
 - asn: 46489
   cfg:
@@ -966,6 +1345,9 @@ clients:
       irrdb:
         as_sets:
         - AS46489:AS-JUSTINTV
+      max_prefix:
+        limit_ipv4: 30
+        limit_ipv6: 10
   ip: 2001:7f8:3e:0:a500:4:6489:1
 - asn: 46489
   cfg:
@@ -973,6 +1355,9 @@ clients:
       irrdb:
         as_sets:
         - AS46489:AS-JUSTINTV
+      max_prefix:
+        limit_ipv4: 30
+        limit_ipv6: 10
   ip: 192.121.80.31
 - asn: 46489
   cfg:
@@ -980,6 +1365,9 @@ clients:
       irrdb:
         as_sets:
         - AS46489:AS-JUSTINTV
+      max_prefix:
+        limit_ipv4: 30
+        limit_ipv6: 10
   ip: 2001:7f8:3e:0:a500:4:6489:2
 - asn: 47699
   cfg:
@@ -987,6 +1375,9 @@ clients:
       irrdb:
         as_sets:
         - AS-BBK
+      max_prefix:
+        limit_ipv4: 10
+        limit_ipv6: 10
   ip: 192.121.80.50
 - asn: 47699
   cfg:
@@ -994,6 +1385,9 @@ clients:
       irrdb:
         as_sets:
         - AS-BBK
+      max_prefix:
+        limit_ipv4: 10
+        limit_ipv6: 10
   ip: 2001:7f8:3e:0:a500:4:7699:1
 - asn: 47708
   cfg:
@@ -1001,6 +1395,9 @@ clients:
       irrdb:
         as_sets:
         - AS-PUBLICSERVICE
+      max_prefix:
+        limit_ipv4: 2
+        limit_ipv6: 1
   ip: 192.121.80.184
 - asn: 47708
   cfg:
@@ -1008,6 +1405,9 @@ clients:
       irrdb:
         as_sets:
         - AS-PUBLICSERVICE
+      max_prefix:
+        limit_ipv4: 2
+        limit_ipv6: 1
   ip: 2001:7f8:3e:0:a500:4:7708:1
 - asn: 47869
   cfg:
@@ -1015,6 +1415,9 @@ clients:
       irrdb:
         as_sets:
         - AS-NETROUTING
+      max_prefix:
+        limit_ipv4: 150
+        limit_ipv6: 50
   ip: 192.121.80.223
 - asn: 47869
   cfg:
@@ -1022,6 +1425,9 @@ clients:
       irrdb:
         as_sets:
         - AS-NETROUTING
+      max_prefix:
+        limit_ipv4: 150
+        limit_ipv6: 50
   ip: 2001:7f8:3e:0:a500:4:7869:1
 - asn: 48579
   cfg:
@@ -1029,6 +1435,9 @@ clients:
       irrdb:
         as_sets:
         - AS-ELASTX
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 20
   ip: 192.121.80.66
 - asn: 48579
   cfg:
@@ -1036,6 +1445,9 @@ clients:
       irrdb:
         as_sets:
         - AS-ELASTX
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 20
   ip: 2001:7f8:3e:0:a500:4:8579:1
 - asn: 48767
   cfg:
@@ -1043,6 +1455,9 @@ clients:
       irrdb:
         as_sets:
         - AS48767
+      max_prefix:
+        limit_ipv4: 5
+        limit_ipv6: 5
   ip: 192.121.80.49
 - asn: 48767
   cfg:
@@ -1050,6 +1465,9 @@ clients:
       irrdb:
         as_sets:
         - AS48767
+      max_prefix:
+        limit_ipv4: 5
+        limit_ipv6: 5
   ip: 2001:7f8:3e:0:a500:4:8767:1
 - asn: 49079
   cfg:
@@ -1071,6 +1489,9 @@ clients:
       irrdb:
         as_sets:
         - AS-RACKFISH
+      max_prefix:
+        limit_ipv4: 10
+        limit_ipv6: 1
   ip: 192.121.80.209
 - asn: 49232
   cfg:
@@ -1078,6 +1499,9 @@ clients:
       irrdb:
         as_sets:
         - AS-RACKFISH
+      max_prefix:
+        limit_ipv4: 10
+        limit_ipv6: 1
   ip: 2001:7f8:3e:0:a500:4:9232:1
 - asn: 49515
   cfg:
@@ -1085,6 +1509,8 @@ clients:
       irrdb:
         as_sets:
         - AS-NSC
+      max_prefix:
+        limit_ipv4: 5
   ip: 192.121.80.16
 - asn: 49515
   cfg:
@@ -1092,6 +1518,8 @@ clients:
       irrdb:
         as_sets:
         - AS-NSC
+      max_prefix:
+        limit_ipv4: 5
   ip: 2001:7f8:3e:0:a500:4:9515:1
 - asn: 49770
   cfg:
@@ -1099,6 +1527,9 @@ clients:
       irrdb:
         as_sets:
         - AS49770
+      max_prefix:
+        limit_ipv4: 20
+        limit_ipv6: 32
   ip: 192.121.80.241
 - asn: 49770
   cfg:
@@ -1106,6 +1537,9 @@ clients:
       irrdb:
         as_sets:
         - AS49770
+      max_prefix:
+        limit_ipv4: 20
+        limit_ipv6: 32
   ip: 2001:7f8:3e:0:a500:4:9770:1
 - asn: 50066
   cfg:
@@ -1113,6 +1547,9 @@ clients:
       irrdb:
         as_sets:
         - AS-SRSTUBES
+      max_prefix:
+        limit_ipv4: 50
+        limit_ipv6: 3
   ip: 192.121.80.164
 - asn: 50066
   cfg:
@@ -1120,6 +1557,9 @@ clients:
       irrdb:
         as_sets:
         - AS-SRSTUBES
+      max_prefix:
+        limit_ipv4: 50
+        limit_ipv6: 3
   ip: 2001:7f8:3e:0:a500:5:0066:1
 - asn: 50168
   cfg:
@@ -1127,6 +1567,9 @@ clients:
       irrdb:
         as_sets:
         - AS-BOGALNET
+      max_prefix:
+        limit_ipv4: 15
+        limit_ipv6: 10
   ip: 192.121.80.247
 - asn: 50168
   cfg:
@@ -1134,6 +1577,9 @@ clients:
       irrdb:
         as_sets:
         - AS-BOGALNET
+      max_prefix:
+        limit_ipv4: 15
+        limit_ipv6: 10
   ip: 2001:7f8:3e:0:a500:5:0168:1
 - asn: 50304
   cfg:
@@ -1141,6 +1587,9 @@ clients:
       irrdb:
         as_sets:
         - AS-BLIX
+      max_prefix:
+        limit_ipv4: 500
+        limit_ipv6: 100
   ip: 192.121.80.212
 - asn: 50304
   cfg:
@@ -1148,6 +1597,9 @@ clients:
       irrdb:
         as_sets:
         - AS-BLIX
+      max_prefix:
+        limit_ipv4: 500
+        limit_ipv6: 100
   ip: 2001:7f8:3e:0:a500:5:0304:1
 - asn: 50572
   cfg:
@@ -1155,6 +1607,9 @@ clients:
       irrdb:
         as_sets:
         - AS-ZETUP
+      max_prefix:
+        limit_ipv4: 20
+        limit_ipv6: 10
   ip: 192.121.80.221
 - asn: 50572
   cfg:
@@ -1162,6 +1617,9 @@ clients:
       irrdb:
         as_sets:
         - AS-ZETUP
+      max_prefix:
+        limit_ipv4: 20
+        limit_ipv6: 10
   ip: 2001:7f8:3e:0:a500:5:0572:1
 - asn: 50821
   cfg:
@@ -1169,6 +1627,9 @@ clients:
       irrdb:
         as_sets:
         - AS-STOSN
+      max_prefix:
+        limit_ipv4: 50
+        limit_ipv6: 25
   ip: 192.121.80.188
 - asn: 50821
   cfg:
@@ -1176,6 +1637,9 @@ clients:
       irrdb:
         as_sets:
         - AS-STOSN
+      max_prefix:
+        limit_ipv4: 50
+        limit_ipv6: 25
   ip: 2001:7f8:3e:0:a500:5:0821:1
 - asn: 50986
   cfg:
@@ -1183,6 +1647,9 @@ clients:
       irrdb:
         as_sets:
         - AS-EHSAB
+      max_prefix:
+        limit_ipv4: 400
+        limit_ipv6: 40
   ip: 192.121.80.177
 - asn: 50986
   cfg:
@@ -1190,6 +1657,9 @@ clients:
       irrdb:
         as_sets:
         - AS-EHSAB
+      max_prefix:
+        limit_ipv4: 400
+        limit_ipv6: 40
   ip: 2001:7f8:3e:0:a500:5:0986:1
 - asn: 50989
   cfg:
@@ -1197,6 +1667,9 @@ clients:
       irrdb:
         as_sets:
         - AS-I2B
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 10
   ip: 192.121.80.186
 - asn: 50989
   cfg:
@@ -1204,6 +1677,9 @@ clients:
       irrdb:
         as_sets:
         - AS-I2B
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 10
   ip: 2001:7f8:3e:0:a500:5:0989:1
 - asn: 50989
   cfg:
@@ -1211,6 +1687,9 @@ clients:
       irrdb:
         as_sets:
         - AS-I2B
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 10
   ip: 192.121.80.185
 - asn: 50989
   cfg:
@@ -1218,6 +1697,9 @@ clients:
       irrdb:
         as_sets:
         - AS-I2B
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 10
   ip: 2001:7f8:3e:0:a500:5:0989:2
 - asn: 50989
   cfg:
@@ -1225,6 +1707,9 @@ clients:
       irrdb:
         as_sets:
         - AS-I2B
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 10
   ip: 192.121.80.178
 - asn: 50989
   cfg:
@@ -1232,6 +1717,9 @@ clients:
       irrdb:
         as_sets:
         - AS-I2B
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 10
   ip: 2001:7f8:3e:0:a500:5:0989:3
 - asn: 51040
   cfg:
@@ -1239,6 +1727,8 @@ clients:
       irrdb:
         as_sets:
         - AS-PIRATE
+      max_prefix:
+        limit_ipv4: 3
   ip: 192.121.80.181
 - asn: 51040
   cfg:
@@ -1246,6 +1736,8 @@ clients:
       irrdb:
         as_sets:
         - AS-PIRATE
+      max_prefix:
+        limit_ipv4: 3
   ip: 2001:7f8:3e:0:a500:5:1040:1
 - asn: 51040
   cfg:
@@ -1253,6 +1745,8 @@ clients:
       irrdb:
         as_sets:
         - AS-PIRATE
+      max_prefix:
+        limit_ipv4: 3
   ip: 192.121.80.206
 - asn: 51040
   cfg:
@@ -1260,6 +1754,8 @@ clients:
       irrdb:
         as_sets:
         - AS-PIRATE
+      max_prefix:
+        limit_ipv4: 3
   ip: 2001:7f8:3e:0:a500:5:1040:2
 - asn: 51701
   cfg:
@@ -1295,6 +1791,9 @@ clients:
       irrdb:
         as_sets:
         - AS-ITMASTAREN
+      max_prefix:
+        limit_ipv4: 40
+        limit_ipv6: 10
   ip: 192.121.80.234
 - asn: 51929
   cfg:
@@ -1302,6 +1801,9 @@ clients:
       irrdb:
         as_sets:
         - AS-ITMASTAREN
+      max_prefix:
+        limit_ipv4: 40
+        limit_ipv6: 10
   ip: 2001:7f8:3e:0:a500:5:1929:1
 - asn: 54113
   cfg:
@@ -1309,6 +1811,9 @@ clients:
       irrdb:
         as_sets:
         - AS-FASTLY
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 50
   ip: 192.121.80.71
 - asn: 54113
   cfg:
@@ -1316,6 +1821,9 @@ clients:
       irrdb:
         as_sets:
         - AS-FASTLY
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 50
   ip: 2001:7f8:3e:0:a500:5:4113:1
 - asn: 54113
   cfg:
@@ -1323,6 +1831,9 @@ clients:
       irrdb:
         as_sets:
         - AS-FASTLY
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 50
   ip: 192.121.80.72
 - asn: 54113
   cfg:
@@ -1330,6 +1841,9 @@ clients:
       irrdb:
         as_sets:
         - AS-FASTLY
+      max_prefix:
+        limit_ipv4: 100
+        limit_ipv6: 50
   ip: 2001:7f8:3e:0:a500:5:4113:2
 - asn: 56735
   cfg:
@@ -1351,6 +1865,8 @@ clients:
       irrdb:
         as_sets:
         - AS-EMTORP
+      max_prefix:
+        limit_ipv4: 5
   ip: 192.121.80.208
 - asn: 56848
   cfg:
@@ -1358,6 +1874,8 @@ clients:
       irrdb:
         as_sets:
         - AS-EMTORP
+      max_prefix:
+        limit_ipv4: 5
   ip: 2001:7f8:3e:0:a500:5:6848:1
 - asn: 57151
   cfg:
@@ -1365,6 +1883,9 @@ clients:
       irrdb:
         as_sets:
         - AS-SET-STHIX-RS
+      max_prefix:
+        limit_ipv4: 2500
+        limit_ipv6: 500
   ip: 192.121.80.2
 - asn: 57151
   cfg:
@@ -1372,6 +1893,9 @@ clients:
       irrdb:
         as_sets:
         - AS-SET-STHIX-RS
+      max_prefix:
+        limit_ipv4: 2500
+        limit_ipv6: 500
   ip: 2001:7f8:3e:0:a500:5:7151:2
 - asn: 57151
   cfg:
@@ -1379,6 +1903,9 @@ clients:
       irrdb:
         as_sets:
         - AS-SET-STHIX-RS
+      max_prefix:
+        limit_ipv4: 2500
+        limit_ipv6: 500
   ip: 192.121.80.1
 - asn: 57151
   cfg:
@@ -1386,6 +1913,9 @@ clients:
       irrdb:
         as_sets:
         - AS-SET-STHIX-RS
+      max_prefix:
+        limit_ipv4: 2500
+        limit_ipv6: 500
   ip: 2001:7f8:3e:0:a500:5:7151:1
 - asn: 57208
   cfg:
@@ -1393,6 +1923,9 @@ clients:
       irrdb:
         as_sets:
         - as-Telecomputing
+      max_prefix:
+        limit_ipv4: 12
+        limit_ipv6: 2
   ip: 192.121.80.55
 - asn: 57208
   cfg:
@@ -1400,6 +1933,9 @@ clients:
       irrdb:
         as_sets:
         - as-Telecomputing
+      max_prefix:
+        limit_ipv4: 12
+        limit_ipv6: 2
   ip: 2001:7f8:3e:0:a500:5:7208:1
 - asn: 59750
   cfg:
@@ -1435,6 +1971,9 @@ clients:
       irrdb:
         as_sets:
         - AS60662
+      max_prefix:
+        limit_ipv4: 10
+        limit_ipv6: 5
   ip: 192.121.80.61
 - asn: 60662
   cfg:
@@ -1442,6 +1981,9 @@ clients:
       irrdb:
         as_sets:
         - AS60662
+      max_prefix:
+        limit_ipv4: 10
+        limit_ipv6: 5
   ip: 2001:7f8:3e:0:a500:6:0662:1
 - asn: 62020
   cfg:
@@ -1449,6 +1991,8 @@ clients:
       irrdb:
         as_sets:
         - AS-NETSAT
+      max_prefix:
+        limit_ipv4: 1
   ip: 192.121.80.28
 - asn: 62020
   cfg:
@@ -1456,6 +2000,8 @@ clients:
       irrdb:
         as_sets:
         - AS-NETSAT
+      max_prefix:
+        limit_ipv4: 1
   ip: 2001:7f8:3e:0:a500:6:2020:1
 - asn: 62183
   cfg:
@@ -1463,6 +2009,9 @@ clients:
       irrdb:
         as_sets:
         - AS62183
+      max_prefix:
+        limit_ipv4: 20
+        limit_ipv6: 8
   ip: 192.121.80.60
 - asn: 62183
   cfg:
@@ -1470,6 +2019,9 @@ clients:
       irrdb:
         as_sets:
         - AS62183
+      max_prefix:
+        limit_ipv4: 20
+        limit_ipv6: 8
   ip: 2001:7f8:3e:0:a500:6:2183:1
 - asn: 196967
   cfg:
@@ -1477,6 +2029,8 @@ clients:
       irrdb:
         as_sets:
         - AS-KONTEI
+      max_prefix:
+        limit_ipv4: 3
   ip: 192.121.80.192
 - asn: 196967
   cfg:
@@ -1484,6 +2038,8 @@ clients:
       irrdb:
         as_sets:
         - AS-KONTEI
+      max_prefix:
+        limit_ipv4: 3
   ip: 2001:7f8:3e:0:a500:19:6967:1
 - asn: 197430
   cfg:
@@ -1505,6 +2061,9 @@ clients:
       irrdb:
         as_sets:
         - AS-VIDEOPLAZA
+      max_prefix:
+        limit_ipv4: 10
+        limit_ipv6: 1
   ip: 192.121.80.204
 - asn: 197541
   cfg:
@@ -1512,6 +2071,9 @@ clients:
       irrdb:
         as_sets:
         - AS-VIDEOPLAZA
+      max_prefix:
+        limit_ipv4: 10
+        limit_ipv6: 1
   ip: 2001:7f8:3e:0:a500:19:7541:1
 - asn: 197541
   cfg:
@@ -1519,6 +2081,9 @@ clients:
       irrdb:
         as_sets:
         - AS-VIDEOPLAZA
+      max_prefix:
+        limit_ipv4: 10
+        limit_ipv6: 1
   ip: 192.121.80.245
 - asn: 197541
   cfg:
@@ -1526,6 +2091,9 @@ clients:
       irrdb:
         as_sets:
         - AS-VIDEOPLAZA
+      max_prefix:
+        limit_ipv4: 10
+        limit_ipv6: 1
   ip: 2001:7f8:3e:0:a500:19:7541:2
 - asn: 197595
   cfg:
@@ -1533,6 +2101,9 @@ clients:
       irrdb:
         as_sets:
         - AS-OBENETWORK
+      max_prefix:
+        limit_ipv4: 200
+        limit_ipv6: 50
   ip: 192.121.80.201
 - asn: 197595
   cfg:
@@ -1540,6 +2111,9 @@ clients:
       irrdb:
         as_sets:
         - AS-OBENETWORK
+      max_prefix:
+        limit_ipv4: 200
+        limit_ipv6: 50
   ip: 2001:7f8:3e:0:a500:19:7595:1
 - asn: 197617
   cfg:
@@ -1561,6 +2135,9 @@ clients:
       irrdb:
         as_sets:
         - AS-DFRI
+      max_prefix:
+        limit_ipv4: 10
+        limit_ipv6: 10
   ip: 192.121.80.225
 - asn: 198093
   cfg:
@@ -1568,6 +2145,9 @@ clients:
       irrdb:
         as_sets:
         - AS-DFRI
+      max_prefix:
+        limit_ipv4: 10
+        limit_ipv6: 10
   ip: 2001:7f8:3e:0:a500:19:8093:1
 - asn: 198093
   cfg:
@@ -1575,6 +2155,9 @@ clients:
       irrdb:
         as_sets:
         - AS-DFRI
+      max_prefix:
+        limit_ipv4: 10
+        limit_ipv6: 10
   ip: 192.121.80.46
 - asn: 198093
   cfg:
@@ -1582,6 +2165,9 @@ clients:
       irrdb:
         as_sets:
         - AS-DFRI
+      max_prefix:
+        limit_ipv4: 10
+        limit_ipv6: 10
   ip: 2001:7f8:3e:0:a500:19:8093:2
 - asn: 198549
   cfg:
@@ -1603,6 +2189,8 @@ clients:
       irrdb:
         as_sets:
         - AS-EXCEDO
+      max_prefix:
+        limit_ipv4: 5
   ip: 192.121.80.228
 - asn: 199150
   cfg:
@@ -1610,6 +2198,8 @@ clients:
       irrdb:
         as_sets:
         - AS-EXCEDO
+      max_prefix:
+        limit_ipv4: 5
   ip: 2001:7f8:3e:0:a500:19:9150:1
 - asn: 199150
   cfg:
@@ -1617,6 +2207,8 @@ clients:
       irrdb:
         as_sets:
         - AS-EXCEDO
+      max_prefix:
+        limit_ipv4: 5
   ip: 192.121.80.229
 - asn: 199150
   cfg:
@@ -1624,6 +2216,8 @@ clients:
       irrdb:
         as_sets:
         - AS-EXCEDO
+      max_prefix:
+        limit_ipv4: 5
   ip: 2001:7f8:3e:0:a500:19:9150:2
 - asn: 199544
   cfg:
@@ -1631,6 +2225,9 @@ clients:
       irrdb:
         as_sets:
         - AS-REMOTE24-SET
+      max_prefix:
+        limit_ipv4: 25
+        limit_ipv6: 15
   ip: 192.121.80.233
 - asn: 199544
   cfg:
@@ -1638,6 +2235,9 @@ clients:
       irrdb:
         as_sets:
         - AS-REMOTE24-SET
+      max_prefix:
+        limit_ipv4: 25
+        limit_ipv6: 15
   ip: 2001:7f8:3e:0:a500:19:9544:1
 - asn: 201146
   cfg:
@@ -1673,6 +2273,9 @@ clients:
       irrdb:
         as_sets:
         - AS-FALAFEL
+      max_prefix:
+        limit_ipv4: 1
+        limit_ipv6: 10
   ip: 192.121.80.52
 - asn: 204179
   cfg:
@@ -1680,6 +2283,9 @@ clients:
       irrdb:
         as_sets:
         - AS-FALAFEL
+      max_prefix:
+        limit_ipv4: 1
+        limit_ipv6: 10
   ip: 2001:7f8:3e:0:a500:20:4179:1
 - asn: 394354
   cfg:
@@ -1687,6 +2293,9 @@ clients:
       irrdb:
         as_sets:
         - AS394354
+      max_prefix:
+        limit_ipv4: 10
+        limit_ipv6: 10
   ip: 192.121.80.62
 - asn: 394354
   cfg:
@@ -1694,4 +2303,7 @@ clients:
       irrdb:
         as_sets:
         - AS394354
+      max_prefix:
+        limit_ipv4: 10
+        limit_ipv6: 10
   ip: 2001:7f8:3e:0:a500:39:4354:1

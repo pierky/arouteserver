@@ -1,18 +1,26 @@
-# Data fetched from https://www.seattleix.net/autogen/participants.json at 2017-08-30T16:21:16.485845 UTC
+# Data fetched from https://www.seattleix.net/autogen/participants.json at 2017-09-05T18:39:25.161245 UTC
 # IXP ID: 1
 # VLAN ID: 2
 clients:
 - asn: 7575
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS7575:AS-CUSTOMER
       max_prefix:
         limit_ipv4: 800
+        limit_ipv6: 100
   description: AARNet Pty Ltd
   ip: 206.81.80.112
 - asn: 7575
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS7575:AS-CUSTOMER
       max_prefix:
+        limit_ipv4: 800
         limit_ipv6: 100
   description: AARNet Pty Ltd
   ip: 2001:504:16::1d97
@@ -21,40 +29,58 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 3
   description: Access Communications Co-operative Limited
   ip: 206.81.81.24
 - asn: 21804
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 3
   description: Access Communications Co-operative Limited
   ip: 2001:504:16::552c
 - asn: 11274
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ADHOST-PEERING
       max_prefix:
         limit_ipv4: 60
+        limit_ipv6: 10
   description: Adhost
   ip: 206.81.80.59
 - asn: 11274
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ADHOST-PEERING
       max_prefix:
+        limit_ipv4: 60
         limit_ipv6: 10
   description: Adhost
   ip: 2001:504:16::2c0a
 - asn: 15224
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ADBE-DMBU
       max_prefix:
         limit_ipv4: 20
+        limit_ipv6: 1
   description: Adobe Systems
   ip: 206.81.81.13
 - asn: 15224
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ADBE-DMBU
       max_prefix:
+        limit_ipv4: 20
         limit_ipv6: 1
   description: Adobe Systems
   ip: 2001:504:16::3b78
@@ -63,54 +89,80 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 300
+        limit_ipv6: 15
   description: AEBC Internet Corporation
   ip: 206.81.80.103
 - asn: 25668
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 300
         limit_ipv6: 15
   description: AEBC Internet Corporation
   ip: 2001:504:16::6444
 - asn: 11796
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-AIRSTREAM-TRANSIT
       max_prefix:
         limit_ipv4: 300
+        limit_ipv6: 50
   description: Airstream Communications
   ip: 206.81.81.117
 - asn: 11796
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-AIRSTREAM-TRANSIT
       max_prefix:
+        limit_ipv4: 300
         limit_ipv6: 50
   description: Airstream Communications
   ip: 2001:504:16::2e14
 - asn: 20940
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-AKAMAI
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 20
   description: Akamai Technologies, Inc.
   ip: 206.81.80.113
 - asn: 20940
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-AKAMAI
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 20
   description: Akamai Technologies, Inc.
   ip: 2001:504:16::51cc
 - asn: 7782
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ACS-TRANSIT
       max_prefix:
         limit_ipv4: 200
+        limit_ipv6: 10
   description: Alaska Communications Systems
   ip: 206.81.80.47
 - asn: 7782
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ACS-TRANSIT
       max_prefix:
+        limit_ipv4: 200
         limit_ipv6: 10
   description: Alaska Communications Systems
   ip: 2001:504:16::1e66
@@ -123,70 +175,110 @@ clients:
 - asn: 15290
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ALLSTREAM
       max_prefix:
         limit_ipv4: 3000
+        limit_ipv6: 150
   description: Allstream (was AT&T Canada)
   ip: 206.81.80.61
 - asn: 15290
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ALLSTREAM
       max_prefix:
+        limit_ipv4: 3000
         limit_ipv6: 150
   description: Allstream (was AT&T Canada)
   ip: 2001:504:16::3bba
 - asn: 6456
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ALTOPIA
       max_prefix:
         limit_ipv4: 5
+        limit_ipv6: 1
   description: Altopia Corporation
   ip: 206.81.80.10
 - asn: 6456
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ALTOPIA
       max_prefix:
+        limit_ipv4: 5
         limit_ipv6: 1
   description: Altopia Corporation
   ip: 2001:504:16::1938
 - asn: 6456
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ALTOPIA
       max_prefix:
         limit_ipv4: 5
+        limit_ipv6: 1
   description: Altopia Corporation
   ip: 206.81.81.41
 - asn: 6456
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ALTOPIA
       max_prefix:
+        limit_ipv4: 5
         limit_ipv6: 1
   description: Altopia Corporation
   ip: 2001:504:16::297:0:1938
 - asn: 16509
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-AMAZON
       max_prefix:
         limit_ipv4: 2000
+        limit_ipv6: 500
   description: Amazon.com
   ip: 206.81.80.147
 - asn: 16509
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-AMAZON
       max_prefix:
+        limit_ipv4: 2000
         limit_ipv6: 500
   description: Amazon.com
   ip: 2001:504:16::407d
 - asn: 16509
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-AMAZON
       max_prefix:
         limit_ipv4: 2000
+        limit_ipv6: 500
   description: Amazon.com
   ip: 206.81.80.248
 - asn: 16509
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-AMAZON
       max_prefix:
+        limit_ipv4: 2000
         limit_ipv6: 500
   description: Amazon.com
   ip: 2001:504:16::248:0:407d
@@ -203,25 +295,43 @@ clients:
 - asn: 40475
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-APPLIEDOPS
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: Applied Operations, LLC
   ip: 206.81.80.137
 - asn: 40475
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-APPLIEDOPS
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 5
   description: Applied Operations, LLC
   ip: 2001:504:16::9e1b
 - asn: 22059
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-APVIO
       max_prefix:
         limit_ipv4: 6
   description: Apvio, Inc.
   ip: 206.81.80.78
 - asn: 22059
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-APVIO
+      max_prefix:
+        limit_ipv4: 6
   description: Apvio, Inc.
   ip: 2001:504:16::562b
 - asn: 54527
@@ -229,88 +339,140 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 3
   description: Astute Hosting Inc.
   ip: 206.81.81.56
 - asn: 54527
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 3
   description: Astute Hosting Inc.
   ip: 2001:504:16::d4ff
 - asn: 21743
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ATLASNET
       max_prefix:
         limit_ipv4: 20
+        limit_ipv6: 1
   description: Atlas Networks
   ip: 206.81.81.30
 - asn: 21743
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ATLASNET
       max_prefix:
+        limit_ipv4: 20
         limit_ipv6: 1
   description: Atlas Networks
   ip: 2001:504:16::54ef
 - asn: 2635
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-AUTOMATTIC
       max_prefix:
         limit_ipv4: 150
+        limit_ipv6: 100
   description: Automattic
   ip: 206.81.81.70
 - asn: 2635
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-AUTOMATTIC
       max_prefix:
+        limit_ipv4: 150
         limit_ipv6: 100
   description: Automattic
   ip: 2001:504:16::a4b
 - asn: 54182
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-AXIACONNECT
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 1
   description: Axia Connect Limited
   ip: 206.81.80.213
 - asn: 54182
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-AXIACONNECT
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 1
   description: Axia Connect Limited
   ip: 2001:504:16::d3a6
 - asn: 577
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS577:AS-CUSTOMERS
   description: Bell Canada
   ip: 206.81.80.217
 - asn: 577
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS577:AS-CUSTOMERS
   description: Bell Canada
   ip: 2001:504:16::241
 - asn: 27008
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-BENDTEL
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 10
   description: BendTel
   ip: 206.81.80.100
 - asn: 27008
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-BENDTEL
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 10
   description: BendTel
   ip: 2001:504:16::6980
 - asn: 3491
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CAIS
       max_prefix:
         limit_ipv4: 120000
+        limit_ipv6: 8000
   description: Beyond the Network (PCCW)
   ip: 206.81.80.13
 - asn: 3491
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CAIS
       max_prefix:
+        limit_ipv4: 120000
         limit_ipv6: 8000
   description: Beyond the Network (PCCW)
   ip: 2001:504:16::da3
@@ -319,68 +481,102 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 20
   description: Bigleaf Networks, Inc.
   ip: 206.81.81.73
 - asn: 62642
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 20
   description: Bigleaf Networks, Inc.
   ip: 2001:504:16::f4b2
 - asn: 21947
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-BLACKFOOT
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 8
   description: Blackfoot Communications Inc.
   ip: 206.81.80.109
 - asn: 21947
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-BLACKFOOT
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 8
   description: Blackfoot Communications Inc.
   ip: 2001:504:16::55bb
 - asn: 21947
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-BLACKFOOT
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 8
   description: Blackfoot Communications Inc.
   ip: 206.81.80.209
 - asn: 21947
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-BLACKFOOT
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 8
   description: Blackfoot Communications Inc.
   ip: 2001:504:16::209:0:55bb
 - asn: 57976
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-BLIZZARD
       max_prefix:
         limit_ipv4: 200
+        limit_ipv6: 50
   description: Blizzard Entertainment
   ip: 206.81.81.122
 - asn: 57976
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-BLIZZARD
       max_prefix:
+        limit_ipv4: 200
         limit_ipv6: 50
   description: Blizzard Entertainment
   ip: 2001:504:16::e278
 - asn: 33011
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-BOX
       max_prefix:
         limit_ipv4: 20
+        limit_ipv6: 10
   description: Box
   ip: 206.81.81.19
 - asn: 33011
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-BOX
       max_prefix:
+        limit_ipv4: 20
         limit_ipv6: 10
   description: Box
   ip: 2001:504:16::80f3
@@ -389,12 +585,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 500
+        limit_ipv6: 100
   description: Bragg Communications / Delta Cable / EastLink
   ip: 206.81.80.236
 - asn: 22799
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 500
         limit_ipv6: 100
   description: Bragg Communications / Delta Cable / EastLink
   ip: 2001:504:16::590f
@@ -403,12 +601,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 1000
+        limit_ipv6: 50
   description: CANARIE Inc.
   ip: 206.81.80.189
 - asn: 6509
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 1000
         limit_ipv6: 50
   description: CANARIE Inc.
   ip: 2001:504:16::189:0:196d
@@ -417,40 +617,58 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 10
+        limit_ipv6: 1
   description: Cascadelink Inc
   ip: 206.81.80.230
 - asn: 19975
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 10
         limit_ipv6: 1
   description: Cascadelink Inc
   ip: 2001:504:16::4e07
 - asn: 35838
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CCANET
       max_prefix:
         limit_ipv4: 20
+        limit_ipv6: 1
   description: CCANet Ltd
   ip: 206.81.80.200
 - asn: 35838
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CCANET
       max_prefix:
+        limit_ipv4: 20
         limit_ipv6: 1
   description: CCANet Ltd
   ip: 2001:504:16::8bfe
 - asn: 36408
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CDNETWORKS
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: CDNetworks
   ip: 206.81.80.167
 - asn: 36408
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CDNETWORKS
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 5
   description: CDNetworks
   ip: 2001:504:16::8e38
@@ -459,12 +677,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 10000
+        limit_ipv6: 4
   description: Charter Communications
   ip: 206.81.80.207
 - asn: 33588
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 70
         limit_ipv6: 1000
   description: Charter Communications
   ip: 2001:504:16::8334
@@ -473,12 +693,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 10000
+        limit_ipv6: 4
   description: Charter Communications
   ip: 206.81.80.231
 - asn: 33588
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 70
         limit_ipv6: 1000
   description: Charter Communications
   ip: 2001:504:16::231:0:8334
@@ -487,26 +709,36 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 10000
+        limit_ipv6: 1000
   description: Charter Communications
   ip: 206.81.80.234
 - asn: 20115
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 10000
         limit_ipv6: 1000
   description: Charter Communications
   ip: 2001:504:16::4e93
 - asn: 20473
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CHOOPA
       max_prefix:
         limit_ipv4: 1000
+        limit_ipv6: 250
   description: Choopa, LLC
   ip: 206.81.81.66
 - asn: 20473
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CHOOPA
       max_prefix:
+        limit_ipv4: 1000
         limit_ipv6: 250
   description: Choopa, LLC
   ip: 2001:504:16::4ff9
@@ -518,29 +750,51 @@ clients:
   description: City of Seattle
   ip: 206.81.80.202
 - asn: 3401
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 3
   description: City of Seattle
   ip: 2001:504:16::d49
 - asn: 18988
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CITYWEST
       max_prefix:
         limit_ipv4: 100
   description: City West Cable & Telephone Corp.
   ip: 206.81.81.106
 - asn: 18988
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CITYWEST
+      max_prefix:
+        limit_ipv4: 100
   description: City West Cable & Telephone Corp.
   ip: 2001:504:16::4a2c
 - asn: 36416
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CLACKESD
       max_prefix:
         limit_ipv4: 35
+        limit_ipv6: 10
   description: Clackamas ESD
   ip: 206.81.80.162
 - asn: 36416
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CLACKESD
       max_prefix:
+        limit_ipv4: 35
         limit_ipv6: 10
   description: Clackamas ESD
   ip: 2001:504:16::8e40
@@ -549,54 +803,80 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 4
+        limit_ipv6: 4
   description: ClaimLynx, Inc.
   ip: 206.81.81.128
 - asn: 62708
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 4
         limit_ipv6: 4
   description: ClaimLynx, Inc.
   ip: 2001:504:16::f4f4
 - asn: 27400
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CLEARFLY
       max_prefix:
         limit_ipv4: 8
+        limit_ipv6: 1
   description: Clearfly Communications
   ip: 206.81.80.221
 - asn: 27400
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CLEARFLY
       max_prefix:
+        limit_ipv4: 8
         limit_ipv6: 1
   description: Clearfly Communications
   ip: 2001:504:16::6b08
 - asn: 13335
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CLOUDFLARE
       max_prefix:
         limit_ipv4: 500
+        limit_ipv6: 100
   description: CloudFlare, Inc.
   ip: 206.81.81.10
 - asn: 13335
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CLOUDFLARE
       max_prefix:
+        limit_ipv4: 500
         limit_ipv6: 100
   description: CloudFlare, Inc.
   ip: 2001:504:16::3417
 - asn: 40065
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CNSERVERS
       max_prefix:
         limit_ipv4: 200
+        limit_ipv6: 2
   description: CNSERVERS LLC
   ip: 206.81.81.37
 - asn: 40065
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CNSERVERS
       max_prefix:
+        limit_ipv4: 200
         limit_ipv6: 2
   description: CNSERVERS LLC
   ip: 2001:504:16::9c81
@@ -605,26 +885,36 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 10
+        limit_ipv6: 10
   description: Code42 Software Inc
   ip: 206.81.81.25
 - asn: 62715
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 10
         limit_ipv6: 10
   description: Code42 Software Inc
   ip: 2001:504:16::f4fb
 - asn: 47096
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-47096DOWNSTREAM
       max_prefix:
         limit_ipv4: 30
+        limit_ipv6: 10
   description: Compudyne, Inc.
   ip: 206.81.81.127
 - asn: 47096
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-47096DOWNSTREAM
       max_prefix:
+        limit_ipv4: 30
         limit_ipv6: 10
   description: Compudyne, Inc.
   ip: 2001:504:16::b7f8
@@ -643,42 +933,66 @@ clients:
 - asn: 58511
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CIT
       max_prefix:
         limit_ipv4: 200
+        limit_ipv6: 50
   description: Connectivity I.T.
   ip: 206.81.81.108
 - asn: 58511
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CIT
       max_prefix:
+        limit_ipv4: 200
         limit_ipv6: 50
   description: Connectivity I.T.
   ip: 2001:504:16::e48f
 - asn: 43531
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-IXREACH
       max_prefix:
         limit_ipv4: 3000
+        limit_ipv6: 150
   description: Console, Inc.
   ip: 206.81.81.111
 - asn: 43531
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-IXREACH
       max_prefix:
+        limit_ipv4: 3000
         limit_ipv6: 150
   description: Console, Inc.
   ip: 2001:504:16::aa0b
 - asn: 64227
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CTCTRANSIT
       max_prefix:
         limit_ipv4: 18
+        limit_ipv6: 3
   description: Consolidated Telephone Company
   ip: 206.81.81.131
 - asn: 64227
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CTCTRANSIT
       max_prefix:
+        limit_ipv4: 18
         limit_ipv6: 3
   description: Consolidated Telephone Company
   ip: 2001:504:16::fae3
@@ -687,12 +1001,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 40
+        limit_ipv6: 1
   description: Cortland Electronics Corporation
   ip: 206.81.80.18
 - asn: 4319
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 40
         limit_ipv6: 1
   description: Cortland Electronics Corporation
   ip: 2001:504:16::10df
@@ -701,12 +1017,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 5
+        limit_ipv6: 1
   description: CSS Integration & Communications
   ip: 206.81.80.95
 - asn: 26792
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 5
         limit_ipv6: 1
   description: CSS Integration & Communications
   ip: 2001:504:16::68a8
@@ -718,33 +1036,53 @@ clients:
   description: CTS Language Link
   ip: 206.81.81.135
 - asn: 15190
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 2
   description: CTS Language Link
   ip: 2001:504:16::3b56
 - asn: 19653
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CTSTELECOM
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 15
   description: CTS Telecom
   ip: 206.81.81.151
 - asn: 19653
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CTSTELECOM
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 15
   description: CTS Telecom
   ip: 2001:504:16::4cc5
 - asn: 10594
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CEC-TRANSIT
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: Cutting Edge Communications
   ip: 206.81.80.87
 - asn: 10594
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-CEC-TRANSIT
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 5
   description: Cutting Edge Communications
   ip: 2001:504:16::2962
@@ -753,26 +1091,36 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 12
+        limit_ipv6: 1
   description: Cybernet1 Inc.
   ip: 206.81.81.92
 - asn: 21632
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 12
         limit_ipv6: 1
   description: Cybernet1 Inc.
   ip: 2001:504:16::5480
 - asn: 5413
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS5413:AS-CUSTOMER
       max_prefix:
         limit_ipv4: 500
+        limit_ipv6: 25
   description: Daisy Communications
   ip: 206.81.81.115
 - asn: 5413
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS5413:AS-CUSTOMER
       max_prefix:
+        limit_ipv4: 500
         limit_ipv6: 25
   description: Daisy Communications
   ip: 2001:504:16::1525
@@ -784,33 +1132,53 @@ clients:
   description: DALnet
   ip: 206.81.80.101
 - asn: 31800
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 3
   description: DALnet
   ip: 2001:504:16::7c38
 - asn: 13739
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-DCIP
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: DataCenter IP
   ip: 206.81.80.170
 - asn: 13739
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-DCIP
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 5
   description: DataCenter IP
   ip: 2001:504:16::35ab
 - asn: 13739
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-DCIP
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: DataCenter IP
   ip: 206.81.80.244
 - asn: 13739
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-DCIP
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 5
   description: DataCenter IP
   ip: 2001:504:16::244:0:35ab
@@ -822,57 +1190,95 @@ clients:
   description: Default Route
   ip: 206.81.80.163
 - asn: 13722
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 5
   description: Default Route
   ip: 2001:504:16::359a
 - asn: 10848
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-DELLSERVICES
       max_prefix:
         limit_ipv4: 10
+        limit_ipv6: 1
   description: Dell Services
   ip: 206.81.80.225
 - asn: 10848
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-DELLSERVICES
       max_prefix:
+        limit_ipv4: 10
         limit_ipv6: 1
   description: Dell Services
   ip: 2001:504:16::2a60
 - asn: 3361
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-DF-BROADCASTEDASNS
       max_prefix:
         limit_ipv4: 200
   description: Digital Fortress (was Fortress Colocation Centers)
   ip: 206.81.80.159
 - asn: 3361
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-DF-BROADCASTEDASNS
+      max_prefix:
+        limit_ipv4: 200
   description: Digital Fortress (was Fortress Colocation Centers)
   ip: 2001:504:16::d21
 - asn: 36086
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TELX
       max_prefix:
         limit_ipv4: 300
+        limit_ipv6: 20
   description: Digital Realty (Telx Group)
   ip: 206.81.81.32
 - asn: 36086
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TELX
       max_prefix:
+        limit_ipv4: 300
         limit_ipv6: 20
   description: Digital Realty (Telx Group)
   ip: 2001:504:16::8cf6
 - asn: 395823
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-DOOF
       max_prefix:
         limit_ipv4: 1
+        limit_ipv6: 1
   description: doof.net
   ip: 206.81.81.125
 - asn: 395823
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-DOOF
       max_prefix:
+        limit_ipv4: 1
         limit_ipv6: 1
   description: doof.net
   ip: 2001:504:16::6:a2f
@@ -881,54 +1287,80 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 1000
+        limit_ipv6: 50
   description: DREN
   ip: 206.81.81.57
 - asn: 668
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 1000
         limit_ipv6: 50
   description: DREN
   ip: 2001:504:16::29c
 - asn: 19679
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-DROPBOX
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 50
   description: Dropbox Inc
   ip: 206.81.81.112
 - asn: 19679
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-DROPBOX
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 50
   description: Dropbox Inc
   ip: 2001:504:16::4cdf
 - asn: 33517
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-DYNCUSTOMERS
       max_prefix:
         limit_ipv4: 200
+        limit_ipv6: 100
   description: Dyn
   ip: 206.81.81.121
 - asn: 33517
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-DYNCUSTOMERS
       max_prefix:
+        limit_ipv4: 200
         limit_ipv6: 100
   description: Dyn
   ip: 2001:504:16::82ed
 - asn: 12009
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-EONI
       max_prefix:
         limit_ipv4: 10
+        limit_ipv6: 1
   description: Eastern Oregon Net, Inc.
   ip: 206.81.81.49
 - asn: 12009
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-EONI
       max_prefix:
+        limit_ipv4: 10
         limit_ipv6: 1
   description: Eastern Oregon Net, Inc.
   ip: 2001:504:16::2ee9
@@ -941,28 +1373,44 @@ clients:
 - asn: 55039
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-EDNETICS
       max_prefix:
         limit_ipv4: 3
+        limit_ipv6: 1
   description: Ednetics, Inc
   ip: 206.81.81.39
 - asn: 55039
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-EDNETICS
       max_prefix:
+        limit_ipv4: 3
         limit_ipv6: 1
   description: Ednetics, Inc
   ip: 2001:504:16::d6ff
 - asn: 11686
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ENA
       max_prefix:
         limit_ipv4: 60
+        limit_ipv6: 3
   description: Education Networks of America
   ip: 206.81.80.242
 - asn: 11686
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ENA
       max_prefix:
+        limit_ipv4: 60
         limit_ipv6: 3
   description: Education Networks of America
   ip: 2001:504:16::2da6
@@ -971,12 +1419,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 10
+        limit_ipv6: 1
   description: Eltopia.com, LLC
   ip: 206.81.80.126
 - asn: 33005
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 10
         limit_ipv6: 1
   description: Eltopia.com, LLC
   ip: 2001:504:16::80ed
@@ -985,68 +1435,102 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 1
+        limit_ipv6: 1
   description: Emerald Onion
   ip: 206.81.81.158
 - asn: 396507
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 1
         limit_ipv6: 1
   description: Emerald Onion
   ip: 2001:504:16::6:cdb
 - asn: 8966
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-EMIX
       max_prefix:
         limit_ipv4: 5000
+        limit_ipv6: 250
   description: Emirates Telecommunications Corporation (Etisalat)
   ip: 206.81.81.14
 - asn: 8966
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-EMIX
       max_prefix:
+        limit_ipv4: 5000
         limit_ipv6: 250
   description: Emirates Telecommunications Corporation (Etisalat)
   ip: 2001:504:16::2306
 - asn: 293
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ESNET
       max_prefix:
         limit_ipv4: 170
+        limit_ipv6: 50
   description: ESnet (Energy Sciences Network at LBNL)
   ip: 206.81.81.102
 - asn: 293
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ESNET
       max_prefix:
+        limit_ipv4: 170
         limit_ipv6: 50
   description: ESnet (Energy Sciences Network at LBNL)
   ip: 2001:504:16::125
 - asn: 32934
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-FACEBOOK
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 100
   description: Facebook
   ip: 206.81.80.181
 - asn: 32934
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-FACEBOOK
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 100
   description: Facebook
   ip: 2001:504:16::80a6
 - asn: 32934
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-FACEBOOK
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 100
   description: Facebook
   ip: 206.81.80.211
 - asn: 32934
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-FACEBOOK
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 100
   description: Facebook
   ip: 2001:504:16::211:0:80a6
@@ -1055,12 +1539,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 75
+        limit_ipv6: 4
   description: Faction Inc. (was PeakColo)
   ip: 206.81.80.232
 - asn: 14701
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 75
         limit_ipv6: 4
   description: Faction Inc. (was PeakColo)
   ip: 2001:504:16::396d
@@ -1069,158 +1555,252 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 15
+        limit_ipv6: 15
   description: Fast Mail Press Limited
   ip: 206.81.81.134
 - asn: 131321
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 15
         limit_ipv6: 15
   description: Fast Mail Press Limited
   ip: 2001:504:16::2:f9
 - asn: 54113
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-FASTLY
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 50
   description: Fastly, Inc.
   ip: 206.81.81.71
 - asn: 54113
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-FASTLY
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 50
   description: Fastly, Inc.
   ip: 2001:504:16::d361
 - asn: 54113
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-FASTLY
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 50
   description: Fastly, Inc.
   ip: 206.81.81.72
 - asn: 54113
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-FASTLY
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 50
   description: Fastly, Inc.
   ip: 2001:504:16::328:0:d361
 - asn: 26803
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-26803
       max_prefix:
         limit_ipv4: 401
+        limit_ipv6: 20
   description: Fiber Internet Center, LLC
   ip: 206.81.80.172
 - asn: 26803
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-26803
       max_prefix:
+        limit_ipv4: 401
         limit_ipv6: 20
   description: Fiber Internet Center, LLC
   ip: 2001:504:16::68b3
 - asn: 53340
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-FIBERHUB
       max_prefix:
         limit_ipv4: 200
+        limit_ipv6: 10
   description: Fiberhub
   ip: 206.81.80.229
 - asn: 53340
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-FIBERHUB
       max_prefix:
+        limit_ipv4: 200
         limit_ipv6: 10
   description: Fiberhub
   ip: 2001:504:16::d05c
 - asn: 25905
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-FIRESERVE
       max_prefix:
         limit_ipv4: 20
+        limit_ipv6: 10
   description: FireServe, LLC
   ip: 206.81.81.149
 - asn: 25905
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-FIRESERVE
       max_prefix:
+        limit_ipv4: 20
         limit_ipv6: 10
   description: FireServe, LLC
   ip: 2001:504:16::6531
 - asn: 23138
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-FSR
       max_prefix:
         limit_ipv4: 40
   description: First Step Internet
   ip: 206.81.81.110
 - asn: 23138
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FSR
+      max_prefix:
+        limit_ipv4: 40
   description: First Step Internet
   ip: 2001:504:16::5a62
 - asn: 23138
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-FSR
       max_prefix:
         limit_ipv4: 40
   description: First Step Internet
   ip: 206.81.81.113
 - asn: 23138
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FSR
+      max_prefix:
+        limit_ipv4: 40
   description: First Step Internet
   ip: 2001:504:16::369:0:5a62
 - asn: 5650
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-FRONTIER
       max_prefix:
         limit_ipv4: 6000
+        limit_ipv6: 300
   description: Frontier Communications
   ip: 206.81.80.75
 - asn: 5650
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-FRONTIER
       max_prefix:
+        limit_ipv4: 6000
         limit_ipv6: 300
   description: Frontier Communications
   ip: 2001:504:16::1612
 - asn: 7311
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-FRONTIERNET
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: Frontier Networks
   ip: 206.81.80.206
 - asn: 7311
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-FRONTIERNET
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 5
   description: Frontier Networks
   ip: 2001:504:16::1c8f
 - asn: 19754
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TFNNET
       max_prefix:
         limit_ipv4: 500
+        limit_ipv6: 100
   description: Fusion Network
   ip: 206.81.81.93
 - asn: 19754
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TFNNET
       max_prefix:
+        limit_ipv4: 500
         limit_ipv6: 100
   description: Fusion Network
   ip: 2001:504:16::4d2a
 - asn: 33353
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-GAIKAI
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 3
   description: Gaikai Inc
   ip: 206.81.81.29
 - asn: 33353
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-GAIKAI
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 3
   description: Gaikai Inc
   ip: 2001:504:16::8249
@@ -1229,40 +1809,58 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 32
+        limit_ipv6: 2
   description: Galaxybroadband Communications
   ip: 206.81.80.187
 - asn: 14500
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 32
         limit_ipv6: 2
   description: Galaxybroadband Communications
   ip: 2001:504:16::38a4
 - asn: 8047
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-GCI
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: GCI
   ip: 206.81.80.62
 - asn: 8047
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-GCI
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 5
   description: GCI
   ip: 2001:504:16::1f6f
 - asn: 8047
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-GCI
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: GCI
   ip: 206.81.81.63
 - asn: 8047
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-GCI
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 5
   description: GCI
   ip: 2001:504:16::319:0:1f6f
@@ -1274,33 +1872,53 @@ clients:
   description: Genesis Technology Communication, Inc.
   ip: 206.81.81.126
 - asn: 30032
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 10
   description: Genesis Technology Communication, Inc.
   ip: 2001:504:16::7550
 - asn: 36459
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-GITHUB
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 10
   description: GitHub
   ip: 206.81.81.89
 - asn: 36459
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-GITHUB
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 10
   description: GitHub
   ip: 2001:504:16::8e6b
 - asn: 36459
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-GITHUB
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 10
   description: GitHub
   ip: 206.81.81.90
 - asn: 36459
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-GITHUB
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 10
   description: GitHub
   ip: 2001:504:16::346:0:8e6b
@@ -1308,47 +1926,75 @@ clients:
   cfg:
     filtering:
       max_prefix:
-        limit_ipv4: 1
+        limit_ipv4: 2
+        limit_ipv6: 1
   description: Global Net
   ip: 206.81.81.145
 - asn: 395466
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 2
         limit_ipv6: 1
   description: Global Net
   ip: 2001:504:16::6:8ca
 - asn: 4775
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TRANSIT-GLOBE
   description: Globe Telecom, Inc.
   ip: 206.81.80.208
 - asn: 4775
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TRANSIT-GLOBE
   description: Globe Telecom, Inc.
   ip: 2001:504:16::12a7
 - asn: 22363
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-GIGANEWS-ALL
       max_prefix:
         limit_ipv4: 200
+        limit_ipv6: 10
   description: Golden Frog GmbH / Powerhouse Management, Inc.
   ip: 206.81.81.46
 - asn: 22363
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-GIGANEWS-ALL
       max_prefix:
+        limit_ipv4: 200
         limit_ipv6: 10
   description: Golden Frog GmbH / Powerhouse Management, Inc.
   ip: 2001:504:16::575b
 - asn: 15169
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-GOOGLE
       max_prefix:
         limit_ipv4: 15000
+        limit_ipv6: 750
   description: Google
   ip: 206.81.80.17
 - asn: 15169
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-GOOGLE
       max_prefix:
+        limit_ipv4: 15000
         limit_ipv6: 750
   description: Google
   ip: 2001:504:16::3b41
@@ -1357,12 +2003,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 30
+        limit_ipv6: 2
   description: Gorge Networks
   ip: 206.81.80.199
 - asn: 11233
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 30
         limit_ipv6: 2
   description: Gorge Networks
   ip: 2001:504:16::2be1
@@ -1371,12 +2019,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 40
+        limit_ipv6: 5
   description: Green House Data (was FiberCloud)
   ip: 206.81.80.111
 - asn: 6295
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 40
         limit_ipv6: 5
   description: Green House Data (was FiberCloud)
   ip: 2001:504:16::1897
@@ -1385,12 +2035,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 40
+        limit_ipv6: 5
   description: Green House Data (was FiberCloud)
   ip: 206.81.80.164
 - asn: 6295
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 40
         limit_ipv6: 5
   description: Green House Data (was FiberCloud)
   ip: 2001:504:16::164:0:1897
@@ -1399,26 +2051,36 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 30
+        limit_ipv6: 2
   description: GTA/Teleguam Holdings, LLC
   ip: 206.81.80.119
 - asn: 9246
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 30
         limit_ipv6: 2
   description: GTA/Teleguam Holdings, LLC
   ip: 2001:504:16::241e
 - asn: 5580
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-HIBERNIA
       max_prefix:
         limit_ipv4: 85000
+        limit_ipv6: 1000
   description: Hibernia Networks
   ip: 206.81.81.17
 - asn: 5580
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-HIBERNIA
       max_prefix:
+        limit_ipv4: 85000
         limit_ipv6: 1000
   description: Hibernia Networks
   ip: 2001:504:16::15cc
@@ -1427,54 +2089,80 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 2
+        limit_ipv6: 1
   description: Hoplite Industries, Inc.
   ip: 206.81.81.153
 - asn: 395657
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 2
         limit_ipv6: 1
   description: Hoplite Industries, Inc.
   ip: 2001:504:16::6:989
 - asn: 14361
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-HOPONE
       max_prefix:
         limit_ipv4: 500
+        limit_ipv6: 25
   description: HopOne Internet Corporation
   ip: 206.81.80.115
 - asn: 14361
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-HOPONE
       max_prefix:
+        limit_ipv4: 500
         limit_ipv6: 25
   description: HopOne Internet Corporation
   ip: 2001:504:16::3819
 - asn: 36236
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-HOSTVIRTUAL
       max_prefix:
         limit_ipv4: 550
+        limit_ipv6: 250
   description: Host Virtual, Inc
   ip: 206.81.81.64
 - asn: 36236
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-HOSTVIRTUAL
       max_prefix:
+        limit_ipv4: 550
         limit_ipv6: 250
   description: Host Virtual, Inc
   ip: 2001:504:16::8d8c
 - asn: 14280
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NETNATION
       max_prefix:
         limit_ipv4: 20
+        limit_ipv6: 1
   description: Hostway Canada, Inc.
   ip: 206.81.80.220
 - asn: 14280
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NETNATION
       max_prefix:
+        limit_ipv4: 20
         limit_ipv6: 1
   description: Hostway Canada, Inc.
   ip: 2001:504:16::37c8
@@ -1483,12 +2171,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 25
+        limit_ipv6: 5
   description: Hostwinds
   ip: 206.81.81.79
 - asn: 54290
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 25
         limit_ipv6: 5
   description: Hostwinds
   ip: 2001:504:16::d412
@@ -1497,26 +2187,36 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 25
+        limit_ipv6: 5
   description: Hostwinds
   ip: 206.81.81.82
 - asn: 54290
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 25
         limit_ipv6: 5
   description: Hostwinds
   ip: 2001:504:16::338:0:d412
 - asn: 53597
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-HOYOS-NETWORK
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 25
   description: Hoyos Consulting LLC
   ip: 206.81.81.136
 - asn: 53597
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-HOYOS-NETWORK
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 25
   description: Hoyos Consulting LLC
   ip: 2001:504:16::d15d
@@ -1529,28 +2229,46 @@ clients:
 - asn: 36012
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-HUNTERCOMM
       max_prefix:
         limit_ipv4: 20
+        limit_ipv6: 1
   description: Hunter Communications
   ip: 206.81.81.69
 - asn: 36012
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-HUNTERCOMM
       max_prefix:
+        limit_ipv4: 20
         limit_ipv6: 1
   description: Hunter Communications
   ip: 2001:504:16::8cac
 - asn: 6939
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-HURRICANE
+        - AS-HURRICANEV6
       max_prefix:
         limit_ipv4: 165000
+        limit_ipv6: 25000
   description: Hurricane Electric
   ip: 206.81.80.40
 - asn: 6939
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-HURRICANE
+        - AS-HURRICANEV6
       max_prefix:
+        limit_ipv4: 165000
         limit_ipv6: 25000
   description: Hurricane Electric
   ip: 2001:504:16::1b1b
@@ -1563,56 +2281,88 @@ clients:
 - asn: 46435
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-IRON
       max_prefix:
         limit_ipv4: 300
+        limit_ipv6: 15
   description: Idaho Regional Optical Network
   ip: 206.81.81.43
 - asn: 46435
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-IRON
       max_prefix:
+        limit_ipv4: 300
         limit_ipv6: 15
   description: Idaho Regional Optical Network
   ip: 2001:504:16::b563
 - asn: 25764
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-IFIBER-LOCAL
       max_prefix:
         limit_ipv4: 12
+        limit_ipv6: 1
   description: iFIBER Communications
   ip: 206.81.80.204
 - asn: 25764
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-IFIBER-LOCAL
       max_prefix:
+        limit_ipv4: 12
         limit_ipv6: 1
   description: iFIBER Communications
   ip: 2001:504:16::64a4
 - asn: 26753
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-IN2NET
       max_prefix:
         limit_ipv4: 40
+        limit_ipv6: 2
   description: In2net Network
   ip: 206.81.80.27
 - asn: 26753
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-IN2NET
       max_prefix:
+        limit_ipv4: 40
         limit_ipv6: 2
   description: In2net Network
   ip: 2001:504:16::6881
 - asn: 54540
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-INCERO
       max_prefix:
         limit_ipv4: 500
+        limit_ipv6: 500
   description: Incero LLC
   ip: 206.81.81.20
 - asn: 54540
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-INCERO
       max_prefix:
+        limit_ipv4: 500
         limit_ipv6: 500
   description: Incero LLC
   ip: 2001:504:16::d50c
@@ -1621,12 +2371,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 43
+        limit_ipv6: 2
   description: Infinity Internet / Atmosera / EasyStreet (was Northwest Link)
   ip: 206.81.80.31
 - asn: 2044
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 43
         limit_ipv6: 2
   description: Infinity Internet / Atmosera / EasyStreet (was Northwest Link)
   ip: 2001:504:16::7fc
@@ -1638,6 +2390,10 @@ clients:
   description: Inland Northwest Health Services
   ip: 206.81.80.188
 - asn: 30076
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 3
   description: Inland Northwest Health Services
   ip: 2001:504:16::757c
 - asn: 26088
@@ -1648,67 +2404,115 @@ clients:
   description: Inland Telephone Company
   ip: 206.81.80.165
 - asn: 26088
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 4
   description: Inland Telephone Company
   ip: 2001:504:16::65e8
 - asn: 7385
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-INTEGRA
       max_prefix:
         limit_ipv4: 1300
+        limit_ipv6: 65
   description: Integra Telecom
   ip: 206.81.80.102
 - asn: 7385
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-INTEGRA
       max_prefix:
+        limit_ipv4: 1300
         limit_ipv6: 65
   description: Integra Telecom
   ip: 2001:504:16::1cd9
 - asn: 29791
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-INTERNAP
       max_prefix:
         limit_ipv4: 3000
+        limit_ipv6: 150
   description: Internap (was Voxel)
   ip: 206.81.80.149
 - asn: 29791
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-INTERNAP
       max_prefix:
+        limit_ipv4: 3000
         limit_ipv6: 150
   description: Internap (was Voxel)
   ip: 2001:504:16::745f
 - asn: 2497
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-IIJ
+        - AS-IIJ6
       max_prefix:
         limit_ipv4: 20000
+        limit_ipv6: 5000
   description: Internet Initiative Japan Inc.
   ip: 206.81.80.237
 - asn: 2497
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-IIJ
+        - AS-IIJ6
       max_prefix:
+        limit_ipv4: 20000
         limit_ipv6: 5000
   description: Internet Initiative Japan Inc.
   ip: 2001:504:16::9c1
 - asn: 11537
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-I2-CPS
   description: Internet2
   ip: 206.81.80.67
 - asn: 11537
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-I2-CPS
   description: Internet2
   ip: 2001:504:16::2d11
 - asn: 11164
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TR
       max_prefix:
         limit_ipv4: 8000
+        limit_ipv6: 600
   description: Internet2 TransitRail
   ip: 206.81.80.77
 - asn: 11164
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TR
       max_prefix:
+        limit_ipv4: 8000
         limit_ipv6: 600
   description: Internet2 TransitRail
   ip: 2001:504:16::2b9c
@@ -1717,92 +2521,144 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 25
+        limit_ipv6: 25
   description: IntroVex Solutions Ltd
   ip: 206.81.81.143
 - asn: 135886
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 25
         limit_ipv6: 25
   description: IntroVex Solutions Ltd
   ip: 2001:504:16::2:12ce
 - asn: 395970
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-IONSWITCH
       max_prefix:
         limit_ipv4: 10
+        limit_ipv6: 20
   description: IonSwitch, LLC
   ip: 206.81.81.144
 - asn: 395970
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-IONSWITCH
       max_prefix:
+        limit_ipv4: 10
         limit_ipv6: 20
   description: IonSwitch, LLC
   ip: 2001:504:16::6:ac2
 - asn: 53708
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-IOVATION
       max_prefix:
         limit_ipv4: 10
   description: iovation, Inc.
   ip: 206.81.80.192
 - asn: 53708
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IOVATION
+      max_prefix:
+        limit_ipv4: 10
   description: iovation, Inc.
   ip: 2001:504:16::d1cc
 - asn: 41095
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-IPTP
       max_prefix:
         limit_ipv4: 12000
+        limit_ipv6: 3000
   description: IPTP Networks
   ip: 206.81.81.26
 - asn: 41095
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-IPTP
       max_prefix:
+        limit_ipv4: 12000
         limit_ipv6: 3000
   description: IPTP Networks
   ip: 2001:504:16::a087
 - asn: 18530
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ISOMEDIA
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: ISOMEDIA, Inc.
   ip: 206.81.80.79
 - asn: 18530
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ISOMEDIA
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 5
   description: ISOMEDIA, Inc.
   ip: 2001:504:16::4862
 - asn: 23393
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ISPRIME
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 25
   description: ISPrime LLC
   ip: 206.81.81.65
 - asn: 23393
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ISPRIME
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 25
   description: ISPrime LLC
   ip: 2001:504:16::5b61
 - asn: 32204
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-KPU
       max_prefix:
         limit_ipv4: 20
+        limit_ipv6: 1
   description: Ketchikan Public Utilities
   ip: 206.81.81.36
 - asn: 32204
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-KPU
       max_prefix:
+        limit_ipv4: 20
         limit_ipv6: 1
   description: Ketchikan Public Utilities
   ip: 2001:504:16::7dcc
@@ -1811,12 +2667,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 24
+        limit_ipv6: 1
   description: King County Institutional Network (I-Net) Westin
   ip: 206.81.80.124
 - asn: 2544
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 24
         limit_ipv6: 1
   description: King County Institutional Network (I-Net) Westin
   ip: 2001:504:16::124:0:9f0
@@ -1825,68 +2683,102 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 24
+        limit_ipv6: 1
   description: King County Institutional Network (I-Net) Westin
   ip: 206.81.80.63
 - asn: 2544
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 24
         limit_ipv6: 1
   description: King County Institutional Network (I-Net) Westin
   ip: 2001:504:16::9f0
 - asn: 4766
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-KORNETBGP
       max_prefix:
         limit_ipv4: 22000
+        limit_ipv6: 1000
   description: KT Corp
   ip: 206.81.80.131
 - asn: 4766
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-KORNETBGP
       max_prefix:
+        limit_ipv4: 22000
         limit_ipv6: 1000
   description: KT Corp
   ip: 2001:504:16::129e
 - asn: 31638
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-LEPIDA
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: LepidaSpA
   ip: 206.81.81.84
 - asn: 31638
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-LEPIDA
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 5
   description: LepidaSpA
   ip: 2001:504:16::7b96
 - asn: 22822
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-LLNW
       max_prefix:
         limit_ipv4: 600
+        limit_ipv6: 30
   description: Limelight Networks
   ip: 206.81.80.99
 - asn: 22822
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-LLNW
       max_prefix:
+        limit_ipv4: 600
         limit_ipv6: 30
   description: Limelight Networks
   ip: 2001:504:16::5926
 - asn: 22822
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-LLNW
       max_prefix:
         limit_ipv4: 600
+        limit_ipv6: 30
   description: Limelight Networks
   ip: 206.81.81.83
 - asn: 22822
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-LLNW
       max_prefix:
+        limit_ipv4: 600
         limit_ipv6: 30
   description: Limelight Networks
   ip: 2001:504:16::339:0:5926
@@ -1895,12 +2787,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 10
+        limit_ipv6: 5
   description: Little Apple Technologies
   ip: 206.81.81.118
 - asn: 11046
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 10
         limit_ipv6: 5
   description: Little Apple Technologies
   ip: 2001:504:16::2b26
@@ -1909,40 +2803,58 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: LocalTel Communications, aka Northwest Internet
   ip: 206.81.80.173
 - asn: 13370
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 5
   description: LocalTel Communications, aka Northwest Internet
   ip: 2001:504:16::343a
 - asn: 393552
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-LPCNEXTLIGHT
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 2
   description: Longmont Power & Communications
   ip: 206.81.81.154
 - asn: 393552
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-LPCNEXTLIGHT
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 2
   description: Longmont Power & Communications
   ip: 2001:504:16::6:150
 - asn: 25899
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-LSNET
       max_prefix:
         limit_ipv4: 2000
+        limit_ipv6: 200
   description: LS Networks
   ip: 206.81.80.134
 - asn: 25899
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-LSNET
       max_prefix:
+        limit_ipv4: 2000
         limit_ipv6: 200
   description: LS Networks
   ip: 2001:504:16::652b
@@ -1954,19 +2866,31 @@ clients:
   description: LTD Broadband LLC
   ip: 206.81.81.155
 - asn: 394330
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 1
   description: LTD Broadband LLC
   ip: 2001:504:16::6:45a
 - asn: 22702
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-M5-CUSTOMERS
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 3
   description: Magna5, LLC (was X5 Solutions)
   ip: 206.81.81.22
 - asn: 22702
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-M5-CUSTOMERS
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 3
   description: Magna5, LLC (was X5 Solutions)
   ip: 2001:504:16::58ae
@@ -1978,6 +2902,10 @@ clients:
   description: Marchex, Inc.
   ip: 206.81.80.129
 - asn: 40495
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 5
   description: Marchex, Inc.
   ip: 2001:504:16::9e2f
 - asn: 20394
@@ -1985,40 +2913,58 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 10
   description: Mashell Telecom
   ip: 206.81.80.186
 - asn: 20394
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 10
   description: Mashell Telecom
   ip: 2001:504:16::4faa
 - asn: 50763
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-MCKAY
       max_prefix:
         limit_ipv4: 25
+        limit_ipv6: 10
   description: MCKAYCOM Ltd
   ip: 206.81.80.219
 - asn: 50763
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-MCKAY
       max_prefix:
+        limit_ipv4: 25
         limit_ipv6: 10
   description: MCKAYCOM Ltd
   ip: 2001:504:16::c64b
 - asn: 36817
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-MCSNET
       max_prefix:
         limit_ipv4: 20
+        limit_ipv6: 1
   description: MCSNet
   ip: 206.81.81.16
 - asn: 36817
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-MCSNET
       max_prefix:
+        limit_ipv4: 20
         limit_ipv6: 1
   description: MCSNet
   ip: 2001:504:16::8fd1
@@ -2027,54 +2973,80 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 40
+        limit_ipv6: 4
   description: Metapeer, Inc.
   ip: 206.81.80.21
 - asn: 13331
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 40
         limit_ipv6: 4
   description: Metapeer, Inc.
   ip: 2001:504:16::3413
 - asn: 8075
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-MICROSOFT
       max_prefix:
         limit_ipv4: 1000
+        limit_ipv6: 250
   description: Microsoft Corporation
   ip: 206.81.80.30
 - asn: 8075
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-MICROSOFT
       max_prefix:
+        limit_ipv4: 1000
         limit_ipv6: 250
   description: Microsoft Corporation
   ip: 2001:504:16::1f8b
 - asn: 8075
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-MICROSOFT
       max_prefix:
         limit_ipv4: 1000
+        limit_ipv6: 250
   description: Microsoft Corporation
   ip: 206.81.80.68
 - asn: 8075
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-MICROSOFT
       max_prefix:
+        limit_ipv4: 1000
         limit_ipv6: 250
   description: Microsoft Corporation
   ip: 2001:504:16::68:0:1f8b
 - asn: 57695
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-MISAKA
       max_prefix:
         limit_ipv4: 200
+        limit_ipv6: 200
   description: Misaka Network LLC
   ip: 206.81.81.161
 - asn: 57695
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-MISAKA
       max_prefix:
+        limit_ipv4: 200
         limit_ipv6: 200
   description: Misaka Network LLC
   ip: 2001:504:16::e15f
@@ -2083,26 +3055,36 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 10
+        limit_ipv6: 1
   description: Montana Internet Corporation
   ip: 206.81.81.68
 - asn: 4043
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 10
         limit_ipv6: 1
   description: Montana Internet Corporation
   ip: 2001:504:16::fcb
 - asn: 11924
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-11924-PEERING
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: Montana Opticom LLC
   ip: 206.81.81.45
 - asn: 11924
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-11924-PEERING
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 5
   description: Montana Opticom LLC
   ip: 2001:504:16::2e94
@@ -2111,12 +3093,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 44
+        limit_ipv6: 2
   description: Montana West LLC
   ip: 206.81.80.228
 - asn: 54327
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 44
         limit_ipv6: 2
   description: Montana West LLC
   ip: 2001:504:16::d437
@@ -2128,6 +3112,10 @@ clients:
   description: Mouat's Technology Services, Inc.
   ip: 206.81.80.14
 - asn: 3601
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 5
   description: Mouat's Technology Services, Inc.
   ip: 2001:504:16::e11
 - asn: 394140
@@ -2144,61 +3132,97 @@ clients:
   description: NCI Datacom, Inc.
   ip: 206.81.81.96
 - asn: 20474
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 50
   description: NCI Datacom, Inc.
   ip: 2001:504:16::4ffa
 - asn: 3701
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-OWEN-INTERNAL
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 10
   description: NERO
   ip: 206.81.81.76
 - asn: 3701
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-OWEN-INTERNAL
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 10
   description: NERO
   ip: 2001:504:16::e75
 - asn: 2906
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NFLX
       max_prefix:
         limit_ipv4: 250
+        limit_ipv6: 13
   description: Netflix Streaming Services, Inc.
   ip: 206.81.80.222
 - asn: 2906
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NFLX
       max_prefix:
+        limit_ipv4: 250
         limit_ipv6: 13
   description: Netflix Streaming Services, Inc.
   ip: 2001:504:16::b5a
 - asn: 2906
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NFLX
       max_prefix:
         limit_ipv4: 250
+        limit_ipv6: 13
   description: Netflix Streaming Services, Inc.
   ip: 206.81.80.223
 - asn: 2906
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NFLX
       max_prefix:
+        limit_ipv4: 250
         limit_ipv6: 13
   description: Netflix Streaming Services, Inc.
   ip: 2001:504:16::223:0:b5a
 - asn: 19528
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NETRIVER
       max_prefix:
         limit_ipv4: 25
+        limit_ipv6: 1
   description: Netriver INT LLC
   ip: 206.81.80.160
 - asn: 19528
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NETRIVER
       max_prefix:
+        limit_ipv4: 25
         limit_ipv6: 1
   description: Netriver INT LLC
   ip: 2001:504:16::4c48
@@ -2207,26 +3231,36 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 4000
+        limit_ipv6: 120
   description: NetValue, Inc.
   ip: 206.81.81.165
 - asn: 8095
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 4000
         limit_ipv6: 120
   description: NetValue, Inc.
   ip: 2001:504:16::1f9f
 - asn: 1982
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NEXUS
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: Network OS / Northwest Nexus
   ip: 206.81.80.96
 - asn: 1982
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NEXUS
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 5
   description: Network OS / Northwest Nexus
   ip: 2001:504:16::7be
@@ -2235,40 +3269,58 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 200
+        limit_ipv6: 20
   description: NetworkLubbock
   ip: 206.81.81.59
 - asn: 46455
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 200
         limit_ipv6: 20
   description: NetworkLubbock
   ip: 2001:504:16::b577
 - asn: 11666
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NEXICOM
       max_prefix:
         limit_ipv4: 300
+        limit_ipv6: 50
   description: Nexicom Inc
   ip: 206.81.80.144
 - asn: 11666
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NEXICOM
       max_prefix:
+        limit_ipv4: 300
         limit_ipv6: 50
   description: Nexicom Inc
   ip: 2001:504:16::2d92
 - asn: 54721
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NGEN
       max_prefix:
         limit_ipv4: 1
+        limit_ipv6: 1
   description: NGEN Networks, LLC
   ip: 206.81.81.146
 - asn: 54721
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NGEN
       max_prefix:
+        limit_ipv4: 1
         limit_ipv6: 1
   description: NGEN Networks, LLC
   ip: 2001:504:16::d5c1
@@ -2277,12 +3329,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 7
+        limit_ipv6: 1
   description: NGL Connection
   ip: 206.81.81.147
 - asn: 55193
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 7
         limit_ipv6: 1
   description: NGL Connection
   ip: 2001:504:16::d799
@@ -2295,70 +3349,110 @@ clients:
 - asn: 53828
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NITEL-TRANSIT
       max_prefix:
         limit_ipv4: 500
+        limit_ipv6: 100
   description: Nitel
   ip: 206.81.81.77
 - asn: 53828
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NITEL-TRANSIT
       max_prefix:
+        limit_ipv4: 500
         limit_ipv6: 100
   description: Nitel
   ip: 2001:504:16::d244
 - asn: 26935
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NOELC
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 3
   description: Noel Communications Inc.
   ip: 206.81.80.125
 - asn: 26935
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NOELC
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 3
   description: Noel Communications Inc.
   ip: 2001:504:16::6937
 - asn: 26935
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NOELC
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 3
   description: Noel Communications Inc.
   ip: 206.81.81.156
 - asn: 26935
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NOELC
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 3
   description: Noel Communications Inc.
   ip: 2001:504:16::412:0:6937
 - asn: 16713
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NOANET-PEERING
       max_prefix:
         limit_ipv4: 250
+        limit_ipv6: 13
   description: Northwest Open Access Network (NoaNet)
   ip: 206.81.80.60
 - asn: 16713
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NOANET-PEERING
       max_prefix:
+        limit_ipv4: 250
         limit_ipv6: 13
   description: Northwest Open Access Network (NoaNet)
   ip: 2001:504:16::4149
 - asn: 16713
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NOANET-PEERING
       max_prefix:
         limit_ipv4: 250
+        limit_ipv6: 13
   description: Northwest Open Access Network (NoaNet)
   ip: 206.81.80.224
 - asn: 16713
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-NOANET-PEERING
       max_prefix:
+        limit_ipv4: 250
         limit_ipv6: 13
   description: Northwest Open Access Network (NoaNet)
   ip: 2001:504:16::224:0:4149
@@ -2367,12 +3461,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 15
+        limit_ipv6: 1
   description: Novus Entertainment Inc.
   ip: 206.81.80.216
 - asn: 40029
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 15
         limit_ipv6: 1
   description: Novus Entertainment Inc.
   ip: 2001:504:16::9c5d
@@ -2381,12 +3477,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 4
+        limit_ipv6: 1
   description: noWYR
   ip: 206.81.81.109
 - asn: 11385
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 4
         limit_ipv6: 1
   description: noWYR
   ip: 2001:504:16::2c79
@@ -2395,152 +3493,234 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 40
+        limit_ipv6: 2
   description: NuclearFallout Enterprises, Inc.
   ip: 206.81.80.12
 - asn: 32751
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 40
         limit_ipv6: 2
   description: NuclearFallout Enterprises, Inc.
   ip: 2001:504:16::7fef
 - asn: 30071
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-OCCAID6
       max_prefix:
         limit_ipv4: 10
+        limit_ipv6: 300
   description: OCCAID, Inc.
   ip: 206.81.80.212
 - asn: 30071
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-OCCAID6
       max_prefix:
+        limit_ipv4: 10
         limit_ipv6: 300
   description: OCCAID, Inc.
   ip: 2001:504:16::7577
 - asn: 36692
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-OPENDNS
       max_prefix:
         limit_ipv4: 70
+        limit_ipv6: 20
   description: OpenDNS
   ip: 206.81.80.53
 - asn: 36692
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-OPENDNS
       max_prefix:
+        limit_ipv4: 70
         limit_ipv6: 20
   description: OpenDNS
   ip: 2001:504:16::8f54
 - asn: 39832
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-OPERA
       max_prefix:
         limit_ipv4: 20
+        limit_ipv6: 5
   description: Opera Software ASA
   ip: 206.81.80.198
 - asn: 39832
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-OPERA
       max_prefix:
+        limit_ipv4: 20
         limit_ipv6: 5
   description: Opera Software ASA
   ip: 2001:504:16::9b98
 - asn: 14380
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-OPUS
       max_prefix:
         limit_ipv4: 25
+        limit_ipv6: 10
   description: Opus Interactive
   ip: 206.81.81.23
 - asn: 14380
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-OPUS
       max_prefix:
+        limit_ipv4: 25
         limit_ipv6: 10
   description: Opus Interactive
   ip: 2001:504:16::382c
 - asn: 16276
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-OVH
       max_prefix:
         limit_ipv4: 200
+        limit_ipv6: 50
   description: OVH
   ip: 206.81.80.214
 - asn: 16276
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-OVH
       max_prefix:
+        limit_ipv4: 200
         limit_ipv6: 50
   description: OVH
   ip: 2001:504:16::3f94
 - asn: 101
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-PNW-GIGAPOP
       max_prefix:
         limit_ipv4: 250
+        limit_ipv6: 13
   description: Pacific Northwest Gigapop
   ip: 206.81.80.84
 - asn: 101
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-PNW-GIGAPOP
       max_prefix:
+        limit_ipv4: 250
         limit_ipv6: 13
   description: Pacific Northwest Gigapop
   ip: 2001:504:16::65
 - asn: 3856
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
       max_prefix:
         limit_ipv4: 600
+        limit_ipv6: 600
   description: Packet Clearing House
   ip: 206.81.80.81
 - asn: 3856
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
       max_prefix:
+        limit_ipv4: 600
         limit_ipv6: 600
   description: Packet Clearing House
   ip: 2001:504:16::f10
 - asn: 14371
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-PBC
       max_prefix:
         limit_ipv4: 200
+        limit_ipv6: 10
   description: Paul Bunyan Communications
   ip: 206.81.81.139
 - asn: 14371
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-PBC
       max_prefix:
+        limit_ipv4: 200
         limit_ipv6: 10
   description: Paul Bunyan Communications
   ip: 2001:504:16::3823
 - asn: 13768
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS13768:AS-CUSTOMERS
       max_prefix:
         limit_ipv4: 3000
+        limit_ipv6: 150
   description: Peer 1 Network
   ip: 206.81.80.38
 - asn: 13768
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS13768:AS-CUSTOMERS
       max_prefix:
+        limit_ipv4: 3000
         limit_ipv6: 150
   description: Peer 1 Network
   ip: 2001:504:16::35c8
 - asn: 21782
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-PLATEAU
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: Plateau Telecommunications
   ip: 206.81.81.80
 - asn: 21782
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-PLATEAU
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 5
   description: Plateau Telecommunications
   ip: 2001:504:16::5516
@@ -2549,26 +3729,36 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 200
+        limit_ipv6: 10
   description: Pocketinet Communications, Inc.
   ip: 206.81.80.88
 - asn: 23265
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 200
         limit_ipv6: 10
   description: Pocketinet Communications, Inc.
   ip: 2001:504:16::5ae1
 - asn: 36696
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-PZ-OAFD
       max_prefix:
         limit_ipv4: 18
+        limit_ipv6: 1
   description: PogoZone Internet Solutions (was OpenAccess)
   ip: 206.81.80.121
 - asn: 36696
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-PZ-OAFD
       max_prefix:
+        limit_ipv4: 18
         limit_ipv6: 1
   description: PogoZone Internet Solutions (was OpenAccess)
   ip: 2001:504:16::8f58
@@ -2580,6 +3770,10 @@ clients:
   description: PopCap Games
   ip: 206.81.80.184
 - asn: 36715
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 3
   description: PopCap Games
   ip: 2001:504:16::8f6b
 - asn: 6407
@@ -2587,26 +3781,36 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 1000
+        limit_ipv6: 25
   description: Primus Telecommunications Canada Inc.
   ip: 206.81.80.74
 - asn: 6407
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 1000
         limit_ipv6: 25
   description: Primus Telecommunications Canada Inc.
   ip: 2001:504:16::1907
 - asn: 31857
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-PTERA
       max_prefix:
         limit_ipv4: 4
+        limit_ipv6: 1
   description: Ptera Inc
   ip: 206.81.81.140
 - asn: 31857
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-PTERA
       max_prefix:
+        limit_ipv4: 4
         limit_ipv6: 1
   description: Ptera Inc
   ip: 2001:504:16::7c71
@@ -2615,26 +3819,36 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 3
   description: Quantum Communications
   ip: 206.81.80.210
 - asn: 30583
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 3
   description: Quantum Communications
   ip: 2001:504:16::7777
 - asn: 19875
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-RACKFORCE
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: RackForce Networks, Inc.
   ip: 206.81.80.154
 - asn: 19875
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-RACKFORCE
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 5
   description: RackForce Networks, Inc.
   ip: 2001:504:16::4da3
@@ -2643,12 +3857,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: Radiant Communications Corp.
   ip: 206.81.80.146
 - asn: 15247
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 5
   description: Radiant Communications Corp.
   ip: 2001:504:16::3b8f
@@ -2657,12 +3873,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 25
+        limit_ipv6: 1
   description: RamNode, LLC
   ip: 206.81.81.12
 - asn: 3842
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 25
         limit_ipv6: 1
   description: RamNode, LLC
   ip: 2001:504:16::f02
@@ -2674,6 +3892,10 @@ clients:
   description: RealNetworks, Inc.
   ip: 206.81.80.11
 - asn: 11922
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 9
   description: RealNetworks, Inc.
   ip: 2001:504:16::2e92
 - asn: 62838
@@ -2681,31 +3903,63 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 20
+        limit_ipv6: 1
   description: Reprise Hosting
   ip: 206.81.81.21
 - asn: 62838
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 20
         limit_ipv6: 1
   description: Reprise Hosting
   ip: 2001:504:16::f576
 - asn: 33108
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 100000
+        limit_ipv6: 30000
   description: Reserved
   ip: 206.81.80.1
 - asn: 33108
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 100000
+        limit_ipv6: 30000
   description: Reserved
   ip: 2001:504:16::1
 - asn: 33108
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 100000
+        limit_ipv6: 30000
   description: Reserved
   ip: 206.81.80.8
 - asn: 33108
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 100000
+        limit_ipv6: 30000
   description: Reserved
   ip: 2001:504:16::8
 - asn: 33108
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 100000
+        limit_ipv6: 30000
   description: Reserved
   ip: 206.81.80.9
 - asn: 33108
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 100000
+        limit_ipv6: 30000
   description: Reserved
   ip: 2001:504:16::9
 - asn: 14987
@@ -2716,47 +3970,75 @@ clients:
   description: Rethem Hosting LLC
   ip: 206.81.80.226
 - asn: 14987
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 6
   description: Rethem Hosting LLC
   ip: 2001:504:16::3a8b
 - asn: 3130
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-RGNET
       max_prefix:
         limit_ipv4: 300
+        limit_ipv6: 15
   description: RGnet/PSGnet
   ip: 206.81.80.23
 - asn: 3130
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-RGNET
       max_prefix:
+        limit_ipv4: 300
         limit_ipv6: 15
   description: RGnet/PSGnet
   ip: 2001:504:16::c3a
 - asn: 40627
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-RINGCENTRAL
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 1
   description: RingCentral
   ip: 206.81.81.99
 - asn: 40627
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-RINGCENTRAL
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 1
   description: RingCentral
   ip: 2001:504:16::9eb3
 - asn: 6507
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-RIOT
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 3
   description: Riot Games Inc
   ip: 206.81.81.42
 - asn: 6507
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-RIOT
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 3
   description: Riot Games Inc
   ip: 2001:504:16::196b
@@ -2765,12 +4047,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 8
+        limit_ipv6: 2
   description: Riseup Networks
   ip: 206.81.81.74
 - asn: 16652
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 8
         limit_ipv6: 2
   description: Riseup Networks
   ip: 2001:504:16::410c
@@ -2779,12 +4063,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 10
+        limit_ipv6: 1
   description: RisingNet, LLC.
   ip: 206.81.80.110
 - asn: 33211
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 10
         limit_ipv6: 1
   description: RisingNet, LLC.
   ip: 2001:504:16::81bb
@@ -2796,19 +4082,31 @@ clients:
   description: Rock Island Communications
   ip: 206.81.80.108
 - asn: 19518
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 2
   description: Rock Island Communications
   ip: 2001:504:16::4c3e
 - asn: 395478
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-RMI
       max_prefix:
         limit_ipv4: 3
+        limit_ipv6: 1
   description: Rocky Mountain Internet, Inc.
   ip: 206.81.81.133
 - asn: 395478
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-RMI
       max_prefix:
+        limit_ipv4: 3
         limit_ipv6: 1
   description: Rocky Mountain Internet, Inc.
   ip: 2001:504:16::6:8d6
@@ -2820,6 +4118,10 @@ clients:
   description: Safelink Internet
   ip: 206.81.81.129
 - asn: 33037
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 17
   description: Safelink Internet
   ip: 2001:504:16::810d
 - asn: 803
@@ -2827,12 +4129,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 250
+        limit_ipv6: 13
   description: SaskTel / Saskatchewan Telecommunications
   ip: 206.81.80.145
 - asn: 803
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 250
         limit_ipv6: 13
   description: SaskTel / Saskatchewan Telecommunications
   ip: 2001:504:16::323
@@ -2844,19 +4148,31 @@ clients:
   description: Seattle Public Library
   ip: 206.81.80.196
 - asn: 21525
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 2
   description: Seattle Public Library
   ip: 2001:504:16::5415
 - asn: 3742
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SEMA
       max_prefix:
         limit_ipv4: 75
+        limit_ipv6: 3
   description: Semaphore Corporation
   ip: 206.81.80.16
 - asn: 3742
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SEMA
       max_prefix:
+        limit_ipv4: 75
         limit_ipv6: 3
   description: Semaphore Corporation
   ip: 2001:504:16::e9e
@@ -2865,12 +4181,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 20
+        limit_ipv6: 3
   description: ServedBy the Net, LLC
   ip: 206.81.80.203
 - asn: 53837
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 20
         limit_ipv6: 3
   description: ServedBy the Net, LLC
   ip: 2001:504:16::d24d
@@ -2879,12 +4197,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 100
   description: ServerCrate
   ip: 206.81.81.103
 - asn: 20150
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 100
   description: ServerCrate
   ip: 2001:504:16::4eb6
@@ -2897,56 +4217,88 @@ clients:
 - asn: 50245
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SERVEREL
       max_prefix:
         limit_ipv4: 300
+        limit_ipv6: 4
   description: Serverel
   ip: 206.81.81.48
 - asn: 50245
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SERVEREL
       max_prefix:
+        limit_ipv4: 300
         limit_ipv6: 4
   description: Serverel
   ip: 2001:504:16::c445
 - asn: 24482
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SGGS
       max_prefix:
         limit_ipv4: 4000
+        limit_ipv6: 200
   description: SG.GS
   ip: 206.81.81.61
 - asn: 24482
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SGGS
       max_prefix:
+        limit_ipv4: 4000
         limit_ipv6: 200
   description: SG.GS
   ip: 2001:504:16::5fa2
 - asn: 6327
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-BIGPIPE
       max_prefix:
         limit_ipv4: 20000
+        limit_ipv6: 1000
   description: Shaw Communications Inc.
   ip: 206.81.80.54
 - asn: 6327
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-BIGPIPE
       max_prefix:
+        limit_ipv4: 20000
         limit_ipv6: 1000
   description: Shaw Communications Inc.
   ip: 2001:504:16::18b7
 - asn: 26223
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SSCNETWORKS
       max_prefix:
         limit_ipv4: 20
+        limit_ipv6: 1
   description: Silver Star Communications
   ip: 206.81.81.98
 - asn: 26223
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SSCNETWORKS
       max_prefix:
+        limit_ipv4: 20
         limit_ipv6: 1
   description: Silver Star Communications
   ip: 2001:504:16::666f
@@ -2955,82 +4307,124 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 10
   description: Silver Star Telecom
   ip: 206.81.80.171
 - asn: 32869
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 10
   description: Silver Star Telecom
   ip: 2001:504:16::8065
 - asn: 8309
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SPH
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 1
   description: Sipartech
   ip: 206.81.81.86
 - asn: 8309
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SPH
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 1
   description: Sipartech
   ip: 2001:504:16::2075
 - asn: 9318
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SKBROADBAND
       max_prefix:
         limit_ipv4: 20000
+        limit_ipv6: 1000
   description: SK Broadband
   ip: 206.81.81.40
 - asn: 9318
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SKBROADBAND
       max_prefix:
+        limit_ipv4: 20000
         limit_ipv6: 1000
   description: SK Broadband
   ip: 2001:504:16::2466
 - asn: 9318
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SKBROADBAND
       max_prefix:
         limit_ipv4: 20000
+        limit_ipv6: 1000
   description: SK Broadband
   ip: 206.81.81.160
 - asn: 9318
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SKBROADBAND
       max_prefix:
+        limit_ipv4: 20000
         limit_ipv6: 1000
   description: SK Broadband
   ip: 2001:504:16::416:0:2466
 - asn: 36351
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SOFTLAYER
       max_prefix:
         limit_ipv4: 1500
+        limit_ipv6: 350
   description: Softlayer Technologies, Inc.
   ip: 206.81.80.140
 - asn: 36351
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SOFTLAYER
       max_prefix:
+        limit_ipv4: 1500
         limit_ipv6: 350
   description: Softlayer Technologies, Inc.
   ip: 2001:504:16::8dff
 - asn: 7065
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SONICTRANSIT
       max_prefix:
         limit_ipv4: 200
+        limit_ipv6: 10
   description: Sonic.net, Inc.
   ip: 206.81.80.107
 - asn: 7065
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SONICTRANSIT
       max_prefix:
+        limit_ipv4: 200
         limit_ipv6: 10
   description: Sonic.net, Inc.
   ip: 2001:504:16::1b99
@@ -3039,40 +4433,58 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 10
   description: Spartan Host Ltd
   ip: 206.81.81.101
 - asn: 201106
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 10
   description: Spartan Host Ltd
   ip: 2001:504:16::3:1192
 - asn: 8403
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SPOTIFY
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 3
   description: Spotify LTD
   ip: 206.81.81.150
 - asn: 8403
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SPOTIFY
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 3
   description: Spotify LTD
   ip: 2001:504:16::20d3
 - asn: 15211
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SQUARE
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 10
   description: Square, Inc
   ip: 206.81.81.75
 - asn: 15211
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SQUARE
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 10
   description: Square, Inc
   ip: 2001:504:16::3b6b
@@ -3085,28 +4497,44 @@ clients:
 - asn: 54104
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-STACKPATH
       max_prefix:
         limit_ipv4: 300
+        limit_ipv6: 30
   description: StackPath, LLC
   ip: 206.81.81.114
 - asn: 54104
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-STACKPATH
       max_prefix:
+        limit_ipv4: 300
         limit_ipv6: 30
   description: StackPath, LLC
   ip: 2001:504:16::d358
 - asn: 12989
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-HIGHWINDS
       max_prefix:
         limit_ipv4: 25000
+        limit_ipv6: 2500
   description: StackPath, LLC (was Highwinds)
   ip: 206.81.80.194
 - asn: 12989
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-HIGHWINDS
       max_prefix:
+        limit_ipv4: 25000
         limit_ipv6: 2500
   description: StackPath, LLC (was Highwinds)
   ip: 2001:504:16::32bd
@@ -3115,26 +4543,36 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 500
+        limit_ipv6: 5
   description: Star Light Networks
   ip: 206.81.81.164
 - asn: 395358
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 500
         limit_ipv6: 5
   description: Star Light Networks
   ip: 2001:504:16::6:85e
 - asn: 19171
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-STARGATE-CA
       max_prefix:
         limit_ipv4: 15
+        limit_ipv6: 5
   description: Stargate Connections Inc.
   ip: 206.81.81.15
 - asn: 19171
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-STARGATE-CA
       max_prefix:
+        limit_ipv4: 15
         limit_ipv6: 5
   description: Stargate Connections Inc.
   ip: 2001:504:16::4ae3
@@ -3143,40 +4581,58 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 15
+        limit_ipv6: 1
   description: StarTouch, Inc.
   ip: 206.81.80.195
 - asn: 15177
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 15
         limit_ipv6: 1
   description: StarTouch, Inc.
   ip: 2001:504:16::3b49
 - asn: 1798
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ORNET
       max_prefix:
         limit_ipv4: 35
+        limit_ipv6: 5
   description: State of Oregon
   ip: 206.81.80.177
 - asn: 1798
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-ORNET
       max_prefix:
+        limit_ipv4: 35
         limit_ipv6: 5
   description: State of Oregon
   ip: 2001:504:16::706
 - asn: 36374
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-STELLAR-TRANSIT
       max_prefix:
         limit_ipv4: 33
+        limit_ipv6: 1
   description: Stellar Association
   ip: 206.81.81.142
 - asn: 36374
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-STELLAR-TRANSIT
       max_prefix:
+        limit_ipv4: 33
         limit_ipv6: 1
   description: Stellar Association
   ip: 2001:504:16::8e16
@@ -3185,12 +4641,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 6
+        limit_ipv6: 1
   description: Sumofiber
   ip: 206.81.80.245
 - asn: 54329
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 6
         limit_ipv6: 1
   description: Sumofiber
   ip: 2001:504:16::d439
@@ -3202,33 +4660,85 @@ clients:
   description: Surescripts LLC (was Kryptiq)
   ip: 206.81.80.243
 - asn: 53869
-  description: Surescripts LLC (was Kryptiq)
-  ip: 2001:504:16::d26d
-- asn: 15305
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 3
+  description: Surescripts LLC (was Kryptiq)
+  ip: 2001:504:16::d26d
+- asn: 27471
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 16
+        limit_ipv6: 1
+  description: Symantec Corporation
+  ip: 206.81.81.169
+- asn: 27471
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 16
+        limit_ipv6: 1
+  description: Symantec Corporation
+  ip: 2001:504:16::6b4f
+- asn: 27471
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 16
+        limit_ipv6: 1
+  description: Symantec Corporation
+  ip: 206.81.81.170
+- asn: 27471
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 16
+        limit_ipv6: 1
+  description: Symantec Corporation
+  ip: 2001:504:16::426:0:6b4f
+- asn: 15305
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SYRINGANETWORKS
+      max_prefix:
         limit_ipv4: 500
+        limit_ipv6: 50
   description: Syringa Networks
   ip: 206.81.80.239
 - asn: 15305
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SYRINGANETWORKS
       max_prefix:
+        limit_ipv4: 500
         limit_ipv6: 50
   description: Syringa Networks
   ip: 2001:504:16::3bc9
 - asn: 21928
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-21928
       max_prefix:
         limit_ipv4: 500
+        limit_ipv6: 1000
   description: T-Mobile US
   ip: 206.81.81.35
 - asn: 21928
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-21928
       max_prefix:
+        limit_ipv4: 500
         limit_ipv6: 1000
   description: T-Mobile US
   ip: 2001:504:16::55a8
@@ -3237,40 +4747,58 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 1
+        limit_ipv6: 1
   description: T. Grand Networks Inc. / QuickStream Internet
   ip: 206.81.81.95
 - asn: 27618
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 1
         limit_ipv6: 1
   description: T. Grand Networks Inc. / QuickStream Internet
   ip: 2001:504:16::6be2
 - asn: 4474
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TCTWEST
       max_prefix:
         limit_ipv4: 10
+        limit_ipv6: 1
   description: TCT West, Inc
   ip: 206.81.80.215
 - asn: 4474
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TCTWEST
       max_prefix:
+        limit_ipv4: 10
         limit_ipv6: 1
   description: TCT West, Inc
   ip: 2001:504:16::117a
 - asn: 4181
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TDS-TRANSIT
       max_prefix:
         limit_ipv4: 3000
+        limit_ipv6: 13
   description: TDS Telecom (was BendBroadband)
   ip: 206.81.80.178
 - asn: 4181
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TDS-TRANSIT
       max_prefix:
+        limit_ipv4: 3000
         limit_ipv6: 13
   description: TDS Telecom (was BendBroadband)
   ip: 2001:504:16::1055
@@ -3279,40 +4807,58 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 150
+        limit_ipv6: 8
   description: Telebyte Northwest
   ip: 206.81.80.58
 - asn: 13871
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 150
         limit_ipv6: 8
   description: Telebyte Northwest
   ip: 2001:504:16::362f
 - asn: 7713
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS7713:AS-TELKOM-TRANSIT
       max_prefix:
         limit_ipv4: 10000
+        limit_ipv6: 1000
   description: Telekomunikasi Indonesia International
   ip: 206.81.81.85
 - asn: 7713
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS7713:AS-TELKOM-TRANSIT
       max_prefix:
+        limit_ipv4: 10000
         limit_ipv6: 1000
   description: Telekomunikasi Indonesia International
   ip: 2001:504:16::1e21
 - asn: 5071
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS5071:AS-CUSTOMERS
       max_prefix:
         limit_ipv4: 20
+        limit_ipv6: 1
   description: TeliPhone Navigata-Westel
   ip: 206.81.80.182
 - asn: 5071
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS5071:AS-CUSTOMERS
       max_prefix:
+        limit_ipv4: 20
         limit_ipv6: 1
   description: TeliPhone Navigata-Westel
   ip: 2001:504:16::13cf
@@ -3324,6 +4870,10 @@ clients:
   description: TELoIP Inc.
   ip: 206.81.81.138
 - asn: 16570
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 9
   description: TELoIP Inc.
   ip: 2001:504:16::40ba
 - asn: 393350
@@ -3331,40 +4881,58 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 1
+        limit_ipv6: 1
   description: Teltrust Corp.
   ip: 206.81.81.100
 - asn: 393350
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 1
         limit_ipv6: 1
   description: Teltrust Corp.
   ip: 2001:504:16::6:86
 - asn: 852
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TELUS
       max_prefix:
         limit_ipv4: 2000
+        limit_ipv6: 86
   description: Telus
   ip: 206.81.80.227
 - asn: 852
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TELUS
       max_prefix:
+        limit_ipv4: 2000
         limit_ipv6: 86
   description: Telus
   ip: 2001:504:16::354
 - asn: 10973
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SCIN
       max_prefix:
         limit_ipv4: 20
+        limit_ipv6: 1
   description: TENKAL
   ip: 206.81.80.201
 - asn: 10973
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-SCIN
       max_prefix:
+        limit_ipv4: 20
         limit_ipv6: 1
   description: TENKAL
   ip: 2001:504:16::2add
@@ -3373,82 +4941,124 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 150
+        limit_ipv6: 8
   description: TeraGo Networks Inc.
   ip: 206.81.80.179
 - asn: 20161
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 150
         limit_ipv6: 8
   description: TeraGo Networks Inc.
   ip: 2001:504:16::4ec1
 - asn: 7752
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-THRESHINC
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 10
   description: Threshold Communications, Inc.
   ip: 206.81.80.28
 - asn: 7752
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-THRESHINC
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 10
   description: Threshold Communications, Inc.
   ip: 2001:504:16::1e48
 - asn: 7752
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-THRESHINC
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 10
   description: Threshold Communications, Inc.
   ip: 206.81.81.167
 - asn: 7752
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-THRESHINC
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 10
   description: Threshold Communications, Inc.
   ip: 2001:504:16::423:0:1e48
 - asn: 30340
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TPSEA
       max_prefix:
         limit_ipv4: 40
+        limit_ipv6: 10
   description: TierPoint Spokane (was Liberty Lake Internet Exchange)
   ip: 206.81.80.20
 - asn: 30340
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TPSEA
       max_prefix:
+        limit_ipv4: 40
         limit_ipv6: 10
   description: TierPoint Spokane (was Liberty Lake Internet Exchange)
   ip: 2001:504:16::7684
 - asn: 46562
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-COLOAT
       max_prefix:
         limit_ipv4: 500
+        limit_ipv6: 25
   description: Total Server Solutions, LLC
   ip: 206.81.81.81
 - asn: 46562
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-COLOAT
       max_prefix:
+        limit_ipv4: 500
         limit_ipv6: 25
   description: Total Server Solutions, LLC
   ip: 2001:504:16::b5e2
 - asn: 20485
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TTK
       max_prefix:
         limit_ipv4: 20000
+        limit_ipv6: 1000
   description: TransTelecom (TTK)
   ip: 206.81.81.67
 - asn: 20485
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TTK
       max_prefix:
+        limit_ipv4: 20000
         limit_ipv6: 1000
   description: TransTelecom (TTK)
   ip: 2001:504:16::5005
@@ -3457,12 +5067,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 10
+        limit_ipv6: 1
   description: Treasure State Internet
   ip: 206.81.81.58
 - asn: 30261
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 10
         limit_ipv6: 1
   description: Treasure State Internet
   ip: 2001:504:16::7635
@@ -3474,6 +5086,10 @@ clients:
   description: TVG Network
   ip: 206.81.81.168
 - asn: 40752
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 1
   description: TVG Network
   ip: 2001:504:16::9f30
 - asn: 4323
@@ -3481,222 +5097,344 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 12000
+        limit_ipv6: 600
   description: tw telecom
   ip: 206.81.80.64
 - asn: 4323
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 12000
         limit_ipv6: 600
   description: tw telecom
   ip: 2001:504:16::10e3
 - asn: 32621
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TCVTRANSIT
       max_prefix:
         limit_ipv4: 10
+        limit_ipv6: 5
   description: 'Twin City VoIP; D/B/A: Minnesota VoIP'
   ip: 206.81.81.119
 - asn: 32621
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TCVTRANSIT
       max_prefix:
+        limit_ipv4: 10
         limit_ipv6: 5
   description: 'Twin City VoIP; D/B/A: Minnesota VoIP'
   ip: 2001:504:16::7f6d
 - asn: 46489
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TWITCH
       max_prefix:
         limit_ipv4: 30
+        limit_ipv6: 10
   description: Twitch Interactive, Inc
   ip: 206.81.81.54
 - asn: 46489
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TWITCH
       max_prefix:
+        limit_ipv4: 30
         limit_ipv6: 10
   description: Twitch Interactive, Inc
   ip: 2001:504:16::b599
 - asn: 46489
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TWITCH
       max_prefix:
         limit_ipv4: 30
+        limit_ipv6: 10
   description: Twitch Interactive, Inc
   ip: 206.81.81.55
 - asn: 46489
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TWITCH
       max_prefix:
+        limit_ipv4: 30
         limit_ipv6: 10
   description: Twitch Interactive, Inc
   ip: 2001:504:16::311:0:b599
 - asn: 13414
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TWITTER
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: Twitter, Inc.
   ip: 206.81.81.31
 - asn: 13414
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-TWITTER
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 5
   description: Twitter, Inc.
   ip: 2001:504:16::3466
 - asn: 19662
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-UNISERVE
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 5
   description: Uniserve Communications Corp.
   ip: 206.81.80.141
 - asn: 19662
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-UNISERVE
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 5
   description: Uniserve Communications Corp.
   ip: 2001:504:16::4cce
 - asn: 32354
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-UNWIRED
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 25
   description: Unwired LTD
   ip: 206.81.81.53
 - asn: 32354
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-UNWIRED
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 25
   description: Unwired LTD
   ip: 2001:504:16::7e62
 - asn: 10242
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-USINTERNET
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 20
   description: US Internet
   ip: 206.81.81.116
 - asn: 10242
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-USINTERNET
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 20
   description: US Internet
   ip: 2001:504:16::2802
 - asn: 47065
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-PEERING-TESTBED
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 300
   description: USC / UFMG PEERING Research Testbed
   ip: 206.81.81.78
 - asn: 47065
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-PEERING-TESTBED
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 300
   description: USC / UFMG PEERING Research Testbed
   ip: 2001:504:16::b7d9
 - asn: 29834
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-USTR
       max_prefix:
         limit_ipv4: 20
+        limit_ipv6: 1
   description: Ustream Inc.
   ip: 206.81.81.38
 - asn: 29834
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-USTR
       max_prefix:
+        limit_ipv4: 20
         limit_ipv6: 1
   description: Ustream Inc.
   ip: 2001:504:16::748a
 - asn: 32590
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-VALVE
       max_prefix:
         limit_ipv4: 100
+        limit_ipv6: 50
   description: Valve Corporation
   ip: 206.81.80.246
 - asn: 32590
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-VALVE
       max_prefix:
+        limit_ipv4: 100
         limit_ipv6: 50
   description: Valve Corporation
   ip: 2001:504:16::7f4e
 - asn: 29933
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-29933-TRANSIT
       max_prefix:
         limit_ipv4: 65
+        limit_ipv6: 20
   description: Veracity Networks
   ip: 206.81.81.132
 - asn: 29933
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-29933-TRANSIT
       max_prefix:
+        limit_ipv4: 65
         limit_ipv6: 20
   description: Veracity Networks
   ip: 2001:504:16::74ed
 - asn: 7342
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-GTLD
       max_prefix:
         limit_ipv4: 300
+        limit_ipv6: 50
   description: VeriSign Inc
   ip: 206.81.80.133
 - asn: 7342
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-GTLD
       max_prefix:
+        limit_ipv4: 300
         limit_ipv6: 50
   description: VeriSign Inc
   ip: 2001:504:16::1cae
 - asn: 15133
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-EDGECAST
       max_prefix:
         limit_ipv4: 200
+        limit_ipv6: 100
   description: Verizon Digital Media Services (EdgeCast Networks)
   ip: 206.81.80.152
 - asn: 15133
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-EDGECAST
       max_prefix:
+        limit_ipv4: 200
         limit_ipv6: 100
   description: Verizon Digital Media Services (EdgeCast Networks)
   ip: 2001:504:16::3b1d
 - asn: 15133
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-EDGECAST
       max_prefix:
         limit_ipv4: 200
+        limit_ipv6: 100
   description: Verizon Digital Media Services (EdgeCast Networks)
   ip: 206.81.81.28
 - asn: 15133
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-EDGECAST
       max_prefix:
+        limit_ipv4: 200
         limit_ipv6: 100
   description: Verizon Digital Media Services (EdgeCast Networks)
   ip: 2001:504:16::284:0:3b1d
 - asn: 26156
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-VERUS-3
       max_prefix:
         limit_ipv4: 2
+        limit_ipv6: 1
   description: Verus Corporation
   ip: 206.81.81.162
 - asn: 26156
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-VERUS-3
       max_prefix:
+        limit_ipv4: 2
         limit_ipv6: 1
   description: Verus Corporation
   ip: 2001:504:16::662c
@@ -3705,26 +5443,36 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 2000
+        limit_ipv6: 10
   description: ViaSat Inc.
   ip: 206.81.81.104
 - asn: 7155
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 2000
         limit_ipv6: 10
   description: ViaSat Inc.
   ip: 2001:504:16::1bf3
 - asn: 13649
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-VIAWEST-TRANSIT
       max_prefix:
         limit_ipv4: 1000
+        limit_ipv6: 50
   description: ViaWest
   ip: 206.81.81.105
 - asn: 13649
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-VIAWEST-TRANSIT
       max_prefix:
+        limit_ipv4: 1000
         limit_ipv6: 50
   description: ViaWest
   ip: 2001:504:16::3551
@@ -3733,12 +5481,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 450
+        limit_ipv6: 10
   description: Vision Net Inc.
   ip: 206.81.80.175
 - asn: 8057
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 450
         limit_ipv6: 10
   description: Vision Net Inc.
   ip: 2001:504:16::1f79
@@ -3747,26 +5497,36 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 500
+        limit_ipv6: 25
   description: Visionary Communications Inc.
   ip: 206.81.80.57
 - asn: 10835
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 500
         limit_ipv6: 25
   description: Visionary Communications Inc.
   ip: 2001:504:16::2a53
 - asn: 9500
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-VODAFONENZ
       max_prefix:
         limit_ipv4: 5000
+        limit_ipv6: 1000
   description: Vodafone New Zealand
   ip: 206.81.81.51
 - asn: 9500
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-VODAFONENZ
       max_prefix:
+        limit_ipv4: 5000
         limit_ipv6: 1000
   description: Vodafone New Zealand
   ip: 2001:504:16::251c
@@ -3775,12 +5535,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 1000
+        limit_ipv6: 50
   description: VQBN INC.
   ip: 206.81.81.60
 - asn: 18106
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 1000
         limit_ipv6: 50
   description: VQBN INC.
   ip: 2001:504:16::46ba
@@ -3789,12 +5551,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 15
+        limit_ipv6: 1
   description: Warm Springs Telecommunications
   ip: 206.81.81.27
 - asn: 54523
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 15
         limit_ipv6: 1
   description: Warm Springs Telecommunications
   ip: 2001:504:16::d4fb
@@ -3803,12 +5567,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 12
+        limit_ipv6: 1
   description: Washington Broadband, Inc.
   ip: 206.81.81.44
 - asn: 19116
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 12
         limit_ipv6: 1
   description: Washington Broadband, Inc.
   ip: 2001:504:16::4aac
@@ -3817,26 +5583,36 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 3000
+        limit_ipv6: 250
   description: Wave Division Holdings (was Spectrum Networks)
   ip: 206.81.80.56
 - asn: 11404
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 3000
         limit_ipv6: 250
   description: Wave Division Holdings (was Spectrum Networks)
   ip: 2001:504:16::2c8c
+- asn: 22546
+  description: Weyerhaeuser NR Company
+  ip: 206.81.81.171
+- asn: 22546
+  description: Weyerhaeuser NR Company
+  ip: 2001:504:16::5812
 - asn: 3853
   cfg:
     filtering:
       max_prefix:
         limit_ipv4: 30
+        limit_ipv6: 1
   description: Whidbey Telephone Company DBA Whidbey Telecom
   ip: 206.81.81.97
 - asn: 3853
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 30
         limit_ipv6: 1
   description: Whidbey Telephone Company DBA Whidbey Telecom
   ip: 2001:504:16::f0d
@@ -3845,54 +5621,80 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 30
+        limit_ipv6: 1
   description: Whidbey Telephone Company DBA Whidbey Telecom
   ip: 206.81.81.166
 - asn: 3853
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 30
         limit_ipv6: 1
   description: Whidbey Telephone Company DBA Whidbey Telecom
   ip: 2001:504:16::422:0:f0d
 - asn: 33362
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-WIKTEL
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 10
   description: Wikstrom Telephone Company
   ip: 206.81.81.141
 - asn: 33362
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-WIKTEL
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 10
   description: Wikstrom Telephone Company
   ip: 2001:504:16::8252
 - asn: 7029
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-WINDSTREAM
       max_prefix:
         limit_ipv4: 10000
+        limit_ipv6: 500
   description: Windstream Communications
   ip: 206.81.80.106
 - asn: 7029
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-WINDSTREAM
       max_prefix:
+        limit_ipv4: 10000
         limit_ipv6: 500
   description: Windstream Communications
   ip: 2001:504:16::1b75
 - asn: 36222
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-36222-TRANSIT
       max_prefix:
         limit_ipv4: 15
+        limit_ipv6: 1
   description: Windwave Communications
   ip: 206.81.81.52
 - asn: 36222
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-36222-TRANSIT
       max_prefix:
+        limit_ipv4: 15
         limit_ipv6: 1
   description: Windwave Communications
   ip: 2001:504:16::8d7e
@@ -3901,152 +5703,234 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 3
+        limit_ipv6: 17
   description: Wireless Advocates / CarToys
   ip: 206.81.81.94
 - asn: 394514
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 3
         limit_ipv6: 17
   description: Wireless Advocates / CarToys
   ip: 2001:504:16::6:512
 - asn: 64241
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-WOBSCALE
       max_prefix:
         limit_ipv4: 5
+        limit_ipv6: 5
   description: Wobscale Technologies, LLC
   ip: 206.81.81.87
 - asn: 64241
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-WOBSCALE
       max_prefix:
+        limit_ipv4: 5
         limit_ipv6: 5
   description: Wobscale Technologies, LLC
   ip: 2001:504:16::faf1
 - asn: 4258
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-WOLFE
       max_prefix:
         limit_ipv4: 5000
+        limit_ipv6: 250
   description: Wolfe
   ip: 206.81.80.49
 - asn: 4258
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-WOLFE
       max_prefix:
+        limit_ipv4: 5000
         limit_ipv6: 250
   description: Wolfe
   ip: 2001:504:16::10a2
 - asn: 4258
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-WOLFE
       max_prefix:
         limit_ipv4: 5000
+        limit_ipv6: 250
   description: Wolfe
   ip: 206.81.80.241
 - asn: 4258
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-WOLFE
       max_prefix:
+        limit_ipv4: 5000
         limit_ipv6: 250
   description: Wolfe
   ip: 2001:504:16::241:0:10a2
 - asn: 30500
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-WOLFPAW
       max_prefix:
         limit_ipv4: 50
+        limit_ipv6: 2
   description: Wolfpaw Data Centres
   ip: 206.81.81.159
 - asn: 30500
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-WOLFPAW
       max_prefix:
+        limit_ipv4: 50
         limit_ipv6: 2
   description: Wolfpaw Data Centres
   ip: 2001:504:16::7724
 - asn: 42
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
       max_prefix:
         limit_ipv4: 600
+        limit_ipv6: 600
   description: WoodyNet
   ip: 206.81.80.80
 - asn: 42
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
       max_prefix:
+        limit_ipv4: 600
         limit_ipv6: 600
   description: WoodyNet
   ip: 2001:504:16::2a
 - asn: 23033
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-WOWRACK-GLOBAL
       max_prefix:
         limit_ipv4: 600
+        limit_ipv6: 20
   description: Wowrack.com
   ip: 206.81.80.37
 - asn: 23033
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-WOWRACK-GLOBAL
       max_prefix:
+        limit_ipv4: 600
         limit_ipv6: 20
   description: Wowrack.com
   ip: 2001:504:16::59f9
 - asn: 6315
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-XMISSION
       max_prefix:
         limit_ipv4: 30
+        limit_ipv6: 6
   description: XMission
   ip: 206.81.80.235
 - asn: 6315
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-XMISSION
       max_prefix:
+        limit_ipv4: 30
         limit_ipv6: 6
   description: XMission
   ip: 2001:504:16::18ab
 - asn: 22995
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-BXI
       max_prefix:
         limit_ipv4: 500
+        limit_ipv6: 200
   description: Xplornet
   ip: 206.81.81.11
 - asn: 22995
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-BXI
       max_prefix:
+        limit_ipv4: 500
         limit_ipv6: 200
   description: Xplornet
   ip: 2001:504:16::59d3
 - asn: 10310
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-YAHOO
       max_prefix:
         limit_ipv4: 1000
+        limit_ipv6: 100
   description: Yahoo! Inc.
   ip: 206.81.80.98
 - asn: 10310
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-YAHOO
       max_prefix:
+        limit_ipv4: 1000
         limit_ipv6: 100
   description: Yahoo! Inc.
   ip: 2001:504:16::2846
 - asn: 10310
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-YAHOO
       max_prefix:
         limit_ipv4: 1000
+        limit_ipv6: 100
   description: Yahoo! Inc.
   ip: 206.81.81.50
 - asn: 10310
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-YAHOO
       max_prefix:
+        limit_ipv4: 1000
         limit_ipv6: 100
   description: Yahoo! Inc.
   ip: 2001:504:16::306:0:2846
@@ -4061,40 +5945,58 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 10
+        limit_ipv6: 10
   description: Yarmouth Holdings Inc.
   ip: 206.81.81.130
 - asn: 135554
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 10
         limit_ipv6: 10
   description: Yarmouth Holdings Inc.
   ip: 2001:504:16::2:1182
 - asn: 7363
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-YOMURA
       max_prefix:
         limit_ipv4: 250
+        limit_ipv6: 50
   description: Yomura
   ip: 206.81.81.152
 - asn: 7363
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-YOMURA
       max_prefix:
+        limit_ipv4: 250
         limit_ipv6: 50
   description: Yomura
   ip: 2001:504:16::1cc3
 - asn: 6461
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-MFNX
       max_prefix:
         limit_ipv4: 48000
+        limit_ipv6: 2000
   description: Zayo
   ip: 206.81.80.19
 - asn: 6461
   cfg:
     filtering:
+      irrdb:
+        as_sets:
+        - AS-MFNX
       max_prefix:
+        limit_ipv4: 48000
         limit_ipv6: 2000
   description: Zayo
   ip: 2001:504:16::193d
@@ -4103,12 +6005,14 @@ clients:
     filtering:
       max_prefix:
         limit_ipv4: 8
+        limit_ipv6: 10
   description: Zillow.com
   ip: 206.81.80.29
 - asn: 18888
   cfg:
     filtering:
       max_prefix:
+        limit_ipv4: 8
         limit_ipv6: 10
   description: Zillow.com
   ip: 2001:504:16::49c8
