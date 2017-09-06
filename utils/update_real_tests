@@ -248,7 +248,7 @@ function vultr_create() {
 	attempts=1
 	server_ready=0
 	echo -n "Testing server reachability... "
-	while [[ $attempts -le 24 && $server_ready -eq 0 ]]
+	while [[ $attempts -le 36 && $server_ready -eq 0 ]]
 	do
 		set +e
 		ssh -i ~/.ssh/arouteserver \
@@ -321,6 +321,11 @@ if [[ `echo "$THESE_TESTS_ONLY" | grep -P "\bbuild\b"` ]]; then
 		done
 	done
 fi
+
+echo "Copying configs to archive directory..."
+archive_dir="var/real_tests/configs/`date +%Y%m%d_%H%M%S`"
+mkdir -p $archive_dir
+cp $TESTS_DIR/var/configs/* $archive_dir/
 
 if [[ `echo "$THESE_TESTS_ONLY" | grep -P "\bload\b"` ]]; then
 	for daemon_id in $THESE_DAEMONS_ONLY; do

@@ -32,3 +32,5 @@ class TestRealConfigs_LONAP_OpenBGPD60(TestRealConfigs_LONAP,
 class TestRealConfigs_LONAP_OpenBGPD61(TestRealConfigs_LONAP,
                                        TestRealConfigs_OpenBGPD61):
     __test__ = True
+
+    SKIP_LOAD_NO_RESOURCES = True
