@@ -6,7 +6,6 @@ before_install:
   - docker pull pierky/bird:1.6.3 
 install:
   - pip install -r requirements.txt
-before_script:
- - export PYTHONPATH=$PYTHONPATH:$(pwd)
 script:
- - nosetests -vs tests/real/
+ - nosetests -vs tests/static/
+ - nosetests -vs tests/live_tests/
