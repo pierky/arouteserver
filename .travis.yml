@@ -9,4 +9,4 @@ install:
 before_script:
  - export PYTHONPATH=$PYTHONPATH:$(pwd)
 script:
- - nosetests -vs tests/
+ - nosetests -vs tests/real/
