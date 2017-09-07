@@ -28,10 +28,8 @@ clients:
           ip:
           - "192.0.2.51"
           - "2001:db8:1:1::51"
-          description: "AS5_1 client"
+          description: "AS5_1 client, AS-SET from PeeringDB"
           cfg:
                 filtering:
                         irrdb:
                                 enforce_prefix_in_as_set: True
-                                as_sets:
-                                - "AS-AS5"

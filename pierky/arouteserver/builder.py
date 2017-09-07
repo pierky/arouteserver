@@ -31,7 +31,8 @@ from .config.clients import ConfigParserClients
 from .config.roa import ConfigParserROAEntries
 from .enrichers.irrdb import IRRDBConfigEnricher_OriginASNs, \
                              IRRDBConfigEnricher_Prefixes
-from .enrichers.peeringdb import PeeringDBConfigEnricher
+from .enrichers.pdb_as_set import PeeringDBConfigEnricher_ASSet
+from .enrichers.pdb_max_prefix import PeeringDBConfigEnricher_MaxPrefix
 from .enrichers.rtt import RTTGetterConfigEnricher
 from .errors import MissingDirError, MissingFileError, BuilderError, \
                     ARouteServerError, PeeringDBError, PeeringDBNoInfoError, \
@@ -461,9 +462,15 @@ class ConfigBuilder(object):
             self.cfg_general["communities"][comm_name]["peer_as"] = comm.get("peer_as", False)
 
         # Enrichers
-        used_enricher_classes = [IRRDBConfigEnricher_OriginASNs,
-                                 IRRDBConfigEnricher_Prefixes,
-                                 PeeringDBConfigEnricher]
+        # Order matters: AS-SET from PeeringDB must be run first
+        # in order to acquire missing AS-SETs that are processed
+        # later by IRRDB enrichers.
+        used_enricher_classes = []
+        if self.cfg_general["filtering"]["irrdb"]["peering_db"]:
+            used_enricher_classes += [PeeringDBConfigEnricher_ASSet]
+        used_enricher_classes += [IRRDBConfigEnricher_OriginASNs,
+                                  IRRDBConfigEnricher_Prefixes,
+                                  PeeringDBConfigEnricher_MaxPrefix]
         if self.cfg_general.rtt_based_functions_are_used:
             used_enricher_classes.append(RTTGetterConfigEnricher)
 

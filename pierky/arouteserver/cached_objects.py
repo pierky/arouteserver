@@ -18,12 +18,13 @@ import logging
 import os
 import time
 
-from .errors import CachedObjectsError
+from .errors import CachedObjectsError, ExternalDataNoInfoError
 
 
 class CachedObject(object):
 
     DEFAULT_EXPIRY = 43200
+    MISSING_INFO_EXCEPTION = ExternalDataNoInfoError
 
     def __init__(self, **kwargs):
         self.cache_dir = kwargs.get("cache_dir", "var")
@@ -67,6 +68,12 @@ class CachedObject(object):
         if data["ts"] <= epoch_time - self.cache_expiry_time:
             return False
 
+        if data["data"] is None:
+            logging.debug(
+                "Cache hit: missing info {}".format(self._get_object_filepath())
+            )
+            raise self.MISSING_INFO_EXCEPTION()
+            
         self.raw_data = data["data"]
         return True
 
@@ -78,7 +85,15 @@ class CachedObject(object):
             logging.debug("Cache hit: {}".format(self._get_object_filepath()))
             return
 
-        self.raw_data = self._get_data()
+        # Children classes raise ExternalDataNoInfoError-derived exceptions
+        # when no information can be obtained for the requested resource.
+        # Here, the data is saved to the file even in case of missing info,
+        # then the original exception is re-raised.
+        try:
+            self.raw_data = self._get_data()
+        except ExternalDataNoInfoError:
+            self.save_data_to_cache()
+            raise
 
         self.save_data_to_cache()
 
@@ -92,13 +107,12 @@ class CachedObject(object):
             "data": self.raw_data
         }
 
-        if self.raw_data:
-            try:
-                if not os.path.exists(os.path.dirname(file_path)):
-                    os.makedirs(os.path.dirname(file_path))
-                with open(file_path, "w") as f:
-                    json.dump(cache_data, f)
-            except Exception as e:
-                raise CachedObjectsError(
-                    "Error while saving data to the cache: {}".format(str(e))
-                )
+        try:
+            if not os.path.exists(os.path.dirname(file_path)):
+                os.makedirs(os.path.dirname(file_path))
+            with open(file_path, "w") as f:
+                json.dump(cache_data, f)
+        except Exception as e:
+            raise CachedObjectsError(
+                "Error while saving data to the cache: {}".format(str(e))
+            )

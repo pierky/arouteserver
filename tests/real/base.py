@@ -13,13 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import json
 import logging
+from logging.config import fileConfig
 import os
+import subprocess
 import time
 import unittest
 
-from pierky.arouteserver.builder import BIRDConfigBuilder, \
-                                        OpenBGPDConfigBuilder
 from pierky.arouteserver.tests.base import ARouteServerTestCase
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance, \
                                                           OpenBGPD61Instance
@@ -31,13 +32,26 @@ class TestRealConfigs(ARouteServerTestCase):
 
     IXP = None
     CLIENTS_FILE = None
+    IP_VER = None
 
-    def setUp(self):
-        self.skipTest("Work in progress on 'dev' branch")
+    # Set to True for those tests that don't run locally on my machine,
+    # because of lack of resources!!! If True, the REMOTE_IP env var is
+    # used to get the IP address of a remote host where OpenBGPD is
+    # running.
+    # If REMOTE_IP_NEEDED is True and no remote IP can be found, the
+    # test is skipped.
+    REMOTE_IP_NEEDED = False
+
+    SKIP_LOAD_NO_RESOURCES = False
 
     @classmethod
     def _setUpClass(cls):
         cwd = os.path.dirname(__file__)
+
+        if os.path.exists(os.path.join(cwd, "arouteserver.log")):
+            os.remove(os.path.join(cwd, "arouteserver.log"))
+
+        fileConfig(os.path.join(cwd, "log.ini"))
 
         cls.var_dir = os.path.join(cwd, "var")
         if not os.path.exists(cls.var_dir):
@@ -47,47 +61,71 @@ class TestRealConfigs(ARouteServerTestCase):
         if not os.path.exists(cls.cache_dir):
             os.makedirs(cls.cache_dir)
 
-        cls.now = int(time.time())
+        cls.rs_config_dir = os.path.join(cls.var_dir, "configs")
+        if not os.path.exists(cls.rs_config_dir):
+            os.makedirs(cls.rs_config_dir)
+
+    @classmethod
+    def _tearDownClass(cls):
+        print("")
+        print("")
+        print("======================================================================")
 
     def get_rs_config_file_path(self, bgp_speaker, target_ver, ip_ver):
-        filename = "{ixp}_{bgp_speaker}{bgp_speaker_version}{ip_ver}_{ts}.conf".format(
+        filename = "{ixp}_{bgp_speaker}{bgp_speaker_version}{ip_ver}.conf".format(
             ixp=self.IXP,
             bgp_speaker=bgp_speaker,
             bgp_speaker_version="_{}".format(target_ver) if target_ver else "",
-            ip_ver="_ipv{}".format(ip_ver) if ip_ver else "",
-            ts=self.now
+            ip_ver="_ipv{}".format(ip_ver) if ip_ver else ""
         )
-        return os.path.join(self.var_dir, filename)
+        return os.path.join(self.rs_config_dir, filename)
+
+    def print_duration(self, descr, bgp_speaker, target_ver, ip_ver, duration):
+        msg = "{descr} for {daemon}, {ip_ver}: {duration} seconds".format(
+            descr=descr,
+            daemon="{} {}".format(bgp_speaker, target_ver) if target_ver
+                                                           else bgp_speaker,
+            ip_ver="IPv{}".format(ip_ver) if ip_ver else "IPv4 & IPv6",
+            duration=duration
+        )
+        print(msg)
 
     def build_config(self, bgp_speaker, target_ver, ip_ver):
         cwd = os.path.dirname(__file__)
 
-        if bgp_speaker == "bird":
-            builder_class = BIRDConfigBuilder
-        elif bgp_speaker == "openbgpd":
-            builder_class = OpenBGPDConfigBuilder
-        else:
+        if bgp_speaker not in ("bird", "openbgpd"):
             raise ValueError("Unknown bgp_speaker: {}".format(bgp_speaker))
-
-        builder = builder_class(
-            template_dir=os.path.join(cwd, "templates", bgp_speaker),
-            template_name="main.j2",
-            cache_dir=self.cache_dir,
-            ip_ver=ip_ver,
-            ignore_errors=["path_hiding"],
-            target_version=target_ver,
-            cfg_general=os.path.join(cwd, "general.yml"),
-            cfg_bogons=os.path.join(cwd, "bogons.yml"),
-            cfg_clients=os.path.join(cwd, "clients", self.CLIENTS_FILE)
-        )
 
         rs_config_file_path = self.get_rs_config_file_path(
             bgp_speaker, target_ver, ip_ver)
 
-        with open(rs_config_file_path, "w") as f:
-            builder.render_template(f)
+        cmd = ["./scripts/arouteserver"]
+        cmd += [bgp_speaker]
+        cmd += ["--cfg", os.path.join(cwd, "arouteserver.yml")]
+        cmd += ["--output", rs_config_file_path]
+        cmd += ["--ignore-issues", "*"]
+        if target_ver:
+            cmd += ["--target-version", target_ver]
+        cmd += ["--clients", os.path.join(cwd, "clients", self.CLIENTS_FILE)]
+        if ip_ver:
+            cmd += ["--ip-ver", str(ip_ver)]
+
+        time_a = int(time.time())
+        subprocess.check_output(cmd)
+        time_b = int(time.time())
+        self.print_duration("Building config", bgp_speaker, target_ver, ip_ver,
+                            time_b - time_a)
 
     def load_config(self, bgp_speaker, target_ver, ip_ver):
+        if self.SKIP_LOAD_NO_RESOURCES:
+            self.skipTest("Lack of resources")
+
+        remote_ip = os.environ.get("REMOTE_IP", None)
+        if remote_ip:
+            remote_ip = remote_ip.strip()
+        if not remote_ip and self.REMOTE_IP_NEEDED:
+            self.skipTest("Remote IP not found")
+
         if bgp_speaker == "bird":
             if ip_ver == 4:
                 inst_class = BIRDInstanceIPv4
@@ -114,112 +152,82 @@ class TestRealConfigs(ARouteServerTestCase):
             "rs", "2001:db8:1:1::2" if ip_ver == 6 else "192.0.2.2",
             [(rs_config_file_path,
               "/etc/bird/bird.conf" if bgp_speaker == "bird"
-                                    else "/etc/bgpd.conf")]
+                                    else "/etc/bgpd.conf")],
+            remote_ip=remote_ip
         )
-        inst.set_var_dir(self.var_dir)
+        inst.set_var_dir(self.rs_config_dir)
+
+        time_a = int(time.time())
         inst.start()
         inst.stop()
+        time_b = int(time.time())
+        self.print_duration("Loading config", bgp_speaker, target_ver, ip_ver,
+                            time_b - time_a)
 
     def shortDescription(self):
         return "Real configs: {}, {}".format(self.IXP, self._testMethodDoc)
 
-class TestRealConfigs_IXP(TestRealConfigs):
+class TestRealConfigs_BIRD(TestRealConfigs):
     __test__ = False
 
-    def test_bird4_a(self):
+    REMOTE_IP_NEEDED = False
+
+    def test_bird163_4_010_build(self):
         """BIRD, IPv4, build"""
+        if self.IP_VER and self.IP_VER != 4:
+            self.skipTest("IPv{} only".format(self.IP_VER))
         self.build_config("bird", None, 4)
 
-    def test_bird4_b(self):
+    def test_bird163_4_020_load(self):
         """BIRD, IPv4, load"""
+        if self.IP_VER and self.IP_VER != 4:
+            self.skipTest("IPv{} only".format(self.IP_VER))
         if "BUILD_ONLY" in os.environ:
             self.skipTest("Build only")
         self.load_config("bird", None, 4)
 
-    def test_bird6_a(self):
+    def test_bird163_6_010_build(self):
         """BIRD, IPv6, build"""
+        if self.IP_VER and self.IP_VER != 6:
+            self.skipTest("IPv{} only".format(self.IP_VER))
         self.build_config("bird", None, 6)
 
-    def test_bird6_b(self):
+    def test_bird163_6_020_load(self):
         """BIRD, IPv6, load"""
+        if self.IP_VER and self.IP_VER != 6:
+            self.skipTest("IPv{} only".format(self.IP_VER))
         if "BUILD_ONLY" in os.environ:
             self.skipTest("Build only")
         self.load_config("bird", None, 6)
 
-    def test_openbgpd60_a(self):
+class TestRealConfigs_OpenBGPD60(TestRealConfigs):
+    __test__ = False
+
+    REMOTE_IP_NEEDED = True
+
+    def test_openbgpd60_any_010_build(self):
         """OpenBGPD 6.0, build"""
         self.build_config("openbgpd", "6.0", None)
 
     @unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
-    def test_openbgpd60_b(self):
+    def test_openbgpd60_any_020_load(self):
         """OpenBGPD 6.0, load"""
         if "BUILD_ONLY" in os.environ:
             self.skipTest("Build only")
         self.load_config("openbgpd", "6.0", None)
 
-    def test_openbgpd61_a(self):
+class TestRealConfigs_OpenBGPD61(TestRealConfigs):
+    __test__ = False
+
+    REMOTE_IP_NEEDED = False
+
+    def test_openbgpd61_any_010_build(self):
         """OpenBGPD 6.1, build"""
         self.build_config("openbgpd", "6.1", None)
 
     @unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
-    def test_openbgpd61_b(self):
+    def test_openbgpd61_any_020_load(self):
         """OpenBGPD 6.1, load"""
         if "BUILD_ONLY" in os.environ:
             self.skipTest("Build only")
         self.load_config("openbgpd", "6.1", None)
-
-
-class TestRealConfigs_ASM_IX(TestRealConfigs_IXP):
-    __test__ = True
-
-    IXP = "ASM-IX"
-    CLIENTS_FILE = "ams-ix.yml"
-
-class TestRealConfigs_BCIX_IX(TestRealConfigs_IXP):
-    __test__ = True
-
-    IXP = "BCIX"
-    CLIENTS_FILE = "bcix.yml"
-
-class TestRealConfigs_BIX(TestRealConfigs_IXP):
-    __test__ = True
-
-    IXP = "BIX"
-    CLIENTS_FILE = "bix.yml"
-
-class TestRealConfigs_GR_IX(TestRealConfigs_IXP):
-    __test__ = True
-
-    IXP = "GR-IX"
-    CLIENTS_FILE = "gr-ix.yml"
-
-class TestRealConfigs_INEX(TestRealConfigs_IXP):
-    __test__ = True
-
-    IXP = "INEX"
-    CLIENTS_FILE = "inex.yml"
-
-class TestRealConfigs_LONAP(TestRealConfigs_IXP):
-    __test__ = True
-
-    IXP = "LONAP"
-    CLIENTS_FILE = "lonap.yml"
-
-class TestRealConfigs_SIX(TestRealConfigs_IXP):
-    __test__ = True
-
-    IXP = "SIX"
-    CLIENTS_FILE = "six.yml"
-
-class TestRealConfigs_STHIX(TestRealConfigs_IXP):
-    __test__ = True
-
-    IXP = "STHIX"
-    CLIENTS_FILE = "sthix.yml"
-
-class TestRealConfigs_SwissIX(TestRealConfigs_IXP):
-    __test__ = True
-
-    IXP = "SwissIX"
-    CLIENTS_FILE = "swissix.yml"
-

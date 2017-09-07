@@ -28,4 +28,6 @@ cache_dir: "var/cache"
 bgpq3_path: "/usr/local/bin/bgpq3"
 
 # Cache expiry time, in seconds.
-cache_expiry: 3600
+cache_expiry: 604800
+
+rtt_getter_path: "~/arouteserver/utils/fake_rtt_getter.sh"

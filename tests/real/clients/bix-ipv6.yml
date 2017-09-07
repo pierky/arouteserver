@@ -1,0 +1,460 @@
+# Data fetched from http://admin.bix.hu/ixfexport.php at 2017-09-05T18:12:47.365098 UTC
+# IXP ID: 1
+# VLAN ID: 2
+clients:
+- asn: 8990
+  description: Antenna Hung?ria
+  ip: 2001:7F8:35::8990:1
+- asn: 8990
+  description: Antenna Hung?ria
+  ip: 2001:7F8:35::8990:3
+- asn: 8990
+  description: Antenna Hung?ria
+  ip: 2001:7F8:35::8990:2
+- asn: 5400
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BT-EU
+      max_prefix:
+        limit_ipv4: 4900
+        limit_ipv6: 245
+  description: British Telecom
+  ip: 2001:7F8:35::5400:1
+- asn: 12594
+  description: Externet
+  ip: 2001:7F8:35::1:2594:1
+- asn: 1955
+  description: Hungarnet
+  ip: 2001:7F8:35::1955:1
+- asn: 1955
+  description: Hungarnet
+  ip: 2001:7F8:35::1955:2
+- asn: 5483
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 2000
+        limit_ipv6: 100
+  description: Magyar Telekom
+  ip: 2001:7F8:35::5483:2
+- asn: 5483
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 2000
+        limit_ipv6: 100
+  description: Magyar Telekom
+  ip: 2001:7F8:35::5483:1
+- asn: 6830
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AORTA
+      max_prefix:
+        limit_ipv4: 15000
+        limit_ipv6: 1500
+  description: Liberty Global
+  ip: 2001:7F8:35::6830:1
+- asn: 6830
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AORTA
+      max_prefix:
+        limit_ipv4: 15000
+        limit_ipv6: 1500
+  description: Liberty Global
+  ip: 2001:7F8:35::6830:2
+- asn: 12301
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS12301:AS-ROUTES
+      max_prefix:
+        limit_ipv4: 200
+        limit_ipv6: 10
+  description: Invitech
+  ip: 2001:7F8:35::1:2301:1
+- asn: 12301
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS12301:AS-ROUTES
+      max_prefix:
+        limit_ipv4: 200
+        limit_ipv6: 10
+  description: Invitech
+  ip: 2001:7F8:35::1:2301:2
+- asn: 8448
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TELENORHUN
+        - AS-TELENORHUN6
+      max_prefix:
+        limit_ipv4: 8
+        limit_ipv6: 1
+  description: Telenor
+  ip: 2001:7F8:35::8448:1
+- asn: 8448
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TELENORHUN
+        - AS-TELENORHUN6
+      max_prefix:
+        limit_ipv4: 8
+        limit_ipv6: 1
+  description: Telenor
+  ip: 2001:7F8:35::8448:2
+- asn: 21229
+  description: Dr?vanet
+  ip: 2001:7F8:35::19:7248:1
+- asn: 12303
+  description: ISZT
+  ip: 2001:7F8:35::1:2303:2
+- asn: 12303
+  description: ISZT
+  ip: 2001:7F8:35::1:2303:1
+- asn: 8708
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-RDSNET
+        - AS-RDSNET6
+      max_prefix:
+        limit_ipv4: 3000
+        limit_ipv6: 150
+  description: Romania Data Systems
+  ip: 2001:7F8:35::8708:1
+- asn: 21334
+  description: Vodafone
+  ip: 2001:7F8:35::2:1334:2
+- asn: 21334
+  description: Vodafone
+  ip: 2001:7F8:35::2:1334:1
+- asn: 15566
+  description: Infotechna Ltd.
+  ip: 2001:7F8:35::1:5566:1
+- asn: 3340
+  description: GTS Hungary
+  ip: 2001:7F8:35::5588:1
+- asn: 20845
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-DIGICABLE
+        - AS-DIGICABLE6
+      max_prefix:
+        limit_ipv4: 30
+        limit_ipv6: 2
+  description: DIGI
+  ip: 2001:7F8:35::2:845:1
+- asn: 29278
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-DENINET
+      max_prefix:
+        limit_ipv4: 400
+        limit_ipv6: 20
+  description: Deninet
+  ip: 2001:7F8:35::2:9278:2
+- asn: 29278
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-DENINET
+      max_prefix:
+        limit_ipv4: 400
+        limit_ipv6: 20
+  description: Deninet
+  ip: 2001:7F8:35::2:9278:1
+- asn: 47381
+  description: DoclerNet Hosting
+  ip: 2001:7F8:35::4:7381:2
+- asn: 47381
+  description: DoclerNet Hosting
+  ip: 2001:7F8:35::4:7381:1
+- asn: 35311
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PRTELECOM
+      max_prefix:
+        limit_ipv4: 11
+        limit_ipv6: 1
+  description: PR-Telecom
+  ip: 2001:7F8:35::3:5311:1
+- asn: 8462
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 20
+        limit_ipv6: 2
+  description: Tarr
+  ip: 2001:7F8:35::8462:2
+- asn: 8462
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 20
+        limit_ipv6: 2
+  description: Tarr
+  ip: 2001:7F8:35::8462:1
+- asn: 24806
+  description: Internet CZ
+  ip: 2001:7F8:35::2:4806:1
+- asn: 42864
+  description: Giganet
+  ip: 2001:7F8:35::4:2864:1
+- asn: 43928
+  description: MVM Informatika
+  ip: 2001:7F8:35::4:3928:1
+- asn: 43928
+  description: MVM Informatika
+  ip: 2001:7F8:35::4:3928:2
+- asn: 47116
+  description: IntelliHome
+  ip: 2001:7F8:35::4:7116:1
+- asn: 47169
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 80
+        limit_ipv6: 4
+  description: MVMnet
+  ip: 2001:7F8:35::4:7169:1
+- asn: 47169
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 80
+        limit_ipv6: 4
+  description: MVMnet
+  ip: 2001:7F8:35::4:7169:2
+- asn: 47169
+  cfg:
+    filtering:
+      max_prefix:
+        limit_ipv4: 80
+        limit_ipv6: 4
+  description: MVMnet
+  ip: 2001:7F8:35::4:7169:3
+- asn: 16265
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-LEASEWEB
+      max_prefix:
+        limit_ipv4: 350
+        limit_ipv6: 100
+  description: Leaseweb Network
+  ip: 2001:7F8:35::1:6265:1
+- asn: 9002
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-RETN
+        - AS-RETN6
+      max_prefix:
+        limit_ipv4: 25000
+        limit_ipv6: 1500
+  description: RETN
+  ip: 2001:7F8:35::9002:1
+- asn: 50031
+  description: Zalasz?m
+  ip: 2001:7F8:35::5:31:1
+- asn: 50261
+  description: ACE Telecom
+  ip: 2001:7F8:35::5:261:1
+- asn: 50261
+  description: ACE Telecom
+  ip: 2001:7F8:35::5:261:2
+- asn: 5580
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-HIBERNIA
+      max_prefix:
+        limit_ipv4: 85000
+        limit_ipv6: 1000
+  description: Hibernia Networks (GTT Comm)
+  ip: 2001:7F8:35::5580:1
+- asn: 15169
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GOOGLE
+      max_prefix:
+        limit_ipv4: 15000
+        limit_ipv6: 750
+  description: Google
+  ip: 2001:7F8:35::1:5169:1
+- asn: 59649
+  description: NMHH
+  ip: 2001:7F8:35::5:9649:2
+- asn: 6939
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-HURRICANE
+        - AS-HURRICANEV6
+      max_prefix:
+        limit_ipv4: 165000
+        limit_ipv6: 25000
+  description: Hurricane Electric
+  ip: 2001:7F8:35::6939:1
+- asn: 29834
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-USTR
+      max_prefix:
+        limit_ipv4: 20
+        limit_ipv6: 1
+  description: Ustream
+  ip: 2001:7F8:35::2:9834:1
+- asn: 9009
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GBXS
+        - AS-GBXS6
+      max_prefix:
+        limit_ipv4: 5000
+        limit_ipv6: 250
+  description: M247 Networks
+  ip: 2001:7F8:35::9009:1
+- asn: 62214
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-RACKFOREST
+      max_prefix:
+        limit_ipv4: 10
+        limit_ipv6: 10
+  description: RackForest
+  ip: 2001:7F8:35::6:2214:2
+- asn: 62214
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-RACKFOREST
+      max_prefix:
+        limit_ipv4: 10
+        limit_ipv6: 10
+  description: RackForest
+  ip: 2001:7F8:35::6:2214:1
+- asn: 62292
+  description: EZIT
+  ip: 2001:7F8:35::6:2292:2
+- asn: 62292
+  description: EZIT
+  ip: 2001:7F8:35::6:2292:1
+- asn: 8075
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MICROSOFT
+      max_prefix:
+        limit_ipv4: 1000
+        limit_ipv6: 250
+  description: Microsoft
+  ip: 2001:7F8:35::8075:1
+- asn: 9146
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-BIHNET-ALL
+      max_prefix:
+        limit_ipv4: 200
+        limit_ipv6: 10
+  description: BH Telecom
+  ip: 2001:7F8:35::9146:1
+- asn: 57389
+  description: ZNET Telekom
+  ip: 2001:7F8:35::5:7389:1
+- asn: 29405
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VNET
+      max_prefix:
+        limit_ipv4: 145
+        limit_ipv6: 23
+  description: VNET
+  ip: 2001:7F8:35::2:9405:1
+- asn: 31042
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SBB
+      max_prefix:
+        limit_ipv4: 1000
+        limit_ipv6: 59
+  description: Serbia BroadBand
+  ip: 2001:7F8:35::3:1042:1
+- asn: 30836
+  description: 23VNet
+  ip: 2001:7F8:35::3:836:1
+- asn: 3216
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SOVAM
+      max_prefix:
+        limit_ipv4: 20000
+        limit_ipv6: 5000
+  description: VimpelCom
+  ip: 2001:7F8:35::3216:1
+- asn: 13335
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CLOUDFLARE
+      max_prefix:
+        limit_ipv4: 500
+        limit_ipv6: 100
+  description: Cloudflare
+  ip: 2001:7F8:35::1:3335:1
+- asn: 42624
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SIMPLECARRIERV4
+        - AS-SIMPLECARRIERV6
+  description: Simple Carrier
+  ip: 2001:7F8:35::4:2624:1
+- asn: 20510
+  description: Nexum
+  ip: 2001:7F8:35::2:510:1

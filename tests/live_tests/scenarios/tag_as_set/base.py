@@ -98,7 +98,7 @@ class TagASSetScenario_WithAS_SETs(object):
         "AS1": [1],
         "AS-AS2": [2],
         "AS-AS4": [4],
-        "AS-AS5": [5],
+        "AS-AS5_FROM_PDB": [5],
     }
     R_SET = {
         "AS1": [
@@ -110,7 +110,7 @@ class TagASSetScenario_WithAS_SETs(object):
         "AS-AS4": [
             "AS4_allowed_prefixes"
         ],
-        "AS-AS5": [
+        "AS-AS5_FROM_PDB": [
             "AS5_allowed_prefixes"
         ]
     }
@@ -209,7 +209,7 @@ class TagASSetScenario_EmptyAS_SETs(object):
         "AS1": [],
         "AS-AS2": [],
         "AS-AS4": [],
-        "AS-AS5": [],
+        "AS-AS5_FROM_PDB": [],
     }
     R_SET = {
         "AS1": [
@@ -218,7 +218,7 @@ class TagASSetScenario_EmptyAS_SETs(object):
         ],
         "AS-AS4": [
         ],
-        "AS-AS5": [
+        "AS-AS5_FROM_PDB": [
         ]
     }
 

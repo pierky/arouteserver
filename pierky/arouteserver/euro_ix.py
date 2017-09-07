@@ -23,6 +23,7 @@ except ImportError:
     # Fall back to Python 2's urllib2
     from urllib2 import urlopen
 
+from peering_db import PeeringDBNet, PeeringDBNoInfoError
 from .errors import EuroIXError, EuroIXSchemaError
 
 class EuroIXMemberList(object):
@@ -39,6 +40,7 @@ class EuroIXMemberList(object):
         ("city", "city"),
         ("country", "country")
     ]
+    INFO_FROM_PEERINGDB = ["as-set", "max-prefix"]
 
     def __init__(self, input_object):
         self.raw_data = None
@@ -105,6 +107,24 @@ class EuroIXMemberList(object):
             val = EuroIXMemberList._check_type(val, key, expected_type)
         return val
 
+    @staticmethod
+    def mk_parents_and_set(d, p, v=None):
+        if v is not None:
+            parents = p.split(".")[:-1]
+            val_key = p.split(".")[-1]
+        else:
+            parents = p.split(".")
+            val_key = None
+
+        last = d
+        for key in parents:
+            if key not in last:
+                last[key] = {}
+            last = last[key]
+
+        if val_key:
+            last[val_key] = v
+
     def check_schema_version(self):
         data = self.raw_data
 
@@ -120,13 +140,15 @@ class EuroIXMemberList(object):
 
     def get_clients(self, ixp_id, vlan_id=None,
                     routeserver_only=False,
-                    guess_custom_bgp_communities=[]):
+                    guess_custom_bgp_communities=[],
+                    merge_from_peeringdb=[]):
 
         def new_client(asn, description):
             client = {}
             client["asn"] = asn
             if description:
                 client["description"] = description.encode("ascii", "replace")
+                client["description"] = client["description"].strip()
             return client
 
         def get_descr(member, connection=None):
@@ -172,11 +194,7 @@ class EuroIXMemberList(object):
         def attach_custom_bgp_community(client, prefix, name):
             community_tag = normalize_bgp_community(name)
 
-            if "cfg" not in client:
-                client["cfg"] = {}
-
-            if "attach_custom_communities" not in client["cfg"]:
-                client["cfg"]["attach_custom_communities"] = []
+            self.mk_parents_and_set(client, "cfg.attach_custom_communities", [])
 
             if community_tag not in client["cfg"]["attach_custom_communities"]:
                 client["cfg"]["attach_custom_communities"].append(
@@ -211,6 +229,54 @@ class EuroIXMemberList(object):
                     for client in clients:
                         attach_custom_bgp_community(client, prefix, attribute_val)
 
+        def enrich_with_peeringdb_info(clients):
+            if not merge_from_peeringdb:
+                return
+
+            for client in clients:
+                fetch_from_pdb = []
+                if "as-set" in merge_from_peeringdb:
+                    try:
+                        if not client["cfg"]["filtering"]["irrdb"]["as_sets"]:
+                            raise KeyError()
+                    except KeyError:
+                        fetch_from_pdb.append("as-set")
+
+                if "max-prefix" in merge_from_peeringdb:
+                    for ip_ver in [4, 6]:
+                        try:
+                            if not client["cfg"]["filtering"]["max_prefix"]["limit_ipv{}".format(ip_ver)]:
+                                raise KeyError()
+                        except KeyError:
+                            fetch_from_pdb.append("max-prefix{}".format(ip_ver))
+
+                if fetch_from_pdb:
+                    try:
+                        pdb_net = PeeringDBNet(client["asn"])
+                    except PeeringDBNoInfoError:
+                        continue
+
+                    as_sets = pdb_net.irr_as_sets
+                    if as_sets and "as-set" in fetch_from_pdb:
+                        self.mk_parents_and_set(
+                            client,
+                            "cfg.filtering.irrdb.as_sets",
+                            as_sets
+                        )
+
+                    for ip_ver in [4, 6]:
+                        if ip_ver == 4:
+                            max_prefix = pdb_net.info_prefixes4
+                        else:
+                            max_prefix = pdb_net.info_prefixes6
+
+                        if max_prefix and "max-prefix{}".format(ip_ver) in fetch_from_pdb:
+                            self.mk_parents_and_set(
+                                client,
+                                "cfg.filtering.max_prefix.limit_ipv{}".format(ip_ver),
+                                max_prefix
+                            )
+
         def process_member(member):
             if self._get_item("member_type", member, str, True) == "routeserver":
                 # Member is a route server itself.
@@ -225,6 +291,9 @@ class EuroIXMemberList(object):
                     if new_clients:
                         enrich_with_custom_bgp_communities(new_clients,
                                                            connection)
+
+                        enrich_with_peeringdb_info(new_clients)
+
                         for new_client in new_clients:
                             duplicate_found = False
                             for existing_client in clients:
@@ -301,18 +370,16 @@ class EuroIXMemberList(object):
                     as_macro = self._get_item("as_macro", ip_info, str, True)
                     max_prefix = self._get_item("max_prefix", ip_info, int, True)
 
-                    if as_macro or max_prefix:
-                        client["cfg"] = {
-                            "filtering": {}
-                        }
                     if as_macro:
-                        client["cfg"]["filtering"]["irrdb"] = {
-                            "as_sets": [as_macro]
-                        }
+                        self.mk_parents_and_set(
+                            client, "cfg.filtering.irrdb.as_sets", [as_macro]
+                        )
                     if max_prefix:
-                        client["cfg"]["filtering"]["max_prefix"] = {
-                            "limit_ipv{}".format(ip_ver): max_prefix
-                        }
+                        self.mk_parents_and_set(
+                            client,
+                            "cfg.filtering.max_prefix.limit_ipv{}".format(ip_ver),
+                            max_prefix
+                        )
                     if guess_custom_bgp_communities and \
                         "member_type" in guess_custom_bgp_communities:
                         if member_type:

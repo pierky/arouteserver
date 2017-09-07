@@ -42,9 +42,10 @@ match from {{ client.ip  }} set community NO_ADVERTISE
 {%			else %}
 {%				set matching_element = "prefix" %}
 {%			endif %}
-{%			for subset in as_sets[as_set_id][objects]|batch(50) %}
-{%				set matching_element = matching_element + " $AS_SET_" ~ as_set_id ~ "_" ~ objects ~ loop.index %}
-{%				if as_sets[as_set_id][objects] %}
+{%			set as_set_data = as_sets[as_set_id][objects] %}
+{%			if as_set_data %}
+{%				for subset in as_set_data|batch(50) %}
+{%					set matching_element = matching_element + " $AS_SET_" ~ as_set_id ~ "_" ~ objects ~ loop.index %}
 match from {{ client.ip }} {{ matching_element }} set community delete NO_ADVERTISE	# {{ as_sets[as_set_id].name }}
 {%					if tag_as_set %}
 {%						if comm_object_not_present_in_as_set|community_is_set %}
@@ -56,10 +57,10 @@ match from {{ client.ip }} {{ matching_element }} set community delete NO_ADVERT
 {{ add_communities("match from " ~ client.ip ~ " " ~ matching_element, comm_object_present_in_as_set) -}}
 {%						endif %}
 {%					endif %}
-{%				else %}
+{%				endfor %}
+{%			else %}
 # AS-SET {{ as_set_id }} referenced but empty.
-{%                      	endif %}
-{%			endfor %}
+{%                      endif %}
 {%              endfor %}
 {%      endif %}
 {%      if enforce_object_in_as_set %}

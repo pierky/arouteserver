@@ -15,6 +15,7 @@
 
 import logging
 from Queue import Queue, Empty, Full
+import time
 import threading
 
 from ..errors import BuilderError, ARouteServerError
@@ -51,13 +52,14 @@ class BaseConfigEnricherThread(threading.Thread):
                     with self.lock:
                         self.save_data(task, data)
             except Exception as e:
-                if str(e) and isinstance(e, ARouteServerError):
-                    logging.error(
-                        "{} thread {} error: {}".format(
-                            self.DESCR, self.name,
-                            str(e)
+                if isinstance(e, ARouteServerError):
+                    if str(e):
+                        logging.error(
+                            "{} thread {} error: {}".format(
+                                self.DESCR, self.name,
+                                str(e)
+                            )
                         )
-                    )
                 else:
                     logging.error(
                         "{} thread {} unhandled exception: {}".format(
@@ -76,6 +78,34 @@ class BaseConfigEnricherThread(threading.Thread):
 
         logging.debug("{} thread {} stopped".format(
             self.DESCR, self.name))
+
+class QueueLengthMonitor(threading.Thread):
+
+    def __init__(self, tasks_q, descr, threads):
+        threading.Thread.__init__(self)
+
+        self.tasks_q = tasks_q
+        self.descr = descr
+        self.threads = threads
+
+        self.name = "'{}' enricher queue monitor".format(self.descr)
+        self.daemon = True
+
+        self.done = False
+
+    def run(self):
+        start_time = int(time.time())
+        while not self.done and self.tasks_q.qsize() > 0:
+            time.sleep(1)
+
+            # Print n. of remaining tasks every 10 seconds
+            if (int(time.time()) - start_time) % 10 == 0:
+                tasks_left = self.tasks_q.qsize()
+                logging.info("Enricher '{}', {} tasks left".format(
+                    self.descr, self.tasks_q.qsize()
+                ))
+                if tasks_left <= self.threads:
+                    return
 
 class BaseConfigEnricher(object):
 
@@ -97,6 +127,11 @@ class BaseConfigEnricher(object):
         raise NotImplementedError()
 
     def enrich(self):
+        logging.info(
+            "Enricher '{}' started".format(self.WORKER_THREAD_CLASS.DESCR)
+        )
+        start_time = int(time.time())
+
         self.prepare()
 
         lock = threading.Lock()
@@ -114,10 +149,30 @@ class BaseConfigEnricher(object):
         for t in threads:
             t.start()
 
+        q_monitor = QueueLengthMonitor(self.tasks_q,
+                                       self.WORKER_THREAD_CLASS.DESCR,
+                                       self.threads)
+        q_monitor.start()
+
         self.tasks_q.join()
+
+        q_monitor.done = True
+        q_monitor.join(timeout=5)
+
+        stop_time = int(time.time())
 
         try:
             self.errors_q.get_nowait()
+            logging.error(
+                "Enricher '{}' completed with errors after {} seconds".format(
+                    self.WORKER_THREAD_CLASS.DESCR, stop_time - start_time
+                )
+            )
             raise BuilderError()
         except Empty:
+            logging.info(
+                "Enricher '{}' completed successfully after {} seconds".format(
+                    self.WORKER_THREAD_CLASS.DESCR, stop_time - start_time
+                )
+            )
             return

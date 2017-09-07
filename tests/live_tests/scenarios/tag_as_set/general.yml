@@ -8,6 +8,7 @@ cfg:
                         enforce_origin_in_as_set: False
                         enforce_prefix_in_as_set: False
                         allow_longer_prefixes: True
+                        peering_db: True
         communities:
                 prefix_present_in_as_set:
                         std: "rs_as:64512"

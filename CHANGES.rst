@@ -3,6 +3,23 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+v0.10.0
+-------
+
+- New feature: when IRRDB-based filters are enabled and no AS-SETs are configured for a client, if the ``cfg.filtering.irrdb.peering_db`` option is set ARouteServer tries to fetch their values from the client's ASN record on PeeringDB.
+
+  Related: `issue #7 on GitHub <https://github.com/pierky/arouteserver/issues/7>`_.
+
+- Improvement: config building process performances,
+
+  - reduced memory consumption by moving IRRDB information from memory to temporary files;
+
+  - responses for empty/missing resources are also cached;
+
+  - fix a wrong behaviour that led to multiple PeeringDB requests for the same ASN.
+
+- Improvement: ``clients-from-euroix`` command, the new ``--merge-from-peeringdb`` option can be used to integrate missing information into the output clients list by fetching AS-SETs and max-prefix limit from PeeringDB.
+
 v0.9.3
 ------
 

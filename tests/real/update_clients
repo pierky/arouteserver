@@ -7,14 +7,15 @@ fi
 
 export PYTHONPATH="`pwd`"
 
-cmd="./scripts/arouteserver clients-from-euroix --cfg tests/real/arouteserver.yml"
+cmd="./scripts/arouteserver clients-from-euroix --cfg tests/real/arouteserver.yml --merge-from-peeringdb as-set max-prefix"
 dst_dir="tests/real/clients"
 
 mkdir -p $dst_dir
 
 $cmd --url https://my.ams-ix.net/api/v1/members.json -o $dst_dir/ams-ix.yml --vlan-id 501 2
 $cmd --url https://www.bcix.de/ixp/api/v4/member-export/ixf/0.6 -o $dst_dir/bcix.yml --vlan-id 1 1
-$cmd --url http://admin.bix.hu/ixfexport.php -o $dst_dir/bix.yml --vlan-id 1 1
+$cmd --url http://admin.bix.hu/ixfexport.php -o $dst_dir/bix-ipv4.yml --vlan-id 1 1
+$cmd --url http://admin.bix.hu/ixfexport.php -o $dst_dir/bix-ipv6.yml --vlan-id 2 1
 $cmd --url https://portal.gr-ix.gr/participants.json -o $dst_dir/gr-ix.yml 1
 $cmd --url https://www.inex.ie/ixp/api/v4/member-export/ixf/0.6 -o $dst_dir/inex.yml --vlan-id 2 1
 $cmd --url https://portal.lonap.net/apiv1/member-list/list -o $dst_dir/lonap.yml --vlan-id 1 1

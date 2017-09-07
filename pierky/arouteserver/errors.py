@@ -58,13 +58,16 @@ class MissingDirError(ARouteServerError):
 class CachedObjectsError(ARouteServerError):
     pass
 
+class ExternalDataNoInfoError(ARouteServerError):
+    pass
+
 class IRRDBToolsError(ARouteServerError):
     pass
 
 class PeeringDBError(ARouteServerError):
     pass
 
-class PeeringDBNoInfoError(ARouteServerError):
+class PeeringDBNoInfoError(ExternalDataNoInfoError):
     pass
 
 class EuroIXError(ARouteServerError):

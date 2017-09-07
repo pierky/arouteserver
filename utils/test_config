@@ -42,7 +42,7 @@ elif [ "$1" == "openbgpd" ]; then
 	echo "When started..."
 	echo "scp -i ~/.ssh/arouteserver -o StrictHostKeyChecking=no $2 root@192.0.2.2:/etc/bgpd.conf"
 	echo "ssh -i ~/.ssh/arouteserver -o StrictHostKeyChecking=no root@192.0.2.2"
-	echo "/etc/rc.d/bgpd stop ; bgpd -vdn && /etc/rc.d/bgpd start"
+	echo "/etc/rc.d/bgpd stop ; bgpd -dn && /etc/rc.d/bgpd start"
 	echo "bgpctl"
 	echo ""
 	virsh list

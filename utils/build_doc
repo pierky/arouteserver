@@ -118,6 +118,32 @@ cd $ROOT
 
 # ----------------------------------------------------
 
+echo "Building HTML description for real tests configuration"
+TMP_CLIENTS_FILE="`mktemp`"
+cat > $TMP_CLIENTS_FILE << EOF
+clients:
+  - asn: 1
+    ip: 1.1.1.1
+EOF
+
+./scripts/arouteserver html --cfg tests/real/arouteserver.yml --clients $TMP_CLIENTS_FILE -o tests/real/general.html
+cp tests/real/general.html $DOCS_DIR/_static/tests_real_general.html
+cp tests/real/last $DOCS_DIR/_static/tests_real_results.last
+rm $TMP_CLIENTS_FILE
+
+DST_FILE="$DOCS_DIR/REALTESTS.rst"
+
+echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > $DST_FILE
+echo "" >> $DST_FILE
+cat tests/real/README.rst >> $DST_FILE
+echo "They are also reported below." >> $DST_FILE
+echo "" >> $DST_FILE
+echo ".. literalinclude:: _static/tests_real_results.last" >> $DST_FILE
+
+cd $ROOT
+
+# ----------------------------------------------------
+
 echo "Building examples"
 DST_FILE="$DOCS_DIR/EXAMPLES.rst"
 rm $DST_FILE

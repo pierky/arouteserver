@@ -88,6 +88,15 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
                  "city, ...).",
             dest="guess_custom_bgp_communities")
 
+
+        parser.add_argument(
+            "--merge-from-peeringdb",
+            nargs="+",
+            choices=EuroIXMemberList.INFO_FROM_PEERINGDB,
+            help="Fetch missing information from PeeringDB if they are "
+                 "not included in the Euro-IX JSON member list file.",
+            dest="merge_from_peeringdb")
+
         parser.add_argument(
             "-o", "--output",
             type=argparse.FileType('w'),
@@ -102,7 +111,8 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
             clients = euro_ix.get_clients(
                 self.args.ixp_id, vlan_id=self.args.vlan_id,
                 routeserver_only=self.args.routeserver_only,
-                guess_custom_bgp_communities=self.args.guess_custom_bgp_communities)
+                guess_custom_bgp_communities=self.args.guess_custom_bgp_communities,
+                merge_from_peeringdb=self.args.merge_from_peeringdb)
             res = {"clients": clients}
 
             comments = []

@@ -19,9 +19,12 @@ ROOT="`pwd`"
 TESTS_DIR="`pwd`/tests"
 LAST_RESULTS_DIR="$TESTS_DIR/last_results"
 
-if [ ! -d "$LAST_RESULTS_DIR" ]; then
-	mkdir -p $LAST_RESULTS_DIR
+if [ -d "$LAST_RESULTS_DIR" ]; then
+	echo "Last results directory already existing: please check and then remove it - rmdir $LAST_RESULTS_DIR"
+	exit
 fi
+
+mkdir -p $LAST_RESULTS_DIR
 
 function join_last_results() {
 	if [ ! -e $LAST_RESULTS_DIR/static.last ]; then
@@ -50,8 +53,11 @@ if [ "$1" == "join_only" ]; then
 	exit
 fi
 
-echo "Restarting docker..."
-sudo service docker restart
+echo "Verifying no Docker instances are running..."
+if [ "`docker ps | wc -l`" != "1" ]; then
+	echo "One or more Docker instances are already running"
+	exit
+fi
 
 echo "Verifying no VMs are running..."
 if [ "`virsh list --name --state-running | wc -w`" != "0" ]; then

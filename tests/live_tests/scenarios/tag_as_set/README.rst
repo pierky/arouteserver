@@ -69,7 +69,7 @@ AS4 announces:
 
 AS5:
 
-- allowed objects:
+- allowed objects (AS-SET from PeeringDB):
 
   - prefix: 5.0.0.0/16
   - origin: 5
