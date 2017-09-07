@@ -9,7 +9,14 @@ if [ "`pwd`" != `echo ~` ]; then
 	exit
 fi
 ROOT="`pwd`/arouteserver"
-CURR_PACKAGE="`ls $ROOT/dist/ | tail -n 1`"
+CURR_PACKAGE="`ls $ROOT/dist/ | sort --version-sort | tail -n 1`"
+
+echo -n "Really run test_new_rel for ${CURR_PACKAGE}? [yes/NO] "
+read YES_NO
+
+if [ "$YES_NO" != "yes" ]; then
+	exit
+fi
 
 function run() {
 	VENV_NAME="$1"; shift
