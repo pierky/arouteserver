@@ -13,9 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import TagASSetScenario_WithAS_SETs, TagASSetScenario_EmptyAS_SETs, \
+from .base import TagASSetScenario_WithAS_SETs, TagASSetScenario_EmptyAS_SETs, \
                  TagASSetScenarioBIRD
-from data4 import TagASSetScenario_Data4
+from .data4 import TagASSetScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 
 class TagASSetScenario_WithAS_SETs_BIRDIPv4(TagASSetScenario_WithAS_SETs,

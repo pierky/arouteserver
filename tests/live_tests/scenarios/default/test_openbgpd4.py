@@ -16,8 +16,8 @@
 import os
 import unittest
 
-from base import DefaultConfigScenarioOpenBGPD
-from data4 import DefaultConfigScenario_Data4
+from .base import DefaultConfigScenarioOpenBGPD
+from .data4 import DefaultConfigScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
 

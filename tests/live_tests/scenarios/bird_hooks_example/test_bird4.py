@@ -13,8 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import BIRDHooksExampleScenario
-from data4 import BIRDHooksExampleScenario_Data4
+from .base import BIRDHooksExampleScenario
+from .data4 import BIRDHooksExampleScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 
 class BIRDHooksExampleScenario_IPv4(BIRDHooksExampleScenario_Data4,

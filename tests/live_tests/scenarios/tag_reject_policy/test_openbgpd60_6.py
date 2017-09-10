@@ -16,8 +16,8 @@
 import os
 import unittest
 
-from base import TagRejectPolicyScenarioOpenBGPD60
-from data6 import BasicScenario_Data6
+from .base import TagRejectPolicyScenarioOpenBGPD60
+from .data6 import BasicScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
 
