@@ -13,10 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import ipaddr
 import unittest
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
+from pierky.ipaddresses import IPNetwork
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
@@ -234,7 +234,7 @@ class BasicScenario(LiveScenario):
     def test_040_bad_prefixes_received_by_rs_prefix_len(self):
         """{}: bad prefixes received by rs: invalid prefix-len"""
 
-        ip_ver = ipaddr.IPNetwork(self.DATA["pref_len1"]).version
+        ip_ver = IPNetwork(self.DATA["pref_len1"]).version
 
         self.receive_route(self.rs, self.DATA["pref_len1"], self.AS1_1,
                            as_path="1", next_hop=self.AS1_1,
@@ -342,7 +342,7 @@ class BasicScenario(LiveScenario):
         self.receive_route(self.rs, self.DATA["Default_route"],
                            other_inst=self.AS3,
                            filtered=True, reject_reason=(2, 10))
-        if ipaddr.IPNetwork(self.DATA["Default_route"]).version == 4:
+        if IPNetwork(self.DATA["Default_route"]).version == 4:
             msg = "prefix is bogon - REJECTING " + self.DATA["Default_route"]
         else:
             msg = "prefix is not in IPv6 Global Unicast space - REJECTING " + self.DATA["Default_route"]

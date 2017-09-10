@@ -14,17 +14,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import atexit
-import cPickle
-import ipaddr
 import logging
 import re
 import shutil
+from six.moves import cPickle
 import tempfile
 
 from .base import BaseConfigEnricher, BaseConfigEnricherThread
 from ..errors import BuilderError, ARouteServerError
+from ..ipaddresses import IPAddress
 from ..irrdb import ASSet, RSet, IRRDBTools
-
 
 irrdb_pickle_dir = None
 def setup_irrdb_pickle_dir():
@@ -215,7 +214,7 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
 
             if self.builder.ip_ver is not None:
                 ip = client["ip"]
-                if ipaddr.IPAddress(ip).version != self.builder.ip_ver:
+                if IPAddress(ip).version != self.builder.ip_ver:
                     # The address family of this client is not the
                     # current one used to build the configuration.
                     continue

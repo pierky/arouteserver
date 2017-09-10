@@ -15,7 +15,10 @@
 
 import os
 import json
-import mock
+try:
+    import mock
+except ImportError:
+    import unittest.mock as mock
 
 from ..cached_objects import CachedObject
 from ..peering_db import PeeringDBInfo, PeeringDBNet

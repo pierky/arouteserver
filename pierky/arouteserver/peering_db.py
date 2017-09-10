@@ -17,8 +17,8 @@ import logging
 import json
 import re
 import subprocess
-from urllib2 import urlopen, HTTPError
-
+from six.moves.urllib.request import urlopen
+from six.moves.urllib.error import HTTPError
 
 from .cached_objects import CachedObject
 from .errors import PeeringDBError, PeeringDBNoInfoError

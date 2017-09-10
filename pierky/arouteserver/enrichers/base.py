@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from Queue import Queue, Empty, Full
+from six.moves import queue
 import time
 import threading
 
@@ -43,7 +43,7 @@ class BaseConfigEnricherThread(threading.Thread):
         while True:
             try:
                 task = self.tasks_q.get(block=True, timeout=0.1)
-            except Empty:
+            except queue.Empty:
                 break
 
             try:
@@ -71,7 +71,7 @@ class BaseConfigEnricherThread(threading.Thread):
 
                 try:
                     self.errors_q.put_nowait(True)
-                except Full:
+                except queue.Full:
                     pass
 
             self.tasks_q.task_done()
@@ -114,8 +114,8 @@ class BaseConfigEnricher(object):
     def __init__(self, builder, threads):
         self.builder = builder
         self.threads = threads
-        self.tasks_q = Queue()
-        self.errors_q = Queue(maxsize=1)
+        self.tasks_q = queue()
+        self.errors_q = queue(maxsize=1)
 
     def prepare(self):
         pass
@@ -169,7 +169,7 @@ class BaseConfigEnricher(object):
                 )
             )
             raise BuilderError()
-        except Empty:
+        except queue.Empty:
             logging.info(
                 "Enricher '{}' completed successfully after {} seconds".format(
                     self.WORKER_THREAD_CLASS.DESCR, stop_time - start_time

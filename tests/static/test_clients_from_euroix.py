@@ -37,7 +37,7 @@ class TestClientsFromEuroIX(unittest.TestCase):
         self.clients = euro_ix.get_clients(*args, **kwargs)
 
     def _result_match_file(self, json_in_filename, yml_res_filename=None,
-                       *args, **kwargs):
+                           *args, **kwargs):
         self._run(json_in_filename, *args, **kwargs)
         res = {"clients": self.clients}
 

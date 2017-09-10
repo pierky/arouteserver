@@ -23,7 +23,8 @@ from pierky.arouteserver.tests.mock_peeringdb import mock_peering_db
 
 class TestPeeringDBInfo(unittest.TestCase):
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
 
         mock_peering_db(os.path.dirname(__file__) + "/peeringdb_data")
 

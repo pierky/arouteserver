@@ -13,7 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import ipaddr
 import logging
 import os
 from packaging import version
@@ -38,6 +37,7 @@ from .errors import MissingDirError, MissingFileError, BuilderError, \
                     ARouteServerError, PeeringDBError, PeeringDBNoInfoError, \
                     MissingArgumentError, TemplateRenderingError, \
                     CompatibilityIssuesError, ConfigError
+from .ipaddresses import IPNetwork
 from .irrdb import ASSet, RSet, IRRDBTools
 from .cached_objects import CachedObject
 from .peering_db import PeeringDBNet
@@ -536,12 +536,12 @@ class ConfigBuilder(object):
             self.cfg_general.rtt_based_functions_are_used
 
         def ipaddr_ver(ip):
-            return ipaddr.IPAddress(ip).version
+            return IPNetwork(ip).version
 
         def current_ipver(ip):
             if self.ip_ver is None:
                 return True
-            return ipaddr.IPAddress(ip).version == self.ip_ver
+            return IPNetwork(ip).version == self.ip_ver
 
         def include_local_file(local_file_id):
             if local_file_id not in self.LOCAL_FILES_IDS:

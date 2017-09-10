@@ -13,7 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import ipaddr
 import json
 import os
 import logging
@@ -23,6 +22,7 @@ import time
 from .cached_objects import CachedObject
 from .config.validators import ValidatorPrefixListEntry
 from .errors import IRRDBToolsError
+from .ipaddresses import IPNetwork
 
 
 class IRRDBTools(CachedObject):
@@ -143,9 +143,9 @@ class RSet(IRRDBTools):
         return [self._parse_prefix(prefix) for prefix in data["prefix_list"]]
 
     def _parse_prefix(self, raw):
-        prefix = ipaddr.IPNetwork(raw["prefix"])
+        prefix = IPNetwork(raw["prefix"])
         res = {
-            "prefix": str(prefix.ip),
+            "prefix": prefix.ip,
             "length": prefix.prefixlen,
             "exact": raw["exact"] if "exact" in raw else False,
             "comment": self.object_name
