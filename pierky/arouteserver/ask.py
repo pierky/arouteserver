@@ -35,7 +35,7 @@ def ask(text, options=None, default=None):
     sys.stdout.write(msg)
 
     try:
-        answer = raw_input()
+        answer = input()
     except:
         return False, None
 

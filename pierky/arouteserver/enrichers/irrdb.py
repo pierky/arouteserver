@@ -18,6 +18,7 @@ import logging
 import re
 import shutil
 from six.moves import cPickle
+from six import iteritems
 import tempfile
 
 from .base import BaseConfigEnricher, BaseConfigEnricherThread
@@ -289,7 +290,7 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
 
     def add_tasks(self):
         # Enqueuing tasks.
-        for as_set_id, as_set in self.builder.as_sets.items():
+        for as_set_id, as_set in iteritems(self.builder.as_sets):
             used_by = ", ".join(as_set.used_by)
             self.tasks_q.put((as_set, used_by, as_set.name))
 

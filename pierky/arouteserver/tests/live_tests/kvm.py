@@ -17,7 +17,7 @@ import os
 import subprocess
 import time
 
-from instances import InstanceError, BGPSpeakerInstance
+from .instances import InstanceError, BGPSpeakerInstance
 
 class KVMInstance(BGPSpeakerInstance):
 

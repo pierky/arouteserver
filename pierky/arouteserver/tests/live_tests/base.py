@@ -20,7 +20,7 @@ import re
 import time
 import yaml
 
-from docker import InstanceError
+from .docker import InstanceError
 
 from pierky.arouteserver.config.validators import ValidatorPrefixListEntry
 from pierky.arouteserver.enrichers.irrdb import IRRDBConfigEnricher_OriginASNs, \

@@ -18,7 +18,7 @@ import re
 import subprocess
 import time
 
-from instances import InstanceError, BGPSpeakerInstance
+from .instances import InstanceError, BGPSpeakerInstance
 
 class DockerInstance(BGPSpeakerInstance):
 

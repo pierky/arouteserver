@@ -15,8 +15,8 @@
 
 import re
 
-from docker import DockerInstance
-from instances import Route, BGPSpeakerInstance, InstanceNotRunning
+from .docker import DockerInstance
+from .instances import Route, BGPSpeakerInstance, InstanceNotRunning
 
 
 class BIRDInstance(DockerInstance):
