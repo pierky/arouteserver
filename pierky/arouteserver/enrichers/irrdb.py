@@ -55,7 +55,7 @@ class AS_SET(object):
 
     def save(self, objects, data):
         if objects in ("asns", "prefixes"):
-            with open(self.get_path(objects), "w") as f:
+            with open(self.get_path(objects), "wb") as f:
                 cPickle.dump(data, f, cPickle.HIGHEST_PROTOCOL)
             self.saved_objects += [objects]
         else:
@@ -63,7 +63,7 @@ class AS_SET(object):
 
     def load(self, objects):
         if objects in self.saved_objects:
-            with open(self.get_path(objects), "r") as f:
+            with open(self.get_path(objects), "rb") as f:
                 return cPickle.load(f)
         else:
             return []

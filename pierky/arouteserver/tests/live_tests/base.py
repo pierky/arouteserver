@@ -14,7 +14,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from jinja2 import Environment, FileSystemLoader
-import mock
+try:
+    import mock
+except ImportError:
+    import unittest.mock as mock
 import os
 import re
 import time
@@ -390,7 +393,11 @@ class LiveScenario(ARouteServerTestCase):
         mock_peering_db(cls._get_module_dir() + "/peeringdb_data")
         cls.mock_irrdb()
         cls.mock_rttgetter()
-        cls._setup_instances()
+        try:
+            cls._setup_instances()
+        except:
+            cls.tearDownClass()
+            raise
 
         if cls._do_not_run_instances():
             cls.debug("Skipping starting instances")

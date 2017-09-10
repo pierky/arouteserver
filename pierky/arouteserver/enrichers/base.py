@@ -114,8 +114,8 @@ class BaseConfigEnricher(object):
     def __init__(self, builder, threads):
         self.builder = builder
         self.threads = threads
-        self.tasks_q = queue()
-        self.errors_q = queue(maxsize=1)
+        self.tasks_q = queue.Queue()
+        self.errors_q = queue.Queue(maxsize=1)
 
     def prepare(self):
         pass
