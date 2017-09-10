@@ -69,7 +69,7 @@ class RTTGetter_WorkerThread(BaseConfigEnricherThread):
             raise BuilderError()
 
         try:
-            return self._parse_result(out)
+            return self._parse_result(out.decode("utf-8"))
         except ValueError as e:
             err = ("Error while parsing result from "
                    "RTT getter command '{}': {}".format(" ".join(cmd), str(e)))

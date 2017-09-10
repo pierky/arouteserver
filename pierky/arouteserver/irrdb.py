@@ -76,7 +76,7 @@ class ASSet(IRRDBTools):
             )
 
         try:
-            data = json.loads(out)
+            data = json.loads(out.decode("utf-8"))
         except Exception as e:
             raise IRRDBToolsError(
                 "Error while parsing bgpq3 output "
@@ -131,7 +131,7 @@ class RSet(IRRDBTools):
             )
 
         try:
-            data = json.loads(out)
+            data = json.loads(out.decode("utf-8"))
         except Exception as e:
             raise IRRDBToolsError(
                 "Error while parsing bgpq3 output "

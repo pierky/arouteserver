@@ -43,9 +43,7 @@ class EuroIXMemberList(object):
 
         if isinstance(input_object, dict):
             self.raw_data = input_object
-        elif isinstance(input_object, file):
-            raw = input_object.read()
-        else:
+        elif isinstance(input_object, six.string_types):
             try:
                 response = urlopen(input_object)
                 raw = response.read().decode("utf-8")
@@ -56,6 +54,8 @@ class EuroIXMemberList(object):
                         input_object, str(e)
                     )
                 )
+        else:
+            raw = input_object.read().decode("utf-8")
 
         if not self.raw_data:
             try:

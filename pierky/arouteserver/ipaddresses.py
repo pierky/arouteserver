@@ -29,7 +29,7 @@ class IPAddress(object):
             self.ip = str(self.obj)
         else:
             self.obj = ipaddress.ip_address(ip)
-            self.ip = str(self.obj.exploded)
+            self.ip = str(self.obj.compressed)
 
         self.version = self.obj.version
 
