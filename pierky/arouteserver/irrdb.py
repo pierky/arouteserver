@@ -29,7 +29,7 @@ class IRRDBTools(CachedObject):
 
     BGPQ3_DEFAULT_HOST = "rr.ntt.net"
     BGPQ3_DEFAULT_SOURCES = ("RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,"
-                             "BBOI,BELL,GT,JPIRR,LEVEL3,RADB,RGNET,"
+                             "BBOI,BELL,JPIRR,LEVEL3,RADB,RGNET,"
                              "SAVVIS,TC")
 
     def __init__(self, *args, **kwargs):
