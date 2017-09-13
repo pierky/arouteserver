@@ -8,6 +8,10 @@ next version
 
 - Python 3.4 support.
 
+- Improvement: GT registry removed from the sources used to gather info from IRRDB.
+
+  Related: `PR #8 on GitHub <https://github.com/pierky/arouteserver/pull/8>`_.
+
 v0.10.0
 -------
 
