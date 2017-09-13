@@ -21,6 +21,20 @@ fi
 function run() {
 	VENV_NAME="$1"; shift
 	IS_UPGR="$1"; shift
+	if [ "$1" == "py3" ]; then
+		PY3=1
+		PIP="pip3"
+		PYTHON_ARG="--python /usr/bin/python3.4"
+		echo "Testing with Python 3.4"
+		echo echo
+	else
+		PY3=0
+		PIP="pip"
+		PYTHON_ARG=""
+		echo "Testing with Python 2"
+		echo
+		echo
+	fi
 
 	echo "Arguments: VENV_NAME: $VENV_NAME, IS_UPGR: $IS_UPGR"
 	echo
@@ -46,29 +60,29 @@ function run() {
 	mkdir -p $VENV_DIR
 
 	echo "Activating venv $VENV_DIR..."
-	virtualenv $VENV_DIR
+	virtualenv $PYTHON_ARG $VENV_DIR
 	source $VENV_DIR/bin/activate
 	echo
 	echo
 
 	if [ $IS_UPGR -eq 1 ]; then
 		echo -n "Previous version of arouteserver: "
-		pip freeze | grep arouteserver
+		$PIP freeze | grep arouteserver
 		echo
 		echo
 	fi
 
 	echo "Installing $CURR_PACKAGE..."
 	if [ $IS_UPGR -eq 1 ]; then
-		pip install --upgrade $ROOT/dist/$CURR_PACKAGE
+		$PIP install --upgrade $ROOT/dist/$CURR_PACKAGE
 	else
-		pip install $ROOT/dist/$CURR_PACKAGE
+		$PIP install $ROOT/dist/$CURR_PACKAGE
 	fi
 	echo
 	echo
 
 	echo -n "Installed version of arouteserver: "
-	pip freeze | grep arouteserver
+	$PIP freeze | grep arouteserver
 	echo
 	echo
 
@@ -115,7 +129,10 @@ function run() {
 	echo
 }
 
-run "ars_new_rel_test" 0
-run "ars_upgr_rel_test" 1
+run "ars_new_rel_test" 0 "py2"
+run "ars_upgr_rel_test" 1 "py2"
+
+run "ars_new_rel_test" 0 "py3"
+run "ars_upgr_rel_test" 1 "py3"
 
 echo "Done!"

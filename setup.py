@@ -1,10 +1,11 @@
 import os
 from os.path import abspath, dirname, join
 from setuptools import setup, find_packages
-import sys
 
 """
 New release procedure
+
+- ./utils/update_fingerprints.py
 
 - nosetests -vs tests/
 
@@ -48,17 +49,6 @@ with open("requirements.txt", "r") as f:
     for line in f.read().split("\n"):
         if line:
             install_requires.append(line)
-
-if len(sys.argv) > 1 and sys.argv[1] in ("fps", "sdist"):
-    print("Calculating templates fingerprints...")
-    import yaml
-    from pierky.arouteserver.config.program import ConfigParserProgram
-    fps = ConfigParserProgram.calculate_fingerprints("templates")
-    fps_path = os.path.join("templates", ConfigParserProgram.FINGERPRINTS_FILENAME)
-    with open(fps_path, "w") as f:
-        yaml.safe_dump(fps, f, default_flow_style=False)
-    if sys.argv[1] == "fps":
-        sys.exit(0)
 
 # Get the long description from README.md
 setup(
