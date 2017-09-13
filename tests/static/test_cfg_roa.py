@@ -55,9 +55,9 @@ class TestConfigParserROA(TestConfigParserBase):
 
     def test_invalid_ge(self):
         """{}: invalid ge"""
-	cfg = [
+        cfg = [
             "roas:",
-	    "- prefix:",
+            "- prefix:",
             "    prefix: 10.0.1.0",
             "    length: 24",
             "    ge: 25",

@@ -281,7 +281,7 @@ class ConfigParserGeneral(ConfigParserBase):
         unique_communities = []
         for comms in (self.cfg["cfg"]["communities"],
                       self.cfg["cfg"]["custom_communities"]):
-            for comm_tag in comms:
+            for comm_tag in sorted(comms):
                 comm = comms[comm_tag]
                 for fmt in ("std", "lrg", "ext"):
                     if comm[fmt]:

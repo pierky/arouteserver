@@ -13,10 +13,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import ipaddr
+import six
 import unittest
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
+from pierky.arouteserver.ipaddresses import IPNetwork
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
@@ -192,13 +193,13 @@ class BasicScenario(LiveScenario):
                            std_comms=[], ext_comms=ext_comm_rpki_unknown, lrg_comms=[])
 
         # rs should not receive prefixes with the following criteria
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.rs, self.DATA["AS1_good1"], self.AS2)
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.rs, self.DATA["AS1_good2"], self.AS2)
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.rs, self.DATA["AS2_good1"], self.AS1_1)
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.rs, self.DATA["AS2_good2"], self.AS1_1)
 
         # AS_PATH should match the expectations
@@ -234,7 +235,7 @@ class BasicScenario(LiveScenario):
     def test_040_bad_prefixes_received_by_rs_prefix_len(self):
         """{}: bad prefixes received by rs: invalid prefix-len"""
 
-        ip_ver = ipaddr.IPNetwork(self.DATA["pref_len1"]).version
+        ip_ver = IPNetwork(self.DATA["pref_len1"]).version
 
         self.receive_route(self.rs, self.DATA["pref_len1"], self.AS1_1,
                            as_path="1", next_hop=self.AS1_1,
@@ -342,7 +343,7 @@ class BasicScenario(LiveScenario):
         self.receive_route(self.rs, self.DATA["Default_route"],
                            other_inst=self.AS3,
                            filtered=True, reject_reason=(2, 10))
-        if ipaddr.IPNetwork(self.DATA["Default_route"]).version == 4:
+        if IPNetwork(self.DATA["Default_route"]).version == 4:
             msg = "prefix is bogon - REJECTING " + self.DATA["Default_route"]
         else:
             msg = "prefix is not in IPv6 Global Unicast space - REJECTING " + self.DATA["Default_route"]
@@ -358,7 +359,7 @@ class BasicScenario(LiveScenario):
                        self.DATA["aspath_len1"],
                        self.DATA["AS2_nonclient_nexthop2"]):
             for inst in (self.AS2, self.AS3, self.AS4):
-                with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+                with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                     self.receive_route(inst, prefix)
 
         # Among the clients, only AS3 is expected to not see the 
@@ -366,7 +367,7 @@ class BasicScenario(LiveScenario):
         # receive them on their session with AS101
         for prefix in (self.DATA["AS101_no_rset"],
                        self.DATA["AS102_no_asset"]):
-            with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                 self.receive_route(self.AS3, prefix)
 
     def test_045_rpki_valid_prefix(self):
@@ -416,7 +417,7 @@ class BasicScenario(LiveScenario):
             raise unittest.SkipTest("RPKI not supported by OpenBGPD")
 
         for pref_id in ("AS101_roa_invalid1", "AS101_roa_badlen"):
-            with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                 self.receive_route(self.AS3, self.DATA[pref_id])
 
     def test_045_blackhole_with_roa(self):
@@ -556,20 +557,20 @@ class BasicScenario(LiveScenario):
             # Test valid only for BGP daemons that don't support large comms
             raise unittest.SkipTest("Large comms are supported here")
 
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS1_1, self.DATA["AS2_blackhole3"])
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS3, self.DATA["AS2_blackhole3"])
 
     def test_071_blackholed_prefixes_not_seen_by_not_enabled_clients(self):
         """{}: blackholed prefixes not seen by not enabled clients"""
 
         # AS1_2 not enabled to receive blackholed prefixes
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS1_2, self.DATA["AS2_blackhole1"])
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS1_2, self.DATA["AS2_blackhole2"])
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS1_2, self.DATA["AS2_blackhole3"])
         self.log_contains(self.rs, "client {{AS1_2}} not enabled to receive blackhole prefixes - NOT ANNOUNCING {pref} TO {{AS1_2}}".format(pref=self.DATA["AS2_blackhole1"]), {"AS1_2": self.AS1_2})
         self.log_contains(self.rs, "client {{AS1_2}} not enabled to receive blackhole prefixes - NOT ANNOUNCING {pref} TO {{AS1_2}}".format(pref=self.DATA["AS2_blackhole2"]), {"AS1_2": self.AS1_2})
@@ -586,7 +587,7 @@ class BasicScenario(LiveScenario):
                            std_comms=[], lrg_comms=[])
 
         for inst in (self.AS2, self.AS4):
-            with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                 self.receive_route(inst, self.DATA["AS3_cc_AS1only"])
         self.log_contains(self.rs, "route didn't pass control communities checks - NOT ANNOUNCING {} TO {{AS2}}".format(self.DATA["AS3_cc_AS1only"]), {"AS2": self.AS2})
 
@@ -599,7 +600,7 @@ class BasicScenario(LiveScenario):
                                std_comms=[], lrg_comms=[])
 
         for inst in (self.AS1_1, self.AS1_2):
-            with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                 self.receive_route(inst, self.DATA["AS3_cc_not_AS1"])
             self.log_contains(self.rs, "route didn't pass control communities checks - NOT ANNOUNCING {} TO {{other_inst}}".format(self.DATA["AS3_cc_not_AS1"]), {"other_inst": inst})
 
@@ -607,7 +608,7 @@ class BasicScenario(LiveScenario):
         """{}: control communities, don't announce to any"""
 
         for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4):
-            with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                 self.receive_route(inst, self.DATA["AS3_cc_none"])
             self.log_contains(self.rs, "route didn't pass control communities checks - NOT ANNOUNCING {} TO {{other_inst}}".format(self.DATA["AS3_cc_none"]), {"other_inst": inst})
 
@@ -669,7 +670,7 @@ class BasicScenario(LiveScenario):
                                as_path="3", next_hop=self.AS3,
                                std_comms=["65535:65281"],
                                lrg_comms=[], ext_comms=[])
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS101, self.DATA["AS3_noexport_any"])
 
     def test_083_control_communities_AS3_noexport_to_AS1(self):
@@ -684,7 +685,7 @@ class BasicScenario(LiveScenario):
                            std_comms=[],
                            lrg_comms=[], ext_comms=[])
         self.receive_route(self.AS101, pref, as_path="2 3 3 3 3")
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS101, pref, as_path="1 3")
 
     def _test_084_AS1_1_and_AS1_2_only(self, pref):
@@ -692,7 +693,7 @@ class BasicScenario(LiveScenario):
             self.receive_route(inst, pref, self.rs, as_path="4",
                                std_comms=[], lrg_comms=[], ext_comms=[])
         for inst in (self.AS2, self.AS3):
-            with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                 self.receive_route(inst, pref)
 
     def test_084_control_communities_rtt_AS4_only_peers_lt_15(self):
@@ -732,7 +733,7 @@ class BasicScenario(LiveScenario):
             self.receive_route(inst, pref, self.rs,
                                std_comms=[], lrg_comms=[], ext_comms=[])
         for inst in [self.AS2]:
-            with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                 self.receive_route(inst, pref)
 
     def test_084_control_communities_rtt_AS4_not_peers_lt_5_gt_100(self):
@@ -744,7 +745,7 @@ class BasicScenario(LiveScenario):
             self.receive_route(inst, pref, self.rs,
                                std_comms=[], lrg_comms=[], ext_comms=[])
         for inst in [self.AS1_1, self.AS1_2, self.AS3]:
-            with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                 self.receive_route(inst, pref)
 
     def test_084_control_communities_rtt_AS4_blackhole_not_to_peers_gt_20(self):
@@ -765,7 +766,7 @@ class BasicScenario(LiveScenario):
                                std_comms=["65535:666", "65535:65281"],
                                lrg_comms=[], ext_comms=[])
         for inst in [self.AS1_2, self.AS3]:
-            with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                 self.receive_route(inst, pref)
 
     def test_085_control_communities_rtt_prep3x_gt_100_2x_gt_10(self):
@@ -903,14 +904,14 @@ class BasicScenario_TagRejectPolicy(LiveScenario_TagRejectPolicy):
 
     def test_042_bad_prefixes_received_by_rs_bogon_wrong_tag(self):
         """{}: bad prefixes received by rs: bogon (wrong tag)"""
-        with self.assertRaisesRegexp(AssertionError, "real reasons 2, expected reason 1."):
+        with six.assertRaisesRegex(self, AssertionError, "real reasons 2, expected reason 1."):
             self.receive_route(self.rs, self.DATA["bogon1"], self.AS1_1,
                                as_path="1", next_hop=self.AS1_1,
                                filtered=True, reject_reason=1)
 
     def test_042_bad_prefixes_received_by_rs_global_blacklist_wrong_tag(self):
         """{}: bad prefixes received by rs: global blacklist (wrong tag)"""
-        with self.assertRaisesRegexp(AssertionError, "real reasons 3, expected reason 1."):
+        with six.assertRaisesRegex(self, AssertionError, "real reasons 3, expected reason 1."):
             self.receive_route(self.rs, self.DATA["local1"], self.AS1_1,
                                as_path="1", next_hop=self.AS1_1,
                                filtered=True, reject_reason=1)

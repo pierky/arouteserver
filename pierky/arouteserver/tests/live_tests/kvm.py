@@ -17,7 +17,7 @@ import os
 import subprocess
 import time
 
-from instances import InstanceError, BGPSpeakerInstance
+from .instances import InstanceError, BGPSpeakerInstance
 
 class KVMInstance(BGPSpeakerInstance):
 
@@ -65,7 +65,7 @@ class KVMInstance(BGPSpeakerInstance):
             dev_null = open(os.devnull, "w")
             stdout = subprocess.check_output(
                 cmd.split(), stderr=dev_null
-            )
+            ).decode("utf-8")
             return stdout
         except subprocess.CalledProcessError as e:
             raise InstanceError(
@@ -139,7 +139,7 @@ class KVMInstance(BGPSpeakerInstance):
                 )
 
             running = False
-            for i in range(self.MAX_BOOT_TIME / 5):
+            for i in range(self.MAX_BOOT_TIME // 5):
                 time.sleep(5)
                 try:
                     res = self.run_cmd("true")
@@ -174,7 +174,7 @@ class KVMInstance(BGPSpeakerInstance):
         if self._graceful_shutdown():
             time.sleep(10)
 
-        for i in range(20 / 5):
+        for i in range(20 // 5):
             if not self.is_running():
                 return
             time.sleep(5)
@@ -182,7 +182,7 @@ class KVMInstance(BGPSpeakerInstance):
         if self.is_running() and not self.is_remote:
             try:
                 self._run("virsh shutdown {}".format(self.domain_name))
-                for i in range(30 / 5):
+                for i in range(30 // 5):
                     if not self.is_running():
                         return
                     time.sleep(5)

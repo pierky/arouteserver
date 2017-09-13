@@ -16,7 +16,7 @@
 import os
 import pkg_resources
 
-from errors import ResourceNotFoundError
+from .errors import ResourceNotFoundError
 
 
 def get_local_dir(dirname):

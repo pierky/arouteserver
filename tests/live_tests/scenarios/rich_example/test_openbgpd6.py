@@ -16,8 +16,8 @@
 import os
 import unittest
 
-from base import RichConfigExampleScenarioOpenBGPD
-from data6 import RichConfigExampleScenario_Data6
+from .base import RichConfigExampleScenarioOpenBGPD
+from .data6 import RichConfigExampleScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
 

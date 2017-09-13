@@ -3,7 +3,7 @@ Tests
 
 The following directories contain code that is used to test ARouteServer:
 
-- **static**: Python unittest modules used to test single piece of code;
+- **static**: Python unittest modules used to test single pieces of code;
 
 - **live_tests**: the `Live tests framework <https://arouteserver.readthedocs.io/en/latest/LIVETESTS.html>`_ used to simulate route servers configured using this tool and to verify how they interact with their clients;
 

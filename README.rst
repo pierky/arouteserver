@@ -3,7 +3,7 @@
 ARouteServer
 ============
 
-|Documentation| |Build Status| |PYPI Version| |Requirements|
+|Documentation| |Build Status| |PYPI Version| |Python Versions| |Requirements|
 
 
 A Python tool to automatically build (and test) feature-rich configurations for BGP route servers.
@@ -150,3 +150,4 @@ Blog: https://blog.pierky.com Twitter: `@pierky <https://twitter.com/pierky>`_
 .. |Requirements| image:: https://requires.io/github/pierky/arouteserver/requirements.svg?branch=master
     :target: https://requires.io/github/pierky/arouteserver/requirements/?branch=master
     :alt: Requirements Status
+.. |Python Versions| image:: https://img.shields.io/pypi/pyversions/arouteserver.svg

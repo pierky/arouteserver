@@ -16,7 +16,7 @@
 import os
 import re
 
-from base import ARouteServerCommand
+from .base import ARouteServerCommand
 from ..ask import ask, ask_yes_no
 from ..config.program import program_config
 from ..errors import ARouteServerError

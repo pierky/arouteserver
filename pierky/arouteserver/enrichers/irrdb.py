@@ -14,17 +14,17 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import atexit
-import cPickle
-import ipaddr
 import logging
 import re
 import shutil
+from six.moves import cPickle
+from six import iteritems
 import tempfile
 
 from .base import BaseConfigEnricher, BaseConfigEnricherThread
 from ..errors import BuilderError, ARouteServerError
+from ..ipaddresses import IPAddress
 from ..irrdb import ASSet, RSet, IRRDBTools
-
 
 irrdb_pickle_dir = None
 def setup_irrdb_pickle_dir():
@@ -55,7 +55,7 @@ class AS_SET(object):
 
     def save(self, objects, data):
         if objects in ("asns", "prefixes"):
-            with open(self.get_path(objects), "w") as f:
+            with open(self.get_path(objects), "wb") as f:
                 cPickle.dump(data, f, cPickle.HIGHEST_PROTOCOL)
             self.saved_objects += [objects]
         else:
@@ -63,7 +63,7 @@ class AS_SET(object):
 
     def load(self, objects):
         if objects in self.saved_objects:
-            with open(self.get_path(objects), "r") as f:
+            with open(self.get_path(objects), "rb") as f:
                 return cPickle.load(f)
         else:
             return []
@@ -215,7 +215,7 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
 
             if self.builder.ip_ver is not None:
                 ip = client["ip"]
-                if ipaddr.IPAddress(ip).version != self.builder.ip_ver:
+                if IPAddress(ip).version != self.builder.ip_ver:
                     # The address family of this client is not the
                     # current one used to build the configuration.
                     continue
@@ -290,7 +290,7 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
 
     def add_tasks(self):
         # Enqueuing tasks.
-        for as_set_id, as_set in self.builder.as_sets.items():
+        for as_set_id, as_set in iteritems(self.builder.as_sets):
             used_by = ", ".join(as_set.used_by)
             self.tasks_q.put((as_set, used_by, as_set.name))
 

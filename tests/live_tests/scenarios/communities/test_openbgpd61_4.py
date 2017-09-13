@@ -16,8 +16,8 @@
 import os
 import unittest
 
-from base import BGPCommunitiesScenarioOpenBGPD61
-from data4 import BGPCommunitiesScenario_Data4
+from .base import BGPCommunitiesScenarioOpenBGPD61
+from .data4 import BGPCommunitiesScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD61Instance
 

@@ -16,10 +16,10 @@
 import os
 import unittest
 
-from base import PathHidingScenario_MitigationOn, \
+from .base import PathHidingScenario_MitigationOn, \
                  PathHidingScenario_MitigationOff, \
                  PathHidingScenarioOpenBGPD61
-from data4 import PathHidingScenario_Data4
+from .data4 import PathHidingScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD61Instance
 

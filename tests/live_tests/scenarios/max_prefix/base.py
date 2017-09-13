@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import six
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
@@ -167,7 +168,7 @@ class MaxPrefixScenarioOpenBGPD(LiveScenario_TagRejectPolicy, MaxPrefixScenario)
     def test_020_sessions_down(self):
         """{}: sessions are down"""
         for inst in (self.AS1, self.AS2, self.AS3):
-            with self.assertRaisesRegexp(
+            with six.assertRaisesRegex(self,
                 AssertionError, "is not up"
             ):
                 self.session_is_up(self.rs, inst)

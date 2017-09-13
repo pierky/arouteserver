@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import six
+
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, \
                                                       BIRDInstanceIPv6
@@ -268,7 +270,7 @@ class SkeletonScenario(LiveScenario):
                            other_inst=self.AS2, as_path="2",
                            filtered=True)
         # AS1 should not receive the bogon prefix from the route server
-        with self.assertRaisesRegexp(AssertionError, "Routes not found"):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found"):
             self.receive_route(self.AS1, self.DATA["AS2_bogon1"])
 
     def test_030_custom_test(self):
