@@ -115,7 +115,7 @@ class PeeringDBNet(PeeringDBInfo):
 
         # Removing things like "<registry>::" and "<registry>: ".
         pattern = re.compile("^(?:RIPE|APNIC|AFRINIC|ARIN|NTTCOM|"
-                             "ALTDB|BBOI|BELL|GT|JPIRR|LEVEL3|RADB|"
+                             "ALTDB|BBOI|BELL|JPIRR|LEVEL3|RADB|"
                              "RGNET|SAVVIS|TC):[:\s]", flags=re.IGNORECASE)
         v, number_of_subs_made = pattern.subn("", v)
         if number_of_subs_made > 0:
