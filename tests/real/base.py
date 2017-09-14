@@ -120,6 +120,9 @@ class TestRealConfigs(ARouteServerTestCase):
         if self.SKIP_LOAD_NO_RESOURCES:
             self.skipTest("Lack of resources")
 
+        if self.REMOTE_IP_NEEDED and "LOCAL_ONLY" in os.environ:
+            self.skipTest("Remote IP needed, but LOCAL_ONLY is set")
+
         remote_ip = os.environ.get("REMOTE_IP", None)
         if remote_ip:
             remote_ip = remote_ip.strip()

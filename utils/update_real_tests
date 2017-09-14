@@ -322,18 +322,22 @@ if [[ `echo "$THESE_TESTS_ONLY" | grep -P "\bbuild\b"` ]]; then
 			build "$ixp_id" "$daemon_id"
 		done
 	done
-fi
 
-echo "Copying configs to archive directory..."
-archive_dir="var/real_tests/configs/`date +%Y%m%d_%H%M%S`"
-mkdir -p $archive_dir
-cp $TESTS_DIR/var/configs/* $archive_dir/
+	echo "Copying configs to archive directory..."
+	archive_dir="var/real_tests/configs/`date +%Y%m%d_%H%M%S`"
+	mkdir -p $archive_dir
+	cp $TESTS_DIR/var/configs/* $archive_dir/
+fi
 
 if [[ `echo "$THESE_TESTS_ONLY" | grep -P "\bload\b"` ]]; then
 	for daemon_id in $THESE_DAEMONS_ONLY; do
 		REMOTE_IP=""
 		if [ "$daemon_id" == "openbgpd60" ]; then
-			vultr_create
+			if [ -z "$LOCAL_ONLY" ]; then
+				vultr_create
+			else
+				echo "Skipping creation of Vultr server because LOCAL_ONLY is set"
+			fi
 		fi
 		for ixp_id in $THESE_IXP_IDS_ONLY; do
 			echo "Loading configs for ${ixp_id}, ${daemon_id}... "
