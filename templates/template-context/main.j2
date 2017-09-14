@@ -20,7 +20,7 @@ asns
 
 irrdb_info
 -------
-{{ irrdb_info|parse_irrdb_info|to_yaml }}
+{{ irrdb_info|parse_irrdb_info|sort(attribute="id")|to_yaml }}
 
 roas
 ----
