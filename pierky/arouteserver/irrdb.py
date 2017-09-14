@@ -185,8 +185,7 @@ class RSet(IRRDBInfo):
         res = {
             "prefix": prefix.ip,
             "length": prefix.prefixlen,
-            "exact": raw["exact"] if "exact" in raw else False,
-            "comment": self.descr
+            "exact": raw["exact"] if "exact" in raw else False
         }
         if res["exact"]:
             res["ge"] = None

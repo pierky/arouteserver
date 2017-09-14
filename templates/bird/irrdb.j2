@@ -5,7 +5,7 @@
 
 {% for as_set_bundle_id in irrdb_info|sort %}
 {% set as_set_bundle = irrdb_info[as_set_bundle_id] %}
-# {{ as_set_bundle.descr }}, ID {{ as_set_bundle.id }}
+# {{ as_set_bundle.descr }}, used_by {{ as_set_bundle.used_by|join(", ") }}
 {% if as_set_bundle.asns|length == 0 %}
 # no origin ASNs found for {{ as_set_bundle.name }}
 {% else %}

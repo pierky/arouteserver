@@ -711,68 +711,40 @@ asns:
 irrdb_info
 -------
 - asns:
-  - 10745
-  descr: AS10745
-  id: a47487d3c1df7a14133a9cff3612f3af305e57bc54f1f212d6f8fb2da1da11949dea574d2c972b103143a62afb13ce6c93f8f89d3b0102b7113b54f8e1c8b341
-  name: AS10745
-  prefixes:
-  - comment: AS10745
-    exact: true
-    ge: null
-    le: null
-    length: 24
-    max_length: 32
-    prefix: 192.136.136.0
-  - comment: AS10745
-    exact: true
-    ge: null
-    le: null
-    length: 24
-    max_length: 32
-    prefix: 192.149.252.0
-  - comment: AS10745
-    exact: true
-    ge: null
-    le: null
-    length: 24
-    max_length: 32
-    prefix: 199.43.0.0
-  used_by: client AS10745_1
-- asns:
   - 3333
   descr: AS3333
   id: 454ed823addc298946e5f2ad415842d8a0a89403cf8ad05e584f94caf52ef799ca506a90f5386c1335f271047089bc0612014069cbb3d9a7851d595a0374c5c3
   name: AS3333
   prefixes:
-  - comment: AS3333
+  - comment: null
     exact: true
     ge: null
     le: null
     length: 21
     max_length: 32
     prefix: 193.0.0.0
-  - comment: AS3333
+  - comment: null
     exact: true
     ge: null
     le: null
     length: 23
     max_length: 32
     prefix: 193.0.10.0
-  - comment: AS3333
+  - comment: null
     exact: true
     ge: null
     le: null
     length: 23
     max_length: 32
     prefix: 193.0.12.0
-  - comment: AS3333
+  - comment: null
     exact: true
     ge: null
     le: null
     length: 23
     max_length: 32
     prefix: 193.0.18.0
-  - comment: AS3333
+  - comment: null
     exact: false
     ge: 23
     le: 23
@@ -780,6 +752,34 @@ irrdb_info
     max_length: 32
     prefix: 193.0.20.0
   used_by: client AS3333_1
+- asns:
+  - 10745
+  descr: AS10745
+  id: a47487d3c1df7a14133a9cff3612f3af305e57bc54f1f212d6f8fb2da1da11949dea574d2c972b103143a62afb13ce6c93f8f89d3b0102b7113b54f8e1c8b341
+  name: AS10745
+  prefixes:
+  - comment: null
+    exact: true
+    ge: null
+    le: null
+    length: 24
+    max_length: 32
+    prefix: 192.136.136.0
+  - comment: null
+    exact: true
+    ge: null
+    le: null
+    length: 24
+    max_length: 32
+    prefix: 192.149.252.0
+  - comment: null
+    exact: true
+    ge: null
+    le: null
+    length: 24
+    max_length: 32
+    prefix: 199.43.0.0
+  used_by: client AS10745_1
 
 
 roas

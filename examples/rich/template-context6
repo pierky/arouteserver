@@ -715,21 +715,21 @@ irrdb_info
   id: a47487d3c1df7a14133a9cff3612f3af305e57bc54f1f212d6f8fb2da1da11949dea574d2c972b103143a62afb13ce6c93f8f89d3b0102b7113b54f8e1c8b341
   name: AS10745
   prefixes:
-  - comment: AS10745
+  - comment: null
     exact: true
     ge: null
     le: null
     length: 48
     max_length: 128
     prefix: '2001:500:4::'
-  - comment: AS10745
+  - comment: null
     exact: true
     ge: null
     le: null
     length: 48
     max_length: 128
     prefix: '2001:500:30::'
-  - comment: AS10745
+  - comment: null
     exact: true
     ge: null
     le: null
