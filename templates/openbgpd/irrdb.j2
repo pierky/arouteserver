@@ -4,21 +4,21 @@
 
 {{ "pre-irrdb"|include_local_file -}}
 
-{% for as_set_id in as_sets %}
-{%	set as_set = as_sets[as_set_id] %}
-# {{ as_set.name }}
-{%	if as_set.asns|length == 0 %}
-# no origin ASNs found for {{ as_set.name }}
+{% for as_set_bundle_id in irrdb_info|sort %}
+{%	set as_set_bundle = irrdb_info[as_set_bundle_id] %}
+# {{ as_set_bundle.descr }}, ID {{ as_set_bundle.id }}
+{%	if as_set_bundle.asns|length == 0 %}
+# no origin ASNs found for {{ as_set_bundle.name }}
 {%	else %}
-{%		for asns in as_set.asns|batch(50) %}
-AS_SET_{{ as_set.id }}_asns{{ loop.index }}="{ {% for asn in asns %}{{ asn }}{% if not loop.last %}, {% endif %}{% endfor %} }"
+{%		for asns in as_set_bundle.asns|sort|batch(50) %}
+AS_SET_{{ as_set_bundle.name }}_asns{{ loop.index }}="{ {% for asn in asns %}{{ asn }}{% if not loop.last %}, {% endif %}{% endfor %} }"
 {%		endfor %}
 {%	endif %}
-{%	if as_set.prefixes|length == 0 %}
-# no prefixes found for {{ as_set.name }}
+{%	if as_set_bundle.prefixes|length == 0 %}
+# no prefixes found for {{ as_set_bundle.name }}
 {%	else %}
-{%              for prefixes in as_set.prefixes|batch(50) %}
-AS_SET_{{ as_set.id }}_prefixes{{ loop.index }}="{ {{ write_prefix_list(prefixes) }} }"
+{%              for prefixes in as_set_bundle.prefixes|batch(50) %}
+AS_SET_{{ as_set_bundle.name }}_prefixes{{ loop.index }}="{ {{ write_prefix_list(prefixes) }} }"
 {%		endfor %}
 {%	endif %}
 

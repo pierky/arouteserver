@@ -20,17 +20,17 @@ reject {{ err_msg }};
 # ---------------------------------------------------------
 # MEMBERS
 
-{% for client in clients if client.ip is current_ipver %}
+{% for client in clients|sort(attribute="id") if client.ip is current_ipver %}
 
 # AS-SET for {{ client.id }}
 function origin_as_is_in_{{ client.id }}_as_set() {
-{% if client.cfg.filtering.irrdb.as_set_ids %}
-{%	for as_set_id in client.cfg.filtering.irrdb.as_set_ids %}
-{%		if as_sets[as_set_id].asns %}
-	if bgp_path.last ~ AS_SET_{{ as_set_id }}_asns then
+{% if client.cfg.filtering.irrdb.as_set_bundle_ids %}
+{%	for as_set_bundle_id in client.cfg.filtering.irrdb.as_set_bundle_ids|sort %}
+{%		if irrdb_info[as_set_bundle_id].asns %}
+	if bgp_path.last ~ AS_SET_{{ irrdb_info[as_set_bundle_id].name }}_asns then
 		return true;
 {%		else %}
-	# AS-SET {{ as_set_id }} referenced but empty.
+	# AS-SET {{ irrdb_info[as_set_bundle_id].name }} referenced but empty.
 {%		endif %}
 {%	endfor %}
 {% endif %}
@@ -39,13 +39,13 @@ function origin_as_is_in_{{ client.id }}_as_set() {
 
 # R-SET for {{ client.id }}
 function prefix_is_in_{{ client.id }}_as_set() {
-{% if client.cfg.filtering.irrdb.as_set_ids %}
-{%	for as_set_id in client.cfg.filtering.irrdb.as_set_ids %}
-{%		if as_sets[as_set_id].prefixes %}
-	if net ~ AS_SET_{{ as_set_id }}_prefixes then
+{% if client.cfg.filtering.irrdb.as_set_bundle_ids %}
+{%	for as_set_bundle_id in client.cfg.filtering.irrdb.as_set_bundle_ids|sort %}
+{%		if irrdb_info[as_set_bundle_id].prefixes %}
+	if net ~ AS_SET_{{ irrdb_info[as_set_bundle_id].name }}_prefixes then
 		return true;
 {%		else %}
-	# AS-SET {{ as_set_id }} referenced but empty.
+	# AS-SET {{ irrdb_info[as_set_bundle_id].name }} referenced but empty.
 {%		endif %}
 {%	endfor %}
 {% endif %}
@@ -58,12 +58,12 @@ function next_hop_is_valid_for_{{ client.id }}()
 	{% if client.cfg.filtering.next_hop.policy == "strict" %}
 	if bgp_next_hop = {{ client.ip }} then return true;
 	{% elif client.cfg.filtering.next_hop.policy == "authorized_addresses" %}
-	{%	for addr in client.cfg.filtering.next_hop.authorized_addresses_list if addr is current_ipver %}
+	{%	for addr in client.cfg.filtering.next_hop.authorized_addresses_list|sort if addr is current_ipver %}
 	if bgp_next_hop = {{ addr }} then return true;
 	{%	endfor %}
 	{% else %}
 	{% for asn, same_as_clients in clients|groupby("asn") if asn == client.asn %}
-	{% for same_as_client in same_as_clients if same_as_client.ip is current_ipver %}
+	{% for same_as_client in same_as_clients|sort(attribute="ip") if same_as_client.ip is current_ipver %}
 	if bgp_next_hop = {{ same_as_client.ip }} then return true;	# {{ same_as_client.id }}
 	{% endfor %}
 	{% endfor %}
@@ -95,7 +95,7 @@ filter receive_from_{{ client.id }} {
 
 	{% if client.cfg.attach_custom_communities %}
 	# Attach custom BGP communities
-	{% for name in client.cfg.attach_custom_communities %}
+	{% for name in client.cfg.attach_custom_communities|sort %}
 	# {{ name }}
 	{{ add_communities(cfg.custom_communities[name]) }}
 	{% endfor %}

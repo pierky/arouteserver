@@ -24,7 +24,7 @@ import textwrap
 import yaml
 
 from ..ask import ask, ask_yes_no
-from ..irrdb import IRRDBTools
+from ..irrdb import IRRDBInfo
 from ..cached_objects import CachedObject
 from ..resources import get_config_dir, get_templates_dir
 from ..errors import ConfigError, ARouteServerError, MissingFileError
@@ -56,8 +56,8 @@ class ConfigParserProgram(object):
         "cache_expiry": CachedObject.DEFAULT_EXPIRY,
 
         "bgpq3_path": "bgpq3",
-        "bgpq3_host": IRRDBTools.BGPQ3_DEFAULT_HOST,
-        "bgpq3_sources": IRRDBTools.BGPQ3_DEFAULT_SOURCES,
+        "bgpq3_host": IRRDBInfo.BGPQ3_DEFAULT_HOST,
+        "bgpq3_sources": IRRDBInfo.BGPQ3_DEFAULT_SOURCES,
 
         "rtt_getter_path": "",
 

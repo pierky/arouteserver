@@ -40,6 +40,7 @@ class PeeringDBConfigEnricher_MaxPrefix_WorkerThread(BaseConfigEnricherThread):
             net = PeeringDBNet(asn,
                                cache_dir=self.cache_dir,
                                cache_expiry=self.cache_expiry)
+            net.load_data()
 
             return net.info_prefixes4 or self.general_limits["ipv4"], \
                     net.info_prefixes6 or self.general_limits["ipv6"]

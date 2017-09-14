@@ -104,8 +104,6 @@ class QueueLengthMonitor(threading.Thread):
                 logging.info("Enricher '{}', {} tasks left".format(
                     self.descr, self.tasks_q.qsize()
                 ))
-                if tasks_left <= self.threads:
-                    return
 
 class BaseConfigEnricher(object):
 

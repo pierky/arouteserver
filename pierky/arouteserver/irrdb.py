@@ -13,9 +13,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import hashlib
 import json
 import os
 import logging
+import re
 import subprocess
 import time
 
@@ -25,36 +27,71 @@ from .errors import IRRDBToolsError
 from .ipaddresses import IPNetwork
 
 
-class IRRDBTools(CachedObject):
+class AS_SET_Bundle(object):
+
+    def __init__(self, object_names):
+        assert isinstance(object_names, list)
+
+        self.object_names = [n.upper() for n in sorted(set(object_names))]
+
+        # id, internal unique identifier.
+        buf = "_".join(self.object_names)
+        hasher = hashlib.sha512()
+        hasher.update(buf.encode("utf-8"))
+        self.id = hasher.hexdigest()
+
+        # descr, textual description of the bundle.
+        # Do not use it in templates unless within comments.
+        self.descr = ", ".join(self.object_names[:3])
+        if len(self.object_names) > 3:
+            self.descr += " and {} more".format(len(self.object_names) - 3)
+
+        # name, brief textual representation of the bundle.
+        # Only [a-zA-Z0-9_] characters.
+        # Can be used in templates.
+        if len(self.object_names) == 1:
+            self.name = self.object_names[0]
+        elif len(self.object_names) <= 3:
+            self.name = "_".join(self.object_names)
+        else:
+            self.name = "{name}_and_{more}_more_{short_hash}".format(
+                name=self.object_names[0],
+                more=len(self.object_names) - 1,
+                short_hash=self.id[:7]
+            )
+        self.name = re.sub("[^a-zA-Z0-9_]", "_", self.name)
+
+class IRRDBInfo(CachedObject, AS_SET_Bundle):
 
     BGPQ3_DEFAULT_HOST = "rr.ntt.net"
     BGPQ3_DEFAULT_SOURCES = ("RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,"
                              "BBOI,BELL,JPIRR,LEVEL3,RADB,RGNET,"
                              "SAVVIS,TC")
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, object_names, *args, **kwargs):
+        assert isinstance(object_names, list)
+
         CachedObject.__init__(self, *args, **kwargs)
         self.bgpq3_path = kwargs.get("bgpq3_path")
         self.bgpq3_host = kwargs.get("bgpq3_host", self.BGPQ3_DEFAULT_HOST)
         self.bgpq3_sources = kwargs.get("bgpq3_sources",
                                         self.BGPQ3_DEFAULT_SOURCES)
 
-class ASSet(IRRDBTools):
+        AS_SET_Bundle.__init__(self, object_names)
 
-    def __init__(self, object_name, **kwargs):
-        IRRDBTools.__init__(self, **kwargs)
-        self.object_name = object_name
+class ASSet(IRRDBInfo):
 
+    def load_data(self):
         logging.debug("Getting origin ASNs for "
-                      "{} from IRRdb".format(self.object_name))
+                      "{} from IRRdb".format(self.descr))
 
-        self.load_data()
+        IRRDBInfo.load_data(self)
 
         # list of int
         self.asns = self.raw_data
 
     def _get_object_filename(self):
-        return "{}-as_set.json".format(self.object_name)
+        return "{}-as_set.json".format(self.name)
 
     def _get_data(self):
         cmd = [self.bgpq3_path]
@@ -64,14 +101,14 @@ class ASSet(IRRDBTools):
         cmd += ["-j"]
         cmd += ["-f", "1"]
         cmd += ["-l", "asn_list"]
-        cmd += [self.object_name]
+        cmd += self.object_names
 
         try:
             out = subprocess.check_output(cmd)
         except Exception as e:
             raise IRRDBToolsError(
                 "Can't get list of authorized ASNs for {}: {}".format(
-                    self.object_name, str(e)
+                    self.descr, str(e)
                 )
             )
 
@@ -87,25 +124,26 @@ class ASSet(IRRDBTools):
 
         return data["asn_list"]
 
-class RSet(IRRDBTools):
+class RSet(IRRDBInfo):
 
-    def __init__(self, object_name, ip_ver, allow_longer_prefixes, **kwargs):
-        IRRDBTools.__init__(self, **kwargs)
-        self.object_name = object_name
+    def __init__(self, object_names, ip_ver, allow_longer_prefixes, **kwargs):
+        IRRDBInfo.__init__(self, object_names, **kwargs)
+
         assert ip_ver in (4, 6)
         self.ip_ver = ip_ver
         self.allow_longer_prefixes = allow_longer_prefixes
 
+    def load_data(self):
         logging.debug("Getting prefixes for {} IPv{} "
-                      "from IRRdb".format(self.object_name, self.ip_ver))
+                      "from IRRdb".format(self.descr, self.ip_ver))
 
-        self.load_data()
+        IRRDBInfo.load_data(self)
 
         # list of dict as returned by ValidatorPrefixListEntry
         self.prefixes = self.raw_data
 
     def _get_object_filename(self):
-        return "{}-r_set-ipv{}.json".format(self.object_name, self.ip_ver)
+        return "{}-r_set-ipv{}.json".format(self.name, self.ip_ver)
 
     def _get_data(self):
         cmd = [self.bgpq3_path]
@@ -119,14 +157,14 @@ class RSet(IRRDBTools):
         if self.allow_longer_prefixes:
             cmd += ["-R"]
             cmd += ["32"] if self.ip_ver == 4 else ["128"]
-        cmd += [self.object_name]
+        cmd += self.object_names
 
         try:
             out = subprocess.check_output(cmd)
         except Exception as e:
             raise IRRDBToolsError(
                 "Can't get authorized prefix list for {} IPv{}: {}".format(
-                    self.object_name, self.ip_ver, str(e)
+                    self.descr, self.ip_ver, str(e)
                 )
             )
 
@@ -148,7 +186,7 @@ class RSet(IRRDBTools):
             "prefix": prefix.ip,
             "length": prefix.prefixlen,
             "exact": raw["exact"] if "exact" in raw else False,
-            "comment": self.object_name
+            "comment": self.descr
         }
         if res["exact"]:
             res["ge"] = None

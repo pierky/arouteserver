@@ -122,7 +122,7 @@
 {% endmacro %}
 
 {% macro list_prepending_comms(comms, asn, rtt_thresholds) %}
-{% for comm_name in comms %}
+{% for comm_name in comms|sort %}
 {%	if comm_name.startswith("prepend_") %}
 {%		set comm = comms[comm_name] %}
 {%		if comm|community_is_set %}

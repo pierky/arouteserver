@@ -3,15 +3,15 @@
 # ---------------------------------------------------------
 # IRRDB
 
-{% for as_set_id in as_sets %}
-{% set as_set = as_sets[as_set_id] %}
-# {{ as_set.name }}
-{% if as_set.asns|length == 0 %}
-# no origin ASNs found for {{ as_set.name }}
+{% for as_set_bundle_id in irrdb_info|sort %}
+{% set as_set_bundle = irrdb_info[as_set_bundle_id] %}
+# {{ as_set_bundle.descr }}, ID {{ as_set_bundle.id }}
+{% if as_set_bundle.asns|length == 0 %}
+# no origin ASNs found for {{ as_set_bundle.name }}
 {% else %}
-define AS_SET_{{ as_set.id }}_asns = [
+define AS_SET_{{ as_set_bundle.name }}_asns = [
 {{ "\t" -}}
-{%	for asn in as_set.asns %}
+{%	for asn in as_set_bundle.asns|sort %}
 {{-		asn -}}
 {%		if not loop.last %}, {% endif %}
 {%		if loop.index % 5 == 0 %}{{ "\n\t" }}{% endif %}
@@ -20,11 +20,11 @@ define AS_SET_{{ as_set.id }}_asns = [
 ];
 {% endif %}
 
-{% if as_set.prefixes|length == 0 %}
-# no prefixes found for {{ as_set.name }}
+{% if as_set_bundle.prefixes|length == 0 %}
+# no prefixes found for {{ as_set_bundle.name }}
 {% else %}
-define AS_SET_{{ as_set.id }}_prefixes = [
-{{ write_prefix_list(as_set.prefixes, True) }}
+define AS_SET_{{ as_set_bundle.name }}_prefixes = [
+{{ write_prefix_list(as_set_bundle.prefixes, True) }}
 ];
 {% endif %}
 

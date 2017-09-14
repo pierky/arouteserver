@@ -38,9 +38,8 @@ from .errors import MissingDirError, MissingFileError, BuilderError, \
                     MissingArgumentError, TemplateRenderingError, \
                     CompatibilityIssuesError, ConfigError
 from .ipaddresses import IPNetwork
-from .irrdb import ASSet, RSet, IRRDBTools
+from .irrdb import ASSet, RSet, IRRDBInfo
 from .cached_objects import CachedObject
-from .peering_db import PeeringDBNet
 
 
 class ConfigBuilder(object):
@@ -121,8 +120,8 @@ class ConfigBuilder(object):
 
     def __init__(self, template_dir=None, template_name=None,
                  cache_dir=None, cache_expiry=CachedObject.DEFAULT_EXPIRY,
-                 bgpq3_path="bgpq3", bgpq3_host=IRRDBTools.BGPQ3_DEFAULT_HOST,
-                 bgpq3_sources=IRRDBTools.BGPQ3_DEFAULT_SOURCES,
+                 bgpq3_path="bgpq3", bgpq3_host=IRRDBInfo.BGPQ3_DEFAULT_HOST,
+                 bgpq3_sources=IRRDBInfo.BGPQ3_DEFAULT_SOURCES,
                  rtt_getter_path=None, threads=4,
                  ip_ver=None, ignore_errors=[], live_tests=False,
                  local_files=[], local_files_dir=None, target_version=None,
@@ -396,7 +395,8 @@ class ConfigBuilder(object):
 
         self.kwargs = kwargs
 
-        self.as_sets = None
+        # { "<as_set_bundle_id>": <AS_SET_Bundle_Proxy>, ... }
+        self.irrdb_info = None
 
         # Validation
 
@@ -529,7 +529,7 @@ class ConfigBuilder(object):
         self.data["bogons"] = self.cfg_bogons
         self.data["clients"] = self.cfg_clients
         self.data["asns"] = self.cfg_asns
-        self.data["as_sets"] = self.as_sets
+        self.data["irrdb_info"] = self.irrdb_info
         self.data["roas"] = self.cfg_roas
         self.data["live_tests"] = self.live_tests
         self.data["rtt_based_functions_are_used"] = \
@@ -933,4 +933,12 @@ class TemplateContextDumper(ConfigBuilder):
         def to_yaml(obj):
             return yaml.safe_dump(obj, default_flow_style=False)
 
+        def parse_irrdb_info(irrdb_info):
+            lst = []
+            for bundle_id in irrdb_info:
+                bundle = irrdb_info[bundle_id]
+                lst.append(bundle.to_dict())
+            return lst
+
         env.filters["to_yaml"] = to_yaml
+        env.filters["parse_irrdb_info"] = parse_irrdb_info

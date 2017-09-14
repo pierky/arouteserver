@@ -12,6 +12,9 @@ next version
 
   Related: `PR #8 on GitHub <https://github.com/pierky/arouteserver/pull/8>`_.
 
+- Improvement: multiple AS-SETs used for the same client are now grouped together and queried at one time.
+  This allows to leverage bgpq3's ability and speed to aggregate results in order to have smaller configuration files.
+
 v0.10.0
 -------
 

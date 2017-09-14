@@ -38,17 +38,20 @@ class TestPeeringDBInfo(unittest.TestCase):
     def test_net1(self):
         """PeeringDB network: get data"""
         net = PeeringDBNet(1)
+        net.load_data()
         self.assertEqual(net.info_prefixes4, 20)
         self.assertEqual(net.info_prefixes6, 10)
 
     def test_no_data(self):
         """PeeringDB network: missing data"""
+        net = PeeringDBNet(2)
         with self.assertRaises(PeeringDBNoInfoError):
-            net = PeeringDBNet(2)
+            net.load_data()
 
     def test_parse_as_sets(self):
         """PeeringDB: AS-SETs parsing"""
         net = PeeringDBNet(1)
+        net.load_data()
         self.assertEqual(net.parse_as_sets("AS-1"), ["AS-1"])
         self.assertEqual(net.parse_as_sets("AS-1, AS-2, AA:BB"), ["AS-1", "AS-2"])
         self.assertEqual(net.parse_as_sets("AS-1 / AS-2\nAS-3"), ["AS-1", "AS-2", "AS-3"])

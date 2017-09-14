@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function usage() {
-	echo "utils/test_config [bird4 | bird6 | openbgpd] <config_file_path>"
+	echo "utils/test_config [bird4 | bird6 | openbgpd60 | openbgpd61] <config_file_path>"
 }
 
 if [ ! -e "setup.py" ]; then
@@ -36,9 +36,9 @@ elif [ "$1" == "bird6" ]; then
 		pierky/bird:1.6.3 \
 		bird6 -c /etc/bird/bird.conf -d
 
-elif [ "$1" == "openbgpd" ]; then
+elif [ "$1" == "openbgpd60" -o "$1" == "openbgpd61" ]; then
 	virsh \
-		start arouteserver_openbgpd60
+		start arouteserver_$1
 	echo "When started..."
 	echo "scp -i ~/.ssh/arouteserver -o StrictHostKeyChecking=no $2 root@192.0.2.2:/etc/bgpd.conf"
 	echo "ssh -i ~/.ssh/arouteserver -o StrictHostKeyChecking=no root@192.0.2.2"

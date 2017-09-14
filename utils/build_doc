@@ -37,6 +37,15 @@ function RenderExample() {
 	elif [ "$COMMAND" == "html" ]; then
 		$CMD -o examples/$DST/description.html
 		cp examples/$DST/description.html $DOCS_DIR/_static/examples_$DST.html
+	elif [ "$COMMAND" == "template-context" ]; then
+		if [ "$#" -gt 0 ]; then
+			IP_VER="$1" ; shift
+			IP_VER_OPT="--ip-ver $IP_VER"
+		else
+			IP_VER=""
+			IP_VER_OPT=""
+		fi
+		$CMD $IP_VER_OPT -o examples/$DST/template-context$IP_VER
 	else
 		echo "Command unknown: $COMMAND"
 	fi
@@ -58,26 +67,34 @@ function ClientsFromEuroIX() {
 	./scripts/arouteserver bird --cfg $CFG_FILE --test-only --general "config.d/general.yml" --clients $OUTPUT_FILE --bogons "config.d/bogons.yml" --ip-ver 6
 }
 
-echo "Building example: default, IPv4"
+echo "Building example: default, BIRD, IPv4"
 RenderExample "default" "bird" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml" 4
-RenderExample "default" "openbgpd" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml"
+RenderExample "default" "template-context" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml" 4
 
-echo "Building example: default, IPv6"
+echo "Building example: default, BIRD, IPv6"
 RenderExample "default" "bird" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml" 6
-RenderExample "default" "openbgpd" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml"
+RenderExample "default" "template-context" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml" 6
 
-echo "Building example HTML: default"
+echo "Building example: default, OpenBGPD, IPv4 + IPv6"
+RenderExample "default" "openbgpd" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml"
+RenderExample "default" "template-context" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml"
+
+echo "Building example: default, HTML"
 RenderExample "default" "html" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml"
 
-echo "Building example: rich, IPv4"
+echo "Building example: rich, BIRD, IPv4"
 RenderExample "rich" "bird" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml" 4 --use-local-files client
-RenderExample "rich" "openbgpd" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml"
+RenderExample "rich" "template-context" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml" 4
 
-echo "Building example: rich, IPv6"
+echo "Building example: rich, BIRD, IPv6"
 RenderExample "rich" "bird" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml" 6
-RenderExample "rich" "openbgpd" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml"
+RenderExample "rich" "template-context" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml" 6
 
-echo "Building example HTML: rich"
+echo "Building example: rich, OpenBGPD, IPv4 + IPv6"
+RenderExample "rich" "openbgpd" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml"
+RenderExample "rich" "template-context" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml"
+
+echo "Building example: rich, HTML"
 RenderExample "rich" "html" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml"
 
 echo "Building example: BIRD hooks"

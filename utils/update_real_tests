@@ -301,16 +301,18 @@ if [ $JOIN_ONLY -eq 1 ]; then
 	exit
 fi
 
-echo "Verifying no Docker containers are running..."
-if [ "`docker ps | wc -l`" != "1" ]; then
-	echo "One or more Docker containers are already running"
-	exit
-fi
+if [[ `echo "$THESE_TESTS_ONLY" | grep -P "\bload\b"` ]]; then
+	echo "Verifying no Docker containers are running..."
+	if [ "`docker ps | wc -l`" != "1" ]; then
+		echo "One or more Docker containers are already running"
+		exit
+	fi
 
-echo "Verifying no VMs are running..."
-if [ "`virsh list --name --state-running | wc -w`" != "0" ]; then
-	echo "One or more VMs are already running"
-	exit
+	echo "Verifying no VMs are running..."
+	if [ "`virsh list --name --state-running | wc -w`" != "0" ]; then
+		echo "One or more VMs are already running"
+		exit
+	fi
 fi
 
 if [[ `echo "$THESE_TESTS_ONLY" | grep -P "\bbuild\b"` ]]; then

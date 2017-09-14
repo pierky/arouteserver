@@ -75,7 +75,7 @@ int set transit_free_asns;
 {
 {% if cfg.filtering.transit_free.asns %}
 	transit_free_asns = [
-		{% for asn in cfg.filtering.transit_free.asns %}
+		{% for asn in cfg.filtering.transit_free.asns|sort %}
 		{{ asn }}{% if not loop.last %}, {% endif %}{% if loop.index % 5 == 0 %}{{ "\n" }}{% endif %}
 		{% endfor %}
 
@@ -94,7 +94,7 @@ int set transit_free_asns;
 # If the RTT is not available it returns 0.
 function get_peer_rtt(ip client_ip) {
 	case client_ip {
-{%	for client in clients if client.ip is current_ipver %}
+{%	for client in clients|sort(attribute="ip") if client.ip is current_ipver %}
 {%		if "rtt" in client and client["rtt"]|get_normalized_rtt %}
 		{{ client["ip"] }} : return {{ client["rtt"]|get_normalized_rtt }}; # {{ client["rtt"] }}
 {%		endif %}
@@ -109,19 +109,19 @@ function get_peer_rtt(ip client_ip) {
 # for signaling purpose toward its clients. (RFC7454, Section 11)
 # It must be applied on routes entering the route server.
 function scrub_communities_in() {
-{% for name in cfg.communities if cfg.communities[name].type == "outbound" %}
+{% for name in cfg.communities|sort if cfg.communities[name].type == "outbound" %}
 {% if cfg.communities[name]|community_is_set %}
 	# {{ name }}
 {{ del_communities(cfg.communities[name]) }}
 {% endif %}
 {% endfor %}
-{% for name in cfg.communities if cfg.communities[name].type == "internal" %}
+{% for name in cfg.communities|sort if cfg.communities[name].type == "internal" %}
 {% if cfg.communities[name]|community_is_set %}
 	# {{ name }}
 {{ del_communities(cfg.communities[name], replace_dyn_val="*") }}
 {% endif %}
 {% endfor %}
-{% for name in cfg.custom_communities %}
+{% for name in cfg.custom_communities|sort %}
 {% if cfg.custom_communities[name]|community_is_set %}
 	# {{ name }}
 {{ del_communities(cfg.custom_communities[name]) }}
@@ -136,13 +136,13 @@ function scrub_communities_in() {
 # the route server to perform some actions.
 # It must be applied on routes leaving the route server.
 function scrub_communities_out() {
-{% for name in cfg.communities if cfg.communities[name].type == "inbound" %}
+{% for name in cfg.communities|sort if cfg.communities[name].type == "inbound" %}
 {% if cfg.communities[name]|community_is_set %}
 	# {{ name }}
 {{ del_communities(cfg.communities[name], cfg.communities[name].peer_as, replace_dyn_val="*") }}
 {% endif %}
 {% endfor %}
-{% for name in cfg.communities if cfg.communities[name].type == "internal" %}
+{% for name in cfg.communities|sort if cfg.communities[name].type == "internal" %}
 {% if cfg.communities[name]|community_is_set %}
 	# {{ name }}
 {{ del_communities(cfg.communities[name], replace_dyn_val="*") }}

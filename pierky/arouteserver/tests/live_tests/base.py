@@ -357,24 +357,30 @@ class LiveScenario(ARouteServerTestCase):
 
         def _mock_ASSet(self):
             self.prepare()
-            for as_set_id in self.builder.as_sets:
-                as_set = self.builder.as_sets[as_set_id]
-                as_set_name = as_set.name
-                if as_set_name in cls.AS_SET:
-                    as_set.save("asns", cls.AS_SET[as_set_name])
+            for as_set_bundle_id in self.builder.irrdb_info:
+                bundle = self.builder.irrdb_info[as_set_bundle_id]
+                asns = []
+                for as_set_name in bundle.object_names:
+                    if as_set_name not in cls.AS_SET:
+                        continue
+                    asns.extend(cls.AS_SET[as_set_name])
+                if asns:
+                    bundle.save("asns", asns)
 
         def _mock_RSet(self):
             self.prepare()
             allow_longer_prefixes = self.builder.cfg_general["filtering"]["irrdb"]["allow_longer_prefixes"]
-            for as_set_id in self.builder.as_sets:
-                as_set = self.builder.as_sets[as_set_id]
-                as_set_name = as_set.name
-                if as_set_name in cls.R_SET:
-                    lst = []
+            for as_set_bundle_id in self.builder.irrdb_info:
+                bundle = self.builder.irrdb_info[as_set_bundle_id]
+                prefixes = []
+                for as_set_name in bundle.object_names:
+                    if as_set_name not in cls.R_SET:
+                        continue
                     for prefix_name in cls.R_SET[as_set_name]:
                         add_prefix_to_list(prefix_name, allow_longer_prefixes,
-                                           lst)
-                    as_set.save("prefixes", lst)
+                                           prefixes)
+                if prefixes:
+                    bundle.save("prefixes", prefixes)
 
         mock_ASSet = mock.patch.object(
             IRRDBConfigEnricher_OriginASNs, "enrich", autospec=True
