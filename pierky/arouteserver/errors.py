@@ -28,6 +28,12 @@ class ARouteServerError(Exception):
 class ConfigError(ARouteServerError):
     pass
 
+class ProgramConfigError(ARouteServerError):
+
+    def __init__(self, msg):
+        ARouteServerError.__init__(self, msg)
+        self._extra_info = "Please check the program's configuration."
+
 class MissingArgumentError(ARouteServerError):
 
     def __init__(self, arg):

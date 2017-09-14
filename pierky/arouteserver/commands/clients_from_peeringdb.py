@@ -107,7 +107,7 @@ class ClientsFromPeeringDBCommand(ARouteServerCommand):
 
         data = clients_from_peeringdb(
             netixlanid,
-            program_config.get("cache_dir")
+            program_config.get_dir("cache_dir")
         )
         yaml.safe_dump(data, self.args.output_file, default_flow_style=False)
 
