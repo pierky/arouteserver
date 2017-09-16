@@ -601,7 +601,7 @@ class ConfigParserProgram(object):
 
             if not res:
                 self.v("")
-                self.v("Setup aborted")
+                self.v("Setup aborted: no destination directory given")
                 return False
 
         dest_dir = dest_dir.strip()
@@ -626,7 +626,7 @@ class ConfigParserProgram(object):
 
             if not res or yes_or_no != "yes":
                 self.v("")
-                self.v("Setup aborted")
+                self.v("Setup aborted: destination directory not confirmed")
                 return False
 
         self.v("Installing configuration files into {}...".format(dest_dir))
@@ -636,7 +636,7 @@ class ConfigParserProgram(object):
 
         if not self.process_dir(distrib_config_dir, dest_dir):
             self.v("")
-            self.v("Setup aborted")
+            self.v("Setup aborted while populating destination directory")
             return False
 
         # Load the new configuration, so that the following .setup_templates()
@@ -645,7 +645,7 @@ class ConfigParserProgram(object):
 
         if not self.setup_templates():
             self.v("")
-            self.v("Setup aborted")
+            self.v("Setup aborted while populating templates directory")
             return False
 
         # Creating cache directory.
