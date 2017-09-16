@@ -7,98 +7,98 @@ ip_ver
 cfg
 ---
 cfg:
-  add_path: false
+  add_path: true
   blackhole_filtering:
     add_noexport: true
     announce_to_client: true
-    policy_ipv4: null
-    policy_ipv6: null
-    rewrite_next_hop_ipv4: null
-    rewrite_next_hop_ipv6: null
+    policy_ipv4: rewrite-next-hop
+    policy_ipv6: rewrite-next-hop
+    rewrite_next_hop_ipv4: 192.0.2.66
+    rewrite_next_hop_ipv6: 2001:db8:1:1::66
   communities:
     add_noadvertise_to_any:
-      ext: null
-      lrg: null
+      ext: rt:65508:999
+      lrg: 999:65508:999
       peer_as: false
-      std: null
+      std: 65508:999
       type: inbound
     add_noadvertise_to_peer:
-      ext: null
-      lrg: null
+      ext: rt:65510:peer_as
+      lrg: 999:65510:peer_as
       peer_as: true
-      std: null
+      std: 65510:peer_as
       type: inbound
     add_noexport_to_any:
-      ext: null
-      lrg: null
+      ext: rt:65507:999
+      lrg: 999:65507:999
       peer_as: false
-      std: null
+      std: 65507:999
       type: inbound
     add_noexport_to_peer:
-      ext: null
-      lrg: null
+      ext: rt:65509:peer_as
+      lrg: 999:65509:peer_as
       peer_as: true
-      std: null
+      std: 65509:peer_as
       type: inbound
     announce_to_peer:
-      ext: null
-      lrg: null
+      ext: rt:999:peer_as
+      lrg: 999:999:peer_as
       peer_as: true
-      std: null
+      std: 999:peer_as
       type: inbound
     announce_to_peers_with_rtt_higher_than:
-      ext: null
-      lrg: null
+      ext: rt:64514:dyn_val
+      lrg: 999:64514:dyn_val
       peer_as: false
-      std: null
+      std: 64514:dyn_val
       type: inbound
     announce_to_peers_with_rtt_lower_than:
-      ext: null
-      lrg: null
+      ext: rt:64513:dyn_val
+      lrg: 999:64513:dyn_val
       peer_as: false
-      std: null
+      std: 64513:dyn_val
       type: inbound
     blackholing:
       ext: null
-      lrg: null
+      lrg: 999:666:0
       peer_as: false
-      std: null
+      std: '65534:0'
       type: inbound
     do_not_announce_to_any:
-      ext: null
-      lrg: null
+      ext: rt:0:999
+      lrg: 999:0:999
       peer_as: false
-      std: null
+      std: 0:999
       type: inbound
     do_not_announce_to_peer:
-      ext: null
-      lrg: null
+      ext: rt:0:peer_as
+      lrg: 999:0:peer_as
       peer_as: true
-      std: null
+      std: 0:peer_as
       type: inbound
     do_not_announce_to_peers_with_rtt_higher_than:
-      ext: null
-      lrg: null
+      ext: rt:64512:dyn_val
+      lrg: 999:64512:dyn_val
       peer_as: false
-      std: null
+      std: 64512:dyn_val
       type: inbound
     do_not_announce_to_peers_with_rtt_lower_than:
-      ext: null
-      lrg: null
+      ext: rt:64511:dyn_val
+      lrg: 999:64511:dyn_val
       peer_as: false
-      std: null
+      std: 64511:dyn_val
       type: inbound
     origin_not_present_in_as_set:
       ext: null
-      lrg: null
+      lrg: 999:65530:0
       peer_as: false
-      std: null
+      std: '65530:0'
       type: outbound
     origin_present_in_as_set:
       ext: null
-      lrg: null
+      lrg: 999:65530:1
       peer_as: false
-      std: null
+      std: '65530:1'
       type: outbound
     prefix_not_present_in_as_set:
       ext: null
@@ -113,76 +113,76 @@ cfg:
       std: null
       type: outbound
     prepend_once_to_any:
-      ext: null
-      lrg: null
+      ext: rt:65501:999
+      lrg: 999:65501:999
       peer_as: false
-      std: null
+      std: 65501:999
       type: inbound
     prepend_once_to_peer:
-      ext: null
-      lrg: null
+      ext: rt:65504:peer_as
+      lrg: 999:65504:peer_as
       peer_as: true
-      std: null
+      std: 65504:peer_as
       type: inbound
     prepend_once_to_peers_with_rtt_higher_than:
-      ext: null
-      lrg: null
+      ext: rt:64518:dyn_val
+      lrg: 999:64518:dyn_val
       peer_as: false
-      std: null
+      std: 64518:dyn_val
       type: inbound
     prepend_once_to_peers_with_rtt_lower_than:
-      ext: null
-      lrg: null
+      ext: rt:64515:dyn_val
+      lrg: 999:64515:dyn_val
       peer_as: false
-      std: null
+      std: 64515:dyn_val
       type: inbound
     prepend_thrice_to_any:
-      ext: null
-      lrg: null
+      ext: rt:65503:999
+      lrg: 999:65503:999
       peer_as: false
-      std: null
+      std: 65503:999
       type: inbound
     prepend_thrice_to_peer:
-      ext: null
-      lrg: null
+      ext: rt:65506:peer_as
+      lrg: 999:65506:peer_as
       peer_as: true
-      std: null
+      std: 65506:peer_as
       type: inbound
     prepend_thrice_to_peers_with_rtt_higher_than:
-      ext: null
-      lrg: null
+      ext: rt:64520:dyn_val
+      lrg: 999:64520:dyn_val
       peer_as: false
-      std: null
+      std: 64520:dyn_val
       type: inbound
     prepend_thrice_to_peers_with_rtt_lower_than:
-      ext: null
-      lrg: null
+      ext: rt:64517:dyn_val
+      lrg: 999:64517:dyn_val
       peer_as: false
-      std: null
+      std: 64517:dyn_val
       type: inbound
     prepend_twice_to_any:
-      ext: null
-      lrg: null
+      ext: rt:65502:999
+      lrg: 999:65502:999
       peer_as: false
-      std: null
+      std: 65502:999
       type: inbound
     prepend_twice_to_peer:
-      ext: null
-      lrg: null
+      ext: rt:65505:peer_as
+      lrg: 999:65505:peer_as
       peer_as: true
-      std: null
+      std: 65505:peer_as
       type: inbound
     prepend_twice_to_peers_with_rtt_higher_than:
-      ext: null
-      lrg: null
+      ext: rt:64519:dyn_val
+      lrg: 999:64519:dyn_val
       peer_as: false
-      std: null
+      std: 64519:dyn_val
       type: inbound
     prepend_twice_to_peers_with_rtt_lower_than:
-      ext: null
-      lrg: null
+      ext: rt:64516:dyn_val
+      lrg: 999:64516:dyn_val
       peer_as: false
-      std: null
+      std: 64516:dyn_val
       type: inbound
     reject_cause:
       ext: null
@@ -196,9 +196,31 @@ cfg:
       peer_as: false
       std: null
       type: internal
-  custom_communities: {}
+  custom_communities:
+    from_europe:
+      ext: rt:65534:1
+      lrg: 999:65534:1
+      std: '65534:1'
+    from_usa:
+      ext: rt:65534:2
+      lrg: 999:65534:2
+      std: '65534:2'
   filtering:
-    global_black_list_pref: null
+    global_black_list_pref:
+    - comment: Local network
+      exact: false
+      ge: null
+      le: null
+      length: 24
+      max_length: 32
+      prefix: 192.0.2.0
+    - comment: Local network
+      exact: false
+      ge: null
+      le: null
+      length: 64
+      max_length: 128
+      prefix: '2001:db8:1:1::'
     ipv4_pref_len:
       max: 24
       min: 8
@@ -213,21 +235,21 @@ cfg:
       tag_as_set: true
     max_as_path_len: 32
     max_prefix:
-      action: null
+      action: restart
       general_limit_ipv4: 170000
       general_limit_ipv6: 12000
       peering_db: true
-      restart_after: 15
+      restart_after: 30
     next_hop:
-      policy: strict
+      policy: same-as
     reject_invalid_as_in_as_path: true
     reject_policy:
       policy: reject
     rpki:
-      enabled: false
+      enabled: true
       reject_invalid: true
     transit_free:
-      action: null
+      action: reject
       asns:
       - 174
       - 209
@@ -248,7 +270,7 @@ cfg:
       - 6830
       - 7018
       - 12956
-  gtsm: false
+  gtsm: true
   passive: true
   path_hiding: true
   prepend_rs_as: false
@@ -577,8 +599,9 @@ clients
 clients:
 - asn: 3333
   cfg:
-    add_path: false
-    attach_custom_communities: null
+    add_path: true
+    attach_custom_communities:
+    - from_europe
     blackhole_filtering:
       announce_to_client: true
     filtering:
@@ -597,31 +620,33 @@ clients:
         enforce_prefix_in_as_set: true
       max_as_path_len: 32
       max_prefix:
-        action: null
-        limit_ipv4: null
-        limit_ipv6: null
+        action: restart
+        limit_ipv4: 20
+        limit_ipv6: 1
         peering_db: true
-        restart_after: 15
+        restart_after: 30
       next_hop:
         authorized_addresses_list: null
-        policy: strict
+        policy: same-as
       reject_invalid_as_in_as_path: true
       reject_policy:
         policy: reject
       rpki:
-        enabled: false
+        enabled: true
         reject_invalid: true
-    gtsm: false
+    gtsm: true
     passive: true
     prepend_rs_as: false
   description: null
   id: AS3333_1
   ip: 192.0.2.11
   password: null
+  rtt: 604.0
 - asn: 10745
   cfg:
-    add_path: false
-    attach_custom_communities: null
+    add_path: true
+    attach_custom_communities:
+    - from_usa
     blackhole_filtering:
       announce_to_client: true
     filtering:
@@ -636,31 +661,33 @@ clients:
         enforce_prefix_in_as_set: true
       max_as_path_len: 32
       max_prefix:
-        action: null
-        limit_ipv4: null
-        limit_ipv6: null
+        action: restart
+        limit_ipv4: 5
+        limit_ipv6: 12000
         peering_db: true
-        restart_after: 15
+        restart_after: 30
       next_hop:
         authorized_addresses_list: null
-        policy: strict
+        policy: same-as
       reject_invalid_as_in_as_path: true
       reject_policy:
         policy: reject
       rpki:
-        enabled: false
+        enabled: true
         reject_invalid: true
-    gtsm: false
+    gtsm: true
     passive: true
     prepend_rs_as: false
   description: null
   id: AS10745_1
   ip: 192.0.2.22
   password: null
+  rtt: 123.0
 - asn: 10745
   cfg:
-    add_path: false
-    attach_custom_communities: null
+    add_path: true
+    attach_custom_communities:
+    - from_usa
     blackhole_filtering:
       announce_to_client: true
     filtering:
@@ -674,38 +701,33 @@ clients:
         enforce_prefix_in_as_set: true
       max_as_path_len: 32
       max_prefix:
-        action: null
-        limit_ipv4: null
-        limit_ipv6: null
+        action: restart
+        limit_ipv4: 5
+        limit_ipv6: 12000
         peering_db: true
-        restart_after: 15
+        restart_after: 30
       next_hop:
         authorized_addresses_list: null
-        policy: strict
+        policy: same-as
       reject_invalid_as_in_as_path: true
       reject_policy:
         policy: reject
       rpki:
-        enabled: false
+        enabled: true
         reject_invalid: true
-    gtsm: false
+    gtsm: true
     passive: true
     prepend_rs_as: false
   description: null
   id: AS10745_2
-  ip: 2001:db:1:1::22
+  ip: 2001:db8:1:1::22
   password: null
+  rtt: 741.0
 
 
 asns
 ----
-asns:
-  AS10745:
-    as_set_bundle_ids: []
-    as_sets: null
-  AS3333:
-    as_set_bundle_ids: []
-    as_sets: null
+asns: {}
 
 
 irrdb_info

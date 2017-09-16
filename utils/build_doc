@@ -68,39 +68,45 @@ function ClientsFromEuroIX() {
 }
 
 echo "Building example: default, BIRD, IPv4"
-RenderExample "default" "bird" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml" 4
-RenderExample "default" "template-context" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml" 4
+G="config.d/general.yml"
+C="config.d/clients.yml"
+RenderExample "default" "bird" "$G" "$C" "config.d/bogons.yml" 4
+RenderExample "default" "template-context" "$G" "$C" "config.d/bogons.yml" 4
 
 echo "Building example: default, BIRD, IPv6"
-RenderExample "default" "bird" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml" 6
-RenderExample "default" "template-context" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml" 6
+RenderExample "default" "bird" "$G" "$C" "config.d/bogons.yml" 6
+RenderExample "default" "template-context" "$G" "$C" "config.d/bogons.yml" 6
 
 echo "Building example: default, OpenBGPD, IPv4 + IPv6"
-RenderExample "default" "openbgpd" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml"
-RenderExample "default" "template-context" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml"
+RenderExample "default" "openbgpd" "$G" "$C" "config.d/bogons.yml"
+RenderExample "default" "template-context" "$G" "$C" "config.d/bogons.yml"
 
 echo "Building example: default, HTML"
-RenderExample "default" "html" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml"
+RenderExample "default" "html" "$G" "$C" "config.d/bogons.yml"
 
 echo "Building example: rich, BIRD, IPv4"
-RenderExample "rich" "bird" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml" 4 --use-local-files client
-RenderExample "rich" "template-context" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml" 4
+G="examples/rich/general.yml"
+C="examples/rich/clients.yml"
+RenderExample "rich" "bird" "$G" "$C" "config.d/bogons.yml" 4 --use-local-files client
+RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml" 4
 
 echo "Building example: rich, BIRD, IPv6"
-RenderExample "rich" "bird" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml" 6
-RenderExample "rich" "template-context" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml" 6
+RenderExample "rich" "bird" "$G" "$C" "config.d/bogons.yml" 6
+RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml" 6
 
 echo "Building example: rich, OpenBGPD, IPv4 + IPv6"
-RenderExample "rich" "openbgpd" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml"
-RenderExample "rich" "template-context" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml"
+RenderExample "rich" "openbgpd" "$G" "$C" "config.d/bogons.yml"
+RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml"
 
 echo "Building example: rich, HTML"
-RenderExample "rich" "html" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml"
+RenderExample "rich" "html" "$G" "$C" "config.d/bogons.yml"
 
 echo "Building example: BIRD hooks"
+G="examples/bird_hooks/general.yml"
+C="examples/bird_hooks/clients.yml"
 HOOKS="pre_receive_from_client post_receive_from_client pre_announce_to_client post_announce_to_client scrub_communities_in scrub_communities_out apply_blackhole_filtering_policy route_can_be_announced_to announce_rpki_invalid_to_client"
-RenderExample "bird_hooks" "bird" "examples/bird_hooks/general.yml" "examples/bird_hooks/clients.yml" "config.d/bogons.yml" 4 --use-hooks $HOOKS --use-local-files header
-RenderExample "bird_hooks" "bird" "examples/bird_hooks/general.yml" "examples/bird_hooks/clients.yml" "config.d/bogons.yml" 6 --use-hooks $HOOKS --use-local-files header
+RenderExample "bird_hooks" "bird" "$G" "$C" "config.d/bogons.yml" 4 --use-hooks $HOOKS --use-local-files header
+RenderExample "bird_hooks" "bird" "$G" "$C" "config.d/bogons.yml" 6 --use-hooks $HOOKS --use-local-files header
 
 echo "Build clients from Euro-IX files? [yes/NO] "
 read YES_NO
