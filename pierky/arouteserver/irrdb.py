@@ -79,6 +79,26 @@ class IRRDBInfo(CachedObject, AS_SET_Bundle):
 
         AS_SET_Bundle.__init__(self, object_names)
 
+    def _run_cmd(self, cmd):
+        proc = subprocess.Popen(cmd,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
+        out, err = proc.communicate()
+
+        if proc.returncode != 0:
+            err_msg = "bgpq3 exit code is {}".format(proc.returncode)
+            if err is not None and err.strip():
+                err_msg += ", stderr: {}".format(err)
+            raise ValueError(err_msg)
+
+        if err is not None and err.strip():
+            logging.warning("bgpq3 succeeded but an error was "
+                            "printed when executing '{}': {}".format(
+                                " ".join(cmd), err.strip()
+                            ))
+
+        return out
+
 class ASSet(IRRDBInfo):
 
     def load_data(self):
@@ -104,7 +124,7 @@ class ASSet(IRRDBInfo):
         cmd += self.object_names
 
         try:
-            out = subprocess.check_output(cmd)
+            out = self._run_cmd(cmd)
         except Exception as e:
             raise IRRDBToolsError(
                 "Can't get list of authorized ASNs for {}: {}".format(
@@ -160,7 +180,7 @@ class RSet(IRRDBInfo):
         cmd += self.object_names
 
         try:
-            out = subprocess.check_output(cmd)
+            out = self._run_cmd(cmd)
         except Exception as e:
             raise IRRDBToolsError(
                 "Can't get authorized prefix list for {} IPv{}: {}".format(
