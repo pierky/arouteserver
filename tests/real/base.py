@@ -48,11 +48,6 @@ class TestRealConfigs(ARouteServerTestCase):
     def _setUpClass(cls):
         cwd = os.path.dirname(__file__)
 
-        if os.path.exists(os.path.join(cwd, "arouteserver.log")):
-            os.remove(os.path.join(cwd, "arouteserver.log"))
-
-        fileConfig(os.path.join(cwd, "log.ini"))
-
         cls.var_dir = os.path.join(cwd, "var")
         if not os.path.exists(cls.var_dir):
             os.makedirs(cls.var_dir)
@@ -64,6 +59,12 @@ class TestRealConfigs(ARouteServerTestCase):
         cls.rs_config_dir = os.path.join(cls.var_dir, "configs")
         if not os.path.exists(cls.rs_config_dir):
             os.makedirs(cls.rs_config_dir)
+
+        log_dir = os.path.join(cls.var_dir, "log")
+        if not os.path.exists(log_dir):
+            os.makedirs(log_dir)
+
+        fileConfig(os.path.join(cwd, "log.ini"))
 
     @classmethod
     def _tearDownClass(cls):
