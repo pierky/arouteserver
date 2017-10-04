@@ -144,7 +144,7 @@ s = sys.stdin.read();
 d = json.loads(s);
 for k in d:
   if d[k]["name"] == "arouteserver":
-    print d[k]["SSHKEYID"]'
+    print(d[k]["SSHKEYID"])'
 }
 
 function vultr_destroy() {
