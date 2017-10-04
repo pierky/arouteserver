@@ -8,7 +8,9 @@ Built to group as many tests as possible in a single scenario.
   AS-SETs:
 
   - AS-AS1 (1.0.0.0/8, 128.0.0.0/7)
-  - AS-AS1_CUSTOMERS (101.0.0.0/16)
+  - AS-AS1_CUSTOMERS (101.0.0.0/16, 103.0.0.0/16)
+
+  Enabled to perform graceful BGP session shutdown.
 
   clients:
 
@@ -54,7 +56,9 @@ Built to group as many tests as possible in a single scenario.
   AS-SETs:
 
   - AS-AS2 (2.0.0.0/16)
-  - AS-AS2_CUSTOMERS (101.0.0.0/16)
+  - AS-AS2_CUSTOMERS (101.0.0.0/16, 103.0.0.0/16)
+  
+  Not enabled to perform graceful BGP session shutdown.
 
   clients:
 
@@ -182,22 +186,33 @@ Built to group as many tests as possible in a single scenario.
 
   Originated prefixes:
 
-  ====================  ==============   ========== ==================================================================================
-  Prefix ID             Prefix           AS_PATH    Expected result
-  ====================  ==============   ========== ==================================================================================
-  AS101_good1           101.0.1.0/24                fail next_hop_is_valid_for_AS1_2 (for the prefix announced by AS101 to AS1_2)
-  AS101_no_rset         101.1.0.0/24                fail prefix_is_in_AS1_1_r_set and prefix_is_in_AS2_1_r_set
-  AS102_no_asset        102.0.1.0/24     [101 102]  fail origin_as_in_AS1_1_as_set and origin_as_in_AS2_1_as_set
+  ====================  ==============   =========== ==================================================================================
+  Prefix ID             Prefix           AS_PATH     Expected result
+  ====================  ==============   =========== ==================================================================================
+  AS101_good1           101.0.1.0/24                 fail next_hop_is_valid_for_AS1_2 (for the prefix announced by AS101 to AS1_2)
+  AS101_no_rset         101.1.0.0/24                 fail prefix_is_in_AS1_1_r_set and prefix_is_in_AS2_1_r_set
+  AS102_no_asset        102.0.1.0/24     [101 102]   fail origin_as_in_AS1_1_as_set and origin_as_in_AS2_1_as_set
 
-  AS101_bad_std_comm    101.0.2.0/24                add 65530:0, scrubbed by rs
-  AS101_bad_lrg_comm    101.0.3.0/24                add 999:65530:0, scrubbed by rs
-  AS101_other_s_comm    101.0.4.0/24                add 888:0, NOT scrubbed by rs
-  AS101_other_l_comm    101.0.5.0/24                add 888:0:0, NOT scrubbed by rs
-  AS101_bad_good_comms  101.0.6.0/24                add 65530:1,999:65530:1,777:0,777:0:0, 65530 are scrubbed by rs, 777:** are kept
-  AS101_transitfree_1   101.0.7.0/24     [101 174]  fail as_path_contains_transit_free_asn
-  AS101_roa_valid1      101.0.8.0/24                roa check ok (roa n. 1), tagged with 64512:1 / 999:64512:1
-  AS101_roa_invalid1    101.0.9.0/24                roa check fail (roa n. 2, bad origin ASN), rejected
-  AS101_roa_badlen      101.0.128.0/24              roa check fail (roa n. 3, bad length), rejected
-  AS101_roa_blackhole   101.0.128.1/32              65535:666, pass because blackhole filtering request
-  AS101_no_ipv6_gl_uni  8000:1::/32                 fail IPv6 global unicast space check
-  ====================  ==============   ========== ==================================================================================
+  AS101_bad_std_comm    101.0.2.0/24                 add 65530:0, scrubbed by rs
+  AS101_bad_lrg_comm    101.0.3.0/24                 add 999:65530:0, scrubbed by rs
+  AS101_other_s_comm    101.0.4.0/24                 add 888:0, NOT scrubbed by rs
+  AS101_other_l_comm    101.0.5.0/24                 add 888:0:0, NOT scrubbed by rs
+  AS101_bad_good_comms  101.0.6.0/24                 add 65530:1,999:65530:1,777:0,777:0:0, 65530 are scrubbed by rs, 777:** are kept
+  AS101_transitfree_1   101.0.7.0/24     [101 174]   fail as_path_contains_transit_free_asn
+  AS101_roa_valid1      101.0.8.0/24                 roa check ok (roa n. 1), tagged with 64512:1 / 999:64512:1
+  AS101_roa_invalid1    101.0.9.0/24                 roa check fail (roa n. 2, bad origin ASN), rejected
+  AS101_roa_badlen      101.0.128.0/24               roa check fail (roa n. 3, bad length), rejected
+  AS101_roa_blackhole   101.0.128.1/32               65535:666, pass because blackhole filtering request
+  AS101_no_ipv6_gl_uni  8000:1::/32                  fail IPv6 global unicast space check
+
+  AS103_gshut_1         103.0.1.0/24     to AS1:     AS1 (best) performs gshut of this route;
+                                         [101 103]   AS3 and AS4 receive the route via AS2 (sub-optimal path)
+
+                                         to AS2:
+                                         [101*2 103]
+  AS103_gshut_2         103.0.2.0/24     to AS1:     AS2 (best) tries gshut of this route but it's not enabled;
+                                         [101*2 103] AS3 and AS4 receive the route via AS2
+
+                                         to AS2:
+                                         [101 103]
+  ====================  ==============   =========== ==================================================================================
