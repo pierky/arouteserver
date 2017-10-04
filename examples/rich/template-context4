@@ -271,7 +271,7 @@ cfg:
       - 7018
       - 12956
   graceful_shutdown:
-    enabled: false
+    enabled: true
     local_pref: 0
   gtsm: true
   passive: true
@@ -638,7 +638,7 @@ clients:
         enabled: true
         reject_invalid: true
     graceful_shutdown:
-      enabled: false
+      enabled: true
     gtsm: true
     passive: true
     prepend_rs_as: false
@@ -681,7 +681,7 @@ clients:
         enabled: true
         reject_invalid: true
     graceful_shutdown:
-      enabled: false
+      enabled: true
     gtsm: true
     passive: true
     prepend_rs_as: false
@@ -723,7 +723,7 @@ clients:
         enabled: true
         reject_invalid: true
     graceful_shutdown:
-      enabled: false
+      enabled: true
     gtsm: true
     passive: true
     prepend_rs_as: false

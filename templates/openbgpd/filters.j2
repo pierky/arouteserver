@@ -235,6 +235,15 @@ allow quick from {{ client.ip }} community BLACKHOLE
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " prefix ::/0 prefixlen " ~ min_pref_len ~ " >< " ~ max_pref_len, 13) }}
 {% endif %}
 
+{% if cfg.graceful_shutdown.enabled and "6.2"|target_version_ge %}
+# Graceful shutdown
+{%	if client.cfg.graceful_shutdown.enabled %}
+match from {{ client.ip }} community GRACEFUL_SHUTDOWN set localpref {{ cfg.graceful_shutdown.local_pref }}
+{%	else %}
+match from {{ client.ip }} community GRACEFUL_SHUTDOWN set community delete GRACEFUL_SHUTDOWN
+{%	endif %}
+{% endif %}
+
 {{ del_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, replace_dyn_val=client.asn) }}
 allow quick from {{ client.ip }}
 

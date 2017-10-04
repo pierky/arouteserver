@@ -210,6 +210,14 @@ filter receive_from_{{ client.id }} {
 		{% endif %}
 		if !prefix_len_is_valid({{ min_pref_len }}, {{ max_pref_len }}) then
 			{{ reject(client, 13, '"prefix len [", net.len, "] not in ' ~ min_pref_len ~ '-' ~ max_pref_len ~ ' - REJECTING ", net') }}
+
+		{% if cfg.graceful_shutdown.enabled %}
+		{%	if client.cfg.graceful_shutdown.enabled %}
+		honor_graceful_shutdown();
+		{%	else %}
+		prevent_graceful_shutdown();
+		{%	endif %}
+		{% endif %}
 	}
 
 	{% if "post_receive_from_client"|hook_is_set %}
