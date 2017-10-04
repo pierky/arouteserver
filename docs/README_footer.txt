@@ -14,3 +14,4 @@ Blog: https://blog.pierky.com Twitter: `@pierky <https://twitter.com/pierky>`_
 .. |Requirements| image:: https://requires.io/github/pierky/arouteserver/requirements.svg?branch=master
     :target: https://requires.io/github/pierky/arouteserver/requirements/?branch=master
     :alt: Requirements Status
+.. |Python Versions| image:: https://img.shields.io/pypi/pyversions/arouteserver.svg

@@ -17,8 +17,8 @@ import os
 import re
 import time
 
-from kvm import KVMInstance
-from instances import Route, BGPSpeakerInstance, InstanceNotRunning
+from .kvm import KVMInstance
+from .instances import Route, BGPSpeakerInstance, InstanceNotRunning
 
 class OpenBGPDRoute(Route):
 

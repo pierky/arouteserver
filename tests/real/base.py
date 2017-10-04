@@ -48,11 +48,6 @@ class TestRealConfigs(ARouteServerTestCase):
     def _setUpClass(cls):
         cwd = os.path.dirname(__file__)
 
-        if os.path.exists(os.path.join(cwd, "arouteserver.log")):
-            os.remove(os.path.join(cwd, "arouteserver.log"))
-
-        fileConfig(os.path.join(cwd, "log.ini"))
-
         cls.var_dir = os.path.join(cwd, "var")
         if not os.path.exists(cls.var_dir):
             os.makedirs(cls.var_dir)
@@ -64,6 +59,12 @@ class TestRealConfigs(ARouteServerTestCase):
         cls.rs_config_dir = os.path.join(cls.var_dir, "configs")
         if not os.path.exists(cls.rs_config_dir):
             os.makedirs(cls.rs_config_dir)
+
+        log_dir = os.path.join(cls.var_dir, "log")
+        if not os.path.exists(log_dir):
+            os.makedirs(log_dir)
+
+        fileConfig(os.path.join(cwd, "log.ini"))
 
     @classmethod
     def _tearDownClass(cls):
@@ -119,6 +120,9 @@ class TestRealConfigs(ARouteServerTestCase):
     def load_config(self, bgp_speaker, target_ver, ip_ver):
         if self.SKIP_LOAD_NO_RESOURCES:
             self.skipTest("Lack of resources")
+
+        if self.REMOTE_IP_NEEDED and "LOCAL_ONLY" in os.environ:
+            self.skipTest("Remote IP needed, but LOCAL_ONLY is set")
 
         remote_ip = os.environ.get("REMOTE_IP", None)
         if remote_ip:

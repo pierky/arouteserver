@@ -91,6 +91,14 @@ YAML !include: general config, 3 !include statements, 2 levels ... ok
 Prefix list parser: bad 'le' and 'ge' ... ok
 Prefix list parser: bad prefix list entries ... ok
 Prefix list parser: valid prefix list entries ... ok
+Program config: load distributed configuration file ... ok
+Program config: load from temporary directory ... ok
+Program config: setup ... ok
+Program config: setup, then setup again ... ok
+Program config: setup, then change a template file ... ok
+Program config: setup, change a template file then fix it ... ok
+Program config: setup, then remove templates ... ok
+Program config: setup, remove templates then fix it ... ok
 ROAs entries config parser: invalid ge ... ok
 ROAs entries config parser: unknown statement ... ok
 ROAs entries config parser: valid configuration ... ok
@@ -117,7 +125,7 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 117 tests in 8.952s
+Ran 125 tests in 10.359s
 
 OK
 Live test, BIRD, hooks example, IPv4: setting instances up...
@@ -128,7 +136,7 @@ Live test, BIRD, hooks example, IPv6: instances setup ... ok
 Live test, BIRD, hooks example, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 2 tests in 9.908s
+Ran 2 tests in 8.866s
 
 OK
 Live test, BIRD, BGP communities, IPv4: setting instances up...
@@ -211,7 +219,7 @@ Live test, OpenBGPD 6.1, BGP communities, IPv6: custom BGP community scrubbed ..
 Live test, OpenBGPD 6.1, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 66 tests in 420.138s
+Ran 66 tests in 425.354s
 
 OK (SKIP=6)
 Live test, BIRD, default config, IPv4: setting instances up...
@@ -228,7 +236,7 @@ Live test, OpenBGPD 6.0, default config, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, default config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 160.791s
+Ran 4 tests in 161.164s
 
 OK
 Live test, BIRD, global scenario, IPv4: setting instances up...
@@ -797,7 +805,7 @@ Live test, OpenBGPD 6.1, global scenario, IPv6: prefixes received by clients: AS
 Live test, OpenBGPD 6.1, global scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 548 tests in 865.596s
+Ran 548 tests in 857.500s
 
 OK (SKIP=44)
 Live test, BIRD, max-prefix, IPv4: setting instances up...
@@ -838,7 +846,7 @@ Live test, OpenBGPD 6.1, max-prefix, IPv6: clients log max-prefix notification .
 Live test, OpenBGPD 6.1, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 24 tests in 467.578s
+Ran 24 tests in 469.023s
 
 OK
 Live test, BIRD, path hiding, mitigation off, IPv4: setting instances up...
@@ -951,9 +959,14 @@ Live test, OpenBGPD 6.1, path hiding, mitigation on, IPv6: AS3 and AS4 don't rec
 Live test, OpenBGPD 6.1, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 84 tests in 888.142s
+Ran 84 tests in 890.176s
 
 OK (SKIP=8)
+
+----------------------------------------------------------------------
+Ran 0 tests in 0.000s
+
+OK
 Live test, BIRD, examples, rich config, IPv4: setting instances up...
 Live test, BIRD, examples, rich config, IPv4: instances setup ... ok
 Live test, BIRD, examples, rich config, IPv4: stopping instances...
@@ -968,7 +981,7 @@ Live test, OpenBGPD 6.0, examples, rich config, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, examples, rich config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 162.152s
+Ran 4 tests in 162.616s
 
 OK
 Live test, BIRD, RPKI INVALID tagging, IPv4: setting instances up...
@@ -1001,7 +1014,7 @@ Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS3 valid prefix, sub prefix 
 Live test, BIRD, RPKI INVALID tagging, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 24 tests in 52.225s
+Ran 24 tests in 51.936s
 
 OK
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: setting instances up...
@@ -1144,7 +1157,7 @@ Live test, OpenBGPD 6.1, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin
 Live test, OpenBGPD 6.1, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 114 tests in 835.204s
+Ran 114 tests in 837.901s
 
 OK
 Live test, BIRD, 'tag' reject policy scenario, IPv4: setting instances up...
@@ -1239,6 +1252,6 @@ Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: prefixes received b
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 82 tests in 291.967s
+Ran 82 tests in 289.893s
 
 OK (SKIP=4)

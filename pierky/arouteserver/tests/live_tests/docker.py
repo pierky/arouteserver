@@ -18,7 +18,7 @@ import re
 import subprocess
 import time
 
-from instances import InstanceError, BGPSpeakerInstance
+from .instances import InstanceError, BGPSpeakerInstance
 
 class DockerInstance(BGPSpeakerInstance):
 
@@ -45,7 +45,7 @@ class DockerInstance(BGPSpeakerInstance):
                 )
                 return None
             else:
-                stdout = subprocess.check_output(cmd.split())
+                stdout = subprocess.check_output(cmd.split()).decode("utf-8")
                 return stdout
         except subprocess.CalledProcessError as e:
             raise InstanceError(

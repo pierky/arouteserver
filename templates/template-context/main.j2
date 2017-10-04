@@ -18,9 +18,9 @@ asns
 ----
 {{ asns.cfg|to_yaml }}
 
-as_sets
+irrdb_info
 -------
-{{ as_sets|to_yaml }}
+{{ irrdb_info|parse_irrdb_info|sort(attribute="id")|to_yaml }}
 
 roas
 ----

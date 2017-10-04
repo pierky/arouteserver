@@ -13,8 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import RichConfigExampleScenarioBIRD
-from data4 import RichConfigExampleScenario_Data4
+from .base import RichConfigExampleScenarioBIRD
+from .data4 import RichConfigExampleScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 
 class RichConfigExampleScenario_BIRDIPv4(RichConfigExampleScenario_Data4,

@@ -3,6 +3,18 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next version
+------------
+
+- Python 3.4 support.
+
+- Improvement: GT registry removed from the sources used to gather info from IRRDB.
+
+  Related: `PR #8 on GitHub <https://github.com/pierky/arouteserver/pull/8>`_.
+
+- Improvement: multiple AS-SETs used for the same client are now grouped together and queried at one time.
+  This allows to leverage bgpq3's ability and speed to aggregate results in order to have smaller configuration files.
+
 v0.10.0
 -------
 

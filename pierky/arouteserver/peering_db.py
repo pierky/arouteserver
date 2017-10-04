@@ -17,8 +17,8 @@ import logging
 import json
 import re
 import subprocess
-from urllib2 import urlopen, HTTPError
-
+from six.moves.urllib.request import urlopen
+from six.moves.urllib.error import HTTPError
 
 from .cached_objects import CachedObject
 from .errors import PeeringDBError, PeeringDBNoInfoError
@@ -85,9 +85,10 @@ class PeeringDBNet(PeeringDBInfo):
         PeeringDBInfo.__init__(self, **kwargs)
         self.asn = asn
 
+    def load_data(self):
         logging.debug("Getting data from PeeringDB: net {}".format(self.asn))
 
-        self.load_data()
+        PeeringDBInfo.load_data(self)
 
         self.info_prefixes4 = self.raw_data[0].get("info_prefixes4", None)
         self.info_prefixes6 = self.raw_data[0].get("info_prefixes6", None)
@@ -115,7 +116,7 @@ class PeeringDBNet(PeeringDBInfo):
 
         # Removing things like "<registry>::" and "<registry>: ".
         pattern = re.compile("^(?:RIPE|APNIC|AFRINIC|ARIN|NTTCOM|"
-                             "ALTDB|BBOI|BELL|GT|JPIRR|LEVEL3|RADB|"
+                             "ALTDB|BBOI|BELL|JPIRR|LEVEL3|RADB|"
                              "RGNET|SAVVIS|TC):[:\s]", flags=re.IGNORECASE)
         v, number_of_subs_made = pattern.subn("", v)
         if number_of_subs_made > 0:
@@ -188,9 +189,10 @@ class PeeringDBNetIXLan(PeeringDBInfo):
         PeeringDBInfo.__init__(self, **kwargs)
         self.ixlanid = ixlanid
 
+    def load_data(self):
         logging.debug("Getting data from PeeringDB: Net IX LAN {}".format(self.ixlanid))
 
-        self.load_data()
+        PeeringDBInfo.load_data(self)
 
     def _get_object_filename(self):
         return "peeringdb_ixlanid_{}.json".format(self.ixlanid)
@@ -202,7 +204,9 @@ class PeeringDBNetIXLan(PeeringDBInfo):
 def clients_from_peeringdb(netixlanid, cache_dir):
     clients = []
 
-    netixlans = PeeringDBNetIXLan(netixlanid, cache_dir=cache_dir).raw_data
+    pdb_net_ixlan = PeeringDBNetIXLan(netixlanid, cache_dir=cache_dir)
+    pdb_net_ixlan.load_data()
+    netixlans = pdb_net_ixlan.raw_data
     for netixlan in netixlans:
         if netixlan["is_rs_peer"] is True:
             client = {
@@ -219,6 +223,7 @@ def clients_from_peeringdb(netixlanid, cache_dir):
     for client in clients:
         asn = client["asn"]
         net = PeeringDBNet(asn)
+        net.load_data()
 
         if not net.irr_as_sets:
             continue

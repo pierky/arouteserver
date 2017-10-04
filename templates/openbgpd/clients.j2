@@ -4,7 +4,7 @@
 {{ "pre-clients"|include_local_file -}}
 
 group "clients" {
-{% for client in clients if client.ip is current_ipver %}
+{% for client in clients|sort(attribute="id") if client.ip is current_ipver %}
 
 {%	if "rtt" in client and client["rtt"] %}
 	# RTT: {{ client["rtt"] }} ms (normalized value: {{ client["rtt"]|get_normalized_rtt }})

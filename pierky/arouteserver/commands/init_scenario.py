@@ -16,7 +16,7 @@
 import os
 import re
 
-from base import ARouteServerCommand
+from .base import ARouteServerCommand
 from ..ask import ask, ask_yes_no
 from ..config.program import program_config
 from ..errors import ARouteServerError
@@ -66,7 +66,7 @@ class InitScenarioCommand(ARouteServerCommand):
 
         skeleton_dir = get_live_test_skeleton_dir()
         dest_dir = os.path.expanduser(self.args.dest_dir)
-        templates_dir = program_config.get("templates_dir")
+        templates_dir = program_config.get_dir("templates_dir")
 
         if os.path.exists(dest_dir):
             raise ARouteServerError(

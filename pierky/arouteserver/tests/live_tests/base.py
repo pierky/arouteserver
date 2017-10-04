@@ -13,20 +13,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import ipaddr
 from jinja2 import Environment, FileSystemLoader
-import mock
+try:
+    import mock
+except ImportError:
+    import unittest.mock as mock
 import os
 import re
 import time
 import yaml
 
-from docker import InstanceError
+from .docker import InstanceError
 
 from pierky.arouteserver.config.validators import ValidatorPrefixListEntry
 from pierky.arouteserver.enrichers.irrdb import IRRDBConfigEnricher_OriginASNs, \
                                                 IRRDBConfigEnricher_Prefixes
 from pierky.arouteserver.enrichers.rtt import RTTGetterConfigEnricher
+from pierky.arouteserver.ipaddresses import IPAddress, IPNetwork
 from pierky.arouteserver.tests.base import ARouteServerTestCase
 from pierky.arouteserver.tests.mock_peeringdb import mock_peering_db
 from pierky.arouteserver.tests.live_tests.instances import BGPSpeakerInstance
@@ -342,10 +345,10 @@ class LiveScenario(ARouteServerTestCase):
     def mock_irrdb(cls):
     
         def add_prefix_to_list(prefix_name, allow_longer_prefixes, lst):
-            obj = ipaddr.IPNetwork(cls.DATA[prefix_name])
+            obj = IPNetwork(cls.DATA[prefix_name])
             lst.append(
                 ValidatorPrefixListEntry().validate({
-                    "prefix": str(obj.ip),
+                    "prefix": obj.ip,
                     "length": obj.prefixlen,
                     "comment": prefix_name,
                     "exact": not allow_longer_prefixes
@@ -354,24 +357,30 @@ class LiveScenario(ARouteServerTestCase):
 
         def _mock_ASSet(self):
             self.prepare()
-            for as_set_id in self.builder.as_sets:
-                as_set = self.builder.as_sets[as_set_id]
-                as_set_name = as_set.name
-                if as_set_name in cls.AS_SET:
-                    as_set.save("asns", cls.AS_SET[as_set_name])
+            for as_set_bundle_id in self.builder.irrdb_info:
+                bundle = self.builder.irrdb_info[as_set_bundle_id]
+                asns = []
+                for as_set_name in bundle.object_names:
+                    if as_set_name not in cls.AS_SET:
+                        continue
+                    asns.extend(cls.AS_SET[as_set_name])
+                if asns:
+                    bundle.save("asns", asns)
 
         def _mock_RSet(self):
             self.prepare()
             allow_longer_prefixes = self.builder.cfg_general["filtering"]["irrdb"]["allow_longer_prefixes"]
-            for as_set_id in self.builder.as_sets:
-                as_set = self.builder.as_sets[as_set_id]
-                as_set_name = as_set.name
-                if as_set_name in cls.R_SET:
-                    lst = []
+            for as_set_bundle_id in self.builder.irrdb_info:
+                bundle = self.builder.irrdb_info[as_set_bundle_id]
+                prefixes = []
+                for as_set_name in bundle.object_names:
+                    if as_set_name not in cls.R_SET:
+                        continue
                     for prefix_name in cls.R_SET[as_set_name]:
                         add_prefix_to_list(prefix_name, allow_longer_prefixes,
-                                           lst)
-                    as_set.save("prefixes", lst)
+                                           prefixes)
+                if prefixes:
+                    bundle.save("prefixes", prefixes)
 
         mock_ASSet = mock.patch.object(
             IRRDBConfigEnricher_OriginASNs, "enrich", autospec=True
@@ -390,7 +399,11 @@ class LiveScenario(ARouteServerTestCase):
         mock_peering_db(cls._get_module_dir() + "/peeringdb_data")
         cls.mock_irrdb()
         cls.mock_rttgetter()
-        cls._setup_instances()
+        try:
+            cls._setup_instances()
+        except:
+            cls.tearDownClass()
+            raise
 
         if cls._do_not_run_instances():
             cls.debug("Skipping starting instances")
@@ -500,7 +513,7 @@ class LiveScenario(ARouteServerTestCase):
             "inst must be of class BGPSpeakerInstance"
 
         try:
-            prefix_ip = ipaddr.IPNetwork(prefix)
+            prefix_ip = IPNetwork(prefix)
         except:
             raise AssertionError("prefix must be a valid IPv4/IPv6 prefix")
 
@@ -526,7 +539,7 @@ class LiveScenario(ARouteServerTestCase):
                  "a BGPSpeakerInstance object")
             next_hop_ip = next_hop if isinstance(next_hop, str) else next_hop.ip
             try:
-                ip = ipaddr.IPAddress(next_hop_ip)
+                ip = IPAddress(next_hop_ip)
             except:
                 raise AssertionError("Invalid next_hop IP address: {}".format(
                     next_hop_ip

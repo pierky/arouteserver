@@ -37,6 +37,7 @@ class PeeringDBConfigEnricher_ASSet_WorkerThread(BaseConfigEnricherThread):
             net = PeeringDBNet(asn,
                                cache_dir=self.cache_dir,
                                cache_expiry=self.cache_expiry)
+            net.load_data()
         except PeeringDBNoInfoError:
             # No data found on PeeringDB.
             logging.debug("No data found on PeeringDB "

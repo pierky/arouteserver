@@ -13,11 +13,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import ipaddr
 import yaml
 
 
 from ..errors import ConfigError
+from ..ipaddresses import IPAddress, IPNetwork
 
 
 class ConfigParserValidator(object):
@@ -160,8 +160,8 @@ class ValidatorIPAddr(ConfigParserValidator):
 
     def _validate(self, v):
         try:
-            ip = ipaddr.IPAddress(v)
-            return str(ip)
+            ip = IPAddress(v)
+            return ip.ip
         except:
             raise ConfigError("Invalid IP address: {}".format(v))
 
@@ -169,8 +169,10 @@ class ValidatorIPv4Addr(ConfigParserValidator):
 
     def _validate(self, v):
         try:
-            ip = ipaddr.IPv4Address(v)
-            return str(ip)
+            ip = IPAddress(v)
+            if not ip.version == 4:
+                raise ValueError()
+            return ip.ip
         except:
             raise ConfigError("Invalid IPv4 address: {}".format(v))
 
@@ -178,8 +180,10 @@ class ValidatorIPv6Addr(ConfigParserValidator):
 
     def _validate(self, v):
         try:
-            ip = ipaddr.IPv6Address(v)
-            return str(ip)
+            ip = IPAddress(v)
+            if not ip.version == 6:
+                raise ValueError()
+            return ip.ip
         except:
             raise ConfigError("Invalid IPv6 address: {}".format(v))
 
@@ -219,7 +223,7 @@ class ValidatorPrefixListEntry(ConfigParserValidator):
                 )
 
         try:
-            ip_obj = ipaddr.IPAddress(v["prefix"])
+            ip_obj = IPNetwork(v["prefix"])
         except:
             raise ConfigError("Invalid prefix ID: {}".format(v["prefix"]))
 
@@ -237,7 +241,7 @@ class ValidatorPrefixListEntry(ConfigParserValidator):
         except:
             raise ConfigError("Invalid prefix length: {}".format(v["length"]))
 
-        v["prefix"] = str(ip_obj)
+        v["prefix"] = ip_obj.ip
         v["length"] = pref_len
         v["comment"] = str(v["comment"]) if "comment" in v else None
         v["max_length"] = ip_obj.max_prefixlen
@@ -433,7 +437,7 @@ class ValidatorCommunity(ConfigParserValidator):
             return v
 
     def _get_parts(self, val):
-        parts = map(str.strip, val.split(":"))
+        parts = list(map(str.strip, val.split(":")))
         if len(parts) != self.EXPECTED_PARTS_CNT:
             raise ConfigError()
 

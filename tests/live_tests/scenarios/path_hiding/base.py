@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import six
 import unittest
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
@@ -203,7 +204,7 @@ class PathHidingScenario_MitigationOn(object):
     def test_041_AS3_and_AS4_no_prefix_via_AS1(self):
         """{}: AS3 and AS4 don't receive prefix via AS1"""
         for inst in (self.AS3, self.AS4):
-            with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                 self.receive_route(inst, self.DATA["AS101_pref_ok1"], self.rs,
                                    next_hop=self.AS1)
 
@@ -213,7 +214,7 @@ class PathHidingScenario_MitigationOff(object):
 
     def test_050_AS3_prefix_not_received_by_AS3(self):
         """{}: AS3 does not receive prefix at all"""
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS3, self.DATA["AS101_pref_ok1"])
 
     def test_051_AS4_receives_prefix_via_AS2_because_of_ADD_PATH(self):

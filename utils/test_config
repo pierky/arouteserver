@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function usage() {
-	echo "utils/test_config [bird4 | bird6 | openbgpd] <config_file_path>"
+	echo "utils/test_config [bird4 | bird6 | openbgpd60 | openbgpd61] <config_file_path>"
 }
 
 if [ ! -e "setup.py" ]; then
@@ -36,19 +36,34 @@ elif [ "$1" == "bird6" ]; then
 		pierky/bird:1.6.3 \
 		bird6 -c /etc/bird/bird.conf -d
 
-elif [ "$1" == "openbgpd" ]; then
+elif [ "$1" == "openbgpd60" -o "$1" == "openbgpd61" ]; then
 	virsh \
-		start arouteserver_openbgpd60
-	echo "When started..."
-	echo "scp -i ~/.ssh/arouteserver -o StrictHostKeyChecking=no $2 root@192.0.2.2:/etc/bgpd.conf"
-	echo "ssh -i ~/.ssh/arouteserver -o StrictHostKeyChecking=no root@192.0.2.2"
-	echo "/etc/rc.d/bgpd stop ; bgpd -dn && /etc/rc.d/bgpd start"
-	echo "bgpctl"
+		start arouteserver_$1
 	echo ""
 	virsh list
 	echo ""
 	while true; do
-		ssh -i ~/.ssh/arouteserver -o StrictHostKeyChecking=no -o ConnectTimeout=5 -o ServerAliveInterval=10 root@192.0.2.2 echo "Up!"
+		echo "Waiting for server reachability... "
+		ssh -i ~/.ssh/arouteserver -o StrictHostKeyChecking=no -o ConnectTimeout=5 -o ServerAliveInterval=10 -q root@192.0.2.2 echo "Up!"
+		if [ $? -eq 0 ]; then
+			echo "VM is up & running"
+
+			echo "Copying configuration..."
+			scp -i ~/.ssh/arouteserver -o StrictHostKeyChecking=no -q $2 root@192.0.2.2:/etc/bgpd.conf
+			if [ $? -ne 0 ]; then
+				echo "ERROR while copying configuration"
+				exit 1
+			fi
+
+			echo "Testing config on the VM... "
+			ssh -i ~/.ssh/arouteserver -o StrictHostKeyChecking=no -q root@192.0.2.2 "/etc/rc.d/bgpd stop ; bgpd -dn"
+			if [ $? -eq 0 ]; then
+				echo "SUCCESS"
+			else
+				echo "FAILURE"
+			fi
+			exit
+		fi
 		sleep 5
 	done
 else

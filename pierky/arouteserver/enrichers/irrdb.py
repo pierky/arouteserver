@@ -14,17 +14,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import atexit
-import cPickle
-import ipaddr
 import logging
-import re
 import shutil
+from six.moves import cPickle
+from six import iteritems
 import tempfile
 
 from .base import BaseConfigEnricher, BaseConfigEnricherThread
 from ..errors import BuilderError, ARouteServerError
-from ..irrdb import ASSet, RSet, IRRDBTools
-
+from ..ipaddresses import IPAddress
+from ..irrdb import ASSet, RSet, AS_SET_Bundle
 
 irrdb_pickle_dir = None
 def setup_irrdb_pickle_dir():
@@ -40,14 +39,15 @@ def setup_irrdb_pickle_dir():
 def clear_irrdb_pickle_dir(target_dir):
     shutil.rmtree(target_dir, ignore_errors=True)
 
-class AS_SET(object):
+class AS_SET_Bundle_Proxy(AS_SET_Bundle):
 
-    def __init__(self, id, name, used_by):
-        self.id = id
-        self.name = name
-        self.used_by = used_by
+    def __init__(self, as_set_names):
+        AS_SET_Bundle.__init__(self, as_set_names)
+
+        self.used_by = []
 
         self.irrdb_pickle_dir = setup_irrdb_pickle_dir()
+
         self.saved_objects = []
 
     def get_path(self, objects):
@@ -55,7 +55,7 @@ class AS_SET(object):
 
     def save(self, objects, data):
         if objects in ("asns", "prefixes"):
-            with open(self.get_path(objects), "w") as f:
+            with open(self.get_path(objects), "wb") as f:
                 cPickle.dump(data, f, cPickle.HIGHEST_PROTOCOL)
             self.saved_objects += [objects]
         else:
@@ -63,7 +63,7 @@ class AS_SET(object):
 
     def load(self, objects):
         if objects in self.saved_objects:
-            with open(self.get_path(objects), "r") as f:
+            with open(self.get_path(objects), "rb") as f:
                 return cPickle.load(f)
         else:
             return []
@@ -76,6 +76,16 @@ class AS_SET(object):
     def prefixes(self):
         return self.load("prefixes")
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "descr": self.descr,
+            "used_by": ", ".join(sorted(self.used_by)),
+            "asns": self.asns,
+            "prefixes": self.prefixes
+        }
+
 class IRRDBConfigEnricher_WorkerThread(BaseConfigEnricherThread):
 
     TARGET_FIELD = None
@@ -87,38 +97,40 @@ class IRRDBConfigEnricher_WorkerThread(BaseConfigEnricherThread):
         self.irrdbtools_cfg = None
 
     def do_task(self, task):
-        _, dest_descr, as_set_name = task
-        data = self._get_external_data(dest_descr, as_set_name)
+        as_set_bundle = task
+        used_by_descr = ", ".join(as_set_bundle.used_by)
+        data = self._get_external_data(used_by_descr, as_set_bundle.object_names)
         return data
 
     def save_data(self, task, data):
-        as_set, _, _ = task
-        as_set.save(self.TARGET_FIELD, data)
+        as_set_bundle = task
+        as_set_bundle.save(self.TARGET_FIELD, data)
 
 class IRRDBConfigEnricher_WorkerThread_Prefixes(IRRDBConfigEnricher_WorkerThread):
 
     DESCR = "IRRdb prefixes"
     TARGET_FIELD = "prefixes"
 
-    def _get_external_data(self, dest_descr, as_set_name):
+    def _get_external_data(self, used_by_descr, as_set_names):
         errors = False
         ip_versions = [self.ip_ver] if self.ip_ver else [4, 6]
         res = []
         for ip_ver in ip_versions:
+            obj = RSet(as_set_names, ip_ver, **self.irrdbtools_cfg)
             try:
-                prefixes = RSet(as_set_name, ip_ver,
-                                **self.irrdbtools_cfg).prefixes
+                obj.load_data()
+                prefixes = obj.prefixes
                 if not prefixes:
                     logging.warning("No IPv{} prefixes found in "
                                     "{} for {}".format(
-                                        ip_ver, as_set_name, dest_descr))
+                                        ip_ver, obj.descr, used_by_descr))
                 res.extend(prefixes)
             except ARouteServerError as e:
                 errors = True
                 logging.error(
-                    "Error while retrieving r_set "
-                    "{} for {} IPv{}: {}".format(
-                        as_set_name, dest_descr, ip_ver, str(e)
+                    "Error while retrieving IPv{} prefixes "
+                    "from {} for {}: {}".format(
+                        ip_ver, obj.descr, used_by_descr, str(e)
                     )
                 )
 
@@ -132,20 +144,22 @@ class IRRDBConfigEnricher_WorkerThread_OriginASNs(IRRDBConfigEnricher_WorkerThre
     DESCR = "IRRdb origin ASNs"
     TARGET_FIELD = "asns"
 
-    def _get_external_data(self, dest_descr, as_set_name):
+    def _get_external_data(self, used_by_descr, as_set_name):
         errors = False
+        obj = ASSet(as_set_name, **self.irrdbtools_cfg)
         try:
-            asns = ASSet(as_set_name, **self.irrdbtools_cfg).asns
+            obj.load_data()
+            asns = obj.asns
             if not asns:
                 logging.warning("No origin ASNs found in "
                                 "{} for {}".format(
-                                    as_set_name, dest_descr))
+                                    obj.descr, used_by_descr))
             return asns
         except ARouteServerError as e:
             errors = True
             logging.error(
-                "Error while retrieving as_set {} for {}: {}".format(
-                    as_set_name, dest_descr, str(e)
+                "Error while retrieving origin ASNs from {} for {}: {}".format(
+                    obj.descr, used_by_descr, str(e)
                 )
             )
 
@@ -157,55 +171,54 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
     WORKER_THREAD_CLASS = None
 
     def prepare(self):
-        if self.builder.as_sets is not None:
+        if self.builder.irrdb_info is not None:
             return
 
-        as_sets = []
+        # In the end, self.builder.irrdb_info will be a dict
+        # with this structure:
+        # {
+        #   "<as_set_bundle_id>": <AS_SET_Bundle_Proxy>
+        # }
+
+        irrdb_info = []
         errors = False
 
-        def normalize_as_set_id(s):
-            return re.sub("[^a-zA-Z0-9_]", "_", s)
+        def use_as_set(as_set_names, used_by_client=None):
+            # New bundle for the given AS-SET names.
+            # If a bundle for the same AS-SET names is already
+            # present in the irrdb_info list, then that one will
+            # be returned; otherwise, new_bundle will be.
+            new_bundle = AS_SET_Bundle_Proxy(as_set_names)
 
-        def get_as_set_by_name(name, used_by_client=None):
-            for as_set in as_sets:
-                if as_set.name == name:
+            for as_set_bundle in irrdb_info:
+                if as_set_bundle.id == new_bundle.id:
+                    # A bundle for the same AS-SET names has been already
+                    # added to irrdb_info: use it.
                     if used_by_client:
-                        as_set.used_by.append(used_by_client)
-                    return as_set
-            return None
+                        as_set_bundle.used_by.append(used_by_client)
+                    return as_set_bundle.id
 
-        def use_as_set(as_set_name, used_by_client=None):
-            # Returns: id of the added/existing as_set
-            existing = get_as_set_by_name(as_set_name)
-            if existing:
-                if used_by_client:
-                    existing.used_by.append(used_by_client)
-                return existing.id
+            if used_by_client:
+                new_bundle.used_by.append(used_by_client)
 
-            new_as_set_id = normalize_as_set_id(as_set_name)
-            as_sets.append(AS_SET(
-                new_as_set_id,
-                as_set_name,
-                [used_by_client] if used_by_client else []
-            ))
-            return new_as_set_id
+            irrdb_info.append(new_bundle)
+            return new_bundle.id
 
-        # Add to as_sets all the AS-SETs reported in the 'asns' section.
+        # Add to irrdb_info all the AS-SET bundles reported in the 'asns' section.
         for asn in self.builder.cfg_asns.cfg["asns"]:
-            self.builder.cfg_asns[asn]["as_set_ids"] = []
+            self.builder.cfg_asns[asn]["as_set_bundle_ids"] = []
 
             if not self.builder.cfg_asns[asn]["as_sets"]:
                 continue
 
-            for as_set in self.builder.cfg_asns[asn]["as_sets"]:
-                self.builder.cfg_asns[asn]["as_set_ids"].append(
-                    use_as_set(as_set)
-                )
+            self.builder.cfg_asns[asn]["as_set_bundle_ids"].append(
+                use_as_set(self.builder.cfg_asns[asn]["as_sets"])
+            )
 
-        # Add to as_sets all the AS-SETs reported in the 'clients' section.
+        # Add to irrdb_info all the AS-SET bundles reported in the 'clients' section.
         for client in self.builder.cfg_clients.cfg["clients"]:
             client_irrdb = client["cfg"]["filtering"]["irrdb"]
-            client_irrdb["as_set_ids"] = []
+            client_irrdb["as_set_bundle_ids"] = []
 
             if not client_irrdb["enforce_origin_in_as_set"] and \
                 not client_irrdb["enforce_prefix_in_as_set"] and \
@@ -215,17 +228,16 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
 
             if self.builder.ip_ver is not None:
                 ip = client["ip"]
-                if ipaddr.IPAddress(ip).version != self.builder.ip_ver:
+                if IPAddress(ip).version != self.builder.ip_ver:
                     # The address family of this client is not the
                     # current one used to build the configuration.
                     continue
 
             if client_irrdb["as_sets"]:
                 # Client has its own specific set of AS-SETs.
-                for as_set in client_irrdb["as_sets"]:
-                    client_irrdb["as_set_ids"].append(
-                        use_as_set(as_set, "client {}".format(client["id"]))
-                    )
+                client_irrdb["as_set_bundle_ids"].append(
+                    use_as_set(client_irrdb["as_sets"], "client {}".format(client["id"]))
+                )
                 continue
 
             # Client needs AS-SETs info but has not its own set of AS-SETs.
@@ -236,10 +248,12 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
             asn = "AS{}".format(client["asn"])
             if asn in self.builder.cfg_asns.cfg["asns"] and \
                 self.builder.cfg_asns.cfg["asns"][asn]["as_sets"]:
-                for as_set in self.builder.cfg_asns.cfg["asns"][asn]["as_sets"]:
-                    client_irrdb["as_set_ids"].append(
-                        use_as_set(as_set, "client {}".format(client["id"]))
+                client_irrdb["as_set_bundle_ids"].append(
+                    use_as_set(
+                        self.builder.cfg_asns.cfg["asns"][asn]["as_sets"],
+                        "client {}".format(client["id"])
                     )
+                )
                 continue
 
             # If one or more AS-SETs have been found on PeeringDB, use them.
@@ -249,11 +263,9 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
                              "Using those obtained from PeeringDB: {}.".format(
                                     client["id"], ", ".join(as_sets_from_pdb)
                                 ))
-                for as_set_from_pdb in as_sets_from_pdb:
-                    client_irrdb["as_set_ids"].append(
-                        use_as_set(as_set_from_pdb,
-                                   "client {}".format(client["id"]))
-                    )
+                client_irrdb["as_set_bundle_ids"].append(
+                    use_as_set(as_sets_from_pdb, "client {}".format(client["id"]))
+                )
                 continue
 
             # No AS-SETs found for the client's ASN in the 'asns' section.
@@ -262,21 +274,21 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
                                 client["id"], client["asn"]
                             ))
 
-            client_irrdb["as_set_ids"].append(
-                use_as_set("AS{}".format(client["asn"]),
+            client_irrdb["as_set_bundle_ids"].append(
+                use_as_set(["AS{}".format(client["asn"])],
                            "client {}".format(client["id"]))
             )
 
         # Removing unreferenced AS-SETs.
-        for as_set in as_sets:
-            if not as_set.used_by:
+        for as_set_bundle in irrdb_info:
+            if not as_set_bundle.used_by:
                 logging.debug("Removing unreferenced AS-SET: "
-                              "{}".format(as_set.name))
-        as_sets = [as_set for as_set in as_sets if as_set.used_by]
+                              "{}".format(as_set_bundle.name))
+        irrdb_info = [bundle for bundle in irrdb_info if bundle.used_by]
 
-        self.builder.as_sets = {}
-        for as_set in as_sets:
-            self.builder.as_sets[as_set.id] = as_set
+        self.builder.irrdb_info = {}
+        for as_set_bundle in irrdb_info:
+            self.builder.irrdb_info[as_set_bundle.id] = as_set_bundle
 
     def _config_thread(self, thread):
         thread.ip_ver = self.builder.ip_ver
@@ -290,9 +302,9 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
 
     def add_tasks(self):
         # Enqueuing tasks.
-        for as_set_id, as_set in self.builder.as_sets.items():
-            used_by = ", ".join(as_set.used_by)
-            self.tasks_q.put((as_set, used_by, as_set.name))
+        for as_set_bundle_id, as_set_bundle in iteritems(self.builder.irrdb_info):
+            used_by = ", ".join(as_set_bundle.used_by)
+            self.tasks_q.put(as_set_bundle)
 
 class IRRDBConfigEnricher_OriginASNs(IRRDBConfigEnricher):
 

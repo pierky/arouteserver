@@ -102,12 +102,12 @@ class ClientsFromPeeringDBCommand(ARouteServerCommand):
         if not netixlanid:
             return False
 
-        print("Building clients list from "
-              "PeeringDB Net IX LAN ID {}...".format(netixlanid))
+        sys.stderr.write("Building clients list from "
+                         "PeeringDB Net IX LAN ID {}...\n".format(netixlanid))
 
         data = clients_from_peeringdb(
             netixlanid,
-            program_config.get("cache_dir")
+            program_config.get_dir("cache_dir")
         )
         yaml.safe_dump(data, self.args.output_file, default_flow_style=False)
 

@@ -31,6 +31,15 @@ It can be scheduled at regular intervals to re-build the configuration (for exam
         cp /etc/bird/bird4.new /etc/bird/bird4.conf && \
         birdcl configure
 
+Resources and ``MemoryError`` error messages
+--------------------------------------------
+
+When building large configurations, for example those generated when huge AS-SETs need to be expanded, the program may crash with a ``MemoryError`` message or other memory related exceptions. In this case, raising *ulimits* for max locked memory (``-l``) and stack size (``-s``) has proven to be effective in solving the problem:
+
+.. code-block:: console
+
+  $ ulimit -l 2097152; ulimit -s 8192; arouteserver openbgpd ...
+
 Library
 -------
 

@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from six.moves import input
 import sys
 
 def ask(text, options=None, default=None):
@@ -35,7 +36,7 @@ def ask(text, options=None, default=None):
     sys.stdout.write(msg)
 
     try:
-        answer = raw_input()
+        answer = input()
     except:
         return False, None
 

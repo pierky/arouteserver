@@ -37,6 +37,8 @@ Installation
 
            pip install arouteserver
 
+        .. note:: If you receive the following error while installing the program (or its requirements) using pip: **error in setup command: 'install_requires' must be a string or list of strings containing valid project/version requirement specifiers** then please upgrade the *setuptools* package that is used in your virtualenv: ``pip install --upgrade setuptools``.
+
 3. Setup your system layout (confirmation will be asked before each action):
 
   .. code:: bash

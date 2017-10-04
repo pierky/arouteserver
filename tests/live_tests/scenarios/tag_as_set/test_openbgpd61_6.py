@@ -16,9 +16,9 @@
 import os
 import unittest
 
-from base import TagASSetScenario_WithAS_SETs, TagASSetScenario_EmptyAS_SETs, \
+from .base import TagASSetScenario_WithAS_SETs, TagASSetScenario_EmptyAS_SETs, \
                  TagASSetScenarioOpenBGPD61
-from data6 import TagASSetScenario_Data6
+from .data6 import TagASSetScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD61Instance
 

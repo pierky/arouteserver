@@ -16,14 +16,10 @@
 import logging
 import json
 import re
-try:
-    # For Python 3.0 and later
-    from urllib.request import urlopen
-except ImportError:
-    # Fall back to Python 2's urllib2
-    from urllib2 import urlopen
+import six
+from six.moves.urllib.request import urlopen
 
-from peering_db import PeeringDBNet, PeeringDBNoInfoError
+from .peering_db import PeeringDBNet, PeeringDBNoInfoError
 from .errors import EuroIXError, EuroIXSchemaError
 
 class EuroIXMemberList(object):
@@ -47,9 +43,7 @@ class EuroIXMemberList(object):
 
         if isinstance(input_object, dict):
             self.raw_data = input_object
-        elif isinstance(input_object, file):
-            raw = input_object.read()
-        else:
+        elif isinstance(input_object, six.string_types):
             try:
                 response = urlopen(input_object)
                 raw = response.read().decode("utf-8")
@@ -60,6 +54,8 @@ class EuroIXMemberList(object):
                         input_object, str(e)
                     )
                 )
+        else:
+            raw = input_object.read().decode("utf-8")
 
         if not self.raw_data:
             try:
@@ -77,13 +73,13 @@ class EuroIXMemberList(object):
     @staticmethod
     def _check_type(v, vname, expected_type):
         if expected_type is str:
-            expected_type_set = (str, unicode)
+            expected_type_set = six.string_types
         else:
             expected_type_set = expected_type
 
         if not isinstance(v, expected_type_set):
             if expected_type is int and \
-                isinstance(v, (str, unicode)) and \
+                isinstance(v, six.string_types) and \
                 v.isdigit():
                 return int(v)
 
@@ -148,7 +144,7 @@ class EuroIXMemberList(object):
             client["asn"] = asn
             if description:
                 client["description"] = description.encode("ascii", "replace")
-                client["description"] = client["description"].strip()
+                client["description"] = client["description"].strip().decode("utf-8")
             return client
 
         def get_descr(member, connection=None):
@@ -184,8 +180,7 @@ class EuroIXMemberList(object):
                 return "unknown"
 
         def normalize_bgp_community(s):
-            res = s
-            res = res.encode("ascii", "ignore")
+            res = s.decode("utf-8")
             res = res.lower()
             res = re.sub("[\\/\[ \]+-]", "_", res)
             res = re.sub("[^0-9a-zA-Z_]", "", res)
@@ -253,6 +248,7 @@ class EuroIXMemberList(object):
                 if fetch_from_pdb:
                     try:
                         pdb_net = PeeringDBNet(client["asn"])
+                        pdb_net.load_data()
                     except PeeringDBNoInfoError:
                         continue
 

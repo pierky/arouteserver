@@ -34,19 +34,20 @@ match from {{ client.ip  }} set community NO_ADVERTISE
 # tag with not_present_in_as_set
 {{		add_communities("match from " ~ client.ip, comm_object_not_present_in_as_set) -}}
 {%	endif %}
-{%      if client.cfg.filtering.irrdb.as_set_ids %}
+{%      if client.cfg.filtering.irrdb.as_set_bundle_ids %}
 # verifying if route is authorized by AS-SETs
-{%              for as_set_id in client.cfg.filtering.irrdb.as_set_ids %}
+{%              for as_set_bundle_id in client.cfg.filtering.irrdb.as_set_bundle_ids|sort %}
 {%			if objects == "asns" %}
 {%				set matching_element = "source-as" %}
 {%			else %}
 {%				set matching_element = "prefix" %}
 {%			endif %}
-{%			set as_set_data = as_sets[as_set_id][objects] %}
+{%			set as_set_bundle = irrdb_info[as_set_bundle_id] %}
+{%			set as_set_data = as_set_bundle[objects] %}
 {%			if as_set_data %}
 {%				for subset in as_set_data|batch(50) %}
-{%					set matching_element = matching_element + " $AS_SET_" ~ as_set_id ~ "_" ~ objects ~ loop.index %}
-match from {{ client.ip }} {{ matching_element }} set community delete NO_ADVERTISE	# {{ as_sets[as_set_id].name }}
+{%					set matching_element = matching_element + " $AS_SET_" ~ as_set_bundle.name ~ "_" ~ objects ~ loop.index %}
+match from {{ client.ip }} {{ matching_element }} set community delete NO_ADVERTISE	# {{ as_set_bundle.name }}
 {%					if tag_as_set %}
 {%						if comm_object_not_present_in_as_set|community_is_set %}
 # removing not_present_in_as_set community from matching routes
@@ -59,7 +60,7 @@ match from {{ client.ip }} {{ matching_element }} set community delete NO_ADVERT
 {%					endif %}
 {%				endfor %}
 {%			else %}
-# AS-SET {{ as_set_id }} referenced but empty.
+# AS-SET {{ as_set_bundle.name }} referenced but empty.
 {%                      endif %}
 {%              endfor %}
 {%      endif %}
@@ -89,13 +90,13 @@ transit_free_asns="{ {{ cfg.filtering.transit_free.asns|join(", ") }} }"
 {{ "pre-filters"|include_local_file -}}
 
 # Scrub communities from inbound routes
-{% for name in cfg.communities if cfg.communities[name].type == "outbound" %}
+{% for name in cfg.communities|sort if cfg.communities[name].type == "outbound" %}
 {%	if cfg.communities[name]|community_is_set %}
 # {{ name }}
 {{ del_communities("match from group clients", cfg.communities[name]) -}}
 {%	endif %}
 {% endfor %}
-{% for name in cfg.custom_communities %}
+{% for name in cfg.custom_communities|sort %}
 {%	if cfg.custom_communities[name]|community_is_set %}
 # {{ name }}
 {{ del_communities("match from group clients", cfg.custom_communities[name]) -}}
@@ -105,7 +106,7 @@ transit_free_asns="{ {{ cfg.filtering.transit_free.asns|join(", ") }} }"
 {% if cfg.communities.rejected_route_announced_by|community_is_set %}
 # Set the 'rejected_route_announced_by' community for all the clients.
 # It will be removed later if the route is not invalid
-{%	for client in clients if client.ip is current_ipver %}
+{%	for client in clients|sort(attribute="id") if client.ip is current_ipver %}
 {%		if client.cfg.filtering.reject_policy.policy == "tag" %}
 {{			add_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, dyn_val=client.asn) }}
 {%		endif %}
@@ -128,7 +129,7 @@ match from group clients prefix 2000::/3 or-longer set community delete NO_ADVER
 # Prefix: bogon
 {{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients prefix $bogons", 2) }}
 
-{% for client in clients if client.ip is current_ipver %}
+{% for client in clients|sort(attribute="id") if client.ip is current_ipver %}
 
 # ---------------------------------------------
 # client {{ client.id }}, inbound
@@ -146,7 +147,7 @@ match from group clients prefix 2000::/3 or-longer set community delete NO_ADVER
 
 {% if client.cfg.attach_custom_communities %}
 # Attach custom BGP communities
-{%	for name in client.cfg.attach_custom_communities %}
+{%	for name in client.cfg.attach_custom_communities|sort %}
 # {{ name }}
 {{ add_communities("match from " ~ client.ip, cfg.custom_communities[name]) -}}
 {%	endfor %}
@@ -157,12 +158,12 @@ match from {{ client.ip }} set community NO_ADVERTISE
 {% if client.cfg.filtering.next_hop.policy == "strict" %}
 match from {{ client.ip }} nexthop {{ client.ip }} set community delete NO_ADVERTISE
 {% elif client.cfg.filtering.next_hop.policy == "authorized_addresses" %}
-{%	for addr in client.cfg.filtering.next_hop.authorized_addresses_list if addr|ipaddr_ver == client.ip|ipaddr_ver %}
+{%	for addr in client.cfg.filtering.next_hop.authorized_addresses_list|sort if addr|ipaddr_ver == client.ip|ipaddr_ver %}
 match from {{ client.ip }} nexthop {{ addr }} set community delete NO_ADVERTISE
 {%	endfor %}
 {% else %}
 {%	for asn, same_as_clients in clients|groupby("asn") if asn == client.asn %}
-{%		for same_as_client in same_as_clients if same_as_client.ip|ipaddr_ver == client.ip|ipaddr_ver %}
+{%		for same_as_client in same_as_clients|sort(attribute="ip") if same_as_client.ip|ipaddr_ver == client.ip|ipaddr_ver %}
 match from {{ client.ip }} nexthop {{ same_as_client.ip }} set community delete NO_ADVERTISE
 {%		endfor %}
 {%	endfor %}
@@ -390,7 +391,7 @@ allow to {{ client.ip }}
 {% endfor %}
 
 # Scrub communities from outbound routes
-{% for name in cfg.communities if cfg.communities[name].type == "inbound" %}
+{% for name in cfg.communities|sort if cfg.communities[name].type == "inbound" %}
 {%	if cfg.communities[name]|community_is_set %}
 # {{ name }}
 {{ del_communities("match to group clients", cfg.communities[name], cfg.communities[name].peer_as, replace_dyn_val="*") -}}
@@ -398,7 +399,7 @@ allow to {{ client.ip }}
 {% endfor %}
 
 # Scrub prepending communities
-{% for comm_name in cfg.communities if "prepend" in comm_name and cfg.communities[comm_name]|community_is_set %}
+{% for comm_name in cfg.communities|sort if "prepend" in comm_name and cfg.communities[comm_name]|community_is_set %}
 match to group clients set { {{ write_prepending_comm(cfg.communities[comm_name], 0, cfg.rtt_thresholds) }} }
 {% endfor %}
 
