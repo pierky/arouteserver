@@ -403,6 +403,11 @@ cfg:
     # client will be treated as if the gshut community was missing
     # and the community stripped off.
     #
+    # OpenBGPD: GRACEFUL_SHUTDOWN BGP community is not implemented
+    # on versions up to 6.1. Since ATOW a newer version has not been
+    # released yet, there is no way to enable gshut on configs built
+    # for OpenBGPD.
+
     # Can be overwritten on a client-by-client basis.
     #
     # Default: False

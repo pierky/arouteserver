@@ -690,7 +690,8 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
     IGNORABLE_ISSUES = ["path_hiding", "transit_free_action", "rpki",
                         "add_path", "max_prefix_action",
                         "blackhole_filtering_rewrite_ipv6_nh",
-                        "large_communities", "extended_communities"]
+                        "large_communities", "extended_communities",
+                        "graceful_shutdown"]
 
     @staticmethod
     def community_is_set(comm):
@@ -904,6 +905,17 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                           "that use the 'peer_as' macro.".format(
                               str(e) + " " if str(e) else ""
                             ))
+
+        if self.cfg_general["graceful_shutdown"]["enabled"] and \
+            version.parse(self.target_version or "6.0") <= version.parse("6.1"):
+            if not self.process_bgpspeaker_specific_compatibility_issue(
+                "graceful_shutdown",
+                "GRACEFUL_SHUTDOWN BGP community is not implemented "
+                "on OpenBGPD versions up to 6.1. Since ATOW a newer "
+                "version has not been released yet, there is no way "
+                "to enable gshut on configs built for OpenBGPD."
+            ):
+                res = False
 
         return res
 
