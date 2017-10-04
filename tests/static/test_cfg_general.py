@@ -298,6 +298,11 @@ class TestConfigParserGeneral(TestConfigParserBase):
             self._contains_err("Error parsing 'rewrite_next_hop_ipv4' at 'cfg.blackhole_filtering' level - Invalid IPv4 address: {}.".format(ip))
         self._test_optional(self.cfg["blackhole_filtering"], "rewrite_next_hop_ipv4")
 
+    def test_graceful_shutdown(self):
+        """{}: graceful shutdown"""
+        self.assertEqual(self.cfg["graceful_shutdown"]["enabled"], False)
+        self._test_bool_val(self.cfg["graceful_shutdown"], "enabled")
+
     def test_rtt_thresholds_str(self):
         """{}: RTT thresholds as comma separated string"""
         self.cfg._load_from_yaml(
@@ -1036,6 +1041,10 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 "rewrite_next_hop_ipv6": None,
                 "announce_to_client": True,
                 "add_noexport": True,
+            },
+            "graceful_shutdown": {
+                "enabled": False,
+                "local_pref": 0
             }
         }
 
@@ -1110,6 +1119,10 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 "rewrite_next_hop_ipv6": None,
                 "announce_to_client": True,
                 "add_noexport": True,
+            },
+            "graceful_shutdown": {
+                "enabled": False,
+                "local_pref": 0
             }
         }
 

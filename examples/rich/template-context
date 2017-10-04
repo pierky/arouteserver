@@ -270,6 +270,9 @@ cfg:
       - 6830
       - 7018
       - 12956
+  graceful_shutdown:
+    enabled: false
+    local_pref: 0
   gtsm: true
   passive: true
   path_hiding: true
@@ -634,6 +637,8 @@ clients:
       rpki:
         enabled: true
         reject_invalid: true
+    graceful_shutdown:
+      enabled: false
     gtsm: true
     passive: true
     prepend_rs_as: false
@@ -675,6 +680,8 @@ clients:
       rpki:
         enabled: true
         reject_invalid: true
+    graceful_shutdown:
+      enabled: false
     gtsm: true
     passive: true
     prepend_rs_as: false
@@ -716,6 +723,8 @@ clients:
       rpki:
         enabled: true
         reject_invalid: true
+    graceful_shutdown:
+      enabled: false
     gtsm: true
     passive: true
     prepend_rs_as: false

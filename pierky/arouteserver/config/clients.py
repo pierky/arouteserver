@@ -105,6 +105,9 @@ class ConfigParserClients(ConfigParserBase):
                 "blackhole_filtering" : {
                    "announce_to_client": ValidatorBool(mandatory=False),
                 },
+                "graceful_shutdown": {
+                    "enabled": ValidatorBool(mandatory=False)
+                },
                 "attach_custom_communities": ValidatorListOf(ValidatorText,
                                                              mandatory=False)
             }

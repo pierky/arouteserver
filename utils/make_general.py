@@ -308,6 +308,10 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
             CfgStatement("announce_to_client", pre_comment=True),
             CfgStatement("add_noexport", pre_comment=True)
         ]),
+        CfgStatement("graceful_shutdown", t="Graceful shutdown", post_comment=True, sub=[
+            CfgStatement("enabled", pre_comment=True),
+            CfgStatement("local_pref", pre_comment=True)
+        ]),
         CfgStatement("rtt_thresholds", t="RTT thresholds", pre_comment=True),
         CfgStatement("communities", t="BGP Communities", post_comment=True, sub=[
 

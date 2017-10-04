@@ -176,6 +176,10 @@ class ConfigParserGeneral(ConfigParserBase):
                     "rewrite_next_hop_ipv6": ValidatorIPv6Addr(mandatory=False),
                     "add_noexport": ValidatorBool(default=True),
                 },
+                "graceful_shutdown": {
+                    "enabled": ValidatorBool(mandatory=True, default=False),
+                    "local_pref": ValidatorUInt(mandatory=True, default=0)
+                },
                 "rtt_thresholds": ValidatorRTTThresholds(mandatory=False),
                 "communities": {
                 },

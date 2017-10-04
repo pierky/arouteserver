@@ -181,6 +181,8 @@ class TestConfigParserClients(TestConfigParserBase):
             "          limit_ipv6: 20",
             "        reject_policy:",
             "          policy: tag",
+            "      graceful_shutdown:",
+            "        enabled: True",
             "  - asn: 333",
             "    ip: 192.0.2.31",
             "    cfg:",
@@ -234,6 +236,7 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["limit_ipv6"], 20)
         self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["peering_db"], False)
         self.assertEqual(client["cfg"]["filtering"]["reject_policy"]["policy"], "tag")
+        self.assertEqual(client["cfg"]["graceful_shutdown"]["enabled"], True)
 
         client = self.cfg[2]
         self.assertEqual(client["cfg"]["filtering"]["next_hop"]["policy"], "authorized_addresses")
