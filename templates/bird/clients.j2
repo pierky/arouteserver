@@ -272,6 +272,10 @@ filter announce_to_{{ client.id }} {
 
 	scrub_communities_out();
 
+	{% if perform_graceful_shutdown %}
+	perform_graceful_shutdown();
+	{% endif %}
+
 	{% if "post_announce_to_client"|hook_is_set %}
 	if !hook_post_announce_to_client({{ client.asn }}, {{ client.ip }}, "{{ client.id }}") then
 		reject "hook_post_announce_to_client returned false - NOT ANNOUNCING ", net, " TO {{ client.id}}";

@@ -1,0 +1,11 @@
+clients:
+        - asn: 1
+          ip:
+          - "192.0.2.11"
+          - "2001:db8:1:1::11"
+          description: "AS1_1 client"
+        - asn: 2
+          ip:
+          - "192.0.2.21"
+          - "2001:db8:1:1::21"
+          description: "AS2_1 client"

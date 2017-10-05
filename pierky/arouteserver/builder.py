@@ -123,7 +123,8 @@ class ConfigBuilder(object):
                  bgpq3_path="bgpq3", bgpq3_host=IRRDBInfo.BGPQ3_DEFAULT_HOST,
                  bgpq3_sources=IRRDBInfo.BGPQ3_DEFAULT_SOURCES,
                  rtt_getter_path=None, threads=4,
-                 ip_ver=None, ignore_errors=[], live_tests=False,
+                 ip_ver=None, perform_graceful_shutdown=False,
+                 ignore_errors=[], live_tests=False,
                  local_files=[], local_files_dir=None, target_version=None,
                  cfg_general=None, cfg_bogons=None, cfg_clients=None,
                  cfg_roas=None,
@@ -201,6 +202,16 @@ class ConfigBuilder(object):
                 Same of:
 
                 - *--ip-ver* CLI argument.
+
+            perform_graceful_shutdown (bool): when True, the output config
+                includes an outbound policy which is applied to BGP
+                sessions toward the clients and which adds the
+                GRACEFUL_SHUTDOWN BGP community (65535:0) to all the
+                routes that the route server announces to them.
+
+                Same of:
+
+                - *--perform-graceful-shutdown* CLI argument.
 
             target_version (str): the BGP daemon target version for which the
                 output configuration must be generated.
@@ -356,6 +367,8 @@ class ConfigBuilder(object):
             self.ip_ver = int(self.ip_ver)
             if self.ip_ver not in (4, 6):
                 raise BuilderError("Invalid IP version: {}".format(ip_ver))
+
+        self.perform_graceful_shutdown = perform_graceful_shutdown
 
         self.ignore_errors = ignore_errors or []
 
@@ -534,6 +547,7 @@ class ConfigBuilder(object):
         self.data["live_tests"] = self.live_tests
         self.data["rtt_based_functions_are_used"] = \
             self.cfg_general.rtt_based_functions_are_used
+        self.data["perform_graceful_shutdown"] = self.perform_graceful_shutdown
 
         def ipaddr_ver(ip):
             return IPNetwork(ip).version
@@ -906,7 +920,8 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                               str(e) + " " if str(e) else ""
                             ))
 
-        if self.cfg_general["graceful_shutdown"]["enabled"] and \
+        if (self.cfg_general["graceful_shutdown"]["enabled"] or \
+            self.perform_graceful_shutdown) and \
             version.parse(self.target_version or "6.0") <= version.parse("6.1"):
             if not self.process_bgpspeaker_specific_compatibility_issue(
                 "graceful_shutdown",

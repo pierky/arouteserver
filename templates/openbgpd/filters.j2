@@ -412,5 +412,9 @@ allow to {{ client.ip }}
 match to group clients set { {{ write_prepending_comm(cfg.communities[comm_name], 0, cfg.rtt_thresholds) }} }
 {% endfor %}
 
+{% if perform_graceful_shutdown and "6.2"|target_version_ge %}
+match to group clients set community GRACEFUL_SHUTDOWN
+{% endif %}
+
 {{ "post-filters"|include_local_file -}}
 

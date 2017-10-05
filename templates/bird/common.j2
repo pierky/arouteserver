@@ -407,3 +407,9 @@ function prevent_graceful_shutdown() {
 	}
 }
 {% endif %}
+
+{% if perform_graceful_shutdown %}
+function perform_graceful_shutdown() {
+	bgp_community.add((65535, 0));
+}
+{% endif %}
