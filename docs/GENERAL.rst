@@ -740,6 +740,7 @@ When **enabled** is True, the route server processes the routes
 that are tagged with the GRACEFUL_SHUTDOWN BGP community
 (65535:0) accordingly to draft-ietf-grow-bgp-gshut, that is
 it lowers their LOCAL_PREF to the value set in **local_pref**.
+(https://tools.ietf.org/html/draft-ietf-grow-bgp-gshut-11)
 
 - ``enabled``:
   Enable processing of GRACEFUL_SHUTDOWN BGP community.
@@ -758,6 +759,10 @@ it lowers their LOCAL_PREF to the value set in **local_pref**.
   and the community stripped off.
 
 
+  OpenBGPD: GRACEFUL_SHUTDOWN BGP community is not implemented
+  on versions up to 6.1. Since ATOW a newer version has not been
+  released yet, there is no way to enable gshut on configs built
+  for OpenBGPD.
   Can be overwritten on a client-by-client basis.
 
 

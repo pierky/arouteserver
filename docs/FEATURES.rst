@@ -64,6 +64,11 @@ Features
   - signalling via BGP Communities (`BLACKHOLE <https://tools.ietf.org/html/rfc7999#section-5>`_ and custom communities);
   - client-by-client control over propagation.
 
+- **Graceful shutdown** support:
+
+  - honor the **GRACEFUL_SHUTDOWN** BGP community received from clients (`draft-ietf-grow-bgp-gshut-11 <https://tools.ietf.org/html/draft-ietf-grow-bgp-gshut-11>`_);
+  - allow to perform a graceful shutdown of the route server itself.
+
 - Control and informative communities:
 
   - prefix/origin ASN present/not present in **IRRDB data**;

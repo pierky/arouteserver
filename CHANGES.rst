@@ -3,6 +3,11 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New feature: `Graceful BGP session shutdown <https://tools.ietf.org/html/draft-ietf-grow-bgp-gshut-11>`_ support, to honor GRACEFUL_SHUTDOWN communities received from clients and also to perform graceful shutdown of the route server itself (``--perform-graceful-shutdown`` `command line argument <https://arouteserver.readthedocs.io/en/latest/USAGE.html#perform-graceful-shutdown>`__).
+
 v0.11.0
 -------
 

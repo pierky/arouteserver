@@ -389,6 +389,7 @@ cfg:
     # that are tagged with the GRACEFUL_SHUTDOWN BGP community
     # (65535:0) accordingly to draft-ietf-grow-bgp-gshut, that is
     # it lowers their LOCAL_PREF to the value set in 'local_pref'.
+    # (https://tools.ietf.org/html/draft-ietf-grow-bgp-gshut-11)
 
     # Enable processing of GRACEFUL_SHUTDOWN BGP community.
     #
