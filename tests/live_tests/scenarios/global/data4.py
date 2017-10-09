@@ -91,5 +91,9 @@ class BasicScenario_Data4(object):
 
         "AS102_no_asset":           "102.0.1.0/24",
 
+        "AS103_allowed_prefixes":   "103.0.0.0/16",
+        "AS103_gshut_1":            "103.0.1.0/24",
+        "AS103_gshut_2":            "103.0.2.0/24",
+
         "Default_route":            "0.0.0.0/0",
     }

@@ -15,13 +15,23 @@ protocol static own_prefixes {
 filter to_the_rs {
 	if net = {{ data.AS1_good3 }} then
 		bgp_next_hop = {{ data.AS1_1_IPAddress }};
+	if net = {{ data.AS103_gshut_1 }} then {
+		bgp_community.add((65535, 0));
+	}
 	accept;
 }
-
+filter from_rs {
+	# AS1 must announce AS103_gshut_* to test gshut.
+	if net = {{ data.AS103_gshut_1 }} then
+		reject;
+	if net = {{ data.AS103_gshut_2 }} then
+		reject;
+	accept;
+}
 protocol bgp the_rs {
 	local as 1;
 	neighbor {{ data.rs_IPAddress }} as 999;
-	import all;
+	import filter from_rs;
 	export filter to_the_rs;
 	connect delay time 1;
 	connect retry time 1;

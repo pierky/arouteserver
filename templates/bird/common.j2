@@ -393,3 +393,23 @@ int dyn_val;
 	bgp_local_pref = 1;
 }
 {% endif %}
+
+{% if cfg.graceful_shutdown.enabled %}
+function honor_graceful_shutdown() {
+	if (65535, 0) ~ bgp_community then {
+		bgp_local_pref = {{ cfg.graceful_shutdown.local_pref }};
+	}
+}
+
+function prevent_graceful_shutdown() {
+	if (65535, 0) ~ bgp_community then {
+		bgp_community.delete([(65535, 0)]);
+	}
+}
+{% endif %}
+
+{% if perform_graceful_shutdown %}
+function perform_graceful_shutdown() {
+	bgp_community.add((65535, 0));
+}
+{% endif %}

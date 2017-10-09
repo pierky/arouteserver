@@ -92,5 +92,9 @@ class BasicScenario_Data6(object):
         "AS102_no_asset":           "3102:0:1::/48",
         "AS101_no_ipv6_gl_uni":     "8000:1::/32",
 
+        "AS103_allowed_prefixes":   "3103:0::/32",
+        "AS103_gshut_1":            "3103:0:1::/48",
+        "AS103_gshut_2":            "3103:0:2::/48",
+
         "Default_route":            "::/0",
     }

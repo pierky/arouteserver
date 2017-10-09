@@ -30,7 +30,7 @@ Setting up the environment to run live tests
 
   .. code:: bash
 
-     network create --ipv6 --subnet=192.0.2.0/24 --subnet=2001:db8:1:1::/64 arouteserver
+     docker network create --ipv6 --subnet=192.0.2.0/24 --subnet=2001:db8:1:1::/64 arouteserver
 
 3. Route server client instances used in live tests are based on BIRD 1.6.3, as well as the BIRD-based version of the route server used in built-in live tests; the ``pierky/bird:1.6.3`` image is expected to be found on the local Docker repository.
    Build the Docker image (or pull it from `Dockerhub <https://hub.docker.com/r/pierky/bird/>`_):

@@ -1,0 +1,24 @@
+router id 192.0.2.11;
+define myas = 1;
+
+log "/var/log/bird.log" all;
+log syslog all;
+debug protocols all;
+
+protocol device { }
+
+protocol static own_prefixes {
+        route {{ data.prefix_1a }} reject;
+        route {{ data.prefix_1b }} reject;
+}
+
+protocol bgp the_rs {
+	local as myas;
+	neighbor {{ data.rs_IPAddress }} as 999;
+	next hop self;
+	import all;
+	export all;
+	connect delay time 1;
+	connect retry time 1;
+	missing lladdr ignore;
+}

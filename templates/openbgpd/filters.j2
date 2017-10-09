@@ -235,6 +235,15 @@ allow quick from {{ client.ip }} community BLACKHOLE
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " prefix ::/0 prefixlen " ~ min_pref_len ~ " >< " ~ max_pref_len, 13) }}
 {% endif %}
 
+{% if cfg.graceful_shutdown.enabled and "6.2"|target_version_ge %}
+# Graceful shutdown
+{%	if client.cfg.graceful_shutdown.enabled %}
+match from {{ client.ip }} community GRACEFUL_SHUTDOWN set localpref {{ cfg.graceful_shutdown.local_pref }}
+{%	else %}
+match from {{ client.ip }} community GRACEFUL_SHUTDOWN set community delete GRACEFUL_SHUTDOWN
+{%	endif %}
+{% endif %}
+
 {{ del_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, replace_dyn_val=client.asn) }}
 allow quick from {{ client.ip }}
 
@@ -402,6 +411,10 @@ allow to {{ client.ip }}
 {% for comm_name in cfg.communities|sort if "prepend" in comm_name and cfg.communities[comm_name]|community_is_set %}
 match to group clients set { {{ write_prepending_comm(cfg.communities[comm_name], 0, cfg.rtt_thresholds) }} }
 {% endfor %}
+
+{% if perform_graceful_shutdown and "6.2"|target_version_ge %}
+match to group clients set community GRACEFUL_SHUTDOWN
+{% endif %}
 
 {{ "post-filters"|include_local_file -}}
 

@@ -42,6 +42,8 @@ clients:
                                 as_sets:
                                 - "AS-AS2"
                                 - "AS-AS2_CUSTOMERS"
+                graceful_shutdown:
+                        enabled: False
         - asn: 3
           ip:
           - "192.0.2.31"

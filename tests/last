@@ -45,6 +45,7 @@ General config parser: dyn_val macro usage in communities ... ok
 General config parser: enforce_origin_in_as_set ... ok
 General config parser: enforce_prefix_in_as_set ... ok
 General config parser: global_black_list_pref ... ok
+General config parser: graceful shutdown ... ok
 General config parser: gtsm ... ok
 General config parser: ipv4_pref_len ... ok
 General config parser: ipv6_pref_len ... ok
@@ -125,7 +126,7 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 125 tests in 10.357s
+Ran 126 tests in 9.343s
 
 OK
 Live test, BIRD, hooks example, IPv4: setting instances up...
@@ -136,7 +137,7 @@ Live test, BIRD, hooks example, IPv6: instances setup ... ok
 Live test, BIRD, hooks example, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 2 tests in 8.940s
+Ran 2 tests in 8.706s
 
 OK
 Live test, BIRD, BGP communities, IPv4: setting instances up...
@@ -219,7 +220,7 @@ Live test, OpenBGPD 6.1, BGP communities, IPv6: custom BGP community scrubbed ..
 Live test, OpenBGPD 6.1, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 66 tests in 415.403s
+Ran 66 tests in 411.026s
 
 OK (SKIP=6)
 Live test, BIRD, default config, IPv4: setting instances up...
@@ -236,7 +237,7 @@ Live test, OpenBGPD 6.0, default config, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, default config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 161.413s
+Ran 4 tests in 160.777s
 
 OK
 Live test, BIRD, global scenario, IPv4: setting instances up...
@@ -281,6 +282,8 @@ Live test, BIRD, global scenario, IPv4: blackholed prefixes as seen by enabled c
 Live test, BIRD, global scenario, IPv4: blackholed prefixes as seen by enabled clients (std_cust) ... ok
 Live test, BIRD, global scenario, IPv4: blackholed prefixes not seen by not enabled clients ... ok
 Live test, BIRD, global scenario, IPv4: blackholed prefixes triggered via unsupported lrg comms ... SKIP: Large comms are supported here
+Live test, BIRD, global scenario, IPv4: gshut by an enabled client ... ok
+Live test, BIRD, global scenario, IPv4: gshut by an not enabled client ... ok
 Live test, BIRD, global scenario, IPv4: control communities, announce to AS1 only ... ok
 Live test, BIRD, global scenario, IPv4: control communities, don't announce to any ... ok
 Live test, BIRD, global scenario, IPv4: control communities, announce to all except AS1 ... ok
@@ -352,6 +355,8 @@ Live test, BIRD, global scenario, IPv4, tag: blackholed prefixes as seen by enab
 Live test, BIRD, global scenario, IPv4, tag: blackholed prefixes as seen by enabled clients (std_cust) ... ok
 Live test, BIRD, global scenario, IPv4, tag: blackholed prefixes not seen by not enabled clients ... ok
 Live test, BIRD, global scenario, IPv4, tag: blackholed prefixes triggered via unsupported lrg comms ... SKIP: Large comms are supported here
+Live test, BIRD, global scenario, IPv4, tag: gshut by an enabled client ... ok
+Live test, BIRD, global scenario, IPv4, tag: gshut by an not enabled client ... ok
 Live test, BIRD, global scenario, IPv4, tag: control communities, announce to AS1 only ... ok
 Live test, BIRD, global scenario, IPv4, tag: control communities, don't announce to any ... ok
 Live test, BIRD, global scenario, IPv4, tag: control communities, announce to all except AS1 ... ok
@@ -421,6 +426,8 @@ Live test, BIRD, global scenario, IPv6: blackholed prefixes as seen by enabled c
 Live test, BIRD, global scenario, IPv6: blackholed prefixes as seen by enabled clients (std_cust) ... ok
 Live test, BIRD, global scenario, IPv6: blackholed prefixes not seen by not enabled clients ... ok
 Live test, BIRD, global scenario, IPv6: blackholed prefixes triggered via unsupported lrg comms ... SKIP: Large comms are supported here
+Live test, BIRD, global scenario, IPv6: gshut by an enabled client ... ok
+Live test, BIRD, global scenario, IPv6: gshut by an not enabled client ... ok
 Live test, BIRD, global scenario, IPv6: control communities, announce to AS1 only ... ok
 Live test, BIRD, global scenario, IPv6: control communities, don't announce to any ... ok
 Live test, BIRD, global scenario, IPv6: control communities, announce to all except AS1 ... ok
@@ -492,6 +499,8 @@ Live test, BIRD, global scenario, IPv6, tag: blackholed prefixes as seen by enab
 Live test, BIRD, global scenario, IPv6, tag: blackholed prefixes as seen by enabled clients (std_cust) ... ok
 Live test, BIRD, global scenario, IPv6, tag: blackholed prefixes not seen by not enabled clients ... ok
 Live test, BIRD, global scenario, IPv6, tag: blackholed prefixes triggered via unsupported lrg comms ... SKIP: Large comms are supported here
+Live test, BIRD, global scenario, IPv6, tag: gshut by an enabled client ... ok
+Live test, BIRD, global scenario, IPv6, tag: gshut by an not enabled client ... ok
 Live test, BIRD, global scenario, IPv6, tag: control communities, announce to AS1 only ... ok
 Live test, BIRD, global scenario, IPv6, tag: control communities, don't announce to any ... ok
 Live test, BIRD, global scenario, IPv6, tag: control communities, announce to all except AS1 ... ok
@@ -563,6 +572,8 @@ Live test, OpenBGPD 6.0, global scenario, IPv4: blackholed prefixes as seen by e
 Live test, OpenBGPD 6.0, global scenario, IPv4: blackholed prefixes as seen by enabled clients (std_cust) ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: blackholed prefixes not seen by not enabled clients ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: blackholed prefixes triggered via unsupported lrg comms ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv4: gshut by an enabled client ... SKIP: GRACEFUL_SHUTDOWN not yet released by OpenBGPD
+Live test, OpenBGPD 6.0, global scenario, IPv4: gshut by an not enabled client ... SKIP: GRACEFUL_SHUTDOWN not yet released by OpenBGPD
 Live test, OpenBGPD 6.0, global scenario, IPv4: control communities, announce to AS1 only ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: control communities, don't announce to any ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: control communities, announce to all except AS1 ... ok
@@ -634,6 +645,8 @@ Live test, OpenBGPD 6.0, global scenario, IPv6: blackholed prefixes as seen by e
 Live test, OpenBGPD 6.0, global scenario, IPv6: blackholed prefixes as seen by enabled clients (std_cust) ... SKIP: Not working on OpenBGPD 6.0
 Live test, OpenBGPD 6.0, global scenario, IPv6: blackholed prefixes not seen by not enabled clients ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: blackholed prefixes triggered via unsupported lrg comms ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv6: gshut by an enabled client ... SKIP: GRACEFUL_SHUTDOWN not yet released by OpenBGPD
+Live test, OpenBGPD 6.0, global scenario, IPv6: gshut by an not enabled client ... SKIP: GRACEFUL_SHUTDOWN not yet released by OpenBGPD
 Live test, OpenBGPD 6.0, global scenario, IPv6: control communities, announce to AS1 only ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: control communities, don't announce to any ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: control communities, announce to all except AS1 ... ok
@@ -705,6 +718,8 @@ Live test, OpenBGPD 6.1, global scenario, IPv4: blackholed prefixes as seen by e
 Live test, OpenBGPD 6.1, global scenario, IPv4: blackholed prefixes as seen by enabled clients (std_cust) ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv4: blackholed prefixes not seen by not enabled clients ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv4: blackholed prefixes triggered via unsupported lrg comms ... SKIP: Large comms are supported here
+Live test, OpenBGPD 6.1, global scenario, IPv4: gshut by an enabled client ... SKIP: GRACEFUL_SHUTDOWN not yet released by OpenBGPD
+Live test, OpenBGPD 6.1, global scenario, IPv4: gshut by an not enabled client ... SKIP: GRACEFUL_SHUTDOWN not yet released by OpenBGPD
 Live test, OpenBGPD 6.1, global scenario, IPv4: control communities, announce to AS1 only ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv4: control communities, don't announce to any ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv4: control communities, announce to all except AS1 ... ok
@@ -776,6 +791,8 @@ Live test, OpenBGPD 6.1, global scenario, IPv6: blackholed prefixes as seen by e
 Live test, OpenBGPD 6.1, global scenario, IPv6: blackholed prefixes as seen by enabled clients (std_cust) ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv6: blackholed prefixes not seen by not enabled clients ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv6: blackholed prefixes triggered via unsupported lrg comms ... SKIP: Large comms are supported here
+Live test, OpenBGPD 6.1, global scenario, IPv6: gshut by an enabled client ... SKIP: GRACEFUL_SHUTDOWN not yet released by OpenBGPD
+Live test, OpenBGPD 6.1, global scenario, IPv6: gshut by an not enabled client ... SKIP: GRACEFUL_SHUTDOWN not yet released by OpenBGPD
 Live test, OpenBGPD 6.1, global scenario, IPv6: control communities, announce to AS1 only ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv6: control communities, don't announce to any ... ok
 Live test, OpenBGPD 6.1, global scenario, IPv6: control communities, announce to all except AS1 ... ok
@@ -805,9 +822,24 @@ Live test, OpenBGPD 6.1, global scenario, IPv6: prefixes received by clients: AS
 Live test, OpenBGPD 6.1, global scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 548 tests in 869.602s
+Ran 564 tests in 872.775s
 
-OK (SKIP=44)
+OK (SKIP=52)
+Live test, BIRD, gshut, IPv4: setting instances up...
+Live test, BIRD, gshut, IPv4: instances setup ... ok
+Live test, BIRD, gshut, IPv4: sessions are up ... ok
+Live test, BIRD, gshut, IPv4: clients receive routes tagged with GRACEFUL_SHUTDOWN ... ok
+Live test, BIRD, gshut, IPv4: stopping instances...
+Live test, BIRD, gshut, IPv6: setting instances up...
+Live test, BIRD, gshut, IPv6: instances setup ... ok
+Live test, BIRD, gshut, IPv6: sessions are up ... ok
+Live test, BIRD, gshut, IPv6: clients receive routes tagged with GRACEFUL_SHUTDOWN ... ok
+Live test, BIRD, gshut, IPv6: stopping instances...
+
+----------------------------------------------------------------------
+Ran 6 tests in 26.521s
+
+OK
 Live test, BIRD, max-prefix, IPv4: setting instances up...
 Live test, BIRD, max-prefix, IPv4: instances setup ... ok
 Live test, BIRD, max-prefix, IPv4: sessions are up ... ok
@@ -846,7 +878,7 @@ Live test, OpenBGPD 6.1, max-prefix, IPv6: clients log max-prefix notification .
 Live test, OpenBGPD 6.1, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 24 tests in 468.655s
+Ran 24 tests in 469.429s
 
 OK
 Live test, BIRD, path hiding, mitigation off, IPv4: setting instances up...
@@ -959,7 +991,7 @@ Live test, OpenBGPD 6.1, path hiding, mitigation on, IPv6: AS3 and AS4 don't rec
 Live test, OpenBGPD 6.1, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 84 tests in 888.575s
+Ran 84 tests in 890.926s
 
 OK (SKIP=8)
 
@@ -981,7 +1013,7 @@ Live test, OpenBGPD 6.0, examples, rich config, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, examples, rich config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 162.336s
+Ran 4 tests in 160.753s
 
 OK
 Live test, BIRD, RPKI INVALID tagging, IPv4: setting instances up...
@@ -1014,7 +1046,7 @@ Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS3 valid prefix, sub prefix 
 Live test, BIRD, RPKI INVALID tagging, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 24 tests in 52.574s
+Ran 24 tests in 52.440s
 
 OK
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: setting instances up...
@@ -1157,7 +1189,7 @@ Live test, OpenBGPD 6.1, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin
 Live test, OpenBGPD 6.1, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 114 tests in 840.061s
+Ran 114 tests in 838.714s
 
 OK
 Live test, BIRD, 'tag' reject policy scenario, IPv4: setting instances up...
@@ -1252,6 +1284,6 @@ Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: prefixes received b
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 82 tests in 292.331s
+Ran 82 tests in 291.662s
 
 OK (SKIP=4)
