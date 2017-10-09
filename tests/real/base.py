@@ -142,6 +142,8 @@ class TestRealConfigs(ARouteServerTestCase):
                 inst_class = OpenBGPD60Instance
             elif target_ver == "6.1":
                 inst_class = OpenBGPD61Instance
+            elif target_ver == "6.2":
+                inst_class = OpenBGPD62Instance
             else:
                 raise ValueError("Unknown target_ver: {}".format(target_ver))
 

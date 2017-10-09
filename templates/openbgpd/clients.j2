@@ -12,7 +12,9 @@ group "clients" {
 	neighbor {{ client.ip }} {
 		{{ "client"|include_local_file -}}
 
+{% if "6.2"|target_version_ge %}
 		softreconfig in yes
+{% endif %}
 {%	if client.description %}
 		descr "{{ client.description|replace("\"", "")|truncate(31, true, "...", 0) }}"
 {%	endif %}
