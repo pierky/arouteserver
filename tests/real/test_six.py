@@ -29,8 +29,8 @@ class TestRealConfigs_SIX_OpenBGPD60(TestRealConfigs_SIX,
                                      TestRealConfigs_OpenBGPD60):
     __test__ = True
 
-class TestRealConfigs_SIX_OpenBGPD61(TestRealConfigs_SIX,
-                                     TestRealConfigs_OpenBGPD61):
+class TestRealConfigs_SIX_OpenBGPD62(TestRealConfigs_SIX,
+                                     TestRealConfigs_OpenBGPD62):
     __test__ = True
 
     SKIP_LOAD_NO_RESOURCES = True

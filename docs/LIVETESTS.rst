@@ -55,9 +55,9 @@ OpenBGPD live-tests environment
 
 1. To run an instance of OpenBGPD, KVM is needed. Some info about its installation can be found on the :ref:`External programs` installation section.
 
-2. Setup and install a KVM virtual-machine running OpenBSD 6.0 or 6.1. This VM will be started and stopped many times during tests: don't use a production VM.
+2. Setup and install a KVM virtual-machine running one of the supported versions of OpenBSD. This VM will be started and stopped many times during tests: don't use a production VM.
 
-   - By default, the VM name must be ``arouteserver_openbgpd60`` or ``arouteserver_openbgpd61``; this can be changed by setting the ``VIRSH_DOMAINNAME`` environment variable before running the tests.
+   - By default, the VM name must be ``arouteserver_openbgpd60`` or ``arouteserver_openbgpd61`` or ``arouteserver_openbgpd62``; this can be changed by setting the ``VIRSH_DOMAINNAME`` environment variable before running the tests.
 
    - The VM must be connected to the same Docker network created above: the commands ``ip link show`` and ``ifconfig`` can be used to determine the local network name needed when creating the VM:
 
@@ -81,7 +81,7 @@ OpenBGPD live-tests environment
       sudo virsh pool-define-as --name vms_pool --type dir --target ~/vms
       sudo virsh pool-start vms_pool
       sudo virt-install \
-        -n arouteserver_openbgpd \
+        -n arouteserver_openbgpd60 \
         -r 512 \
         --vcpus=1 \
         --os-variant=openbsd4 \

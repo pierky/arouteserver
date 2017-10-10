@@ -29,8 +29,8 @@ class TestRealConfigs_SwissIX_OpenBGPD60(TestRealConfigs_SwissIX,
                                          TestRealConfigs_OpenBGPD60):
     __test__ = True
 
-class TestRealConfigs_SwissIX_OpenBGPD61(TestRealConfigs_SwissIX,
-                                         TestRealConfigs_OpenBGPD61):
+class TestRealConfigs_SwissIX_OpenBGPD62(TestRealConfigs_SwissIX,
+                                         TestRealConfigs_OpenBGPD62):
     __test__ = True
 
     SKIP_LOAD_NO_RESOURCES = True

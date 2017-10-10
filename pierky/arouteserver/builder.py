@@ -575,6 +575,11 @@ class ConfigBuilder(object):
                 return version.parse(self.target_version) >= version.parse(v)
             return False
 
+        def target_version_le(v):
+            if self.target_version:
+                return version.parse(self.target_version) <= version.parse(v)
+            return False
+
         def get_normalized_rtt(v):
             if not v:
                 return 0
@@ -595,6 +600,7 @@ class ConfigBuilder(object):
         env.filters["ipaddr_ver"] = ipaddr_ver
         env.filters["include_local_file"] = include_local_file
         env.filters["target_version_ge"] = target_version_ge
+        env.filters["target_version_le"] = target_version_le
         env.filters["get_normalized_rtt"] = get_normalized_rtt
 
         self.enrich_j2_environment(env)
@@ -698,7 +704,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                        "footer"]
     LOCAL_FILES_BASE_DIR = "/etc/bgpd"
 
-    AVAILABLE_VERSION = ["6.0", "6.1"]
+    AVAILABLE_VERSION = ["6.0", "6.1", "6.2"]
     DEFAULT_VERSION = "6.0"
 
     IGNORABLE_ISSUES = ["path_hiding", "transit_free_action", "rpki",
@@ -926,9 +932,15 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             if not self.process_bgpspeaker_specific_compatibility_issue(
                 "graceful_shutdown",
                 "GRACEFUL_SHUTDOWN BGP community is not implemented "
-                "on OpenBGPD versions up to 6.1. Since ATOW a newer "
-                "version has not been released yet, there is no way "
-                "to enable gshut on configs built for OpenBGPD."
+                "on OpenBGPD versions prior to 6.2. By marking this issue "
+                "as ignored the graceful shutdown option will not be "
+                "considered and the feature will be not included into the "
+                "configuration. "
+                "If the release running on the route server is 6.2 or later "
+                "please consider to enable this feature by "
+                "setting the configuration target version to a value "
+                "greater than or equal to '6.2' (--target-version command "
+                "line argument)."
             ):
                 res = False
 

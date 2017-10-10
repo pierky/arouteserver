@@ -32,12 +32,12 @@ Some *realistic* scenarios have been tested using ARouteServer by feeding it wit
 
   The `full description <_static/tests_real_general.html>`__ of the configuration can be found in the *general.html* file, automatically generated from the `general.yml file <https://github.com/pierky/arouteserver/blob/master/tests/real/general.yml>`__.
 
-- For each IXP, configurations for BIRD and OpenBGPD (both 6.0 and 6.1) have been finally built using ARouteServer and loaded into an instance of their respective daemon, to verify that no errors occurred:
+- For each IXP, configurations for BIRD and OpenBGPD (both 6.0 and 6.2) have been finally built using ARouteServer and loaded into an instance of their respective daemon, to verify that no errors occurred:
 
   - for BIRD, a Docker container has been used;
 
   - for OpenBGPD 6.0, a virtual server has been instantiated on `Vultr <https://www.vultr.com/>`__ in order to have enough resources to process the configuration;
 
-  - for OpenBGPD 6.1, only a few configurations were tested because of lack of resources on my machines :-/
+  - for OpenBGPD 6.2, only a few configurations were tested because of lack of resources on my machines :-/
 
 **Results** can be found within the *tests/real/last* file `(here on GitHub <https://github.com/pierky/arouteserver/blob/master/tests/real/last>`__).

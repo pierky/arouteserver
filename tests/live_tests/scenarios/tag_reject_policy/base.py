@@ -19,8 +19,7 @@ import unittest
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
-                                                          OpenBGPD60Instance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class TagRejectPolicyScenario(LiveScenario):
@@ -368,8 +367,3 @@ class TagRejectPolicyScenarioOpenBGPD60(TagRejectPolicyScenarioOpenBGPD):
     __test__ = False
 
     TARGET_VERSION = "6.0"
-
-class TagRejectPolicyScenarioOpenBGPD61(TagRejectPolicyScenarioOpenBGPD):
-    __test__ = False
-
-    TARGET_VERSION = "6.1"

@@ -29,8 +29,8 @@ class TestRealConfigs_STHIX_OpenBGPD60(TestRealConfigs_STHIX,
                                        TestRealConfigs_OpenBGPD60):
     __test__ = True
 
-class TestRealConfigs_STHIX_OpenBGPD61(TestRealConfigs_STHIX,
-                                       TestRealConfigs_OpenBGPD61):
+class TestRealConfigs_STHIX_OpenBGPD62(TestRealConfigs_STHIX,
+                                       TestRealConfigs_OpenBGPD62):
     __test__ = True
 
     SKIP_LOAD_NO_RESOURCES = True

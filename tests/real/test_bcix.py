@@ -30,8 +30,8 @@ class TestRealConfigs_BCIX_OpenBGPD60(TestRealConfigs_BCIX,
                                       TestRealConfigs_OpenBGPD60):
     __test__ = True
 
-class TestRealConfigs_BCIX_OpenBGPD61(TestRealConfigs_BCIX,
-                                      TestRealConfigs_OpenBGPD61):
+class TestRealConfigs_BCIX_OpenBGPD62(TestRealConfigs_BCIX,
+                                      TestRealConfigs_OpenBGPD62):
     __test__ = True
 
     SKIP_LOAD_NO_RESOURCES = True

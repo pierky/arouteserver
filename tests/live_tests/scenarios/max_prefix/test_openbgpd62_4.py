@@ -13,22 +13,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .base import *
+import os
+import unittest
 
+from .base import MaxPrefixScenarioOpenBGPD62
+from .data4 import MaxPrefixScenario_Data4
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD62Instance
 
-class TestRealConfigs_INEX(object):
+@unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
+class MaxPrefixScenario_OpenBGPDIPv4(MaxPrefixScenario_Data4,
+                                     MaxPrefixScenarioOpenBGPD62):
 
-    IXP = "INEX"
-    CLIENTS_FILE = "inex.yml"
-
-class TestRealConfigs_INEX_BIRD(TestRealConfigs_INEX,
-                                TestRealConfigs_BIRD):
     __test__ = True
+    SKIP_ON_TRAVIS = True
 
-class TestRealConfigs_INEX_OpenBGPD60(TestRealConfigs_INEX,
-                                      TestRealConfigs_OpenBGPD60):
-    __test__ = True
-
-class TestRealConfigs_INEX_OpenBGPD62(TestRealConfigs_INEX,
-                                      TestRealConfigs_OpenBGPD62):
-    __test__ = True
+    SHORT_DESCR = "Live test, OpenBGPD 6.2, max-prefix, IPv4"
+    RS_INSTANCE_CLASS = OpenBGPD62Instance
+    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
