@@ -31,6 +31,9 @@ class OpenBGPDRoute(Route):
             if bgp_comm == "BLACKHOLE":
                 res.append("65535:666")
                 continue
+            if bgp_comm == "GRACEFUL_SHUTDOWN":
+                res.append("65535:0")
+                continue
             res.append(bgp_comm)
         return res
 

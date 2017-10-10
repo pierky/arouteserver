@@ -581,8 +581,8 @@ class BasicScenario(LiveScenario):
     def test_075_gshut_enabled_client(self):
         """{}: gshut by an enabled client"""
 
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("GRACEFUL_SHUTDOWN not yet released by OpenBGPD")
+        if isinstance(self.rs, OpenBGPD60Instance):
+            raise unittest.SkipTest("GRACEFUL_SHUTDOWN not supported by OpenBGPD 6.0")
 
         prefix = self.DATA["AS103_gshut_1"]
 
@@ -604,10 +604,10 @@ class BasicScenario(LiveScenario):
                            next_hop=self.AS2, std_comms=[])
 
     def test_075_gshut_not_enabled_client(self):
-        """{}: gshut by an not enabled client"""
+        """{}: gshut by a not enabled client"""
 
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("GRACEFUL_SHUTDOWN not yet released by OpenBGPD")
+        if isinstance(self.rs, OpenBGPD60Instance):
+            raise unittest.SkipTest("GRACEFUL_SHUTDOWN not supported by OpenBGPD 6.0")
 
         prefix = self.DATA["AS103_gshut_2"]
 

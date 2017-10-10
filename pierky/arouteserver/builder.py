@@ -932,9 +932,15 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             if not self.process_bgpspeaker_specific_compatibility_issue(
                 "graceful_shutdown",
                 "GRACEFUL_SHUTDOWN BGP community is not implemented "
-                "on OpenBGPD versions up to 6.1. Since ATOW a newer "
-                "version has not been released yet, there is no way "
-                "to enable gshut on configs built for OpenBGPD."
+                "on OpenBGPD versions prior to 6.2. By marking this issue "
+                "as ignored the graceful shutdown option will not be "
+                "considered and the feature will be not included into the "
+                "configuration. "
+                "If the release running on the route server is 6.2 or later "
+                "please consider to enable this feature by "
+                "setting the configuration target version to a value "
+                "greater than or equal to '6.2' (--target-version command "
+                "line argument)."
             ):
                 res = False
 
