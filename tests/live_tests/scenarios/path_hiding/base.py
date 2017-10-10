@@ -182,10 +182,10 @@ class PathHidingScenarioOpenBGPD60(PathHidingScenarioOpenBGPD):
 
     TARGET_VERSION = "6.0"
 
-class PathHidingScenarioOpenBGPD61(PathHidingScenarioOpenBGPD):
+class PathHidingScenarioOpenBGPD62(PathHidingScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.1"
+    TARGET_VERSION = "6.2"
 
 class PathHidingScenario_MitigationOn(object):
 

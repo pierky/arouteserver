@@ -575,6 +575,11 @@ class ConfigBuilder(object):
                 return version.parse(self.target_version) >= version.parse(v)
             return False
 
+        def target_version_le(v):
+            if self.target_version:
+                return version.parse(self.target_version) <= version.parse(v)
+            return False
+
         def get_normalized_rtt(v):
             if not v:
                 return 0
@@ -595,6 +600,7 @@ class ConfigBuilder(object):
         env.filters["ipaddr_ver"] = ipaddr_ver
         env.filters["include_local_file"] = include_local_file
         env.filters["target_version_ge"] = target_version_ge
+        env.filters["target_version_le"] = target_version_le
         env.filters["get_normalized_rtt"] = get_normalized_rtt
 
         self.enrich_j2_environment(env)
@@ -699,7 +705,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
     LOCAL_FILES_BASE_DIR = "/etc/bgpd"
 
     AVAILABLE_VERSION = ["6.0", "6.1", "6.2"]
-    DEFAULT_VERSION = "6.1"
+    DEFAULT_VERSION = "6.0"
 
     IGNORABLE_ISSUES = ["path_hiding", "transit_free_action", "rpki",
                         "add_path", "max_prefix_action",

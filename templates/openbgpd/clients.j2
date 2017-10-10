@@ -11,14 +11,14 @@ group "clients" {
 {%	endif %}
 	neighbor {{ client.ip }} {
 		{{ "client"|include_local_file -}}
+		remote-as {{ client.asn }}
 
-{% if "6.2"|target_version_ge %}
+{%	if "6.1"|target_version_le %}
 		softreconfig in yes
-{% endif %}
+{%	endif %}
 {%	if client.description %}
 		descr "{{ client.description|replace("\"", "")|truncate(31, true, "...", 0) }}"
 {%	endif %}
-		remote-as {{ client.asn }}
 {%	if client.cfg.passive %}
 		passive
 {%	endif %}

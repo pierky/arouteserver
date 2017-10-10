@@ -183,7 +183,7 @@ class MaxPrefixScenarioOpenBGPD60(MaxPrefixScenarioOpenBGPD):
 
     TARGET_VERSION = "6.0"
 
-class MaxPrefixScenarioOpenBGPD61(MaxPrefixScenarioOpenBGPD):
+class MaxPrefixScenarioOpenBGPD62(MaxPrefixScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.1"
+    TARGET_VERSION = "6.2"

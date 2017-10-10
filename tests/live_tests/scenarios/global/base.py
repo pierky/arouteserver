@@ -1027,7 +1027,7 @@ class BasicScenarioOpenBGPD60(BasicScenarioOpenBGPD):
 
     TARGET_VERSION = "6.0"
 
-class BasicScenarioOpenBGPD61(BasicScenarioOpenBGPD):
+class BasicScenarioOpenBGPD62(BasicScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.1"
+    TARGET_VERSION = "6.2"

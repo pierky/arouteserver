@@ -16,32 +16,34 @@
 import os
 import unittest
 
-from .base import TagASSetScenario_WithAS_SETs, TagASSetScenario_EmptyAS_SETs, \
-                 TagASSetScenarioOpenBGPD61
-from .data6 import TagASSetScenario_Data6
+from .base import PathHidingScenario_MitigationOn, \
+                 PathHidingScenario_MitigationOff, \
+                 PathHidingScenarioOpenBGPD62
+from .data6 import PathHidingScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD61Instance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD62Instance
 
 @unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
-class TagASSetScenario_WithAS_SETs_OpenBGPDIPv6(TagASSetScenario_WithAS_SETs,
-                                                TagASSetScenario_Data6,
-                                                TagASSetScenarioOpenBGPD61):
+class PathHidingScenario_MitigationOn_BIRDIPv6(PathHidingScenario_Data6,
+                                               PathHidingScenario_MitigationOn,
+                                               PathHidingScenarioOpenBGPD62):
     __test__ = True
     SKIP_ON_TRAVIS = True
 
-    RS_INSTANCE_CLASS = OpenBGPD61Instance
+    RS_INSTANCE_CLASS = OpenBGPD62Instance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.1, tag prefix/origin in AS-SET, IPv6"
+    SHORT_DESCR = "Live test, OpenBGPD 6.2, path hiding, mitigation on, IPv6"
 
 @unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
-class TagASSetScenario_EmptyAS_SETs_OpenBGPDIPv6(TagASSetScenario_EmptyAS_SETs,
-                                                 TagASSetScenario_Data6,
-                                                 TagASSetScenarioOpenBGPD61):
+class PathHidingScenario_MitigationOff_BIRDIPv6(PathHidingScenario_Data6,
+                                                PathHidingScenario_MitigationOff,
+                                                PathHidingScenarioOpenBGPD62):
     __test__ = True
     SKIP_ON_TRAVIS = True
 
-    RS_INSTANCE_CLASS = OpenBGPD61Instance
+    RS_INSTANCE_CLASS = OpenBGPD62Instance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.1, tag prefix/origin empty AS-SET, IPv6"
+    SHORT_DESCR = "Live test, OpenBGPD 6.2, path hiding, mitigation off, IPv6"
+

@@ -259,7 +259,7 @@ class BGPCommunitiesScenarioOpenBGPD60(BGPCommunitiesScenarioOpenBGPD):
 
     TARGET_VERSION = "6.0"
 
-class BGPCommunitiesScenarioOpenBGPD61(BGPCommunitiesScenarioOpenBGPD):
+class BGPCommunitiesScenarioOpenBGPD62(BGPCommunitiesScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.1"
+    TARGET_VERSION = "6.2"
