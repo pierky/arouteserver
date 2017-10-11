@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+set -o pipefail
 
 function on_exit() {
 	# ding ding ding ding
