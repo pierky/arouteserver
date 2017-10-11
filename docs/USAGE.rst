@@ -40,6 +40,8 @@ Prior to a maintenance that requires the route server shutdown a graceful shutdo
 
 Please note that the configuration built when using this argument should be used only **temporarly** before starting the maintenance; it should be **replaced** with the **production configuration** before the route server is reloaded.
 
+.. _memoryerror:
+
 Resources and ``MemoryError`` error messages
 --------------------------------------------
 
