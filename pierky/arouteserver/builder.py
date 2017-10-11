@@ -123,7 +123,8 @@ class ConfigBuilder(object):
                  bgpq3_path="bgpq3", bgpq3_host=IRRDBInfo.BGPQ3_DEFAULT_HOST,
                  bgpq3_sources=IRRDBInfo.BGPQ3_DEFAULT_SOURCES,
                  rtt_getter_path=None, threads=4,
-                 ip_ver=None, ignore_errors=[], live_tests=False,
+                 ip_ver=None, perform_graceful_shutdown=False,
+                 ignore_errors=[], live_tests=False,
                  local_files=[], local_files_dir=None, target_version=None,
                  cfg_general=None, cfg_bogons=None, cfg_clients=None,
                  cfg_roas=None,
@@ -201,6 +202,16 @@ class ConfigBuilder(object):
                 Same of:
 
                 - *--ip-ver* CLI argument.
+
+            perform_graceful_shutdown (bool): when True, the output config
+                includes an outbound policy which is applied to BGP
+                sessions toward the clients and which adds the
+                GRACEFUL_SHUTDOWN BGP community (65535:0) to all the
+                routes that the route server announces to them.
+
+                Same of:
+
+                - *--perform-graceful-shutdown* CLI argument.
 
             target_version (str): the BGP daemon target version for which the
                 output configuration must be generated.
@@ -356,6 +367,8 @@ class ConfigBuilder(object):
             self.ip_ver = int(self.ip_ver)
             if self.ip_ver not in (4, 6):
                 raise BuilderError("Invalid IP version: {}".format(ip_ver))
+
+        self.perform_graceful_shutdown = perform_graceful_shutdown
 
         self.ignore_errors = ignore_errors or []
 
@@ -534,6 +547,7 @@ class ConfigBuilder(object):
         self.data["live_tests"] = self.live_tests
         self.data["rtt_based_functions_are_used"] = \
             self.cfg_general.rtt_based_functions_are_used
+        self.data["perform_graceful_shutdown"] = self.perform_graceful_shutdown
 
         def ipaddr_ver(ip):
             return IPNetwork(ip).version
@@ -561,6 +575,11 @@ class ConfigBuilder(object):
                 return version.parse(self.target_version) >= version.parse(v)
             return False
 
+        def target_version_le(v):
+            if self.target_version:
+                return version.parse(self.target_version) <= version.parse(v)
+            return False
+
         def get_normalized_rtt(v):
             if not v:
                 return 0
@@ -581,6 +600,7 @@ class ConfigBuilder(object):
         env.filters["ipaddr_ver"] = ipaddr_ver
         env.filters["include_local_file"] = include_local_file
         env.filters["target_version_ge"] = target_version_ge
+        env.filters["target_version_le"] = target_version_le
         env.filters["get_normalized_rtt"] = get_normalized_rtt
 
         self.enrich_j2_environment(env)
@@ -684,13 +704,14 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                        "footer"]
     LOCAL_FILES_BASE_DIR = "/etc/bgpd"
 
-    AVAILABLE_VERSION = ["6.0", "6.1"]
+    AVAILABLE_VERSION = ["6.0", "6.1", "6.2"]
     DEFAULT_VERSION = "6.0"
 
     IGNORABLE_ISSUES = ["path_hiding", "transit_free_action", "rpki",
                         "add_path", "max_prefix_action",
                         "blackhole_filtering_rewrite_ipv6_nh",
-                        "large_communities", "extended_communities"]
+                        "large_communities", "extended_communities",
+                        "graceful_shutdown"]
 
     @staticmethod
     def community_is_set(comm):
@@ -904,6 +925,24 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                           "that use the 'peer_as' macro.".format(
                               str(e) + " " if str(e) else ""
                             ))
+
+        if (self.cfg_general["graceful_shutdown"]["enabled"] or \
+            self.perform_graceful_shutdown) and \
+            version.parse(self.target_version or "6.0") <= version.parse("6.1"):
+            if not self.process_bgpspeaker_specific_compatibility_issue(
+                "graceful_shutdown",
+                "GRACEFUL_SHUTDOWN BGP community is not implemented "
+                "on OpenBGPD versions prior to 6.2. By marking this issue "
+                "as ignored the graceful shutdown option will not be "
+                "considered and the feature will be not included into the "
+                "configuration. "
+                "If the release running on the route server is 6.2 or later "
+                "please consider to enable this feature by "
+                "setting the configuration target version to a value "
+                "greater than or equal to '6.2' (--target-version command "
+                "line argument)."
+            ):
+                res = False
 
         return res
 

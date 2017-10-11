@@ -300,7 +300,7 @@ class TagASSetScenarioOpenBGPD60(TagASSetScenarioOpenBGPD):
 
     TARGET_VERSION = "6.0"
 
-class TagASSetScenarioOpenBGPD61(TagASSetScenarioOpenBGPD):
+class TagASSetScenarioOpenBGPD62(TagASSetScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.1"
+    TARGET_VERSION = "6.2"

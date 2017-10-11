@@ -732,6 +732,65 @@ authorized to advertise."
 
 
 
+Graceful shutdown: ``graceful_shutdown``
++++++++++++++++++++++++++++++++++++++++++
+
+Graceful BGP session shutdown (gshut) can be configured here.
+When **enabled** is True, the route server processes the routes
+that are tagged with the GRACEFUL_SHUTDOWN BGP community
+(65535:0) accordingly to draft-ietf-grow-bgp-gshut, that is
+it lowers their LOCAL_PREF to the value set in **local_pref**.
+(https://tools.ietf.org/html/draft-ietf-grow-bgp-gshut-11)
+
+- ``enabled``:
+  Enable processing of GRACEFUL_SHUTDOWN BGP community.
+
+
+  If **enabled** is False in the general.yml configuration then
+  routes tagged with the GRACEFUL_SHUTDOWN BGP community are
+  treated transparently; the gshut community is not stripped
+  off.
+
+
+  If **enabled** is True in the general.yml configuration but
+  False on a specific client configuration then routes tagged
+  with the GRACEFUL_SHUTDOWN BGP community received from that
+  client will be treated as if the gshut community was missing
+  and the community stripped off.
+
+
+  OpenBGPD: GRACEFUL_SHUTDOWN BGP community is not implemented
+  on versions prior to 6.2.
+  Can be overwritten on a client-by-client basis.
+
+
+  Default: **False**
+
+  Example:
+
+  .. code:: yaml
+
+     enabled: False
+
+
+
+- ``local_pref``:
+  Value used to set the new LOCAL_PREF attribute of routes
+  processed accordingly to gshut.
+  Meaningful only when **enabled** is True.
+
+
+  Default: **0**
+
+  Example:
+
+  .. code:: yaml
+
+     local_pref: 0
+
+
+
+
 RTT thresholds: ``rtt_thresholds``
 +++++++++++++++++++++++++++++++++++
 

@@ -42,7 +42,7 @@ How it works
 
 #. `Jinja2`_ built-in templates are used to render the final route server's configuration file.
 
-   Currently, **BIRD** (1.6.3) and **OpenBGPD** (OpenBSD 6.0 and 6.1) are supported.
+   Currently, **BIRD** (1.6.3) and **OpenBGPD** (OpenBSD 6.0, 6.1 and 6.2) are supported.
 
 **Validation** and testing are performed using the built-in **live tests** framework: `Docker`_ instances are used to simulate several scenarios, and more custom scenarios can be built on the basis of the user's needs. More details on the `Live tests <https://arouteserver.readthedocs.io/en/latest/LIVETESTS.html>`_ section.
 
@@ -73,6 +73,11 @@ Features
   - optional **NEXT_HOP rewriting**;
   - signalling via BGP Communities (`BLACKHOLE <https://tools.ietf.org/html/rfc7999#section-5>`_ and custom communities);
   - client-by-client control over propagation.
+
+- **Graceful shutdown** support:
+
+  - honor the **GRACEFUL_SHUTDOWN** BGP community received from clients (`draft-ietf-grow-bgp-gshut-11 <https://tools.ietf.org/html/draft-ietf-grow-bgp-gshut-11>`_);
+  - allow to perform a graceful shutdown of the route server itself.
 
 - Control and informative communities:
 

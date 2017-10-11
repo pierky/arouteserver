@@ -34,9 +34,9 @@ class BasicScenario(LiveScenario):
 
     AS_SET = {
         "AS-AS1": [1],
-        "AS-AS1_CUSTOMERS": [101],
+        "AS-AS1_CUSTOMERS": [101, 103],
         "AS-AS2": [2],
-        "AS-AS2_CUSTOMERS": [101],
+        "AS-AS2_CUSTOMERS": [101, 103],
     }
     R_SET = {
         "AS-AS1": [
@@ -44,13 +44,15 @@ class BasicScenario(LiveScenario):
             "pref_len1"
         ],
         "AS-AS1_CUSTOMERS": [
-            "AS101_allowed_prefixes"
+            "AS101_allowed_prefixes",
+            "AS103_allowed_prefixes",
         ],
         "AS-AS2": [
             "AS2_allowed_prefixes"
         ],
         "AS-AS2_CUSTOMERS": [
-            "AS101_allowed_prefixes"
+            "AS101_allowed_prefixes",
+            "AS103_allowed_prefixes",
         ],
     }
     RTT = {
@@ -576,6 +578,56 @@ class BasicScenario(LiveScenario):
         self.log_contains(self.rs, "client {{AS1_2}} not enabled to receive blackhole prefixes - NOT ANNOUNCING {pref} TO {{AS1_2}}".format(pref=self.DATA["AS2_blackhole2"]), {"AS1_2": self.AS1_2})
         self.log_contains(self.rs, "client {{AS1_2}} not enabled to receive blackhole prefixes - NOT ANNOUNCING {pref} TO {{AS1_2}}".format(pref=self.DATA["AS2_blackhole3"]), {"AS1_2": self.AS1_2})
 
+    def test_075_gshut_enabled_client(self):
+        """{}: gshut by an enabled client"""
+
+        if isinstance(self.rs, OpenBGPD60Instance):
+            raise unittest.SkipTest("GRACEFUL_SHUTDOWN not supported by OpenBGPD 6.0")
+
+        prefix = self.DATA["AS103_gshut_1"]
+
+        # AS103's prefix as seen by its upstreams, AS1 and AS2
+        for inst in (self.AS1_1, self.AS1_2):
+            self.receive_route(inst, prefix, as_path="101 103")
+        self.receive_route(self.AS2, prefix, as_path="101 101 103")
+
+        # prefix as seen by the route server (AS1 performed gshut)
+        self.receive_route(self.rs, prefix, as_path="1 101 103",
+                           other_inst=self.AS1_1,
+                           local_pref=5, std_comms=["65535:0"])
+        self.receive_route(self.rs, prefix, as_path="2 101 101 103",
+                           other_inst=self.AS2,
+                           local_pref=100, std_comms=[])
+
+        # prefix as seen by other clients, via AS2 (longest path)
+        self.receive_route(self.AS4, prefix, as_path="2 101 101 103",
+                           next_hop=self.AS2, std_comms=[])
+
+    def test_075_gshut_not_enabled_client(self):
+        """{}: gshut by a not enabled client"""
+
+        if isinstance(self.rs, OpenBGPD60Instance):
+            raise unittest.SkipTest("GRACEFUL_SHUTDOWN not supported by OpenBGPD 6.0")
+
+        prefix = self.DATA["AS103_gshut_2"]
+
+        # AS103's prefix as seen by its upstreams, AS1 and AS2
+        for inst in (self.AS1_1, self.AS1_2):
+            self.receive_route(inst, prefix, as_path="101 101 103")
+        self.receive_route(self.AS2, prefix, as_path="101 103")
+
+        # prefix as seen by the route server (AS2 tried gshut but not enabled)
+        self.receive_route(self.rs, prefix, as_path="1 101 101 103",
+                           other_inst=self.AS1_1,
+                           local_pref=100, std_comms=[])
+        self.receive_route(self.rs, prefix, as_path="2 101 103",
+                           other_inst=self.AS2,
+                           local_pref=100, std_comms=[])
+
+        # prefix as seen by other clients, via AS2 (still best path)
+        self.receive_route(self.AS4, prefix, as_path="2 101 103",
+                           next_hop=self.AS2, std_comms=[])
+
     def test_080_control_communities_AS1_only(self):
         """{}: control communities, announce to AS1 only"""
 
@@ -975,7 +1027,7 @@ class BasicScenarioOpenBGPD60(BasicScenarioOpenBGPD):
 
     TARGET_VERSION = "6.0"
 
-class BasicScenarioOpenBGPD61(BasicScenarioOpenBGPD):
+class BasicScenarioOpenBGPD62(BasicScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.1"
+    TARGET_VERSION = "6.2"

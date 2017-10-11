@@ -271,6 +271,16 @@ The NO_EXPORT well-known community is also added.
 
 
 
+{% if cfg.graceful_shutdown.enabled %}
+<h2>Graceful BGP session shutdown</h2>
+
+<ul>
+<li><p>Routes tagged with the <strong>GRACEFUL_SHUTDOWN</strong> BGP community (65535:0) have their LOCAL_PREF attribute lowered to {{ cfg.graceful_shutdown.local_pref }}.</p></li>
+</ul>
+{% endif %}
+
+
+
 <h2>Announcement control via BGP communities</h2>
 
 <table class="table table-striped">

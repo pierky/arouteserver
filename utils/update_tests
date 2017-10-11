@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+set -o pipefail
 
 function on_exit() {
 	# ding ding ding ding
@@ -19,12 +20,14 @@ ROOT="`pwd`"
 TESTS_DIR="`pwd`/tests"
 LAST_RESULTS_DIR="$TESTS_DIR/last_results"
 
-if [ -d "$LAST_RESULTS_DIR" ]; then
+if [ -d "$LAST_RESULTS_DIR" -a -z "$1" ]; then
 	echo "Last results directory already existing: please check and then remove it - rmdir $LAST_RESULTS_DIR"
 	exit
 fi
 
-mkdir -p $LAST_RESULTS_DIR
+if [ ! -d $LAST_RESULTS_DIR ]; then
+	mkdir -p $LAST_RESULTS_DIR
+fi
 
 function join_last_results() {
 	if [ ! -e $LAST_RESULTS_DIR/static.last ]; then

@@ -29,6 +29,6 @@ class TestRealConfigs_GR_IX_OpenBGPD60(TestRealConfigs_GR_IX,
                                        TestRealConfigs_OpenBGPD60):
     __test__ = True
 
-class TestRealConfigs_GR_IX_OpenBGPD61(TestRealConfigs_GR_IX,
-                                       TestRealConfigs_OpenBGPD61):
+class TestRealConfigs_GR_IX_OpenBGPD62(TestRealConfigs_GR_IX,
+                                       TestRealConfigs_OpenBGPD62):
     __test__ = True

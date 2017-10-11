@@ -31,6 +31,17 @@ It can be scheduled at regular intervals to re-build the configuration (for exam
         cp /etc/bird/bird4.new /etc/bird/bird4.conf && \
         birdcl configure
 
+.. _perform-graceful-shutdown:
+
+Route server graceful shutdown
+------------------------------
+
+Prior to a maintenance that requires the route server shutdown a graceful shutdown can be triggered by using the ``--perform-graceful-shutdown`` argument. This option allows to build a temporary configuration that includes an outbound policy which is applied to BGP sessions toward the clients and which adds the `GRACEFUL_SHUTDOWN <https://tools.ietf.org/html/draft-ietf-grow-bgp-gshut-11>`__ BGP community (65535:0) to all the routes that the route server announces to them.
+
+Please note that the configuration built when using this argument should be used only **temporarly** before starting the maintenance; it should be **replaced** with the **production configuration** before the route server is reloaded.
+
+.. _memoryerror:
+
 Resources and ``MemoryError`` error messages
 --------------------------------------------
 

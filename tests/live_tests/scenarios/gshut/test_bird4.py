@@ -13,20 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-import unittest
+from .base import GShutScenarioBIRD
+from .data4 import GShutScenario_Data4
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 
-from .base import BasicScenarioOpenBGPD61
-from .data6 import BasicScenario_Data6
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD61Instance
-
-@unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
-class BasicScenario_OpenBGPDIPv4(BasicScenario_Data6, BasicScenarioOpenBGPD61):
+class GShutScenario_BIRDIPv4(GShutScenario_Data4, GShutScenarioBIRD):
 
     __test__ = True
-    SKIP_ON_TRAVIS = True
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.1, global scenario, IPv6"
-    RS_INSTANCE_CLASS = OpenBGPD61Instance
-    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
+    SHORT_DESCR = "Live test, BIRD, gshut, IPv4"
+    RS_INSTANCE_CLASS = BIRDInstanceIPv4
+    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
+    IP_VER = 4

@@ -33,7 +33,19 @@ filter to_rs {
 		bgp_next_hop = {{ data.AS2_nonclient_nexthop1_nh }};
 	if net = {{ data.AS2_nonclient_nexthop2 }} then
 		bgp_next_hop = {{ data.AS2_nonclient_nexthop2_nh }};
+	if net = {{ data.AS103_gshut_2 }} then {
+		bgp_community.add((65535, 0));
+	}
 
+	accept;
+}
+
+filter from_rs {
+	# AS2 must announce AS103_gshut_* to test gshut.
+	if net = {{ data.AS103_gshut_1 }} then
+		reject;
+	if net = {{ data.AS103_gshut_2 }} then
+		reject;
 	accept;
 }
 
@@ -41,7 +53,7 @@ protocol bgp the_rs {
 	local as 2;
 	neighbor {{ data.rs_IPAddress }} as 999;
 	next hop self;
-	import all;
+	import filter from_rs;
 	export filter to_rs;
 	connect delay time 1;
 	connect retry time 1;
