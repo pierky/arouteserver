@@ -145,7 +145,7 @@ class TestProgramConfig(unittest.TestCase):
 
     def test_060_setup_rm_templates_then_fix(self):
         """Program config: setup, remove templates then fix it"""
-        self.test_050_setup_then_rm_templates
+        self.test_050_setup_then_rm_templates()
 
         self.pr_cfg.setup_templates()
         errors = self.pr_cfg.verify_templates()
