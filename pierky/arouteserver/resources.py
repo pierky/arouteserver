@@ -20,17 +20,13 @@ from .errors import ResourceNotFoundError
 
 
 def get_local_dir(dirname):
-    local_path = dirname
-    if os.path.isdir(local_path):
-        return local_path
-
     pkg_path = pkg_resources.resource_filename("pierky.arouteserver", dirname)
     if os.path.isdir(pkg_path):
         return pkg_path
 
     raise ResourceNotFoundError(
-        "Can't find '{}' directory neither at {} nor at {}".format(
-            dirname, local_path, pkg_path
+        "Can't find '{}' directory at {}".format(
+            dirname, pkg_path
         )
     )
 
@@ -42,15 +38,3 @@ def get_templates_dir():
 
 def get_live_test_skeleton_dir():
     return get_local_dir("tests/live_tests/skeleton")
-
-def get_config_file(filename):
-    config_dir = get_config_dir()
-    path = os.path.join(config_dir, filename)
-    if os.path.isfile(path):
-        return path
-
-    raise ResourceNotFoundError(
-        "Can't find '{}' configuration file at {}".format(
-            filename, config_dir
-        )
-    )
