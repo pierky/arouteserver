@@ -3,6 +3,13 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+v0.12.1
+-------
+
+- Fix an issue that was impacting templates upgrading under certain circumstances.
+
+  Related: `issue #10 on GitHub <https://github.com/pierky/arouteserver/issues/10>`_.
+
 v0.12.0
 -------
 
