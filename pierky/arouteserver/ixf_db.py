@@ -17,7 +17,7 @@ import json
 import six
 from six.moves.urllib.request import urlopen
 
-from .errors import IXFDBError, IXFDBSchemaError
+from .errors import IXFDBError, IXFDBSchemaError, EuroIXSchemaError
 
 class IXFDB(object):
 

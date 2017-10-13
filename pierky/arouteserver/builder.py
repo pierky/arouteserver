@@ -16,7 +16,6 @@
 import logging
 import os
 from packaging import version
-import re
 import sys
 import time
 import yaml
@@ -34,11 +33,11 @@ from .enrichers.pdb_as_set import PeeringDBConfigEnricher_ASSet
 from .enrichers.pdb_max_prefix import PeeringDBConfigEnricher_MaxPrefix
 from .enrichers.rtt import RTTGetterConfigEnricher
 from .errors import MissingDirError, MissingFileError, BuilderError, \
-                    ARouteServerError, PeeringDBError, PeeringDBNoInfoError, \
-                    MissingArgumentError, TemplateRenderingError, \
-                    CompatibilityIssuesError, ConfigError
+                    ARouteServerError, MissingArgumentError, \
+                    TemplateRenderingError, CompatibilityIssuesError, \
+                    ConfigError
 from .ipaddresses import IPNetwork
-from .irrdb import ASSet, RSet, IRRDBInfo
+from .irrdb import IRRDBInfo
 from .cached_objects import CachedObject
 
 
@@ -773,31 +772,27 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
 
         if add_path_clients:
             clients = add_path_clients
+            cnt = len(clients)
             if not self.process_bgpspeaker_specific_compatibility_issue(
                 "add_path",
                 "ADD_PATH not supported by OpenBGPD but "
                 "enabled for the following clients: {}{}.".format(
                     ", ".join(clients[:3]),
-                    "" if len(clients) <= 3 else
-                        " and {} more".format(
-                           len(clients) - 3
-                        )
+                    "" if cnt <= 3 else " and {} more".format(cnt - 3)
                 )
             ):
                 res = False
 
         if max_prefix_action_clients:
             clients = max_prefix_action_clients
+            cnt = len(clients)
             if not self.process_bgpspeaker_specific_compatibility_issue(
                 "max_prefix_action",
                 "Invalid max-prefix 'action' for the following "
                 "clients: {}{}; only 'shutdown' and 'restart' "
                 "are supported by OpenBGPD.".format(
                     ", ".join(clients[:3]),
-                    "" if len(clients) <= 3 else
-                        " and {} more".format(
-                           len(clients) - 3
-                        )
+                    "" if cnt <= 3 else " and {} more".format(cnt - 3)
                 )
             ):
                 res = False

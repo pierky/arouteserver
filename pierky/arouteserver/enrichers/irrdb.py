@@ -181,7 +181,6 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
         # }
 
         irrdb_info = []
-        errors = False
 
         def use_as_set(as_set_names, used_by_client=None):
             # New bundle for the given AS-SET names.
@@ -303,7 +302,6 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
     def add_tasks(self):
         # Enqueuing tasks.
         for as_set_bundle_id, as_set_bundle in iteritems(self.builder.irrdb_info):
-            used_by = ", ".join(as_set_bundle.used_by)
             self.tasks_q.put(as_set_bundle)
 
 class IRRDBConfigEnricher_OriginASNs(IRRDBConfigEnricher):

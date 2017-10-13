@@ -16,8 +16,7 @@
 import logging
 
 from .base import BaseConfigEnricher, BaseConfigEnricherThread
-from ..errors import BuilderError, ARouteServerError, \
-                    PeeringDBError, PeeringDBNoInfoError
+from ..errors import BuilderError, PeeringDBError, PeeringDBNoInfoError
 from ..peering_db import PeeringDBNet
 
 class PeeringDBConfigEnricher_MaxPrefix_WorkerThread(BaseConfigEnricherThread):

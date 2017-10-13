@@ -37,14 +37,14 @@ from pierky.arouteserver.tests.live_tests.instances import BGPSpeakerInstance
 
 class LiveScenario(ARouteServerTestCase):
     """An helper class to run tests for a given scenario.
-    
+
     This class must be derived by scenario-specific classes that
     must:
 
     - set the ``MODULE_PATH`` attribute to ``__file__``, in order
       to correctly locate files needed by the scenario.
 
-    - fill the ``INSTANCES`` list with a list of 
+    - fill the ``INSTANCES`` list with a list of
       :class:`BGPSpeakerInstance`
       (or derived) instances representing all the BGP speakers involved in the
       scenario.
@@ -296,7 +296,7 @@ class LiveScenario(ARouteServerTestCase):
         cfg_file_path = "{}/{}".format(var_dir, out_file_name)
 
         with open(cfg_file_path, "w") as f:
-            cfg = builder.render_template(f)
+            builder.render_template(f)
 
         return cfg_file_path
 
@@ -343,7 +343,7 @@ class LiveScenario(ARouteServerTestCase):
 
     @classmethod
     def mock_irrdb(cls):
-    
+
         def add_prefix_to_list(prefix_name, allow_longer_prefixes, lst):
             obj = IPNetwork(cls.DATA[prefix_name])
             lst.append(
@@ -513,7 +513,7 @@ class LiveScenario(ARouteServerTestCase):
             "inst must be of class BGPSpeakerInstance"
 
         try:
-            prefix_ip = IPNetwork(prefix)
+            IPNetwork(prefix)
         except:
             raise AssertionError("prefix must be a valid IPv4/IPv6 prefix")
 
@@ -539,7 +539,7 @@ class LiveScenario(ARouteServerTestCase):
                  "a BGPSpeakerInstance object")
             next_hop_ip = next_hop if isinstance(next_hop, str) else next_hop.ip
             try:
-                ip = IPAddress(next_hop_ip)
+                IPAddress(next_hop_ip)
             except:
                 raise AssertionError("Invalid next_hop IP address: {}".format(
                     next_hop_ip
@@ -636,6 +636,11 @@ class LiveScenario(ARouteServerTestCase):
                             reject_reason_found = True
 
                     if not reject_reason_found:
+                        if len(reject_reasons) == 1:
+                            exp_reason = reject_reasons[0]
+                        else:
+                            exp_reason = "one of {}".format(", ".join(map(str, reject_reasons)))
+
                         errors.append(
                             "{{inst}} receives {{prefix}} from {via}, AS_PATH {as_path}, NEXT_HOP {next_hop}, "
                             "it is filtered but reject reasons don't match: real reasons {reason}, "
@@ -644,8 +649,7 @@ class LiveScenario(ARouteServerTestCase):
                                 as_path=route.as_path,
                                 next_hop=route.next_hop,
                                 reason=", ".join(map(str, route.reject_reasons)),
-                                exp_reason=reject_reasons[0] if len(reject_reasons) == 1 else
-                                        "one of {}".format(", ".join(map(str, reject_reasons)))
+                                exp_reason=exp_reason
                             )
                         )
                         err = True
@@ -689,7 +693,7 @@ class LiveScenario(ARouteServerTestCase):
                 criteria=", ".join(criteria)
             )
             failure += "\n\t".join([
-                err.format(
+                err_msg.format(
                     inst=inst.name,
                     prefix=prefix,
                     other_inst="{} ({})".format(other_inst.ip, other_inst.name) if other_inst else "",
@@ -699,7 +703,7 @@ class LiveScenario(ARouteServerTestCase):
                     lrg_comms=lrg_comms,
                     ext_comms=ext_comms,
                     local_pref=local_pref,
-                ) for err in errors
+                ) for err_msg in errors
             ])
             self.fail(failure)
 

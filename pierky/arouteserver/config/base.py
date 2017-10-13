@@ -111,7 +111,7 @@ class ConfigParserBase(object):
             return
 
         for prop in cfg:
-            if not prop in schema:
+            if prop not in schema:
                 errors = True
                 logging.error(
                     "Unknown statement at '{}' level: '{}'.".format(
@@ -120,7 +120,7 @@ class ConfigParserBase(object):
                 )
 
         for prop in schema:
-            if isinstance(schema[prop], ConfigParserValidator): 
+            if isinstance(schema[prop], ConfigParserValidator):
                 validator = schema[prop]
 
                 try:
@@ -164,7 +164,7 @@ def convert_next_hop_policy(cfg):
         return
     if not isinstance(cfg, dict):
         return
-    if not "filtering" in cfg:
+    if "filtering" not in cfg:
         return
     if not cfg["filtering"]:
         return

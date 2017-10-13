@@ -15,11 +15,9 @@
 
 import hashlib
 import json
-import os
 import logging
 import re
 import subprocess
-import time
 
 from .cached_objects import CachedObject
 from .config.validators import ValidatorPrefixListEntry
