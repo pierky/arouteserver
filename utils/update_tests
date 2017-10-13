@@ -75,11 +75,11 @@ fi
 
 if [[ -z "$1" || `echo "$1" | grep -P "\bstatic\b"` ]]; then
 	echo "Running static tests..."
-	nosetests -vs -x --tests=$TESTS_DIR/static 2>&1 | tee $LAST_RESULTS_DIR/static.last
+	nosetests -vs -x $TESTS_DIR/static 2>&1 | tee $LAST_RESULTS_DIR/static.last
 fi
 
 echo "Testing live scenarios with BUILD_ONLY=1..."
-BUILD_ONLY=1 nosetests -vs -x --tests=$TESTS_DIR/live_tests
+BUILD_ONLY=1 nosetests -vs -x $TESTS_DIR/live_tests
 
 echo "Running live tests..."
 for d in $TESTS_DIR/live_tests/scenarios/*; do
@@ -89,7 +89,7 @@ for d in $TESTS_DIR/live_tests/scenarios/*; do
 		if [[ -z "$1" || `echo "$1" | grep -P "\b$LIVE_TEST_NAME\b"` ]]; then
 			echo " - live test: $LIVE_TEST_NAME"
 			TARGET_FILE="live_$LIVE_TEST_NAME.last"
-			nosetests -vs -x --tests=$d 2>&1 | tee $LAST_RESULTS_DIR/$TARGET_FILE
+			nosetests -vs -x $d 2>&1 | tee $LAST_RESULTS_DIR/$TARGET_FILE
 		fi
 	fi
 done
