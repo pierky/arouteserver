@@ -30,7 +30,7 @@ class AS_SET_Bundle(object):
     def __init__(self, object_names):
         assert isinstance(object_names, list)
 
-        self.object_names = [n.upper() for n in sorted(set(object_names))]
+        self.object_names = sorted([n.upper() for n in set(object_names)])
 
         # id, internal unique identifier.
         buf = "_".join(self.object_names)
