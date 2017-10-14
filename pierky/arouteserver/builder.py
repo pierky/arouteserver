@@ -499,22 +499,6 @@ class ConfigBuilder(object):
         if errors:
             raise BuilderError()
 
-    @staticmethod
-    def community_is_set(comm):
-        """Helper filter used by Jinja2 templates.
-
-        It's defined at class-level because different BGP-speaker-specific
-        builder classes may have a diffent way to treat communities:
-        OpenBGPD 6.0, for example, does not implement large communities, so
-        a community defined with only large values must have a return value
-        False.
-        """
-        if not comm:
-            return False
-        if not comm["std"] and not comm["lrg"] and not comm["ext"]:
-            return False
-        return True
-
     def _include_local_file(self, local_file_id):
         raise NotImplementedError()
 
@@ -589,6 +573,13 @@ class ConfigBuilder(object):
                 return 60000
             return int(round(v))
 
+        def community_is_set(comm):
+            if not comm:
+                return False
+            if not comm["std"] and not comm["lrg"] and not comm["ext"]:
+                return False
+            return True
+
         env = Environment(
             loader=FileSystemLoader(self.template_dir),
             trim_blocks=True,
@@ -596,7 +587,7 @@ class ConfigBuilder(object):
             undefined=StrictUndefined
         )
         env.tests["current_ipver"] = current_ipver
-        env.filters["community_is_set"] = self.community_is_set
+        env.filters["community_is_set"] = community_is_set
         env.filters["ipaddr_ver"] = ipaddr_ver
         env.filters["include_local_file"] = include_local_file
         env.filters["target_version_ge"] = target_version_ge
@@ -712,14 +703,6 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                         "blackhole_filtering_rewrite_ipv6_nh",
                         "large_communities", "extended_communities",
                         "graceful_shutdown"]
-
-    @staticmethod
-    def community_is_set(comm):
-        if not comm:
-            return False
-        if not comm["std"] and not comm["ext"]:
-            return False
-        return True
 
     def _include_local_file(self, local_file_id):
         return 'include "{}"\n\n'.format(
@@ -961,7 +944,21 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                     return True
             return False
 
+        def community_is_set(comm):
+            if not comm:
+                return False
+            # OpenBGPD <= 6.0 does not implement large BGP communities,
+            # so only standard and extended ones are considered.
+            if version.parse(self.target_version or "6.0") < version.parse("6.1"):
+                if not comm["std"] and not comm["ext"]:
+                    return False
+            else:
+                if not comm["std"] and not comm["ext"] and not comm["lrg"]:
+                    return False
+            return True
+
         env.filters["convert_ext_comm"] = convert_ext_comm
+        env.filters["community_is_set"] = community_is_set
         self.data["at_least_one_client_uses_tag_reject_policy"] = \
             at_least_one_client_uses_tag_reject_policy()
 
