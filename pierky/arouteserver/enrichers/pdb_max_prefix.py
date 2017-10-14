@@ -41,9 +41,15 @@ class PeeringDBConfigEnricher_MaxPrefix_WorkerThread(BaseConfigEnricherThread):
                                cache_dir=self.cache_dir,
                                cache_expiry=self.cache_expiry)
             net.load_data()
+            if net.info_prefixes4:
+                net.info_prefixes4 += 100
+                net.info_prefixes4 *= 1.15
+            if net.info_prefixes6:
+                net.info_prefixes6 += 100
+                net.info_prefixes6 *= 1.15
 
-            return net.info_prefixes4 or self.general_limits["ipv4"], \
-                    net.info_prefixes6 or self.general_limits["ipv6"]
+            return int(net.info_prefixes4) or self.general_limits["ipv4"], \
+                    int(net.info_prefixes6) or self.general_limits["ipv6"]
 
         except PeeringDBNoInfoError:
             # No data found on PeeringDB.
