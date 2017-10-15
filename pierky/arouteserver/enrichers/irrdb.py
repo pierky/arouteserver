@@ -256,12 +256,21 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
                 )
                 continue
 
-            # If one or more AS-SETs have been found on PeeringDB, use them.
+            # In the worst case, use AS<asn>; moreover...
+            client_irrdb["as_set_bundle_ids"].append(
+                use_as_set(["AS{}".format(client["asn"])],
+                           "client {}".format(client["id"]))
+            )
+
+            # ... if one or more AS-SETs have been found on PeeringDB,
+            # use them too.
             as_sets_from_pdb = client.get("as_sets_from_pdb", None)
             if as_sets_from_pdb:
-                logging.info("No AS-SET provided for the '{}' client. "
-                             "Using those obtained from PeeringDB: {}.".format(
-                                    client["id"], ", ".join(as_sets_from_pdb)
+                logging.info("No AS-SETs provided for the '{}' client. "
+                             "Using AS{} + those obtained from PeeringDB: "
+                             "{}.".format(
+                                    client["id"], client["asn"],
+                                    ", ".join(as_sets_from_pdb)
                                 ))
                 client_irrdb["as_set_bundle_ids"].append(
                     use_as_set(as_sets_from_pdb, "client {}".format(client["id"]))
@@ -269,15 +278,10 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
                 continue
 
             # No AS-SETs found for the client's ASN in the 'asns' section.
-            logging.warning("No AS-SET provided for the '{}' client. "
+            logging.warning("No AS-SETs provided for the '{}' client. "
                             "Only AS{} will be expanded.".format(
                                 client["id"], client["asn"]
                             ))
-
-            client_irrdb["as_set_bundle_ids"].append(
-                use_as_set(["AS{}".format(client["asn"])],
-                           "client {}".format(client["id"]))
-            )
 
         # Removing unreferenced AS-SETs.
         for as_set_bundle in irrdb_info:
