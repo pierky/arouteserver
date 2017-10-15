@@ -233,6 +233,15 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
                     # current one used to build the configuration.
                     continue
 
+            # Client needs AS-SETs info because origin ASN or prefix filters
+            # are required.
+
+            # In the worst case, use AS<asn>.
+            client_irrdb["as_set_bundle_ids"].append(
+                use_as_set(["AS{}".format(client["asn"])],
+                           "client {}".format(client["id"]))
+            )
+
             if client_irrdb["as_sets"]:
                 # Client has its own specific set of AS-SETs.
                 client_irrdb["as_set_bundle_ids"].append(
@@ -256,14 +265,8 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
                 )
                 continue
 
-            # In the worst case, use AS<asn>; moreover...
-            client_irrdb["as_set_bundle_ids"].append(
-                use_as_set(["AS{}".format(client["asn"])],
-                           "client {}".format(client["id"]))
-            )
-
-            # ... if one or more AS-SETs have been found on PeeringDB,
-            # use them too.
+            # If one or more AS-SETs have been found on PeeringDB,
+            # use them.
             as_sets_from_pdb = client.get("as_sets_from_pdb", None)
             if as_sets_from_pdb:
                 logging.info("No AS-SETs provided for the '{}' client. "
@@ -277,7 +280,7 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
                 )
                 continue
 
-            # No AS-SETs found for the client's ASN in the 'asns' section.
+            # No other AS-SETs found for the client.
             logging.warning("No AS-SETs provided for the '{}' client. "
                             "Only AS{} will be expanded.".format(
                                 client["id"], client["asn"]

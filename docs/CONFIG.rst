@@ -125,7 +125,8 @@ One or more AS-SETs can be used to gather information about authorized origin AS
 - for each client, one or more AS-SETs can be configured in the ``cfg.filtering.irrdb`` section.
 
 To gather information from the IRRDBs, at first the script uses the AS-SETs provided in the client-level configuration; if no AS-SETs are provided there, it looks to the ASN configuration.
-If no AS-SETs are found in both the client and the ASN configuration, if the ``cfg.filtering.irrdb.peering_db`` option is set to True the AS-SET from PeeringDB is used ("IRR Record" field), otherwise only the ASN's autnum object will be used.
+If no AS-SETs are found in both the client and the ASN configuration, if the ``cfg.filtering.irrdb.peering_db`` option is set to True the AS-SET from PeeringDB is used ("IRR Record" field).
+The ASN's autnum object will be used in any case.
 
 Example:
 
