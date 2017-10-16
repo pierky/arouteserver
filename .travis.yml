@@ -12,27 +12,22 @@ install:
   - pip install tox
   - pip install coveralls
 
+env:
+   - TOXENV=py34-syntax
+   - TOXENV=py27-flake8
+   - TOXENV=py34-flake8
+   - TOXENV=py27
+   - TOXENV=py34
+   - TOXENV=py27-coverage
+
+script: tox
+
+after_success:
+ - coveralls
+
 jobs:
   include:
-    - stage: test
-      env: TOXENV=py34-syntax
-      script: tox
-    - stage: test
-      env: TOXENV=py27-flake8
-      script: tox
-    - stage: test
-      env: TOXENV=py34-flake8
-      script: tox
-    - stage: test
-      env: TOXENV=py27
-      script: tox
-    - stage: test
-      env: TOXENV=py34
-      script: tox
-    - stage: test
-      env: TOXENV=py27-coverage
-      script: tox
-    - stage: deploy
+    - stage: deploy test
       script: skip
       deploy:
         # Test
@@ -45,6 +40,9 @@ jobs:
           on:
             branch: dev
             tags: true
+    - stage: deploy production
+      script: skip
+      deploy:
         # Production
         - provider: pypi
           distributions: sdist
@@ -55,5 +53,9 @@ jobs:
             branch: master
             tags: true
 
-after_success:
- - coveralls
+stages:
+  - test
+  - name: deploy test
+    if: tag IS present AND tag =~ ^v\d+\.\d+\.\d+-alpha\d+\S*$
+  - name: deploy production
+    if: tag IS present AND tag =~ ^v\d+\.\d+\.\d+$
