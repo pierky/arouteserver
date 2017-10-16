@@ -103,6 +103,22 @@ transit_free_asns="{ {{ cfg.filtering.transit_free.asns|join(", ") }} }"
 {%	endif %}
 {% endfor %}
 
+{% if cfg.rfc1997_wellknown_communities.policy == "pass" %}
+# Internal communities used for RFC1997 well-known communities handling
+
+# Scrub them from routes received from clients.
+match from group clients set ext-community delete soo 65535:65281
+match from group clients set ext-community delete soo 65535:65282
+
+# Transform NO_EXPORT into soo 65535:65281
+match from group clients community NO_EXPORT set ext-community soo 65535:65281
+match from group clients community NO_EXPORT set community delete NO_EXPORT
+
+# Transform NO_ADVERTISE into soo 65535:65282
+match from group clients community NO_ADVERTISE set ext-community soo 65535:65282
+match from group clients community NO_ADVERTISE set community delete NO_ADVERTISE
+{% endif %}
+
 {% if cfg.communities.rejected_route_announced_by|community_is_set %}
 # Set the 'rejected_route_announced_by' community for all the clients.
 # It will be removed later if the route is not invalid
@@ -414,6 +430,14 @@ match to group clients set { {{ write_prepending_comm(cfg.communities[comm_name]
 
 {% if perform_graceful_shutdown and "6.2"|target_version_ge %}
 match to group clients set community GRACEFUL_SHUTDOWN
+{% endif %}
+
+{% if cfg.rfc1997_wellknown_communities.policy == "pass" %}
+# RFC1997 NO_EXPORT/NO_ADVERTISE received from clients and propagated because of pass-through policy
+match to group clients ext-community soo 65535:65281 set community NO_EXPORT
+match to group clients ext-community soo 65535:65281 set ext-community delete soo 65535:65281
+match to group clients ext-community soo 65535:65282 set community NO_ADVERTISE
+match to group clients ext-community soo 65535:65282 set ext-community delete soo 65535:65282
 {% endif %}
 
 {{ "post-filters"|include_local_file -}}

@@ -19,6 +19,7 @@ protocol static own_prefixes {
 	route {{ data.AS3_prep3AS1_1any }} reject;
 	route {{ data.AS3_noexport_any }} reject;
 	route {{ data.AS3_noexport_AS1 }} reject;
+	route {{ data.AS3_rfc1997_noexp }} reject;
 	route {{ data.Default_route }} reject;
 }
 
@@ -58,6 +59,9 @@ filter to_rs {
 	if net = {{ data.AS3_noexport_AS1 }} then {
 		bgp_community.add((65509,1));
 		bgp_community.add((65506,2));
+	}
+	if net = {{ data.AS3_rfc1997_noexp }} then {
+		bgp_community.add((65535, 65281));
 	}
 	accept;
 }

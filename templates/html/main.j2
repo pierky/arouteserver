@@ -283,6 +283,14 @@ The NO_EXPORT well-known community is also added.
 
 <h2>Announcement control via BGP communities</h2>
 
+<ul>
+{% if cfg.rfc1997_wellknown_communities.policy == "strict" %}
+<li><p><b>NO_EXPORT</b> and <b>NO_ADVERTISE</b> communities are processed accordingly to RFC1997.</p></li>
+{% else %}
+<li><p>Routes tagged with the <b>NO_EXPORT</b> or <b>NO_ADVERTISE</b> communities received by the route server are propagated to other clients with those communities unaltered.</p></li>
+{% endif %}
+</ul>
+
 <table class="table table-striped">
   <thead>
     <tr>

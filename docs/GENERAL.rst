@@ -791,6 +791,41 @@ it lowers their LOCAL_PREF to the value set in **local_pref**.
 
 
 
+RFC1997 well-known communities: ``rfc1997_wellknown_communities``
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+RFC1997 well-known communities (NO_EXPORT and NO_ADVERTISE)
+can be locally interpreted or passed through the route server,
+depending on the policy that a route server operator decides
+to implement.
+This section allows to configure this policy.
+
+- ``policy``:
+  The policy used to process routes tagged with NO_EXPORT or
+  NO_ADVERTISE that are received from clients.
+
+
+  Options:
+
+
+  - **rfc1997**: routes are processed accordingly to RFC1997;
+
+
+  - **pass**: routes are propagated to other clients with the
+    NO_EXPORT/NO_ADVERTISE communities unaltered.
+
+
+  Default: **pass**
+
+  Example:
+
+  .. code:: yaml
+
+     policy: "pass"
+
+
+
+
 RTT thresholds: ``rtt_thresholds``
 +++++++++++++++++++++++++++++++++++
 
@@ -1131,6 +1166,10 @@ NO_EXPORT / NO_ADVERTISE
   propagated to other clients before the NO_EXPORT (65535:65281)
   and/or the NO_ADVERTISE (65535:65282) well-known communities
   are added.
+  When **rfc1997_wellknown_communities.enabled** is set to **pass**
+  this behaviour can be obtained by announcing routes to the
+  route server after tagging them with RFC1997 NO_EXPORT or
+  NO_ADVERTISE.
 
 
   The following communities are scrubbed from outbound routes.

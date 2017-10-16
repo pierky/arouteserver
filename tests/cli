@@ -77,6 +77,22 @@ GENERAL="$GENERAL_RS2"
 build_cmd "bird" --ip-ver 4 | must_contain "router id 192.0.2.2"
 
 # ---------------------------------------------
+# RFC1997 'pass' policy and bgp comms collision
+reset
+TITLE="RFC1997 'pass' policy and BGP comms collision"
+SUB_TEST="$LINENO"
+GENERAL="tests/var/general.yml"
+cat << EOF > $GENERAL
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+  communities:
+    prepend_once_to_any:
+      ext: "ro:65535:65281"
+EOF
+build_cmd "openbgpd" | must_contain "ro:65535:65281 and ro:65535:65282"
+
+# ---------------------------------------------
 # custom BGP communities
 reset
 TITLE="Custom BGP communities"

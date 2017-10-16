@@ -277,6 +277,8 @@ cfg:
   passive: true
   path_hiding: true
   prepend_rs_as: false
+  rfc1997_wellknown_communities:
+    policy: pass
   router_id: 192.0.2.2
   rs_as: 999
   rtt_thresholds:

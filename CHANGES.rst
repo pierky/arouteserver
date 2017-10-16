@@ -3,6 +3,13 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New feature: an option to set RFC1997 well-known communities (NO_EXPORT/NO_ADVERTISE) handling policy: pass-through or strict RFC1997 behaviour.
+
+  This **breaks backward compatibility**: previously, NO_EXPORT/NO_ADVERTISE communities were treated accordingly to the default implementation of the BGP speaker daemon (BIRD, OpenBGPD). Now, ARouteServer's default setting is to treat routes tagged with those communities transparently, that is to announce them to other clients and to pass-through the original RFC1997 communities.
+
 v0.12.1
 -------
 

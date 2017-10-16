@@ -320,6 +320,12 @@ protocol bgp {{ client.id }} {
 	secondary;
 	{% endif %}
 
+	{% if cfg.rfc1997_wellknown_communities.policy == "rfc1997" %}
+	interpret communities on;
+	{% else %}
+	interpret communities off;
+	{% endif %}
+
 	{% if client.cfg.filtering.max_prefix.action %}
 	{%	if ip_ver == 4 and client.cfg.filtering.max_prefix.limit_ipv4 %}
 	{%		set max_pref_limit = client.cfg.filtering.max_prefix.limit_ipv4 %}

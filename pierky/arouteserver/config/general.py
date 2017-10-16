@@ -180,6 +180,10 @@ class ConfigParserGeneral(ConfigParserBase):
                     "enabled": ValidatorBool(mandatory=True, default=False),
                     "local_pref": ValidatorUInt(mandatory=True, default=0)
                 },
+                "rfc1997_wellknown_communities": {
+                    "policy": ValidatorOption("policy", ("rfc1997", "pass"),
+                                              default="pass"),
+                },
                 "rtt_thresholds": ValidatorRTTThresholds(mandatory=False),
                 "communities": {
                 },
