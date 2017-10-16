@@ -20,7 +20,7 @@ install:
   - pip install tox
   - pip install coveralls
 
-jobs:
+matrix:
   include:
     - stage: test
       script: tox
