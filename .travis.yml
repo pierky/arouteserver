@@ -18,3 +18,12 @@ script:
  - tox
 after_success:
  - coveralls
+deploy:
+ - provider: pypi
+   distributions: sdist
+   user: pierky
+   password:
+     secure: "BPeL143U0knmholVOZp85ZiX5zQAr00sytCPOth/VFKqz4J104ifu53oY3OpIRTbpMQksNhlLCbv57nSUn1eaX/Pvf7GRdYcDhnaePr0sffPQRYLcKnGoQbV+5A3qqqGOSpYQX1MhHy2ZtBlIqaqzkfuYQi1c/MJE4z1aVwDNvyMAXXJkwPxClyoe8hSxKxp1oxYJWCEsdgXz6c3QfNjDeREk9rql6BQwkgSdEhhah5v6oMib0xtV7cLTl6SenpAtTA2FinIw57kxAZVBD2RNPFRZ0cw23ZDL/08BYrjF2jmuMN2ySyww3wM8Xg5hmQxh+7qVLatrRZyWznt7RAdkA168ODae84L5OUNevR8vjtuAoz6wOFIQX3+sdTFuHe8Dio/BxScJzSwk7t+NnPi1JXs43qxFnyD+2KFYiQmVnaSeyUhzH8hcriIkOjm5JSsd/cQZ7FZ/MUApJZcJkSMWSqih1cqVwVgxZWta6Lu7mbWZAJ3hhz8gTlqq89xy3UskJollS5jesRaMUOjrek6eh/4pZ+P+EqOTBkiqAe60tAtCplrAg40PPzFJ7Z/LtfgwmOsthsWVbAvbkewH5B9oibKQmdipUS1nkU+nuQXUeqDxg9pDCwu1miwpT6yd8U3JElHO3QJztyz7VKVMw1AjjUb/GNrzwCEynikF64FhNY="
+   on:
+     branch: master
+     tags: true

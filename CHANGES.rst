@@ -3,6 +3,20 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+v0.12.3
+-------
+
+- Improvement: always take the AS*n* macro into account when building IRRdb-based filters.
+
+  Related: `issue #15 on GitHub <https://github.com/pierky/arouteserver/issues/15>`_.
+  
+v0.12.2
+-------
+
+- Fix: an issue on OpenBGPD builder class was preventing features offered via large BGP communities only from being actually implemented into the final configuration.
+
+  Related: `issue #11 on GitHub <https://github.com/pierky/arouteserver/issues/11>`_.
+
 v0.12.1
 -------
 
