@@ -1,5 +1,7 @@
 language: python
+
 sudo: required
+
 env:
   - TOXENV=py34-syntax
   - TOXENV=py27-flake8
@@ -7,23 +9,43 @@ env:
   - TOXENV=py27
   - TOXENV=py34
   - TOXENV=py27-coverage
+
 services:
   - docker
+
 before_install:
   - docker pull pierky/bird:1.6.3 
+
 install:
   - pip install tox
   - pip install coveralls
-script:
- - tox
+
+jobs:
+  include:
+    - stage: test
+      script: tox
+    - stage: deploy
+      script: skip
+      deploy:
+        # Test
+        - provider: pypi
+          server: https://testpypi.python.org/pypi
+          distributions: sdist
+          user: pierky
+          password:
+            secure: "PRWFP9vzvIf2SO9cjEY/jPSxlK+zHA2EYM6oxa49ND4mbgeY32HJ6YGcorWNwETdmuIMXEC89mIWdJ0rX5Mx4qdJ9y2Hea0djo58PGw1W6LP85lg/3URIVBjcsihWYlx5lSLdUL0KQ57glST0KmirloYbNkGBdaJrS6HFiFZbOok25gBtUxsKpz6Mz9D7+PP/K9hfNVfDoxokEovstjJkdGs5qsVYk6uK3cCh1FsDUSHk4/nDcdXLPhnPKwPYhuZTu8PunHPVLk9xvq/KCg+oqbRJEzKn7wUyEhxOkosbOCpYIV1Q+UaMLJWH/9+FXB3HdloBsXUT/P626lGIGPw+k6DFJBdmnrm+cmOQBjylv/w2AJTWGCFpPg0mIyFKML78UDHVl8PHoeq2xYc7Ci/k+v2JSeGoB8GpVa74MPGLiOgcHppidZIMF96xR0FFf+ZuRF/E+kwpVjxDL6kDKGiYF4kzlkDz+50fdBBUNsNcY/AEtYXKIUcLthQcPkUFtTgogra9EjrAGVbIKOzQnLU96pPriZlct204xUOz4g+MNajF8ll04Ub58hwJK3o5DGHYRaFWyoXaf3VGMQnRB/reHJB9ljz4jB1T/ensOtiARzgGTpk0rOHv491kRJRs6nl/2o0YTQZjPsST03PCMfhenjfQR6i6tlKzh7pVMp1XGw="
+          on:
+            branch: dev
+            tags: true
+        # Production
+        - provider: pypi
+          distributions: sdist
+          user: pierky
+          password:
+            secure: "BPeL143U0knmholVOZp85ZiX5zQAr00sytCPOth/VFKqz4J104ifu53oY3OpIRTbpMQksNhlLCbv57nSUn1eaX/Pvf7GRdYcDhnaePr0sffPQRYLcKnGoQbV+5A3qqqGOSpYQX1MhHy2ZtBlIqaqzkfuYQi1c/MJE4z1aVwDNvyMAXXJkwPxClyoe8hSxKxp1oxYJWCEsdgXz6c3QfNjDeREk9rql6BQwkgSdEhhah5v6oMib0xtV7cLTl6SenpAtTA2FinIw57kxAZVBD2RNPFRZ0cw23ZDL/08BYrjF2jmuMN2ySyww3wM8Xg5hmQxh+7qVLatrRZyWznt7RAdkA168ODae84L5OUNevR8vjtuAoz6wOFIQX3+sdTFuHe8Dio/BxScJzSwk7t+NnPi1JXs43qxFnyD+2KFYiQmVnaSeyUhzH8hcriIkOjm5JSsd/cQZ7FZ/MUApJZcJkSMWSqih1cqVwVgxZWta6Lu7mbWZAJ3hhz8gTlqq89xy3UskJollS5jesRaMUOjrek6eh/4pZ+P+EqOTBkiqAe60tAtCplrAg40PPzFJ7Z/LtfgwmOsthsWVbAvbkewH5B9oibKQmdipUS1nkU+nuQXUeqDxg9pDCwu1miwpT6yd8U3JElHO3QJztyz7VKVMw1AjjUb/GNrzwCEynikF64FhNY="
+          on:
+            branch: master
+            tags: true
+
 after_success:
  - coveralls
-deploy:
- - provider: pypi
-   distributions: sdist
-   user: pierky
-   password:
-     secure: "BPeL143U0knmholVOZp85ZiX5zQAr00sytCPOth/VFKqz4J104ifu53oY3OpIRTbpMQksNhlLCbv57nSUn1eaX/Pvf7GRdYcDhnaePr0sffPQRYLcKnGoQbV+5A3qqqGOSpYQX1MhHy2ZtBlIqaqzkfuYQi1c/MJE4z1aVwDNvyMAXXJkwPxClyoe8hSxKxp1oxYJWCEsdgXz6c3QfNjDeREk9rql6BQwkgSdEhhah5v6oMib0xtV7cLTl6SenpAtTA2FinIw57kxAZVBD2RNPFRZ0cw23ZDL/08BYrjF2jmuMN2ySyww3wM8Xg5hmQxh+7qVLatrRZyWznt7RAdkA168ODae84L5OUNevR8vjtuAoz6wOFIQX3+sdTFuHe8Dio/BxScJzSwk7t+NnPi1JXs43qxFnyD+2KFYiQmVnaSeyUhzH8hcriIkOjm5JSsd/cQZ7FZ/MUApJZcJkSMWSqih1cqVwVgxZWta6Lu7mbWZAJ3hhz8gTlqq89xy3UskJollS5jesRaMUOjrek6eh/4pZ+P+EqOTBkiqAe60tAtCplrAg40PPzFJ7Z/LtfgwmOsthsWVbAvbkewH5B9oibKQmdipUS1nkU+nuQXUeqDxg9pDCwu1miwpT6yd8U3JElHO3QJztyz7VKVMw1AjjUb/GNrzwCEynikF64FhNY="
-   on:
-     branch: master
-     tags: true
