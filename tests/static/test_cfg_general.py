@@ -303,6 +303,11 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.assertEqual(self.cfg["graceful_shutdown"]["enabled"], False)
         self._test_bool_val(self.cfg["graceful_shutdown"], "enabled")
 
+    def test_rfc1997_wellknown_communities(self):
+        """{}: RFC1997 well-known communities"""
+        self.assertEqual(self.cfg["rfc1997_wellknown_communities"]["policy"], "pass")
+        self._test_option(self.cfg["rfc1997_wellknown_communities"], "policy", ("rfc1997", "pass"))
+
     def test_rtt_thresholds_str(self):
         """{}: RTT thresholds as comma separated string"""
         self.cfg._load_from_yaml(
@@ -1045,6 +1050,9 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "graceful_shutdown": {
                 "enabled": False,
                 "local_pref": 0
+            },
+            "rfc1997_wellknown_communities": {
+                "policy": "pass"
             }
         }
 
@@ -1123,6 +1131,9 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "graceful_shutdown": {
                 "enabled": False,
                 "local_pref": 0
+            },
+            "rfc1997_wellknown_communities": {
+                "policy": "pass"
             }
         }
 

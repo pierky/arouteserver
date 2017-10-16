@@ -312,6 +312,9 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
             CfgStatement("enabled", pre_comment=True),
             CfgStatement("local_pref", pre_comment=True)
         ]),
+        CfgStatement("rfc1997_wellknown_communities", t="RFC1997 well-known communities", post_comment=True, sub=[
+            CfgStatement("policy", pre_comment=True)
+        ]),
         CfgStatement("rtt_thresholds", t="RTT thresholds", pre_comment=True),
         CfgStatement("communities", t="BGP Communities", post_comment=True, sub=[
 

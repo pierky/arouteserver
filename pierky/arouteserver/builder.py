@@ -701,7 +701,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                         "add_path", "max_prefix_action",
                         "blackhole_filtering_rewrite_ipv6_nh",
                         "large_communities", "extended_communities",
-                        "graceful_shutdown"]
+                        "graceful_shutdown", "rfc1997_wellknown_communities"]
 
     def _include_local_file(self, local_file_id):
         return 'include "{}"\n\n'.format(
@@ -921,6 +921,31 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                 "line argument)."
             ):
                 res = False
+
+        if self.cfg_general["rfc1997_wellknown_communities"]["policy"] == "pass":
+            rfc1997_wkcomms_collisions = []
+            for comm_name in ConfigParserGeneral.COMMUNITIES_SCHEMA:
+                comm = self.cfg_general["communities"][comm_name]
+                if comm["ext"]:
+                    if comm["ext"] == "ro:65535:65281":
+                        rfc1997_wkcomms_collisions.append(comm_name)
+                    if comm["ext"] == "ro:65535:65282":
+                        rfc1997_wkcomms_collisions.append(comm_name)
+
+            if rfc1997_wkcomms_collisions:
+                if not self.process_bgpspeaker_specific_compatibility_issue(
+                    "rfc1997_wellknown_communities",
+                    "When using the pass-through policy for RFC1977 "
+                    "well-known communities handling two communities "
+                    "must be reserved for internal purposes: "
+                    "ro:65535:65281 and ro:65535:65282. "
+                    "A collision has been detected with the following "
+                    "communit{y_ies}: {comms}".format(
+                        y_ies="y" if len(rfc1997_wkcomms_collisions) == 1 else "ies",
+                        comms=", ".join(rfc1997_wkcomms_collisions)
+                    )
+                ):
+                    res = False
 
         return res
 

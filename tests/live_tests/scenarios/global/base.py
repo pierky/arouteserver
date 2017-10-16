@@ -740,6 +740,17 @@ class BasicScenario(LiveScenario):
         with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS101, pref, as_path="1 3")
 
+    def test_083_control_communities_AS3_rfc1997_noexport(self):
+        """{}: control communities, RFC1997 NO_EXPORT"""
+
+        pref = self.DATA["AS3_rfc1997_noexp"]
+        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4):
+            self.receive_route(inst, pref, self.rs, as_path="3",
+                               next_hop=self.AS3, std_comms=["65535:65281"],
+                               lrg_comms=[], ext_comms=[])
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
+            self.receive_route(self.AS101, pref)
+
     def _test_084_AS1_1_and_AS1_2_only(self, pref):
         for inst in (self.AS1_1, self.AS1_2):
             self.receive_route(inst, pref, self.rs, as_path="4",

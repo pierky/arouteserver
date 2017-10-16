@@ -62,6 +62,7 @@ class BasicScenario_Data4(object):
         "AS3_prep3AS1_1any":        "3.0.10.0/24",
         "AS3_noexport_any":         "3.0.11.0/24",
         "AS3_noexport_AS1":         "3.0.12.0/24",
+        "AS3_rfc1997_noexp":        "3.0.13.0/24",
 
         "AS4_rtt_1":                "4.0.1.0/24",
         "AS4_rtt_2":                "4.0.2.0/24",
