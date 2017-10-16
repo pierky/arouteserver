@@ -2,14 +2,6 @@ language: python
 
 sudo: required
 
-env:
-  - TOXENV=py34-syntax
-  - TOXENV=py27-flake8
-  - TOXENV=py34-flake8
-  - TOXENV=py27
-  - TOXENV=py34
-  - TOXENV=py27-coverage
-
 services:
   - docker
 
@@ -20,9 +12,25 @@ install:
   - pip install tox
   - pip install coveralls
 
-matrix:
+jobs:
   include:
     - stage: test
+      env: TOXENV=py34-syntax
+      script: tox
+    - stage: test
+      env: TOXENV=py27-flake8
+      script: tox
+    - stage: test
+      env: TOXENV=py34-flake8
+      script: tox
+    - stage: test
+      env: TOXENV=py27
+      script: tox
+    - stage: test
+      env: TOXENV=py34
+      script: tox
+    - stage: test
+      env: TOXENV=py27-coverage
       script: tox
     - stage: deploy
       script: skip
