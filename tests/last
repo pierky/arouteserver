@@ -56,6 +56,8 @@ General config parser: max_prefix action ... ok
 General config parser: max_prefix general_limit_ipv4 ... ok
 General config parser: max_prefix general_limit_ipv6 ... ok
 General config parser: max_prefix PeeringDB ... ok
+General config parser: max_prefix PeeringDB (pre v0.13.0 format) ... ok
+General config parser: next_hop.policy ... ok
 General config parser: next_hop_policy (pre v0.6.0 format) ... ok
 General config parser: overlapping communities, inbound/custom ... ok
 General config parser: overlapping communities, inbound/inbound ... ok
@@ -71,6 +73,7 @@ General config parser: reject_cause can be set only with 'tag' reject_policy ...
 General config parser: reject_invalid_as_in_as_path ... ok
 General config parser: reject_policy ... ok
 General config parser: rejected_route_announced_by can be set only with 'tag' reject_policy ... ok
+General config parser: RFC1997 well-known communities ... ok
 General config parser: router_id ... ok
 General config parser: rpki, enabled ... ok
 General config parser: rpki, reject_invalid ... ok
@@ -108,6 +111,19 @@ Clients from Euro-IX: IXP-Manager workaround ... ok
 Clients from Euro-IX: official basic example ... ok
 Clients from Euro-IX: official more complex example ... ok
 Clients from Euro-IX: --routeserver-only filter ... ok
+IRRDB info: base, AS_SET bundle info (1) ... ok
+IRRDB info: base, AS_SET bundle info (3) ... ok
+IRRDB info: base, AS_SET bundle info (4) ... ok
+IRRDB info: base, simple ... ok
+IRRDB info: base, no external data available ... ok
+IRRDB info: base, cache expired ... ok
+IRRDB info: base, corrupted cache file ... ok
+IRRDB info: ASNs, simple ... ok
+IRRDB info: ASNs, from cache ... ok
+IRRDB info: ASNs, cache expired ... ok
+IRRDB info: RSets, simple ... ok
+IRRDB info: RSets, from cache ... ok
+IRRDB info: RSets, cache expired ... ok
 PeeringDB network: get data ... ok
 PeeringDB network: missing data ... ok
 PeeringDB: AS-SETs parsing ... ok
@@ -126,7 +142,7 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 126 tests in 9.535s
+Ran 142 tests in 14.214s
 
 OK
 Live test, BIRD, hooks example, IPv4: setting instances up...
@@ -137,7 +153,7 @@ Live test, BIRD, hooks example, IPv6: instances setup ... ok
 Live test, BIRD, hooks example, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 2 tests in 8.736s
+Ran 2 tests in 8.724s
 
 OK
 Live test, BIRD, BGP communities, IPv4: setting instances up...
@@ -220,7 +236,7 @@ Live test, OpenBGPD 6.2, BGP communities, IPv6: custom BGP community scrubbed ..
 Live test, OpenBGPD 6.2, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 66 tests in 431.029s
+Ran 66 tests in 428.915s
 
 OK (SKIP=6)
 Live test, BIRD, default config, IPv4: setting instances up...
@@ -237,7 +253,7 @@ Live test, OpenBGPD 6.0, default config, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, default config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 160.895s
+Ran 4 tests in 159.624s
 
 OK
 Live test, BIRD, global scenario, IPv4: setting instances up...
@@ -295,6 +311,7 @@ Live test, BIRD, global scenario, IPv4: control communities, prepend twice to AS
 Live test, BIRD, global scenario, IPv4: control communities, prepend thrice to AS1, once to others ... ok
 Live test, BIRD, global scenario, IPv4: control communities, NO_EXPORT to AS1 ... ok
 Live test, BIRD, global scenario, IPv4: control communities, NO_EXPORT to any ... ok
+Live test, BIRD, global scenario, IPv4: control communities, RFC1997 NO_EXPORT ... ok
 Live test, BIRD, global scenario, IPv4: control communities, RTT, blackhole, not peers > 20 ms ... ok
 Live test, BIRD, global scenario, IPv4: control communities, RTT, not peers > 15 ms ... ok
 Live test, BIRD, global scenario, IPv4: control communities, RTT, not peers > 5 ms ... ok
@@ -368,6 +385,7 @@ Live test, BIRD, global scenario, IPv4, tag: control communities, prepend twice 
 Live test, BIRD, global scenario, IPv4, tag: control communities, prepend thrice to AS1, once to others ... ok
 Live test, BIRD, global scenario, IPv4, tag: control communities, NO_EXPORT to AS1 ... ok
 Live test, BIRD, global scenario, IPv4, tag: control communities, NO_EXPORT to any ... ok
+Live test, BIRD, global scenario, IPv4, tag: control communities, RFC1997 NO_EXPORT ... ok
 Live test, BIRD, global scenario, IPv4, tag: control communities, RTT, blackhole, not peers > 20 ms ... ok
 Live test, BIRD, global scenario, IPv4, tag: control communities, RTT, not peers > 15 ms ... ok
 Live test, BIRD, global scenario, IPv4, tag: control communities, RTT, not peers > 5 ms ... ok
@@ -439,6 +457,7 @@ Live test, BIRD, global scenario, IPv6: control communities, prepend twice to AS
 Live test, BIRD, global scenario, IPv6: control communities, prepend thrice to AS1, once to others ... ok
 Live test, BIRD, global scenario, IPv6: control communities, NO_EXPORT to AS1 ... ok
 Live test, BIRD, global scenario, IPv6: control communities, NO_EXPORT to any ... ok
+Live test, BIRD, global scenario, IPv6: control communities, RFC1997 NO_EXPORT ... ok
 Live test, BIRD, global scenario, IPv6: control communities, RTT, blackhole, not peers > 20 ms ... ok
 Live test, BIRD, global scenario, IPv6: control communities, RTT, not peers > 15 ms ... ok
 Live test, BIRD, global scenario, IPv6: control communities, RTT, not peers > 5 ms ... ok
@@ -512,6 +531,7 @@ Live test, BIRD, global scenario, IPv6, tag: control communities, prepend twice 
 Live test, BIRD, global scenario, IPv6, tag: control communities, prepend thrice to AS1, once to others ... ok
 Live test, BIRD, global scenario, IPv6, tag: control communities, NO_EXPORT to AS1 ... ok
 Live test, BIRD, global scenario, IPv6, tag: control communities, NO_EXPORT to any ... ok
+Live test, BIRD, global scenario, IPv6, tag: control communities, RFC1997 NO_EXPORT ... ok
 Live test, BIRD, global scenario, IPv6, tag: control communities, RTT, blackhole, not peers > 20 ms ... ok
 Live test, BIRD, global scenario, IPv6, tag: control communities, RTT, not peers > 15 ms ... ok
 Live test, BIRD, global scenario, IPv6, tag: control communities, RTT, not peers > 5 ms ... ok
@@ -585,6 +605,7 @@ Live test, OpenBGPD 6.0, global scenario, IPv4: control communities, prepend twi
 Live test, OpenBGPD 6.0, global scenario, IPv4: control communities, prepend thrice to AS1, once to others ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: control communities, NO_EXPORT to AS1 ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: control communities, NO_EXPORT to any ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv4: control communities, RFC1997 NO_EXPORT ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: control communities, RTT, blackhole, not peers > 20 ms ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: control communities, RTT, not peers > 15 ms ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: control communities, RTT, not peers > 5 ms ... ok
@@ -658,6 +679,7 @@ Live test, OpenBGPD 6.0, global scenario, IPv6: control communities, prepend twi
 Live test, OpenBGPD 6.0, global scenario, IPv6: control communities, prepend thrice to AS1, once to others ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: control communities, NO_EXPORT to AS1 ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: control communities, NO_EXPORT to any ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv6: control communities, RFC1997 NO_EXPORT ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: control communities, RTT, blackhole, not peers > 20 ms ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: control communities, RTT, not peers > 15 ms ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: control communities, RTT, not peers > 5 ms ... ok
@@ -731,6 +753,7 @@ Live test, OpenBGPD 6.2, global scenario, IPv4: control communities, prepend twi
 Live test, OpenBGPD 6.2, global scenario, IPv4: control communities, prepend thrice to AS1, once to others ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: control communities, NO_EXPORT to AS1 ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: control communities, NO_EXPORT to any ... ok
+Live test, OpenBGPD 6.2, global scenario, IPv4: control communities, RFC1997 NO_EXPORT ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: control communities, RTT, blackhole, not peers > 20 ms ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: control communities, RTT, not peers > 15 ms ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: control communities, RTT, not peers > 5 ms ... ok
@@ -804,6 +827,7 @@ Live test, OpenBGPD 6.2, global scenario, IPv6: control communities, prepend twi
 Live test, OpenBGPD 6.2, global scenario, IPv6: control communities, prepend thrice to AS1, once to others ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: control communities, NO_EXPORT to AS1 ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: control communities, NO_EXPORT to any ... ok
+Live test, OpenBGPD 6.2, global scenario, IPv6: control communities, RFC1997 NO_EXPORT ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: control communities, RTT, blackhole, not peers > 20 ms ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: control communities, RTT, not peers > 15 ms ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: control communities, RTT, not peers > 5 ms ... ok
@@ -822,7 +846,7 @@ Live test, OpenBGPD 6.2, global scenario, IPv6: prefixes received by clients: AS
 Live test, OpenBGPD 6.2, global scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 564 tests in 902.128s
+Ran 572 tests in 907.219s
 
 OK (SKIP=48)
 Live test, BIRD, gshut, IPv4: setting instances up...
@@ -847,7 +871,7 @@ Live test, OpenBGPD 6.2, gshut, IPv6: clients receive routes tagged with GRACEFU
 Live test, OpenBGPD 6.2, gshut, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 12 tests in 216.377s
+Ran 12 tests in 215.912s
 
 OK
 Live test, BIRD, max-prefix, IPv4: setting instances up...
@@ -857,6 +881,7 @@ Live test, BIRD, max-prefix, IPv4: log is populated ... ok
 Live test, BIRD, max-prefix, IPv4: number of prefixes received by rs from AS1 ... ok
 Live test, BIRD, max-prefix, IPv4: number of prefixes received by rs from AS2 ... ok
 Live test, BIRD, max-prefix, IPv4: number of prefixes received by rs from AS3 ... ok
+Live test, BIRD, max-prefix, IPv4: number of prefixes received by rs from AS4 ... ok
 Live test, BIRD, max-prefix, IPv4: stopping instances...
 Live test, BIRD, max-prefix, IPv6: setting instances up...
 Live test, BIRD, max-prefix, IPv6: instances setup ... ok
@@ -865,6 +890,7 @@ Live test, BIRD, max-prefix, IPv6: log is populated ... ok
 Live test, BIRD, max-prefix, IPv6: number of prefixes received by rs from AS1 ... ok
 Live test, BIRD, max-prefix, IPv6: number of prefixes received by rs from AS2 ... ok
 Live test, BIRD, max-prefix, IPv6: number of prefixes received by rs from AS3 ... ok
+Live test, BIRD, max-prefix, IPv6: number of prefixes received by rs from AS4 ... ok
 Live test, BIRD, max-prefix, IPv6: stopping instances...
 Live test, OpenBGPD 6.0, max-prefix, IPv4: setting instances up...
 Live test, OpenBGPD 6.0, max-prefix, IPv4: instances setup ... ok
@@ -888,7 +914,7 @@ Live test, OpenBGPD 6.2, max-prefix, IPv6: clients log max-prefix notification .
 Live test, OpenBGPD 6.2, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 24 tests in 487.365s
+Ran 26 tests in 541.438s
 
 OK
 Live test, BIRD, path hiding, mitigation off, IPv4: setting instances up...
@@ -1001,7 +1027,7 @@ Live test, OpenBGPD 6.2, path hiding, mitigation on, IPv6: AS3 and AS4 don't rec
 Live test, OpenBGPD 6.2, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 84 tests in 925.041s
+Ran 84 tests in 926.871s
 
 OK (SKIP=8)
 
@@ -1023,7 +1049,7 @@ Live test, OpenBGPD 6.0, examples, rich config, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, examples, rich config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 162.249s
+Ran 4 tests in 162.101s
 
 OK
 Live test, BIRD, RPKI INVALID tagging, IPv4: setting instances up...
@@ -1056,7 +1082,7 @@ Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS3 valid prefix, sub prefix 
 Live test, BIRD, RPKI INVALID tagging, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 24 tests in 52.794s
+Ran 24 tests in 52.544s
 
 OK
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: setting instances up...
@@ -1199,7 +1225,7 @@ Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 114 tests in 871.491s
+Ran 114 tests in 873.637s
 
 OK
 Live test, BIRD, 'tag' reject policy scenario, IPv4: setting instances up...
@@ -1294,6 +1320,6 @@ Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: prefixes received b
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 82 tests in 292.701s
+Ran 82 tests in 292.088s
 
 OK (SKIP=4)

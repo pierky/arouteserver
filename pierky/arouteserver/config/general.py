@@ -15,7 +15,8 @@
 
 import logging
 
-from .base import ConfigParserBase, convert_next_hop_policy
+from .base import ConfigParserBase, convert_next_hop_policy, \
+                  convert_maxprefix_peeringdb
 from .validators import *
 from ..errors import ConfigError, ARouteServerError
 
@@ -142,7 +143,13 @@ class ConfigParserGeneral(ConfigParserBase):
                                                         default=True),
                     },
                     "max_prefix": {
-                        "peering_db": ValidatorBool(default=True),
+                        "peering_db": {
+                            "enabled": ValidatorBool(default=True),
+                            "increment": {
+                                "absolute": ValidatorUInt(default=100),
+                                "relative": ValidatorUInt(default=15)
+                            }
+                        },
                         "general_limit_ipv4": ValidatorUInt(default=170000),
                         "general_limit_ipv6": ValidatorUInt(default=12000),
                         "action": ValidatorOption(
@@ -225,6 +232,10 @@ class ConfigParserGeneral(ConfigParserBase):
         try:
             # Convert next_hop_policy (< v0.6.0) into the new format
             convert_next_hop_policy(self.cfg["cfg"])
+
+            # Convert max_prefix.peering_db (< v0.13.0) into the new format
+            convert_maxprefix_peeringdb(self.cfg["cfg"])
+
             ConfigParserBase.validate(schema, self.cfg)
         except ARouteServerError as e:
             errors = True

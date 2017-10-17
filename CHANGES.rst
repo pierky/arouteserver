@@ -10,6 +10,12 @@ next release
 
   This **breaks backward compatibility**: previously, NO_EXPORT/NO_ADVERTISE communities were treated accordingly to the default implementation of the BGP speaker daemon (BIRD, OpenBGPD). Now, ARouteServer's default setting is to treat routes tagged with those communities transparently, that is to announce them to other clients and to pass-through the original RFC1997 communities.
 
+- Improvement: when using PeeringDB records to configure the max-prefix limits, a margin is took into account to accomodate networks that fill the PeeringDB records with their exact route announcement count.
+
+  This **breaks backward compatibility**: if using max-prefix from PeeringDB, current limits will be raised by the default increment values (+100, +15%): this behaviour can be reverted to the pre-v0.13.0 situation by explicitly setting the ``max_prefix.peering_db.increment`` configuration section to ``0/0``.
+
+  Related: `issue #12 on GitHub <https://github.com/pierky/arouteserver/issues/12>`_.
+
 v0.12.3
 -------
 

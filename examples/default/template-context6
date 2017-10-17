@@ -216,7 +216,11 @@ cfg:
       action: null
       general_limit_ipv4: 170000
       general_limit_ipv6: 12000
-      peering_db: true
+      peering_db:
+        enabled: true
+        increment:
+          absolute: 100
+          relative: 15
       restart_after: 15
     next_hop:
       policy: strict
@@ -604,7 +608,11 @@ clients:
         action: null
         limit_ipv4: null
         limit_ipv6: null
-        peering_db: true
+        peering_db:
+          enabled: true
+          increment:
+            absolute: 100
+            relative: 15
         restart_after: 15
       next_hop:
         authorized_addresses_list: null
@@ -644,7 +652,11 @@ clients:
         action: null
         limit_ipv4: null
         limit_ipv6: null
-        peering_db: true
+        peering_db:
+          enabled: true
+          increment:
+            absolute: 100
+            relative: 15
         restart_after: 15
       next_hop:
         authorized_addresses_list: null
@@ -685,7 +697,11 @@ clients:
         action: null
         limit_ipv4: null
         limit_ipv6: null
-        peering_db: true
+        peering_db:
+          enabled: true
+          increment:
+            absolute: 100
+            relative: 15
         restart_after: 15
       next_hop:
         authorized_addresses_list: null

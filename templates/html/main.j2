@@ -178,7 +178,7 @@ Route <strong>validity state</strong> is signalled to route server clients using
 {%	endif %}
 	</p></li>
 
-{%	if cfg.filtering.max_prefix.peering_db %}
+{%	if cfg.filtering.max_prefix.peering_db.enabled %}
 	<li><p>The limit, if not provided on a client-by-client basis, is learnt from the client's <strong>PeeringDB record</strong>.</p></li>
 {%	endif %}
 	<li><p>If no more specific limits exist for the client, the <strong>general limit</strong> of {{ cfg.filtering.max_prefix.general_limit_ipv4 }} IPv4 routes and {{ cfg.filtering.max_prefix.general_limit_ipv6 }} IPv6 routes is enforced.</p></li>

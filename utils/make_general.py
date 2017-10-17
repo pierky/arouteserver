@@ -289,10 +289,16 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
                 CfgStatement("enabled", pre_comment=True),
                 CfgStatement("reject_invalid", pre_comment=True)
             ]),
-            CfgStatement("max_prefix", t="Max prefix", sub=[ 
+            CfgStatement("max_prefix", t="Max prefix", post_comment=True, sub=[
                 CfgStatement("action", pre_comment=True),
                 CfgStatement("restart_after", pre_comment=True),
-                CfgStatement("peering_db", pre_comment=True),
+                CfgStatement("peering_db", post_comment=True, sub = [
+                    CfgStatement("enabled", pre_comment=True),
+                    CfgStatement("increment", pre_comment=True, sub=[
+                        CfgStatement("absolute", pre_comment=True),
+                        CfgStatement("relative", pre_comment=True)
+                    ]),
+                ]),
                 CfgStatement("general_limit_ipv4", pre_comment=True),
                 CfgStatement("general_limit_ipv6", group_with_previous="general_limit_ipv4")
             ]),

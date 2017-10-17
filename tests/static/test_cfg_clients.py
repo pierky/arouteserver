@@ -176,6 +176,7 @@ class TestConfigParserClients(TestConfigParserBase):
             "        # test pre v0.6.0 format for next_hop",
             "        next_hop_policy: same-as",
             "        max_prefix:",
+            "          # test pre v0.13.0 format for peering_db",
             "          peering_db: False",
             "          limit_ipv4: 10",
             "          limit_ipv6: 20",
@@ -214,7 +215,7 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["filtering"]["next_hop"]["policy"], "strict")
         self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["limit_ipv4"], None)
         self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["limit_ipv6"], None)
-        self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["peering_db"], True)
+        self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["peering_db"]["enabled"], True)
         self.assertEqual(client["cfg"]["filtering"]["reject_policy"]["policy"], "reject")
 
         client = self.cfg[1]
@@ -234,7 +235,7 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["filtering"]["next_hop"]["policy"], "same-as")
         self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["limit_ipv4"], 10)
         self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["limit_ipv6"], 20)
-        self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["peering_db"], False)
+        self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["peering_db"]["enabled"], False)
         self.assertEqual(client["cfg"]["filtering"]["reject_policy"]["policy"], "tag")
         self.assertEqual(client["cfg"]["graceful_shutdown"]["enabled"], True)
 

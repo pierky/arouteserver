@@ -141,7 +141,11 @@ clients:
 
         max_prefix:
           #action: "shutdown"
-          #peering_db: True
+          #peering_db:
+          #  enabled: True
+          #  increment:
+          #    absolute: 100
+          #    relative: 15
 
           #limit_ipv4: 170000
           #limit_ipv6:  12000

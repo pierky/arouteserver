@@ -13,6 +13,22 @@ ROOT="`pwd`"
 DOCS_DIR="`pwd`/docs"
 CFG_FILE="var/build_doc.yml"
 
+function publish_docs() {
+	echo "Publishing docs via HTTP"
+
+	echo "cd $DOCS_DIR ; make html ; cd _build/html/ ; python -m SimpleHTTPServer 8000 ; cd $ROOT"
+	cd $DOCS_DIR
+	make html
+	cd _build/html/
+	python -m SimpleHTTPServer 8000
+	cd $ROOT
+}
+
+if [ "$1" == "publish" ]; then
+	publish_docs
+	exit
+fi
+
 # ----------------------------------------------------
 
 echo "Rendering GENERAL.rst from config.d/general.yml"
@@ -213,11 +229,4 @@ cat $DOCS_DIR/README_footer.txt >> $DST_FILE
 
 # ----------------------------------------------------
 
-echo "Publishing docs via HTTP"
-
-echo "cd $DOCS_DIR ; make html ; cd _build/html/ ; python -m SimpleHTTPServer 8000 ; cd $ROOT"
-cd $DOCS_DIR
-make html
-cd _build/html/
-python -m SimpleHTTPServer 8000
-cd $ROOT
+publish_docs

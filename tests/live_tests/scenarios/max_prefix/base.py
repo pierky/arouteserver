@@ -64,6 +64,16 @@ class MaxPrefixScenario(LiveScenario):
                     )
                 ],
             ),
+            cls.CLIENT_INSTANCE_CLASS(
+                "AS4",
+                cls.DATA["AS4_1_IPAddress"],
+                [
+                    (
+                        cls.build_other_cfg("AS4.j2"),
+                        "/etc/bird/bird.conf"
+                    )
+                ],
+            ),
         ]
 
     def set_instance_variables(self):
@@ -71,6 +81,7 @@ class MaxPrefixScenario(LiveScenario):
         self.AS1 = self._get_instance_by_name("AS1")
         self.AS2 = self._get_instance_by_name("AS2")
         self.AS3 = self._get_instance_by_name("AS3")
+        self.AS4 = self._get_instance_by_name("AS4")
 
     def test_010_setup(self):
         """{}: instances setup"""
@@ -114,9 +125,14 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
         log = log_tpl.format(limit=2)
         self.log_contains(self.rs, log, {"inst": self.AS3})
 
+        log = log_tpl.format(limit=6)
+        self.log_contains(self.rs, log, {"inst": self.AS4})
+
     def _get_routes_from(self, asn, include_filtered=False):
         routes = []
-        for prefix_num in (1,2,3,4,5):
+        for prefix_num in (1,2,3,4,5,6,7):
+            if "AS{}_pref{}".format(asn, prefix_num) not in self.DATA:
+                continue
             routes.extend(
                 self.rs.get_routes(
                     self.DATA["AS{}_pref{}".format(asn, prefix_num)],
@@ -143,6 +159,12 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
         self.assertEqual(len(self._get_routes_from(3)), 2)
         self.assertEqual(len(self._get_routes_from(3, include_filtered=True)), 5)
 
+    def test_032_count_received_prefixes_AS4(self):
+        """{}: number of prefixes received by rs from AS4"""
+
+        self.assertEqual(len(self._get_routes_from(4)), 6)
+        self.assertEqual(len(self._get_routes_from(4, include_filtered=True)), 7)
+
 class MaxPrefixScenarioOpenBGPD(LiveScenario_TagRejectPolicy, MaxPrefixScenario):
     __test__ = False
 
@@ -167,7 +189,7 @@ class MaxPrefixScenarioOpenBGPD(LiveScenario_TagRejectPolicy, MaxPrefixScenario)
 
     def test_020_sessions_down(self):
         """{}: sessions are down"""
-        for inst in (self.AS1, self.AS2, self.AS3):
+        for inst in (self.AS1, self.AS2, self.AS3, self.AS4):
             with six.assertRaisesRegex(self,
                 AssertionError, "is not up"
             ):
@@ -175,7 +197,7 @@ class MaxPrefixScenarioOpenBGPD(LiveScenario_TagRejectPolicy, MaxPrefixScenario)
 
     def test_030_clients_receive_maxpref_not(self):
         """{}: clients log max-prefix notification"""
-        for inst in (self.AS1, self.AS2, self.AS3):
+        for inst in (self.AS1, self.AS2, self.AS3, self.AS4):
             self.log_contains(inst, "the_rs: Received: Maximum number of prefixes reached")
 
 class MaxPrefixScenarioOpenBGPD60(MaxPrefixScenarioOpenBGPD):
