@@ -927,9 +927,8 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             for comm_name in ConfigParserGeneral.COMMUNITIES_SCHEMA:
                 comm = self.cfg_general["communities"][comm_name]
                 if comm["ext"]:
-                    if comm["ext"] == "ro:65535:65281":
-                        rfc1997_wkcomms_collisions.append(comm_name)
-                    if comm["ext"] == "ro:65535:65282":
+                    if comm["ext"] in ("ro:65535:65281", "ro:65535:65282",
+                                       "ro:65535:dyn_val", "ro:65535:peer_as"):
                         rfc1997_wkcomms_collisions.append(comm_name)
 
             if rfc1997_wkcomms_collisions:
