@@ -32,7 +32,7 @@ jobs:
       deploy:
         # Test
         - provider: pypi
-          server: https://testpypi.python.org/pypi
+          server: https://test.pypi.org/legacy
           distributions: sdist
           user: pierky
           password:
