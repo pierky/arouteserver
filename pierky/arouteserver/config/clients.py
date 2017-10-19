@@ -78,6 +78,10 @@ class ConfigParserClients(ConfigParserBase):
                                                    mandatory=False),
                         "enforce_origin_in_as_set": ValidatorBool(mandatory=False),
                         "enforce_prefix_in_as_set": ValidatorBool(mandatory=False),
+                        "white_list_pref": ValidatorListOf(
+                            ValidatorPrefixListEntry, mandatory=False,
+                        ),
+                        "white_list_asn": ValidatorASNList(mandatory=False),
                     },
                     "rpki": {
                         "enabled": ValidatorBool(mandatory=False),

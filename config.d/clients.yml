@@ -76,6 +76,8 @@ clients:
     #
     # - filtering.black_list_pref
     # - filtering.irrdb.as_sets
+    # - filtering.irrdb.white_list_pref
+    # - filtering.irrdb.white_list_asn
     #
     # Please refer to the general configuration file for more
     # details.
@@ -135,6 +137,20 @@ clients:
 
           #enforce_origin_in_as_set: True
           #enforce_prefix_in_as_set: True
+
+          # List of prefixes that are treated as if they were
+          # included within the client's AS-SET.
+          white_list_pref:
+            #- prefix:
+            #  length:
+            #  comment: ""
+
+          # List of origin ASNs that are treated as if they were
+          # included within the client's AS-SET.
+          white_list_asn:
+            #- 1
+            #- 2
+            #- 3
 
         rpki:
           #reject_invalid: True
