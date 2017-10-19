@@ -17,6 +17,9 @@ protocol static bad_prefixes {
 	route {{ data.peer_as1 }} reject;
 	route {{ data.invalid_asn1 }} reject;
 	route {{ data.aspath_len1 }} reject;
+	route {{ data.AS1_whitel_1 }} reject;
+	route {{ data.AS1_whitel_2 }} reject;
+	route {{ data.AS1_whitel_3 }} reject;
 }
 
 filter to_the_rs {
@@ -37,6 +40,21 @@ filter to_the_rs {
 	}
 	if net = {{ data.AS103_gshut_1 }} then {
 		bgp_community.add((65535, 0));
+	}
+	if net = {{ data.AS1_whitel_1 }} then {
+		bgp_path.delete(1);
+		bgp_path.prepend(1011);
+		bgp_path.prepend(1);
+	}
+	if net = {{ data.AS1_whitel_2 }} then {
+		bgp_path.delete(1);
+		bgp_path.prepend(1000);
+		bgp_path.prepend(1);
+	}
+	if net = {{ data.AS1_whitel_3 }} then {
+		bgp_path.delete(1);
+		bgp_path.prepend(1011);
+		bgp_path.prepend(1);
 	}
 	accept;
 }

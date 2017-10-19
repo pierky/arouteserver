@@ -219,6 +219,11 @@ class BasicScenario(LiveScenario):
                            as_path="2",
                            next_hop=self.DATA["AS2_nonclient_nexthop1_nh"])
 
+    def test_030_good_prefixes_because_of_irrdb_whitelist(self):
+        """{}: good prefixes received by rs: IRRdb white-list"""
+
+        self.receive_route(self.rs, self.DATA["AS1_whitel_1"], as_path="1 1011")
+
     def test_040_bad_prefixes_received_by_rs_bogon(self):
         """{}: bad prefixes received by rs: bogon"""
         self.receive_route(self.rs, self.DATA["bogon1"], self.AS1_1,
@@ -350,6 +355,17 @@ class BasicScenario(LiveScenario):
         else:
             msg = "prefix is not in IPv6 Global Unicast space - REJECTING " + self.DATA["Default_route"]
         self.log_contains(self.rs, msg)
+
+    def test_040_bad_prefixes_even_if_irrdb_whitelist(self):
+        """{}: bad prefixes received by rs: IRRdb white-list"""
+
+        self.receive_route(self.rs, self.DATA["AS1_whitel_2"], as_path="1 1000",
+                           filtered=True, reject_reason=9)
+        self.log_contains(self.rs, "origin ASN [1000] not in allowed as-sets - REJECTING " + self.DATA["AS1_whitel_2"])
+
+        self.receive_route(self.rs, self.DATA["AS1_whitel_3"], as_path="1 1011",
+                           filtered=True, reject_reason=12)
+        self.log_contains(self.rs, "prefix not in client's r_set - REJECTING " + self.DATA["AS1_whitel_3"])
 
     def test_041_bad_prefixes_not_received_by_clients(self):
         """{}: bad prefixes not received by clients"""

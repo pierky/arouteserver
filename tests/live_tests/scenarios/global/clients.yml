@@ -10,6 +10,15 @@ clients:
                                 as_sets:
                                 - "AS-AS1"
                                 - "AS-AS1_CUSTOMERS"
+                                white_list_pref:
+                                - prefix: "11.1.0.0"
+                                  length: 16
+                                  le: 32
+                                - prefix: "2a11:1::"
+                                  length: 32
+                                  le: 128
+                                white_list_asn:
+                                - 1011
         - asn: 1
           ip:
           - "192.0.2.12"

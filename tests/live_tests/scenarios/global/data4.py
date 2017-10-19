@@ -39,6 +39,10 @@ class BasicScenario_Data4(object):
         "invalid_asn1":             "128.0.0.0/9",
         "aspath_len1":              "128.0.0.0/10",
 
+        "AS1_whitel_1":             "11.1.1.0/24",
+        "AS1_whitel_2":             "11.1.2.0/24",
+        "AS1_whitel_3":             "11.2.1.0/24",
+
         "AS2_allowed_prefixes":     "2.0.0.0/16",
         "AS2_good1":                "2.0.1.0/24",
         "AS2_good2":                "2.0.2.0/24",

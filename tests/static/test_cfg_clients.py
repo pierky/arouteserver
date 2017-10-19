@@ -162,6 +162,12 @@ class TestConfigParserClients(TestConfigParserBase):
             "        irrdb:",
             "          enforce_origin_in_as_set: False",
             "          enforce_prefix_in_as_set: False",
+            "          white_list_pref:",
+            "            - prefix: 192.0.2.0",
+            "              length: 24",
+            "          white_list_asn:",
+            "            - 11",
+            "            - 12",
             "        rpki:",
             "          enabled: True",
             "          reject_invalid: False",
@@ -204,6 +210,8 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["prepend_rs_as"], False)
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_origin_in_as_set"], True)
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_prefix_in_as_set"], True)
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_pref"], None)
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_asn"], None)
         self.assertEqual(client["cfg"]["filtering"]["rpki"]["enabled"], False)
         self.assertEqual(client["cfg"]["filtering"]["rpki"]["reject_invalid"], True)
         self.assertEqual(client["cfg"]["filtering"]["reject_invalid_as_in_as_path"], True)
@@ -224,6 +232,9 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["prepend_rs_as"], True)
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_origin_in_as_set"], False)
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_prefix_in_as_set"], False)
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_pref"][0]["prefix"], "192.0.2.0")
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_pref"][0]["length"], 24)
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_asn"], [11, 12])
         self.assertEqual(client["cfg"]["filtering"]["rpki"]["enabled"], True)
         self.assertEqual(client["cfg"]["filtering"]["rpki"]["reject_invalid"], False)
         self.assertEqual(client["cfg"]["filtering"]["reject_invalid_as_in_as_path"], False)

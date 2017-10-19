@@ -39,6 +39,10 @@ class BasicScenario_Data6(object):
         "invalid_asn1":             "2a99:1::/48",
         "aspath_len1":              "2a99:2::/48",
 
+        "AS1_whitel_1":             "2a11:1:1::/48",
+        "AS1_whitel_2":             "2a11:1:2::/48",
+        "AS1_whitel_3":             "2a11:2:1::/48",
+
         "AS2_allowed_prefixes":     "2a02:0::/32",
         "AS2_good1":                "2a02:0:1::/48",
         "AS2_good2":                "2a02:0:2::/48",

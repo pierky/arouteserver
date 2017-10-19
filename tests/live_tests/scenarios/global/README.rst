@@ -9,6 +9,7 @@ Built to group as many tests as possible in a single scenario.
 
   - AS-AS1 (1.0.0.0/8, 128.0.0.0/7)
   - AS-AS1_CUSTOMERS (101.0.0.0/16, 103.0.0.0/16)
+  - white list: 11.1.0.0/16, ASN 1011
 
   Enabled to perform graceful BGP session shutdown.
 
@@ -33,6 +34,12 @@ Built to group as many tests as possible in a single scenario.
     peer_as1       128.0.0.0/8   [2, 1]        fail bgp_path.first != peer_as
     invalid_asn1   128.0.0.0/9   [1, 65536 1]  fail as_path_contains_invalid_asn
     aspath_len1    128.0.0.0/10  [1, 2x6]      fail bgp_path.len > 6
+
+    AS1_whitel_1   11.1.1.0/24   [1, 1011]     accepted, cause in white list
+    AS1_whitel_2   11.1.2.0/24   [1, 1000]     rejected, bad ASN even if prefix in
+                                               white list
+    AS1_whitel_3   11.2.1.0/24   [1, 1011]     rejected, bad prefix even if ASN in
+                                               white list
     ============   ============  ============  ====================================
 
   - AS1_2 (192.0.2.12, RTT 5 ms)
