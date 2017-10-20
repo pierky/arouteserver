@@ -111,6 +111,7 @@ Clients from Euro-IX: IXP-Manager workaround ... ok
 Clients from Euro-IX: official basic example ... ok
 Clients from Euro-IX: official more complex example ... ok
 Clients from Euro-IX: --routeserver-only filter ... ok
+Max-prefix from PeeringDB: increment ... ok
 IRRDB info: base, AS_SET bundle info (1) ... ok
 IRRDB info: base, AS_SET bundle info (3) ... ok
 IRRDB info: base, AS_SET bundle info (4) ... ok
@@ -124,6 +125,13 @@ IRRDB info: ASNs, cache expired ... ok
 IRRDB info: RSets, simple ... ok
 IRRDB info: RSets, from cache ... ok
 IRRDB info: RSets, cache expired ... ok
+IRRDB enricher: autnum + AS-SET ... ok
+IRRDB enricher: autnum + AS-SET + ASN white list ... ok
+IRRDB enricher: autnum + AS-SET + prefix white list ... ok
+IRRDB enricher: autnum + AS-SET + prefix/ASN white list ... ok
+IRRDB enricher: autnum + AS-SET + prefix/ASN white list + empty AS-SET ... ok
+IRRDB enricher: autnum only ... ok
+IRRDB enricher: empty autnum + empty AS-SET ... ok
 PeeringDB network: get data ... ok
 PeeringDB network: missing data ... ok
 PeeringDB: AS-SETs parsing ... ok
@@ -142,7 +150,7 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 142 tests in 14.214s
+Ran 150 tests in 31.076s
 
 OK
 Live test, BIRD, hooks example, IPv4: setting instances up...
@@ -153,7 +161,7 @@ Live test, BIRD, hooks example, IPv6: instances setup ... ok
 Live test, BIRD, hooks example, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 2 tests in 8.724s
+Ran 2 tests in 8.686s
 
 OK
 Live test, BIRD, BGP communities, IPv4: setting instances up...
@@ -236,7 +244,7 @@ Live test, OpenBGPD 6.2, BGP communities, IPv6: custom BGP community scrubbed ..
 Live test, OpenBGPD 6.2, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 66 tests in 428.915s
+Ran 66 tests in 432.232s
 
 OK (SKIP=6)
 Live test, BIRD, default config, IPv4: setting instances up...
@@ -253,16 +261,18 @@ Live test, OpenBGPD 6.0, default config, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, default config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 159.624s
+Ran 4 tests in 161.051s
 
 OK
 Live test, BIRD, global scenario, IPv4: setting instances up...
 Live test, BIRD, global scenario, IPv4: instances setup ... ok
 Live test, BIRD, global scenario, IPv4: sessions are up ... ok
 Live test, BIRD, global scenario, IPv4: session configured via local include files ... ok
+Live test, BIRD, global scenario, IPv4: good prefixes received by rs: IRRdb white-list ... ok
 Live test, BIRD, global scenario, IPv4: good prefixes received by rs ... ok
 Live test, BIRD, global scenario, IPv4: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: IRRdb white-list ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: AS_PATH len ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: bogon ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: client blacklist ... ok
@@ -332,9 +342,11 @@ Live test, BIRD, global scenario, IPv4, tag: setting instances up...
 Live test, BIRD, global scenario, IPv4, tag: instances setup ... ok
 Live test, BIRD, global scenario, IPv4, tag: sessions are up ... ok
 Live test, BIRD, global scenario, IPv4, tag: session configured via local include files ... ok
+Live test, BIRD, global scenario, IPv4, tag: good prefixes received by rs: IRRdb white-list ... ok
 Live test, BIRD, global scenario, IPv4, tag: good prefixes received by rs ... ok
 Live test, BIRD, global scenario, IPv4, tag: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: IRRdb white-list ... ok
 Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: AS_PATH len ... ok
 Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: bogon ... ok
 Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: client blacklist ... ok
@@ -406,9 +418,11 @@ Live test, BIRD, global scenario, IPv6: setting instances up...
 Live test, BIRD, global scenario, IPv6: instances setup ... ok
 Live test, BIRD, global scenario, IPv6: sessions are up ... ok
 Live test, BIRD, global scenario, IPv6: session configured via local include files ... ok
+Live test, BIRD, global scenario, IPv6: good prefixes received by rs: IRRdb white-list ... ok
 Live test, BIRD, global scenario, IPv6: good prefixes received by rs ... ok
 Live test, BIRD, global scenario, IPv6: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: IRRdb white-list ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: AS_PATH len ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: bogon ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: client blacklist ... ok
@@ -478,9 +492,11 @@ Live test, BIRD, global scenario, IPv6, tag: setting instances up...
 Live test, BIRD, global scenario, IPv6, tag: instances setup ... ok
 Live test, BIRD, global scenario, IPv6, tag: sessions are up ... ok
 Live test, BIRD, global scenario, IPv6, tag: session configured via local include files ... ok
+Live test, BIRD, global scenario, IPv6, tag: good prefixes received by rs: IRRdb white-list ... ok
 Live test, BIRD, global scenario, IPv6, tag: good prefixes received by rs ... ok
 Live test, BIRD, global scenario, IPv6, tag: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: IRRdb white-list ... ok
 Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: AS_PATH len ... ok
 Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: bogon ... ok
 Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: client blacklist ... ok
@@ -552,9 +568,11 @@ Live test, OpenBGPD 6.0, global scenario, IPv4: setting instances up...
 Live test, OpenBGPD 6.0, global scenario, IPv4: instances setup ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: sessions are up ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: session configured via local include files ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv4: good prefixes received by rs: IRRdb white-list ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: good prefixes received by rs ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: IRRdb white-list ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: AS_PATH len ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: bogon ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: client blacklist ... ok
@@ -626,9 +644,11 @@ Live test, OpenBGPD 6.0, global scenario, IPv6: setting instances up...
 Live test, OpenBGPD 6.0, global scenario, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: sessions are up ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: session configured via local include files ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv6: good prefixes received by rs: IRRdb white-list ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: good prefixes received by rs ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: IRRdb white-list ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: AS_PATH len ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: bogon ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: client blacklist ... ok
@@ -700,9 +720,11 @@ Live test, OpenBGPD 6.2, global scenario, IPv4: setting instances up...
 Live test, OpenBGPD 6.2, global scenario, IPv4: instances setup ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: sessions are up ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: session configured via local include files ... ok
+Live test, OpenBGPD 6.2, global scenario, IPv4: good prefixes received by rs: IRRdb white-list ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: good prefixes received by rs ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, OpenBGPD 6.2, global scenario, IPv4: bad prefixes received by rs: IRRdb white-list ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: bad prefixes received by rs: AS_PATH len ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: bad prefixes received by rs: bogon ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: bad prefixes received by rs: client blacklist ... ok
@@ -774,9 +796,11 @@ Live test, OpenBGPD 6.2, global scenario, IPv6: setting instances up...
 Live test, OpenBGPD 6.2, global scenario, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: sessions are up ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: session configured via local include files ... ok
+Live test, OpenBGPD 6.2, global scenario, IPv6: good prefixes received by rs: IRRdb white-list ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: good prefixes received by rs ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, OpenBGPD 6.2, global scenario, IPv6: bad prefixes received by rs: IRRdb white-list ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: bad prefixes received by rs: AS_PATH len ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: bad prefixes received by rs: bogon ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: bad prefixes received by rs: client blacklist ... ok
@@ -846,7 +870,7 @@ Live test, OpenBGPD 6.2, global scenario, IPv6: prefixes received by clients: AS
 Live test, OpenBGPD 6.2, global scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 572 tests in 907.219s
+Ran 588 tests in 918.402s
 
 OK (SKIP=48)
 Live test, BIRD, gshut, IPv4: setting instances up...
@@ -871,7 +895,7 @@ Live test, OpenBGPD 6.2, gshut, IPv6: clients receive routes tagged with GRACEFU
 Live test, OpenBGPD 6.2, gshut, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 12 tests in 215.912s
+Ran 12 tests in 217.682s
 
 OK
 Live test, BIRD, max-prefix, IPv4: setting instances up...
@@ -914,7 +938,7 @@ Live test, OpenBGPD 6.2, max-prefix, IPv6: clients log max-prefix notification .
 Live test, OpenBGPD 6.2, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 541.438s
+Ran 26 tests in 541.897s
 
 OK
 Live test, BIRD, path hiding, mitigation off, IPv4: setting instances up...
@@ -1027,7 +1051,7 @@ Live test, OpenBGPD 6.2, path hiding, mitigation on, IPv6: AS3 and AS4 don't rec
 Live test, OpenBGPD 6.2, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 84 tests in 926.871s
+Ran 84 tests in 926.971s
 
 OK (SKIP=8)
 
@@ -1049,7 +1073,7 @@ Live test, OpenBGPD 6.0, examples, rich config, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, examples, rich config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 162.101s
+Ran 4 tests in 160.698s
 
 OK
 Live test, BIRD, RPKI INVALID tagging, IPv4: setting instances up...
@@ -1082,7 +1106,7 @@ Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS3 valid prefix, sub prefix 
 Live test, BIRD, RPKI INVALID tagging, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 24 tests in 52.544s
+Ran 24 tests in 52.753s
 
 OK
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: setting instances up...
@@ -1225,7 +1249,7 @@ Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 114 tests in 873.637s
+Ran 114 tests in 875.344s
 
 OK
 Live test, BIRD, 'tag' reject policy scenario, IPv4: setting instances up...
@@ -1320,6 +1344,6 @@ Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: prefixes received b
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 82 tests in 292.088s
+Ran 82 tests in 293.615s
 
 OK (SKIP=4)
