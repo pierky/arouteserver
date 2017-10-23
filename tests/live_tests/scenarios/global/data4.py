@@ -42,6 +42,9 @@ class BasicScenario_Data4(object):
         "AS1_whitel_1":             "11.1.1.0/24",
         "AS1_whitel_2":             "11.1.2.0/24",
         "AS1_whitel_3":             "11.2.1.0/24",
+        "AS1_whitel_4":             "11.3.0.0/16",
+        "AS1_whitel_5":             "11.4.1.0/24",
+        "AS1_whitel_6":             "11.3.1.0/24",
 
         "AS2_allowed_prefixes":     "2.0.0.0/16",
         "AS2_good1":                "2.0.1.0/24",

@@ -223,6 +223,8 @@ class BasicScenario(LiveScenario):
         """{}: good prefixes received by rs: IRRdb white-list"""
 
         self.receive_route(self.rs, self.DATA["AS1_whitel_1"], as_path="1 1011")
+        self.receive_route(self.rs, self.DATA["AS1_whitel_4"], as_path="1 1011")
+        self.receive_route(self.rs, self.DATA["AS1_whitel_5"], as_path="1 1000")
 
     def test_040_bad_prefixes_received_by_rs_bogon(self):
         """{}: bad prefixes received by rs: bogon"""
@@ -366,6 +368,10 @@ class BasicScenario(LiveScenario):
         self.receive_route(self.rs, self.DATA["AS1_whitel_3"], as_path="1 1011",
                            filtered=True, reject_reason=12)
         self.log_contains(self.rs, "prefix not in client's r_set - REJECTING " + self.DATA["AS1_whitel_3"])
+
+        self.receive_route(self.rs, self.DATA["AS1_whitel_6"], as_path="1 1011",
+                           filtered=True, reject_reason=12)
+        self.log_contains(self.rs, "prefix not in client's r_set - REJECTING " + self.DATA["AS1_whitel_6"])
 
     def test_041_bad_prefixes_not_received_by_clients(self):
         """{}: bad prefixes not received by clients"""

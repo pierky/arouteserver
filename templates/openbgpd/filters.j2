@@ -1,4 +1,5 @@
 {% from 'macros.j2' import write_prefix_list %}
+{% from 'macros.j2' import write_prefix_list_entry %}
 {% from 'macros.j2' import match_communities %}
 {% from 'macros.j2' import add_communities %}
 {% from 'macros.j2' import del_communities %}
@@ -64,6 +65,16 @@ match from {{ client.ip }} {{ matching_element }} set community delete NO_ADVERT
 {%                      endif %}
 {%              endfor %}
 {%      endif %}
+{%	if client.cfg.filtering.irrdb.white_list_route %}
+# client's white list
+{%		for route in client.cfg.filtering.irrdb.white_list_route|sort(attribute="prefix") if route.prefix is current_ipver %}
+{%			if route.asn %}
+match from {{ client.ip }} prefix {{ write_prefix_list_entry(route) }} source-as {{ route.asn }} set community delete NO_ADVERTISE	# {{ route.comment }}
+{%			else %}
+match from {{ client.ip }} prefix {{ write_prefix_list_entry(route) }} set community delete NO_ADVERTISE	# {{ route.comment }}
+{%			endif %}
+{%		endfor %}
+{%	endif %}
 {%      if enforce_object_in_as_set %}
 # enforcing: if NO_ADVERTISE has not been removed then the route is not authorized
 {{ deny_inbound_route(client.cfg.filtering.reject_policy.policy == "tag", "from " ~ client.ip ~ " community NO_ADVERTISE", reject_code) }}

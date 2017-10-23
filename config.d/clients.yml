@@ -76,6 +76,7 @@ clients:
     #
     # - filtering.black_list_pref
     # - filtering.irrdb.as_sets
+    # - filtering.irrdb.white_list_route
     # - filtering.irrdb.white_list_pref
     # - filtering.irrdb.white_list_asn
     #
@@ -137,6 +138,52 @@ clients:
 
           #enforce_origin_in_as_set: True
           #enforce_prefix_in_as_set: True
+
+          # White lists.
+          # The following 3 sections allow to configure white lists
+          # for routes, prefixes and origin ASNs on a client-specific
+          # level.
+          #
+          # The first one, 'white_list_route', allows routes to
+          # "escape" IRRdb-based filters and to be always accepted.
+          # Entries of this list are made up by prefixes and an
+          # optional ASN which, if present, is matched against the
+          # origin ASN. In this case, routes that pass the IRRdb
+          # filters are tagged with 'prefix_not_present_in_as_set'
+          # and 'origin_not_present_in_as_set' accordingly to the
+          # configured policy.
+          #
+          # The last two, 'white_list_pref' and 'white_list_asn'
+          # are more "tricky". They allow to treat prefixes and ASNs
+          # as if they were part of the client's AS-SET.
+          # This implies that filters and features based on IRRdb
+          # data are also applied as if routes were validated against
+          # those data.
+          # For example, if tagging via BGP community was enabled,
+          # when a route is accepted because of one or both of these
+          # white lists then the appropriate
+          # 'prefix_present_in_as_set' or 'origin_present_in_as_set'
+          # communities are also added.
+          #
+          # In any case, these white lists only apply to IRRdb-based
+          # filters; other filters (NEXT_HOP, prefix length, max
+          # AS_PATH length, transit-free/invalid ASN in AS_PATH and
+          # so on) are applied accordingly to the rest of the
+          # configuration.
+          #
+          # Prefixes are always intended as being inclusive of more
+          # specifics unless the 'exact' attribute is set to True.
+          # The range of included sub-prefixes can be set using 'ge'
+          # and 'le' attributes; if they are missing,
+          # <length>-[32|128] is used.
+
+          # List of routes that are always accepted by IRRdb-based
+          # filters.
+          white_list_route:
+            #- prefix:
+            #  length:
+            #  comment: ""
+            #  asn:
 
           # List of prefixes that are treated as if they were
           # included within the client's AS-SET.

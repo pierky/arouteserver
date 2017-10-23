@@ -168,6 +168,11 @@ class TestConfigParserClients(TestConfigParserBase):
             "          white_list_asn:",
             "            - 11",
             "            - 12",
+            "          white_list_route:",
+            "            - prefix: 192.0.2.0",
+            "              length: 24",
+            "              le: 32",
+            "              asn: 65534",
             "        rpki:",
             "          enabled: True",
             "          reject_invalid: False",
@@ -199,7 +204,13 @@ class TestConfigParserClients(TestConfigParserBase):
             "          authorized_addresses_list:",
             "            - '192.0.2.31'",
             "            - '192.0.2.32'",
-            "            - '2001:db8:0:0::31'"
+            "            - '2001:db8:0:0::31'",
+            "        irrdb:",
+            "          # testing optional ASN",
+            "          white_list_route:",
+            "            - prefix: 192.0.2.0",
+            "              length: 24",
+            "              le: 32"
         ]))
         self.cfg.parse()
         self._contains_err()
@@ -235,6 +246,10 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_pref"][0]["prefix"], "192.0.2.0")
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_pref"][0]["length"], 24)
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_asn"], [11, 12])
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_route"][0]["prefix"], "192.0.2.0")
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_route"][0]["length"], 24)
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_route"][0]["le"], 32)
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_route"][0]["asn"], 65534)
         self.assertEqual(client["cfg"]["filtering"]["rpki"]["enabled"], True)
         self.assertEqual(client["cfg"]["filtering"]["rpki"]["reject_invalid"], False)
         self.assertEqual(client["cfg"]["filtering"]["reject_invalid_as_in_as_path"], False)
@@ -255,6 +270,10 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["filtering"]["next_hop"]["authorized_addresses_list"], [
             "192.0.2.31", "192.0.2.32", "2001:db8:0:0::31"
         ])
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_route"][0]["prefix"], "192.0.2.0")
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_route"][0]["length"], 24)
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_route"][0]["le"], 32)
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_route"][0]["asn"], None)
 
     def test_blackhole_filtering_propagation(self):
         """{}: inherit from general cfg - blackhole filtering"""

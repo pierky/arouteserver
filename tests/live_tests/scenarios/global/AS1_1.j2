@@ -20,6 +20,9 @@ protocol static bad_prefixes {
 	route {{ data.AS1_whitel_1 }} reject;
 	route {{ data.AS1_whitel_2 }} reject;
 	route {{ data.AS1_whitel_3 }} reject;
+	route {{ data.AS1_whitel_4 }} reject;
+	route {{ data.AS1_whitel_5 }} reject;
+	route {{ data.AS1_whitel_6 }} reject;
 }
 
 filter to_the_rs {
@@ -52,6 +55,21 @@ filter to_the_rs {
 		bgp_path.prepend(1);
 	}
 	if net = {{ data.AS1_whitel_3 }} then {
+		bgp_path.delete(1);
+		bgp_path.prepend(1011);
+		bgp_path.prepend(1);
+	}
+	if net = {{ data.AS1_whitel_4 }} then {
+		bgp_path.delete(1);
+		bgp_path.prepend(1011);
+		bgp_path.prepend(1);
+	}
+	if net = {{ data.AS1_whitel_5 }} then {
+		bgp_path.delete(1);
+		bgp_path.prepend(1000);
+		bgp_path.prepend(1);
+	}
+	if net = {{ data.AS1_whitel_6 }} then {
 		bgp_path.delete(1);
 		bgp_path.prepend(1011);
 		bgp_path.prepend(1);

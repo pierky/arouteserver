@@ -82,6 +82,9 @@ class ConfigParserClients(ConfigParserBase):
                             ValidatorPrefixListEntry, mandatory=False,
                         ),
                         "white_list_asn": ValidatorASNList(mandatory=False),
+                        "white_list_route": ValidatorListOf(
+                            ValidatorWhiteListRouteEntry, mandatory=False
+                        )
                     },
                     "rpki": {
                         "enabled": ValidatorBool(mandatory=False),

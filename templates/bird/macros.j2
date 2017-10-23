@@ -1,24 +1,28 @@
+{% macro write_prefix_list_entry(entry) %}
+{{	entry.prefix }}/{{ entry.length -}}
+{%-	if not entry.exact -%}
+{{ 		"{" }}
+{%-		if entry.ge -%}
+{{ 			entry.ge }}
+{%-		else -%}
+{{ 			entry.length }}
+{%-		endif -%}
+{{ 		"," }}
+{%-		if entry.le -%}
+{{ 			entry.le }}
+{%-		else -%}
+{{ 			entry.max_length }}
+{%-		endif -%}
+{{ 		"}" }}
+{%-	endif %}
+{% endmacro %}
+
 {% macro write_prefix_list(prefix_list, group=False) %}
 {% if prefix_list %}
 {%	for entry in prefix_list if entry.prefix is current_ipver %}
 {%		if not group %}{{ "\t\t" }}# {{ entry.comment }}{{ "\n" }}{% endif %}
 {%		if not group %}{{ "\t\t" }}{% else %}{{ "\t" }}{% endif %}
-{{		entry.prefix }}/{{ entry.length -}}
-{%-		if not entry.exact -%}
-{{			"{" }}
-{%-			if entry.ge -%}
-{{ 				entry.ge }}
-{%-			else -%}
-{{				entry.length }}
-{%-			endif -%}
-{{			"," }}
-{%-			if entry.le -%}
-{{				entry.le }}
-{%- 			else -%}
-{{				entry.max_length }}
-{%- 			endif -%}
-{{			"}" }}
-{%-		endif %}
+{{-		write_prefix_list_entry(entry) -}}
 {%		if not loop.last %}
 {%		 	if group %}
 {%				if loop.index % 4 == 0 %}{{ ",\n" -}}{% else %}{{ ", " -}}{% endif %}

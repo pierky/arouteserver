@@ -16,9 +16,9 @@ next release
 
   Related: `issue #12 on GitHub <https://github.com/pierky/arouteserver/issues/12>`_.
 
-- New feature: client-level white lists for IRRdb prefixes and origin ASNs.
+- New feature: client-level white lists for IRRdb-based filters.
 
-  This allows to manually enter prefixes and ASNs that must be treated as if they were included within client's AS-SETs.
+  This allows to manually enter routes that must always be accepted by IRRdb-level checks and prefixes and ASNs that must be treated as if they were included within client's AS-SETs.
 
 v0.12.3
 -------

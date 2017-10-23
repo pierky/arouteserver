@@ -19,6 +19,19 @@ clients:
                                   le: 128
                                 white_list_asn:
                                 - 1011
+                                white_list_route:
+                                - prefix: "11.3.0.0"
+                                  length: 16
+                                  exact: True
+                                  asn: 1011
+                                - prefix: "2a11:3::"
+                                  length: 32
+                                  exact: True
+                                  asn: 1011
+                                - prefix: "11.4.0.0"
+                                  length: 16
+                                - prefix: "2a11:4::"
+                                  length: 32
         - asn: 1
           ip:
           - "192.0.2.12"

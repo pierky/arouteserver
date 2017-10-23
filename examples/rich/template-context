@@ -629,6 +629,7 @@ clients:
         enforce_prefix_in_as_set: true
         white_list_asn: null
         white_list_pref: null
+        white_list_route: null
       max_as_path_len: 32
       max_prefix:
         action: restart
@@ -678,6 +679,7 @@ clients:
         enforce_prefix_in_as_set: true
         white_list_asn: null
         white_list_pref: null
+        white_list_route: null
       max_as_path_len: 32
       max_prefix:
         action: restart
@@ -727,6 +729,7 @@ clients:
         enforce_prefix_in_as_set: true
         white_list_asn: null
         white_list_pref: null
+        white_list_route: null
       max_as_path_len: 32
       max_prefix:
         action: restart

@@ -185,14 +185,12 @@ Example:
            irrdb:
              as_sets:
                - "AS-AS11NETS"
-             white_list_pref:
+             white_list_route:
                - prefix: "203.0.113.0"
                  length: 24
-                 le: 32
-             white_list_asn:
-               - 65534
+                 asn: 65534
 
-This configuration allows to authorize all the prefixes and ASNs obtained by expanding **AS11** and **AS-AS11NETS** objects and also **203.0.113.0/24-32** and **65534**.
+This configuration allows to authorize routes for 203.0.113.0/24{24-32} with origin ASN 65534 received from the client.
 
 RPKI-based filtering
 ********************
