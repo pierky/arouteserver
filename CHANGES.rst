@@ -20,6 +20,8 @@ next release
 
   This allows to manually enter routes that must always be accepted by IRRdb-level checks and prefixes and ASNs that must be treated as if they were included within client's AS-SETs.
 
+  Related: `issue #16 on GitHub <https://github.com/pierky/arouteserver/issues/16>`_.
+
 v0.12.3
 -------
 
