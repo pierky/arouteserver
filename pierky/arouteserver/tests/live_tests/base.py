@@ -654,7 +654,7 @@ class LiveScenario(ARouteServerTestCase):
                         )
                         err = True
                 if not err:
-                    return
+                    return route
 
         if errors:
             criteria = []
