@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import copy
+import json
 import os
 import shutil
 import tempfile
@@ -25,32 +26,30 @@ import unittest
 import yaml
 
 from pierky.arouteserver.builder import TemplateContextDumper
-from pierky.arouteserver.enrichers.irrdb import IRRDBConfigEnricher_OriginASNs, \
-                                                IRRDBConfigEnricher_Prefixes
-from pierky.arouteserver.errors import ExternalDataNoInfoError
-from pierky.arouteserver.irrdb import IRRDBInfo, ASSet, RSet
+from pierky.arouteserver.irrdb import ASSet, RSet
 
 def load(filename):
     path = os.path.join(os.path.dirname(__file__), "irrdb_data", filename)
-    with open(path, "rb") as f:
-        return f.read()
+    with open(path, "r") as f:
+        return json.load(f)
 
 def asset_get_data(self, cmd):
-    res = []
+    asn_list = []
     for obj_name in self.object_names:
         raw = load("asset_{}.json".format(obj_name))
-    return raw
+        for asn in raw["asn_list"]:
+            if asn not in asn_list:
+                asn_list.append(asn)
+    return json.dumps({"asn_list": asn_list}).encode()
 
 def rset_get_data(self, cmd):
-    res = []
+    prefix_list = []
     for obj_name in self.object_names:
         raw = load("rset_{}_ipv{}.json".format(obj_name, self.ip_ver))
-    return raw
-
-class FakeIRRDBObject(IRRDBInfo):
-
-    def _get_data(self):
-        return self._run_cmd(["false"])
+        for prefix in raw["prefix_list"]:
+            if prefix not in prefix_list:
+                prefix_list.append(prefix)
+    return json.dumps({"prefix_list": prefix_list}).encode()
 
 class TestIRRDBEnricher_Base(unittest.TestCase):
 
@@ -265,4 +264,24 @@ class TestIRRDBEnricher_Prefixes(TestIRRDBEnricher_Base):
         self.assertEqual(
             self.get_client_info(self.get_client_by_id("AS3_1")),
             ([], [])
+        )
+
+    def test_010_autnum_and_1_assets(self, *patches):
+        """IRRDB enricher: autnum + 2 AS-SETs"""
+        clients = copy.deepcopy(self.CLIENTS_SIMPLE)
+        clients["clients"][0]["cfg"] = {"filtering": {"irrdb": {"as_sets": ["AS-ONE", "AS-TWO"]}}}
+        clients["clients"][1]["cfg"] = {"filtering": {"irrdb": {"as_sets": ["AS-TWO", "AS-THREE"]}}}
+
+        self.setup_builder(self.GENERAL_SIMPLE, clients)
+        self.builder.render_template()
+
+        self.assertEqual(
+            self.get_client_info(self.get_client_by_id("AS1_1")),
+            ([1, 10, 11, 12, 20, 21, 22], sorted(["1.0.0.0/8", "10.0.0.0/8", "11.0.0.0/8", "12.0.0.0/8",
+                                                  "20.0.0.0/8", "21.0.0.0/8", "22.0.0.0/8"]))
+        )
+        self.assertEqual(
+            self.get_client_info(self.get_client_by_id("AS2_1")),
+            ([2, 20, 21, 22, 30, 31, 32], sorted(["2.0.0.0/8", "20.0.0.0/8", "21.0.0.0/8", "22.0.0.0/8",
+                                                  "30.0.0.0/8", "31.0.0.0/8", "32.0.0.0/8"]))
         )
