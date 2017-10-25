@@ -37,5 +37,5 @@ class SkeletonScenario_BIRDIPv6(SkeletonScenario):
         "AS2_IPAddress":            "2001:db8:1:1::22",
 
         "AS2_prefix1":              "2a00:2::/32",
-        "AS2_bogon1":               "2001:0:8000::/48"  
+        "AS2_bogon1":               "2001:0:8000::/48"
     }

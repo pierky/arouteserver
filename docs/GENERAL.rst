@@ -486,6 +486,26 @@ RPKI: ``rpki``
 Max prefix: ``max_prefix``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Dynamically adjust max-prefix limit of each client on the
+basis of the following criteria, in priority order:
+
+
+
+
+- client's **limit_ipv[4|6]** configuration statement, if
+  given;
+
+
+- client's ASN PeeringDB record, if enabled by the
+  **peering_db** option;
+
+
+- general limit set in **general_limit_ipv[4|6]**, if given.
+
+
+In the end, if no limit is found for a given AF or if
+it is 0, no max-prefix limit is configured fot the
+specific client.
 
 - ``action``:
   If **action** is not given, no max-prefix enforcement
@@ -536,28 +556,13 @@ Max prefix: ``max_prefix``
 
 
 - ``peering_db``:
-  Dynamically adjust max-prefix limit of each client on the
-  basis of the following criteria, in priority order:
-
-
-
-
-  - client's **limit_ipv[4|6]** configuration statement, if
-    given;
-
-
-  - client's ASN PeeringDB record, if enabled by the
-    **peering_db** option;
-
-
-  - general limit set in **general_limit_ipv[4|6]**, if given.
-
-
-  In the end, if no limit is found for a given AF or if
-  it is 0, no max-prefix limit is configured fot the
-  specific client.
   Used to set client's max-pref limit if **limit_ipv[4|6]**
   option is not given for the specific client.
+
+
+- ``enabled``:
+  If **enabled** is True and client's max-pref limit is not
+  set, ARouteServer fetches the limits from PeeringDB.
 
 
   Can be overwritten on a client-by-client basis.
@@ -569,7 +574,51 @@ Max prefix: ``max_prefix``
 
   .. code:: yaml
 
-     peering_db: True
+     enabled: True
+
+
+
+- ``increment``:
+  The following section can be used to accommodate cases of
+  networks that fill the PeeringDB records using their exact
+  route announcement count rather than a recommendation on
+  what others should configure as max-prefix limit.
+
+
+  The value that will be used is given by:
+  (<PeeringDB value> + <absolute>) * (1 + <relative> / 100)
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+- ``absolute``:
+  Absolute increment in terms of number of prefixes.
+
+
+  Default: **100**
+
+  Example:
+
+  .. code:: yaml
+
+     absolute: 100
+
+
+
+- ``relative``:
+  Relative increment in terms of percentage.
+
+
+  Default: **15**
+
+  Example:
+
+  .. code:: yaml
+
+     relative: 15
+
+
 
 
 
@@ -787,6 +836,41 @@ it lowers their LOCAL_PREF to the value set in **local_pref**.
   .. code:: yaml
 
      local_pref: 0
+
+
+
+
+RFC1997 well-known communities: ``rfc1997_wellknown_communities``
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+RFC1997 well-known communities (NO_EXPORT and NO_ADVERTISE)
+can be locally interpreted or passed through the route server,
+depending on the policy that a route server operator decides
+to implement.
+This section allows to configure this policy.
+
+- ``policy``:
+  The policy used to process routes tagged with NO_EXPORT or
+  NO_ADVERTISE that are received from clients.
+
+
+  Options:
+
+
+  - **rfc1997**: routes are processed accordingly to RFC1997;
+
+
+  - **pass**: routes are propagated to other clients with the
+    NO_EXPORT/NO_ADVERTISE communities unaltered.
+
+
+  Default: **pass**
+
+  Example:
+
+  .. code:: yaml
+
+     policy: "pass"
 
 
 
@@ -1131,6 +1215,10 @@ NO_EXPORT / NO_ADVERTISE
   propagated to other clients before the NO_EXPORT (65535:65281)
   and/or the NO_ADVERTISE (65535:65282) well-known communities
   are added.
+  When **rfc1997_wellknown_communities.enabled** is set to **pass**
+  this behaviour can be obtained by announcing routes to the
+  route server after tagging them with RFC1997 NO_EXPORT or
+  NO_ADVERTISE.
 
 
   The following communities are scrubbed from outbound routes.

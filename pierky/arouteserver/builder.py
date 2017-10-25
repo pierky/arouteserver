@@ -16,7 +16,6 @@
 import logging
 import os
 from packaging import version
-import re
 import sys
 import time
 import yaml
@@ -34,11 +33,11 @@ from .enrichers.pdb_as_set import PeeringDBConfigEnricher_ASSet
 from .enrichers.pdb_max_prefix import PeeringDBConfigEnricher_MaxPrefix
 from .enrichers.rtt import RTTGetterConfigEnricher
 from .errors import MissingDirError, MissingFileError, BuilderError, \
-                    ARouteServerError, PeeringDBError, PeeringDBNoInfoError, \
-                    MissingArgumentError, TemplateRenderingError, \
-                    CompatibilityIssuesError, ConfigError
+                    ARouteServerError, MissingArgumentError, \
+                    TemplateRenderingError, CompatibilityIssuesError, \
+                    ConfigError
 from .ipaddresses import IPNetwork
-from .irrdb import ASSet, RSet, IRRDBInfo
+from .irrdb import IRRDBInfo
 from .cached_objects import CachedObject
 
 
@@ -702,7 +701,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                         "add_path", "max_prefix_action",
                         "blackhole_filtering_rewrite_ipv6_nh",
                         "large_communities", "extended_communities",
-                        "graceful_shutdown"]
+                        "graceful_shutdown", "rfc1997_wellknown_communities"]
 
     def _include_local_file(self, local_file_id):
         return 'include "{}"\n\n'.format(
@@ -756,31 +755,27 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
 
         if add_path_clients:
             clients = add_path_clients
+            cnt = len(clients)
             if not self.process_bgpspeaker_specific_compatibility_issue(
                 "add_path",
                 "ADD_PATH not supported by OpenBGPD but "
                 "enabled for the following clients: {}{}.".format(
                     ", ".join(clients[:3]),
-                    "" if len(clients) <= 3 else
-                        " and {} more".format(
-                           len(clients) - 3
-                        )
+                    "" if cnt <= 3 else " and {} more".format(cnt - 3)
                 )
             ):
                 res = False
 
         if max_prefix_action_clients:
             clients = max_prefix_action_clients
+            cnt = len(clients)
             if not self.process_bgpspeaker_specific_compatibility_issue(
                 "max_prefix_action",
                 "Invalid max-prefix 'action' for the following "
                 "clients: {}{}; only 'shutdown' and 'restart' "
                 "are supported by OpenBGPD.".format(
                     ", ".join(clients[:3]),
-                    "" if len(clients) <= 3 else
-                        " and {} more".format(
-                           len(clients) - 3
-                        )
+                    "" if cnt <= 3 else " and {} more".format(cnt - 3)
                 )
             ):
                 res = False
@@ -926,6 +921,30 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                 "line argument)."
             ):
                 res = False
+
+        if self.cfg_general["rfc1997_wellknown_communities"]["policy"] == "pass":
+            rfc1997_wkcomms_collisions = []
+            for comm_name in ConfigParserGeneral.COMMUNITIES_SCHEMA:
+                comm = self.cfg_general["communities"][comm_name]
+                if comm["ext"]:
+                    if comm["ext"] in ("ro:65535:65281", "ro:65535:65282",
+                                       "ro:65535:dyn_val", "ro:65535:peer_as"):
+                        rfc1997_wkcomms_collisions.append(comm_name)
+
+            if rfc1997_wkcomms_collisions:
+                if not self.process_bgpspeaker_specific_compatibility_issue(
+                    "rfc1997_wellknown_communities",
+                    "When using the pass-through policy for RFC1977 "
+                    "well-known communities handling two communities "
+                    "must be reserved for internal purposes: "
+                    "ro:65535:65281 and ro:65535:65282. "
+                    "A collision has been detected with the following "
+                    "communit{y_ies}: {comms}".format(
+                        y_ies="y" if len(rfc1997_wkcomms_collisions) == 1 else "ies",
+                        comms=", ".join(rfc1997_wkcomms_collisions)
+                    )
+                ):
+                    res = False
 
         return res
 

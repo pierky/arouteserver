@@ -289,10 +289,16 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
                 CfgStatement("enabled", pre_comment=True),
                 CfgStatement("reject_invalid", pre_comment=True)
             ]),
-            CfgStatement("max_prefix", t="Max prefix", sub=[ 
+            CfgStatement("max_prefix", t="Max prefix", post_comment=True, sub=[
                 CfgStatement("action", pre_comment=True),
                 CfgStatement("restart_after", pre_comment=True),
-                CfgStatement("peering_db", pre_comment=True),
+                CfgStatement("peering_db", post_comment=True, sub = [
+                    CfgStatement("enabled", pre_comment=True),
+                    CfgStatement("increment", pre_comment=True, sub=[
+                        CfgStatement("absolute", pre_comment=True),
+                        CfgStatement("relative", pre_comment=True)
+                    ]),
+                ]),
                 CfgStatement("general_limit_ipv4", pre_comment=True),
                 CfgStatement("general_limit_ipv6", group_with_previous="general_limit_ipv4")
             ]),
@@ -311,6 +317,9 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
         CfgStatement("graceful_shutdown", t="Graceful shutdown", post_comment=True, sub=[
             CfgStatement("enabled", pre_comment=True),
             CfgStatement("local_pref", pre_comment=True)
+        ]),
+        CfgStatement("rfc1997_wellknown_communities", t="RFC1997 well-known communities", post_comment=True, sub=[
+            CfgStatement("policy", pre_comment=True)
         ]),
         CfgStatement("rtt_thresholds", t="RTT thresholds", pre_comment=True),
         CfgStatement("communities", t="BGP Communities", post_comment=True, sub=[

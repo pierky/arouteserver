@@ -1,4 +1,5 @@
 {% from 'macros.j2' import write_prefix_list %}
+{% from 'macros.j2' import write_prefix_list_entry %}
 {% from 'macros.j2' import match_communities %}
 {% from 'macros.j2' import add_communities %}
 {% from 'macros.j2' import del_communities %}
@@ -64,6 +65,16 @@ match from {{ client.ip }} {{ matching_element }} set community delete NO_ADVERT
 {%                      endif %}
 {%              endfor %}
 {%      endif %}
+{%	if client.cfg.filtering.irrdb.white_list_route %}
+# client's white list
+{%		for route in client.cfg.filtering.irrdb.white_list_route|sort(attribute="prefix") if route.prefix is current_ipver %}
+{%			if route.asn %}
+match from {{ client.ip }} prefix {{ write_prefix_list_entry(route) }} source-as {{ route.asn }} set community delete NO_ADVERTISE	# {{ route.comment }}
+{%			else %}
+match from {{ client.ip }} prefix {{ write_prefix_list_entry(route) }} set community delete NO_ADVERTISE	# {{ route.comment }}
+{%			endif %}
+{%		endfor %}
+{%	endif %}
 {%      if enforce_object_in_as_set %}
 # enforcing: if NO_ADVERTISE has not been removed then the route is not authorized
 {{ deny_inbound_route(client.cfg.filtering.reject_policy.policy == "tag", "from " ~ client.ip ~ " community NO_ADVERTISE", reject_code) }}
@@ -102,6 +113,22 @@ transit_free_asns="{ {{ cfg.filtering.transit_free.asns|join(", ") }} }"
 {{ del_communities("match from group clients", cfg.custom_communities[name]) -}}
 {%	endif %}
 {% endfor %}
+
+{% if cfg.rfc1997_wellknown_communities.policy == "pass" %}
+# Internal communities used for RFC1997 well-known communities handling
+
+# Scrub them from routes received from clients.
+match from group clients set ext-community delete soo 65535:65281
+match from group clients set ext-community delete soo 65535:65282
+
+# Transform NO_EXPORT into soo 65535:65281
+match from group clients community NO_EXPORT set ext-community soo 65535:65281
+match from group clients community NO_EXPORT set community delete NO_EXPORT
+
+# Transform NO_ADVERTISE into soo 65535:65282
+match from group clients community NO_ADVERTISE set ext-community soo 65535:65282
+match from group clients community NO_ADVERTISE set community delete NO_ADVERTISE
+{% endif %}
 
 {% if cfg.communities.rejected_route_announced_by|community_is_set %}
 # Set the 'rejected_route_announced_by' community for all the clients.
@@ -414,6 +441,14 @@ match to group clients set { {{ write_prepending_comm(cfg.communities[comm_name]
 
 {% if perform_graceful_shutdown and "6.2"|target_version_ge %}
 match to group clients set community GRACEFUL_SHUTDOWN
+{% endif %}
+
+{% if cfg.rfc1997_wellknown_communities.policy == "pass" %}
+# RFC1997 NO_EXPORT/NO_ADVERTISE received from clients and propagated because of pass-through policy
+match to group clients ext-community soo 65535:65281 set community NO_EXPORT
+match to group clients ext-community soo 65535:65281 set ext-community delete soo 65535:65281
+match to group clients ext-community soo 65535:65282 set community NO_ADVERTISE
+match to group clients ext-community soo 65535:65282 set ext-community delete soo 65535:65282
 {% endif %}
 
 {{ "post-filters"|include_local_file -}}

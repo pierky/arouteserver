@@ -215,9 +215,9 @@ class EuroIXMemberList(object):
                 switch_info = self.switches[str(switch_id)]
 
                 for attribute, prefix in self.EUROIX_SWITCH_ATTRIBUTES_COMMUNITIES_MAP:
-                    if not prefix in guess_custom_bgp_communities:
+                    if prefix not in guess_custom_bgp_communities:
                         continue
-                    if not attribute in switch_info:
+                    if attribute not in switch_info:
                         continue
                     attribute_val = switch_info[attribute]
 
@@ -537,4 +537,3 @@ class EuroIXMemberList(object):
                     s = "VLAN " + s
 
                 out_file.write(" - " + s + "\n")
-

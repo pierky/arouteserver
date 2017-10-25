@@ -92,6 +92,111 @@ class TagASSetScenario(LiveScenario):
         self.session_is_up(self.rs, self.AS4)
         self.session_is_up(self.rs, self.AS5)
 
+    def test_060_AS2_whitelist_wl_wl(self):
+        """{}: AS2 white list, prefix WL, origin WL"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64514"])
+        self.receive_route(self.rs, self.DATA["AS2_pref_wl_origin_wl"],
+                           self.AS2, as_path="2 21", next_hop=self.AS2,
+                           std_comms=["999:64512", "999:64514"],
+                           lrg_comms=lrg_comms)
+
+    def test_060_AS2_whitelist_wl_ko(self):
+        """{}: AS2 white list, prefix WL, origin ko"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64515"])
+        self.receive_route(self.rs, self.DATA["AS2_pref_wl_origin_ko"],
+                           self.AS2, as_path="2 3", next_hop=self.AS2,
+                           std_comms=["999:64512", "999:64515"],
+                           lrg_comms=lrg_comms)
+
+    def test_060_AS2_whitelist_ko_wl(self):
+        """{}: AS2 white list, prefix ko, origin WL"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64514"])
+        self.receive_route(self.rs, self.DATA["AS2_pref_ko_origin_wl"],
+                           self.AS2, as_path="2 21", next_hop=self.AS2,
+                           std_comms=["999:64513", "999:64514"],
+                           lrg_comms=lrg_comms)
+
+    def test_060_AS4_whitelist_wl_wl(self):
+        """{}: AS4 white list, prefix WL, origin WL"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64514"])
+        self.receive_route(self.rs, self.DATA["AS4_pref_wl_origin_wl"],
+                           self.AS4, as_path="4 41", next_hop=self.AS4,
+                           std_comms=["999:64512", "999:64514"],
+                           lrg_comms=lrg_comms)
+
+    def test_060_AS4_whitelist_ko_wl(self):
+        """{}: AS4 white list, prefix ko, origin WL"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64514"])
+        self.receive_route(self.rs, self.DATA["AS4_pref_ko_origin_wl"],
+                           self.AS4, as_path="4 41", next_hop=self.AS4,
+                           std_comms=["999:64513", "999:64514"],
+                           lrg_comms=lrg_comms)
+
+    def test_060_AS4_whitelist_wl_ko(self):
+        """{}: AS4 white list, prefix WL, origin ko"""
+        self.receive_route(self.rs, self.DATA["AS4_pref_wl_origin_ko"],
+                           self.AS4, as_path="4 3", next_hop=self.AS4,
+                           filtered=True)
+
+    def test_060_AS4_route_whitelist_1(self):
+        """{}: AS4 route white list, ok (exact)"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64515"])
+        self.receive_route(self.rs, self.DATA["AS4_routewl_1"],
+                           self.AS4, as_path="4 44", next_hop=self.AS4,
+                           std_comms=["999:64513", "999:64515"],
+                           lrg_comms=lrg_comms)
+
+    def test_060_AS4_route_whitelist_2(self):
+        """{}: AS4 route white list, reject (more spec)"""
+        self.receive_route(self.rs, self.DATA["AS4_routewl_2"],
+                           self.AS4, as_path="4 44", next_hop=self.AS4,
+                           filtered=True)
+
+    def test_060_AS4_route_whitelist_3(self):
+        """{}: AS4 route white list, ok (more spec)"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64515"])
+        self.receive_route(self.rs, self.DATA["AS4_routewl_3"],
+                           self.AS4, as_path="4 43", next_hop=self.AS4,
+                           std_comms=["999:64513", "999:64515"],
+                           lrg_comms=lrg_comms)
+
+    def test_060_AS4_route_whitelist_4(self):
+        """{}: AS4 route white list, reject (origin KO)"""
+        self.receive_route(self.rs, self.DATA["AS4_routewl_4"],
+                           self.AS4, as_path="4 45", next_hop=self.AS4,
+                           filtered=True)
+
+    def test_060_AS4_route_whitelist_5(self):
+        """{}: AS4 route white list, ok (origin any)"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64515"])
+        self.receive_route(self.rs, self.DATA["AS4_routewl_5"],
+                           self.AS4, as_path="4 45", next_hop=self.AS4,
+                           std_comms=["999:64513", "999:64515"],
+                           lrg_comms=lrg_comms)
+
+    def test_060_AS5_whitelist_wl_ko(self):
+        """{}: AS5 white list, prefix WL, origin ko"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64515"])
+        self.receive_route(self.rs, self.DATA["AS5_pref_wl_origin_ko"],
+                           self.AS5, as_path="5 3", next_hop=self.AS5,
+                           std_comms=["999:64512", "999:64515"],
+                           lrg_comms=lrg_comms)
+
+    def test_060_AS5_whitelist_wl_wl(self):
+        """{}: AS5 white list, prefix WL, origin WL"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64514"])
+        self.receive_route(self.rs, self.DATA["AS5_pref_wl_origin_wl"],
+                           self.AS5, as_path="5 51", next_hop=self.AS5,
+                           std_comms=["999:64512", "999:64514"],
+                           lrg_comms=lrg_comms)
+
+    def test_060_AS5_whitelist_ko_wl(self):
+        """{}: AS5 white list, prefix ko, origin WL"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64514"])
+        self.receive_route(self.rs, self.DATA["AS5_pref_ko_origin_wl"],
+                           self.AS5, as_path="5 51", next_hop=self.AS5,
+                           filtered=True)
+
 class TagASSetScenario_WithAS_SETs(object):
 
     AS_SET = {
@@ -203,6 +308,54 @@ class TagASSetScenario_WithAS_SETs(object):
                            self.AS5, as_path="5 3", next_hop=self.AS5,
                            filtered=True, reject_reason=12)
 
+    def test_060_AS2_whitelist_wl_ok(self):
+        """{}: AS2 white list, prefix WL, origin ok"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64514"])
+        self.receive_route(self.rs, self.DATA["AS2_pref_wl_origin_ok"],
+                           self.AS2, as_path="2", next_hop=self.AS2,
+                           std_comms=["999:64512", "999:64514"],
+                           lrg_comms=lrg_comms)
+
+    def test_060_AS2_whitelist_ok_wl(self):
+        """{}: AS2 white list, prefix ok, origin WL"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64514"])
+        self.receive_route(self.rs, self.DATA["AS2_pref_ok_origin_wl"],
+                           self.AS2, as_path="2 21", next_hop=self.AS2,
+                           std_comms=["999:64512", "999:64514"],
+                           lrg_comms=lrg_comms)
+
+    def test_060_AS4_whitelist_wl_ok(self):
+        """{}: AS4 white list, prefix WL, origin ok"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64514"])
+        self.receive_route(self.rs, self.DATA["AS4_pref_wl_origin_ok"],
+                           self.AS4, as_path="4", next_hop=self.AS4,
+                           std_comms=["999:64512", "999:64514"],
+                           lrg_comms=lrg_comms)
+
+    def test_060_AS4_whitelist_ok_wl(self):
+        """{}: AS4 white list, prefix ok, origin WL"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64514"])
+        self.receive_route(self.rs, self.DATA["AS4_pref_ok_origin_wl"],
+                           self.AS4, as_path="4 41", next_hop=self.AS4,
+                           std_comms=["999:64512", "999:64514"],
+                           lrg_comms=lrg_comms)
+
+    def test_060_AS5_whitelist_wl_ok(self):
+        """{}: AS5 white list, prefix WL, origin ok"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64514"])
+        self.receive_route(self.rs, self.DATA["AS5_pref_wl_origin_ok"],
+                           self.AS5, as_path="5", next_hop=self.AS5,
+                           std_comms=["999:64512", "999:64514"],
+                           lrg_comms=lrg_comms)
+
+    def test_060_AS5_whitelist_ok_wl(self):
+        """{}: AS5 white list, prefix ok, origin WL"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64514"])
+        self.receive_route(self.rs, self.DATA["AS5_pref_ok_origin_wl"],
+                           self.AS5, as_path="5 51", next_hop=self.AS5,
+                           std_comms=["999:64512", "999:64514"],
+                           lrg_comms=lrg_comms)
+
 class TagASSetScenario_EmptyAS_SETs(object):
 
     AS_SET = {
@@ -255,6 +408,50 @@ class TagASSetScenario_EmptyAS_SETs(object):
                      self.DATA["AS3_pref_ko_origin_ko1"]):
             self.receive_route(self.rs, pref, self.AS5, next_hop=self.AS5,
                                filtered=True, reject_reason=(9, 12))
+
+    def test_060_AS2_whitelist_wl_ok(self):
+        """{}: AS2 white list, prefix WL, origin ok"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64515"])
+        self.receive_route(self.rs, self.DATA["AS2_pref_wl_origin_ok"],
+                           self.AS2, as_path="2", next_hop=self.AS2,
+                           std_comms=["999:64512", "999:64515"],
+                           lrg_comms=lrg_comms)
+
+    def test_060_AS2_whitelist_ok_wl(self):
+        """{}: AS2 white list, prefix ok, origin WL"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64514"])
+        self.receive_route(self.rs, self.DATA["AS2_pref_ok_origin_wl"],
+                           self.AS2, as_path="2 21", next_hop=self.AS2,
+                           std_comms=["999:64513", "999:64514"],
+                           lrg_comms=lrg_comms)
+
+    def test_060_AS4_whitelist_wl_ok(self):
+        """{}: AS4 white list, prefix WL, origin ok"""
+        self.receive_route(self.rs, self.DATA["AS4_pref_wl_origin_ok"],
+                           self.AS4, as_path="4", next_hop=self.AS4,
+                           filtered=True)
+
+    def test_060_AS4_whitelist_ok_wl(self):
+        """{}: AS4 white list, prefix ok, origin WL"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64514"])
+        self.receive_route(self.rs, self.DATA["AS4_pref_ok_origin_wl"],
+                           self.AS4, as_path="4 41", next_hop=self.AS4,
+                           std_comms=["999:64513", "999:64514"],
+                           lrg_comms=lrg_comms)
+
+    def test_060_AS5_whitelist_wl_ok(self):
+        """{}: AS5 white list, prefix WL, origin ok"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64515"])
+        self.receive_route(self.rs, self.DATA["AS5_pref_wl_origin_ok"],
+                           self.AS5, as_path="5", next_hop=self.AS5,
+                           std_comms=["999:64512", "999:64515"],
+                           lrg_comms=lrg_comms)
+
+    def test_060_AS5_whitelist_ok_wl(self):
+        """{}: AS5 white list, prefix ok, origin WL"""
+        self.receive_route(self.rs, self.DATA["AS5_pref_ok_origin_wl"],
+                           self.AS5, as_path="5 51", next_hop=self.AS5,
+                           filtered=True)
 
 class TagASSetScenarioBIRD(TagASSetScenario):
     __test__ = False

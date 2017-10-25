@@ -58,9 +58,9 @@ class CachedObject(object):
             )
             return False
 
-        if not "ts" in data:
+        if "ts" not in data:
             return False
-        if not "data" in data:
+        if "data" not in data:
             return False
 
         epoch_time = int(time.time())
@@ -73,7 +73,7 @@ class CachedObject(object):
                 "Cache hit: missing info {}".format(self._get_object_filepath())
             )
             raise self.MISSING_INFO_EXCEPTION()
-            
+
         self.raw_data = data["data"]
         return True
 

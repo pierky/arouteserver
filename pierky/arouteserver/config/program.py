@@ -186,6 +186,9 @@ class ConfigParserProgram(object):
     def cp_file(self, s, d):
         if os.path.abspath(s) == os.path.abspath(d):
             return
+        # Avoid .swp files
+        if s.endswith(".swp"):
+            return
 
         assert os.path.exists(s), "The {} file does not exist.".format(s)
 

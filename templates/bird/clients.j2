@@ -1,4 +1,5 @@
 {% from 'macros.j2' import write_prefix_list %}
+{% from 'macros.j2' import write_prefix_list_entry %}
 {% from 'macros.j2' import add_communities %}
 {% from 'macros.j2' import match_communities %}
 
@@ -82,6 +83,72 @@ prefix set {{ client.id }}_blacklist;
 }
 {% endif %}
 
+{% if client.cfg.filtering.irrdb.enforce_origin_in_as_set or client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}
+function verify_{{ client.id }}_irrdb()
+bool reject_because_of_bad_origin;
+bool reject_because_of_bad_prefix;
+{
+	reject_because_of_bad_origin = false;
+	reject_because_of_bad_prefix = false;
+
+	{% if client.cfg.filtering.irrdb.enforce_origin_in_as_set or cfg.filtering.irrdb.tag_as_set %}
+	# IRRdb: enforce origin via AS-SET (or tag)
+	if !origin_as_is_in_{{ client.id }}_as_set() then {
+	{%	if client.cfg.filtering.irrdb.enforce_origin_in_as_set %}
+		reject_because_of_bad_origin = true;
+	{%	endif %}
+	{%	if cfg.communities.origin_not_present_in_as_set|community_is_set %}
+		{{ add_communities(cfg.communities.origin_not_present_in_as_set) }}
+	{%	else %}
+		# "'tag_as_set' is True but 'origin_not_present_in_as_set' community is not given";
+	{%	endif %}
+	{%	if cfg.filtering.irrdb.tag_as_set and cfg.communities.origin_present_in_as_set|community_is_set %}
+	} else {
+	{{	add_communities(cfg.communities.origin_present_in_as_set) }}
+	{%	endif %}
+	}
+	{% endif %}
+
+	{% if client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}
+	# IRRdb: enforce prefix via AS-SET (or tag)
+	if !prefix_is_in_{{ client.id }}_as_set() then {
+	{%	if client.cfg.filtering.irrdb.enforce_prefix_in_as_set %}
+		reject_because_of_bad_prefix = true;
+	{%	endif %}
+	{%	if cfg.communities.prefix_not_present_in_as_set|community_is_set %}
+		{{ add_communities(cfg.communities.prefix_not_present_in_as_set) }}
+	{%	else %}
+		# "'tag_as_set' is True but 'prefix_not_present_in_as_set' community is not given";
+	{%	endif %}
+	{%	if cfg.filtering.irrdb.tag_as_set and cfg.communities.prefix_present_in_as_set|community_is_set %}
+	} else {
+	{{	add_communities(cfg.communities.prefix_present_in_as_set) }}
+	{%	endif %}
+	}
+	{% endif %}
+
+	{% if client.cfg.filtering.irrdb.white_list_route %}
+	# Client's white list
+	{%	for route in client.cfg.filtering.irrdb.white_list_route|sort(attribute="prefix") if route.prefix is current_ipver %}
+	if net ~ [ {{ write_prefix_list_entry(route) }} ] then {
+	{%		if route.asn %}
+		if bgp_path.last = {{ route.asn }} then return true;
+	{%		else %}
+		return true;
+	{%		endif %}
+	}
+	{%	endfor %}
+	{% endif %}
+
+	if reject_because_of_bad_origin then {
+		{{ reject(client, 9, '"origin ASN [", bgp_path.last, "] not in allowed as-sets - REJECTING ", net', avoid_braces=True) }}
+	}
+	if reject_because_of_bad_prefix then {
+		{{ reject(client, 12, '"prefix not in client\'s r_set - REJECTING ", net', avoid_braces=True) }}
+	}
+}
+{% endif %}
+
 filter receive_from_{{ client.id }} {
 	if !(source = RTS_BGP ) then
 		{{ reject(client, 65535, '"source != RTS_BGP - REJECTING ", net') }}
@@ -129,25 +196,6 @@ filter receive_from_{{ client.id }} {
 	{%	endif %}
 	{% endif %}
 
-	{% if client.cfg.filtering.irrdb.enforce_origin_in_as_set or cfg.filtering.irrdb.tag_as_set %}
-	# AS_PATH: enforce origin via AS-SET (or tag)
-	if !origin_as_is_in_{{ client.id }}_as_set() then {
-	{%	if client.cfg.filtering.irrdb.enforce_origin_in_as_set %}
-		{{ reject(client, 9, '"origin ASN [", bgp_path.last, "] not in allowed as-sets - REJECTING ", net', avoid_braces=True) }}
-	{%	else %}
-	{%		if cfg.communities.origin_not_present_in_as_set|community_is_set %}
-		{{ add_communities(cfg.communities.origin_not_present_in_as_set) }}
-	{%		else %}
-		print "'tag_as_set' is True but 'origin_not_present_in_as_set' community is not given";
-	{%		endif %}
-	{%	endif %}
-	{%	if cfg.filtering.irrdb.tag_as_set and cfg.communities.origin_present_in_as_set|community_is_set %}
-	} else {
-	{{	add_communities(cfg.communities.origin_present_in_as_set) }}
-	{%	endif %}
-	}
-	{% endif %}
-
 	{% if ip_ver == 6 %}
 	# Prefix: only IPv6 Global Unicast space allowed
 	if net !~ [2000::/3+] then
@@ -168,23 +216,9 @@ filter receive_from_{{ client.id }} {
 	if prefix_is_bogon() then
 		{{ reject(client, 2, '"prefix is bogon - REJECTING ", net') }}
 
-	{% if client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}
-	# Prefix: enforce prefix via AS-SET (or tag)
-	if !prefix_is_in_{{ client.id }}_as_set() then {
-	{%	if client.cfg.filtering.irrdb.enforce_prefix_in_as_set %}
-		{{ reject(client, 12, '"prefix not in client\'s r_set - REJECTING ", net', avoid_braces=True) }}
-	{%	else %}
-	{%		if cfg.communities.prefix_not_present_in_as_set|community_is_set %}
-		{{ add_communities(cfg.communities.prefix_not_present_in_as_set) }}
-	{%		else %}
-		print "'tag_as_set' is True but 'prefix_not_present_in_as_set' community is not given";
-	{%		endif %}
-	{%	endif %}
-	{%	if cfg.filtering.irrdb.tag_as_set and cfg.communities.prefix_present_in_as_set|community_is_set %}
-	} else {
-	{{	add_communities(cfg.communities.prefix_present_in_as_set) }}
-	{%	endif %}
-	}
+	{% if client.cfg.filtering.irrdb.enforce_origin_in_as_set or client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}
+	# IRRdb checks
+	verify_{{ client.id }}_irrdb();
 	{% endif %}
 
 	# Blackhole request?
@@ -318,6 +352,12 @@ protocol bgp {{ client.id }} {
 
 	{% if cfg.path_hiding %}
 	secondary;
+	{% endif %}
+
+	{% if cfg.rfc1997_wellknown_communities.policy == "rfc1997" %}
+	interpret communities on;
+	{% else %}
+	interpret communities off;
 	{% endif %}
 
 	{% if client.cfg.filtering.max_prefix.action %}

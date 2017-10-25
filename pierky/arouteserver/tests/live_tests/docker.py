@@ -14,11 +14,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import re
 import subprocess
 import time
 
-from .instances import InstanceError, BGPSpeakerInstance
+from .instances import InstanceError, BGPSpeakerInstance, InstanceNotRunning
 
 class DockerInstance(BGPSpeakerInstance):
 
@@ -37,7 +36,7 @@ class DockerInstance(BGPSpeakerInstance):
         try:
             if detached:
                 dev_null = open(os.devnull, "w")
-                process = subprocess.Popen(
+                subprocess.Popen(
                     cmd.split(),
                     stdin=None,
                     stdout=dev_null,
@@ -165,7 +164,7 @@ class DockerInstance(BGPSpeakerInstance):
                     )
             )
 
-            res = self._run(cmd, detached=True)
+            self._run(cmd, detached=True)
             time.sleep(3)
             if not self.is_running():
                 process = subprocess.Popen(

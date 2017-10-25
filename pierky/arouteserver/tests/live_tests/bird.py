@@ -202,4 +202,3 @@ class BIRDInstanceIPv6(BIRDInstance):
 
     def _birdcl(self, cmd):
         return self.run_cmd("birdcl6 {}".format(cmd))
-

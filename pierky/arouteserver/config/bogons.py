@@ -39,10 +39,10 @@ class ConfigParserBogons(ConfigParserBase):
             try:
                 bogon = ValidatorPrefixListEntry().validate(bogon)
             except ARouteServerError as e:
+                msg = "Error in bogon definition"
                 if str(e):
-                    logging.error("Error in bogon definition: {}.".format(str(e)))
-                else:
-                    logging.error("Error in bogon definition")
+                    msg += ": {}.".format(str(e))
+                logging.error(msg)
                 errors = True
 
         if errors:

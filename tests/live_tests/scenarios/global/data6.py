@@ -39,6 +39,13 @@ class BasicScenario_Data6(object):
         "invalid_asn1":             "2a99:1::/48",
         "aspath_len1":              "2a99:2::/48",
 
+        "AS1_whitel_1":             "2a11:1:1::/48",
+        "AS1_whitel_2":             "2a11:1:2::/48",
+        "AS1_whitel_3":             "2a11:2:1::/48",
+        "AS1_whitel_4":             "2a11:3::/32",
+        "AS1_whitel_5":             "2a11:4:1::/48",
+        "AS1_whitel_6":             "2a11:3:1::/48",
+
         "AS2_allowed_prefixes":     "2a02:0::/32",
         "AS2_good1":                "2a02:0:1::/48",
         "AS2_good2":                "2a02:0:2::/48",
@@ -62,6 +69,7 @@ class BasicScenario_Data6(object):
         "AS3_prep3AS1_1any":        "2a03:0:A::/48",
         "AS3_noexport_any":         "2a03:0:B::/48",
         "AS3_noexport_AS1":         "2a03:0:C::/48",
+        "AS3_rfc1997_noexp":        "2a03:0:D::/48",
 
         "AS4_rtt_1":                "2a04:0:1::/48",
         "AS4_rtt_2":                "2a04:0:2::/48",

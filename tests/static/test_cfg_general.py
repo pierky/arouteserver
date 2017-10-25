@@ -101,7 +101,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._test_option(self.cfg["filtering"]["next_hop"], "policy", ("strict", "same-as"))
         self._test_mandatory(self.cfg["filtering"]["next_hop"], "policy", has_default=True)
 
-    def test_next_hop_policy(self):
+    def test_next_hop_policy_pre_0_6_0(self):
         """{}: next_hop_policy (pre v0.6.0 format)"""
 
         self.cfg._load_from_yaml(
@@ -302,6 +302,11 @@ class TestConfigParserGeneral(TestConfigParserBase):
         """{}: graceful shutdown"""
         self.assertEqual(self.cfg["graceful_shutdown"]["enabled"], False)
         self._test_bool_val(self.cfg["graceful_shutdown"], "enabled")
+
+    def test_rfc1997_wellknown_communities(self):
+        """{}: RFC1997 well-known communities"""
+        self.assertEqual(self.cfg["rfc1997_wellknown_communities"]["policy"], "pass")
+        self._test_option(self.cfg["rfc1997_wellknown_communities"], "policy", ("rfc1997", "pass"))
 
     def test_rtt_thresholds_str(self):
         """{}: RTT thresholds as comma separated string"""
@@ -918,9 +923,46 @@ class TestConfigParserGeneral(TestConfigParserBase):
 
     def test_max_pref_peeringdb(self):
         """{}: max_prefix PeeringDB"""
-        self.assertEqual(self.cfg["filtering"]["max_prefix"]["peering_db"], True)
-        self._test_bool_val(self.cfg["filtering"]["max_prefix"], "peering_db")
-        self._test_optional(self.cfg["filtering"]["max_prefix"], "peering_db")
+        self.assertEqual(self.cfg["filtering"]["max_prefix"]["peering_db"], {
+            "enabled": True,
+            "increment": {
+                "absolute": 100,
+                "relative": 15
+            }
+        })
+        self._test_bool_val(self.cfg["filtering"]["max_prefix"]["peering_db"], "enabled")
+        self._test_optional(self.cfg["filtering"]["max_prefix"]["peering_db"], "enabled")
+
+    def test_max_pref_peeringdb_pre_0_13_0(self):
+        """{}: max_prefix PeeringDB (pre v0.13.0 format)"""
+
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: 192.0.2.2\n"
+            "  filtering:\n"
+            "    max_prefix:\n"
+            "      peering_db: True\n"
+        )
+        self.cfg.parse()
+        self._contains_err()
+
+        self.assertEqual(self.cfg["filtering"]["max_prefix"]["peering_db"]["enabled"], True)
+        self.assertEqual(self.cfg["filtering"]["max_prefix"]["peering_db"]["increment"]["absolute"], 100)
+        self.assertEqual(self.cfg["filtering"]["max_prefix"]["peering_db"]["increment"]["relative"], 15)
+
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: 192.0.2.2\n"
+            "  filtering:\n"
+            "    max_prefix:\n"
+            "      peering_db: False\n"
+        )
+        self.cfg.parse()
+        self._contains_err()
+
+        self.assertEqual(self.cfg["filtering"]["max_prefix"]["peering_db"]["enabled"], False)
 
     def test_max_pref_general_limit_ipv4(self):
         """{}: max_prefix general_limit_ipv4"""
@@ -1028,7 +1070,13 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 "max_prefix": {
                     "action": None,
                     "restart_after": 15,
-                    "peering_db": True,
+                    "peering_db": {
+                        "enabled": True,
+                        "increment": {
+                            "absolute": 100,
+                            "relative": 15
+                        }
+                    },
                     "general_limit_ipv4": 170000,
                     "general_limit_ipv6": 12000
                 },
@@ -1045,6 +1093,9 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "graceful_shutdown": {
                 "enabled": False,
                 "local_pref": 0
+            },
+            "rfc1997_wellknown_communities": {
+                "policy": "pass"
             }
         }
 
@@ -1106,7 +1157,13 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 "max_prefix": {
                     "action": None,
                     "restart_after": 15,
-                    "peering_db": True,
+                    "peering_db": {
+                        "enabled": True,
+                        "increment": {
+                            "absolute": 100,
+                            "relative": 15
+                        }
+                    },
                     "general_limit_ipv4": 170000,
                     "general_limit_ipv6": 12000
                 },
@@ -1123,6 +1180,9 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "graceful_shutdown": {
                 "enabled": False,
                 "local_pref": 0
+            },
+            "rfc1997_wellknown_communities": {
+                "policy": "pass"
             }
         }
 

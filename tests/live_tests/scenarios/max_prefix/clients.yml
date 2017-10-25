@@ -12,6 +12,12 @@ clients:
           - "192.0.2.21"
           - "2001:db8:1:1::21"
           cfg:
+                filtering:
+                        max_prefix:
+                                peering_db:
+                                        increment:
+                                                absolute: 0
+                                                relative: 0
         - asn: 3
           ip:
           - "192.0.2.31"
@@ -21,3 +27,7 @@ clients:
                         max_prefix:
                                 limit_ipv4: 2 
                                 limit_ipv6: 2 
+        - asn: 4
+          ip:
+          - "192.0.2.41"
+          - "2001:db8:1:1::41"

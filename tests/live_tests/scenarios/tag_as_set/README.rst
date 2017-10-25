@@ -33,6 +33,11 @@ AS2:
   - enforcing: no
   - tagging: yes
 
+- white lists:
+
+  - prefixes: 2.2.0.0/16
+  - asns: 21
+
 AS2 announces:
 
         ============    ===========     ==========      ==========      =================  =================
@@ -42,6 +47,11 @@ AS2 announces:
         2.1.0.0/24      2               no              yes             64513 64514        64513 64515
         2.0.2.0/24      2 3             yes             no              64512 64515        64513 64515
         3.0.1.0/24      2 3             no              no              64513 64515        64513 64515
+        2.2.1.0/24      2               yes (WL)        yes             64512 64514        64512 64515
+        2.2.2.0/24      2 3             yes (WL)        no              64512 64515        the same
+        2.2.3.0/24      2 21            yes (WL)        yes (WL)        64512 64514        the same
+        2.3.1.0/24      2 21            no              yes (WL)        64513 64514        the same
+        2.0.3.0/24      2 21            yes             yes (WL)        64512 64514        64513 64514
         ============    ===========     ==========      ==========      =================  =================
 
 AS4:
@@ -56,6 +66,17 @@ AS4:
   - enforcing: origin only
   - tagging: yes
 
+- white lists:
+
+  - prefixes: 4.2.0.0/16
+  - asns: 41
+
+  - routes:
+
+    - exact 4.4.0.0/16, AS 44
+    - 4.5.0.0/16, AS 43
+    - 4.6.0.0/16, no origin AS
+
 AS4 announces:
 
         ============    ===========     ==========      ==========      =================  =================
@@ -65,6 +86,16 @@ AS4 announces:
         4.1.0.0/24      4               no              yes             64513 64514        rejected
         4.0.2.0/24      4 3             yes             no              rejected           rejected
         3.0.1.0/24      4 3             no              no              rejected           rejected
+        4.2.1.0/24      4               yes (WL)        yes             64512 64514        rejected
+        4.2.2.0/24      4 3             yes (WL)        no              rejected           rejected
+        4.2.3.0/24      4 41            yes (WL)        yes (WL)        64512 64514        the same
+        4.3.1.0/24      4 41            no              yes (WL)        64513 64514        the same
+        4.0.3.0/24      4 41            yes             yes (WL)        64512 64514        64513 64514
+        4.4.0.0/16      4 44            r WL            r WL            64513 64515        the same
+        4.4.1.0/24      4 44            r WL            r WL            rejected           rejected
+        4.5.1.0/24      4 43            r WL            r WL            64513 64515        the same
+        4.5.2.0/24      4 45            r WL            r WL KO         rejected           rejected
+        4.6.1.0/24      4 45            r WL            r WL            64513 64515        the same
         ============    ===========     ==========      ==========      =================  =================
 
 AS5:
@@ -79,6 +110,11 @@ configuration:
   - enforcing: prefix only
   - tagging: yes
 
+- white lists:
+
+  - prefixes: 5.2.0.0/16
+  - asns: 51
+
 AS5 announces:
 
         ============    ===========     ==========      ==========      =================  =================
@@ -88,5 +124,10 @@ AS5 announces:
         5.1.0.0/24      5               no              yes             rejected           rejected
         5.0.2.0/24      5 3             yes             no              64512 64515        rejected
         3.0.1.0/24      5 3             no              no              rejected           rejected
+        5.2.1.0/24      5               yes (WL)        yes             64512 64514        64512 64515
+        5.2.2.0/24      5 3             yes (WL)        no              64512 64515        the same
+        5.2.3.0/24      5 51            yes (WL)        yes (WL)        64512 64514        the same
+        5.3.1.0/24      5 51            no              yes (WL)        rejected           rejected
+        5.0.3.0/24      5 51            yes             yes (WL)        64512 64514        rejected
         ============    ===========     ==========      ==========      =================  =================
 

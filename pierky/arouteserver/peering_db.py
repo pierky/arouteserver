@@ -16,7 +16,6 @@
 import logging
 import json
 import re
-import subprocess
 from six.moves.urllib.request import urlopen
 from six.moves.urllib.error import HTTPError
 
@@ -68,7 +67,7 @@ class PeeringDBInfo(CachedObject):
 
     def _get_data(self):
         data = self._get_data_from_peeringdb()
-        if not "data" in data:
+        if "data" not in data:
             raise PeeringDBNoInfoError("Missing 'data'")
         if not isinstance(data["data"], list):
             raise PeeringDBNoInfoError("Unexpected format: 'data' is not a list")

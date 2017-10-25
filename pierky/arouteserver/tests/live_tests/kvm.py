@@ -17,7 +17,7 @@ import os
 import subprocess
 import time
 
-from .instances import InstanceError, BGPSpeakerInstance
+from .instances import InstanceError, BGPSpeakerInstance, InstanceNotRunning
 
 class KVMInstance(BGPSpeakerInstance):
 
@@ -223,4 +223,4 @@ class KVMInstance(BGPSpeakerInstance):
                        container_file=mount["container"],
                        path_to_key=self._get_ssh_key_path()
                     ))
-            res = self._run(cmd)
+            self._run(cmd)

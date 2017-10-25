@@ -170,6 +170,8 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
 
     WORKER_THREAD_CLASS = None
 
+    WHITE_LIST_OBJECT_NAME_PREFIX = "WHITE_LIST_"
+
     def prepare(self):
         if self.builder.irrdb_info is not None:
             return
@@ -181,13 +183,14 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
         # }
 
         irrdb_info = []
-        errors = False
 
         def use_as_set(as_set_names, used_by_client=None):
             # New bundle for the given AS-SET names.
             # If a bundle for the same AS-SET names is already
             # present in the irrdb_info list, then that one will
             # be returned; otherwise, new_bundle will be.
+            #
+            # Returns: (<bundle id>, <bundle obj>)
             new_bundle = AS_SET_Bundle_Proxy(as_set_names)
 
             for as_set_bundle in irrdb_info:
@@ -196,13 +199,13 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
                     # added to irrdb_info: use it.
                     if used_by_client:
                         as_set_bundle.used_by.append(used_by_client)
-                    return as_set_bundle.id
+                    return as_set_bundle.id, as_set_bundle
 
             if used_by_client:
                 new_bundle.used_by.append(used_by_client)
 
             irrdb_info.append(new_bundle)
-            return new_bundle.id
+            return new_bundle.id, new_bundle
 
         # Add to irrdb_info all the AS-SET bundles reported in the 'asns' section.
         for asn in self.builder.cfg_asns.cfg["asns"]:
@@ -212,7 +215,7 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
                 continue
 
             self.builder.cfg_asns[asn]["as_set_bundle_ids"].append(
-                use_as_set(self.builder.cfg_asns[asn]["as_sets"])
+                use_as_set(self.builder.cfg_asns[asn]["as_sets"])[0]
             )
 
         # Add to irrdb_info all the AS-SET bundles reported in the 'clients' section.
@@ -239,13 +242,28 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
             # In the worst case, use AS<asn>.
             client_irrdb["as_set_bundle_ids"].append(
                 use_as_set(["AS{}".format(client["asn"])],
-                           "client {}".format(client["id"]))
+                           "client {}".format(client["id"]))[0]
             )
+
+            # IRR white lists
+            for cfg_attr, obj_type in (("white_list_pref", "prefixes"),
+                                       ("white_list_asn", "asns")):
+                if client_irrdb[cfg_attr]:
+                    # If a white list of prefixes/ASNs has been set for the
+                    # client, add a fake 'white_list' AS-SET with those
+                    # prefixes/ASNs.
+                    white_list_name = self.WHITE_LIST_OBJECT_NAME_PREFIX + client["id"]
+                    white_list_bundle_id, white_list_bundle = use_as_set(
+                        [white_list_name], "client {}".format(client["id"])
+                    )
+                    white_list_bundle.save(obj_type, client_irrdb[cfg_attr])
+                    if white_list_bundle_id not in client_irrdb["as_set_bundle_ids"]:
+                        client_irrdb["as_set_bundle_ids"].append(white_list_bundle_id)
 
             if client_irrdb["as_sets"]:
                 # Client has its own specific set of AS-SETs.
                 client_irrdb["as_set_bundle_ids"].append(
-                    use_as_set(client_irrdb["as_sets"], "client {}".format(client["id"]))
+                    use_as_set(client_irrdb["as_sets"], "client {}".format(client["id"]))[0]
                 )
                 continue
 
@@ -261,7 +279,7 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
                     use_as_set(
                         self.builder.cfg_asns.cfg["asns"][asn]["as_sets"],
                         "client {}".format(client["id"])
-                    )
+                    )[0]
                 )
                 continue
 
@@ -276,7 +294,7 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
                                     ", ".join(as_sets_from_pdb)
                                 ))
                 client_irrdb["as_set_bundle_ids"].append(
-                    use_as_set(as_sets_from_pdb, "client {}".format(client["id"]))
+                    use_as_set(as_sets_from_pdb, "client {}".format(client["id"]))[0]
                 )
                 continue
 
@@ -310,7 +328,8 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
     def add_tasks(self):
         # Enqueuing tasks.
         for as_set_bundle_id, as_set_bundle in iteritems(self.builder.irrdb_info):
-            used_by = ", ".join(as_set_bundle.used_by)
+            if as_set_bundle.name.startswith(self.WHITE_LIST_OBJECT_NAME_PREFIX):
+                continue
             self.tasks_q.put(as_set_bundle)
 
 class IRRDBConfigEnricher_OriginASNs(IRRDBConfigEnricher):

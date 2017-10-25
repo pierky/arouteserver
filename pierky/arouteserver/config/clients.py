@@ -16,7 +16,8 @@
 from copy import deepcopy
 import logging
 
-from .base import ConfigParserBase, convert_next_hop_policy
+from .base import ConfigParserBase, convert_next_hop_policy, \
+                  convert_maxprefix_peeringdb
 from .validators import *
 from ..errors import ConfigError, ARouteServerError
 
@@ -77,6 +78,13 @@ class ConfigParserClients(ConfigParserBase):
                                                    mandatory=False),
                         "enforce_origin_in_as_set": ValidatorBool(mandatory=False),
                         "enforce_prefix_in_as_set": ValidatorBool(mandatory=False),
+                        "white_list_pref": ValidatorListOf(
+                            ValidatorPrefixListEntry, mandatory=False,
+                        ),
+                        "white_list_asn": ValidatorASNList(mandatory=False),
+                        "white_list_route": ValidatorListOf(
+                            ValidatorWhiteListRouteEntry, mandatory=False
+                        )
                     },
                     "rpki": {
                         "enabled": ValidatorBool(mandatory=False),
@@ -92,7 +100,13 @@ class ConfigParserClients(ConfigParserBase):
                             mandatory=False
                         ),
                         "restart_after": ValidatorUInt(mandatory=False),
-                        "peering_db": ValidatorBool(mandatory=False),
+                        "peering_db": {
+                            "enabled": ValidatorBool(mandatory=False),
+                            "increment": {
+                                "absolute": ValidatorUInt(mandatory=False),
+                                "relative": ValidatorUInt(mandatory=False)
+                            }
+                        },
                         "limit_ipv4": ValidatorUInt(mandatory=False),
                         "limit_ipv6": ValidatorUInt(mandatory=False),
                     },
@@ -133,6 +147,8 @@ class ConfigParserClients(ConfigParserBase):
                 # Convert next_hop_policy (< v0.6.0) into the new format
                 if "cfg" in client:
                     convert_next_hop_policy(client["cfg"])
+                    convert_maxprefix_peeringdb(client["cfg"])
+
                 ConfigParserBase.validate(schema, client, "clients")
             except ARouteServerError as e:
                 err_msg = ("One or more errors occurred while processing "

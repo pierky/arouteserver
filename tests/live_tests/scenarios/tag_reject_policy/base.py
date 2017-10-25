@@ -227,10 +227,17 @@ class TagRejectPolicyScenario(LiveScenario):
 
     def test_040_origin_not_in_asset(self):
         """{}: origin not in as-macro"""
-        self.receive_route(self.rc, self.DATA["AS102_no_asset"],
+        r = self.receive_route(self.rc, self.DATA["AS102_no_asset"],
                 self.rs, next_hop=self.AS1_1,
-                filtered=False, std_comms=["65520:0", "65520:9"],
+                filtered=False,
                 ext_comms=["rt:65520:1"])
+        # The reject community and reject cause community are
+        # tested in that way because, after white_list_route,
+        # rejected routes may also be tagged with
+        # "prefix/origin is not present in AS-SET" comms,
+        # so a straight match could fail.
+        self.assertTrue("65520:0" in r.std_comms)
+        self.assertTrue("65520:9" in r.std_comms)
 
     def test_040_no_ipv6_global_unicast(self):
         """{}: prefix is not in IPv6 global unicast space"""

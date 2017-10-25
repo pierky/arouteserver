@@ -111,7 +111,7 @@ class ConfigParserBase(object):
             return
 
         for prop in cfg:
-            if not prop in schema:
+            if prop not in schema:
                 errors = True
                 logging.error(
                     "Unknown statement at '{}' level: '{}'.".format(
@@ -120,7 +120,7 @@ class ConfigParserBase(object):
                 )
 
         for prop in schema:
-            if isinstance(schema[prop], ConfigParserValidator): 
+            if isinstance(schema[prop], ConfigParserValidator):
                 validator = schema[prop]
 
                 try:
@@ -164,7 +164,7 @@ def convert_next_hop_policy(cfg):
         return
     if not isinstance(cfg, dict):
         return
-    if not "filtering" in cfg:
+    if "filtering" not in cfg:
         return
     if not cfg["filtering"]:
         return
@@ -181,3 +181,26 @@ def convert_next_hop_policy(cfg):
             "policy": cfg["filtering"]["next_hop_policy"]
         }
         del cfg["filtering"]["next_hop_policy"]
+
+def convert_maxprefix_peeringdb(cfg):
+    if not cfg:
+        return
+    if not isinstance(cfg, dict):
+        return
+    if "filtering" not in cfg:
+        return
+    if not cfg["filtering"]:
+        return
+    if not isinstance(cfg["filtering"], dict):
+        return
+    if "max_prefix" not in cfg["filtering"]:
+        return
+    if not isinstance(cfg["filtering"]["max_prefix"], dict):
+        return
+    if "peering_db" in cfg["filtering"]["max_prefix"]:
+        peering_db = cfg["filtering"]["max_prefix"]["peering_db"]
+        if isinstance(peering_db, dict):
+            return
+        cfg["filtering"]["max_prefix"]["peering_db"] = {
+            "enabled": peering_db
+        }

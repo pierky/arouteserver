@@ -56,6 +56,8 @@ General config parser: max_prefix action ... ok
 General config parser: max_prefix general_limit_ipv4 ... ok
 General config parser: max_prefix general_limit_ipv6 ... ok
 General config parser: max_prefix PeeringDB ... ok
+General config parser: max_prefix PeeringDB (pre v0.13.0 format) ... ok
+General config parser: next_hop.policy ... ok
 General config parser: next_hop_policy (pre v0.6.0 format) ... ok
 General config parser: overlapping communities, inbound/custom ... ok
 General config parser: overlapping communities, inbound/inbound ... ok
@@ -71,6 +73,7 @@ General config parser: reject_cause can be set only with 'tag' reject_policy ...
 General config parser: reject_invalid_as_in_as_path ... ok
 General config parser: reject_policy ... ok
 General config parser: rejected_route_announced_by can be set only with 'tag' reject_policy ... ok
+General config parser: RFC1997 well-known communities ... ok
 General config parser: router_id ... ok
 General config parser: rpki, enabled ... ok
 General config parser: rpki, reject_invalid ... ok
@@ -108,6 +111,27 @@ Clients from Euro-IX: IXP-Manager workaround ... ok
 Clients from Euro-IX: official basic example ... ok
 Clients from Euro-IX: official more complex example ... ok
 Clients from Euro-IX: --routeserver-only filter ... ok
+Max-prefix from PeeringDB: increment ... ok
+IRRDB info: base, AS_SET bundle info (1) ... ok
+IRRDB info: base, AS_SET bundle info (3) ... ok
+IRRDB info: base, AS_SET bundle info (4) ... ok
+IRRDB info: base, simple ... ok
+IRRDB info: base, no external data available ... ok
+IRRDB info: base, cache expired ... ok
+IRRDB info: base, corrupted cache file ... ok
+IRRDB info: ASNs, simple ... ok
+IRRDB info: ASNs, from cache ... ok
+IRRDB info: ASNs, cache expired ... ok
+IRRDB info: RSets, simple ... ok
+IRRDB info: RSets, from cache ... ok
+IRRDB info: RSets, cache expired ... ok
+IRRDB enricher: autnum + AS-SET ... ok
+IRRDB enricher: autnum + AS-SET + ASN white list ... ok
+IRRDB enricher: autnum + AS-SET + prefix white list ... ok
+IRRDB enricher: autnum + AS-SET + prefix/ASN white list ... ok
+IRRDB enricher: autnum + AS-SET + prefix/ASN white list + empty AS-SET ... ok
+IRRDB enricher: autnum only ... ok
+IRRDB enricher: empty autnum + empty AS-SET ... ok
 PeeringDB network: get data ... ok
 PeeringDB network: missing data ... ok
 PeeringDB: AS-SETs parsing ... ok
@@ -126,7 +150,7 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 126 tests in 9.535s
+Ran 150 tests in 16.473s
 
 OK
 Live test, BIRD, hooks example, IPv4: setting instances up...
@@ -137,7 +161,7 @@ Live test, BIRD, hooks example, IPv6: instances setup ... ok
 Live test, BIRD, hooks example, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 2 tests in 8.736s
+Ran 2 tests in 8.762s
 
 OK
 Live test, BIRD, BGP communities, IPv4: setting instances up...
@@ -220,7 +244,7 @@ Live test, OpenBGPD 6.2, BGP communities, IPv6: custom BGP community scrubbed ..
 Live test, OpenBGPD 6.2, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 66 tests in 431.029s
+Ran 66 tests in 431.179s
 
 OK (SKIP=6)
 Live test, BIRD, default config, IPv4: setting instances up...
@@ -237,16 +261,18 @@ Live test, OpenBGPD 6.0, default config, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, default config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 160.895s
+Ran 4 tests in 161.182s
 
 OK
 Live test, BIRD, global scenario, IPv4: setting instances up...
 Live test, BIRD, global scenario, IPv4: instances setup ... ok
 Live test, BIRD, global scenario, IPv4: sessions are up ... ok
 Live test, BIRD, global scenario, IPv4: session configured via local include files ... ok
+Live test, BIRD, global scenario, IPv4: good prefixes received by rs: IRRdb white-list ... ok
 Live test, BIRD, global scenario, IPv4: good prefixes received by rs ... ok
 Live test, BIRD, global scenario, IPv4: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: IRRdb white-list ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: AS_PATH len ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: bogon ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: client blacklist ... ok
@@ -295,6 +321,7 @@ Live test, BIRD, global scenario, IPv4: control communities, prepend twice to AS
 Live test, BIRD, global scenario, IPv4: control communities, prepend thrice to AS1, once to others ... ok
 Live test, BIRD, global scenario, IPv4: control communities, NO_EXPORT to AS1 ... ok
 Live test, BIRD, global scenario, IPv4: control communities, NO_EXPORT to any ... ok
+Live test, BIRD, global scenario, IPv4: control communities, RFC1997 NO_EXPORT ... ok
 Live test, BIRD, global scenario, IPv4: control communities, RTT, blackhole, not peers > 20 ms ... ok
 Live test, BIRD, global scenario, IPv4: control communities, RTT, not peers > 15 ms ... ok
 Live test, BIRD, global scenario, IPv4: control communities, RTT, not peers > 5 ms ... ok
@@ -315,9 +342,11 @@ Live test, BIRD, global scenario, IPv4, tag: setting instances up...
 Live test, BIRD, global scenario, IPv4, tag: instances setup ... ok
 Live test, BIRD, global scenario, IPv4, tag: sessions are up ... ok
 Live test, BIRD, global scenario, IPv4, tag: session configured via local include files ... ok
+Live test, BIRD, global scenario, IPv4, tag: good prefixes received by rs: IRRdb white-list ... ok
 Live test, BIRD, global scenario, IPv4, tag: good prefixes received by rs ... ok
 Live test, BIRD, global scenario, IPv4, tag: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: IRRdb white-list ... ok
 Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: AS_PATH len ... ok
 Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: bogon ... ok
 Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: client blacklist ... ok
@@ -368,6 +397,7 @@ Live test, BIRD, global scenario, IPv4, tag: control communities, prepend twice 
 Live test, BIRD, global scenario, IPv4, tag: control communities, prepend thrice to AS1, once to others ... ok
 Live test, BIRD, global scenario, IPv4, tag: control communities, NO_EXPORT to AS1 ... ok
 Live test, BIRD, global scenario, IPv4, tag: control communities, NO_EXPORT to any ... ok
+Live test, BIRD, global scenario, IPv4, tag: control communities, RFC1997 NO_EXPORT ... ok
 Live test, BIRD, global scenario, IPv4, tag: control communities, RTT, blackhole, not peers > 20 ms ... ok
 Live test, BIRD, global scenario, IPv4, tag: control communities, RTT, not peers > 15 ms ... ok
 Live test, BIRD, global scenario, IPv4, tag: control communities, RTT, not peers > 5 ms ... ok
@@ -388,9 +418,11 @@ Live test, BIRD, global scenario, IPv6: setting instances up...
 Live test, BIRD, global scenario, IPv6: instances setup ... ok
 Live test, BIRD, global scenario, IPv6: sessions are up ... ok
 Live test, BIRD, global scenario, IPv6: session configured via local include files ... ok
+Live test, BIRD, global scenario, IPv6: good prefixes received by rs: IRRdb white-list ... ok
 Live test, BIRD, global scenario, IPv6: good prefixes received by rs ... ok
 Live test, BIRD, global scenario, IPv6: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: IRRdb white-list ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: AS_PATH len ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: bogon ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: client blacklist ... ok
@@ -439,6 +471,7 @@ Live test, BIRD, global scenario, IPv6: control communities, prepend twice to AS
 Live test, BIRD, global scenario, IPv6: control communities, prepend thrice to AS1, once to others ... ok
 Live test, BIRD, global scenario, IPv6: control communities, NO_EXPORT to AS1 ... ok
 Live test, BIRD, global scenario, IPv6: control communities, NO_EXPORT to any ... ok
+Live test, BIRD, global scenario, IPv6: control communities, RFC1997 NO_EXPORT ... ok
 Live test, BIRD, global scenario, IPv6: control communities, RTT, blackhole, not peers > 20 ms ... ok
 Live test, BIRD, global scenario, IPv6: control communities, RTT, not peers > 15 ms ... ok
 Live test, BIRD, global scenario, IPv6: control communities, RTT, not peers > 5 ms ... ok
@@ -459,9 +492,11 @@ Live test, BIRD, global scenario, IPv6, tag: setting instances up...
 Live test, BIRD, global scenario, IPv6, tag: instances setup ... ok
 Live test, BIRD, global scenario, IPv6, tag: sessions are up ... ok
 Live test, BIRD, global scenario, IPv6, tag: session configured via local include files ... ok
+Live test, BIRD, global scenario, IPv6, tag: good prefixes received by rs: IRRdb white-list ... ok
 Live test, BIRD, global scenario, IPv6, tag: good prefixes received by rs ... ok
 Live test, BIRD, global scenario, IPv6, tag: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: IRRdb white-list ... ok
 Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: AS_PATH len ... ok
 Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: bogon ... ok
 Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: client blacklist ... ok
@@ -512,6 +547,7 @@ Live test, BIRD, global scenario, IPv6, tag: control communities, prepend twice 
 Live test, BIRD, global scenario, IPv6, tag: control communities, prepend thrice to AS1, once to others ... ok
 Live test, BIRD, global scenario, IPv6, tag: control communities, NO_EXPORT to AS1 ... ok
 Live test, BIRD, global scenario, IPv6, tag: control communities, NO_EXPORT to any ... ok
+Live test, BIRD, global scenario, IPv6, tag: control communities, RFC1997 NO_EXPORT ... ok
 Live test, BIRD, global scenario, IPv6, tag: control communities, RTT, blackhole, not peers > 20 ms ... ok
 Live test, BIRD, global scenario, IPv6, tag: control communities, RTT, not peers > 15 ms ... ok
 Live test, BIRD, global scenario, IPv6, tag: control communities, RTT, not peers > 5 ms ... ok
@@ -532,9 +568,11 @@ Live test, OpenBGPD 6.0, global scenario, IPv4: setting instances up...
 Live test, OpenBGPD 6.0, global scenario, IPv4: instances setup ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: sessions are up ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: session configured via local include files ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv4: good prefixes received by rs: IRRdb white-list ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: good prefixes received by rs ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: IRRdb white-list ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: AS_PATH len ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: bogon ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: client blacklist ... ok
@@ -585,6 +623,7 @@ Live test, OpenBGPD 6.0, global scenario, IPv4: control communities, prepend twi
 Live test, OpenBGPD 6.0, global scenario, IPv4: control communities, prepend thrice to AS1, once to others ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: control communities, NO_EXPORT to AS1 ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: control communities, NO_EXPORT to any ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv4: control communities, RFC1997 NO_EXPORT ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: control communities, RTT, blackhole, not peers > 20 ms ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: control communities, RTT, not peers > 15 ms ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: control communities, RTT, not peers > 5 ms ... ok
@@ -605,9 +644,11 @@ Live test, OpenBGPD 6.0, global scenario, IPv6: setting instances up...
 Live test, OpenBGPD 6.0, global scenario, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: sessions are up ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: session configured via local include files ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv6: good prefixes received by rs: IRRdb white-list ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: good prefixes received by rs ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: IRRdb white-list ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: AS_PATH len ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: bogon ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: client blacklist ... ok
@@ -658,6 +699,7 @@ Live test, OpenBGPD 6.0, global scenario, IPv6: control communities, prepend twi
 Live test, OpenBGPD 6.0, global scenario, IPv6: control communities, prepend thrice to AS1, once to others ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: control communities, NO_EXPORT to AS1 ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: control communities, NO_EXPORT to any ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv6: control communities, RFC1997 NO_EXPORT ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: control communities, RTT, blackhole, not peers > 20 ms ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: control communities, RTT, not peers > 15 ms ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: control communities, RTT, not peers > 5 ms ... ok
@@ -678,9 +720,11 @@ Live test, OpenBGPD 6.2, global scenario, IPv4: setting instances up...
 Live test, OpenBGPD 6.2, global scenario, IPv4: instances setup ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: sessions are up ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: session configured via local include files ... ok
+Live test, OpenBGPD 6.2, global scenario, IPv4: good prefixes received by rs: IRRdb white-list ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: good prefixes received by rs ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, OpenBGPD 6.2, global scenario, IPv4: bad prefixes received by rs: IRRdb white-list ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: bad prefixes received by rs: AS_PATH len ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: bad prefixes received by rs: bogon ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: bad prefixes received by rs: client blacklist ... ok
@@ -731,6 +775,7 @@ Live test, OpenBGPD 6.2, global scenario, IPv4: control communities, prepend twi
 Live test, OpenBGPD 6.2, global scenario, IPv4: control communities, prepend thrice to AS1, once to others ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: control communities, NO_EXPORT to AS1 ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: control communities, NO_EXPORT to any ... ok
+Live test, OpenBGPD 6.2, global scenario, IPv4: control communities, RFC1997 NO_EXPORT ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: control communities, RTT, blackhole, not peers > 20 ms ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: control communities, RTT, not peers > 15 ms ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: control communities, RTT, not peers > 5 ms ... ok
@@ -751,9 +796,11 @@ Live test, OpenBGPD 6.2, global scenario, IPv6: setting instances up...
 Live test, OpenBGPD 6.2, global scenario, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: sessions are up ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: session configured via local include files ... ok
+Live test, OpenBGPD 6.2, global scenario, IPv6: good prefixes received by rs: IRRdb white-list ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: good prefixes received by rs ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, OpenBGPD 6.2, global scenario, IPv6: bad prefixes received by rs: IRRdb white-list ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: bad prefixes received by rs: AS_PATH len ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: bad prefixes received by rs: bogon ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: bad prefixes received by rs: client blacklist ... ok
@@ -804,6 +851,7 @@ Live test, OpenBGPD 6.2, global scenario, IPv6: control communities, prepend twi
 Live test, OpenBGPD 6.2, global scenario, IPv6: control communities, prepend thrice to AS1, once to others ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: control communities, NO_EXPORT to AS1 ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: control communities, NO_EXPORT to any ... ok
+Live test, OpenBGPD 6.2, global scenario, IPv6: control communities, RFC1997 NO_EXPORT ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: control communities, RTT, blackhole, not peers > 20 ms ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: control communities, RTT, not peers > 15 ms ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: control communities, RTT, not peers > 5 ms ... ok
@@ -822,7 +870,7 @@ Live test, OpenBGPD 6.2, global scenario, IPv6: prefixes received by clients: AS
 Live test, OpenBGPD 6.2, global scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 564 tests in 902.128s
+Ran 588 tests in 914.914s
 
 OK (SKIP=48)
 Live test, BIRD, gshut, IPv4: setting instances up...
@@ -847,7 +895,7 @@ Live test, OpenBGPD 6.2, gshut, IPv6: clients receive routes tagged with GRACEFU
 Live test, OpenBGPD 6.2, gshut, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 12 tests in 216.377s
+Ran 12 tests in 218.171s
 
 OK
 Live test, BIRD, max-prefix, IPv4: setting instances up...
@@ -857,6 +905,7 @@ Live test, BIRD, max-prefix, IPv4: log is populated ... ok
 Live test, BIRD, max-prefix, IPv4: number of prefixes received by rs from AS1 ... ok
 Live test, BIRD, max-prefix, IPv4: number of prefixes received by rs from AS2 ... ok
 Live test, BIRD, max-prefix, IPv4: number of prefixes received by rs from AS3 ... ok
+Live test, BIRD, max-prefix, IPv4: number of prefixes received by rs from AS4 ... ok
 Live test, BIRD, max-prefix, IPv4: stopping instances...
 Live test, BIRD, max-prefix, IPv6: setting instances up...
 Live test, BIRD, max-prefix, IPv6: instances setup ... ok
@@ -865,6 +914,7 @@ Live test, BIRD, max-prefix, IPv6: log is populated ... ok
 Live test, BIRD, max-prefix, IPv6: number of prefixes received by rs from AS1 ... ok
 Live test, BIRD, max-prefix, IPv6: number of prefixes received by rs from AS2 ... ok
 Live test, BIRD, max-prefix, IPv6: number of prefixes received by rs from AS3 ... ok
+Live test, BIRD, max-prefix, IPv6: number of prefixes received by rs from AS4 ... ok
 Live test, BIRD, max-prefix, IPv6: stopping instances...
 Live test, OpenBGPD 6.0, max-prefix, IPv4: setting instances up...
 Live test, OpenBGPD 6.0, max-prefix, IPv4: instances setup ... ok
@@ -888,7 +938,7 @@ Live test, OpenBGPD 6.2, max-prefix, IPv6: clients log max-prefix notification .
 Live test, OpenBGPD 6.2, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 24 tests in 487.365s
+Ran 26 tests in 542.978s
 
 OK
 Live test, BIRD, path hiding, mitigation off, IPv4: setting instances up...
@@ -1001,12 +1051,12 @@ Live test, OpenBGPD 6.2, path hiding, mitigation on, IPv6: AS3 and AS4 don't rec
 Live test, OpenBGPD 6.2, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 84 tests in 925.041s
+Ran 84 tests in 927.777s
 
 OK (SKIP=8)
 
 ----------------------------------------------------------------------
-Ran 0 tests in 0.000s
+Ran 0 tests in 0.004s
 
 OK
 Live test, BIRD, examples, rich config, IPv4: setting instances up...
@@ -1023,7 +1073,7 @@ Live test, OpenBGPD 6.0, examples, rich config, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, examples, rich config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 162.249s
+Ran 4 tests in 161.032s
 
 OK
 Live test, BIRD, RPKI INVALID tagging, IPv4: setting instances up...
@@ -1056,7 +1106,7 @@ Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS3 valid prefix, sub prefix 
 Live test, BIRD, RPKI INVALID tagging, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 24 tests in 52.794s
+Ran 24 tests in 52.504s
 
 OK
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: setting instances up...
@@ -1065,6 +1115,26 @@ Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: sessions are up ... ok
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 no enforcement, prefix and origin not in AS-SET ... ok
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 origin enforcement ... ok
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 prefix enforcement ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (exact) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (more spec) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (more spec) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (origin KO) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (origin any) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: stopping instances...
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: setting instances up...
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: instances setup ... ok
@@ -1081,6 +1151,26 @@ Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 route filtered (prefix k
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 route filtered (prefix ko) ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 prefix ok origin ko ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 prefix ok origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (exact) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 route white list, reject (more spec) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (more spec) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 route white list, reject (origin KO) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (origin any) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: stopping instances...
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: setting instances up...
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: instances setup ... ok
@@ -1088,6 +1178,26 @@ Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: sessions are up ... ok
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 no enforcement, prefix and origin not in AS-SET ... ok
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 origin enforcement ... ok
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 prefix enforcement ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (exact) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (more spec) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (more spec) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (origin KO) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (origin any) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: setting instances up...
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: instances setup ... ok
@@ -1104,6 +1214,26 @@ Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (prefix k
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (prefix ko) ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ko ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (exact) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 route white list, reject (more spec) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (more spec) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 route white list, reject (origin KO) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (origin any) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: stopping instances...
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: setting instances up...
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: instances setup ... ok
@@ -1111,6 +1241,26 @@ Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: sessions are up .
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 no enforcement, prefix and origin not in AS-SET ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 origin enforcement ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 prefix enforcement ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (exact) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (more spec) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (more spec) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (origin KO) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (origin any) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: stopping instances...
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: setting instances up...
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: instances setup ... ok
@@ -1127,6 +1277,26 @@ Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS5 route filtered (
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS5 route filtered (prefix ko) ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS5 prefix ok origin ko ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS5 prefix ok origin ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (exact) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS4 route white list, reject (more spec) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (more spec) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS4 route white list, reject (origin KO) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (origin any) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: stopping instances...
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: setting instances up...
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: instances setup ... ok
@@ -1134,6 +1304,26 @@ Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: sessions are up .
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 no enforcement, prefix and origin not in AS-SET ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 origin enforcement ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 prefix enforcement ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (exact) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (more spec) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (more spec) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (origin KO) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (origin any) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: setting instances up...
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: instances setup ... ok
@@ -1150,6 +1340,26 @@ Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (prefix ko) ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ko ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (exact) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS4 route white list, reject (more spec) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (more spec) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS4 route white list, reject (origin KO) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (origin any) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: stopping instances...
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: setting instances up...
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: instances setup ... ok
@@ -1157,6 +1367,26 @@ Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: sessions are up .
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 no enforcement, prefix and origin not in AS-SET ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 origin enforcement ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 prefix enforcement ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (exact) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (more spec) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (more spec) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (origin KO) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (origin any) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: stopping instances...
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: setting instances up...
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: instances setup ... ok
@@ -1173,6 +1403,26 @@ Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS5 route filtered (
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS5 route filtered (prefix ko) ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS5 prefix ok origin ko ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS5 prefix ok origin ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (exact) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS4 route white list, reject (more spec) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (more spec) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS4 route white list, reject (origin KO) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (origin any) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: stopping instances...
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: setting instances up...
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: instances setup ... ok
@@ -1180,6 +1430,26 @@ Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: sessions are up .
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 no enforcement, prefix and origin not in AS-SET ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 origin enforcement ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 prefix enforcement ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (exact) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (more spec) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (more spec) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (origin KO) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (origin any) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: setting instances up...
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: instances setup ... ok
@@ -1196,10 +1466,30 @@ Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (prefix ko) ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ko ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (exact) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS4 route white list, reject (more spec) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (more spec) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS4 route white list, reject (origin KO) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (origin any) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 114 tests in 871.491s
+Ran 354 tests in 894.637s
 
 OK
 Live test, BIRD, 'tag' reject policy scenario, IPv4: setting instances up...
@@ -1294,6 +1584,6 @@ Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: prefixes received b
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 82 tests in 292.701s
+Ran 82 tests in 293.088s
 
 OK (SKIP=4)

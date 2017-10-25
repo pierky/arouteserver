@@ -13,9 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import yaml
-
-
 from ..errors import ConfigError
 from ..ipaddresses import IPAddress, IPNetwork
 
@@ -304,6 +301,24 @@ class ValidatorPrefixListEntry(ConfigParserValidator):
 
         return v
 
+class ValidatorWhiteListRouteEntry(ConfigParserValidator):
+
+    def _validate(self, v):
+        # Bad trick here: remove 'asn' in order to have
+        # the rest of the dict validated as if it was a
+        # standard prefix-list entry.
+        # Then, add it back again.
+        asn = None
+        if "asn" in v:
+            v["asn"] = ValidatorASN(mandatory=False).validate(v["asn"])
+            asn = v["asn"]
+            del v["asn"]
+
+        ValidatorPrefixListEntry()._validate(v)
+
+        v["asn"] = asn
+
+        return v
 
 class ValidatorBool(ConfigParserValidator):
 
@@ -380,7 +395,7 @@ class ValidatorIPMinMaxLen(ConfigParserValidator):
                         min_max, self.ver, v[min_max]
                     )
                 )
-        
+
             if val > max_val:
                 raise ConfigError(
                     "Value of '{}' in the IPv{} min/max length out of "

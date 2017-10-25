@@ -13,7 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import logging
 from logging.config import fileConfig, dictConfig
 import os
 
@@ -70,8 +69,8 @@ class ARouteServerCommand(object):
         group.add_argument(
             "--logging-config-file",
             help="Logging configuration file, in Python fileConfig() format ("
-                "https://docs.python.org/2/library/logging.config.html"
-                "#configuration-file-format)",
+                 "https://docs.python.org/2/library/logging.config.html"
+                 "#configuration-file-format)",
             dest="logging_config_file")
 
         group.add_argument(
@@ -121,7 +120,7 @@ class ARouteServerCommand(object):
                 program_config.load(program_cfg_path)
                 program_cfg_found = True
                 break
-            except MissingFileError as e:
+            except MissingFileError:
                 pass
 
         if not program_cfg_found:

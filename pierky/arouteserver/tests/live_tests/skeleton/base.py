@@ -252,7 +252,7 @@ class SkeletonScenario(LiveScenario):
 
     def set_instance_variables(self):
         """Simply set local attributes for an easier usage later
-        
+
         The argument of ``self._get_instance_by_name()`` must be one of
         the instance names used in ``_setup_instances()``.
         """

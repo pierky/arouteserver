@@ -35,7 +35,7 @@ class CaptureLog(logging.Handler):
                 self.msgs.append(record.getMessage())
         finally:
             self.release()
-    
+
     def reset(self):
         self.acquire()
         try:
@@ -116,4 +116,3 @@ class ARouteServerTestCase(unittest.TestCase):
 
     def shortDescription(self):
         return self._testMethodDoc.format(self.SHORT_DESCR)
-

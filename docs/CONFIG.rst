@@ -168,6 +168,30 @@ With this configuration, the following values will be used to run the bgpq3 prog
 - **AS-AS33CUSTOMERS** for the 192.0.2.33 client (the ``asns``-level configuration is ignored because a more specific one is given at client-level);
 - **AS44** for the 192.0.2.44 client, because no AS-SETs are given at any level. In this case, if the ``cfg.filtering.irrdb.peering_db`` was set to True, the AS-SET from PeeringDB would be used.
 
+White lists
+~~~~~~~~~~~
+
+In addition to prefixes and ASNs gathered as said above, white lists can be configured at client level to manually enter prefixes and origin ASNs that will be treated as if they were included within clients' AS-SET.
+
+Example:
+
+.. code:: yaml
+
+   clients:
+     - asn: 11
+       ip: "192.0.2.11"
+       cfg:
+         filtering:
+           irrdb:
+             as_sets:
+               - "AS-AS11NETS"
+             white_list_route:
+               - prefix: "203.0.113.0"
+                 length: 24
+                 asn: 65534
+
+This configuration allows to authorize routes for 203.0.113.0/24{24-32} with origin ASN 65534 received from the client.
+
 RPKI-based filtering
 ********************
 

@@ -16,8 +16,7 @@
 import logging
 
 from .base import BaseConfigEnricher, BaseConfigEnricherThread
-from ..errors import BuilderError, ARouteServerError, \
-                    PeeringDBError, PeeringDBNoInfoError
+from ..errors import BuilderError, PeeringDBError, PeeringDBNoInfoError
 from ..peering_db import PeeringDBNet
 
 class PeeringDBConfigEnricher_MaxPrefix_WorkerThread(BaseConfigEnricherThread):
@@ -60,15 +59,25 @@ class PeeringDBConfigEnricher_MaxPrefix_WorkerThread(BaseConfigEnricherThread):
             )
             raise BuilderError()
 
+    @staticmethod
+    def _set_client_max_prefix_from_pdb(client, afi, pdb_value):
+        max_prefix = client["cfg"]["filtering"]["max_prefix"]
+        pdb_incr = max_prefix["peering_db"]["increment"]
+        limit = int(round(
+                    (pdb_value + pdb_incr["absolute"]) * \
+                    (1 + float(pdb_incr["relative"]) / 100)
+                ))
+        max_prefix["limit_ipv{}".format(afi)] = limit
+
     def save_data(self, task, data):
         _, clients = task
         limit4, limit6 = data
         for client in clients:
             client_max_prefix = client["cfg"]["filtering"]["max_prefix"]
             if limit4 and not client_max_prefix["limit_ipv4"]:
-                client["cfg"]["filtering"]["max_prefix"]["limit_ipv4"] = limit4
+                self._set_client_max_prefix_from_pdb(client, 4, limit4)
             if limit6 and not client_max_prefix["limit_ipv6"]:
-                client["cfg"]["filtering"]["max_prefix"]["limit_ipv6"] = limit6
+                self._set_client_max_prefix_from_pdb(client, 6, limit6)
 
 class PeeringDBConfigEnricher_MaxPrefix(BaseConfigEnricher):
 
@@ -111,7 +120,7 @@ class PeeringDBConfigEnricher_MaxPrefix(BaseConfigEnricher):
                     # the current address family.
                     continue
 
-                if not client_max_prefix["peering_db"]:
+                if not client_max_prefix["peering_db"]["enabled"]:
                     # PeeringDB disabled for this client:
                     # using general limit.
                     client_max_prefix["limit_ipv{}".format(ip_ver)] = \

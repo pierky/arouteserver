@@ -104,7 +104,7 @@ class TemplateRenderingCommands(ARouteServerCommand):
         group.add_argument(
             "--ip-ver",
             help="IP version. "
-                "Default: both IPv4 and IPv6",
+                 "Default: both IPv4 and IPv6",
             default=None,
             choices=[4, 6],
             type=int,
@@ -164,7 +164,7 @@ class TemplateRenderingCommands(ARouteServerCommand):
         self._set_cfg_builder_params()
 
         builder_class = self.BUILDER_CLASS
-        
+
         template_sub_dir = self._get_template_sub_dir()
         if template_sub_dir:
             self.cfg_builder_params["template_dir"] = os.path.join(
@@ -253,7 +253,7 @@ class BuildCommand(TemplateRenderingCommands):
         parser.add_argument(
             "--speaker",
             help="The BGP speaker target implementation for "
-                "the configuration that will be built.",
+                 "the configuration that will be built.",
             dest="speaker",
             choices=["BIRD"],
             default="BIRD")

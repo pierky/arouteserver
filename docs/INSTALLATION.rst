@@ -134,3 +134,16 @@ To upgrade the program, download the new version...
 
 If local templates have been edited, make a backup of your files in order to merge your changes in the new ones later.
 To customize the configuration of the route server with your own options, please consider using :ref:`site-specific-custom-config` instead of editing the template files.
+
+Development and pre-release versions
+------------------------------------
+
+.. note:: Consider your needs carefully before using a version other than the current production versions. These are preview releases, and their use is not recommended in production settings.
+
+The **dev** `branch <https://github.com/pierky/arouteserver/tree/dev>`__ is used for the development of the project, while the **master** branch always contains the latest, (hopefully) stable production-ready code.
+
+To install or to upgrade to `the latest pre-release version <https://test.pypi.org/project/arouteserver/>`__ use the `TestPyPI <https://packaging.python.org/guides/using-testpypi/>`__ instance of the Python Package Index (PyPI):
+
+.. code:: bash
+
+    pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple --pre arouteserver

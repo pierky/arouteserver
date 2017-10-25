@@ -162,6 +162,17 @@ class TestConfigParserClients(TestConfigParserBase):
             "        irrdb:",
             "          enforce_origin_in_as_set: False",
             "          enforce_prefix_in_as_set: False",
+            "          white_list_pref:",
+            "            - prefix: 192.0.2.0",
+            "              length: 24",
+            "          white_list_asn:",
+            "            - 11",
+            "            - 12",
+            "          white_list_route:",
+            "            - prefix: 192.0.2.0",
+            "              length: 24",
+            "              le: 32",
+            "              asn: 65534",
             "        rpki:",
             "          enabled: True",
             "          reject_invalid: False",
@@ -176,6 +187,7 @@ class TestConfigParserClients(TestConfigParserBase):
             "        # test pre v0.6.0 format for next_hop",
             "        next_hop_policy: same-as",
             "        max_prefix:",
+            "          # test pre v0.13.0 format for peering_db",
             "          peering_db: False",
             "          limit_ipv4: 10",
             "          limit_ipv6: 20",
@@ -192,7 +204,13 @@ class TestConfigParserClients(TestConfigParserBase):
             "          authorized_addresses_list:",
             "            - '192.0.2.31'",
             "            - '192.0.2.32'",
-            "            - '2001:db8:0:0::31'"
+            "            - '2001:db8:0:0::31'",
+            "        irrdb:",
+            "          # testing optional ASN",
+            "          white_list_route:",
+            "            - prefix: 192.0.2.0",
+            "              length: 24",
+            "              le: 32"
         ]))
         self.cfg.parse()
         self._contains_err()
@@ -203,6 +221,8 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["prepend_rs_as"], False)
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_origin_in_as_set"], True)
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_prefix_in_as_set"], True)
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_pref"], None)
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_asn"], None)
         self.assertEqual(client["cfg"]["filtering"]["rpki"]["enabled"], False)
         self.assertEqual(client["cfg"]["filtering"]["rpki"]["reject_invalid"], True)
         self.assertEqual(client["cfg"]["filtering"]["reject_invalid_as_in_as_path"], True)
@@ -214,7 +234,7 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["filtering"]["next_hop"]["policy"], "strict")
         self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["limit_ipv4"], None)
         self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["limit_ipv6"], None)
-        self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["peering_db"], True)
+        self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["peering_db"]["enabled"], True)
         self.assertEqual(client["cfg"]["filtering"]["reject_policy"]["policy"], "reject")
 
         client = self.cfg[1]
@@ -223,6 +243,13 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["prepend_rs_as"], True)
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_origin_in_as_set"], False)
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_prefix_in_as_set"], False)
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_pref"][0]["prefix"], "192.0.2.0")
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_pref"][0]["length"], 24)
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_asn"], [11, 12])
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_route"][0]["prefix"], "192.0.2.0")
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_route"][0]["length"], 24)
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_route"][0]["le"], 32)
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_route"][0]["asn"], 65534)
         self.assertEqual(client["cfg"]["filtering"]["rpki"]["enabled"], True)
         self.assertEqual(client["cfg"]["filtering"]["rpki"]["reject_invalid"], False)
         self.assertEqual(client["cfg"]["filtering"]["reject_invalid_as_in_as_path"], False)
@@ -234,7 +261,7 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["filtering"]["next_hop"]["policy"], "same-as")
         self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["limit_ipv4"], 10)
         self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["limit_ipv6"], 20)
-        self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["peering_db"], False)
+        self.assertEqual(client["cfg"]["filtering"]["max_prefix"]["peering_db"]["enabled"], False)
         self.assertEqual(client["cfg"]["filtering"]["reject_policy"]["policy"], "tag")
         self.assertEqual(client["cfg"]["graceful_shutdown"]["enabled"], True)
 
@@ -243,6 +270,10 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["filtering"]["next_hop"]["authorized_addresses_list"], [
             "192.0.2.31", "192.0.2.32", "2001:db8:0:0::31"
         ])
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_route"][0]["prefix"], "192.0.2.0")
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_route"][0]["length"], 24)
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_route"][0]["le"], 32)
+        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_route"][0]["asn"], None)
 
     def test_blackhole_filtering_propagation(self):
         """{}: inherit from general cfg - blackhole filtering"""

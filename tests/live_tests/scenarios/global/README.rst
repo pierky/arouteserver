@@ -9,6 +9,8 @@ Built to group as many tests as possible in a single scenario.
 
   - AS-AS1 (1.0.0.0/8, 128.0.0.0/7)
   - AS-AS1_CUSTOMERS (101.0.0.0/16, 103.0.0.0/16)
+  - white list: 11.1.0.0/16, ASN 1011
+  - white list routes: exact 11.3.0.0/16 AS1011, 11.4.0.0/16 or more spec w/o origin AS
 
   Enabled to perform graceful BGP session shutdown.
 
@@ -33,6 +35,16 @@ Built to group as many tests as possible in a single scenario.
     peer_as1       128.0.0.0/8   [2, 1]        fail bgp_path.first != peer_as
     invalid_asn1   128.0.0.0/9   [1, 65536 1]  fail as_path_contains_invalid_asn
     aspath_len1    128.0.0.0/10  [1, 2x6]      fail bgp_path.len > 6
+
+    AS1_whitel_1   11.1.1.0/24   [1, 1011]     accepted, cause in white list
+    AS1_whitel_2   11.1.2.0/24   [1, 1000]     rejected, bad ASN even if prefix in
+                                               white list
+    AS1_whitel_3   11.2.1.0/24   [1, 1011]     rejected, bad prefix even if ASN in
+                                               white list
+    AS1_whitel_4   11.3.0.0/16   [1, 1011]     accepted because in white_list_route
+    AS1_whitel_5   11.4.1.0/24   [1, 1000]     accepted because in white_list_route
+    AS1_whitel_6   11.3.1.0/24   [1, 1011]     rejected, more specific of prefix
+                                               allowed by white list route
     ============   ============  ============  ====================================
 
   - AS1_2 (192.0.2.12, RTT 5 ms)
@@ -121,6 +133,7 @@ Built to group as many tests as possible in a single scenario.
     AS3_noexport_any   3.0.11.0/24  65507:999         received by all with NO_EXPORT
     AS3_noexport_AS1   3.0.12.0/24  65509:1 65506:2   (prepend x3 to AS2) received by AS1 with
                                                       NO_EXPORT
+    AS3_rfc1997_noexp  3.0.13.0/24  NO_EXPORT         received by all with NO_EXPORT
     Default_route      0.0.0.0/0                      rejected by rs
     =================  ============ ================= ============================================
 
