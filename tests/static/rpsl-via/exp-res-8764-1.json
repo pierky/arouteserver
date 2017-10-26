@@ -1,0 +1,27 @@
+{
+  "action": "export-via:",
+  "rules": [
+    {
+      "peers": {
+        "to_peer": {
+          "router": null,
+          "except_": "AS-8764-EXCLUDE-AMS-IX-RS",
+          "peer": "AS-ANY"
+        },
+        "actions": []
+      },
+      "via": {
+        "intermediate_as": "AS6777",
+        "router": {
+          "peer_router": "80.249.208.255",
+          "local_router": null
+        }
+      }
+    }
+  ],
+  "announce": [
+    "AS-LTELECOM",
+    "AS-TEO6"
+  ],
+  "afi": null
+}

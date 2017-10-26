@@ -1,0 +1,35 @@
+{
+  "action": "export-via:",
+  "announce": [
+    "AS200617"
+  ],
+  "rules": [
+    {
+      "peers": {
+        "actions": [
+          {
+            "value": [
+              "0:47872",
+              "0:25160",
+              "0:20080",
+              "0:20562",
+              "0:33891"
+            ],
+            "op": ".=",
+            "attr": "community"
+          }
+        ],
+        "to_peer": {
+          "peer": "AS8075",
+          "router": null,
+          "except_": null
+        }
+      },
+      "via": {
+        "router": null,
+        "intermediate_as": "AS6777"
+      }
+    }
+  ],
+  "afi": null
+}

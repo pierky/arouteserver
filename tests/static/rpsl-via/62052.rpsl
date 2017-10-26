@@ -1,0 +1,4 @@
+import-via:     AS6777 from AS8075 accept ANY
+export-via:     AS6777 to AS8075 action community .= { 0:47872, 0:25160, 0:20080, 0:20562, 0:33891 }; announce AS62052
+import-via:     AS6777 from AS15169 accept ANY
+export-via:     AS6777 to AS15169 announce AS62052

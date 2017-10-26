@@ -1,0 +1,6 @@
+import-via:     AS6777 from AS-ANY accept ANY
+export-via:     AS6777 to AS-ANY announce AS-JOIN
+import-via:     AS34307 from AS-ANY accept ANY
+export-via:     AS34307 to AS-ANY announce AS-JOIN
+import-via:     AS49624 from AS-ANY accept ANY
+export-via:     AS49624 to AS-ANY announce AS-JOIN

@@ -1,0 +1,4 @@
+import-via:     AS6777 80.249.208.255 at 80.249.213.131 from AS-ANY accept ANY
+import-via:     AS6777 80.249.209.0 at 80.249.213.131 from AS-ANY accept ANY
+import-via:     AS6777 80.249.210.255 at 80.249.213.131 from AS-ANY accept ANY
+import-via:     AS6777 80.249.211.0 at 80.249.213.131 from AS-ANY accept ANY

@@ -1,0 +1,23 @@
+{
+  "announce": [
+    "AS9115"
+  ],
+  "afi": null,
+  "rules": [
+    {
+      "peers": {
+        "to_peer": {
+          "except_": "AS5466",
+          "peer": "AS-ANY",
+          "router": null
+        },
+        "actions": []
+      },
+      "via": {
+        "intermediate_as": "AS6777",
+        "router": null
+      }
+    }
+  ],
+  "action": "export-via:"
+}

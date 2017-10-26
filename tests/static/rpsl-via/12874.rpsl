@@ -1,0 +1,1 @@
+export-via:     afi ipv4.unicast AS6777 to AS-ANY announce NOT ANY

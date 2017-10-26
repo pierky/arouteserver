@@ -1,0 +1,4 @@
+import-via:     AS61968 from AS-ANY accept ANY;
+export-via:     AS61968 to AS-ANY announce AS-SIRIUSTEC;
+import-via:     afi ipv6.unicast AS61968 from AS-ANY accept ANY;
+export-via:     afi ipv6.unicast AS61968 to AS-ANY announce AS-SIRIUSTEC;

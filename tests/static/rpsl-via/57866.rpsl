@@ -1,0 +1,4 @@
+import-via:     AS6777 80.249.210.255 from AS-ANY action pref=60; accept ANY
+export-via:     AS6777 80.249.210.255 to AS-ANY announce AS-FUSIX
+import-via:     AS6777 80.249.211.0 from AS-ANY action pref=60; accept ANY
+export-via:     AS6777 80.249.211.0 to AS-ANY announce AS-FUSIX

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# AMS-IX
+asn_list="`curl -s -o - -L 'https://my.ams-ix.net/api/v1/members.tsv?exchange=NL' | cut -f 4,10 | grep yes | cut -f 1 | tr -d '"' | sort | uniq`"
+for asn in $asn_list;
+do
+	echo "Processing ${asn}..."
+	whois \
+		-r AS$asn | \
+		egrep "^(export-via|import-via)\:" > ${asn}.rpsl
+
+	if [ $? -ne 0 ]; then
+		rm ${asn}.rpsl
+	fi
+done

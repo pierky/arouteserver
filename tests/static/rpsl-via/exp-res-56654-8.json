@@ -1,0 +1,23 @@
+{
+  "rules": [
+    {
+      "via": {
+        "router": null,
+        "intermediate_as": "AS6777"
+      },
+      "peers": {
+        "to_peer": {
+          "peer": "AS15169",
+          "router": null,
+          "except_": null
+        },
+        "actions": []
+      }
+    }
+  ],
+  "afi": null,
+  "announce": [
+    "AS56654:as-infinitytelecom"
+  ],
+  "action": "export-via:"
+}

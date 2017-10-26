@@ -1,0 +1,4 @@
+import-via:     afi ipv4.unicast AS6777  from AS5413:AS-ROUTE-SERVER-AMS-IX accept ANY;
+export-via:     afi ipv4.unicast AS6777  to   AS5413:AS-ROUTE-SERVER-AMS-IX announce AS5413:AS-CUSTOMER;
+import-via:     afi ipv6.unicast AS6777  from AS5413:AS-ROUTE-SERVER-AMS-IX accept ANY;
+export-via:     afi ipv6.unicast AS6777  to   AS5413:AS-ROUTE-SERVER-AMS-IX announce AS5413:AS-CUSTOMER;

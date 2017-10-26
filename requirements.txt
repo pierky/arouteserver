@@ -5,3 +5,4 @@ nose>=1.3.7
 PyYAML>=3.12
 packaging
 six
+tatsu

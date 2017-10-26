@@ -1,0 +1,25 @@
+{
+  "afi": [
+    "ipv6.unicast"
+  ],
+  "accept": [
+    "ANY"
+  ],
+  "rules": [
+    {
+      "via": {
+        "intermediate_as": "AS6777",
+        "router": null
+      },
+      "peers": {
+        "actions": [],
+        "from_peer": {
+          "peer": "AS-ANY",
+          "except_": null,
+          "router": null
+        }
+      }
+    }
+  ],
+  "action": "import-via:"
+}

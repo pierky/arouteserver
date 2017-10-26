@@ -1,0 +1,2 @@
+import-via:     AS196959 from AS196959 action pref=40; accept ANY
+export-via:     AS196959 to AS196959 announce AS50352

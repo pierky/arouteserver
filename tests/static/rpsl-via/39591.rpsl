@@ -1,0 +1,2 @@
+import-via:     AS6777 from AS-AMSIX-RS accept AS-AMS-IX-RS-SETS
+export-via:     AS6777 to AS-AMSIX-RS announce AS-GLOBAL-E

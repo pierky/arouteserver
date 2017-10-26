@@ -1,0 +1,4 @@
+import-via:     AS6777 from AS-ANY EXCEPT AS49605:AS-AMS-IX-FILTER action pref=200; accept ANY
+export-via:     AS6777 to AS-ANY EXCEPT AS49605:AS-AMS-IX-FILTER announce AS-DTSRETEIVO
+import-via:     afi ipv6.unicast AS6777 from AS-ANY EXCEPT AS49605:AS-AMS-IX-FILTER action pref=200; accept ANY
+export-via:     afi ipv6.unicast AS6777 to AS-ANY EXCEPT AS49605:AS-AMS-IX-FILTER announce AS-DTSRETEIVO

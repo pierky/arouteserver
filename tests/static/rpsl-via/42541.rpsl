@@ -1,0 +1,6 @@
+import-via:     AS6777 from AS-ANY EXCEPT AS-FIBERBY-AMSIX-NO-RS action pref=120; accept ANY
+export-via:     AS6777 to AS-ANY EXCEPT AS-FIBERBY-AMSIX-NO-RS announce AS-FIBERBY
+import-via:     AS52005 from AS-ANY action pref=120; accept ANY
+export-via:     AS52005 to AS-ANY announce AS-FIBERBY
+import-via:     AS57151 from AS-ANY action pref=120; accept ANY
+export-via:     AS57151 to AS-ANY announce AS-FIBERBY

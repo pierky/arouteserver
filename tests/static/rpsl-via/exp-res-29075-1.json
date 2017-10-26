@@ -1,0 +1,171 @@
+{
+  "action": "import-via:",
+  "accept": [
+    "ANY"
+  ],
+  "afi": null,
+  "rules": [
+    {
+      "peers": {
+        "from_peer": {
+          "except_": "AS29075:AS-CUSTOMERS",
+          "router": null,
+          "peer": "AS-ANY"
+        },
+        "actions": [
+          [
+            {
+              "attr": "pref",
+              "op": "=",
+              "value": "200"
+            },
+            {
+              "attr": "med",
+              "op": "=",
+              "value": "100"
+            }
+          ]
+        ]
+      },
+      "via": {
+        "router": null,
+        "intermediate_as": "AS6695"
+      }
+    },
+    {
+      "peers": {
+        "from_peer": {
+          "except_": "AS29075:AS-CUSTOMERS",
+          "router": null,
+          "peer": "AS-ANY"
+        },
+        "actions": [
+          [
+            {
+              "attr": "pref",
+              "op": "=",
+              "value": "200"
+            },
+            {
+              "attr": "med",
+              "op": "=",
+              "value": "100"
+            }
+          ]
+        ]
+      },
+      "via": {
+        "router": null,
+        "intermediate_as": "AS6777"
+      }
+    },
+    {
+      "peers": {
+        "from_peer": {
+          "except_": "AS29075:AS-CUSTOMERS",
+          "router": null,
+          "peer": "AS-ANY"
+        },
+        "actions": [
+          [
+            {
+              "attr": "pref",
+              "op": "=",
+              "value": "200"
+            },
+            {
+              "attr": "med",
+              "op": "=",
+              "value": "100"
+            }
+          ]
+        ]
+      },
+      "via": {
+        "router": null,
+        "intermediate_as": "AS8714"
+      }
+    },
+    {
+      "peers": {
+        "from_peer": {
+          "except_": "AS29075:AS-CUSTOMERS",
+          "router": null,
+          "peer": "AS-ANY"
+        },
+        "actions": [
+          [
+            {
+              "attr": "pref",
+              "op": "=",
+              "value": "200"
+            },
+            {
+              "attr": "med",
+              "op": "=",
+              "value": "100"
+            }
+          ]
+        ]
+      },
+      "via": {
+        "router": null,
+        "intermediate_as": "AS24115"
+      }
+    },
+    {
+      "peers": {
+        "from_peer": {
+          "except_": "AS29075:AS-CUSTOMERS",
+          "router": null,
+          "peer": "AS-ANY"
+        },
+        "actions": [
+          [
+            {
+              "attr": "pref",
+              "op": "=",
+              "value": "200"
+            },
+            {
+              "attr": "med",
+              "op": "=",
+              "value": "100"
+            }
+          ]
+        ]
+      },
+      "via": {
+        "router": null,
+        "intermediate_as": "AS43100"
+      }
+    },
+    {
+      "peers": {
+        "from_peer": {
+          "except_": "AS29075:AS-CUSTOMERS",
+          "router": null,
+          "peer": "AS-ANY"
+        },
+        "actions": [
+          [
+            {
+              "attr": "pref",
+              "op": "=",
+              "value": "200"
+            },
+            {
+              "attr": "med",
+              "op": "=",
+              "value": "100"
+            }
+          ]
+        ]
+      },
+      "via": {
+        "router": null,
+        "intermediate_as": "AS51706"
+      }
+    }
+  ]
+}

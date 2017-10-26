@@ -1,0 +1,32 @@
+import-via:     AS49624 from AS-ANY accept ANY
+export-via:     AS49624 to AS-ANY announce AS-TANGO
+import-via:     afi ipv6.unicast AS49624 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS49624 to AS-ANY announce AS-TANGO
+import-via:     AS34307 from AS-ANY accept ANY
+export-via:     AS34307 to AS-ANY announce AS-TANGO
+import-via:     afi ipv6.unicast AS34307 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS34307 to AS-ANY announce AS-TANGO
+import-via:     AS6777 from AS-ANY accept ANY
+export-via:     AS6777 to AS-ANY announce AS-TANGO
+import-via:     afi ipv6.unicast AS6777 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS6777 to AS-ANY announce AS-TANGO
+import-via:     AS6695 from AS-ANY accept ANY
+export-via:     AS6695 to AS-ANY announce AS-TANGO
+import-via:     afi ipv6.unicast AS6695 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS6695 to AS-ANY announce AS-TANGO
+import-via:     AS51706 from AS-ANY accept ANY
+export-via:     AS51706 to AS-ANY announce AS-TANGO
+import-via:     afi ipv6.unicast AS51706 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS51706 to AS-ANY announce AS-TANGO
+import-via:     AS9033 from AS-ANY accept ANY
+export-via:     AS9033 to AS-ANY announce AS-TANGO
+import-via:     afi ipv6.unicast AS9033 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS9033 to AS-ANY announce AS-TANGO
+import-via:     AS9033 from AS-ANY accept ANY
+export-via:     AS9033 to AS-ANY announce AS-TANGO
+import-via:     afi ipv6.unicast AS9033 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS9033 to AS-ANY announce AS-TANGO
+import-via:     AS8714 from AS-ANY accept ANY
+export-via:     AS8714 to AS-ANY announce AS-TANGO
+import-via:     afi ipv6.unicast AS8714 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS8714 to AS-ANY announce AS-TANGO

@@ -1,0 +1,2 @@
+import-via:     AS62972 from AS-ANY EXCEPT AS2906 accept ANY
+export-via:     AS62972 to AS-ANY EXCEPT AS2906 announce AS-LEASEWEB

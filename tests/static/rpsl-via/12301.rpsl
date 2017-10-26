@@ -1,0 +1,4 @@
+import-via:     AS6777 from AS-ANY EXCEPT AS12301:AS-AMSIX-NO-PEER accept ANY
+export-via:     AS6777 to AS-ANY EXCEPT AS12301:AS-AMSIX-NO-PEER announce AS12301:AS-ROUTES
+import-via:     afi ipv6.unicast AS6777 from AS-ANY EXCEPT AS12301:AS-AMSIX-NO-PEER accept ANY
+export-via:     afi ipv6.unicast AS6777 to AS-ANY EXCEPT AS12301:AS-AMSIX-NO-PEER announce AS12301:AS-ROUTES

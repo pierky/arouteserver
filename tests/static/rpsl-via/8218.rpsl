@@ -1,0 +1,2 @@
+import-via:     AS6777 from AS8218:AS-AMSIX-RS accept ANY
+export-via:     AS6777 to AS8218:AS-AMSIX-RS announce AS-NEOT

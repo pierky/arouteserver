@@ -1,0 +1,4 @@
+export-via:     AS51706 to AS-ANY announce AS-ADELINOVIUS
+export-via:     afi ipv6.unicast AS51706 to AS-ANY announce AS-ADELINOVIUS
+export-via:     afi ipv6.unicast AS43100 to AS-ANY announce AS-ADELINOVIUS
+export-via:     AS43100 to AS-ANY announce AS-ADELINOVIUS

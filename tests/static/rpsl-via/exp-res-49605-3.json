@@ -1,0 +1,31 @@
+{
+  "afi": [
+    "ipv6.unicast"
+  ],
+  "action": "import-via:",
+  "rules": [
+    {
+      "via": {
+        "router": null,
+        "intermediate_as": "AS6777"
+      },
+      "peers": {
+        "from_peer": {
+          "router": null,
+          "peer": "AS-ANY",
+          "except_": "AS49605:AS-AMS-IX-FILTER"
+        },
+        "actions": [
+          {
+            "attr": "pref",
+            "value": "200",
+            "op": "="
+          }
+        ]
+      }
+    }
+  ],
+  "accept": [
+    "ANY"
+  ]
+}

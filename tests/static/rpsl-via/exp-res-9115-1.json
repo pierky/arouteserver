@@ -1,0 +1,23 @@
+{
+  "afi": null,
+  "rules": [
+    {
+      "via": {
+        "router": null,
+        "intermediate_as": "AS6777"
+      },
+      "peers": {
+        "from_peer": {
+          "router": null,
+          "except_": "AS5466",
+          "peer": "AS-ANY"
+        },
+        "actions": []
+      }
+    }
+  ],
+  "accept": [
+    "ANY"
+  ],
+  "action": "import-via:"
+}

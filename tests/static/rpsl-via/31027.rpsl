@@ -1,0 +1,2 @@
+import-via:     AS6777 from AS-ANY EXCEPT AS-31027-EXCLUDE-AMS-IX-RS accept ANY
+export-via:     AS6777 to AS-ANY EXCEPT AS-31027-EXCLUDE-AMS-IX-RS announce AS-NIANET

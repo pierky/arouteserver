@@ -1,0 +1,8 @@
+import-via:     AS61968 from AS-ANY accept ANY
+export-via:     AS61968 to AS-ANY announce AS198721
+import-via:     afi ipv6.unicast AS61968 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS61968 to AS-ANY announce AS198721
+import-via:     AS6777 from AS-ANY accept ANY
+export-via:     AS6777 to AS-ANY announce AS198721
+import-via:     afi ipv6.unicast AS6777 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS6777 to AS-ANY announce AS198721

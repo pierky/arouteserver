@@ -1,0 +1,2 @@
+import-via:     AS6777 from AS8075 accept ANY
+export-via:     AS6777 to AS8075 announce AS201233

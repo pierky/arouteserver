@@ -1,0 +1,6 @@
+import-via:     AS6695 from AS-ANY accept ANY
+export-via:     AS6695 to AS-ANY announce AS-DGW
+import-via:     AS9033 from AS-ANY accept ANY
+export-via:     AS9033 to AS-ANY announce AS-DGW
+import-via:     AS6777 from AS-ANY accept ANY
+export-via:     AS6777 to AS-ANY announce AS-DGW

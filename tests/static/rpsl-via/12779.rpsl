@@ -1,0 +1,3 @@
+import-via:     AS6777 from AS-ANY EXCEPT AS12779:AS-AMS-IX-FILTER accept ANY
+export-via:     afi ipv4.unicast AS6777 to AS-ANY EXCEPT AS12779:AS-AMS-IX-FILTER announce AS12779:AS-CUSTOMERS
+export-via:     afi ipv6.unicast AS6777 to AS-ANY EXCEPT AS12779:AS-AMS-IX-FILTER announce AS12779:AS-CUSTOMERS-V6

@@ -1,0 +1,14 @@
+import-via:     AS6777 from AS-ANY EXCEPT AS32934 accept ANY
+import-via:     AS6777 from AS-ANY EXCEPT AS16509 accept ANY
+import-via:     AS6777 from AS-ANY EXCEPT AS15133 accept ANY
+import-via:     AS6777 from AS-ANY EXCEPT AS16276 accept ANY
+import-via:     AS6777 from AS-ANY EXCEPT AS60781 accept ANY
+import-via:     AS6777 from AS-ANY EXCEPT AS16509 accept ANY
+import-via:     AS6777 from AS-ANY EXCEPT AS20446 accept ANY
+export-via:     AS6777 to AS-ANY EXCEPT AS32934 announce AS15516
+export-via:     AS6777 to AS-ANY EXCEPT AS15133 announce AS15516
+export-via:     AS6777 to AS-ANY EXCEPT AS16276 announce AS15516
+export-via:     AS6777 to AS-ANY EXCEPT AS60781 announce AS15516
+export-via:     AS6777 to AS-ANY EXCEPT AS20446 announce AS15516
+export-via:     AS6777 to AS-ANY EXCEPT AS16509 announce AS15516
+export-via:     AS6777 to AS-ANY EXCEPT AS15133 announce AS15516

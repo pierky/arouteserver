@@ -1,0 +1,2 @@
+import-via:     AS6777 from AS-AMS-IX-RS EXCEPT AS61180:AS-PEERS-AMSIX accept ANY
+export-via:     AS6777 to AS-AMS-IX-RS EXCEPT AS61180:AS-PEERS-AMSIX announce AS-A2B

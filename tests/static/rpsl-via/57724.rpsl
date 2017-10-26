@@ -1,0 +1,2 @@
+import-via:     AS6777 from AS-ANY accept ANY
+export-via:     AS6777 to AS-ANY EXCEPT AS-DDOS-GUARD:AS-EXCEPTIONS announce AS-DDOS-GUARD

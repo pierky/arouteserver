@@ -1,0 +1,6 @@
+import-via:     AS6777 from AS-ANY EXCEPT AS6939 accept ANY
+export-via:     AS6777 to AS-ANY EXCEPT AS6939 announce AS35574:AS-LOTTOMATICA
+import-via:     AS6777 from AS-ANY EXCEPT AS1267 accept ANY
+export-via:     AS6777 to AS-ANY EXCEPT AS1267 announce AS35574:AS-LOTTOMATICA
+import-via:     AS6777 from AS-ANY EXCEPT AS24608 accept ANY
+export-via:     AS6777 to AS-ANY EXCEPT AS24608 announce AS35574:AS-LOTTOMATICA

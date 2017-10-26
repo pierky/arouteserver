@@ -1,0 +1,4 @@
+import-via:     AS6777 from AS-ANY EXCEPT AS-MUNDI-AMSIX-EXCEPTIONS accept ANY
+import-via:     AS48793 from AS-ANY accept ANY
+export-via:     AS6777 to AS-ANY EXCEPT AS-MUNDI-AMSIX-EXCEPTIONS announce AS-MUNDI
+export-via:     AS48793 to AS-ANY announce AS-MUNDI

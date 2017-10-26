@@ -1,0 +1,10 @@
+import-via:     AS6777 from AS-ANY accept ANY
+export-via:     AS6777 to AS-ANY announce AS-NASSTAR
+import-via:     afi ipv6.unicast AS6777 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS6777 to AS-ANY announce AS-NASSTAR
+import-via:     AS8714 from AS-ANY accept ANY
+export-via:     AS8714 to AS-ANY announce AS-NASSTAR
+import-via:     afi ipv6.unicast AS8714 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS8714 to AS-ANY announce AS-NASSTAR
+import-via:     afi ipv6.unicast AS1200 from AS-ANY accept AS1200
+export-via:     afi ipv6.unicast AS1200 to AS-ANY announce AS-NASSTAR

@@ -1,0 +1,2 @@
+import-via:     AS6777 from AS-ANY accept ANY
+export-via:     AS6777 to AS50629:AS-PEERS announce AS-LWL

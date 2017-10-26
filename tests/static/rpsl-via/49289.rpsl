@@ -1,0 +1,10 @@
+import-via:     AS6777 from AS-ANY except AS49289:AS-AMS-IX-FILTER accept ANY
+export-via:     AS6777 to AS-ANY except AS49289:AS-AMS-IX-FILTER announce AS-IPROUTE-SET
+import-via:     AS8714 from AS-ANY except AS49289:AS-AMS-IX-FILTER accept ANY
+export-via:     AS8714 to AS-ANY except AS49289:AS-AMS-IX-FILTER announce AS-IPROUTE-SET
+import-via:     AS61968 from AS-ANY except AS-IPROUTE-SET accept ANY
+export-via:     AS61968 to AS-ANY except AS-IPROUTE-SET announce AS-IPROUTE-SET
+import-via:     AS25309 from AS-ANY except AS-IPROUTE-SET accept ANY
+export-via:     AS25309 to AS-ANY except AS-IPROUTE-SET announce AS-IPROUTE-SET
+import-via:     AS2593 from AS-ANY except AS-IPROUTE-SET accept ANY
+export-via:     AS2593 to AS-ANY except AS-IPROUTE-SET announce AS-IPROUTE-SET

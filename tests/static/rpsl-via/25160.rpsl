@@ -1,0 +1,9 @@
+import-via:     afi any.unicast AS8714 from AS-ANY accept ANY
+export-via:     afi ipv4.unicast AS8714 to AS-ANY announce AS-VORBOSS
+export-via:     afi ipv6.unicast AS8714 to AS-ANY announce AS-VORBOSS6
+import-via:     afi any.unicast AS6777 from AS-ANY EXCEPT AS2914 accept AS-AMS-IX-RS
+export-via:     afi ipv4.unicast AS6777 to AS-ANY announce AS-VORBOSS
+export-via:     afi ipv6.unicast AS6777 to AS-ANY announce AS-VORBOSS6
+import-via:     afi any.unicast AS8550 from AS-ANY accept ANY
+export-via:     afi ipv4.unicast AS8550 to AS-ANY announce AS-VORBOSS
+export-via:     afi ipv6.unicast AS8550 to AS-ANY announce AS-VORBOSS6

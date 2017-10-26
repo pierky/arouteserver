@@ -1,0 +1,2 @@
+export-via:     AS6777 to AS-ANY announce AS-UARNET
+import-via:     AS6777 from AS-ANY accept ANY

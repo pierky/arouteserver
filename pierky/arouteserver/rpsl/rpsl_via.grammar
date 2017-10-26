@@ -1,0 +1,66 @@
+@@grammar :: RPSLVia
+@@ignorecase :: True
+@@parseinfo :: False
+
+# ---------------------------------------------------------
+
+afi = "afi" @:afi_list ;
+afi_list = { "ipv4.unicast" | "ipv4" | "ipv6.unicast" | "ipv6" | "any.unicast" | "any" }+ ;
+
+# ---------------------------------------------------------
+
+regex_ASN = /AS[0-9]{1,10}/ ;
+regex_AS_SET = /(AS[0-9]{1,10}\:)?(AS-|as-)[a-zA-Z0-9:-]+/ ;
+
+asn = regex_ASN ;
+as_set = regex_AS_SET ;
+
+peering = as_set | asn ;
+
+# ---------------------------------------------------------
+
+filter = as_set | asn | "ANY" | "NOT ANY" ;
+
+# ---------------------------------------------------------
+
+regex_ipv4_addr = /[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/ ;
+regex_ipv6_addr = /[0-9a-f\:]+:[0-9a-f\:]?/ ;
+
+ipv4_addr = regex_ipv4_addr ;
+ipv6_addr = regex_ipv6_addr ;
+
+# ---------------------------------------------------------
+
+start = attr_import_via | attr_export_via $ ;
+
+attr_import_via = action:"import-via:" afi:[afi] rules:{ rule_import }+ "accept"     accept:{ filter }+ [ ";" ] ;
+attr_export_via = action:"export-via:" afi:[afi] rules:{ rule_export }+ "announce" announce:{ filter }+ [ ";" ] ;
+
+rule_import = via:via peers:import_peers ;
+rule_export = via:via peers:export_peers ;
+
+via = intermediate_as:peering router:[ routers ] ;
+
+import_peers = { "from" from_peer:peering_selection ["action" actions+:action_list] }+ ;
+export_peers = { "to"     to_peer:peering_selection ["action" actions+:action_list] }+ ;
+
+peering_selection = peer:peering [ router:routers ] ["EXCEPT" except:peering] ;
+
+routers = peer_router:rtr "at" local_router:rtr | peer_router:rtr | "at" local_router:rtr ;
+
+rtr = ipv4_addr | ipv6_addr ;
+
+action_list = { @:action ";" } ;
+
+action = @:action_pref | @:action_med | @:action_dpa | @:action_aspath | @:action_community ;
+
+#action_pref = /pref\s*=\s*[0-9]+/ ;
+
+val_int = /[0-9]+/ ;
+action_pref = attr:"pref" op:"=" value:val_int ;
+action_med = attr:"med" op:"=" value:val_int ;
+action_dpa = attr:"dps" op:"=" value:val_int ;
+action_aspath = attr:"aspath" op:".prepend" value:",".{ val_int } ;
+
+bgp_community = /[0-9]+(:[0-9]+)?/ ;
+action_community = attr:"community" op:[ "=" | ".=" | ".delete" | ".contains" ] "{" value:",".{ bgp_community | "no_export" | "no_advertise" } "}" ;

@@ -1,0 +1,16 @@
+export-via:     AS6777 to AS-ANY EXCEPT AS15169 announce AS34695
+export-via:     AS6777 to AS-ANY EXCEPT AS32934 announce AS34695
+export-via:     AS6777 to AS-ANY EXCEPT AS20940 announce AS34695
+export-via:     AS6777 to AS-ANY EXCEPT AS16265 announce AS34695
+export-via:     AS6777 to AS-ANY EXCEPT AS46786 announce AS34695
+export-via:     AS6777 to AS-ANY EXCEPT AS5580 announce AS34695
+export-via:     AS6777 to AS-ANY EXCEPT AS41095 announce AS34695
+export-via:     AS6777 to AS-ANY EXCEPT AS6939 announce AS34695
+export-via:     AS6777 to AS-ANY EXCEPT AS15169 announce AS34695:AS-TRANSIT
+export-via:     AS6777 to AS-ANY EXCEPT AS32934 announce AS34695:AS-TRANSIT
+export-via:     AS6777 to AS-ANY EXCEPT AS20940 announce AS34695:AS-TRANSIT
+export-via:     AS6777 to AS-ANY EXCEPT AS16265 announce AS34695:AS-TRANSIT
+export-via:     AS6777 to AS-ANY EXCEPT AS46786 announce AS34695:AS-TRANSIT
+export-via:     AS6777 to AS-ANY EXCEPT AS5580 announce AS34695:AS-TRANSIT
+export-via:     AS6777 to AS-ANY EXCEPT AS41095 announce AS34695:AS-TRANSIT
+export-via:     AS6777 to AS-ANY EXCEPT AS6939 announce AS34695:AS-TRANSIT

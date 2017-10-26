@@ -1,0 +1,2 @@
+export-via:     AS6777 to AS-ANY EXCEPT AS5394 announce AS-CONVERGENZE
+export-via:     AS6777 to AS-ANY EXCEPT AS16276 announce AS-CONVERGENZE

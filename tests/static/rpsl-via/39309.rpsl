@@ -1,0 +1,8 @@
+import-via:     AS6777 from AS-ANY accept ANY
+export-via:     AS6777 to AS-ANY announce AS-EDUTEL
+import-via:     afi ipv6.unicast AS6777 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS6777 to AS-ANY announce AS-EDUTEL
+import-via:     AS34307 from AS-ANY accept ANY
+export-via:     AS34307 to AS-ANY announce AS-EDUTEL
+import-via:     afi ipv6.unicast AS34307 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS34307 to AS-ANY announce AS-EDUTEL

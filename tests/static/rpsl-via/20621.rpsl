@@ -1,0 +1,8 @@
+import-via:     AS9033 from AS-ANY accept   ANY
+export-via:     AS9033 to   AS-ANY announce AS-OPENIT
+import-via:     afi ipv6.unicast AS9033 from AS-ANY accept   ANY
+export-via:     afi ipv6.unicast AS9033 to   AS-ANY announce AS-OPENIT
+import-via:     AS6777 from AS-ANY accept ANY
+export-via:     AS6777 to   AS-ANY announce AS-OPENIT
+import-via:     afi ipv6.unicast AS6777 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS6777 to   AS-ANY announce AS-OPENIT

@@ -1,0 +1,25 @@
+{
+  "rules": [
+    {
+      "peers": {
+        "actions": [],
+        "to_peer": {
+          "router": null,
+          "except_": null,
+          "peer": "AS5413:AS-ROUTE-SERVER-AMS-IX"
+        }
+      },
+      "via": {
+        "intermediate_as": "AS6777",
+        "router": null
+      }
+    }
+  ],
+  "afi": [
+    "ipv4.unicast"
+  ],
+  "announce": [
+    "AS5413:AS-CUSTOMER"
+  ],
+  "action": "export-via:"
+}

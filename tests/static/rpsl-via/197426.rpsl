@@ -1,0 +1,20 @@
+import-via:     AS1930 from AS-ANY action pref=100; accept ANY
+export-via:     AS1930 to AS-ANY announce AS-BITCANAL
+import-via:     afi ipv6.unicast AS1930 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS1930 to AS-ANY announce AS-BITCANAL
+import-via:     AS6777 from AS-ANY action pref=100; accept ANY
+export-via:     AS6777 to AS-ANY announce AS-BITCANAL
+import-via:     afi ipv6.unicast AS6777 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS6777 to AS-ANY announce AS-BITCANAL
+import-via:     AS8714 from AS-ANY action pref=100; accept ANY
+export-via:     AS8714 to AS-ANY announce AS-BITCANAL
+import-via:     afi ipv6.unicast AS8714 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS8714 to AS-ANY announce AS-BITCANAL
+import-via:     AS6695 from AS-ANY action pref=100; accept ANY
+export-via:     AS6695 to AS-ANY announce AS-BITCANAL
+import-via:     afi ipv6.unicast AS6695 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS6695 to AS-ANY announce AS-BITCANAL
+import-via:     AS26162 from AS-ANY action pref=100; accept ANY
+export-via:     AS26162 to AS-ANY announce AS-BITCANAL
+import-via:     afi ipv6.unicast AS26162 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS26162 to AS-ANY announce AS-BITCANAL

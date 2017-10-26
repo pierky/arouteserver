@@ -1,0 +1,6 @@
+import-via:     AS6777 from AS-AMS-IX-RS-SETS EXCEPT AS51752:AS-AMS-IX-RS-EXCLUDED accept ANY
+export-via:     AS6777 to AS-ANY EXCEPT AS51752:AS-AMS-IX-RS-EXCLUDED announce AS-WTBTS
+import-via:     afi ipv6.unicast AS6777 from AS-AMS-IX-RS-SETS-V6 EXCEPT AS51752:AS-AMS-IX-RS-EXCLUDED accept ANY
+export-via:     afi ipv6.unicast AS6777 to AS-ANY EXCEPT AS51752:AS-AMS-IX-RS-EXCLUDED announce AS-WTBTS
+import-via:     afi any.unicast AS34307 from AS-ANY accept ANY
+export-via:     afi any.unicast AS34307 to AS-ANY announce AS-WTBTS

@@ -1,0 +1,12 @@
+import-via:     AS61968 from AS-ANY accept ANY;
+export-via:     AS61968 to AS-ANY announce AS-ESTRACOM;
+import-via:     afi ipv6.unicast AS61968 from AS-ANY accept ANY;
+export-via:     afi ipv6.unicast AS61968 to AS-ANY announce AS-ESTRACOM;
+import-via:     AS6777 from AS-ANY EXCEPT AS31319:AS-AMS-IX-FILTER accept ANY
+export-via:     AS6777 to AS-ANY EXCEPT AS31319:AS-AMS-IX-FILTER announce AS-ESTRACOM
+import-via:     afi ipv6.unicast AS6777 from AS-ANY EXCEPT AS31319:AS-AMS-IX-FILTER accept ANY
+export-via:     afi ipv6.unicast AS6777 to AS-ANY EXCEPT AS31319:AS-AMS-IX-FILTER announce AS-ESTRACOM
+import-via:     AS6695 from AS-ANY accept ANY
+export-via:     AS6695 to AS-ANY announce AS-ESTRACOM
+import-via:     afi ipv6.unicast AS6695 from AS-ANY accept ANY
+export-via:     afi ipv6.unicast AS6695 to  AS-ANY announce AS-ESTRACOM

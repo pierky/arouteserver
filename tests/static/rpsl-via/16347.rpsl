@@ -1,0 +1,4 @@
+import-via:     AS6777 from AS-ANY accept ANY
+export-via:     AS6777 to AS-ANY EXCEPT AS16347:AS-AMSIX-RS-EXCEPT announce AS-RMI
+export-via:     AS51706 to AS-ANY announce AS-RMI
+export-via:     afi ipv6.unicast AS51706 to AS-ANY announce AS-RMI
