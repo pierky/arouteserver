@@ -125,8 +125,9 @@ class ASSet(IRRDBInfo):
             out = self._run_cmd(cmd)
         except Exception as e:
             raise IRRDBToolsError(
-                "Can't get list of authorized ASNs for {}: {}".format(
-                    self.descr, str(e)
+                "Can't get list of authorized ASNs for {}: {} - "
+                "Command: {}".format(
+                    self.descr, str(e), " ".join(cmd)
                 )
             )
 
@@ -181,8 +182,9 @@ class RSet(IRRDBInfo):
             out = self._run_cmd(cmd)
         except Exception as e:
             raise IRRDBToolsError(
-                "Can't get authorized prefix list for {} IPv{}: {}".format(
-                    self.descr, self.ip_ver, str(e)
+                "Can't get authorized prefix list for {} IPv{}: {} - "
+                "Command: {}".format(
+                    self.descr, self.ip_ver, str(e), " ".join(cmd)
                 )
             )
 
