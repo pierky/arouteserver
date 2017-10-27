@@ -148,13 +148,15 @@ clients:
           # "escape" IRRdb-based filters and to be always accepted.
           # Entries of this list are made up by prefixes and an
           # optional ASN which, if present, is matched against the
-          # origin ASN. In this case, routes that pass the IRRdb
-          # filters are tagged with 'prefix_not_present_in_as_set'
-          # and 'origin_not_present_in_as_set' accordingly to the
-          # configured policy.
+          # origin ASN. In this case, if the general 'filtering.
+          # irrdb.tag_as_set' option is set, routes that pass the
+          # IRRdb filters because included in this white list are
+          # tagged with 'prefix_not_present_in_as_set' and
+          # 'origin_not_present_in_as_set' communities.
           #
           # The last two, 'white_list_pref' and 'white_list_asn'
-          # are more "tricky". They allow to treat prefixes and ASNs
+          # are more "tricky" and it is likely that they don't need
+          # to be used at all. They allow to treat prefixes and ASNs
           # as if they were part of the client's AS-SET.
           # This implies that filters and features based on IRRdb
           # data are also applied as if routes were validated against

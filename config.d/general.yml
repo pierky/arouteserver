@@ -200,7 +200,8 @@ cfg:
 
       # Tag routes whose prefix is (not) present in a client's AS-SET.
       # If a client's 'enforce_[origin|prefix]in_as_set' is True
-      # then unauthorized prefixes are rejected and not tagged.
+      # then unauthorized routes are rejected and not tagged
+      # (unless they match a client-level 'white_list_route' entry).
       # BGP communities used to tag these routes are
       # '[origin|prefix]_(not_)present_in_as_set'.
       #

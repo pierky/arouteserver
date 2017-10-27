@@ -173,6 +173,8 @@ White lists
 
 In addition to prefixes and ASNs gathered as said above, white lists can be configured at client level to manually enter prefixes and origin ASNs that will be treated as if they were included within clients' AS-SET.
 
+If the ``filtering.irrdb.tag_as_set`` general option is also set to True, routes that fail the basic IRR filters but that are accepted solely because they match a white list entry are tagged with the ``prefix_not_present_in_as_set`` and ``origin_not_present_in_as_set`` informational communities.
+
 Example:
 
 .. code:: yaml
