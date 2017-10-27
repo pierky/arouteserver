@@ -42,6 +42,7 @@ class ConfigParserGeneral(ConfigParserBase):
         "origin_not_present_in_as_set": { "type": "outbound" },
         "prefix_present_in_as_set": { "type": "outbound" },
         "prefix_not_present_in_as_set": { "type": "outbound" },
+        "prefix_validated_via_rpki_roas": { "type": "outbound" },
 
         "blackholing": { "type": "inbound" },
 
@@ -135,7 +136,14 @@ class ConfigParserGeneral(ConfigParserBase):
                         "enforce_prefix_in_as_set": ValidatorBool(default=True),
                         "allow_longer_prefixes": ValidatorBool(default=False),
                         "tag_as_set": ValidatorBool(default=True),
-                        "peering_db": ValidatorBool(default=False)
+                        "peering_db": ValidatorBool(default=False),
+                        "use_rpki_roas_as_route_objects": {
+                            "enabled": ValidatorBool(default=False),
+                            "source": ValidatorOption("source",
+                                                      ("ripe-rpki-validator-cache",),
+                                                      mandatory=True,
+                                                      default="ripe-rpki-validator-cache")
+                        }
                     },
                     "rpki": {
                         "enabled": ValidatorBool(default=False),

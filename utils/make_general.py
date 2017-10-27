@@ -283,7 +283,11 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
                 CfgStatement("enforce_prefix_in_as_set", pre_comment=True),
                 CfgStatement("allow_longer_prefixes", pre_comment=True),
                 CfgStatement("tag_as_set", pre_comment=True),
-                CfgStatement("peering_db", pre_comment=True)
+                CfgStatement("peering_db", pre_comment=True),
+                CfgStatement("use_rpki_roas_as_route_objects", post_comment=True, sub=[
+                    CfgStatement("enabled", pre_comment=True),
+                    CfgStatement("source", pre_comment=True),
+                ])
             ]),
             CfgStatement("rpki", t="RPKI", sub=[
                 CfgStatement("enabled", pre_comment=True),
@@ -328,6 +332,7 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
             CommCfgStatement("prefix_not_present_in_as_set", group_with_previous="prefix_present_in_as_set"),
             CommCfgStatement("origin_present_in_as_set", group_with_previous="prefix_present_in_as_set"),
             CommCfgStatement("origin_not_present_in_as_set", group_with_previous="prefix_present_in_as_set"),
+            CommCfgStatement("prefix_validated_via_rpki_roas", group_with_previous="prefix_present_in_as_set"),
 
             CommCfgStatement("blackholing", g="Blackhole filtering", pre_comment=True),
 

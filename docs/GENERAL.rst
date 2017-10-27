@@ -431,6 +431,61 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
 
 
 
+- ``use_rpki_roas_as_route_objects``:
+  With regards of prefix validation, when this option is
+  enabled ARouteServer uses RPKI ROAs as if they were route
+  objects.
+  Routes whose origin ASN is authorized by a client's AS-SET
+  but whose prefix has not a corresponding route object will
+  be accepted if a corresponding ROA exists for that origin
+  ASN. In this case, if **tag_as_set** is True, these routes
+  are tagged with the **prefix_validated_via_rpki_roas**
+  community.
+
+
+  This option is used only when **enforce_origin_in_as_set**
+  and **enforce_prefix_in_as_set** are both set to True.
+
+
+- ``enabled``:
+  Set this to True to enable this feature.
+
+
+  Default: **False**
+
+  Example:
+
+  .. code:: yaml
+
+     enabled: False
+
+
+
+- ``source``:
+  The source used to gather RPKI ROAs.
+
+
+  Currently, the only method that has been implemented is to
+  fetch data from the RIPE RPKI Validator cache
+  (http://localcert.ripe.net:8088/export).
+
+
+  Please note that this method is far from guaranteeing that
+  a cryptographically validated datased is retrieved from a
+  trusted cache.
+
+
+  Default: **ripe-rpki-validator-cache**
+
+  Example:
+
+  .. code:: yaml
+
+     source: "ripe-rpki-validator-cache"
+
+
+
+
 
 RPKI: ``rpki``
 ~~~~~~~~~~~~~~~
@@ -963,7 +1018,7 @@ matching.
 Prefix/origin AS present in client's AS-SET
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- ``prefix_present_in_as_set``, ``prefix_not_present_in_as_set``, ``origin_present_in_as_set`` and ``origin_not_present_in_as_set``:
+- ``prefix_present_in_as_set``, ``prefix_not_present_in_as_set``, ``origin_present_in_as_set``, ``origin_not_present_in_as_set`` and ``prefix_validated_via_rpki_roas``:
   Prefix/origin AS present in client's AS-SET.
 
 

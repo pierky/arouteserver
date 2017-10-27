@@ -223,6 +223,17 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._test_bool_val(self.cfg["filtering"]["irrdb"], "allow_longer_prefixes")
         self._test_mandatory(self.cfg["filtering"]["irrdb"], "allow_longer_prefixes", has_default=True)
 
+    def test_use_rpki_roas_as_route_objects_enabled(self):
+        """{}: tag_as_set"""
+        self.assertEqual(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["enabled"], False)
+        self._test_bool_val(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "enabled")
+        self._test_mandatory(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "enabled", has_default=True)
+        
+    def test_use_rpki_roas_as_route_objects_source(self):
+        self.assertEqual(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["source"], "ripe-rpki-validator-cache")
+        self._test_option(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "source", ("ripe-rpki-validator-cache",))
+        self._test_mandatory(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "source", has_default=True)
+
     def test_rpki_enabled(self):
         """{}: rpki, enabled"""
         self.assertEqual(self.cfg["filtering"]["rpki"]["enabled"], False)
@@ -1061,7 +1072,11 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "enforce_origin_in_as_set": True,
                     "enforce_prefix_in_as_set": True,
                     "allow_longer_prefixes": False,
-                    "peering_db": False
+                    "peering_db": False,
+                    "use_rpki_roas_as_route_objects": {
+                        "enabled": False,
+                        "source": "ripe-rpki-validator-cache"
+                    }
                 },
                 "rpki": {
                     "enabled": False,
@@ -1149,6 +1164,10 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "enforce_prefix_in_as_set": True,
                     "allow_longer_prefixes": False,
                     "peering_db": False,
+                    "use_rpki_roas_as_route_objects": {
+                        "enabled": False,
+                        "source": "ripe-rpki-validator-cache"
+                    }
                 },
                 "rpki": {
                     "enabled": False,
