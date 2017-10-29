@@ -22,3 +22,6 @@ cfg:
                 origin_not_present_in_as_set:
                         std: "rs_as:64515"
                         lrg: "rs_as:0:64515"
+                prefix_validated_via_rpki_roas:
+                        std: "rs_as:64516"
+                        lrg: "rs_as:0:64516"
