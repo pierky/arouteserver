@@ -140,6 +140,19 @@ bool reject_because_of_bad_prefix;
 	{%	endfor %}
 	{% endif %}
 
+	{% if client.cfg.filtering.irrdb.enforce_origin_in_as_set and
+		client.cfg.filtering.irrdb.enforce_prefix_in_as_set and
+		rpki_roas_as_route_objects %}
+	# Origin ASN is valid, prefix is not: check if a RPKI ROAs exists.
+	if !reject_because_of_bad_origin && reject_because_of_bad_prefix && prefix_in_rpki_roas_as_route_objects() then {
+		{% if cfg.filtering.irrdb.tag_as_set and
+			cfg.communities.prefix_validated_via_rpki_roas|community_is_set %}
+		{{	add_communities(cfg.communities.prefix_validated_via_rpki_roas) }}
+		{% endif %}
+		return true;
+	}
+	{% endif %}
+
 	if reject_because_of_bad_origin then {
 		{{ reject(client, 9, '"origin ASN [", bgp_path.last, "] not in allowed as-sets - REJECTING ", net', avoid_braces=True) }}
 	}

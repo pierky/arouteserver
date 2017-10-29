@@ -112,6 +112,12 @@ cfg:
       peer_as: false
       std: null
       type: outbound
+    prefix_validated_via_rpki_roas:
+      ext: null
+      lrg: 999:65530:2
+      peer_as: false
+      std: '65530:2'
+      type: outbound
     prepend_once_to_any:
       ext: rt:65501:999
       lrg: 999:65501:999
@@ -233,6 +239,9 @@ cfg:
       enforce_prefix_in_as_set: true
       peering_db: false
       tag_as_set: true
+      use_rpki_roas_as_route_objects:
+        enabled: true
+        source: ripe-rpki-validator-cache
     max_as_path_len: 32
     max_prefix:
       action: restart
@@ -767,7 +776,7 @@ asns: {}
 
 
 irrdb_info
--------
+----------
 - asns:
   - 3333
   descr: AS3333
@@ -838,6 +847,102 @@ irrdb_info
     max_length: 32
     prefix: 199.43.0.0
   used_by: client AS10745_1
+
+
+rpki_roas_as_route_objects
+--------------------------
+AS10745:
+- exact: true
+  ge: 48
+  le: 48
+  length: 48
+  max_length: 128
+  prefix: '2001:500:30::'
+- exact: true
+  ge: 48
+  le: 48
+  length: 48
+  max_length: 128
+  prefix: '2001:500:4::'
+- exact: true
+  ge: 24
+  le: 24
+  length: 24
+  max_length: 32
+  prefix: 192.136.136.0
+- exact: true
+  ge: 24
+  le: 24
+  length: 24
+  max_length: 32
+  prefix: 192.149.252.0
+- exact: true
+  ge: 24
+  le: 24
+  length: 24
+  max_length: 32
+  prefix: 199.43.0.0
+AS3333:
+- exact: true
+  ge: 24
+  le: 24
+  length: 24
+  max_length: 32
+  prefix: 193.0.24.0
+- exact: true
+  ge: 23
+  le: 23
+  length: 23
+  max_length: 32
+  prefix: 193.0.12.0
+- exact: true
+  ge: 23
+  le: 23
+  length: 23
+  max_length: 32
+  prefix: 193.0.18.0
+- exact: true
+  ge: 21
+  le: 21
+  length: 21
+  max_length: 32
+  prefix: 193.0.0.0
+- exact: true
+  ge: 48
+  le: 48
+  length: 48
+  max_length: 128
+  prefix: '2001:67c:2e8::'
+- exact: true
+  ge: 23
+  le: 23
+  length: 23
+  max_length: 32
+  prefix: 193.0.22.0
+- exact: true
+  ge: 42
+  le: 42
+  length: 42
+  max_length: 128
+  prefix: '2001:610:240::'
+- exact: true
+  ge: 23
+  le: 23
+  length: 23
+  max_length: 32
+  prefix: 193.0.10.0
+- exact: true
+  ge: 23
+  le: 23
+  length: 23
+  max_length: 32
+  prefix: 193.0.20.0
+- exact: false
+  ge: 22
+  le: 26
+  length: 22
+  max_length: 32
+  prefix: 193.0.24.0
 
 
 roas

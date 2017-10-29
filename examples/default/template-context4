@@ -112,6 +112,12 @@ cfg:
       peer_as: false
       std: null
       type: outbound
+    prefix_validated_via_rpki_roas:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: outbound
     prepend_once_to_any:
       ext: null
       lrg: null
@@ -211,6 +217,9 @@ cfg:
       enforce_prefix_in_as_set: true
       peering_db: false
       tag_as_set: true
+      use_rpki_roas_as_route_objects:
+        enabled: false
+        source: ripe-rpki-validator-cache
     max_as_path_len: 32
     max_prefix:
       action: null
@@ -745,7 +754,7 @@ asns:
 
 
 irrdb_info
--------
+----------
 - asns:
   - 3333
   descr: AS3333
@@ -816,6 +825,11 @@ irrdb_info
     max_length: 32
     prefix: 199.43.0.0
   used_by: client AS10745_1
+
+
+rpki_roas_as_route_objects
+--------------------------
+{}
 
 
 roas

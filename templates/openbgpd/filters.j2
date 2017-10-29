@@ -76,6 +76,13 @@ match from {{ client.ip }} prefix {{ write_prefix_list_entry(route) }} set commu
 {%		endfor %}
 {%	endif %}
 {%      if enforce_object_in_as_set %}
+{%		if objects == "prefixes" and
+			client.cfg.filtering.irrdb.enforce_origin_in_as_set and
+			rpki_roas_as_route_objects %}
+# routes which carry a soo:65535:1 community have the prefix validated by a ROA
+{{			add_communities("match from " ~ client.ip ~ " ext-community soo 65535:1", cfg.communities.prefix_validated_via_rpki_roas) }}
+match from {{ client.ip }} ext-community soo 65535:1 set { community delete NO_ADVERTISE ext-community delete soo 65535:1 }
+{%		endif %}
 # enforcing: if NO_ADVERTISE has not been removed then the route is not authorized
 {{ deny_inbound_route(client.cfg.filtering.reject_policy.policy == "tag", "from " ~ client.ip ~ " community NO_ADVERTISE", reject_code) }}
 {%	else %}
@@ -128,6 +135,23 @@ match from group clients community NO_EXPORT set community delete NO_EXPORT
 # Transform NO_ADVERTISE into soo 65535:65282
 match from group clients community NO_ADVERTISE set ext-community soo 65535:65282
 match from group clients community NO_ADVERTISE set community delete NO_ADVERTISE
+{% endif %}
+
+{% if cfg.filtering.irrdb.enforce_origin_in_as_set and
+	cfg.filtering.irrdb.enforce_prefix_in_as_set and
+	cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and
+	rpki_roas_as_route_objects %}
+# RPKI ROAs used as route objects
+# Add the soo:65535:1 ext community to routes whose
+# origin ASN has a ROA for the announced prefix.
+# It will be used later during IRRDB validation in
+# case the origin ASN is authorized by a client's
+# AS-SET but the prefix is not.
+{%	for origin_asn in rpki_roas_as_route_objects|sort %}
+{%		for prefixes in rpki_roas_as_route_objects[origin_asn].roas|batch(50) %}
+match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {{ write_prefix_list(prefixes) }} } set ext-community soo 65535:1
+{%		endfor %}
+{%	endfor %}
 {% endif %}
 
 {% if cfg.communities.rejected_route_announced_by|community_is_set %}
