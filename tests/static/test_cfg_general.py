@@ -231,7 +231,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
         
     def test_use_rpki_roas_as_route_objects_source(self):
         self.assertEqual(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["source"], "ripe-rpki-validator-cache")
-        self._test_option(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "source", ("ripe-rpki-validator-cache",))
+        self._test_option(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "source", ("ripe-rpki-validator-cache","rtrlib"))
         self._test_mandatory(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "source", has_default=True)
 
     def test_rpki_enabled(self):

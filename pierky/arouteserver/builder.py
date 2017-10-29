@@ -719,7 +719,8 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                         "blackhole_filtering_rewrite_ipv6_nh",
                         "large_communities", "extended_communities",
                         "graceful_shutdown", "rfc1997_wellknown_communities",
-                        "rpki_roas_as_route_objects_internal_community"]
+                        "rpki_roas_as_route_objects_internal_community",
+                        "rpki_roas_as_route_objects_source"]
 
     def _include_local_file(self, local_file_id):
         return 'include "{}"\n\n'.format(
@@ -968,12 +969,13 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             self.cfg_general["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]
         if use_rpki_roas_as_route_objects_cfg["enabled"]:
             if use_rpki_roas_as_route_objects_cfg["source"] != "ripe-rpki-validator-cache":
-                res = False
-                logging.error(
-                    "For OpenBGPD only the 'ripe-rpki-validator-cache'"
+                if not self.process_bgpspeaker_specific_compatibility_issue(
+                    "rpki_roas_as_route_objects_source",
+                    "For OpenBGPD only the 'ripe-rpki-validator-cache' "
                     "value is allowed for the "
                     "'use_rpki_roas_as_route_objects.source' option."
-                )
+                ):
+                    res = False
 
             for comm_name in ConfigParserGeneral.COMMUNITIES_SCHEMA:
                 comm = self.cfg_general["communities"][comm_name]

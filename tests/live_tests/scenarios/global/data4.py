@@ -91,6 +91,10 @@ class BasicScenario_Data4(object):
         "AS101_bad_good_comms":     "101.0.6.0/24",
         "AS101_no_rset":            "101.1.0.0/24",
         "AS101_transitfree_1":      "101.0.7.0/24",
+        "AS101_roa_routeobj_1":     "101.2.0.0/17",
+        "AS101_roa_routeobj_2":     "101.2.1.0/24",
+        "AS101_roa_routeobj_3":     "101.2.128.0/24",
+        "AS101_roa_routeobj_4":     "101.3.0.0/24",
 
         "AS101_roa_valid1":         "101.0.8.0/24",
         "AS101_roa_invalid1":       "101.0.9.0/24",

@@ -25,6 +25,10 @@ protocol static own_prefixes {
 	{% endif %}
 	route {{ data.AS103_gshut_1 }} reject;
 	route {{ data.AS103_gshut_2 }} reject;
+	route {{ data.AS101_roa_routeobj_1 }} reject;
+	route {{ data.AS101_roa_routeobj_2 }} reject;
+	route {{ data.AS101_roa_routeobj_3 }} reject;
+	route {{ data.AS101_roa_routeobj_4 }} reject;
 }
 
 function outgoing_common() {
@@ -60,6 +64,11 @@ function outgoing_common() {
 	}
 	if net = {{ data.AS101_roa_blackhole }} then
 		bgp_community.add((65535,666));
+	if net = {{ data.AS101_roa_routeobj_4 }} then {
+		bgp_path.delete(101);
+		bgp_path.prepend(105);
+		bgp_path.prepend(101);
+	}
 }
 filter to_AS1 {
 	outgoing_common();

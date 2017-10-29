@@ -212,6 +212,28 @@ class BasicScenario(LiveScenario):
         self.receive_route(self.rs, self.DATA["AS1_good1"], self.AS1_1, as_path="1", next_hop=self.AS1_1)
         self.receive_route(self.rs, self.DATA["AS2_good1"], self.AS2, as_path="2", next_hop=self.AS2)
 
+    def test_030_good_prefixes_because_of_rpki_roas_as_route_objects_1(self):
+        """{}: good prefixes because of use_rpki_roas_as_route_objects: exact"""
+        if isinstance(self.rs, OpenBGPDInstance):
+            raise unittest.SkipTest("RPKI not supported by OpenBGPD")
+
+        prefix = self.DATA["AS101_roa_routeobj_1"]
+        self.receive_route(self.rs, prefix,
+                           self.AS1_1, as_path="1 101", next_hop=self.AS1_1)
+        self.receive_route(self.rs, prefix,
+                           self.AS2, as_path="2 101", next_hop=self.AS2)
+
+    def test_030_good_prefixes_because_of_rpki_roas_as_route_objects_2(self):
+        """{}: good prefixes because of use_rpki_roas_as_route_objects: covering"""
+        if isinstance(self.rs, OpenBGPDInstance):
+            raise unittest.SkipTest("RPKI not supported by OpenBGPD")
+
+        prefix = self.DATA["AS101_roa_routeobj_3"]
+        self.receive_route(self.rs, prefix,
+                           self.AS1_1, as_path="1 101", next_hop=self.AS1_1)
+        self.receive_route(self.rs, prefix,
+                           self.AS2, as_path="2 101", next_hop=self.AS2)
+
     def test_030_good_prefixes_received_by_rs_nonclient_nexthop(self):
         """{}: good prefixes received by rs: non-client NEXT_HOP"""
 
@@ -373,6 +395,30 @@ class BasicScenario(LiveScenario):
                            filtered=True, reject_reason=12)
         self.log_contains(self.rs, "prefix not in client's r_set - REJECTING " + self.DATA["AS1_whitel_6"])
 
+    def test_040_bad_prefixes_rpki_roas_as_route_objects_failed(self):
+        """{}: bad prefixes received by rs: RPKI ROAs as route objects failed"""
+        if isinstance(self.rs, OpenBGPDInstance):
+            for prefix in (self.DATA["AS101_roa_routeobj_1"],
+                           self.DATA["AS101_roa_routeobj_3"]):
+                self.receive_route(self.rs, prefix, self.AS1_1, as_path="1 101",
+                                   filtered=True, reject_reason=12)
+                self.receive_route(self.rs, prefix, self.AS2, as_path="2 101",
+                                   filtered=True, reject_reason=12)
+
+        # More specific than ROA
+        prefix = self.DATA["AS101_roa_routeobj_2"]
+        self.receive_route(self.rs, prefix, self.AS1_1, as_path="1 101",
+                           filtered=True, reject_reason=12)
+        self.receive_route(self.rs, prefix, self.AS2, as_path="2 101",
+                           filtered=True, reject_reason=12)
+
+        # ROA OK but origin ASN not authorized by AS-SET
+        prefix = self.DATA["AS101_roa_routeobj_4"]
+        self.receive_route(self.rs, prefix, self.AS1_1, as_path="1 101 105",
+                           filtered=True, reject_reason=9)
+        self.receive_route(self.rs, prefix, self.AS2, as_path="2 101 105",
+                           filtered=True, reject_reason=9)
+
     def test_041_bad_prefixes_not_received_by_clients(self):
         """{}: bad prefixes not received by clients"""
         for prefix in (self.DATA["bogon1"],
@@ -390,7 +436,9 @@ class BasicScenario(LiveScenario):
         # following prefixes because AS1 and AS2
         # receive them on their session with AS101
         for prefix in (self.DATA["AS101_no_rset"],
-                       self.DATA["AS102_no_asset"]):
+                       self.DATA["AS102_no_asset"],
+                       self.DATA["AS101_roa_routeobj_2"],
+                       self.DATA["AS101_roa_routeobj_4"]):
             with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                 self.receive_route(self.AS3, prefix)
 
@@ -942,7 +990,8 @@ class BasicScenario(LiveScenario):
         # also verifies that these prefixes are received twice by AS3)
         for pref in ("AS101_good1", "AS101_bad_std_comm", "AS101_bad_lrg_comm",
                      "AS101_other_s_comm", "AS101_other_l_comm",
-                     "AS101_bad_good_comms"):
+                     "AS101_bad_good_comms", "AS101_roa_routeobj_1",
+                     "AS101_roa_routeobj_3"):
             self.receive_route(self.AS3, self.DATA[pref], self.rs)
 
     def test_100_prefixes_received_by_clients_AS3_with_ADD_PATH(self):

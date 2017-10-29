@@ -97,6 +97,11 @@ class BasicScenario_Data6(object):
         "AS101_roa_badlen":         "3101:0:8000::/48",
         "AS101_roa_blackhole":      "3101:0:8000::1/128",
 
+        "AS101_roa_routeobj_1":     "3101:2::/33",
+        "AS101_roa_routeobj_2":     "3101:2:4000::/34",
+        "AS101_roa_routeobj_3":     "3101:2:8000::/48",
+        "AS101_roa_routeobj_4":     "3101:3:0::/48",
+
         "AS102_no_asset":           "3102:0:1::/48",
         "AS101_no_ipv6_gl_uni":     "8000:1::/32",
 
