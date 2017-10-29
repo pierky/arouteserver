@@ -66,14 +66,11 @@ match from {{ client.ip }} {{ matching_element }} set community delete NO_ADVERT
 {%              endfor %}
 {%      endif %}
 {%	if client.cfg.filtering.irrdb.white_list_route %}
-# client's white list
-{%		for route in client.cfg.filtering.irrdb.white_list_route|sort(attribute="prefix") if route.prefix is current_ipver %}
-{%			if route.asn %}
-match from {{ client.ip }} prefix {{ write_prefix_list_entry(route) }} source-as {{ route.asn }} set community delete NO_ADVERTISE	# {{ route.comment }}
-{%			else %}
-match from {{ client.ip }} prefix {{ write_prefix_list_entry(route) }} set community delete NO_ADVERTISE	# {{ route.comment }}
-{%			endif %}
-{%		endfor %}
+# route authorized by a client's white list?
+{%		if tag_as_set and cfg.communities.route_validated_via_white_list|community_is_set %}
+{{			add_communities("match from " ~ client.ip ~ " ext-community soo 65535:2", cfg.communities.route_validated_via_white_list) }}
+{%		endif %}
+match from {{ client.ip }} ext-community soo 65535:2 set community delete NO_ADVERTISE
 {%	endif %}
 {%      if enforce_object_in_as_set %}
 {%		if objects == "prefixes" and
@@ -247,6 +244,22 @@ match from {{ client.ip }} nexthop {{ same_as_client.ip }} set community delete 
 {%	endif %}
 {% endif %}
 
+{% if client.cfg.filtering.irrdb.white_list_route %}
+# client's white list
+# Add the soo:65535:2 ext community to routes which
+# are validated by a client's white list entry.
+# It will be used later during IRRDB validation in
+# case the route is not authorized by a client's
+# AS-SET.
+{%	for route in client.cfg.filtering.irrdb.white_list_route|sort(attribute="prefix") if route.prefix is current_ipver %}
+{%		if route.asn %}
+match from {{ client.ip }} prefix {{ write_prefix_list_entry(route) }} source-as {{ route.asn }} set ext-community soo 65535:2	# {{ route.comment }}
+{%		else %}
+match from {{ client.ip }} prefix {{ write_prefix_list_entry(route) }} set ext-community soo 65535:2	# {{ route.comment }}
+{%		endif %}
+{%	endfor %}
+{% endif %}
+
 # AS_PATH: enforce/tag origin via AS-SET
 {{ irrdb_filter(client, client.cfg.filtering.irrdb.enforce_origin_in_as_set, cfg.filtering.irrdb.tag_as_set,
 		"asns",
@@ -293,6 +306,21 @@ match from {{ client.ip }} community GRACEFUL_SHUTDOWN set localpref {{ cfg.grac
 {%	else %}
 match from {{ client.ip }} community GRACEFUL_SHUTDOWN set community delete GRACEFUL_SHUTDOWN
 {%	endif %}
+{% endif %}
+
+{% if cfg.filtering.irrdb.enforce_origin_in_as_set and
+	cfg.filtering.irrdb.enforce_prefix_in_as_set and
+	cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and
+	rpki_roas_as_route_objects %}
+# Remove internal community used to mark routes
+# matched by RPKI ROAs used as route objects.
+match from {{ client.ip }} set ext-community delete soo 65535:1
+{% endif %}
+
+{% if client.cfg.filtering.irrdb.white_list_route %}
+# Remove internal community used to mark routes
+# validated by a client's white list entry.
+match from {{ client.ip }} set ext-community delete soo 65535:2
 {% endif %}
 
 {{ del_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, replace_dyn_val=client.asn) }}

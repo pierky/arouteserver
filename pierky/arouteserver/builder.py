@@ -989,6 +989,30 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                         "community: {}".format(comm_name)
                     ):
                         res = False
+                        break
+
+        white_list_route = False
+        for client in self.cfg_clients.cfg["clients"]:
+            if client["cfg"]["filtering"]["irrdb"]["white_list_route"]:
+                white_list_route = True
+                break
+
+        if white_list_route:
+            for comm_name in ConfigParserGeneral.COMMUNITIES_SCHEMA:
+                comm = self.cfg_general["communities"][comm_name]
+                if comm["ext"] and comm["ext"] == "ro:65535:2":
+                    if not self.process_bgpspeaker_specific_compatibility_issue(
+                        "white_list_route_internal_community",
+                        "One or more clients are configured with a route "
+                        "white list ('white_list_route'). "
+                        "When white_list_route options are used, the "
+                        "ro:65535:2 extended community must be reserved "
+                        "for internal purposes. "
+                        "A collision has been detected with the following "
+                        "community: {}".format(comm_name)
+                    ):
+                        res = False
+                        break
 
         return res
 

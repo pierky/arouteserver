@@ -151,8 +151,9 @@ clients:
           # origin ASN. In this case, if the general 'filtering.
           # irrdb.tag_as_set' option is set, routes that pass the
           # IRRdb filters because included in this white list are
-          # tagged with 'prefix_not_present_in_as_set' and
-          # 'origin_not_present_in_as_set' communities.
+          # tagged with 'prefix_not_present_in_as_set',
+          # 'origin_not_present_in_as_set' and
+          # 'route_validated_via_white_list' communities.
           #
           # The last two, 'white_list_pref' and 'white_list_asn'
           # are more "tricky" and it is likely that they don't need

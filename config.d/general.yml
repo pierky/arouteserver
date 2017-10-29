@@ -203,7 +203,9 @@ cfg:
       # then unauthorized routes are rejected and not tagged
       # (unless they match a client-level 'white_list_route' entry).
       # BGP communities used to tag these routes are
-      # '[origin|prefix]_(not_)present_in_as_set'.
+      # '[origin|prefix]_(not_)present_in_as_set' and
+      # 'route_validated_via_white_list' if the route is validated
+      # solely because of a client-level 'white_list_route' entry.
       #
       # Default: True
       tag_as_set: True
@@ -582,7 +584,11 @@ cfg:
       #std:
       #lrg:
       #ext:
- 
+    route_validated_via_white_list:
+      #std:
+      #lrg:
+      #ext:
+
     # Blackhole filtering.
     #
     # If a policy is given in 'blackhole_filtering', it is applied to

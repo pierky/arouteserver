@@ -333,6 +333,7 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
             CommCfgStatement("origin_present_in_as_set", group_with_previous="prefix_present_in_as_set"),
             CommCfgStatement("origin_not_present_in_as_set", group_with_previous="prefix_present_in_as_set"),
             CommCfgStatement("prefix_validated_via_rpki_roas", group_with_previous="prefix_present_in_as_set"),
+            CommCfgStatement("route_validated_via_white_list", group_with_previous="prefix_present_in_as_set"),
 
             CommCfgStatement("blackholing", g="Blackhole filtering", pre_comment=True),
 

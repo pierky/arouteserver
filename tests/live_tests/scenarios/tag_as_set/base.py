@@ -140,39 +140,39 @@ class TagASSetScenario(LiveScenario):
 
     def test_060_AS4_route_whitelist_1(self):
         """{}: AS4 route white list, ok (exact)"""
-        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64515"])
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64515", "999:0:64517"])
         self.receive_route(self.rs, self.DATA["AS4_routewl_1"],
                            self.AS4, as_path="4 44", next_hop=self.AS4,
-                           std_comms=["999:64513", "999:64515"],
-                           lrg_comms=lrg_comms)
+                           std_comms=["999:64513", "999:64515", "999:64517"],
+                           lrg_comms=lrg_comms, ext_comms=[])
 
     def test_060_AS4_route_whitelist_2(self):
         """{}: AS4 route white list, reject (more spec)"""
         self.receive_route(self.rs, self.DATA["AS4_routewl_2"],
                            self.AS4, as_path="4 44", next_hop=self.AS4,
-                           filtered=True)
+                           filtered=True, ext_comms=[])
 
     def test_060_AS4_route_whitelist_3(self):
         """{}: AS4 route white list, ok (more spec)"""
-        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64515"])
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64515", "999:0:64517"])
         self.receive_route(self.rs, self.DATA["AS4_routewl_3"],
                            self.AS4, as_path="4 43", next_hop=self.AS4,
-                           std_comms=["999:64513", "999:64515"],
-                           lrg_comms=lrg_comms)
+                           std_comms=["999:64513", "999:64515", "999:64517"],
+                           lrg_comms=lrg_comms, ext_comms=[])
 
     def test_060_AS4_route_whitelist_4(self):
         """{}: AS4 route white list, reject (origin KO)"""
         self.receive_route(self.rs, self.DATA["AS4_routewl_4"],
                            self.AS4, as_path="4 45", next_hop=self.AS4,
-                           filtered=True)
+                           filtered=True, ext_comms=[])
 
     def test_060_AS4_route_whitelist_5(self):
         """{}: AS4 route white list, ok (origin any)"""
-        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64515"])
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64515", "999:0:64517"])
         self.receive_route(self.rs, self.DATA["AS4_routewl_5"],
                            self.AS4, as_path="4 45", next_hop=self.AS4,
-                           std_comms=["999:64513", "999:64515"],
-                           lrg_comms=lrg_comms)
+                           std_comms=["999:64513", "999:64515", "999:64517"],
+                           lrg_comms=lrg_comms, ext_comms=[])
 
     def test_060_AS5_whitelist_wl_ko(self):
         """{}: AS5 white list, prefix WL, origin ko"""

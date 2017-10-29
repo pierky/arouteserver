@@ -132,8 +132,16 @@ bool reject_because_of_bad_prefix;
 	{%	for route in client.cfg.filtering.irrdb.white_list_route|sort(attribute="prefix") if route.prefix is current_ipver %}
 	if net ~ [ {{ write_prefix_list_entry(route) }} ] then {
 	{%		if route.asn %}
-		if bgp_path.last = {{ route.asn }} then return true;
+		if bgp_path.last = {{ route.asn }} then {
+			{% if cfg.filtering.irrdb.tag_as_set and cfg.communities.route_validated_via_white_list|community_is_set %}
+			{{ add_communities(cfg.communities.route_validated_via_white_list) }}
+			{% endif %}
+			return true;
+		}
 	{%		else %}
+	{%			if cfg.filtering.irrdb.tag_as_set and cfg.communities.route_validated_via_white_list|community_is_set %}
+		{{ add_communities(cfg.communities.route_validated_via_white_list) }}
+	{%			endif %}
 		return true;
 	{%		endif %}
 	}

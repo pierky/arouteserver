@@ -25,3 +25,6 @@ cfg:
                 prefix_validated_via_rpki_roas:
                         std: "rs_as:64516"
                         lrg: "rs_as:0:64516"
+                route_validated_via_white_list:
+                        std: "rs_as:64517"
+                        lrg: "rs_as:0:64517"

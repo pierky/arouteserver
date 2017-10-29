@@ -399,7 +399,9 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
   then unauthorized routes are rejected and not tagged
   (unless they match a client-level **white_list_route** entry).
   BGP communities used to tag these routes are
-  **[origin|prefix]_(not_)present_in_as_set**.
+  **[origin|prefix]_(not_)present_in_as_set** and
+  **route_validated_via_white_list** if the route is validated
+  solely because of a client-level **white_list_route** entry.
 
 
   Default: **True**
@@ -1030,7 +1032,7 @@ matching.
 Prefix/origin AS present in client's AS-SET
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- ``prefix_present_in_as_set``, ``prefix_not_present_in_as_set``, ``origin_present_in_as_set``, ``origin_not_present_in_as_set`` and ``prefix_validated_via_rpki_roas``:
+- ``prefix_present_in_as_set``, ``prefix_not_present_in_as_set``, ``origin_present_in_as_set``, ``origin_not_present_in_as_set``, ``prefix_validated_via_rpki_roas`` and ``route_validated_via_white_list``:
   Prefix/origin AS present in client's AS-SET.
 
 

@@ -19,6 +19,10 @@ Communities:
 
         origin OK       64514
         origin NOT OK   64515
+
+        RPKI ROA OK     64516
+
+        route wht list  64517
         ==============  =====
 
 AS2:
@@ -91,11 +95,11 @@ AS4 announces:
         4.2.3.0/24      4 41            yes (WL)        yes (WL)        64512 64514        the same
         4.3.1.0/24      4 41            no              yes (WL)        64513 64514        the same
         4.0.3.0/24      4 41            yes             yes (WL)        64512 64514        64513 64514
-        4.4.0.0/16      4 44            r WL            r WL            64513 64515        the same
+        4.4.0.0/16      4 44            r WL            r WL            64513 64515 64517  the same
         4.4.1.0/24      4 44            r WL KO         r WL            rejected           rejected
-        4.5.1.0/24      4 43            r WL            r WL            64513 64515        the same
+        4.5.1.0/24      4 43            r WL            r WL            64513 64515 64517  the same
         4.5.2.0/24      4 45            r WL            r WL KO         rejected           rejected
-        4.6.1.0/24      4 45            r WL            r WL            64513 64515        the same
+        4.6.1.0/24      4 45            r WL            r WL            64513 64515 64517  the same
         ============    ===========     ==========      ==========      =================  =================
 
 AS5:
