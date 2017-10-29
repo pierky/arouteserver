@@ -142,7 +142,7 @@ bool reject_because_of_bad_prefix;
 
 	{% if client.cfg.filtering.irrdb.enforce_origin_in_as_set and
 		client.cfg.filtering.irrdb.enforce_prefix_in_as_set and
-		rpki_roas_as_route_objects %}
+		cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled %}
 	# Origin ASN is valid, prefix is not: check if a RPKI ROAs exists.
 	if !reject_because_of_bad_origin && reject_because_of_bad_prefix && prefix_in_rpki_roas_as_route_objects() then {
 		{% if cfg.filtering.irrdb.tag_as_set and

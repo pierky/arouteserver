@@ -140,7 +140,8 @@ class ConfigParserGeneral(ConfigParserBase):
                         "use_rpki_roas_as_route_objects": {
                             "enabled": ValidatorBool(default=False),
                             "source": ValidatorOption("source",
-                                                      ("ripe-rpki-validator-cache",),
+                                                      ("ripe-rpki-validator-cache",
+                                                       "rtrlib"),
                                                       mandatory=True,
                                                       default="ripe-rpki-validator-cache")
                         }
