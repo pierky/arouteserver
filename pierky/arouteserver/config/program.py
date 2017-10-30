@@ -366,6 +366,8 @@ class ConfigParserProgram(object):
             for filename in os.listdir(d):
                 if filename == ConfigParserProgram.FINGERPRINTS_FILENAME:
                     continue
+                if filename.endswith(".swp"):
+                    continue
                 path = os.path.join(d, filename)
                 if os.path.isdir(path):
                     dic[filename] = {}

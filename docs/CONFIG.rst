@@ -168,6 +168,11 @@ With this configuration, the following values will be used to run the bgpq3 prog
 - **AS-AS33CUSTOMERS** for the 192.0.2.33 client (the ``asns``-level configuration is ignored because a more specific one is given at client-level);
 - **AS44** for the 192.0.2.44 client, because no AS-SETs are given at any level. In this case, if the ``cfg.filtering.irrdb.peering_db`` was set to True, the AS-SET from PeeringDB would be used.
 
+Use RPKI ROAs as if they were route objects
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If the ``filtering.irrdb.use_rpki_roas_as_route_objects`` option is enabled, RPKI ROAs are used as if they were route objects to validate routes whose origin ASN is already authorized by a client's AS-SET but whose prefix is not. A lookup into the ROA table is made on the basis of the route origin ASN and, if a covering ROA is found, the route is validated. In this case, if the ``filtering.irrdb.tag_as_set`` general option is True the ``prefix_validated_via_rpki_roas`` informative community is added to the route.
+
 White lists
 ~~~~~~~~~~~
 
@@ -471,6 +476,8 @@ The following list of limitations is based on the currently supported versions o
   - OpenBGPD does not offer a way to delete **extended communities** using wildcard (``rt xxx:*``): peer-ASN-specific extended communities (such as ``prepend_once_to_peer``, ``do_not_announce_to_peer``) are not scrubbed from routes that leave OpenBGPD route servers and so they are propagated to the route server clients.
 
   - **Graceful shutdown** is supported only on OpenBGPD 6.2 or later.
+
+  - The Site of Origin Extended BGP communities in the range 65535:* are reserved for internal reasons.
 
 Depending on the features that are enabled in the ``general.yml`` and ``clients.yml`` files, compatibility issues may arise; in this case, ARouteServer logs one or more errors, which can be then acknowledged and ignored using the ``--ignore-issues`` command line option:
 

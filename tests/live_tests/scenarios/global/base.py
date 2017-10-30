@@ -990,9 +990,12 @@ class BasicScenario(LiveScenario):
         # also verifies that these prefixes are received twice by AS3)
         for pref in ("AS101_good1", "AS101_bad_std_comm", "AS101_bad_lrg_comm",
                      "AS101_other_s_comm", "AS101_other_l_comm",
-                     "AS101_bad_good_comms", "AS101_roa_routeobj_1",
-                     "AS101_roa_routeobj_3"):
+                     "AS101_bad_good_comms"):
             self.receive_route(self.AS3, self.DATA[pref], self.rs)
+
+        if not isinstance(self.rs, OpenBGPDInstance):
+            for pref in ("AS101_roa_routeobj_1", "AS101_roa_routeobj_3"):
+                self.receive_route(self.AS3, self.DATA[pref], self.rs)
 
     def test_100_prefixes_received_by_clients_AS3_with_ADD_PATH(self):
         """{}: prefixes received by clients: AS3 (with ADD-PATH)"""

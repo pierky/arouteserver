@@ -408,6 +408,8 @@ class ConfigBuilder(object):
 
         self.kwargs = kwargs
 
+        # Initially None; is set to {} and finally populated by
+        # the IRRDB enrichers.
         # { "<as_set_bundle_id>": <AS_SET_Bundle_Proxy>, ... }
         self.irrdb_info = None
 
@@ -495,9 +497,7 @@ class ConfigBuilder(object):
         if self.cfg_general.rtt_based_functions_are_used:
             used_enricher_classes.append(RTTGetterConfigEnricher)
 
-        if irrdb_cfg["enforce_origin_in_as_set"] and \
-            irrdb_cfg["enforce_prefix_in_as_set"] and \
-            irrdb_cfg["use_rpki_roas_as_route_objects"]["enabled"] and \
+        if irrdb_cfg["use_rpki_roas_as_route_objects"]["enabled"] and \
             irrdb_cfg["use_rpki_roas_as_route_objects"]["source"] == \
                 "ripe-rpki-validator-cache":
             used_enricher_classes.append(RPKIROAsEnricher)
@@ -718,8 +718,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                         "add_path", "max_prefix_action",
                         "blackhole_filtering_rewrite_ipv6_nh",
                         "large_communities", "extended_communities",
-                        "graceful_shutdown", "rfc1997_wellknown_communities",
-                        "rpki_roas_as_route_objects_internal_community",
+                        "graceful_shutdown", "internal_communities",
                         "rpki_roas_as_route_objects_source"]
 
     def _include_local_file(self, local_file_id):
@@ -941,29 +940,23 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             ):
                 res = False
 
-        if self.cfg_general["rfc1997_wellknown_communities"]["policy"] == "pass":
-            rfc1997_wkcomms_collisions = []
-            for comm_name in ConfigParserGeneral.COMMUNITIES_SCHEMA:
-                comm = self.cfg_general["communities"][comm_name]
-                if comm["ext"]:
-                    if comm["ext"] in ("ro:65535:65281", "ro:65535:65282",
-                                       "ro:65535:dyn_val", "ro:65535:peer_as"):
-                        rfc1997_wkcomms_collisions.append(comm_name)
-
-            if rfc1997_wkcomms_collisions:
-                if not self.process_bgpspeaker_specific_compatibility_issue(
-                    "rfc1997_wellknown_communities",
-                    "When using the pass-through policy for RFC1977 "
-                    "well-known communities handling two communities "
-                    "must be reserved for internal purposes: "
-                    "ro:65535:65281 and ro:65535:65282. "
-                    "A collision has been detected with the following "
-                    "communit{y_ies}: {comms}".format(
-                        y_ies="y" if len(rfc1997_wkcomms_collisions) == 1 else "ies",
-                        comms=", ".join(rfc1997_wkcomms_collisions)
-                    )
-                ):
-                    res = False
+        internal_communities_collistion = []
+        for comm_name in ConfigParserGeneral.COMMUNITIES_SCHEMA:
+            comm = self.cfg_general["communities"][comm_name]
+            if comm["ext"] and comm["ext"].startswith("ro:65535:"):
+                internal_communities_collistion.append(comm_name)
+        if internal_communities_collistion:
+            if not self.process_bgpspeaker_specific_compatibility_issue(
+                "internal_communities",
+                "The Extended BGP communities in the range ro:65535:* "
+                "are reserved for internal purposes. "
+                "A collision has been detected with the following "
+                "communit{y_ies}: {comms}".format(
+                    y_ies="y" if len(internal_communities_collistion) == 1 else "ies",
+                    comms=", ".join(internal_communities_collistion)
+                )
+            ):
+                res = False
 
         use_rpki_roas_as_route_objects_cfg = \
             self.cfg_general["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]
@@ -976,43 +969,6 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                     "'use_rpki_roas_as_route_objects.source' option."
                 ):
                     res = False
-
-            for comm_name in ConfigParserGeneral.COMMUNITIES_SCHEMA:
-                comm = self.cfg_general["communities"][comm_name]
-                if comm["ext"] and comm["ext"] == "ro:65535:1":
-                    if not self.process_bgpspeaker_specific_compatibility_issue(
-                        "rpki_roas_as_route_objects_internal_community",
-                        "When the 'use_rpki_roas_as_route_objects' option "
-                        "is set, the ro:65535:1 extended community must "
-                        "be reserved for internal purposes. "
-                        "A collision has been detected with the following "
-                        "community: {}".format(comm_name)
-                    ):
-                        res = False
-                        break
-
-        white_list_route = False
-        for client in self.cfg_clients.cfg["clients"]:
-            if client["cfg"]["filtering"]["irrdb"]["white_list_route"]:
-                white_list_route = True
-                break
-
-        if white_list_route:
-            for comm_name in ConfigParserGeneral.COMMUNITIES_SCHEMA:
-                comm = self.cfg_general["communities"][comm_name]
-                if comm["ext"] and comm["ext"] == "ro:65535:2":
-                    if not self.process_bgpspeaker_specific_compatibility_issue(
-                        "white_list_route_internal_community",
-                        "One or more clients are configured with a route "
-                        "white list ('white_list_route'). "
-                        "When white_list_route options are used, the "
-                        "ro:65535:2 extended community must be reserved "
-                        "for internal purposes. "
-                        "A collision has been detected with the following "
-                        "community: {}".format(comm_name)
-                    ):
-                        res = False
-                        break
 
         return res
 

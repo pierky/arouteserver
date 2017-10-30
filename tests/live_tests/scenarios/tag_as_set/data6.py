@@ -21,6 +21,7 @@ class TagASSetScenario_Data6(object):
         "AS2_1_IPAddress":                  "2001:db8:1:1::21",
         "AS4_1_IPAddress":                  "2001:db8:1:1::41",
         "AS5_1_IPAddress":                  "2001:db8:1:1::51",
+        "AS6_1_IPAddress":                  "2001:db8:1:1::61",
 
         "AS1_allowed_prefixes":             "2a01:0::/32",
 
@@ -34,6 +35,7 @@ class TagASSetScenario_Data6(object):
         "AS2_pref_wl_origin_wl":            "2a02:2:3::/48",
         "AS2_pref_ko_origin_wl":            "2a02:3:1::/48",
         "AS2_pref_ok_origin_wl":            "2a02:0:3::/48",
+        "AS2_roa1":                         "2a02:4::/32",
 
         "AS4_allowed_prefixes":             "2a04:0::/32",
         "AS4_pref_ok_origin_ok1":           "2a04:0:1::/48",
@@ -59,4 +61,8 @@ class TagASSetScenario_Data6(object):
         "AS5_pref_wl_origin_wl":            "2a05:2:3::/48",
         "AS5_pref_ko_origin_wl":            "2a05:3:1::/48",
         "AS5_pref_ok_origin_wl":            "2a05:0:3::/48",
-    }
+
+        "AS6_allowed_prefixes":             "2a06:0::/32",
+        "AS6_roa1":                         "2a02:4::/32",
+        "AS6_roa2":                         "2a03:1::/32",
+}

@@ -46,9 +46,7 @@ class RPKIROAs_Proxy(object):
 class RPKIROAsEnricher(BaseConfigEnricher):
 
     def enrich(self):
-        logging.info("Updating RPKI ROAs...")
-
-        if not self.builder.irrdb_info:
+        if self.builder.irrdb_info is None:
             raise BuilderError(
                 "RPKI ROAs can be fetched only after that the "
                 "list of authorized origin ASNs has been built."
@@ -59,6 +57,11 @@ class RPKIROAsEnricher(BaseConfigEnricher):
         for bundle_id in self.builder.irrdb_info:
             bundle = self.builder.irrdb_info[bundle_id]
             origin_asns.update(bundle.asns)
+
+        if not origin_asns:
+            return
+
+        logging.info("Updating RPKI ROAs...")
 
         cache_dir = self.builder.cache_dir
 

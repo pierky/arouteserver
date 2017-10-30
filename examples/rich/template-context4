@@ -637,8 +637,9 @@ clients:
         max: 48
         min: 12
       irrdb:
-        as_set_bundle_ids:
-        - 454ed823addc298946e5f2ad415842d8a0a89403cf8ad05e584f94caf52ef799ca506a90f5386c1335f271047089bc0612014069cbb3d9a7851d595a0374c5c3
+        as_set_bundle_ids: !!set
+          ? 454ed823addc298946e5f2ad415842d8a0a89403cf8ad05e584f94caf52ef799ca506a90f5386c1335f271047089bc0612014069cbb3d9a7851d595a0374c5c3
+          : null
         as_sets: null
         enforce_origin_in_as_set: true
         enforce_prefix_in_as_set: true
@@ -687,8 +688,9 @@ clients:
       ipv4_pref_len: *id001
       ipv6_pref_len: *id002
       irrdb:
-        as_set_bundle_ids:
-        - a47487d3c1df7a14133a9cff3612f3af305e57bc54f1f212d6f8fb2da1da11949dea574d2c972b103143a62afb13ce6c93f8f89d3b0102b7113b54f8e1c8b341
+        as_set_bundle_ids: !!set
+          ? a47487d3c1df7a14133a9cff3612f3af305e57bc54f1f212d6f8fb2da1da11949dea574d2c972b103143a62afb13ce6c93f8f89d3b0102b7113b54f8e1c8b341
+          : null
         as_sets: null
         enforce_origin_in_as_set: true
         enforce_prefix_in_as_set: true
@@ -737,7 +739,7 @@ clients:
       ipv4_pref_len: *id001
       ipv6_pref_len: *id002
       irrdb:
-        as_set_bundle_ids: []
+        as_set_bundle_ids: !!set {}
         as_sets: null
         enforce_origin_in_as_set: true
         enforce_prefix_in_as_set: true

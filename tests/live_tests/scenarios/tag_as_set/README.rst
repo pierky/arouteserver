@@ -42,6 +42,10 @@ AS2:
   - prefixes: 2.2.0.0/16
   - asns: 21
 
+- RPKI ROAs:
+
+  - 2.4.0.0/16, AS2
+
 AS2 announces:
 
         ============    ===========     ==========      ==========      =================  =================
@@ -56,7 +60,16 @@ AS2 announces:
         2.2.3.0/24      2 21            yes (WL)        yes (WL)        64512 64514        the same
         2.3.1.0/24      2 21            no              yes (WL)        64513 64514        the same
         2.0.3.0/24      2 21            yes             yes (WL)        64512 64514        64513 64514
+        2.4.0.0/16      2               no              yes             64513 64514 (1)    64513 64515
         ============    ===========     ==========      ==========      =================  =================
+
+1) RPKI ROAs are used as route objects only when both origin AS and prefix enforcing are set.
+
+AS3 (not a route server client here, used just to track RPKI ROAs):
+
+- RPKI ROAs:
+
+  - 3.1.0.0/16, AS3
 
 AS4:
 
@@ -135,3 +148,23 @@ AS5 announces:
         5.0.3.0/24      5 51            yes             yes (WL)        64512 64514        rejected
         ============    ===========     ==========      ==========      =================  =================
 
+AS6:
+
+- allowed objects:
+
+  - prefix: 6.0.0.0/16
+  - origin: 6, 3
+
+configuration:
+
+  - enforcing: both origin ASN and prefix
+  - tagging: yes
+
+AS6 announces:
+
+        ============    ===========     ==========      ==========      =================  =================
+        prefix          AS_PATH         prefix ok?      origin ok?      expected result 1  expected results 2
+        ============    ===========     ==========      ==========      =================  =================
+        2.4.0.0/16      6 2             no              no              rejected           rejected
+        3.1.0.0/16      6 3             ROA             yes             64513 64514 64516  rejected
+        ============    ===========     ==========      ==========      =================  =================

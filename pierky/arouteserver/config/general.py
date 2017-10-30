@@ -352,17 +352,6 @@ class ConfigParserGeneral(ConfigParserBase):
                     "The 'reject_cause' community must be configured when "
                     "'reject_policy.policy' is 'tag'.")
 
-        irrdb_cfg = self.cfg["cfg"]["filtering"]["irrdb"]
-        if irrdb_cfg["use_rpki_roas_as_route_objects"]["enabled"]:
-            if not irrdb_cfg["enforce_origin_in_as_set"] or \
-                not irrdb_cfg["enforce_prefix_in_as_set"]:
-                errors = True
-                logging.error(
-                    "The 'use_rpki_roas_as_route_objects' option can "
-                    "be enabled only when 'enforce_origin_in_as_set' "
-                    "and 'enforce_prefix_in_as_set' are enabled too."
-                )
-
         # Overlapping communities?
         try:
             self.check_overlapping_communities()
