@@ -18,7 +18,7 @@ This release **breaks backward compatibility** (OpenBGPD configs only): for Open
 
   This can be disabled by setting ``check_new_release`` to False in ``arouteserver.yml``.
 
-- Improvement: routes accepted solely because of a ``white_list_route`` entry are now tagged with the ``prefix_validated_via_rpki_roas`` BGP community.
+- Improvement: routes accepted solely because of a ``white_list_route`` entry are now tagged with the ``route_validated_via_white_list`` BGP community.
 
 - Fix: on OpenBGPD configurations, in case of duplicate definition of a client's AS-SETs, duplicate BGP informational communities were added after the IRR validation process.
 
