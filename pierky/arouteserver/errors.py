@@ -103,6 +103,9 @@ class IXFDBSchemaError(IXFDBError):
 class RPKIValidatorCacheError(ARouteServerError):
     pass
 
+class LastVersionCheckingError(ARouteServerError):
+    pass
+
 class BuilderError(ARouteServerError):
     pass
 

@@ -64,6 +64,8 @@ class ConfigParserProgram(object):
         "rtt_getter_path": "",
 
         "threads": 4,
+
+        "check_new_release": True
     }
 
     PATH_KEYS = ("logging_config_file", "cfg_general", "cfg_clients",
