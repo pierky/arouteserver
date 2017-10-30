@@ -33,6 +33,9 @@ class IPAddress(object):
 
         self.version = self.obj.version
 
+    def __str__(self):
+        return self.ip
+
 
 class IPNetwork(object):
 
@@ -47,3 +50,6 @@ class IPNetwork(object):
         self.prefixlen = self.obj.prefixlen
         self.max_prefixlen = self.obj.max_prefixlen
         self.version = self.obj.version
+
+    def __str__(self):
+        return "{}/{}".format(self.ip, self.prefixlen)

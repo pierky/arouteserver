@@ -463,6 +463,17 @@ class LiveScenario(ARouteServerTestCase):
 
     @classmethod
     def _setUpClass(cls):
+        for prefix_name in cls.DATA:
+            prefix = cls.DATA[prefix_name]
+            net = IPNetwork(prefix) if "/" in prefix else IPAddress(prefix)
+            if str(net) != prefix:
+                raise ValueError(
+                    "Prefix '{}' is not represented in its canonical form: "
+                    "'{}' used, '{}' expected.".format(
+                        prefix_name, prefix, str(net)
+                    )
+                )
+
         cls.info("{}: setting instances up...".format(cls.SHORT_DESCR))
 
         if cls.MOCK_PEERING_DB or cls.MOCK_RIPE_RPKI_CACHE:
