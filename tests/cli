@@ -77,6 +77,24 @@ GENERAL="$GENERAL_RS2"
 build_cmd "bird" --ip-ver 4 | must_contain "router id 192.0.2.2"
 
 # ---------------------------------------------
+# RPKI ROAs as route objects invalid source
+reset
+TITLE="RPKI ROAs as route objects invalid source"
+SUB_TEST="$LINENO"
+GENERAL="tests/var/general.yml"
+cat << EOF > $GENERAL
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+  filtering:
+    irrdb:
+      use_rpki_roas_as_route_objects:
+        enabled: true
+        source: "rtrlib"
+EOF
+build_cmd "openbgpd" | must_contain "only the 'ripe-rpki-validator-cache' value"
+
+# ---------------------------------------------
 # RFC1997 'pass' policy and bgp comms collision
 reset
 TITLE="RFC1997 'pass' policy and BGP comms collision"
@@ -90,7 +108,7 @@ cfg:
     prepend_once_to_any:
       ext: "ro:65535:65281"
 EOF
-build_cmd "openbgpd" | must_contain "ro:65535:65281 and ro:65535:65282"
+build_cmd "openbgpd" | must_contain "A collision has been detected with the following community: prepend_once_to_any"
 
 # ---------------------------------------------
 # custom BGP communities

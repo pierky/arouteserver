@@ -164,6 +164,11 @@ class LiveScenario(ARouteServerTestCase):
 
     CONFIG_BUILDER_CLASS = None
 
+    MOCK_PEERING_DB = True
+    MOCK_RIPE_RPKI_CACHE = True
+    MOCK_IRRDB = True
+    MOCK_RTTGETTER = True
+
     # regex: for example ^65520:(\d+)$
     REJECT_CAUSE_COMMUNITY = None
     REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY = None
@@ -460,11 +465,17 @@ class LiveScenario(ARouteServerTestCase):
     def _setUpClass(cls):
         cls.info("{}: setting instances up...".format(cls.SHORT_DESCR))
 
-        cls.mock_cached_objects()
-        cls.mock_peering_db()
-        cls.mock_ripe_rpki_cache()
-        cls.mock_irrdb()
-        cls.mock_rttgetter()
+        if cls.MOCK_PEERING_DB or cls.MOCK_RIPE_RPKI_CACHE:
+            cls.mock_cached_objects()
+        if cls.MOCK_PEERING_DB:
+            cls.mock_peering_db()
+        if cls.MOCK_RIPE_RPKI_CACHE:
+            cls.mock_ripe_rpki_cache()
+        if cls.MOCK_IRRDB:
+            cls.mock_irrdb()
+        if cls.MOCK_RTTGETTER:
+            cls.mock_rttgetter()
+
         try:
             cls._setup_instances()
         except:
