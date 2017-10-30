@@ -15,8 +15,6 @@
 
 from .base import ARouteServerCommand
 
-from ..config.program import program_config
-
 class CheckNewRelease(ARouteServerCommand):
 
     COMMAND_NAME = "check_update"
