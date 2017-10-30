@@ -72,6 +72,8 @@ class RPKIROAsEnricher(BaseConfigEnricher):
             except OSError as e:
                 raise ARouteServerError(str(e))
 
+        afis = [4, 6] if self.builder.ip_ver is None else [self.builder.ip_ver]
+
         ripe_cache = RIPE_RPKI_ROAs(cache_dir=cache_dir,
                                     cache_expiry=self.builder.cache_expiry)
         ripe_cache.load_data()
@@ -98,9 +100,12 @@ class RPKIROAsEnricher(BaseConfigEnricher):
                 if not prefix:
                     raise ValueError("missing prefix")
                 try:
-                    IPNetwork(prefix).prefixlen
+                    prefix_obj = IPNetwork(prefix)
                 except:
                     raise ValueError("invalid prefix: " + prefix)
+
+                if prefix_obj.version not in afis:
+                    continue
 
                 max_len = roa.get("maxLength", None)
                 if not max_len:

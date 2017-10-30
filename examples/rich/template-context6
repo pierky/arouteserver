@@ -828,24 +828,6 @@ AS10745:
   length: 48
   max_length: 128
   prefix: '2001:500:4::'
-- exact: true
-  ge: 24
-  le: 24
-  length: 24
-  max_length: 32
-  prefix: 192.136.136.0
-- exact: true
-  ge: 24
-  le: 24
-  length: 24
-  max_length: 32
-  prefix: 192.149.252.0
-- exact: true
-  ge: 24
-  le: 24
-  length: 24
-  max_length: 32
-  prefix: 199.43.0.0
 
 
 roas

@@ -861,18 +861,6 @@ rpki_roas_as_route_objects
 --------------------------
 AS10745:
 - exact: true
-  ge: 48
-  le: 48
-  length: 48
-  max_length: 128
-  prefix: '2001:500:30::'
-- exact: true
-  ge: 48
-  le: 48
-  length: 48
-  max_length: 128
-  prefix: '2001:500:4::'
-- exact: true
   ge: 24
   le: 24
   length: 24
@@ -916,23 +904,11 @@ AS3333:
   max_length: 32
   prefix: 193.0.0.0
 - exact: true
-  ge: 48
-  le: 48
-  length: 48
-  max_length: 128
-  prefix: '2001:67c:2e8::'
-- exact: true
   ge: 23
   le: 23
   length: 23
   max_length: 32
   prefix: 193.0.22.0
-- exact: true
-  ge: 42
-  le: 42
-  length: 42
-  max_length: 128
-  prefix: '2001:610:240::'
 - exact: true
   ge: 23
   le: 23
