@@ -132,12 +132,14 @@ Status
 
 Anyone who wants to share his/her point of view, to review the output configurations or to test them is **more than welcome**!
 
-Bug? Issues?
-------------
+Bug? Issues? Support requests?
+------------------------------
 
 But also suggestions? New ideas?
 
 Please create an `issue on GitHub <https://github.com/pierky/arouteserver/issues>`_ or `drop me a message <https://pierky.com/#contactme>`_.
+
+A Slack channel is also available on the `network.toCode() <https://networktocode.herokuapp.com/>`__ community: **arouteserver**.
 
 Author
 ------
