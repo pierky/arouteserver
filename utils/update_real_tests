@@ -334,6 +334,13 @@ if [[ `echo "$THESE_TESTS_ONLY" | grep -P "\bload\b"` ]]; then
 		REMOTE_IP=""
 		if [ "$daemon_id" == "openbgpd60" ]; then
 			if [ -z "$LOCAL_ONLY" ]; then
+				echo "Compressing OpenBGP 6.0 rs config files..."
+				shopt -s nullglob
+				for f in $TESTS_DIR/var/configs/*_openbgpd_6.0.conf; do
+					echo "Compressing ${f}..."
+					gzip --best $f
+				done
+
 				vultr_create
 			else
 				echo "Skipping creation of Vultr server because LOCAL_ONLY is set"

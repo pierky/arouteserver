@@ -79,7 +79,15 @@ class TestRealConfigs(ARouteServerTestCase):
             bgp_speaker_version="_{}".format(target_ver) if target_ver else "",
             ip_ver="_ipv{}".format(ip_ver) if ip_ver else ""
         )
-        return os.path.join(self.rs_config_dir, filename)
+        path = os.path.join(self.rs_config_dir, filename)
+        if os.path.exists(path):
+            return path
+        path = path + ".gz"
+        if os.path.exists(path):
+            return path
+        raise ValueError("RS config file not found: {}".format(
+            os.path.join(self.rs_config_dir, filename)
+        ))
 
     def print_duration(self, descr, bgp_speaker, target_ver, ip_ver, duration):
         msg = "{descr} for {daemon}, {ip_ver}: {duration} seconds".format(
