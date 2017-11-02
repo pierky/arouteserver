@@ -12,6 +12,8 @@ cfg:
                         use_rpki_roas_as_route_objects:
                                 enabled: True
                                 source: "ripe-rpki-validator-cache"
+                                allowed_trust_anchors:
+                                - "test"
         communities:
                 prefix_present_in_as_set:
                         std: "rs_as:64512"

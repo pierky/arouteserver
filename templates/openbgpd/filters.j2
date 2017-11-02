@@ -75,6 +75,14 @@ match from {{ client.ip }} {{ condition }} set community delete NO_ADVERTISE	# {
 {%                      endif %}
 {%              endfor %}
 {%      endif %}
+{%	if objects == "prefixes" and
+		enforce_object_in_as_set and
+		client.cfg.filtering.irrdb.enforce_origin_in_as_set and
+		rpki_roas_as_route_objects %}
+# routes tagged with soo:65535:1 community have the prefix validated by a ROA; origin ASN previously validated
+{{			add_communities("match from " ~ client.ip ~ " community NO_ADVERTISE ext-community soo 65535:1", cfg.communities.prefix_validated_via_rpki_roas) }}
+match from {{ client.ip }} community NO_ADVERTISE ext-community soo 65535:1 set { community delete NO_ADVERTISE ext-community delete soo 65535:1 }
+{%	endif %}
 {%	if client.cfg.filtering.irrdb.white_list_route %}
 # route authorized by a client's white list?
 {%		if tag_as_set and cfg.communities.route_validated_via_white_list|community_is_set %}
@@ -84,13 +92,6 @@ match from {{ client.ip }} {{ condition }} set community delete NO_ADVERTISE	# {
 match from {{ client.ip }} community NO_ADVERTISE ext-community soo 65535:2 set community delete NO_ADVERTISE
 {%	endif %}
 {%      if enforce_object_in_as_set %}
-{%		if objects == "prefixes" and
-			client.cfg.filtering.irrdb.enforce_origin_in_as_set and
-			rpki_roas_as_route_objects %}
-# routes which carry a soo:65535:1 community have the prefix validated by a ROA
-{{			add_communities("match from " ~ client.ip ~ " ext-community soo 65535:1", cfg.communities.prefix_validated_via_rpki_roas) }}
-match from {{ client.ip }} ext-community soo 65535:1 set { community delete NO_ADVERTISE ext-community delete soo 65535:1 }
-{%		endif %}
 # enforcing: if NO_ADVERTISE has not been removed then the route is not authorized
 {{ deny_inbound_route(client.cfg.filtering.reject_policy.policy == "tag", "from " ~ client.ip ~ " community NO_ADVERTISE", reject_code) }}
 {%	else %}
