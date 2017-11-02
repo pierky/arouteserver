@@ -50,6 +50,9 @@ cfg:
 
       tag_as_set: True
 
+      use_rpki_roas_as_route_objects:
+        enabled: True
+
     rpki:
       enabled: True
       reject_invalid: True
@@ -84,6 +87,12 @@ cfg:
     origin_not_present_in_as_set:
       std: "65530:0"
       lrg: "rs_as:65530:0"
+    prefix_validated_via_rpki_roas:
+      std: "65530:2"
+      lrg: "rs_as:65530:2"
+    route_validated_via_white_list:
+      std: "65530:3"
+      lrg: "rs_as:65530:3"
     do_not_announce_to_peer:
       std: "0:peer_as"
       ext: "rt:0:peer_as"

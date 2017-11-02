@@ -214,13 +214,23 @@ class KVMInstance(BGPSpeakerInstance):
     def _mount_files(self):
         for mount in self.get_mounts():
             ip = self.remote_ip if self.is_remote else self.ip
+            local_file = mount["host"]
+            remote_file = mount["container"]
+
+            gzipped = local_file.endswith(".gz")
+            if gzipped:
+                remote_file += ".gz"
+
             cmd = ("scp -i {path_to_key} "
                    "-o StrictHostKeyChecking=no "
                    "{host_file} {user}@{ip}:{container_file} ".format(
-                       host_file=mount["host"],
+                       host_file=local_file,
                        user=self._get_ssh_user(),
                        ip="[{}]".format(ip) if ":" in ip else ip,
-                       container_file=mount["container"],
+                       container_file=remote_file,
                        path_to_key=self._get_ssh_key_path()
                     ))
             self._run(cmd)
+
+            if gzipped:
+                self.run_cmd("gunzip -f {}".format(remote_file))

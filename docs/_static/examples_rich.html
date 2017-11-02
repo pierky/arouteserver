@@ -85,6 +85,8 @@ Origin ASN validity is
 <strong>enforced</strong>. Routes whose prefix is not part of the client's AS-SET are rejected.
 </p></li>
 
+<li><p>Use RPKI ROAs to validate routes whose origin ASN is authorized by the client's AS-SET but whose prefix is not.</p></li>
+
 <li><p>
 Route <strong>validity state</strong> is signalled to route server clients using the following <strong>BGP communities</strong>:
 <table class="table">
@@ -111,6 +113,20 @@ Route <strong>validity state</strong> is signalled to route server clients using
     <td>65530:0</td>
     <td>None</td>
     <td>999:65530:0</td>
+  </tr>
+ 
+    <tr>
+    <td>Prefix matched by a RPKI ROA for the authorized origin ASN</td>
+    <td>65530:2</td>
+    <td>None</td>
+    <td>999:65530:2</td>
+  </tr>
+ 
+    <tr>
+    <td>Route authorized soley because of a client white list entry</td>
+    <td>65530:3</td>
+    <td>None</td>
+    <td>999:65530:3</td>
   </tr>
  
 </tbody>

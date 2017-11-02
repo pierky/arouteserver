@@ -40,7 +40,7 @@ class PeeringDBInfo(CachedObject):
             else:
                 raise PeeringDBError(
                     "HTTP error while retrieving info from PeeringDB: "
-                    "core: {}, reason: {} - {}".format(
+                    "code: {}, reason: {} - {}".format(
                         e.code, e.reason, str(e)
                     )
                 )

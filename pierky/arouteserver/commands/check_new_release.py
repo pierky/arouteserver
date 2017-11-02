@@ -13,5 +13,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-__version__ = "0.14.0-alpha4" # pragma: no cover
-COPYRIGHT_YEAR = 2017 # pragma: no cover
+from .base import ARouteServerCommand
+
+class CheckNewRelease(ARouteServerCommand):
+
+    COMMAND_NAME = "check_update"
+    COMMAND_HELP = ("Check if a new release of ARouteServer is available.")
+    NEEDS_CONFIG = True
+
+    def run(self):
+        self.check_new_release(print_output=True)

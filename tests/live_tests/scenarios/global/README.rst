@@ -7,8 +7,8 @@ Built to group as many tests as possible in a single scenario.
 
   AS-SETs:
 
-  - AS-AS1 (1.0.0.0/8, 128.0.0.0/7)
-  - AS-AS1_CUSTOMERS (101.0.0.0/16, 103.0.0.0/16)
+  - AS-AS1 (AS1, 1.0.0.0/8, 128.0.0.0/7)
+  - AS-AS1_CUSTOMERS (AS101, AS103, 101.0.0.0/16, 103.0.0.0/16)
   - white list: 11.1.0.0/16, ASN 1011
   - white list routes: exact 11.3.0.0/16 AS1011, 11.4.0.0/16 or more spec w/o origin AS
 
@@ -67,8 +67,8 @@ Built to group as many tests as possible in a single scenario.
 
   AS-SETs:
 
-  - AS-AS2 (2.0.0.0/16)
-  - AS-AS2_CUSTOMERS (101.0.0.0/16, 103.0.0.0/16)
+  - AS-AS2 (AS2, 2.0.0.0/16)
+  - AS-AS2_CUSTOMERS (AS101, AS103, 101.0.0.0/16, 103.0.0.0/16)
   
   Not enabled to perform graceful BGP session shutdown.
 
@@ -195,6 +195,9 @@ Built to group as many tests as possible in a single scenario.
     1  101.0.8.0/24          101
     2  101.0.9.0/24          102
     3  101.0.128.0/20  23    101
+    4  101.2.0.0/17          101
+    5  101.2.128.0/17  24    101
+    6  101.3.0.0/16    24    105
     == ==============  ====  ======
 
   Originated prefixes:
@@ -216,6 +219,10 @@ Built to group as many tests as possible in a single scenario.
   AS101_roa_invalid1    101.0.9.0/24                 roa check fail (roa n. 2, bad origin ASN), rejected
   AS101_roa_badlen      101.0.128.0/24               roa check fail (roa n. 3, bad length), rejected
   AS101_roa_blackhole   101.0.128.1/32               65535:666, pass because blackhole filtering request
+  AS101_roa_routeobj_1  101.2.0.0/17                 accepted because roa_as_route_objects, add 65530:2
+  AS101_roa_routeobj_2  101.2.1.0/24                 fail, roa_as_route_objects but prefix is more specific than ROA
+  AS101_roa_routeobj_3  101.2.128.0/24               accepted because roa_as_route_objects, add 65530:2
+  AS101_roa_routeobj_4  101.3.0.0/24     [101 105]   fail, roa_as_route_objects but origin ASN not allowed by AS-SETs
   AS101_no_ipv6_gl_uni  8000:1::/32                  fail IPv6 global unicast space check
 
   AS103_gshut_1         103.0.1.0/24     to AS1:     AS1 (best) performs gshut of this route;

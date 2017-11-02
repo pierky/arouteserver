@@ -396,9 +396,12 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
 - ``tag_as_set``:
   Tag routes whose prefix is (not) present in a client's AS-SET.
   If a client's **enforce_[origin|prefix]in_as_set** is True
-  then unauthorized prefixes are rejected and not tagged.
+  then unauthorized routes are rejected and not tagged
+  (unless they match a client-level **white_list_route** entry).
   BGP communities used to tag these routes are
-  **[origin|prefix]_(not_)present_in_as_set**.
+  **[origin|prefix]_(not_)present_in_as_set** and
+  **route_validated_via_white_list** if the route is validated
+  solely because of a client-level **white_list_route** entry.
 
 
   Default: **True**
@@ -427,6 +430,111 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
   .. code:: yaml
 
      peering_db: False
+
+
+
+- ``use_rpki_roas_as_route_objects``:
+  With regards of prefix validation, when this option is
+  enabled ARouteServer uses RPKI ROAs as if they were route
+  objects.
+  Routes whose origin ASN is authorized by a client's AS-SET
+  but whose prefix has not a corresponding route object will
+  be accepted if a covering ROA exists for that origin
+  ASN. In this case, if **tag_as_set** is True, these routes
+  are tagged with the **prefix_validated_via_rpki_roas**
+  community.
+
+
+  This option is used only when **enforce_origin_in_as_set**
+  and **enforce_prefix_in_as_set** are both set to True.
+
+
+- ``enabled``:
+  Set this to True to enable this feature.
+
+
+  Default: **False**
+
+  Example:
+
+  .. code:: yaml
+
+     enabled: False
+
+
+
+- ``source``:
+  The source used to gather RPKI ROAs.
+
+
+  Can be one of the following options:
+
+
+  - **rtrlib**: ROAs are loaded using the external program
+    rtrllib (https://github.com/rtrlib/bird-rtrlib-cli).
+    The name of the table where send the ROAs to is **RPKI**.
+
+
+  - **ripe-rpki-validator-cache**: ROAs are fetched via
+    HTTP from the RIPE RPKI Validator cache
+    (http://localcert.ripe.net:8088/export).
+
+
+  Please note that this method is far from guaranteeing
+  that a cryptographically validated datased is retrieved
+  from a trusted cache.
+
+
+  OpenBGPD: only the **ripe-rpki-validator-cache** source
+  is currently supported.
+
+
+  Default: **ripe-rpki-validator-cache**
+
+  Example:
+
+  .. code:: yaml
+
+     source: "ripe-rpki-validator-cache"
+
+
+
+- ``ripe_rpki_validator_url``:
+  RIPE RPKI Validator URL.
+  Meaningful only when **source** is **ripe-rpki-validator-cache**.
+
+
+  Default: **http://localcert.ripe.net:8088/export.json**
+
+  Example:
+
+  .. code:: yaml
+
+     ripe_rpki_validator_url: "http://localcert.ripe.net:8088/export.json"
+
+
+
+- ``allowed_trust_anchors``:
+  When using the **ripe-rpki-validator-cache** source, only the
+  following Trust Anchors will be taken into account.
+
+
+  Values must be taken among those published in the RIPE RPKI
+  Validator Configured Trust Anchors page:
+  http://localcert.ripe.net:8088/trust-anchors
+
+
+  Before enabling the 'ARIN RPKI Root', please consider the
+  following URLs:
+
+
+  http://lists.arin.net/pipermail/arin-ppml/2017-January/031231.html
+
+
+  https://www.arin.net/resources/rpki/rpa.pdf
+
+
+  Default: **APNIC, AfriNIC, LACNIC and RIPE NCC.**
 
 
 
@@ -962,7 +1070,7 @@ matching.
 Prefix/origin AS present in client's AS-SET
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- ``prefix_present_in_as_set``, ``prefix_not_present_in_as_set``, ``origin_present_in_as_set`` and ``origin_not_present_in_as_set``:
+- ``prefix_present_in_as_set``, ``prefix_not_present_in_as_set``, ``origin_present_in_as_set``, ``origin_not_present_in_as_set``, ``prefix_validated_via_rpki_roas`` and ``route_validated_via_white_list``:
   Prefix/origin AS present in client's AS-SET.
 
 

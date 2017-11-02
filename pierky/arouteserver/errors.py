@@ -100,6 +100,12 @@ class IXFDBSchemaError(IXFDBError):
                             "the one recognized by this version of the "
                             "program, or that it contains errors.")
 
+class RPKIValidatorCacheError(ARouteServerError):
+    pass
+
+class LastVersionCheckingError(ARouteServerError):
+    pass
+
 class BuilderError(ARouteServerError):
     pass
 

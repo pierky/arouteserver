@@ -26,6 +26,9 @@ class RichConfigExampleScenario(LiveScenario):
     CLIENT_INSTANCE_CLASS = None
     CONFIG_BUILDER_CLASS = None
 
+    MOCK_RIPE_RPKI_CACHE = False
+    MOCK_PEERING_DB = False
+
     AS_SET = {
         "AS3333": [3333],
         "AS10745": [10745],

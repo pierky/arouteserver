@@ -19,8 +19,12 @@ asns
 {{ asns.cfg|to_yaml }}
 
 irrdb_info
--------
+----------
 {{ irrdb_info|parse_irrdb_info|sort(attribute="id")|to_yaml }}
+
+rpki_roas_as_route_objects
+--------------------------
+{{ rpki_roas_as_route_objects|parse_rpki_roas_as_route_objects|to_yaml }}
 
 roas
 ----

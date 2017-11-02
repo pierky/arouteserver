@@ -3,6 +3,25 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+This release **breaks backward compatibility** (OpenBGPD configs only): for OpenBGPD configurations, starting with this release the Site of Origin Extended BGP communities in the range 65535:* (``soo 65535:*``) are reserved for internal reasons.
+
+- New feature: use RPKI ROAs as if they were route objects.
+
+  This feature allows to accept those routes whose origin ASN is authorized by a client AS-SET, whose prefix is not but it is covered by a RPKI ROA for the same origin ASN.
+
+  Related: `issue #19 on GitHub <https://github.com/pierky/arouteserver/issues/19>`_.
+
+- New feature: automatic checking for new releases.
+
+  This can be disabled by setting ``check_new_release`` to False in ``arouteserver.yml``.
+
+- Improvement: routes accepted solely because of a ``white_list_route`` entry are now tagged with the ``route_validated_via_white_list`` BGP community.
+
+- Fix: on OpenBGPD configurations, in case of duplicate definition of a client's AS-SETs, duplicate BGP informational communities were added after the IRR validation process.
+
 v0.13.0
 -------
 

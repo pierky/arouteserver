@@ -9,6 +9,11 @@ cfg:
                         enforce_prefix_in_as_set: False
                         allow_longer_prefixes: True
                         peering_db: True
+                        use_rpki_roas_as_route_objects:
+                                enabled: True
+                                source: "ripe-rpki-validator-cache"
+                                allowed_trust_anchors:
+                                - "test"
         communities:
                 prefix_present_in_as_set:
                         std: "rs_as:64512"
@@ -22,3 +27,9 @@ cfg:
                 origin_not_present_in_as_set:
                         std: "rs_as:64515"
                         lrg: "rs_as:0:64515"
+                prefix_validated_via_rpki_roas:
+                        std: "rs_as:64516"
+                        lrg: "rs_as:0:64516"
+                route_validated_via_white_list:
+                        std: "rs_as:64517"
+                        lrg: "rs_as:0:64517"

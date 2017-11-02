@@ -76,3 +76,15 @@ clients:
                                     length: 32
                                 white_list_asn:
                                   - 51
+        - asn: 6
+          ip:
+          - "192.0.2.61"
+          - "2001:db8:1:1::61"
+          description: "AS6_1 client"
+          cfg:
+                filtering:
+                        irrdb:
+                                as_sets:
+                                - "AS6"
+                                enforce_prefix_in_as_set: True
+                                enforce_origin_in_as_set: True

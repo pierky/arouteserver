@@ -42,6 +42,8 @@ class ConfigParserGeneral(ConfigParserBase):
         "origin_not_present_in_as_set": { "type": "outbound" },
         "prefix_present_in_as_set": { "type": "outbound" },
         "prefix_not_present_in_as_set": { "type": "outbound" },
+        "prefix_validated_via_rpki_roas": { "type": "outbound" },
+        "route_validated_via_white_list": { "type": "outbound" },
 
         "blackholing": { "type": "inbound" },
 
@@ -135,7 +137,31 @@ class ConfigParserGeneral(ConfigParserBase):
                         "enforce_prefix_in_as_set": ValidatorBool(default=True),
                         "allow_longer_prefixes": ValidatorBool(default=False),
                         "tag_as_set": ValidatorBool(default=True),
-                        "peering_db": ValidatorBool(default=False)
+                        "peering_db": ValidatorBool(default=False),
+                        "use_rpki_roas_as_route_objects": {
+                            "enabled": ValidatorBool(default=False),
+                            "source": ValidatorOption("source",
+                                                      ("ripe-rpki-validator-cache",
+                                                       "rtrlib"),
+                                                      mandatory=True,
+                                                      default="ripe-rpki-validator-cache"),
+                            "ripe_rpki_validator_url": ValidatorText(
+                                mandatory=True,
+                                default="http://localcert.ripe.net:8088/export.json"
+                            ),
+                            "allowed_trust_anchors": ValidatorListOf(
+                                ValidatorText, mandatory=True, default=[
+                                    "APNIC from AFRINIC RPKI Root",
+                                    "APNIC from ARIN RPKI Root",
+                                    "APNIC from IANA RPKI Root",
+                                    "APNIC from LACNIC RPKI Root",
+                                    "APNIC from RIPE RPKI Root",
+                                    "AfriNIC RPKI Root",
+                                    "LACNIC RPKI Root",
+                                    "RIPE NCC RPKI Root"
+                                ]
+                            )
+                        }
                     },
                     "rpki": {
                         "enabled": ValidatorBool(default=False),

@@ -20,9 +20,9 @@ except ImportError:
     import unittest.mock as mock
 import unittest
 
+from .mock_peeringdb import mock_peering_db
 from pierky.arouteserver.peering_db import PeeringDBNet
 from pierky.arouteserver.errors import PeeringDBNoInfoError 
-from pierky.arouteserver.tests.mock_peeringdb import mock_peering_db
 
 
 class TestPeeringDBInfo(unittest.TestCase):

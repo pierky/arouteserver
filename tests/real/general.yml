@@ -25,6 +25,9 @@ cfg:
       allow_longer_prefixes: False
       tag_as_set: True
       peering_db: True
+      use_rpki_roas_as_route_objects:
+        enabled: True
+        source: "ripe-rpki-validator-cache"
     rpki:
       enabled: False
     max_prefix:

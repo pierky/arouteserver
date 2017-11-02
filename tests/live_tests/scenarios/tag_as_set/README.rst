@@ -19,6 +19,10 @@ Communities:
 
         origin OK       64514
         origin NOT OK   64515
+
+        RPKI ROA OK     64516
+
+        route wht list  64517
         ==============  =====
 
 AS2:
@@ -38,6 +42,10 @@ AS2:
   - prefixes: 2.2.0.0/16
   - asns: 21
 
+- RPKI ROAs:
+
+  - 2.4.0.0/16, AS2
+
 AS2 announces:
 
         ============    ===========     ==========      ==========      =================  =================
@@ -52,7 +60,16 @@ AS2 announces:
         2.2.3.0/24      2 21            yes (WL)        yes (WL)        64512 64514        the same
         2.3.1.0/24      2 21            no              yes (WL)        64513 64514        the same
         2.0.3.0/24      2 21            yes             yes (WL)        64512 64514        64513 64514
+        2.4.0.0/16      2               no              yes             64513 64514 (1)    64513 64515
         ============    ===========     ==========      ==========      =================  =================
+
+1) RPKI ROAs are used as route objects only when both origin AS and prefix enforcing are set.
+
+AS3 (not a route server client here, used just to track RPKI ROAs):
+
+- RPKI ROAs:
+
+  - 3.1.0.0/16, AS3
 
 AS4:
 
@@ -91,11 +108,11 @@ AS4 announces:
         4.2.3.0/24      4 41            yes (WL)        yes (WL)        64512 64514        the same
         4.3.1.0/24      4 41            no              yes (WL)        64513 64514        the same
         4.0.3.0/24      4 41            yes             yes (WL)        64512 64514        64513 64514
-        4.4.0.0/16      4 44            r WL            r WL            64513 64515        the same
-        4.4.1.0/24      4 44            r WL            r WL            rejected           rejected
-        4.5.1.0/24      4 43            r WL            r WL            64513 64515        the same
+        4.4.0.0/16      4 44            r WL            r WL            64513 64515 64517  the same
+        4.4.1.0/24      4 44            r WL KO         r WL            rejected           rejected
+        4.5.1.0/24      4 43            r WL            r WL            64513 64515 64517  the same
         4.5.2.0/24      4 45            r WL            r WL KO         rejected           rejected
-        4.6.1.0/24      4 45            r WL            r WL            64513 64515        the same
+        4.6.1.0/24      4 45            r WL            r WL            64513 64515 64517  the same
         ============    ===========     ==========      ==========      =================  =================
 
 AS5:
@@ -131,3 +148,23 @@ AS5 announces:
         5.0.3.0/24      5 51            yes             yes (WL)        64512 64514        rejected
         ============    ===========     ==========      ==========      =================  =================
 
+AS6:
+
+- allowed objects:
+
+  - prefix: 6.0.0.0/16
+  - origin: 6, 3
+
+configuration:
+
+  - enforcing: both origin ASN and prefix
+  - tagging: yes
+
+AS6 announces:
+
+        ============    ===========     ==========      ==========      =================  =================
+        prefix          AS_PATH         prefix ok?      origin ok?      expected result 1  expected results 2
+        ============    ===========     ==========      ==========      =================  =================
+        2.4.0.0/16      6 2             no              no              rejected           rejected
+        3.1.0.0/16      6 3             ROA             yes             64513 64514 64516  rejected
+        ============    ===========     ==========      ==========      =================  =================
