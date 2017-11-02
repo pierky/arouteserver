@@ -259,6 +259,12 @@ cfg:
         # Default: ripe-rpki-validator-cache
         source: "ripe-rpki-validator-cache"
 
+        # RIPE RPKI Validator URL.
+        # Meaningful only when 'source' is 'ripe-rpki-validator-cache'.
+        #
+        # Default: http://localcert.ripe.net:8088/export.json
+        ripe_rpki_validator_url: "http://localcert.ripe.net:8088/export.json"
+
         # When using the 'ripe-rpki-validator-cache' source, only the
         # following Trust Anchors will be taken into account.
         #
@@ -272,6 +278,8 @@ cfg:
         # http://lists.arin.net/pipermail/arin-ppml/2017-January/031231.html
         #
         # https://www.arin.net/resources/rpki/rpa.pdf
+        #
+        # Default: APNIC, AfriNIC, LACNIC and RIPE NCC.
         allowed_trust_anchors:
           - "APNIC from AFRINIC RPKI Root"
           - "APNIC from ARIN RPKI Root"

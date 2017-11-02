@@ -1077,6 +1077,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "use_rpki_roas_as_route_objects": {
                         "enabled": False,
                         "source": "ripe-rpki-validator-cache",
+                        "ripe_rpki_validator_url": "http://localcert.ripe.net:8088/export.json",
                         "allowed_trust_anchors": [
                             "APNIC from AFRINIC RPKI Root",
                             "APNIC from ARIN RPKI Root",
@@ -1178,6 +1179,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "use_rpki_roas_as_route_objects": {
                         "enabled": False,
                         "source": "ripe-rpki-validator-cache",
+                        "ripe_rpki_validator_url": "http://localcert.ripe.net:8088/export.json",
                         "allowed_trust_anchors": [
                             "APNIC from AFRINIC RPKI Root",
                             "APNIC from ARIN RPKI Root",

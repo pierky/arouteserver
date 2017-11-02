@@ -499,6 +499,21 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
 
 
 
+- ``ripe_rpki_validator_url``:
+  RIPE RPKI Validator URL.
+  Meaningful only when **source** is **ripe-rpki-validator-cache**.
+
+
+  Default: **http://localcert.ripe.net:8088/export.json**
+
+  Example:
+
+  .. code:: yaml
+
+     ripe_rpki_validator_url: "http://localcert.ripe.net:8088/export.json"
+
+
+
 - ``allowed_trust_anchors``:
   When using the **ripe-rpki-validator-cache** source, only the
   following Trust Anchors will be taken into account.
@@ -517,6 +532,9 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
 
 
   https://www.arin.net/resources/rpki/rpa.pdf
+
+
+  Default: **APNIC, AfriNIC, LACNIC and RIPE NCC.**
 
 
 

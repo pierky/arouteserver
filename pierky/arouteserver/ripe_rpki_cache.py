@@ -25,8 +25,13 @@ from .errors import RPKIValidatorCacheError
 
 class RIPE_RPKI_ROAs(CachedObject):
 
+    DEFAULT_URL = "http://localcert.ripe.net:8088/export.json"
+
     def __init__(self, *args, **kwargs):
         CachedObject.__init__(self, *args, **kwargs)
+
+        self.url = kwargs.get("ripe_rpki_validator_url",
+                              self.DEFAULT_URL)
 
         self.roas = {}
 
@@ -41,23 +46,21 @@ class RIPE_RPKI_ROAs(CachedObject):
         return "ripe-rpki-cache.json"
 
     def _get_data(self):
-        url = "http://localcert.ripe.net:8088/export.json"
-
         try:
-            response = urlopen(url)
+            response = urlopen(self.url)
         except HTTPError as e:
             raise RPKIValidatorCacheError(
                 "HTTP error while retrieving ROAs from "
                 "RIPE RPKI Validator cache ({}): "
                 "code: {}, reason: {} - {}".format(
-                    url, e.code, e.reason, str(e)
+                    self.url, e.code, e.reason, str(e)
                 )
             )
         except Exception as e:
             raise RPKIValidatorCacheError(
                 "Error while retrieving ROAs from "
                 "RIPE RPKI Validator cache ({}): {}".format(
-                    url, str(e)
+                    self.url, str(e)
                 )
             )
 
@@ -67,7 +70,7 @@ class RIPE_RPKI_ROAs(CachedObject):
             raise RPKIValidatorCacheError(
                 "Error while parsing ROAs from "
                 "RIPE RPKI Validator cache ({}): {}".format(
-                    url, str(e)
+                    self.url, str(e)
                 )
             )
 

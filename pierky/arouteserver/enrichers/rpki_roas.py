@@ -74,13 +74,16 @@ class RPKIROAsEnricher(BaseConfigEnricher):
 
         afis = [4, 6] if self.builder.ip_ver is None else [self.builder.ip_ver]
 
+        irrdb_cfg = self.builder.cfg_general["filtering"]["irrdb"]
+        roas_as_route_objects_cfg = irrdb_cfg["use_rpki_roas_as_route_objects"]
+        url = roas_as_route_objects_cfg["ripe_rpki_validator_url"]
+
         ripe_cache = RIPE_RPKI_ROAs(cache_dir=cache_dir,
-                                    cache_expiry=self.builder.cache_expiry)
+                                    cache_expiry=self.builder.cache_expiry,
+                                    ripe_rpki_validator_url=url)
         ripe_cache.load_data()
         roas = ripe_cache.roas
 
-        irrdb_cfg = self.builder.cfg_general["filtering"]["irrdb"]
-        roas_as_route_objects_cfg = irrdb_cfg["use_rpki_roas_as_route_objects"]
         allowed_tas = roas_as_route_objects_cfg["allowed_trust_anchors"]
 
         # "ASx": {"prefix": "a/b", "max_len": c}

@@ -290,6 +290,7 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
                 CfgStatement("use_rpki_roas_as_route_objects", post_comment=True, sub=[
                     CfgStatement("enabled", pre_comment=True),
                     CfgStatement("source", pre_comment=True),
+                    CfgStatement("ripe_rpki_validator_url", pre_comment=True),
                     CfgStatement("allowed_trust_anchors", pre_comment=True),
                 ])
             ]),

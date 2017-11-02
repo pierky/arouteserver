@@ -256,6 +256,7 @@ cfg:
         - LACNIC RPKI Root
         - RIPE NCC RPKI Root
         enabled: true
+        ripe_rpki_validator_url: http://localcert.ripe.net:8088/export.json
         source: ripe-rpki-validator-cache
     max_as_path_len: 32
     max_prefix:

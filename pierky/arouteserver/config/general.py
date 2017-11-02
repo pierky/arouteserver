@@ -145,6 +145,10 @@ class ConfigParserGeneral(ConfigParserBase):
                                                        "rtrlib"),
                                                       mandatory=True,
                                                       default="ripe-rpki-validator-cache"),
+                            "ripe_rpki_validator_url": ValidatorText(
+                                mandatory=True,
+                                default="http://localcert.ripe.net:8088/export.json"
+                            ),
                             "allowed_trust_anchors": ValidatorListOf(
                                 ValidatorText, mandatory=True, default=[
                                     "APNIC from AFRINIC RPKI Root",
