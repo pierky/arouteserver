@@ -106,6 +106,12 @@ class RPKIValidatorCacheError(ARouteServerError):
 class LastVersionCheckingError(ARouteServerError):
     pass
 
+class WhoisError(ARouteServerError):
+    pass
+
+class WhoisResourceError(ExternalDataNoInfoError):
+    pass
+
 class BuilderError(ARouteServerError):
     pass
 
