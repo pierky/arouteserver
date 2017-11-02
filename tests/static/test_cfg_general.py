@@ -1076,7 +1076,17 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "peering_db": False,
                     "use_rpki_roas_as_route_objects": {
                         "enabled": False,
-                        "source": "ripe-rpki-validator-cache"
+                        "source": "ripe-rpki-validator-cache",
+                        "allowed_trust_anchors": [
+                            "APNIC from AFRINIC RPKI Root",
+                            "APNIC from ARIN RPKI Root",
+                            "APNIC from IANA RPKI Root",
+                            "APNIC from LACNIC RPKI Root",
+                            "APNIC from RIPE RPKI Root",
+                            "AfriNIC RPKI Root",
+                            "LACNIC RPKI Root",
+                            "RIPE NCC RPKI Root"
+                        ]
                     }
                 },
                 "rpki": {
@@ -1167,7 +1177,17 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "peering_db": False,
                     "use_rpki_roas_as_route_objects": {
                         "enabled": False,
-                        "source": "ripe-rpki-validator-cache"
+                        "source": "ripe-rpki-validator-cache",
+                        "allowed_trust_anchors": [
+                            "APNIC from AFRINIC RPKI Root",
+                            "APNIC from ARIN RPKI Root",
+                            "APNIC from IANA RPKI Root",
+                            "APNIC from LACNIC RPKI Root",
+                            "APNIC from RIPE RPKI Root",
+                            "AfriNIC RPKI Root",
+                            "LACNIC RPKI Root",
+                            "RIPE NCC RPKI Root"
+                        ]
                     }
                 },
                 "rpki": {

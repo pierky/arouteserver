@@ -259,6 +259,30 @@ cfg:
         # Default: ripe-rpki-validator-cache
         source: "ripe-rpki-validator-cache"
 
+        # When using the 'ripe-rpki-validator-cache' source, only the
+        # following Trust Anchors will be taken into account.
+        #
+        # Values must be taken among those published in the RIPE RPKI
+        # Validator Configured Trust Anchors page:
+        # http://localcert.ripe.net:8088/trust-anchors
+        #
+        # Before enabling the 'ARIN RPKI Root', please consider the
+        # following URLs:
+        #
+        # http://lists.arin.net/pipermail/arin-ppml/2017-January/031231.html
+        #
+        # https://www.arin.net/resources/rpki/rpa.pdf
+        allowed_trust_anchors:
+          - "APNIC from AFRINIC RPKI Root"
+          - "APNIC from ARIN RPKI Root"
+          - "APNIC from IANA RPKI Root"
+          - "APNIC from LACNIC RPKI Root"
+          - "APNIC from RIPE RPKI Root"
+          - "AfriNIC RPKI Root"
+          - "LACNIC RPKI Root"
+          - "RIPE NCC RPKI Root"
+          #- "ARIN RPKI Root"
+
     rpki:
       # Enable RPKI ROAs validation for routes received from
       # clients.

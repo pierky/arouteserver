@@ -499,6 +499,26 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
 
 
 
+- ``allowed_trust_anchors``:
+  When using the **ripe-rpki-validator-cache** source, only the
+  following Trust Anchors will be taken into account.
+
+
+  Values must be taken among those published in the RIPE RPKI
+  Validator Configured Trust Anchors page:
+  http://localcert.ripe.net:8088/trust-anchors
+
+
+  Before enabling the 'ARIN RPKI Root', please consider the
+  following URLs:
+
+
+  http://lists.arin.net/pipermail/arin-ppml/2017-January/031231.html
+
+
+  https://www.arin.net/resources/rpki/rpa.pdf
+
+
 
 
 RPKI: ``rpki``

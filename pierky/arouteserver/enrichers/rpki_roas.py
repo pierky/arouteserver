@@ -79,10 +79,23 @@ class RPKIROAsEnricher(BaseConfigEnricher):
         ripe_cache.load_data()
         roas = ripe_cache.roas
 
+        irrdb_cfg = self.builder.cfg_general["filtering"]["irrdb"]
+        roas_as_route_objects_cfg = irrdb_cfg["use_rpki_roas_as_route_objects"]
+        allowed_tas = roas_as_route_objects_cfg["allowed_trust_anchors"]
+
         # "ASx": {"prefix": "a/b", "max_len": c}
         asn_roas = {}
+
+        invalid_roas_cnt = 0
+        max_invalid_roas = 10
         for roa in roas["roas"]:
             try:
+                ta = roa.get("ta", None)
+                if not ta:
+                    raise ValueError("missing trust anchor")
+                if ta not in allowed_tas:
+                    continue
+
                 asn = roa.get("asn", None)
                 if not asn:
                     raise ValueError("missing ASN")
@@ -116,9 +129,18 @@ class RPKIROAsEnricher(BaseConfigEnricher):
                     max_len = int(max_len)
 
             except ValueError as e:
-                logging.warning("Invalid ROA: '{}', {}".format(
+                logging.warning("Invalid ROA: {}, {}".format(
                     str(roa), str(e)
                 ))
+
+                invalid_roas_cnt += 1
+                if invalid_roas_cnt > max_invalid_roas:
+                    logging.error(
+                        "More than {} invalid ROAs have been found. "
+                        "Aborting.".format(max_invalid_roas)
+                    )
+                    raise BuilderError()
+
                 continue
 
             asn = asn.upper()

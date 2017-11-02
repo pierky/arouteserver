@@ -246,6 +246,15 @@ cfg:
       peering_db: false
       tag_as_set: true
       use_rpki_roas_as_route_objects:
+        allowed_trust_anchors:
+        - APNIC from AFRINIC RPKI Root
+        - APNIC from ARIN RPKI Root
+        - APNIC from IANA RPKI Root
+        - APNIC from LACNIC RPKI Root
+        - APNIC from RIPE RPKI Root
+        - AfriNIC RPKI Root
+        - LACNIC RPKI Root
+        - RIPE NCC RPKI Root
         enabled: true
         source: ripe-rpki-validator-cache
     max_as_path_len: 32
@@ -859,25 +868,6 @@ irrdb_info
 
 rpki_roas_as_route_objects
 --------------------------
-AS10745:
-- exact: true
-  ge: 24
-  le: 24
-  length: 24
-  max_length: 32
-  prefix: 192.136.136.0
-- exact: true
-  ge: 24
-  le: 24
-  length: 24
-  max_length: 32
-  prefix: 192.149.252.0
-- exact: true
-  ge: 24
-  le: 24
-  length: 24
-  max_length: 32
-  prefix: 199.43.0.0
 AS3333:
 - exact: true
   ge: 24
@@ -915,18 +905,18 @@ AS3333:
   length: 23
   max_length: 32
   prefix: 193.0.10.0
-- exact: true
-  ge: 23
-  le: 23
-  length: 23
-  max_length: 32
-  prefix: 193.0.20.0
 - exact: false
   ge: 22
   le: 26
   length: 22
   max_length: 32
   prefix: 193.0.24.0
+- exact: true
+  ge: 23
+  le: 23
+  length: 23
+  max_length: 32
+  prefix: 193.0.20.0
 
 
 roas

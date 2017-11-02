@@ -144,7 +144,19 @@ class ConfigParserGeneral(ConfigParserBase):
                                                       ("ripe-rpki-validator-cache",
                                                        "rtrlib"),
                                                       mandatory=True,
-                                                      default="ripe-rpki-validator-cache")
+                                                      default="ripe-rpki-validator-cache"),
+                            "allowed_trust_anchors": ValidatorListOf(
+                                ValidatorText, mandatory=True, default=[
+                                    "APNIC from AFRINIC RPKI Root",
+                                    "APNIC from ARIN RPKI Root",
+                                    "APNIC from IANA RPKI Root",
+                                    "APNIC from LACNIC RPKI Root",
+                                    "APNIC from RIPE RPKI Root",
+                                    "AfriNIC RPKI Root",
+                                    "LACNIC RPKI Root",
+                                    "RIPE NCC RPKI Root"
+                                ]
+                            )
                         }
                     },
                     "rpki": {
