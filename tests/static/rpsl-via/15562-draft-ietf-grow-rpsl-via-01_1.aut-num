@@ -1,0 +1,19 @@
+aut-num: AS15562
+import-via: AS6777
+             from AS15562
+             action pref = 2;
+             accept AS-SNIJDERS
+export-via: AS6777
+             to AS15562 action community.={15562:40};
+             announce AS-SNIJDERS
+import-via: AS15562:AS-ROUTESERVERS
+             from AS15562:AS-CUSTOMERS
+             accept NOT ANY
+export-via: AS15562:AS-ROUTESERVERS
+             to AS15562:AS-CUSTOMERS announce NOT ANY
+import-via: AS6777
+             from AS4247483647
+             accept AS4247483647
+export-via: AS6777
+             to AS4247483647 action community.={15562:40};
+             announce AS-SNIJDERS

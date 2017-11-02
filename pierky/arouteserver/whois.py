@@ -110,9 +110,7 @@ class WhoisClient(object):
         while True:
             line = self._read_line()
 
-            line = line.strip()
-
-            if not line:
+            if not line.strip():
                 consecutive_empty_line_cnt += 1
                 if consecutive_empty_line_cnt == 2:
                     break
@@ -131,7 +129,7 @@ class WhoisClient(object):
             if line.startswith("%"):
                 continue
 
-            response += line + "\n"
+            response += line
 
         if err:
             raise err[0](err[1])
@@ -202,3 +200,33 @@ class AutNumObject(CachedObject):
     def _get_data(self):
         logging.info("Retrieving {} aut-num info".format(self.asn))
         return self.whois_client.get_autnum(self.asn)
+
+    def get_rpsl_via_lines(self):
+        if not self.raw_data:
+            self.load_data()
+
+        res = []
+        last_line_is_rpsl_via = False
+        lines = self.raw_data.split("\n")
+        try:
+            if not lines:
+                raise ValueError("empty")
+            if not lines[0].startswith("aut-num:"):
+                raise ValueError("first line must start with 'aut-num:': "
+                                 "'{}' found.".format(lines[0]))
+        except ValueError as e:
+            raise WhoisError("Invalid object: {}".format(str(e)))
+
+        for line in lines:
+            if line.startswith(("import-via:", "export-via:")):
+                last_line_is_rpsl_via = True
+                res.append(line)
+                continue
+
+            if last_line_is_rpsl_via and line.startswith(("+", " ", "\t")):
+                res[-1] += " " + line[1:].strip()
+                continue
+
+            last_line_is_rpsl_via = False
+
+        return res

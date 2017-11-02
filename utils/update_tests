@@ -60,6 +60,10 @@ fi
 echo "Verifying if templates and fingerprints are aligned..."
 nosetests -vs -x tests/static/test_cfg_program.py
 
+# Compile RPSL grammar
+echo "Compiling RPSL grammar..."
+tatsu pierky/arouteserver/rpsl/rpsl_via.grammar --outfile pierky/arouteserver/rpsl/rpsl_via.py
+
 # Then check the code
 echo "Checking code via tox..."
 tox -e py34-syntax,py27-flake8,py34-flake8

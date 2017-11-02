@@ -1,0 +1,628 @@
+aut-num:        AS29075
+as-name:        IELO
+descr:          IELO Main Network
+remarks:        ========================================================
+remarks:        == BGP Upstreams ==
+remarks:        ========================================================
+import:         from AS5511 action pref=200; med=190;
+                from AS1299 action pref=200; med=190;
+                from AS6453 action pref=200; med=190;
+                from AS3549 action pref=200; med=190;
+                from AS6762 action pref=200; med=190;
+                from AS174  action pref=200; med=190;
+                from AS6939 action pref=200; med=200;
+                accept ANY
+export:         to AS5511
+                to AS1299
+                to AS6453
+                to AS3549
+                to AS6762
+                to AS174
+                to AS6939
+                announce AS-IELO
+remarks:        ========================================================
+remarks:        == BGP Customers Full view ==
+remarks:        ========================================================
+import:         from AS9036 action pref=100; accept AS-NEURONNEXION
+import:         from AS34783 action pref=100; accept AS34783
+import:         from AS31564 action pref=100; accept AS31564
+import:         from AS44583 action pref=100; accept AS44583
+import:         from AS48920 action pref=100; accept AS-TOILE-LIBRE
+import:         from AS20766 action pref=100; accept AS-GITOYEN
+import:         from AS35625 action pref=100; accept AS-ATE-CUST
+import:         from AS50087 action pref=100; accept AS50087
+import:         from AS31576 action pref=100; accept AS31576
+import:         from AS31576 action pref=100; accept AS-31576-CLIENTS
+import:         from AS51335 action pref=100; accept AS51335
+import:         from AS48072 action pref=100; accept AS-ALSATIS
+import:         from AS44141 action pref=100; accept AS-DEVCLIC
+import:         from AS50618 action pref=100; accept AS-LIAZO
+import:         from AS198335 action pref=100; accept AS-TRANSATEL
+import:         from AS197455 action pref=100; accept AS197455
+import:         from AS42929 action pref=100; accept AS42929
+import:         from AS197465 action pref=100; accept AS197465
+import:         from AS49923 action pref=100; accept AS49923
+import:         from AS29513 action pref=100; accept AS29513
+import:         from AS56693 action pref=100; accept AS56693
+import:         from AS197696 action pref=100; accept AS197696
+import:         from AS43142 action pref=100; accept AS-ADELINOVIUS
+import:         from AS197996 action pref=100; accept AS197996
+import:         from AS24904 action pref=100; accept AS-KWAOO
+import:         from AS25057 action pref=100; accept AS-PLOPNET
+import:         from AS44530 action pref=100; accept AS44530
+import:         from AS51083 action pref=100; accept AS-GRENODE
+import:         from AS198184 action pref=100; accept AS198184
+import:         from AS41765 action pref=100; accept AS-IPGARDE-CUST
+import:         from AS16211 action pref=100; accept AS16211
+import:         from AS51888 action pref=100; accept AS51888
+import:         from AS16073 action pref=100; accept AS-ACCELANCE
+import:         from AS198954 action pref=100; accept AS198954
+import:         from AS13273 action pref=100; accept AS13273
+import:         from AS199571 action pref=100; accept AS199571
+import:         from AS199277 action pref=100; accept AS199277
+import:         from AS60491 action pref=100; accept AS60491
+import:         from AS60362 action pref=100; accept AS60362
+import:         from AS16080 action pref=100; accept AS-RENTABILIWEB-TELECOM
+import:         from AS16347 action pref=100; accept AS-RMI
+import:         from AS49763 action pref=100; accept AS49763
+import:         from AS41064 action pref=100; accept AS41064
+import:         from AS198625 action pref=100; accept AS198625
+import:         from AS202069 action pref=100; accept AS202069
+import:         from AS202140 action pref=100; accept AS-DIS
+import:         from AS58308 action pref=100; accept AS-CUSAE
+import:         from AS197922 action pref=100; accept AS-FIRSTHEBERG
+import:         from AS57734 action pref=100; accept AS57734
+import:         from AS34146 action pref=100; accept AS-ISP-SOLUTIONS
+import:         from AS12654 action pref=100; accept AS12654
+import:         from AS204202 action pref=100; accept AS204202
+import:         from AS8839 action pref=100; accept AS-SDV
+import:         from AS57119 action pref=100; accept AS-NAITWAYS
+import:         from AS201313 action pref=100; accept AS201313
+import:         from AS41157 action pref=100; accept AS-OXYMIUM
+import:         from AS31591 action pref=100; accept AS31591
+import:         from AS199167 action pref=100; accept AS-AZNETWORK
+import:         from AS39931 action pref=100; accept AS-IPTELECOM
+import:         from AS43930 action pref=100; accept AS-FTVDN
+import:         from AS60199 action pref=100; accept AS60199:AS-CUSTOMERS
+import:         from AS48809 action pref=100; accept AS48809
+import:         from AS198385 action pref=100; accept AS-ALPINEDC
+import:         from AS28855 action pref=100; accept AS28855
+import:         from AS203927 action pref=100; accept AS203927
+remarks:        -
+export:         to AS29075:AS-CUSTOMERS announce ANY
+remarks:        -
+remarks:        ========================================================
+remarks:        == PNI Peering Partners ==
+remarks:        ========================================================
+import:         from AS12322 action pref=200; med=90;  accept AS-PROXAD
+import:         from AS12876 action pref=200; med=90;  accept AS12876
+import:         from AS44530 action pref=200; med=105; accept AS-HOPUS
+import:         from AS16276 action pref=200; med=90; accept AS-OVH
+export:         to AS12322
+                to AS12876
+                to AS44530
+                to AS16276
+                announce AS-IELO
+import-via:     AS44530 from AS-ANY action pref=200; med=105; accept AS-HOPUS
+export-via:     AS44530 to AS-ANY announce AS-IELO
+member-of:      AS3320:AS-AUTH-PILOT-ROUTEPRIO-FROM-AS44530
+remarks:        ========================================================
+remarks:        == Peering Partners ==
+remarks:        ========================================================
+remarks:        == AMS-IX ==
+import:         from AS42  action pref=200; med=100; accept AS-PCH
+import:         from AS714  action pref=200; med=100; accept AS-APPLE
+import:         from AS855  action pref=200; med=100; accept AS855:AS-CUSTOMERS
+import:         from AS1103  action pref=200; med=100; accept AS-SURFNET
+import:         from AS1200  action pref=200; med=100; accept AS1200
+import:         from AS1248  action pref=200; med=100; accept AS-NOK
+import:         from AS1267  action pref=200; med=100; accept AS-INFOSTRADA
+import:         from AS1408  action pref=200; med=100; accept AS1408
+import:         from AS1547  action pref=200; med=100; accept AS1547
+import:         from AS2119  action pref=200; med=100; accept AS-TELENOR
+import:         from AS2603  action pref=200; med=100; accept AS-NORDUNET
+import:         from AS2686  action pref=200; med=100; accept AS-IGNEMEA
+import:         from AS2852  action pref=200; med=100; accept AS-CESNET
+import:         from AS2906  action pref=200; med=100; accept AS2906
+import:         from AS3216  action pref=200; med=100; accept AS-SOVAM
+import:         from AS3262  action pref=200; med=100; accept AS-SARENET
+import:         from AS3265  action pref=200; med=100; accept AS-ACCESSFORALL
+import:         from AS3267  action pref=200; med=100; accept AS-RUNNET
+import:         from AS3856  action pref=200; med=100; accept AS-PCH
+import:         from AS4739  action pref=200; med=100; accept AS-4739
+import:         from AS5089  action pref=200; med=100; accept AS-NTLI
+import:         from AS5390  action pref=200; med=100; accept AS-EURONETNL
+import:         from AS5394  action pref=200; med=100; accept AS-UNIDATACUST
+import:         from AS5410  action pref=200; med=100; accept AS-BOUYGTEL-ISP
+import:         from AS5524  action pref=200; med=100; accept AS-BREEDBANDNEDERLAND
+import:         from AS5568  action pref=200; med=100; accept AS-RBNET
+import:         from AS6327  action pref=200; med=100; accept AS-BIGPIPE
+import:         from AS6661  action pref=200; med=100; accept AS-PTLU
+import:         from AS6663  action pref=200; med=100; accept AS-PANTEL
+import:         from AS6667  action pref=200; med=100; accept AS-EUNETIP
+import:         from AS6677  action pref=200; med=100; accept AS-ICENET
+import:         from AS6724  action pref=200; med=100; accept AS-STRATORZ
+import:         from AS6774  action pref=200; med=100; accept AS-BELBONETOPEERS
+import:         from AS6805  action pref=200; med=100; accept AS-TDDE
+import:         from AS6834  action pref=200; med=100; accept AS-KMD
+import:         from AS6939  action pref=200; med=100; accept AS-HURRICANE
+import:         from AS7342  action pref=200; med=100; accept AS-GTLD
+import:         from AS8075  action pref=200; med=100; accept AS8075
+import:         from AS8282  action pref=200; med=100; accept AS-FIDONET
+import:         from AS8359  action pref=200; med=100; accept AS-MTU
+import:         from AS8365  action pref=200; med=100; accept AS-MANDA
+import:         from AS8368  action pref=200; med=100; accept AS-BENESOL
+import:         from AS8422  action pref=200; med=100; accept AS-NETCOLOGNE
+import:         from AS8447  action pref=200; med=100; accept AS-PTA
+import:         from AS8468  action pref=200; med=100; accept AS-ENTANET
+import:         from AS8560  action pref=200; med=100; accept AS-1AND1
+import:         from AS8608  action pref=200; med=100; accept AS-QINIP
+import:         from AS8632  action pref=200; med=100; accept AS-LOL
+import:         from AS8657  action pref=200; med=100; accept AS-CPRM
+import:         from AS8674  action pref=200; med=100; accept AS-NETNOD-ANYCAST
+import:         from AS8708  action pref=200; med=100; accept AS-RDSNET
+import:         from AS8764  action pref=200; med=100; accept AS-LTELECOM
+import:         from AS8881  action pref=200; med=100; accept AS-VT-TRANSIT
+import:         from AS8897  action pref=200; med=100; accept AS-KCOMSPN
+import:         from AS8966  action pref=200; med=100; accept AS-EMIX
+import:         from AS9002  action pref=200; med=100; accept AS-RETN
+import:         from AS9009  action pref=200; med=100; accept AS-GBXS
+import:         from AS9143  action pref=200; med=100; accept AS-BENELUX
+import:         from AS9304  action pref=200; med=100; accept AS9304
+import:         from AS10310  action pref=200; med=100; accept AS-YAHOO
+import:         from AS12041  action pref=200; med=100; accept AS12041:AS-AFILIAS
+import:         from AS12301  action pref=200; med=100; accept AS12301:AS-ROUTES
+import:         from AS12306  action pref=200; med=100; accept AS-PLUSLINE
+import:         from AS12327  action pref=200; med=100; accept AS-IDEAR4BUSINESS
+import:         from AS12350  action pref=200; med=100; accept AS-VTX
+import:         from AS12399  action pref=200; med=100; accept AS-SPXS
+import:         from AS12414  action pref=200; med=100; accept AS-SOLCON
+import:         from AS12496  action pref=200; med=100; accept AS-IDNET
+import:         from AS12552  action pref=200; med=100; accept AS-IPO
+import:         from AS12713  action pref=200; med=100; accept AS-OTEGLOBE
+import:         from AS12731  action pref=200; med=100; accept AS-IPHH
+import:         from AS12859  action pref=200; med=100; accept AS-BIT
+import:         from AS12859  action pref=200; med=100; accept AS-BIT
+import:         from AS12859  action pref=200; med=100; accept AS-BIT AS-BIT6
+import:         from AS12874  action pref=200; med=100; accept AS-FASTWEB
+import:         from AS12989  action pref=200; med=100; accept AS-HIGHWINDS
+import:         from AS13030  action pref=200; med=100; accept AS-INIT7
+import:         from AS13101  action pref=200; med=100; accept AS-TNG
+import:         from AS13127  action pref=200; med=100; accept AS-VERSATEL
+import:         from AS13238  action pref=200; med=100; accept AS-YANDEX
+import:         from AS13285  action pref=200; med=100; accept AS-OPAL
+import:         from AS15133  action pref=200; med=100; accept AS-EDGECAST
+import:         from AS15133  action pref=200; med=100; accept AS-EDGECAST
+import:         from AS15435  action pref=200; med=100; accept AS-KABELFOON
+import:         from AS15542  action pref=200; med=100; accept AS-ZEELANDNET
+import:         from AS15547  action pref=200; med=100; accept AS15547:AS-NETPLUS
+import:         from AS15557  action pref=200; med=100; accept AS-LDCOMNET
+import:         from AS15600  action pref=200; med=100; accept AS-FINECOM
+import:         from AS15703  action pref=200; med=100; accept AS-TRUE
+import:         from AS15830  action pref=200; med=100; accept AS-TELECITYGROUP
+import:         from AS15958  action pref=200; med=100; accept AS-TELENORDOO
+import:         from AS16097  action pref=200; med=100; accept AS-HLKOMM
+import:         from AS16243  action pref=200; med=100; accept AS-VIRTU
+import:         from AS16509  action pref=200; med=100; accept AS-AMAZON
+import:         from AS19151  action pref=200; med=100; accept AS-BBOI
+import:         from AS20485  action pref=200; med=100; accept AS-TTK
+import:         from AS20485  action pref=200; med=100; accept AS-TTK
+import:         from AS20495  action pref=200; med=100; accept AS-WEDARE
+import:         from AS20886  action pref=200; med=100; accept AS-BLATZ
+import:         from AS20940  action pref=200; med=100; accept AS-AKAMAI
+import:         from AS20953  action pref=200; med=100; accept AS-INFO
+import:         from AS21219  action pref=200; med=100; accept AS-FF-TRANSIT
+import:         from AS21345  action pref=200; med=100; accept AS-MESSAGELABSEUROPE
+import:         from AS24218  action pref=200; med=100; accept AS-SET-GTI-PIP
+import:         from AS24875  action pref=200; med=100; accept AS-AVIRA
+import:         from AS25148  action pref=200; med=100; accept AS-BASEFARM
+import:         from AS25151  action pref=200; med=100; accept AS-CYSO
+import:         from AS26496  action pref=200; med=100; accept AS26496
+import:         from AS28917  action pref=200; med=100; accept AS28917
+import:         from AS29017  action pref=200; med=100; accept AS-GYRON
+import:         from AS29073  action pref=200; med=100; accept AS-ECATEL
+import:         from AS29119  action pref=200; med=100; accept AS-SERVIHOSTING
+import:         from AS29141  action pref=200; med=100; accept AS-BKVG
+import:         from AS29169  action pref=200; med=100; accept AS-GANDI
+import:         from AS29208  action pref=200; med=100; accept AS-DIALTELECOM
+import:         from AS29314  action pref=200; med=100; accept AS-VECTRANET
+import:         from AS29396  action pref=200; med=100; accept AS-UNET
+import:         from AS29527  action pref=200; med=100; accept AS-ASTUTIUM
+import:         from AS30094  action pref=200; med=100; accept AS-GIGANEWS-ALL
+import:         from AS30132  action pref=200; med=100; accept AS30132
+import:         from AS30844  action pref=200; med=100; accept AS-LIQUID
+import:         from AS31334  action pref=200; med=100; accept AS-KDG
+import:         from AS31500  action pref=200; med=100; accept AS31500
+import:         from AS31661  action pref=200; med=100; accept AS-COMX
+import:         from AS32934  action pref=200; med=100; accept AS-FACEBOOK
+import:         from AS33891  action pref=200; med=100; accept AS-CORE-BACKBONE
+import:         from AS34215  action pref=200; med=100; accept AS-ATINET
+import:         from AS34655  action pref=200; med=100; accept AS-DOCLER
+import:         from AS34803  action pref=200; med=100; accept AS-BGL
+import:         from AS34968  action pref=200; med=100; accept AS-IUNXI
+import:         from AS35366  action pref=200; med=100; accept AS-ISPPRO
+import:         from AS35432  action pref=200; med=100; accept AS35432
+import:         from AS35733  action pref=200; med=100; accept AS35733
+import:         from AS36408  action pref=200; med=100; accept AS36408
+import:         from AS37100  action pref=200; med=100; accept AS-SET-SEACOM
+import:         from AS38915  action pref=200; med=100; accept AS-HEERLEN
+import:         from AS39120  action pref=200; med=100; accept AS-CONVERGENZE
+import:         from AS39138  action pref=200; med=100; accept AS-OPENAP
+import:         from AS39637  action pref=200; med=100; accept AS39637
+import:         from AS39737  action pref=200; med=100; accept AS-NETVISIONTEL
+import:         from AS39792  action pref=200; med=100; accept AS-ANDERS
+import:         from AS41095  action pref=200; med=100; accept AS-IPTP
+import:         from AS41445  action pref=200; med=100; accept AS-NETGROUND
+import:         from AS41692  action pref=200; med=100; accept AS-OPENCARRIER
+import:         from AS41913  action pref=200; med=100; accept AS-COMPUTERLINE
+import:         from AS42708  action pref=200; med=100; accept AS-PORTLANE
+import:         from AS43350  action pref=200; med=100; accept AS-NFORCE
+import:         from AS43531  action pref=200; med=100; accept AS-IXREACH
+import:         from AS43996  action pref=200; med=100; accept AS-BOOKING
+import:         from AS44788  action pref=200; med=100; accept AS-CRITEO-EU
+import:         from AS46489  action pref=200; med=100; accept AS-TWITCH
+import:         from AS47195  action pref=200; med=100; accept AS-GAMEFORGE
+import:         from AS47344  action pref=200; med=100; accept AS47344
+import:         from AS47764  action pref=200; med=100; accept AS47764
+import:         from AS49544  action pref=200; med=100; accept AS-INTERACTIVE3D
+import:         from AS49562  action pref=200; med=100; accept AS49562
+import:         from AS50056  action pref=200; med=100; accept AS-AI
+import:         from AS50295  action pref=200; med=100; accept AS50295
+import:         from AS50384  action pref=200; med=100; accept AS-W-IX
+import:         from AS50683  action pref=200; med=100; accept AS-I2B-GLO
+import:         from AS50763  action pref=200; med=100; accept AS-MCKAY
+import:         from AS51088  action pref=200; med=100; accept AS-A2B
+import:         from AS198792  action pref=200; med=100; accept AS-DSTORAGE
+remarks:        == DE-CIX ==
+import:         from AS714  action pref=200; med=100; accept AS-APPLE
+import:         from AS8365  action pref=200; med=100; accept AS-MANDA
+import:         from AS10310  action pref=200; med=100; accept AS-YAHOO
+import:         from AS24953  action pref=200; med=100; accept AS-24953
+import:         from AS42708  action pref=200; med=100; accept AS-PORTLANE
+remarks:        == EQUINIX-IX-PARIS ==
+import:         from AS42  action pref=200; med=100; accept AS-PCH
+import:         from AS2486  action pref=200; med=100; accept AS2486
+import:         from AS3856  action pref=200; med=100; accept AS-PCH
+import:         from AS4651  action pref=200; med=100; accept AS-THIX
+import:         from AS6939  action pref=200; med=100; accept AS-HURRICANE
+import:         from AS8426  action pref=200; med=100; accept AS-CLARANET
+import:         from AS8554  action pref=200; med=100; accept AS-TAS
+import:         from AS12041  action pref=200; med=100; accept AS12041:AS-AFILIAS
+import:         from AS12350  action pref=200; med=100; accept AS-VTX
+import:         from AS15133  action pref=200; med=100; accept AS-EDGECAST
+import:         from AS15133  action pref=200; med=100; accept AS-EDGECAST
+import:         from AS16276  action pref=200; med=100; accept AS-OVH
+import:         from AS16509  action pref=200; med=100; accept AS-AMAZON
+import:         from AS20940  action pref=200; med=100; accept AS-AKAMAI
+import:         from AS24963  action pref=200; med=100; accept AS-YACAST
+import:         from AS29608  action pref=200; med=100; accept AS-W2MY
+import:         from AS30126  action pref=200; med=100; accept AS30126
+import:         from AS30889  action pref=200; med=100; accept AS-WAYCOM
+import:         from AS31500  action pref=200; med=100; accept AS31500
+import:         from AS32934  action pref=200; med=100; accept AS-FACEBOOK
+import:         from AS34019  action pref=200; med=100; accept AS-HIVANE
+import:         from AS34021  action pref=200; med=100; accept AS-MULTI-VISP
+import:         from AS34655  action pref=200; med=100; accept AS-DOCLER
+import:         from AS34997  action pref=200; med=100; accept AS-ALIONIS
+import:         from AS35189  action pref=200; med=100; accept AS-KAZAR
+import:         from AS37958  action pref=200; med=100; accept AS37958
+import:         from AS39473  action pref=200; med=100; accept AS-ETERA
+import:         from AS39605  action pref=200; med=100; accept AS-IGUANE
+import:         from AS41095  action pref=200; med=100; accept AS-IPTP
+import:         from AS42708  action pref=200; med=100; accept AS-PORTLANE
+import:         from AS43531  action pref=200; med=100; accept AS-IXREACH
+import:         from AS44099  action pref=200; med=100; accept AS44099
+import:         from AS44334  action pref=200; med=100; accept AS44334
+import:         from AS44788  action pref=200; med=100; accept AS-CRITEO-EU
+import:         from AS44980  action pref=200; med=100; accept AS-CAIRNEY
+import:         from AS47841  action pref=200; med=100; accept AS47841
+import:         from AS50234  action pref=200; med=100; accept AS-EULERIAN
+import:         from AS50858  action pref=200; med=100; accept AS-SOLUINFO
+import:         from AS57048  action pref=200; med=100; accept AS-REDTRANSIT4
+remarks:        == FRANCEIX ==
+import:         from AS2611  action pref=200; med=100; accept AS-BELNET
+import:         from AS2906  action pref=200; med=100; accept as-nflx
+import:         from AS5410  action pref=200; med=100; accept AS-BOUYGTEL-ISP
+import:         from AS5580  action pref=200; med=100; accept AS-ATRATO
+import:         from AS6661  action pref=200; med=100; accept AS-PTLU
+import:         from AS6939  action pref=200; med=100; accept AS-HURRICANE
+import:         from AS8560  action pref=200; med=100; accept AS-1AND1
+import:         from AS8632  action pref=200; med=100; accept AS-LOL
+import:         from AS8966  action pref=200; med=100; accept AS-EMIX
+import:         from AS9002  action pref=200; med=100; accept AS-RETN
+import:         from AS9153  action pref=200; med=100; accept AS-BURSTFIRE
+import:         from AS15830  action pref=200; med=100; accept AS-TELECITYGROUP
+import:         from AS16276  action pref=200; med=100; accept AS-OVH
+import:         from AS16509  action pref=200; med=100; accept AS-AMAZON
+import:         from AS20940  action pref=200; med=100; accept AS-AKAMAI
+import:         from AS21502  action pref=200; med=100; accept AS-NUMERICABLE
+import:         from AS29644  action pref=200; med=100; accept AS-AIRSPEED
+import:         from AS30126  action pref=200; med=100; accept AS30126
+import:         from AS32934  action pref=200; med=100; accept AS-FACEBOOK
+import:         from AS34655  action pref=200; med=100; accept AS-DOCLER
+import:         from AS36408  action pref=200; med=100; accept AS36408
+import:         from AS39605  action pref=200; med=100; accept AS-IGUANE
+import:         from AS41692  action pref=200; med=100; accept AS-OPENCARRIER
+remarks:        == LINX ==
+import:         from AS855  action pref=200; med=100; accept AS855:AS-CUSTOMERS
+import:         from AS1248  action pref=200; med=100; accept AS-NOK
+import:         from AS1547  action pref=200; med=100; accept AS1547
+import:         from AS2110  action pref=200; med=100; accept AS-BTIRE
+import:         from AS2119  action pref=200; med=100; accept AS-TELENOR
+import:         from AS2134  action pref=200; med=100; accept AS-GSVNET
+import:         from AS2484  action pref=200; med=100; accept AS-AFNIC
+import:         from AS2603  action pref=200; med=100; accept AS-NORDUNET
+import:         from AS2818  action pref=200; med=100; accept AS-BBC
+import:         from AS2906  action pref=200; med=100; accept as-nflx
+import:         from AS3216  action pref=200; med=100; accept AS-SOVAM
+import:         from AS4739  action pref=200; med=100; accept AS4739
+import:         from AS5607  action pref=200; med=100; accept AS-BSKYB-BROADBAND
+import:         from AS6067  action pref=200; med=100; accept AS-ONYX
+import:         from AS6663  action pref=200; med=100; accept AS-PANTEL
+import:         from AS6667  action pref=200; med=100; accept AS-EUNETIP
+import:         from AS6677  action pref=200; med=100; accept AS-ICENET
+import:         from AS6805  action pref=200; med=100; accept AS-TDDE
+import:         from AS6939  action pref=200; med=100; accept AS-HURRICANE
+import:         from AS7342  action pref=200; med=100; accept AS-GTLD
+import:         from AS8282  action pref=200; med=100; accept AS-FIDONET
+import:         from AS8359  action pref=200; med=100; accept AS-MTU AS-MTU-V6
+import:         from AS8530  action pref=200; med=100; accept AS-EXCELL
+import:         from AS8553  action pref=200; med=100; accept AS-AVENSYS
+import:         from AS8560  action pref=200; med=100; accept AS-1AND1
+import:         from AS8657  action pref=200; med=100; accept AS-CPRM
+import:         from AS8683  action pref=200; med=100; accept AS8683
+import:         from AS8708  action pref=200; med=100; accept AS-RDSNET
+import:         from AS8943  action pref=200; med=100; accept AS-JUMP
+import:         from AS8966  action pref=200; med=100; accept AS-EMIX
+import:         from AS9002  action pref=200; med=100; accept AS-RETN AS-RETN6
+import:         from AS9153  action pref=200; med=100; accept AS-BURSTFIRE
+import:         from AS9304  action pref=200; med=100; accept AS9304
+import:         from AS10310  action pref=200; med=100; accept AS-YAHOO
+import:         from AS12041  action pref=200; med=100; accept AS12041:AS-AFILIAS
+import:         from AS12290  action pref=200; med=100; accept AS12290
+import:         from AS12350  action pref=200; med=100; accept AS-VTX
+import:         from AS12859  action pref=200; med=100; accept AS-BIT AS-BIT6
+import:         from AS12989  action pref=200; med=100; accept AS-HIGHWINDS
+import:         from AS13213  action pref=200; med=100; accept AS-UK2NET
+import:         from AS13285  action pref=200; med=100; accept AS-OPAL
+import:         from AS15133  action pref=200; med=100; accept AS-EDGECAST
+import:         from AS15839  action pref=200; med=100; accept AS15839
+import:         from AS15988  action pref=200; med=100; accept AS-AKHTERNET
+import:         from AS16353  action pref=200; med=100; accept AS-MERULA
+import:         from AS17451  action pref=200; med=100; accept AS17451
+import:         from AS17660  action pref=200; med=100; accept AS-DRUKNET
+import:         from AS20485  action pref=200; med=100; accept AS-TTK
+import:         from AS20712  action pref=200; med=100; accept AS-AA
+import:         from AS20773  action pref=200; med=100; accept AS20773:AS-HOSTEUROPE
+import:         from AS20940  action pref=200; med=100; accept AS-AKAMAI
+import:         from AS21345  action pref=200; med=100; accept AS-MESSAGELABSEUROPE
+import:         from AS23148  action pref=200; med=100; accept AS-TWW
+import:         from AS24218  action pref=200; med=100; accept AS-SET-GTI-PIP
+import:         from AS25605  action pref=200; med=100; accept AS-SCANSAFE
+import:         from AS28929  action pref=200; med=100; accept AS28929
+import:         from AS29208  action pref=200; med=100; accept AS-DIALTELECOM
+import:         from AS29527  action pref=200; med=100; accept AS-ASTUTIUM
+import:         from AS29636  action pref=200; med=100; accept AS-CATALYST2
+import:         from AS29644  action pref=200; med=100; accept AS-AIRSPEED
+import:         from AS29668  action pref=200; med=100; accept AS-QUBE
+import:         from AS29834  action pref=200; med=100; accept AS-USTR
+import:         from AS30827  action pref=200; med=100; accept AS-XTRAORDINARY
+import:         from AS30844  action pref=200; med=100; accept AS-LIQUID
+import:         from AS31708  action pref=200; med=100; accept AS-COREIX
+import:         from AS32934  action pref=200; med=100; accept AS-FACEBOOK
+import:         from AS33891  action pref=200; med=100; accept AS-CORE-BACKBONE
+import:         from AS33920  action pref=200; med=100; accept AS-AQNET
+import:         from AS34066  action pref=200; med=100; accept AS-TELAPPLIANT
+import:         from AS34245  action pref=200; med=100; accept AS-MAGNETLOCAL
+import:         from AS34309  action pref=200; med=100; accept AS-LINK11
+import:         from AS34442  action pref=200; med=100; accept AS34442
+import:         from AS34555  action pref=200; med=100; accept AS-CCSLEEDS
+import:         from AS34655  action pref=200; med=100; accept AS-DOCLER
+import:         from AS34790  action pref=200; med=100; accept AS34790
+import:         from AS35028  action pref=200; med=100; accept AS-MULTIPLAY
+import:         from AS35399  action pref=200; med=100; accept AS35399
+import:         from AS35425  action pref=200; med=100; accept AS-BYTEMARK
+import:         from AS35432  action pref=200; med=100; accept AS35432
+import:         from AS35916  action pref=200; med=100; accept AS-35916-TRANSIT
+import:         from AS37100  action pref=200; med=100; accept AS-SET-SEACOM
+import:         from AS37253  action pref=200; med=100; accept AS37253
+import:         from AS39138  action pref=200; med=100; accept AS-OPENAP
+import:         from AS39605  action pref=200; med=100; accept AS-IGUANE
+import:         from AS41230  action pref=200; med=100; accept AS-ASK4
+import:         from AS41695  action pref=200; med=100; accept AS-VOSTRON
+import:         from AS41695  action pref=200; med=100; accept AS-VOSTRON
+import:         from AS41811  action pref=200; med=100; accept AS41811
+import:         from AS42004  action pref=200; med=100; accept AS-ULGRP
+import:         from AS42010  action pref=200; med=100; accept AS-ITPS
+import:         from AS42344  action pref=200; med=100; accept AS42344
+import:         from AS42973  action pref=200; med=100; accept AS-METRONETUK
+import:         from AS43996  action pref=200; med=100; accept AS-BOOKING
+import:         from AS44611  action pref=200; med=100; accept AS-TALKINTERNET
+import:         from AS46489  action pref=200; med=100; accept AS46489
+import:         from AS47480  action pref=200; med=100; accept AS-BTS
+import:         from AS47622  action pref=200; med=100; accept AS-DATATECHUK
+import:         from AS47764  action pref=200; med=100; accept AS47764
+import:         from AS47999  action pref=200; med=100; accept AS-TCL9
+import:         from AS49158  action pref=200; med=100; accept AS49158
+import:         from AS49544  action pref=200; med=100; accept AS-INTERACTIVE3D
+import:         from AS50056  action pref=200; med=100; accept AS-AI
+import:         from AS50957  action pref=200; med=100; accept AS-MEMSET
+import:         from AS51918  action pref=200; med=100; accept AS-CERBERUSNETWORKS
+import:         from AS57228  action pref=200; med=100; accept AS57228
+import:         from AS199659  action pref=200; med=100; accept AS-SURETEC
+remarks:        == LYONIX ==
+import:         from AS2200  action pref=200; med=100; accept AS-RENATER
+import:         from AS2484  action pref=200; med=100; accept AS2484
+import:         from AS12779  action pref=200; med=100; accept AS12779:AS-CUSTOMERS
+import:         from AS21502  action pref=200; med=100; accept AS-NUMERICABLE
+import:         from AS43100  action pref=200; med=100; accept AS43100:AS-MEMBERS
+import:         from AS43142  action pref=200; med=100; accept AS-ADELI
+import:         from AS47242  action pref=200; med=100; accept AS47242
+remarks:        -
+export:         to AS29075:AS-PEERS announce AS-IELO
+remarks:        -
+remarks:        IELO connects to route-servers
+                at DE-CIX, AMS-IX, LINX, Equinix-IX Paris, SwissIX, LyonIX, France-IX
+import-via:     AS6695  from AS-ANY EXCEPT AS29075:AS-CUSTOMERS action pref=200; med=100;
+                AS6777  from AS-ANY EXCEPT AS29075:AS-CUSTOMERS action pref=200; med=100;
+                AS8714  from AS-ANY EXCEPT AS29075:AS-CUSTOMERS action pref=200; med=100;
+                AS24115 from AS-ANY EXCEPT AS29075:AS-CUSTOMERS action pref=200; med=100;
+                AS42476 from AS-ANY EXCEPT AS29075:AS-CUSTOMERS action pref=200; med=100;
+                AS43100 from AS-ANY EXCEPT AS29075:AS-CUSTOMERS action pref=200; med=100;
+                AS51706 from AS-ANY EXCEPT AS29075:AS-CUSTOMERS action pref=200; med=100;
+                accept ANY
+export-via:     AS6695  to   AS-ANY EXCEPT AS29075:AS-CUSTOMERS
+                AS6777  to   AS-ANY EXCEPT AS29075:AS-CUSTOMERS
+                AS8714  to   AS-ANY EXCEPT AS29075:AS-CUSTOMERS
+                AS24115 to   AS-ANY EXCEPT AS29075:AS-CUSTOMERS
+                AS42476 to   AS-ANY EXCEPT AS29075:AS-CUSTOMERS
+                AS43100 to   AS-ANY EXCEPT AS29075:AS-CUSTOMERS
+                AS51706 to   AS-ANY EXCEPT AS29075:AS-CUSTOMERS
+                announce AS-IELO
+remarks:        ========================================================
+remarks:        IELO Network Locations
+remarks:        ========================================================
+remarks:
+remarks:        France:
+remarks:        Paris: TeleHouse 1, TeleHouse 2, Telecity/Redbus Courbevoie,
+remarks:        Telecity/Redbus Aubervilliers,
+remarks:        SFR (Courbevoie), Equinix (IXeurope), Iliad (Vitry)
+remarks:        Lyon: SFR (Venissieux)
+remarks:        Marseille: IELO Liandier Datacenter (Prado), SFR (Salengro)
+remarks:        Netherlands:
+remarks:        Amsterdam: Telecity 2 (Kuiperbergweg)
+remarks:        Amsterdam: Evoswitch
+remarks:        United Kingdom:
+remarks:        London: Telecity 2 Harbour Exchange
+remarks:        Switzerland:
+remarks:        Geneva: Equinix GVA1
+remarks:        Lausanne: Brainserve
+remarks:
+remarks:        ========================================================
+remarks:        Peering Informations
+remarks:        ========================================================
+remarks:
+remarks:        Peering policy is open on this internet exchange points:
+remarks:
+remarks:        AMS-IX - http://www.ams-ix.net/
+remarks:        IPv4: 195.69.144.27
+remarks:        IPv6: 2001:7f8:1::a502:9075:1
+remarks:        LINX - http://www.linx.net/
+remarks:        IPv4: 195.66.224.73
+remarks:        IPv6: 2001:7f8:4::7193:1
+remarks:        Equinix - Paris Exchange - http://eu-ix.equinix.com/
+remarks:        IPv4: 195.42.144.71
+remarks:        IPv6: 2001:7f8:43::2:9075:1
+remarks:        FranceIX - http://www.franceix.net
+remarks:        IPv4: 193.105.232.205
+remarks:        IPv6: 2001:7f8:54::205
+remarks:        LyonIX - http://www.lyonix.net
+remarks:        IPv4: 77.95.71.62
+remarks:        IPv6: 2001:7f8:47:47::3f
+remarks:
+remarks:        Peering contact : peers@ielo.net
+remarks:        Network and peerings informations : http://www.as-ielo.net/
+remarks:        Looking Glass : http://www.as-ielo.net/lg/
+remarks:        PeeringDB : http://as29075.peeringdb.com/
+remarks:
+remarks:        ========================================================
+remarks:        Communities sent to customers
+remarks:        ========================================================
+remarks:
+remarks:        Transit upstreams
+remarks:
+remarks:        29075:7000 transit routes from AS3549 (GBLX) Paris (TH2)
+remarks:        29075:7050 transit routes from AS1299 (TELIA) Amsterdam (Telecity 2)
+remarks:        29075:7100 transit routes from AS5511 (OpenTransit) Paris (TH2)
+remarks:        29075:7250 transit routes from AS9009 (GlobalAXS) Paris (TH2)
+remarks:        29075:7300 transit routes from AS6939 (Hurricane Electric) Paris (TH2) (IPv6 only)
+remarks:        29075:7350 transit routes from AS6762 (SeaBone) Paris (SFR)
+remarks:        29075:7400 transit routes from AS6762 (SeaBone) Marseille (SFR)
+remarks:        29075:7500 transit routes from AS174  (Cogent) Paris (Iliad)
+remarks:        29075:7550 transit routes from AS6453 (Tata) Paris (Equinix)
+remarks:
+remarks:        Public Peering
+remarks:
+remarks:        29075:6350 peer routes from FranceIX Paris
+remarks:        29075:6400 peer routes from SwissIX
+remarks:        29075:6550 peer routes from EquinixIX Paris
+remarks:        29075:6600 peer routes from LyonIX
+remarks:        29075:6650 peer routes from AMS-IX
+remarks:        29075:6700 peer routes from LINX
+remarks:        29075:6750 peer routes from DE-CIX
+remarks:
+remarks:        PNI/Specific
+remarks:
+remarks:        29075:8000 peer routes from OVH AS16276
+remarks:        29075:8050 peer routes from PNI Free/Proxad AS12322 from Paris (TH2)
+remarks:        29075:8100 peer routes from PNI PoneyTelecom AS12876 from Paris (Iliad DC2)
+remarks:        29075:8150 peer routes from HOPUS AS44530 from Paris (TH2)
+remarks:
+remarks:        29075:18000 Ielo customers routes
+remarks:        29075:19000 Ielo partial customers routes
+remarks:
+remarks:        ========================================================
+remarks:        Communities accepted from customers
+remarks:        ========================================================
+remarks:
+remarks:        29075:700x  act on AS3549 (GBLX)
+remarks:        29075:705x  act on AS1299 (TELIA)
+remarks:        29075:710x  act on AS5511 (OpenTransit)
+remarks:        29075:725x  act on AS9009 (GlobalAXS)
+remarks:        29075:730x  act on AS6939 (Hurricane Electric) (IPv6 only)
+remarks:        29075:735x  act on AS6762 (Seabone Paris)
+remarks:        29075:740x  act on AS6762 (Seabone Marseille)
+remarks:        29075:750x  act on AS174  (Cogent Iliad)
+remarks:        29075:755x  act on AS6453 (Tata Equinix)
+remarks:
+remarks:        29075:635x  act on FranceIX Paris
+remarks:        29075:640x  act on SwissIX
+remarks:        29075:655x  act on EquinixIX Paris
+remarks:        29075:660x  act on LyonIX
+remarks:        29075:665x  act on AMS-IX
+remarks:        29075:670x  act on LINX
+remarks:        29075:675x  act on DE-CIX
+remarks:
+remarks:        29075:800x  act on OVH AS16276
+remarks:        29075:805x  act on PNI Free/Proxad Paris (TH2)
+remarks:        29075:810x  act on PNI PoneyTelecom Paris (Iliad DC2)
+remarks:        29075:815x  act on HOPUS Paris (TH2)
+remarks:        29075:820x  act on OVH Paris (TH2)
+remarks:
+remarks:        x = 1 : Prepend once
+remarks:        x = 2 : Prepend twice
+remarks:        x = 3 : Prepend three times
+remarks:        x = 4 : don't announce
+remarks:
+remarks:        29075:18001 Customer secondary session (localpref 10 less)
+remarks:        29075:18002 Customer tertiary session (localpref 20 less)
+remarks:
+remarks:        29075:0 Null-route/Blackhole
+remarks:
+remarks:        Well Known communities :
+remarks:        NO_EXPORT 65535:65281
+remarks:        NO_ADVERTISE 65535:65282
+remarks:
+remarks:        ========================================================
+remarks:        Routing Policy
+remarks:        ========================================================
+remarks:
+remarks:        AS29075 use RIPE-229 route-flap damping parameters.
+remarks:        AS29075 filter the following networks (RFC1918):
+remarks:        192.168.0.0/16
+remarks:        172.16.0.0/12
+remarks:        10.0.0.0/8
+remarks:        127.0.0.0/8
+remarks:        0.0.0.0/0
+remarks:
+remarks:        ========================================================
+admin-c:        IELO
+tech-c:         IELO
+mnt-by:         RIPE-NCC-END-MNT
+mnt-by:         IELO-MNT
+mnt-routes:     IELO-MNT
+org:            ORG-LOS3-RIPE
+status:         ASSIGNED
+created:        2003-05-27T07:22:11Z
+last-modified:  2017-11-03T13:00:30Z
+source:         RIPE # Filtered
