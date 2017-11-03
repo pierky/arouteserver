@@ -477,12 +477,16 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
 
   - **ripe-rpki-validator-cache**: ROAs are fetched via
     HTTP from the RIPE RPKI Validator cache
-    (http://localcert.ripe.net:8088/export).
+    (http://localcert.ripe.net:8088/export.json by default).
 
 
   Please note that this method is far from guaranteeing
   that a cryptographically validated datased is retrieved
-  from a trusted cache.
+  from a trusted cache, unless the URL of a local, trusted
+  instance of RPKI Validator is provided below in the
+  **ripe_rpki_validator_url** option.
+
+
 
 
   OpenBGPD: only the **ripe-rpki-validator-cache** source
