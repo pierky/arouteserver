@@ -85,7 +85,9 @@ Origin ASN validity is
 <strong>enforced</strong>. Routes whose prefix is not part of the client's AS-SET are rejected.
 </p></li>
 
-<li><p>Use RPKI ROAs to validate routes whose origin ASN is authorized by the client's AS-SET but whose prefix is not.</p></li>
+<li><p>Use <strong>RPKI ROAs</strong> to validate routes whose origin ASN is authorized by the client's AS-SET but whose prefix is not.</p></li>
+
+<li><p>RPKI ROAs are fetched from the RIPE RPKI Validator cache file at <a href="http://localcert.ripe.net:8088/export.json" rel="noopener">http://localcert.ripe.net:8088/export.json</a>. The following Trust Anchors are used: APNIC from AFRINIC RPKI Root, APNIC from ARIN RPKI Root, APNIC from IANA RPKI Root, APNIC from LACNIC RPKI Root, APNIC from RIPE RPKI Root, AfriNIC RPKI Root, LACNIC RPKI Root, RIPE NCC RPKI Root</p></li>
 
 <li><p>
 Route <strong>validity state</strong> is signalled to route server clients using the following <strong>BGP communities</strong>:

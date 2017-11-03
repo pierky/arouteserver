@@ -120,7 +120,11 @@ Longer prefixes that are covered by one entry of the resulting route set are acc
 {% if cfg.filtering.irrdb.enforce_origin_in_as_set and
 	cfg.filtering.irrdb.enforce_prefix_in_as_set and
 	cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled %}
-<li><p>Use RPKI ROAs to validate routes whose origin ASN is authorized by the client's AS-SET but whose prefix is not.</p></li>
+<li><p>Use <strong>RPKI ROAs</strong> to validate routes whose origin ASN is authorized by the client's AS-SET but whose prefix is not.</p></li>
+
+{%	if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.source == "ripe-rpki-validator-cache" %}
+<li><p>RPKI ROAs are fetched from the RIPE RPKI Validator cache file at {{ cfg.filtering.irrdb.use_rpki_roas_as_route_objects.ripe_rpki_validator_url|urlize }}. The following Trust Anchors are used: {{ cfg.filtering.irrdb.use_rpki_roas_as_route_objects.allowed_trust_anchors|join(", ") }}</p></li>
+{%	endif %}
 {% endif %}
 
 {% if cfg.filtering.irrdb.tag_as_set and
