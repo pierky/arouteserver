@@ -2,31 +2,31 @@ Real configs: AMS-IX, BIRD, IPv4, build ... ok
 Real configs: AMS-IX, BIRD, IPv6, build ... ok
 
 ----------------------------------------------------------------------
-Ran 2 tests in 2678.678s
+Ran 2 tests in 746.093s
 
 OK
-Building config for bird, IPv4: 2228 seconds
-Building config for bird, IPv6: 451 seconds
+Building config for bird, IPv4: 620 seconds
+Building config for bird, IPv6: 126 seconds
 
 
 ======================================================================
 Real configs: AMS-IX, OpenBGPD 6.0, build ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 612.110s
+Ran 1 test in 612.203s
 
 OK
-Building config for openbgpd 6.0, IPv4 & IPv6: 613 seconds
+Building config for openbgpd 6.0, IPv4 & IPv6: 612 seconds
 
 
 ======================================================================
 Real configs: AMS-IX, OpenBGPD 6.2, build ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 634.591s
+Ran 1 test in 613.513s
 
 OK
-Building config for openbgpd 6.2, IPv4 & IPv6: 634 seconds
+Building config for openbgpd 6.2, IPv4 & IPv6: 614 seconds
 
 
 ======================================================================
@@ -34,21 +34,21 @@ Real configs: AMS-IX, BIRD, IPv4, load ... ok
 Real configs: AMS-IX, BIRD, IPv6, load ... ok
 
 ----------------------------------------------------------------------
-Ran 2 tests in 9.800s
+Ran 2 tests in 11.825s
 
 OK
-Loading config for bird, IPv4: 6 seconds
-Loading config for bird, IPv6: 3 seconds
+Loading config for bird, IPv4: 8 seconds
+Loading config for bird, IPv6: 4 seconds
 
 
 ======================================================================
 Real configs: AMS-IX, OpenBGPD 6.0, load ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 1919.922s
+Ran 1 test in 1602.736s
 
 OK
-Loading config for openbgpd 6.0, IPv4 & IPv6: 1920 seconds
+Loading config for openbgpd 6.0, IPv4 & IPv6: 1603 seconds
 
 
 ======================================================================
@@ -65,31 +65,31 @@ Real configs: BCIX, BIRD, IPv4, build ... ok
 Real configs: BCIX, BIRD, IPv6, build ... ok
 
 ----------------------------------------------------------------------
-Ran 2 tests in 451.239s
+Ran 2 tests in 182.004s
 
 OK
-Building config for bird, IPv4: 379 seconds
-Building config for bird, IPv6: 72 seconds
+Building config for bird, IPv4: 150 seconds
+Building config for bird, IPv6: 32 seconds
 
 
 ======================================================================
 Real configs: BCIX, OpenBGPD 6.0, build ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 129.642s
+Ran 1 test in 144.713s
 
 OK
-Building config for openbgpd 6.0, IPv4 & IPv6: 130 seconds
+Building config for openbgpd 6.0, IPv4 & IPv6: 145 seconds
 
 
 ======================================================================
 Real configs: BCIX, OpenBGPD 6.2, build ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 216.159s
+Ran 1 test in 146.064s
 
 OK
-Building config for openbgpd 6.2, IPv4 & IPv6: 217 seconds
+Building config for openbgpd 6.2, IPv4 & IPv6: 146 seconds
 
 
 ======================================================================
@@ -97,7 +97,7 @@ Real configs: BCIX, BIRD, IPv4, load ... ok
 Real configs: BCIX, BIRD, IPv6, load ... ok
 
 ----------------------------------------------------------------------
-Ran 2 tests in 7.686s
+Ran 2 tests in 7.667s
 
 OK
 Loading config for bird, IPv4: 4 seconds
@@ -108,10 +108,10 @@ Loading config for bird, IPv6: 4 seconds
 Real configs: BCIX, OpenBGPD 6.0, load ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 239.376s
+Ran 1 test in 115.546s
 
 OK
-Loading config for openbgpd 6.0, IPv4 & IPv6: 239 seconds
+Loading config for openbgpd 6.0, IPv4 & IPv6: 115 seconds
 
 
 ======================================================================
@@ -130,14 +130,14 @@ Real configs: BIX_IPv6, BIRD, IPv4, build ... SKIP: IPv6 only
 Real configs: BIX_IPv6, BIRD, IPv6, build ... ok
 
 ----------------------------------------------------------------------
-Ran 4 tests in 161.043s
+Ran 4 tests in 116.704s
 
 OK (SKIP=2)
-Building config for bird, IPv4: 135 seconds
+Building config for bird, IPv4: 94 seconds
 
 
 ======================================================================
-Building config for bird, IPv6: 26 seconds
+Building config for bird, IPv6: 22 seconds
 
 
 ======================================================================
@@ -145,14 +145,14 @@ Real configs: BIX_IPv4, OpenBGPD 6.0, build ... ok
 Real configs: BIX_IPv6, OpenBGPD 6.0, build ... ok
 
 ----------------------------------------------------------------------
-Ran 2 tests in 103.910s
+Ran 2 tests in 132.321s
 
 OK
-Building config for openbgpd 6.0, IPv4 & IPv6: 54 seconds
+Building config for openbgpd 6.0, IPv4 & IPv6: 68 seconds
 
 
 ======================================================================
-Building config for openbgpd 6.0, IPv4 & IPv6: 50 seconds
+Building config for openbgpd 6.0, IPv4 & IPv6: 64 seconds
 
 
 ======================================================================
@@ -160,14 +160,14 @@ Real configs: BIX_IPv4, OpenBGPD 6.2, build ... ok
 Real configs: BIX_IPv6, OpenBGPD 6.2, build ... ok
 
 ----------------------------------------------------------------------
-Ran 2 tests in 105.699s
+Ran 2 tests in 131.952s
 
 OK
-Building config for openbgpd 6.2, IPv4 & IPv6: 55 seconds
+Building config for openbgpd 6.2, IPv4 & IPv6: 67 seconds
 
 
 ======================================================================
-Building config for openbgpd 6.2, IPv4 & IPv6: 51 seconds
+Building config for openbgpd 6.2, IPv4 & IPv6: 65 seconds
 
 
 ======================================================================
@@ -177,7 +177,7 @@ Real configs: BIX_IPv6, BIRD, IPv4, load ... SKIP: IPv6 only
 Real configs: BIX_IPv6, BIRD, IPv6, load ... ok
 
 ----------------------------------------------------------------------
-Ran 4 tests in 7.580s
+Ran 4 tests in 7.769s
 
 OK (SKIP=2)
 Loading config for bird, IPv4: 4 seconds
@@ -192,14 +192,14 @@ Real configs: BIX_IPv4, OpenBGPD 6.0, load ... ok
 Real configs: BIX_IPv6, OpenBGPD 6.0, load ... ok
 
 ----------------------------------------------------------------------
-Ran 2 tests in 391.714s
+Ran 2 tests in 68.278s
 
 OK
-Loading config for openbgpd 6.0, IPv4 & IPv6: 243 seconds
+Loading config for openbgpd 6.0, IPv4 & IPv6: 35 seconds
 
 
 ======================================================================
-Loading config for openbgpd 6.0, IPv4 & IPv6: 148 seconds
+Loading config for openbgpd 6.0, IPv4 & IPv6: 33 seconds
 
 
 ======================================================================
@@ -207,7 +207,7 @@ Real configs: BIX_IPv4, OpenBGPD 6.2, load ... SKIP: Lack of resources
 Real configs: BIX_IPv6, OpenBGPD 6.2, load ... SKIP: Lack of resources
 
 ----------------------------------------------------------------------
-Ran 2 tests in 0.008s
+Ran 2 tests in 0.007s
 
 OK (SKIP=2)
 
@@ -220,31 +220,31 @@ Real configs: GR-IX, BIRD, IPv4, build ... ok
 Real configs: GR-IX, BIRD, IPv6, build ... ok
 
 ----------------------------------------------------------------------
-Ran 2 tests in 95.134s
+Ran 2 tests in 39.672s
 
 OK
-Building config for bird, IPv4: 77 seconds
-Building config for bird, IPv6: 18 seconds
+Building config for bird, IPv4: 29 seconds
+Building config for bird, IPv6: 11 seconds
 
 
 ======================================================================
 Real configs: GR-IX, OpenBGPD 6.0, build ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 24.462s
+Ran 1 test in 30.140s
 
 OK
-Building config for openbgpd 6.0, IPv4 & IPv6: 25 seconds
+Building config for openbgpd 6.0, IPv4 & IPv6: 30 seconds
 
 
 ======================================================================
 Real configs: GR-IX, OpenBGPD 6.2, build ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 25.293s
+Ran 1 test in 30.222s
 
 OK
-Building config for openbgpd 6.2, IPv4 & IPv6: 26 seconds
+Building config for openbgpd 6.2, IPv4 & IPv6: 30 seconds
 
 
 ======================================================================
@@ -252,135 +252,7 @@ Real configs: GR-IX, BIRD, IPv4, load ... ok
 Real configs: GR-IX, BIRD, IPv6, load ... ok
 
 ----------------------------------------------------------------------
-Ran 2 tests in 7.530s
-
-OK
-Loading config for bird, IPv4: 4 seconds
-Loading config for bird, IPv6: 4 seconds
-
-
-======================================================================
-Real configs: GR-IX, OpenBGPD 6.0, load ... ok
-
-----------------------------------------------------------------------
-Ran 1 test in 46.012s
-
-OK
-Loading config for openbgpd 6.0, IPv4 & IPv6: 46 seconds
-
-
-======================================================================
-Real configs: GR-IX, OpenBGPD 6.2, load ... ok
-
-----------------------------------------------------------------------
-Ran 1 test in 160.077s
-
-OK
-Loading config for openbgpd 6.2, IPv4 & IPv6: 160 seconds
-
-
-======================================================================
-Real configs: INEX, BIRD, IPv4, build ... ok
-Real configs: INEX, BIRD, IPv6, build ... ok
-
-----------------------------------------------------------------------
-Ran 2 tests in 83.996s
-
-OK
-Building config for bird, IPv4: 61 seconds
-Building config for bird, IPv6: 23 seconds
-
-
-======================================================================
-Real configs: INEX, OpenBGPD 6.0, build ... ok
-
-----------------------------------------------------------------------
-Ran 1 test in 32.236s
-
-OK
-Building config for openbgpd 6.0, IPv4 & IPv6: 32 seconds
-
-
-======================================================================
-Real configs: INEX, OpenBGPD 6.2, build ... ok
-
-----------------------------------------------------------------------
-Ran 1 test in 41.571s
-
-OK
-Building config for openbgpd 6.2, IPv4 & IPv6: 41 seconds
-
-
-======================================================================
-Real configs: INEX, BIRD, IPv4, load ... ok
-Real configs: INEX, BIRD, IPv6, load ... ok
-
-----------------------------------------------------------------------
-Ran 2 tests in 7.512s
-
-OK
-Loading config for bird, IPv4: 3 seconds
-Loading config for bird, IPv6: 4 seconds
-
-
-======================================================================
-Real configs: INEX, OpenBGPD 6.0, load ... ok
-
-----------------------------------------------------------------------
-Ran 1 test in 62.157s
-
-OK
-Loading config for openbgpd 6.0, IPv4 & IPv6: 63 seconds
-
-
-======================================================================
-Real configs: INEX, OpenBGPD 6.2, load ... ok
-
-----------------------------------------------------------------------
-Ran 1 test in 120.437s
-
-OK
-Loading config for openbgpd 6.2, IPv4 & IPv6: 121 seconds
-
-
-======================================================================
-Real configs: LONAP, BIRD, IPv4, build ... ok
-Real configs: LONAP, BIRD, IPv6, build ... ok
-
-----------------------------------------------------------------------
-Ran 2 tests in 186.552s
-
-OK
-Building config for bird, IPv4: 132 seconds
-Building config for bird, IPv6: 54 seconds
-
-
-======================================================================
-Real configs: LONAP, OpenBGPD 6.0, build ... ok
-
-----------------------------------------------------------------------
-Ran 1 test in 90.647s
-
-OK
-Building config for openbgpd 6.0, IPv4 & IPv6: 91 seconds
-
-
-======================================================================
-Real configs: LONAP, OpenBGPD 6.2, build ... ok
-
-----------------------------------------------------------------------
-Ran 1 test in 102.418s
-
-OK
-Building config for openbgpd 6.2, IPv4 & IPv6: 102 seconds
-
-
-======================================================================
-Real configs: LONAP, BIRD, IPv4, load ... ok
-Real configs: LONAP, BIRD, IPv6, load ... ok
-
-----------------------------------------------------------------------
-Ran 2 tests in 7.699s
+Ran 2 tests in 7.851s
 
 OK
 Loading config for bird, IPv4: 4 seconds
@@ -388,59 +260,124 @@ Loading config for bird, IPv6: 3 seconds
 
 
 ======================================================================
-Real configs: LONAP, OpenBGPD 6.0, load ... ok
+Real configs: GR-IX, OpenBGPD 6.0, load ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 150.763s
+Ran 1 test in 22.172s
 
 OK
-Loading config for openbgpd 6.0, IPv4 & IPv6: 151 seconds
+Loading config for openbgpd 6.0, IPv4 & IPv6: 22 seconds
 
 
 ======================================================================
-Real configs: LONAP, OpenBGPD 6.2, load ... SKIP: Lack of resources
+Real configs: GR-IX, OpenBGPD 6.2, load ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 0.005s
-
-OK (SKIP=1)
-
-
-======================================================================
-Real configs: SIX, BIRD, IPv4, build ... ok
-Real configs: SIX, BIRD, IPv6, build ... ok
-
-----------------------------------------------------------------------
-Ran 2 tests in 392.219s
+Ran 1 test in 113.111s
 
 OK
-Building config for bird, IPv4: 302 seconds
-Building config for bird, IPv6: 91 seconds
+Loading config for openbgpd 6.2, IPv4 & IPv6: 113 seconds
 
 
 ======================================================================
-Real configs: SIX, OpenBGPD 6.0, build ... ok
+Real configs: INEX, BIRD, IPv4, build ... ok
+Real configs: INEX, BIRD, IPv6, build ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 184.513s
+Ran 2 tests in 38.348s
 
 OK
-Building config for openbgpd 6.0, IPv4 & IPv6: 185 seconds
+Building config for bird, IPv4: 27 seconds
+Building config for bird, IPv6: 12 seconds
 
 
 ======================================================================
-Real configs: SIX, OpenBGPD 6.2, build ... ok
+Real configs: INEX, OpenBGPD 6.0, build ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 174.343s
+Ran 1 test in 41.334s
 
 OK
-Building config for openbgpd 6.2, IPv4 & IPv6: 175 seconds
+Building config for openbgpd 6.0, IPv4 & IPv6: 41 seconds
 
 
 ======================================================================
-Real configs: SIX, BIRD, IPv4, load ... ok
-Real configs: SIX, BIRD, IPv6, load ... ok
+Real configs: INEX, OpenBGPD 6.2, build ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 42.103s
+
+OK
+Building config for openbgpd 6.2, IPv4 & IPv6: 42 seconds
+
+
+======================================================================
+Real configs: INEX, BIRD, IPv4, load ... ok
+Real configs: INEX, BIRD, IPv6, load ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 7.656s
+
+OK
+Loading config for bird, IPv4: 4 seconds
+Loading config for bird, IPv6: 4 seconds
+
+
+======================================================================
+Real configs: INEX, OpenBGPD 6.0, load ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 26.088s
+
+OK
+Loading config for openbgpd 6.0, IPv4 & IPv6: 26 seconds
+
+
+======================================================================
+Real configs: INEX, OpenBGPD 6.2, load ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 125.224s
+
+OK
+Loading config for openbgpd 6.2, IPv4 & IPv6: 125 seconds
+
+
+======================================================================
+Real configs: LONAP, BIRD, IPv4, build ... ok
+Real configs: LONAP, BIRD, IPv6, build ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 86.331s
+
+OK
+Building config for bird, IPv4: 63 seconds
+Building config for bird, IPv6: 23 seconds
+
+
+======================================================================
+Real configs: LONAP, OpenBGPD 6.0, build ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 101.545s
+
+OK
+Building config for openbgpd 6.0, IPv4 & IPv6: 101 seconds
+
+
+======================================================================
+Real configs: LONAP, OpenBGPD 6.2, build ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 106.480s
+
+OK
+Building config for openbgpd 6.2, IPv4 & IPv6: 106 seconds
+
+
+======================================================================
+Real configs: LONAP, BIRD, IPv4, load ... ok
+Real configs: LONAP, BIRD, IPv6, load ... ok
 
 ----------------------------------------------------------------------
 Ran 2 tests in 7.708s
@@ -451,13 +388,76 @@ Loading config for bird, IPv6: 4 seconds
 
 
 ======================================================================
+Real configs: LONAP, OpenBGPD 6.0, load ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 46.837s
+
+OK
+Loading config for openbgpd 6.0, IPv4 & IPv6: 47 seconds
+
+
+======================================================================
+Real configs: LONAP, OpenBGPD 6.2, load ... SKIP: Lack of resources
+
+----------------------------------------------------------------------
+Ran 1 test in 0.004s
+
+OK (SKIP=1)
+
+
+======================================================================
+Real configs: SIX, BIRD, IPv4, build ... ok
+Real configs: SIX, BIRD, IPv6, build ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 206.226s
+
+OK
+Building config for bird, IPv4: 167 seconds
+Building config for bird, IPv6: 39 seconds
+
+
+======================================================================
+Real configs: SIX, OpenBGPD 6.0, build ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 192.216s
+
+OK
+Building config for openbgpd 6.0, IPv4 & IPv6: 192 seconds
+
+
+======================================================================
+Real configs: SIX, OpenBGPD 6.2, build ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 194.941s
+
+OK
+Building config for openbgpd 6.2, IPv4 & IPv6: 195 seconds
+
+
+======================================================================
+Real configs: SIX, BIRD, IPv4, load ... ok
+Real configs: SIX, BIRD, IPv6, load ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 7.996s
+
+OK
+Loading config for bird, IPv4: 3 seconds
+Loading config for bird, IPv6: 5 seconds
+
+
+======================================================================
 Real configs: SIX, OpenBGPD 6.0, load ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 291.965s
+Ran 1 test in 104.593s
 
 OK
-Loading config for openbgpd 6.0, IPv4 & IPv6: 292 seconds
+Loading config for openbgpd 6.0, IPv4 & IPv6: 105 seconds
 
 
 ======================================================================
@@ -474,31 +474,31 @@ Real configs: STHIX, BIRD, IPv4, build ... ok
 Real configs: STHIX, BIRD, IPv6, build ... ok
 
 ----------------------------------------------------------------------
-Ran 2 tests in 127.821s
+Ran 2 tests in 94.075s
 
 OK
-Building config for bird, IPv4: 93 seconds
-Building config for bird, IPv6: 35 seconds
+Building config for bird, IPv4: 72 seconds
+Building config for bird, IPv6: 22 seconds
 
 
 ======================================================================
 Real configs: STHIX, OpenBGPD 6.0, build ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 77.267s
+Ran 1 test in 91.808s
 
 OK
-Building config for openbgpd 6.0, IPv4 & IPv6: 78 seconds
+Building config for openbgpd 6.0, IPv4 & IPv6: 92 seconds
 
 
 ======================================================================
 Real configs: STHIX, OpenBGPD 6.2, build ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 76.821s
+Ran 1 test in 92.184s
 
 OK
-Building config for openbgpd 6.2, IPv4 & IPv6: 77 seconds
+Building config for openbgpd 6.2, IPv4 & IPv6: 92 seconds
 
 
 ======================================================================
@@ -506,7 +506,7 @@ Real configs: STHIX, BIRD, IPv4, load ... ok
 Real configs: STHIX, BIRD, IPv6, load ... ok
 
 ----------------------------------------------------------------------
-Ran 2 tests in 7.785s
+Ran 2 tests in 7.814s
 
 OK
 Loading config for bird, IPv4: 4 seconds
@@ -517,10 +517,10 @@ Loading config for bird, IPv6: 4 seconds
 Real configs: STHIX, OpenBGPD 6.0, load ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 106.975s
+Ran 1 test in 44.876s
 
 OK
-Loading config for openbgpd 6.0, IPv4 & IPv6: 107 seconds
+Loading config for openbgpd 6.0, IPv4 & IPv6: 44 seconds
 
 
 ======================================================================
@@ -537,31 +537,31 @@ Real configs: SwissIX, BIRD, IPv4, build ... ok
 Real configs: SwissIX, BIRD, IPv6, build ... ok
 
 ----------------------------------------------------------------------
-Ran 2 tests in 385.099s
+Ran 2 tests in 166.321s
 
 OK
-Building config for bird, IPv4: 319 seconds
-Building config for bird, IPv6: 66 seconds
+Building config for bird, IPv4: 131 seconds
+Building config for bird, IPv6: 35 seconds
 
 
 ======================================================================
 Real configs: SwissIX, OpenBGPD 6.0, build ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 133.637s
+Ran 1 test in 148.051s
 
 OK
-Building config for openbgpd 6.0, IPv4 & IPv6: 134 seconds
+Building config for openbgpd 6.0, IPv4 & IPv6: 148 seconds
 
 
 ======================================================================
 Real configs: SwissIX, OpenBGPD 6.2, build ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 138.579s
+Ran 1 test in 153.659s
 
 OK
-Building config for openbgpd 6.2, IPv4 & IPv6: 138 seconds
+Building config for openbgpd 6.2, IPv4 & IPv6: 153 seconds
 
 
 ======================================================================
@@ -569,21 +569,21 @@ Real configs: SwissIX, BIRD, IPv4, load ... ok
 Real configs: SwissIX, BIRD, IPv6, load ... ok
 
 ----------------------------------------------------------------------
-Ran 2 tests in 7.626s
+Ran 2 tests in 8.166s
 
 OK
 Loading config for bird, IPv4: 3 seconds
-Loading config for bird, IPv6: 4 seconds
+Loading config for bird, IPv6: 5 seconds
 
 
 ======================================================================
 Real configs: SwissIX, OpenBGPD 6.0, load ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 246.959s
+Ran 1 test in 97.738s
 
 OK
-Loading config for openbgpd 6.0, IPv4 & IPv6: 247 seconds
+Loading config for openbgpd 6.0, IPv4 & IPv6: 98 seconds
 
 
 ======================================================================

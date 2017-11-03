@@ -31,6 +31,7 @@ from .enrichers.irrdb import IRRDBConfigEnricher_OriginASNs, \
                              IRRDBConfigEnricher_Prefixes
 from .enrichers.pdb_as_set import PeeringDBConfigEnricher_ASSet
 from .enrichers.pdb_max_prefix import PeeringDBConfigEnricher_MaxPrefix
+from .enrichers.rpki_roas import RPKIROAsEnricher
 from .enrichers.rtt import RTTGetterConfigEnricher
 from .errors import MissingDirError, MissingFileError, BuilderError, \
                     ARouteServerError, MissingArgumentError, \
@@ -407,8 +408,13 @@ class ConfigBuilder(object):
 
         self.kwargs = kwargs
 
+        # Initially None; is set to {} and finally populated by
+        # the IRRDB enrichers.
         # { "<as_set_bundle_id>": <AS_SET_Bundle_Proxy>, ... }
         self.irrdb_info = None
+
+        # { "<origin_asn>": [{"prefix": "a/b", "max_len": c}] }
+        self.rpki_roas_as_route_objects = {}
 
         # Validation
 
@@ -476,15 +482,25 @@ class ConfigBuilder(object):
         # Enrichers
         # Order matters: AS-SET from PeeringDB must be run first
         # in order to acquire missing AS-SETs that are processed
-        # later by IRRDB enrichers.
+        # later by IRRDB enrichers. RPKI ROAs are processed only
+        # for those origin ASNs that have been gathered from AS-SETs.
+        irrdb_cfg = self.cfg_general["filtering"]["irrdb"]
         used_enricher_classes = []
-        if self.cfg_general["filtering"]["irrdb"]["peering_db"]:
+
+        if irrdb_cfg["peering_db"]:
             used_enricher_classes += [PeeringDBConfigEnricher_ASSet]
+
         used_enricher_classes += [IRRDBConfigEnricher_OriginASNs,
                                   IRRDBConfigEnricher_Prefixes,
                                   PeeringDBConfigEnricher_MaxPrefix]
+
         if self.cfg_general.rtt_based_functions_are_used:
             used_enricher_classes.append(RTTGetterConfigEnricher)
+
+        if irrdb_cfg["use_rpki_roas_as_route_objects"]["enabled"] and \
+            irrdb_cfg["use_rpki_roas_as_route_objects"]["source"] == \
+                "ripe-rpki-validator-cache":
+            used_enricher_classes.append(RPKIROAsEnricher)
 
         for enricher_class in used_enricher_classes:
             enricher = enricher_class(self, threads=self.threads)
@@ -526,6 +542,7 @@ class ConfigBuilder(object):
         self.data["clients"] = self.cfg_clients
         self.data["asns"] = self.cfg_asns
         self.data["irrdb_info"] = self.irrdb_info
+        self.data["rpki_roas_as_route_objects"] = self.rpki_roas_as_route_objects
         self.data["roas"] = self.cfg_roas
         self.data["live_tests"] = self.live_tests
         self.data["rtt_based_functions_are_used"] = \
@@ -701,7 +718,8 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                         "add_path", "max_prefix_action",
                         "blackhole_filtering_rewrite_ipv6_nh",
                         "large_communities", "extended_communities",
-                        "graceful_shutdown", "rfc1997_wellknown_communities"]
+                        "graceful_shutdown", "internal_communities",
+                        "rpki_roas_as_route_objects_source"]
 
     def _include_local_file(self, local_file_id):
         return 'include "{}"\n\n'.format(
@@ -922,27 +940,33 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             ):
                 res = False
 
-        if self.cfg_general["rfc1997_wellknown_communities"]["policy"] == "pass":
-            rfc1997_wkcomms_collisions = []
-            for comm_name in ConfigParserGeneral.COMMUNITIES_SCHEMA:
-                comm = self.cfg_general["communities"][comm_name]
-                if comm["ext"]:
-                    if comm["ext"] in ("ro:65535:65281", "ro:65535:65282",
-                                       "ro:65535:dyn_val", "ro:65535:peer_as"):
-                        rfc1997_wkcomms_collisions.append(comm_name)
+        internal_communities_collistion = []
+        for comm_name in ConfigParserGeneral.COMMUNITIES_SCHEMA:
+            comm = self.cfg_general["communities"][comm_name]
+            if comm["ext"] and comm["ext"].startswith("ro:65535:"):
+                internal_communities_collistion.append(comm_name)
+        if internal_communities_collistion:
+            if not self.process_bgpspeaker_specific_compatibility_issue(
+                "internal_communities",
+                "The Extended BGP communities in the range ro:65535:* "
+                "are reserved for internal purposes. "
+                "A collision has been detected with the following "
+                "communit{y_ies}: {comms}".format(
+                    y_ies="y" if len(internal_communities_collistion) == 1 else "ies",
+                    comms=", ".join(internal_communities_collistion)
+                )
+            ):
+                res = False
 
-            if rfc1997_wkcomms_collisions:
+        use_rpki_roas_as_route_objects_cfg = \
+            self.cfg_general["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]
+        if use_rpki_roas_as_route_objects_cfg["enabled"]:
+            if use_rpki_roas_as_route_objects_cfg["source"] != "ripe-rpki-validator-cache":
                 if not self.process_bgpspeaker_specific_compatibility_issue(
-                    "rfc1997_wellknown_communities",
-                    "When using the pass-through policy for RFC1977 "
-                    "well-known communities handling two communities "
-                    "must be reserved for internal purposes: "
-                    "ro:65535:65281 and ro:65535:65282. "
-                    "A collision has been detected with the following "
-                    "communit{y_ies}: {comms}".format(
-                        y_ies="y" if len(rfc1997_wkcomms_collisions) == 1 else "ies",
-                        comms=", ".join(rfc1997_wkcomms_collisions)
-                    )
+                    "rpki_roas_as_route_objects_source",
+                    "For OpenBGPD only the 'ripe-rpki-validator-cache' "
+                    "value is allowed for the "
+                    "'use_rpki_roas_as_route_objects.source' option."
                 ):
                     res = False
 
@@ -995,5 +1019,12 @@ class TemplateContextDumper(ConfigBuilder):
                 lst.append(bundle.to_dict())
             return lst
 
+        def parse_rpki_roas_as_route_objects(rpki_roas_as_route_objects):
+            res = {}
+            for origin_asn in rpki_roas_as_route_objects:
+                res[origin_asn] = list(rpki_roas_as_route_objects[origin_asn].roas)
+            return res
+
         env.filters["to_yaml"] = to_yaml
         env.filters["parse_irrdb_info"] = parse_irrdb_info
+        env.filters["parse_rpki_roas_as_route_objects"] = parse_rpki_roas_as_route_objects

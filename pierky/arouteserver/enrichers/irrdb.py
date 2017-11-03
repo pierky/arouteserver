@@ -209,19 +209,19 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
 
         # Add to irrdb_info all the AS-SET bundles reported in the 'asns' section.
         for asn in self.builder.cfg_asns.cfg["asns"]:
-            self.builder.cfg_asns[asn]["as_set_bundle_ids"] = []
+            self.builder.cfg_asns[asn]["as_set_bundle_ids"] = set()
 
             if not self.builder.cfg_asns[asn]["as_sets"]:
                 continue
 
-            self.builder.cfg_asns[asn]["as_set_bundle_ids"].append(
+            self.builder.cfg_asns[asn]["as_set_bundle_ids"].add(
                 use_as_set(self.builder.cfg_asns[asn]["as_sets"])[0]
             )
 
         # Add to irrdb_info all the AS-SET bundles reported in the 'clients' section.
         for client in self.builder.cfg_clients.cfg["clients"]:
             client_irrdb = client["cfg"]["filtering"]["irrdb"]
-            client_irrdb["as_set_bundle_ids"] = []
+            client_irrdb["as_set_bundle_ids"] = set()
 
             if not client_irrdb["enforce_origin_in_as_set"] and \
                 not client_irrdb["enforce_prefix_in_as_set"] and \
@@ -240,7 +240,7 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
             # are required.
 
             # In the worst case, use AS<asn>.
-            client_irrdb["as_set_bundle_ids"].append(
+            client_irrdb["as_set_bundle_ids"].add(
                 use_as_set(["AS{}".format(client["asn"])],
                            "client {}".format(client["id"]))[0]
             )
@@ -258,11 +258,11 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
                     )
                     white_list_bundle.save(obj_type, client_irrdb[cfg_attr])
                     if white_list_bundle_id not in client_irrdb["as_set_bundle_ids"]:
-                        client_irrdb["as_set_bundle_ids"].append(white_list_bundle_id)
+                        client_irrdb["as_set_bundle_ids"].add(white_list_bundle_id)
 
             if client_irrdb["as_sets"]:
                 # Client has its own specific set of AS-SETs.
-                client_irrdb["as_set_bundle_ids"].append(
+                client_irrdb["as_set_bundle_ids"].add(
                     use_as_set(client_irrdb["as_sets"], "client {}".format(client["id"]))[0]
                 )
                 continue
@@ -275,7 +275,7 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
             asn = "AS{}".format(client["asn"])
             if asn in self.builder.cfg_asns.cfg["asns"] and \
                 self.builder.cfg_asns.cfg["asns"][asn]["as_sets"]:
-                client_irrdb["as_set_bundle_ids"].append(
+                client_irrdb["as_set_bundle_ids"].add(
                     use_as_set(
                         self.builder.cfg_asns.cfg["asns"][asn]["as_sets"],
                         "client {}".format(client["id"])
@@ -293,7 +293,7 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
                                     client["id"], client["asn"],
                                     ", ".join(as_sets_from_pdb)
                                 ))
-                client_irrdb["as_set_bundle_ids"].append(
+                client_irrdb["as_set_bundle_ids"].add(
                     use_as_set(as_sets_from_pdb, "client {}".format(client["id"]))[0]
                 )
                 continue

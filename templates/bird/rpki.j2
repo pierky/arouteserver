@@ -1,7 +1,11 @@
+{% from 'macros.j2' import write_prefix_list %}
 # ---------------------------------------------------------
 # RPKI
 
-{% if cfg.filtering.rpki.enabled %}
+{% if cfg.filtering.rpki.enabled or (
+		cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and
+		cfg.filtering.irrdb.use_rpki_roas_as_route_objects.source == "rtrlib"
+	) %}
 roa table RPKI {
 {% if roas %}
 {%	for roa in roas if roa.prefix.prefix is current_ipver %}
@@ -16,5 +20,15 @@ roa table RPKI {
 {% endif %}
 };
 {% else %}
-# RPKI not enabled at 'cfg.filtering.rpki.enabled'
+# RPKI not used.
+{% endif %}
+
+{% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and
+	cfg.filtering.irrdb.use_rpki_roas_as_route_objects.source == "ripe-rpki-validator-cache" %}
+# RPKI ROAs used as route objects
+{%	for origin_asn in rpki_roas_as_route_objects|sort %}
+define RPKI_ROAs_as_route_objects_{{ origin_asn }} = [
+{{ write_prefix_list(rpki_roas_as_route_objects[origin_asn].roas, True) }}
+];
+{%	endfor %}
 {% endif %}

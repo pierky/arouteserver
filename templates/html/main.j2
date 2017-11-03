@@ -117,11 +117,22 @@ Longer prefixes that are covered by one entry of the resulting route set are acc
 {% endif %}
 </p></li>
 
+{% if cfg.filtering.irrdb.enforce_origin_in_as_set and
+	cfg.filtering.irrdb.enforce_prefix_in_as_set and
+	cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled %}
+<li><p>Use <strong>RPKI ROAs</strong> to validate routes whose origin ASN is authorized by the client's AS-SET but whose prefix is not.</p></li>
+
+{%	if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.source == "ripe-rpki-validator-cache" %}
+<li><p>RPKI ROAs are fetched from the RIPE RPKI Validator cache file at {{ cfg.filtering.irrdb.use_rpki_roas_as_route_objects.ripe_rpki_validator_url|urlize }}. The following Trust Anchors are used: {{ cfg.filtering.irrdb.use_rpki_roas_as_route_objects.allowed_trust_anchors|join(", ") }}</p></li>
+{%	endif %}
+{% endif %}
+
 {% if cfg.filtering.irrdb.tag_as_set and
 	(cfg.communities.prefix_present_in_as_set|community_is_set or
 	 cfg.communities.prefix_not_present_in_as_set|community_is_set or
 	 cfg.communities.origin_present_in_as_set|community_is_set or
-	 cfg.communities.origin_not_present_in_as_set|community_is_set)%}
+	 cfg.communities.origin_not_present_in_as_set|community_is_set or
+	 cfg.communities.prefix_validated_via_rpki_roas|community_is_set)%}
 <li><p>
 Route <strong>validity state</strong> is signalled to route server clients using the following <strong>BGP communities</strong>:
 <table class="table">
@@ -138,6 +149,8 @@ Route <strong>validity state</strong> is signalled to route server clients using
   {{ write_communities_table_row(cfg.communities.prefix_not_present_in_as_set, "Prefix is NOT included in client's AS-SET") }} 
   {{ write_communities_table_row(cfg.communities.origin_present_in_as_set, "Origin ASN is included in client's AS-SET") }} 
   {{ write_communities_table_row(cfg.communities.origin_not_present_in_as_set, "Origin ASN is NOT included in client's AS-SET") }} 
+  {{ write_communities_table_row(cfg.communities.prefix_validated_via_rpki_roas, "Prefix matched by a RPKI ROA for the authorized origin ASN") }} 
+  {{ write_communities_table_row(cfg.communities.route_validated_via_white_list, "Route authorized soley because of a client white list entry") }} 
 </tbody>
 </table>
 </p></li>

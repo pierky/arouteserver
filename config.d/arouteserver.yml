@@ -59,3 +59,8 @@
 
 # Cache expiry time, in seconds.
 #cache_expiry: 43200
+
+# Enable automatic checking for new release.
+# When set to True, the program automatically checks PyPI for
+# a new release; if found, it logs a warning message.
+#check_new_release: True

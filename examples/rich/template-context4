@@ -112,6 +112,12 @@ cfg:
       peer_as: false
       std: null
       type: outbound
+    prefix_validated_via_rpki_roas:
+      ext: null
+      lrg: 999:65530:2
+      peer_as: false
+      std: '65530:2'
+      type: outbound
     prepend_once_to_any:
       ext: rt:65501:999
       lrg: 999:65501:999
@@ -196,6 +202,12 @@ cfg:
       peer_as: false
       std: null
       type: internal
+    route_validated_via_white_list:
+      ext: null
+      lrg: 999:65530:3
+      peer_as: false
+      std: '65530:3'
+      type: outbound
   custom_communities:
     from_europe:
       ext: rt:65534:1
@@ -233,6 +245,19 @@ cfg:
       enforce_prefix_in_as_set: true
       peering_db: false
       tag_as_set: true
+      use_rpki_roas_as_route_objects:
+        allowed_trust_anchors:
+        - APNIC from AFRINIC RPKI Root
+        - APNIC from ARIN RPKI Root
+        - APNIC from IANA RPKI Root
+        - APNIC from LACNIC RPKI Root
+        - APNIC from RIPE RPKI Root
+        - AfriNIC RPKI Root
+        - LACNIC RPKI Root
+        - RIPE NCC RPKI Root
+        enabled: true
+        ripe_rpki_validator_url: http://localcert.ripe.net:8088/export.json
+        source: ripe-rpki-validator-cache
     max_as_path_len: 32
     max_prefix:
       action: restart
@@ -622,8 +647,9 @@ clients:
         max: 48
         min: 12
       irrdb:
-        as_set_bundle_ids:
-        - 454ed823addc298946e5f2ad415842d8a0a89403cf8ad05e584f94caf52ef799ca506a90f5386c1335f271047089bc0612014069cbb3d9a7851d595a0374c5c3
+        as_set_bundle_ids: !!set
+          ? 454ed823addc298946e5f2ad415842d8a0a89403cf8ad05e584f94caf52ef799ca506a90f5386c1335f271047089bc0612014069cbb3d9a7851d595a0374c5c3
+          : null
         as_sets: null
         enforce_origin_in_as_set: true
         enforce_prefix_in_as_set: true
@@ -672,8 +698,9 @@ clients:
       ipv4_pref_len: *id001
       ipv6_pref_len: *id002
       irrdb:
-        as_set_bundle_ids:
-        - a47487d3c1df7a14133a9cff3612f3af305e57bc54f1f212d6f8fb2da1da11949dea574d2c972b103143a62afb13ce6c93f8f89d3b0102b7113b54f8e1c8b341
+        as_set_bundle_ids: !!set
+          ? a47487d3c1df7a14133a9cff3612f3af305e57bc54f1f212d6f8fb2da1da11949dea574d2c972b103143a62afb13ce6c93f8f89d3b0102b7113b54f8e1c8b341
+          : null
         as_sets: null
         enforce_origin_in_as_set: true
         enforce_prefix_in_as_set: true
@@ -722,7 +749,7 @@ clients:
       ipv4_pref_len: *id001
       ipv6_pref_len: *id002
       irrdb:
-        as_set_bundle_ids: []
+        as_set_bundle_ids: !!set {}
         as_sets: null
         enforce_origin_in_as_set: true
         enforce_prefix_in_as_set: true
@@ -767,7 +794,7 @@ asns: {}
 
 
 irrdb_info
--------
+----------
 - asns:
   - 3333
   descr: AS3333
@@ -838,6 +865,59 @@ irrdb_info
     max_length: 32
     prefix: 199.43.0.0
   used_by: client AS10745_1
+
+
+rpki_roas_as_route_objects
+--------------------------
+AS3333:
+- exact: true
+  ge: 24
+  le: 24
+  length: 24
+  max_length: 32
+  prefix: 193.0.24.0
+- exact: true
+  ge: 23
+  le: 23
+  length: 23
+  max_length: 32
+  prefix: 193.0.12.0
+- exact: true
+  ge: 23
+  le: 23
+  length: 23
+  max_length: 32
+  prefix: 193.0.18.0
+- exact: true
+  ge: 21
+  le: 21
+  length: 21
+  max_length: 32
+  prefix: 193.0.0.0
+- exact: true
+  ge: 23
+  le: 23
+  length: 23
+  max_length: 32
+  prefix: 193.0.22.0
+- exact: true
+  ge: 23
+  le: 23
+  length: 23
+  max_length: 32
+  prefix: 193.0.10.0
+- exact: false
+  ge: 22
+  le: 26
+  length: 22
+  max_length: 32
+  prefix: 193.0.24.0
+- exact: true
+  ge: 23
+  le: 23
+  length: 23
+  max_length: 32
+  prefix: 193.0.20.0
 
 
 roas

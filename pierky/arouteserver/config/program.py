@@ -64,6 +64,8 @@ class ConfigParserProgram(object):
         "rtt_getter_path": "",
 
         "threads": 4,
+
+        "check_new_release": True
     }
 
     PATH_KEYS = ("logging_config_file", "cfg_general", "cfg_clients",
@@ -365,6 +367,8 @@ class ConfigParserProgram(object):
         def iterate_dir(d, dic):
             for filename in os.listdir(d):
                 if filename == ConfigParserProgram.FINGERPRINTS_FILENAME:
+                    continue
+                if filename.endswith(".swp"):
                     continue
                 path = os.path.join(d, filename)
                 if os.path.isdir(path):

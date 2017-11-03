@@ -1,0 +1,40 @@
+router id 192.0.2.61;
+
+log "/var/log/bird.log" all;
+log syslog all;
+debug protocols all;
+
+protocol device { }
+
+protocol static own_prefixes 
+{
+	route {{ data.AS6_roa1 }} reject;
+	route {{ data.AS6_roa2 }} reject;
+}
+
+
+function fake_origin_as(int origin_as) {
+	# build an AS_PATH == "2 <origin_as>", so that the
+	# origin ASN is not included in AS2's AS-SET
+	# and the prefix is marked with the
+	# not_present_in_as_set community.
+	bgp_path.delete(6);
+	bgp_path.prepend(origin_as);
+	bgp_path.prepend(6);
+}
+filter outgoing {
+	if net = {{ data.AS6_roa1 }} then fake_origin_as(2);
+	if net = {{ data.AS6_roa2 }} then fake_origin_as(3);
+accept;
+}
+
+protocol bgp the_rs {
+	local as 6;
+	neighbor {{ data.rs_IPAddress }} as 999;
+	next hop self;
+	import all;
+	export filter outgoing;
+	connect delay time 1;
+	connect retry time 1;
+}
+

@@ -15,6 +15,7 @@
 
 from .tpl_rendering import HTMLCommand, DumpTemplateContextCommand, \
                           BIRDCommand, OpenBGPDCommand, BuildCommand
+from .check_new_release import CheckNewRelease
 from .clients_from_peeringdb import ClientsFromPeeringDBCommand
 from .clients_from_euroix import ClientsFromEuroIXCommand
 from .setup import SetupCommand
@@ -34,4 +35,5 @@ all_commands = [
     SetupTemplatesCommand,
     VerifyTemplatesCommand,
     InitScenarioCommand,
+    CheckNewRelease,
 ]

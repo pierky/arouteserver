@@ -21,10 +21,11 @@ class TagASSetScenario_Data6(object):
         "AS2_1_IPAddress":                  "2001:db8:1:1::21",
         "AS4_1_IPAddress":                  "2001:db8:1:1::41",
         "AS5_1_IPAddress":                  "2001:db8:1:1::51",
+        "AS6_1_IPAddress":                  "2001:db8:1:1::61",
 
-        "AS1_allowed_prefixes":             "2a01:0::/32",
+        "AS1_allowed_prefixes":             "2a01::/32",
 
-        "AS2_allowed_prefixes":             "2a02:0::/32",
+        "AS2_allowed_prefixes":             "2a02::/32",
         "AS2_pref_ok_origin_ok1":           "2a02:0:1::/48",
         "AS2_pref_ko_origin_ok1":           "2a02:1::/48",
         "AS3_pref_ok_origin_ko1":           "2a02:0:2::/48",
@@ -34,8 +35,9 @@ class TagASSetScenario_Data6(object):
         "AS2_pref_wl_origin_wl":            "2a02:2:3::/48",
         "AS2_pref_ko_origin_wl":            "2a02:3:1::/48",
         "AS2_pref_ok_origin_wl":            "2a02:0:3::/48",
+        "AS2_roa1":                         "2a02:4::/32",
 
-        "AS4_allowed_prefixes":             "2a04:0::/32",
+        "AS4_allowed_prefixes":             "2a04::/32",
         "AS4_pref_ok_origin_ok1":           "2a04:0:1::/48",
         "AS4_pref_ko_origin_ok1":           "2a04:1::/48",
         "AS3_pref_ok_origin_ko2":           "2a04:0:2::/48",
@@ -50,7 +52,7 @@ class TagASSetScenario_Data6(object):
         "AS4_routewl_4":                    "2a04:5:2::/48",
         "AS4_routewl_5":                    "2a04:6:1::/48",
 
-        "AS5_allowed_prefixes":             "2a05:0::/32",
+        "AS5_allowed_prefixes":             "2a05::/32",
         "AS5_pref_ok_origin_ok1":           "2a05:0:1::/48",
         "AS5_pref_ko_origin_ok1":           "2a05:1::/48",
         "AS3_pref_ok_origin_ko3":           "2a05:0:2::/48",
@@ -59,4 +61,8 @@ class TagASSetScenario_Data6(object):
         "AS5_pref_wl_origin_wl":            "2a05:2:3::/48",
         "AS5_pref_ko_origin_wl":            "2a05:3:1::/48",
         "AS5_pref_ok_origin_wl":            "2a05:0:3::/48",
-    }
+
+        "AS6_allowed_prefixes":             "2a06::/32",
+        "AS6_roa1":                         "2a02:4::/32",
+        "AS6_roa2":                         "2a03:1::/32",
+}

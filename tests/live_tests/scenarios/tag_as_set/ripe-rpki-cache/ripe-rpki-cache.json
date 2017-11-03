@@ -1,0 +1,6 @@
+{"roas": [
+  {"prefix": "2.4.0.0/16", "maxLength": 16, "asn": "AS2", "ta": "test"},
+  {"prefix": "2a02:4::/32", "maxLength": 32, "asn": "AS2", "ta": "test"},
+  {"prefix": "3.1.0.0/16", "maxLength": 16, "asn": "AS3", "ta": "test"},
+  {"prefix": "2a03:1::/32", "maxLength": 32, "asn": "AS3", "ta": "test"}
+]}

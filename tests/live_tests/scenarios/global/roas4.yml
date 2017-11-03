@@ -12,3 +12,17 @@ roas:
       length: 20
       le: 23
     asn: 101
+  - prefix:
+      prefix: 101.2.0.0
+      length: 17
+    asn: 101
+  - prefix:
+      prefix: 101.2.128.0
+      length: 17
+      le: 24
+    asn: 101
+  - prefix:
+      prefix: 101.3.0.0
+      length: 16
+      le: 24
+    asn: 105

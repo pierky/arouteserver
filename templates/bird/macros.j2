@@ -80,17 +80,17 @@
 {% endif %}
 {% endmacro %}
 
-{% macro add_communities(comm) %}
-
+{% macro add_communities(comm, tabs=2) %}
+{% set indent = "\t" * tabs %}
 {% if comm %}
 {%	if comm.std %}
-		bgp_community.add({{ write_community(comm.std) }});
+{{ indent }}bgp_community.add({{ write_community(comm.std) }});
 {%	endif %}
 {%	if comm.lrg %}
-		bgp_large_community.add({{ write_community(comm.lrg) }});
+{{ indent }}bgp_large_community.add({{ write_community(comm.lrg) }});
 {% 	endif %}
 {%	if comm.ext %}
-		bgp_ext_community.add({{ write_community(comm.ext) }});
+{{ indent }}bgp_ext_community.add({{ write_community(comm.ext) }});
 {% 	endif %}
 {% endif %}
 {% endmacro %}

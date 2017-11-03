@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from jinja2 import Environment, FileSystemLoader
+import json
 try:
     import mock
 except ImportError:
@@ -25,13 +26,15 @@ import yaml
 
 from .docker import InstanceError
 
+from pierky.arouteserver.cached_objects import CachedObject
 from pierky.arouteserver.config.validators import ValidatorPrefixListEntry
 from pierky.arouteserver.enrichers.irrdb import IRRDBConfigEnricher_OriginASNs, \
                                                 IRRDBConfigEnricher_Prefixes
 from pierky.arouteserver.enrichers.rtt import RTTGetterConfigEnricher
 from pierky.arouteserver.ipaddresses import IPAddress, IPNetwork
+from pierky.arouteserver.peering_db import PeeringDBInfo, PeeringDBNet
+from pierky.arouteserver.ripe_rpki_cache import RIPE_RPKI_ROAs
 from pierky.arouteserver.tests.base import ARouteServerTestCase
-from pierky.arouteserver.tests.mock_peeringdb import mock_peering_db
 from pierky.arouteserver.tests.live_tests.instances import BGPSpeakerInstance
 
 
@@ -160,6 +163,11 @@ class LiveScenario(ARouteServerTestCase):
     DO_NOT_STOP_INSTANCES = False
 
     CONFIG_BUILDER_CLASS = None
+
+    MOCK_PEERING_DB = True
+    MOCK_RIPE_RPKI_CACHE = True
+    MOCK_IRRDB = True
+    MOCK_RTTGETTER = True
 
     # regex: for example ^65520:(\d+)$
     REJECT_CAUSE_COMMUNITY = None
@@ -393,12 +401,92 @@ class LiveScenario(ARouteServerTestCase):
         mock_RSet.side_effect = _mock_RSet
 
     @classmethod
+    def mock_cached_objects(cls):
+
+        def load_data_from_cache(self):
+            return False
+
+        def save_data_to_cache(self):
+            return
+
+        mock_load_data_from_cache = mock.patch.object(
+            CachedObject, "load_data_from_cache", autospec=True
+        ).start()
+        mock_load_data_from_cache.side_effect = load_data_from_cache
+
+        mock_save_data_to_cache = mock.patch.object(
+            CachedObject, "save_data_to_cache", autospec=True
+        ).start()
+        mock_save_data_to_cache.side_effect = save_data_to_cache
+
+    @classmethod
+    def mock_peering_db(cls):
+
+        def get_data_from_peeringdb(self):
+            path = "{}/{}/{}".format(
+                cls._get_module_dir(),
+                "peeringdb_data",
+                self._get_peeringdb_url()
+            )
+            with open(path, "r") as f:
+                return json.load(f)
+
+        def get_url_net(self):
+            return "net_{}.json".format(self.asn)
+
+        mock_get_data_from_peeringdb = mock.patch.object(
+            PeeringDBInfo, "_get_data_from_peeringdb", autospec=True
+        ).start()
+        mock_get_data_from_peeringdb.side_effect = get_data_from_peeringdb
+
+        mock_get_url_net = mock.patch.object(
+            PeeringDBNet, "_get_peeringdb_url", autospec=True
+        ).start()
+        mock_get_url_net.side_effect = get_url_net
+
+    @classmethod
+    def mock_ripe_rpki_cache(cls):
+
+        def get_data(self):
+            path = "{}/{}/{}".format(
+                cls._get_module_dir(),
+                "ripe-rpki-cache",
+                "ripe-rpki-cache.json"
+            )
+            with open(path, "r") as f:
+                return json.load(f)
+
+        mock_get_data = mock.patch.object(
+            RIPE_RPKI_ROAs, "_get_data", autospec=True
+        ).start()
+        mock_get_data.side_effect = get_data
+
+    @classmethod
     def _setUpClass(cls):
+        for prefix_name in cls.DATA:
+            prefix = cls.DATA[prefix_name]
+            net = IPNetwork(prefix) if "/" in prefix else IPAddress(prefix)
+            if str(net) != prefix:
+                raise ValueError(
+                    "Prefix '{}' is not represented in its canonical form: "
+                    "'{}' used, '{}' expected.".format(
+                        prefix_name, prefix, str(net)
+                    )
+                )
+
         cls.info("{}: setting instances up...".format(cls.SHORT_DESCR))
 
-        mock_peering_db(cls._get_module_dir() + "/peeringdb_data")
-        cls.mock_irrdb()
-        cls.mock_rttgetter()
+        if cls.MOCK_PEERING_DB or cls.MOCK_RIPE_RPKI_CACHE:
+            cls.mock_cached_objects()
+        if cls.MOCK_PEERING_DB:
+            cls.mock_peering_db()
+        if cls.MOCK_RIPE_RPKI_CACHE:
+            cls.mock_ripe_rpki_cache()
+        if cls.MOCK_IRRDB:
+            cls.mock_irrdb()
+        if cls.MOCK_RTTGETTER:
+            cls.mock_rttgetter()
+
         try:
             cls._setup_instances()
         except:
