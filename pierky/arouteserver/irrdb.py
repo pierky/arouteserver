@@ -112,6 +112,13 @@ class ASSet(IRRDBInfo):
         return "{}-as_set.json".format(self.name)
 
     def _get_data(self):
+        # If the list of objects to expand is made up by
+        # an 'ASxxx' element only, avoid to run bgpq3 and
+        # return only that ASN.
+        if len(self.object_names) == 1 and \
+            re.match("^AS[0-9]+$", self.object_names[0]):
+            return [int(self.object_names[0][2:])]
+
         cmd = [self.bgpq3_path]
         cmd += ["-h", self.bgpq3_host]
         cmd += ["-S", self.bgpq3_sources]
