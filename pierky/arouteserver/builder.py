@@ -27,7 +27,7 @@ from .config.bogons import ConfigParserBogons
 from .config.asns import ConfigParserASNS
 from .config.clients import ConfigParserClients
 from .config.roa import ConfigParserROAEntries
-from .enrichers.irrdb import IRRDBConfigEnricher_OriginASNs, \
+from .enrichers.irrdb import IRRDBConfigEnricher_ASNs, \
                              IRRDBConfigEnricher_Prefixes
 from .enrichers.pdb_as_set import PeeringDBConfigEnricher_ASSet
 from .enrichers.pdb_max_prefix import PeeringDBConfigEnricher_MaxPrefix
@@ -408,9 +408,9 @@ class ConfigBuilder(object):
 
         self.kwargs = kwargs
 
-        # Initially None; is set to {} and finally populated by
+        # Initially None; is set to IRRDB() and finally populated by
         # the IRRDB enrichers.
-        # { "<as_set_bundle_id>": <AS_SET_Bundle_Proxy>, ... }
+        # { "<as_set_bundle_id>": <IRRDBRecord>, ... }
         self.irrdb_info = None
 
         # { "<origin_asn>": [{"prefix": "a/b", "max_len": c}] }
@@ -490,7 +490,7 @@ class ConfigBuilder(object):
         if irrdb_cfg["peering_db"]:
             used_enricher_classes += [PeeringDBConfigEnricher_ASSet]
 
-        used_enricher_classes += [IRRDBConfigEnricher_OriginASNs,
+        used_enricher_classes += [IRRDBConfigEnricher_ASNs,
                                   IRRDBConfigEnricher_Prefixes,
                                   PeeringDBConfigEnricher_MaxPrefix]
 

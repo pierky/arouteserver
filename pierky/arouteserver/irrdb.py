@@ -100,7 +100,7 @@ class IRRDBInfo(CachedObject, AS_SET_Bundle):
 class ASSet(IRRDBInfo):
 
     def load_data(self):
-        logging.debug("Getting origin ASNs for "
+        logging.debug("Getting ASNs for "
                       "{} from IRRdb".format(self.descr))
 
         IRRDBInfo.load_data(self)

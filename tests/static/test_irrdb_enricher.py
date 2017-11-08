@@ -14,77 +14,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import copy
-import json
 import os
 import shutil
 import tempfile
-try:
-    import mock
-except ImportError:
-    import unittest.mock as mock
 import unittest
 import yaml
 
 from pierky.arouteserver.builder import TemplateContextDumper
-from pierky.arouteserver.irrdb import ASSet, RSet
-
-def load(filename):
-    path = os.path.join(os.path.dirname(__file__), "irrdb_data", filename)
-    with open(path, "r") as f:
-        return json.load(f)
-
-def asset_get_data(self, cmd):
-    asn_list = []
-    for obj_name in self.object_names:
-        raw = load("asset_{}.json".format(obj_name))
-        for asn in raw["asn_list"]:
-            if asn not in asn_list:
-                asn_list.append(asn)
-    return json.dumps({"asn_list": asn_list}).encode()
-
-def rset_get_data(self, cmd):
-    prefix_list = []
-    for obj_name in self.object_names:
-        raw = load("rset_{}_ipv{}.json".format(obj_name, self.ip_ver))
-        for prefix in raw["prefix_list"]:
-            if prefix not in prefix_list:
-                prefix_list.append(prefix)
-    return json.dumps({"prefix_list": prefix_list}).encode()
+from pierky.arouteserver.tests.mocked_env import MockedEnv
 
 class TestIRRDBEnricher_Base(unittest.TestCase):
-
-    __test__ = False
-
-    def setup_builder(self, general, clients):
-        self.builder = TemplateContextDumper(
-            template_dir="templates/template-context/",
-            template_name="main.j2",
-            cfg_general=self.write_file("general.yml", general),
-            cfg_clients=self.write_file("clients.yml", clients),
-            cfg_bogons="config.d/bogons.yml",
-            cache_dir=self.temp_dir,
-            cache_expiry=120,
-            ip_ver=4
-        )
-
-    def setUp(self, *patches):
-        self.temp_dir = tempfile.mkdtemp(suffix="arouteserver_unittest")
-
-    def tearDown(self):
-        mock.patch.stopall()
-        shutil.rmtree(self.temp_dir, ignore_errors=True)
-
-    def write_file(self, name, dic):
-        path = os.path.join(self.temp_dir, name)
-        with open(path, "w") as f:
-            yaml.dump(dic, f, default_flow_style=False)
-        return path
-
-@mock.patch.object(ASSet, "_run_cmd", side_effect=asset_get_data, autospec=True)
-@mock.patch.object(RSet, "_run_cmd", side_effect=rset_get_data, autospec=True)
-class TestIRRDBEnricher_Prefixes(TestIRRDBEnricher_Base):
-
-    __test__ = True
 
     GENERAL_SIMPLE = {
         "cfg": {
@@ -109,6 +48,32 @@ class TestIRRDBEnricher_Prefixes(TestIRRDBEnricher_Base):
             { "asn": 3, "ip": "192.0.2.31" }
         ]
     }
+
+    def setup_builder(self, general, clients):
+        self.builder = TemplateContextDumper(
+            template_dir="templates/template-context/",
+            template_name="main.j2",
+            cfg_general=self.write_file("general.yml", general),
+            cfg_clients=self.write_file("clients.yml", clients),
+            cfg_bogons="config.d/bogons.yml",
+            cache_dir=self.temp_dir,
+            cache_expiry=120,
+            ip_ver=4
+        )
+
+    def setUp(self, *patches):
+        MockedEnv(base_dir=os.path.dirname(__file__), default=False, irr=True)
+        self.temp_dir = tempfile.mkdtemp(suffix="arouteserver_unittest")
+
+    def tearDown(self):
+        MockedEnv.stopall()
+        shutil.rmtree(self.temp_dir, ignore_errors=True)
+
+    def write_file(self, name, dic):
+        path = os.path.join(self.temp_dir, name)
+        with open(path, "w") as f:
+            yaml.dump(dic, f, default_flow_style=False)
+        return path
 
     def get_client_by_id(self, id):
         for client in self.builder.data["clients"]:
@@ -263,7 +228,7 @@ class TestIRRDBEnricher_Prefixes(TestIRRDBEnricher_Base):
 
         self.assertEqual(
             self.get_client_info(self.get_client_by_id("AS3_1")),
-            ([], [])
+            ([3], [])
         )
 
     def test_010_autnum_and_1_assets(self, *patches):
