@@ -37,6 +37,22 @@ class BIRDInstance(DockerInstance):
         # See the docstring of _get_protocols_status()
         self.protocols_status = {}
 
+    def restart(self):
+        """Restart BIRD.
+
+        It runs the "[birdcl/birdcl6] configure" and "restart all" commands.
+        """
+        if self.reload_config():
+
+            res = self._birdcl("restart all")
+
+            if "restarted" in res:
+                return True
+            else:
+                return False
+        else:
+            return False
+
     def reload_config(self):
         """Reload BIRD configuration.
 

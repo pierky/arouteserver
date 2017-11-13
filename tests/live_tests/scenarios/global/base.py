@@ -1037,6 +1037,11 @@ class BasicScenario(LiveScenario):
         self.receive_route(self.AS3, self.DATA["AS101_bad_good_comms"], self.rs, as_path="999 2 101", next_hop=self.AS2,
                            std_comms=["777:0"], lrg_comms=["777:0:0"])
 
+    def test_900_reconfigure(self):
+        """{}: reconfigure"""
+        self.rs.reload_config()
+        self.test_020_sessions_up()
+
 class BasicScenario_TagRejectPolicy(LiveScenario_TagRejectPolicy):
 
     def test_042_bad_prefixes_received_by_rs_bogon_wrong_tag(self):

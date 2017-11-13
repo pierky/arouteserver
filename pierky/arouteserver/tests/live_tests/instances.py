@@ -34,9 +34,10 @@ class BGPSpeakerInstance(object):
     Currently, the ``start``, ``stop``, ``is_running`` and
     ``run_cmd`` methods are implemented by the
     :class:`DockerInstance` and :class:`KVMInstance` derived classes,
-    while the ``reload_config``, ``get_bgp_session``, ``get_routes``
-    and ``log_contains`` methods by the [Docker|KVM]Instance-derived
-    :class:`BIRDInstance` class.
+    while the ``restart``, ``reload_config``, ``get_bgp_session``,
+    ``get_routes`` and ``log_contains`` methods by the
+    [Docker|KVM]Instance-derived :class:`BIRDInstance` and
+    :class:`OpenBGPDInstance` classes.
     """
 
     MESSAGE_LOGGING_SUPPORT = True
@@ -73,6 +74,9 @@ class BGPSpeakerInstance(object):
         raise NotImplementedError()
 
     def stop(self):
+        raise NotImplementedError()
+
+    def restart(self):
         raise NotImplementedError()
 
     def reload_config(self):
