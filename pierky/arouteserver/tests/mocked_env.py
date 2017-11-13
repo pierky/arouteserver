@@ -19,7 +19,6 @@ try:
 except ImportError:
     import unittest.mock as mock
 import os
-import six
 
 from pierky.arouteserver.cached_objects import CachedObject
 from pierky.arouteserver.config.validators import ValidatorPrefixListEntry
@@ -193,11 +192,6 @@ class MockedEnv(object):
     def do_mock_ripe_rpki_cache(mocked_env):
 
         def get_data(self):
-            path = "{}/{}/{}".format(
-                mocked_env.base_dir,
-                "ripe-rpki-cache",
-                "ripe-rpki-cache.json"
-            )
             return mocked_env.load("ripe-rpki-cache", "ripe-rpki-cache.json", ret_type="json")
 
         mock_get_data = mock.patch.object(

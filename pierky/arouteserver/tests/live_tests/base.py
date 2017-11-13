@@ -14,7 +14,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from jinja2 import Environment, FileSystemLoader
-import json
 import os
 import re
 import time
@@ -333,11 +332,11 @@ class LiveScenario(ARouteServerTestCase):
 
         cls.info("{}: setting instances up...".format(cls.SHORT_DESCR))
 
-        mock_env = MockedEnv(cls, base_dir=cls._get_module_dir(),
-                             peering_db=cls.MOCK_PEERING_DB,
-                             ripe_rpki_cache=cls.MOCK_RIPE_RPKI_CACHE,
-                             irrdb=cls.MOCK_IRRDB,
-                             rttgetter=cls.MOCK_RTTGETTER)
+        MockedEnv(cls, base_dir=cls._get_module_dir(),
+                  peering_db=cls.MOCK_PEERING_DB,
+                  ripe_rpki_cache=cls.MOCK_RIPE_RPKI_CACHE,
+                  irrdb=cls.MOCK_IRRDB,
+                  rttgetter=cls.MOCK_RTTGETTER)
 
         try:
             cls._setup_instances()

@@ -153,7 +153,7 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 153 tests in 17.819s
+Ran 153 tests in 17.806s
 
 OK
 Live test, BIRD, hooks example, IPv4: setting instances up...
@@ -164,7 +164,7 @@ Live test, BIRD, hooks example, IPv6: instances setup ... ok
 Live test, BIRD, hooks example, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 2 tests in 9.033s
+Ran 2 tests in 8.867s
 
 OK
 Live test, BIRD, BGP communities, IPv4: setting instances up...
@@ -253,7 +253,7 @@ Live test, OpenBGPD 6.2, BGP communities, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.2, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 72 tests in 457.553s
+Ran 72 tests in 459.982s
 
 OK (SKIP=6)
 Live test, BIRD, default config, IPv4: setting instances up...
@@ -270,7 +270,7 @@ Live test, OpenBGPD 6.0, default config, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, default config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 159.692s
+Ran 4 tests in 161.260s
 
 OK
 Live test, BIRD, global scenario, IPv4: setting instances up...
@@ -911,7 +911,7 @@ Live test, OpenBGPD 6.2, global scenario, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 620 tests in 964.534s
+Ran 620 tests in 963.730s
 
 OK (SKIP=56)
 Live test, BIRD, gshut, IPv4: setting instances up...
@@ -940,7 +940,7 @@ Live test, OpenBGPD 6.2, gshut, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.2, gshut, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 16 tests in 231.581s
+Ran 16 tests in 228.461s
 
 OK
 Live test, BIRD, max-prefix, IPv4: setting instances up...
@@ -989,7 +989,7 @@ Live test, OpenBGPD 6.2, max-prefix, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.2, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 32 tests in 569.338s
+Ran 32 tests in 570.896s
 
 OK
 Live test, BIRD, path hiding, mitigation off, IPv4: setting instances up...
@@ -1114,7 +1114,7 @@ Live test, OpenBGPD 6.2, path hiding, mitigation on, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.2, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 96 tests in 984.956s
+Ran 96 tests in 979.006s
 
 OK (SKIP=8)
 
@@ -1136,7 +1136,7 @@ Live test, OpenBGPD 6.0, examples, rich config, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, examples, rich config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 165.125s
+Ran 4 tests in 184.246s
 
 OK
 Live test, BIRD, RPKI INVALID tagging, IPv4: setting instances up...
@@ -1171,7 +1171,7 @@ Live test, BIRD, RPKI INVALID tagging, IPv6: reconfigure ... ok
 Live test, BIRD, RPKI INVALID tagging, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 53.315s
+Ran 26 tests in 53.073s
 
 OK
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: setting instances up...
@@ -1602,7 +1602,7 @@ Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 402 tests in 996.526s
+Ran 402 tests in 991.726s
 
 OK
 Live test, BIRD, 'tag' reject policy scenario, IPv4: setting instances up...
@@ -1701,6 +1701,6 @@ Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 86 tests in 308.260s
+Ran 86 tests in 309.160s
 
 OK (SKIP=4)
