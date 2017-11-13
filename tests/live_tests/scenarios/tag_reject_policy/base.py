@@ -304,6 +304,11 @@ class TagRejectPolicyScenario(LiveScenario):
         self.receive_route(self.AS2, self.DATA["AS1_good3"], self.rs, as_path="1", next_hop=self.AS1_1,
                            std_comms=[], ext_comms=[], lrg_comms=[])
 
+    def test_900_reconfigure(self):
+        """{}: reconfigure"""
+        self.rs.reload_config()
+        self.test_020_sessions_up()
+
 class TagRejectPolicyScenarioBIRD(LiveScenario_TagRejectPolicy, TagRejectPolicyScenario):
     __test__ = False
 

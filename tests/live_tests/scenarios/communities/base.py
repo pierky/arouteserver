@@ -214,6 +214,11 @@ class BGPCommunitiesScenario(LiveScenario):
             self.receive_route(inst, self.DATA["AS2_bad_cust_comm1"], self.rs,
                                std_comms=[])
 
+    def test_900_reconfigure(self):
+        """{}: reconfigure"""
+        self.rs.reload_config()
+        self.test_020_sessions_up()
+
 class BGPCommunitiesScenarioBIRD(BGPCommunitiesScenario):
     __test__ = False
 

@@ -81,6 +81,11 @@ class GShutScenario(LiveScenario):
                                as_path="1", next_hop=self.AS1,
                                std_comms=["65535:0"], ext_comms=[], lrg_comms=[])
 
+    def test_900_reconfigure(self):
+        """{}: reconfigure"""
+        self.rs.reload_config()
+        self.test_020_sessions_up()
+
 class GShutScenarioBIRD(GShutScenario):
     __test__ = False
 

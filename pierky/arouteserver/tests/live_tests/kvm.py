@@ -157,9 +157,9 @@ class KVMInstance(BGPSpeakerInstance):
 
         # The VM is now up and bgpd should be started too,
         # but configuration files have not been updated yet,
-        # so call reload_config() in order to push them
-        # to the VM and reload the daemon.
-        self.reload_config()
+        # so call restart() in order to push them
+        # to the VM and restart the daemon.
+        self.restart()
 
     def _graceful_shutdown(self):
         return False
