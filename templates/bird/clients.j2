@@ -219,7 +219,7 @@ filter receive_from_{{ client.id }} {
 
 	{% if ip_ver == 6 %}
 	# Prefix: only IPv6 Global Unicast space allowed
-	if net !~ [2000::/3+] then
+	if !(net ~ [2000::/3+]) then
 		{{ reject(client, 10, '"prefix is not in IPv6 Global Unicast space - REJECTING ", net') }}
 	{% endif %}
 
