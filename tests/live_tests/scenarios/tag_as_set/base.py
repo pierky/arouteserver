@@ -240,6 +240,11 @@ class TagASSetScenario(LiveScenario):
                            ext_comms=[],
                            filtered=True)
 
+    def test_900_reconfigure(self):
+        """{}: reconfigure"""
+        self.rs.reload_config()
+        self.test_020_sessions_up()
+
 class TagASSetScenario_WithAS_SETs(object):
 
     AS_SET = {

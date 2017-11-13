@@ -207,3 +207,8 @@ class RPKIINVALIDScenario(LiveScenario):
         for inst in (self.AS1, self.AS4):
             self.receive_route(inst, prefix, self.rs, as_path="3",
                                std_comms=["64512:3"], lrg_comms=[], ext_comms=[])
+
+    def test_900_reconfigure(self):
+        """{}: reconfigure"""
+        self.rs.reload_config()
+        self.test_020_sessions_up()

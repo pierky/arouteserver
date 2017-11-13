@@ -136,6 +136,11 @@ class PathHidingScenario(LiveScenario):
         self.log_contains(self.rs, "route didn't pass control communities checks - NOT ANNOUNCING {} TO {{AS4}}".format(
             self.DATA["AS101_pref_ok1"]), {"AS4": self.AS4})
 
+    def test_900_reconfigure(self):
+        """{}: reconfigure"""
+        self.rs.reload_config()
+        self.test_020_sessions_up()
+
 class PathHidingScenarioBIRD(PathHidingScenario):
     __test__ = False
 

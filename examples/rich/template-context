@@ -901,6 +901,36 @@ rpki_roas_as_route_objects
 --------------------------
 AS3333:
 - exact: true
+  ge: 23
+  le: 23
+  length: 23
+  max_length: 32
+  prefix: 193.0.20.0
+- exact: false
+  ge: 22
+  le: 26
+  length: 22
+  max_length: 32
+  prefix: 193.0.24.0
+- exact: true
+  ge: 23
+  le: 23
+  length: 23
+  max_length: 32
+  prefix: 193.0.10.0
+- exact: true
+  ge: 21
+  le: 21
+  length: 21
+  max_length: 32
+  prefix: 193.0.0.0
+- exact: true
+  ge: 23
+  le: 23
+  length: 23
+  max_length: 32
+  prefix: 193.0.22.0
+- exact: true
   ge: 24
   le: 24
   length: 24
@@ -913,17 +943,11 @@ AS3333:
   max_length: 32
   prefix: 193.0.12.0
 - exact: true
-  ge: 23
-  le: 23
-  length: 23
-  max_length: 32
-  prefix: 193.0.18.0
-- exact: true
-  ge: 21
-  le: 21
-  length: 21
-  max_length: 32
-  prefix: 193.0.0.0
+  ge: 42
+  le: 42
+  length: 42
+  max_length: 128
+  prefix: '2001:610:240::'
 - exact: true
   ge: 48
   le: 48
@@ -935,31 +959,7 @@ AS3333:
   le: 23
   length: 23
   max_length: 32
-  prefix: 193.0.22.0
-- exact: true
-  ge: 23
-  le: 23
-  length: 23
-  max_length: 32
-  prefix: 193.0.10.0
-- exact: true
-  ge: 42
-  le: 42
-  length: 42
-  max_length: 128
-  prefix: '2001:610:240::'
-- exact: false
-  ge: 22
-  le: 26
-  length: 22
-  max_length: 32
-  prefix: 193.0.24.0
-- exact: true
-  ge: 23
-  le: 23
-  length: 23
-  max_length: 32
-  prefix: 193.0.20.0
+  prefix: 193.0.18.0
 
 
 roas

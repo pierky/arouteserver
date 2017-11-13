@@ -71,10 +71,11 @@ class OpenBGPDInstance(KVMInstance):
         self.run_cmd("shutdown -h -p now")
         return True
 
-    def reload_config(self):
-        """Reload OpenBGPD configuration.
+    def restart(self):
+        """Restart OpenBGPD.
 
-        Executes '/etc/rc.d/bgpd stop' and then '/etc/rc.d/bgpd -f start'.
+        Updates the configuration files, then executes '/etc/rc.d/bgpd stop'
+        and then '/etc/rc.d/bgpd -f start'.
         """
         if not self.is_running():
             raise InstanceNotRunning(self.name)
@@ -93,6 +94,21 @@ class OpenBGPDInstance(KVMInstance):
         self.run_cmd("/etc/rc.d/bgpd stop")
         time.sleep(5)
         self.run_cmd("/etc/rc.d/bgpd -f start")
+        time.sleep(5)
+
+        return True
+
+    def reload_config(self):
+        """Reload OpenBGPD configuration.
+
+        Updates the configuration files, then executes '/etc/rc.d/bgpd reload'.
+        """
+        if not self.is_running():
+            raise InstanceNotRunning(self.name)
+
+        self._mount_files()
+
+        self.run_cmd("/etc/rc.d/bgpd reload")
         time.sleep(5)
 
         return True

@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+v0.14.1
+-------
+
+- Fix: BIRD, "Unknown instruction 8574 in same (~)" error when reloading IPv6 configurations.
+
+  A `missing case <http://bird.network.cz/pipermail/bird-users/2017-January/010880.html>`__ for the ``!~`` operator triggers this bug when neighbors are established and trying to reload bird6 configuration.
+
+  Related: `issue #20 on GitHub <https://github.com/pierky/arouteserver/issues/20>`_.
+
 v0.14.0
 -------
 

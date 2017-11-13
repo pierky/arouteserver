@@ -87,6 +87,10 @@ class MaxPrefixScenario(LiveScenario):
         """{}: instances setup"""
         pass
 
+    def test_900_reconfigure(self):
+        """{}: reconfigure"""
+        self.rs.reload_config()
+
 class MaxPrefixScenarioBIRD(MaxPrefixScenario):
     __test__ = False
 
@@ -164,6 +168,11 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
 
         self.assertEqual(len(self._get_routes_from(4)), 6)
         self.assertEqual(len(self._get_routes_from(4, include_filtered=True)), 7)
+
+    def test_900_reconfigure(self):
+        """{}: reconfigure"""
+        self.rs.reload_config()
+        self.test_020_sessions_up()
 
 class MaxPrefixScenarioOpenBGPD(LiveScenario_TagRejectPolicy, MaxPrefixScenario):
     __test__ = False
