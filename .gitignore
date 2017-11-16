@@ -1,5 +1,6 @@
 *.swp
 private/
+tools/simulate/config
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

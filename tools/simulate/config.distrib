@@ -1,0 +1,96 @@
+# This is the configuration file that is distributed alongwith
+# the tool. Copy this file into 'config' to make changes.
+
+# ---------------------------
+# MRT file
+
+# The MRT file to process to reproduce clients announcements.
+# Can be also set with the '--mrt' command line argument.
+#
+mrt_file=
+
+# ---------------------------
+# Route server details
+
+# ASN and IP addresses of the 'new' route server, the one that
+# will be configured using ARouteServer.
+#
+rs_asn=64512
+rs_ipv4=
+rs_ipv6=
+
+# IP version to test. Leave empty to run both IPv4 and IPv6.
+#
+#ip_ver=
+
+# ---------------------------
+# Programs
+
+# Path to the mrt2bgpdump.py script that ships with 'mrtparse':
+#
+#         https://github.com/t2mune/mrtparse
+#
+# The tool must be installed to allow that script to find the
+# mrtparse library; otherwise, you can clone the repository
+# and point the 'mrtparse_dir' variable to its path:
+#
+#   git clone https://github.com/t2mune/mrtparse.git ~/
+#   mrtparse_dir=~/mrtparse
+#
+#mrt2bgpdump=~/mrtparse/examples/mrt2bgpdump.py
+#mrtparse_dir=
+
+# Path to the ARouteServer script.
+#
+#arouteserver=arouteserver
+
+# If needed, set this variable to the path of the arouteserver.yml
+# file where the program configuration is stored. It is used to
+# set the '--cfg' command line argument of ARouteServer.
+#arouteserver_cfg=
+
+# ---------------------------
+# Docker options
+
+# They are meaningful only when the 'docker' command is used.
+
+# Name of the Docker network that will be used to connect
+# virtual clients and route server. Will be destroyed and created
+# again when needed.
+#
+#docker_network_name=ars_simulate_network
+
+# Subnets (CIDR format) used to address the virtual network.
+#
+docker_network_ipv4=
+docker_network_ipv6=
+
+# Names of the Docker instances used to run router server and
+# clients.
+#
+#docker_inst_name_rs=ars_rs
+#docker_inst_name_clients=ars_clients
+
+# Docker images used for the clients and for the BIRD route server.
+#docker_exabgp_image="pierky/exabgp:3.4.19"
+#docker_bird_image="pierky/bird:1.6.3"
+
+# ---------------------------
+# Layout options
+
+# The interface used to generate the 'ip addr add ...' commands used
+# to simulate route server clients.
+#
+#eth_iface="eth0"
+
+# Path to the ExaBGP binary used to simulate route server clients.
+#
+#exabgp_bin="exabgp-3.4.19/sbin/exabgp"
+
+# ---------------------------
+# Local directories
+
+# Where files will be stored.
+# The content of this directory is wiped out at each run."
+#
+#var_dir="`pwd`/var"
