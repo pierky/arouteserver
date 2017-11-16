@@ -1,0 +1,90 @@
+cfg:
+  rs_as: 999
+
+  router_id: "10.0.0.1"
+
+  prepend_rs_as: False
+
+  path_hiding: True
+
+  passive: True
+
+  filtering:
+    next_hop:
+      policy: "strict"
+
+    ipv4_pref_len:
+      min: 8
+      max: 24
+    ipv6_pref_len:
+      min: 12
+      max: 48
+
+    global_black_list_pref:
+      - prefix: "192.0.2.0"
+        length: 24
+        comment: "Local network"
+      - prefix: "2001:db8:1:1::"
+        length: 64
+        comment: "Local network"
+
+    max_as_path_len: 32
+
+    reject_invalid_as_in_as_path: True
+
+    transit_free:
+      action: "reject"
+      asns: >
+        174, 209, 286, 701, 1239, 1299, 2828, 2914,
+        3257, 3320, 3356, 3549, 5511, 6453, 6461,
+        6762, 6830, 7018, 12956
+
+    irrdb:
+      enforce_origin_in_as_set: True
+
+      enforce_prefix_in_as_set: True
+
+      tag_as_set: True
+
+      allow_longer_prefixes: True
+
+      peering_db: True
+
+      use_rpki_roas_as_route_objects:
+        enabled: True
+
+    max_prefix:
+      action: "restart"
+      restart_after: 30
+      peering_db: True
+
+    reject_policy:
+      policy: "tag"
+
+  graceful_shutdown:
+    enabled: True
+
+  communities:
+    reject_cause:
+      std: 65520:dyn_val
+    rejected_route_announced_by:
+      ext: rt:65520:dyn_val
+    origin_present_in_as_set:
+      std: "65530:1"
+      lrg: "rs_as:65530:1"
+    origin_not_present_in_as_set:
+      std: "65530:0"
+      lrg: "rs_as:65530:0"
+    prefix_present_in_as_set:
+      std: "65531:1"
+      lrg: "rs_as:65531:1"
+    prefix_not_present_in_as_set:
+      std: "65531:0"
+      lrg: "rs_as:65531:0"
+    prefix_validated_via_rpki_roas:
+      std: "65531:2"
+      lrg: "rs_as:65531:2"
+    route_validated_via_white_list:
+      std: "65530:65530"
+      lrg: "rs_as:65530:65530"
+
