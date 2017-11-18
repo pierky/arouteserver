@@ -26,6 +26,10 @@ rpki_roas_as_route_objects
 --------------------------
 {{ rpki_roas_as_route_objects|parse_rpki_roas_as_route_objects|to_yaml }}
 
+arin_whois_db_records
+---------------------
+{{ arin_whois_records|parse_arin_whois_records|to_yaml }}
+
 roas
 ----
 {% if roas %}

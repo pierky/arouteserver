@@ -542,6 +542,74 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
 
 
 
+- ``use_arin_bulk_whois_data``:
+  Similarly to the **use_rpki_roas_as_route_objects** option,
+  this one allows to back IRR filters up by using "Origin AS"
+  data from an ARIN bulk Whois database dump. It is a dump
+  of the whole ARIN Whois database that contains all the
+  prefixes for which one or more authorized origin ASNs
+  have been set by the resource holder.
+  Routes whose origin ASN is authorized by a client's AS-SET
+  but whose prefix has not a corresponding route object will
+  be accepted if an entry exists in this database for that
+  origin ASN.
+  In this case, if **tag_as_set** is True, these routes
+  are tagged with the
+  **prefix_validated_via_arin_whois_db_dump** community.
+
+
+  This option is used only when **enforce_origin_in_as_set**
+  and **enforce_prefix_in_as_set** are both set to True.
+
+
+  The setting of the **allow_longer_prefixes** option will be
+  honored.
+
+
+- ``enabled``:
+  Set this to True to enable this feature.
+
+
+  Default: **False**
+
+  Example:
+
+  .. code:: yaml
+
+     enabled: False
+
+
+
+- ``source``:
+  The source of the data must be set here.
+
+
+  It can be an **http://** or **https://** URL or a local file
+  path. The file must be in JSON format, accordingly to the
+  following schema:
+  --- #TODO
+  Optionally it can be compressed in BZ2 format. In that
+  case the filename must end with the ".bz2" extension.
+
+
+  The following script can be used to convert the original
+  XML file provided by ARIN into the expected JSON format:
+
+
+  https://github.com/NLNOG/arin-whois-bulk-parser
+
+
+  Default: **URL of the dump parsed and published by NLNOG.**
+
+  Example:
+
+  .. code:: yaml
+
+     source: "http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
+
+
+
+
 
 RPKI: ``rpki``
 ~~~~~~~~~~~~~~~
@@ -1074,7 +1142,7 @@ matching.
 Prefix/origin AS present in client's AS-SET
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- ``prefix_present_in_as_set``, ``prefix_not_present_in_as_set``, ``origin_present_in_as_set``, ``origin_not_present_in_as_set``, ``prefix_validated_via_rpki_roas`` and ``route_validated_via_white_list``:
+- ``prefix_present_in_as_set``, ``prefix_not_present_in_as_set``, ``origin_present_in_as_set``, ``origin_not_present_in_as_set``, ``prefix_validated_via_rpki_roas``, ``prefix_validated_via_arin_whois_db_dump`` and ``route_validated_via_white_list``:
   Prefix/origin AS present in client's AS-SET.
 
 

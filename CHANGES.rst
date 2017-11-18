@@ -3,6 +3,13 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New feature: use ARIN Whois database dump to authorize routes.
+
+  This feature allows to accept those routes whose origin ASN is authorized by a client AS-SET, whose prefix has not a corresponding route object but is covered by an ARIN Whois record for the same origin ASN.
+
 v0.14.1
 -------
 

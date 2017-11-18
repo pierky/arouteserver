@@ -50,7 +50,12 @@ cfg:
 
       tag_as_set: True
 
+      allow_longer_prefixes: True
+
       use_rpki_roas_as_route_objects:
+        enabled: True
+
+      use_arin_bulk_whois_data:
         enabled: True
 
     rpki:
@@ -90,6 +95,9 @@ cfg:
     prefix_validated_via_rpki_roas:
       std: "65530:2"
       lrg: "rs_as:65530:2"
+    prefix_validated_via_arin_whois_db_dump:
+      std: "65530:4"
+      lrg: "rs_as:65530:4"
     route_validated_via_white_list:
       std: "65530:3"
       lrg: "rs_as:65530:3"

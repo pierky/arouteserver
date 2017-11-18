@@ -56,6 +56,14 @@ if [ "$1" == "join_only" ]; then
 	exit
 fi
 
+# Check for codetags
+echo "Verifying codetags..."
+egrep -r "#XXX|#FIXME|#BUG|#TODO" pierky/ templates/ scripts/ tests/
+if [ $? -eq 0 ]; then
+	echo "One ore more codetags found."
+	exit
+fi
+
 # At first verify if templates and fingerprints are aligned.
 echo "Verifying if templates and fingerprints are aligned..."
 nosetests -vs -x tests/static/test_cfg_program.py

@@ -112,6 +112,12 @@ cfg:
       peer_as: false
       std: null
       type: outbound
+    prefix_validated_via_arin_whois_db_dump:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: outbound
     prefix_validated_via_rpki_roas:
       ext: null
       lrg: null
@@ -223,6 +229,9 @@ cfg:
       enforce_prefix_in_as_set: true
       peering_db: false
       tag_as_set: true
+      use_arin_bulk_whois_data:
+        enabled: false
+        source: http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2
       use_rpki_roas_as_route_objects:
         allowed_trust_anchors:
         - APNIC from AFRINIC RPKI Root
@@ -766,10 +775,8 @@ asns
 ----
 asns:
   AS10745:
-    as_set_bundle_ids: !!set {}
     as_sets: null
   AS3333:
-    as_set_bundle_ids: !!set {}
     as_sets: null
 
 
@@ -877,6 +884,11 @@ irrdb_info
 
 rpki_roas_as_route_objects
 --------------------------
+{}
+
+
+arin_whois_db_records
+---------------------
 {}
 
 

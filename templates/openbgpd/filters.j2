@@ -16,7 +16,7 @@
 # the route should be discarded.
 
 {% macro remove_internal_communities(left, all=false) %}
-{{ left }} set { ext-community delete soo 65535:1 ext-community delete soo 65535:2 }
+{{ left }} set { ext-community delete soo 65535:1 ext-community delete soo 65535:2 ext-community delete soo 65535:3 }
 {% if all %}
 {{ left }} set { ext-community delete soo 65535:65281 ext-community delete soo 65535:65282 }
 {% endif %}
@@ -77,11 +77,19 @@ match from {{ client.ip }} {{ condition }} set community delete NO_ADVERTISE	# {
 {%      endif %}
 {%	if objects == "prefixes" and
 		enforce_object_in_as_set and
-		client.cfg.filtering.irrdb.enforce_origin_in_as_set and
-		rpki_roas_as_route_objects %}
+		client.cfg.filtering.irrdb.enforce_origin_in_as_set %}
+{%		if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and
+			rpki_roas_as_route_objects %}
 # routes tagged with soo:65535:1 community have the prefix validated by a ROA; origin ASN previously validated
 {{			add_communities("match from " ~ client.ip ~ " community NO_ADVERTISE ext-community soo 65535:1", cfg.communities.prefix_validated_via_rpki_roas) }}
 match from {{ client.ip }} community NO_ADVERTISE ext-community soo 65535:1 set { community delete NO_ADVERTISE ext-community delete soo 65535:1 }
+{%		endif %}
+{%		if cfg.filtering.irrdb.use_arin_bulk_whois_data.enabled and
+			arin_whois_records %}
+# routes tagged with soo:65535:3 community have the prefix validated by an ARIN Whois record; origin ASN previously validated
+{{			add_communities("match from " ~ client.ip ~ " community NO_ADVERTISE ext-community soo 65535:3", cfg.communities.prefix_validated_via_arin_whois_db_dump) }}
+match from {{ client.ip }} community NO_ADVERTISE ext-community soo 65535:3 set { community delete NO_ADVERTISE ext-community delete soo 65535:3 }
+{%		endif %}
 {%	endif %}
 {%	if client.cfg.filtering.irrdb.white_list_route %}
 # route authorized by a client's white list?
@@ -156,6 +164,20 @@ match from group clients community NO_ADVERTISE set community delete NO_ADVERTIS
 {%	for origin_asn in rpki_roas_as_route_objects %}
 {%		for prefixes in rpki_roas_as_route_objects[origin_asn].roas|batch(50) %}
 match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {{ write_prefix_list(prefixes) }} } set ext-community soo 65535:1
+{%		endfor %}
+{%	endfor %}
+{% endif %}
+
+{% if cfg.filtering.irrdb.use_arin_bulk_whois_data.enabled and
+	arin_whois_records %}
+# Add the soo:65535:3 ext community to routes whose
+# origin ASN has an ARIN Whois record for the announced prefix.
+# It will be used later during IRRDB validation in
+# case the origin ASN is authorized by a client's
+# AS-SET but the prefix is not.
+{%	for origin_asn in arin_whois_records %}
+{%		for prefixes in arin_whois_records[origin_asn].prefixes|batch(50) %}
+match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {{ write_prefix_list(prefixes) }} } set ext-community soo 65535:3
 {%		endfor %}
 {%	endfor %}
 {% endif %}

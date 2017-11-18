@@ -27,6 +27,7 @@ from .config.bogons import ConfigParserBogons
 from .config.asns import ConfigParserASNS
 from .config.clients import ConfigParserClients
 from .config.roa import ConfigParserROAEntries
+from .enrichers.arin_db_dump import ARINWhoisDBDumpEnricher
 from .enrichers.irrdb import IRRDBConfigEnricher_ASNs, \
                              IRRDBConfigEnricher_Prefixes
 from .enrichers.pdb_as_set import PeeringDBConfigEnricher_ASSet
@@ -416,6 +417,9 @@ class ConfigBuilder(object):
         # { "<origin_asn>": [{"prefix": "a/b", "max_len": c}] }
         self.rpki_roas_as_route_objects = {}
 
+        # { "<origin_asn>": ["a/b", "c/d"] }
+        self.arin_whois_records = {}
+
         # Validation
 
         if self.local_files:
@@ -502,6 +506,9 @@ class ConfigBuilder(object):
                 "ripe-rpki-validator-cache":
             used_enricher_classes.append(RPKIROAsEnricher)
 
+        if irrdb_cfg["use_arin_bulk_whois_data"]["enabled"]:
+            used_enricher_classes.append(ARINWhoisDBDumpEnricher)
+
         for enricher_class in used_enricher_classes:
             enricher = enricher_class(self, threads=self.threads)
             try:
@@ -543,6 +550,7 @@ class ConfigBuilder(object):
         self.data["asns"] = self.cfg_asns
         self.data["irrdb_info"] = self.irrdb_info
         self.data["rpki_roas_as_route_objects"] = self.rpki_roas_as_route_objects
+        self.data["arin_whois_records"] = self.arin_whois_records
         self.data["roas"] = self.cfg_roas
         self.data["live_tests"] = self.live_tests
         self.data["rtt_based_functions_are_used"] = \
@@ -1025,6 +1033,13 @@ class TemplateContextDumper(ConfigBuilder):
                 res[origin_asn] = list(rpki_roas_as_route_objects[origin_asn].roas)
             return res
 
+        def parse_arin_whois_records(records):
+            res = {}
+            for origin_asn in records:
+                res[origin_asn] = list(records[origin_asn].prefixes)
+            return res
+
         env.filters["to_yaml"] = to_yaml
         env.filters["parse_irrdb_info"] = parse_irrdb_info
         env.filters["parse_rpki_roas_as_route_objects"] = parse_rpki_roas_as_route_objects
+        env.filters["parse_arin_whois_records"] = parse_arin_whois_records
