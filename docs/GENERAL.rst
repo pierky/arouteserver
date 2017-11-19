@@ -587,7 +587,18 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
   It can be an **http://** or **https://** URL or a local file
   path. The file must be in JSON format, accordingly to the
   following schema:
-  --- #TODO
+
+
+  {
+  "json_schema": "0.0.2",
+  "source": "ARIN-WHOIS",
+  "whois_records": {
+  "v4": [{"originas": "ASxxx", "prefix": "w.x.y.z/l"}],
+  "v6": [{"originas": "ASxxx", "prefix": "a:b:c:d::/l"}]
+  }
+  }
+
+
   Optionally it can be compressed in BZ2 format. In that
   case the filename must end with the ".bz2" extension.
 

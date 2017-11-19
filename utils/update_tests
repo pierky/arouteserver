@@ -55,7 +55,7 @@ fi
 # Check for codetags
 echo "Verifying codetags..."
 set +e
-egrep -r "#XXX|#FIXME|#BUG" pierky/ templates/ scripts/
+egrep -r "#XXX|#FIXME|#BUG" pierky/ templates/ scripts/ config.d/ docs/ examples/
 if [ $? -eq 0 ]; then
 	echo "One ore more codetags found."
 	exit

@@ -18,7 +18,7 @@
 import sys
 import re
 
-RE_COMMENT = re.compile("^\s+#\s+([^\s].+)")
+RE_COMMENT = re.compile("^\s+#\s+([^\s].*)")
 RE_COMMENT_EMPTY_LINE = re.compile("^\s+#\s*$")
 
 class CfgStatement(object):
@@ -223,7 +223,7 @@ class CfgStatement(object):
 
             elif RE_COMMENT_EMPTY_LINE.match(line):
                 # comment, empty line
-                match = RE_COMMENT.match(line)
+                match = RE_COMMENT_EMPTY_LINE.match(line)
                 comment = "\n"
 
                 self.add_body_line(comment)
