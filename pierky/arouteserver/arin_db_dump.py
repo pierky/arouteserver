@@ -36,59 +36,12 @@ class ARINWhoisDBDump(CachedObject):
         self.whois_records = []
 
     def load_data(self):
-        logging.debug("Downloading ARIN Whois DB dump")
-
         CachedObject.load_data(self)
 
-        self.whois_records = self.raw_data
+        logging.debug("Processing ARIN Whois DB dump")
 
-    def _get_object_filename(self):
-        return "arin-whois-db-dump.json"
+        dic = json.loads(self.raw_data)
 
-    def _get_data(self):
-        if self.source.lower().startswith("http://") or \
-            self.source.lower().starswith("https://"):
-
-            url = self.source
-            try:
-                response = urlopen(url).read()
-            except HTTPError as e:
-                raise ARINWhoisDBDumpError(
-                    "HTTP error while retrieving ARIN Whois DB dump "
-                    "from {}: "
-                    "code: {}, reason: {} - {}".format(
-                        url, e.code, e.reason, str(e)
-                    )
-                )
-            except Exception as e:
-                raise ARINWhoisDBDumpError(
-                    "Error while retrieving ARIN Whois DB dump "
-                    "from {}: {}".format(
-                        url, str(e)
-                    )
-                )
-        else:
-            path = self.source
-            if not os.path.exists(path):
-                raise ARINWhoisDBDumpError(
-                    "The ARIN Whois DB dump can't be found, "
-                    "file not found: {}".format(path)
-                )
-            try:
-                with open(path, "rb") as f:
-                    response = f.read()
-            except Exception as e:
-                raise ARINWhoisDBDumpError(
-                    "Error while reading the ARIN Whois DB dump "
-                    "from {}: {}".format(path, str(e))
-                )
-
-        if self.source.endswith(".bz2"):
-            raw_json = decompress(response).decode("utf-8")
-        else:
-            raw_json = response.decode("utf-8")
-
-        dic = json.loads(raw_json)
         try:
             json_schema = dic.get("json_schema", None)
             if json_schema is None:
@@ -114,8 +67,10 @@ class ARINWhoisDBDump(CachedObject):
             if "v4" not in whois_records and "v6" not in whois_records:
                 raise ValueError("'v4' and 'v6' lists missing")
 
-            res = []
             for v4_v6 in ["v4", "v6"]:
+                if not isinstance(whois_records.get(v4_v6, []), list):
+                    raise ValueError("'{}': a list was expected".format(
+                        v4_v6))
                 for record in whois_records.get(v4_v6, []):
                     try:
                         if not isinstance(record, dict):
@@ -138,7 +93,7 @@ class ARINWhoisDBDump(CachedObject):
                             raise ValueError("invalid prefix: {} - {}".format(
                                 prefix, str(e)
                             ))
-                        res.append({
+                        self.whois_records.append({
                             "originas": record["originas"],
                             "prefix": record["prefix"]
                         })
@@ -154,4 +109,58 @@ class ARINWhoisDBDump(CachedObject):
                 "database dump: {}".format(str(e))
             )
 
-        return res
+    def _get_object_filename(self):
+        return "arin-whois-db-dump.json"
+
+    def _get_data(self):
+        if self.source.lower().startswith("http://") or \
+            self.source.lower().starswith("https://"):
+
+            logging.debug("Downloading ARIN Whois DB dump")
+
+            url = self.source
+            try:
+                response = urlopen(url).read()
+            except HTTPError as e:
+                raise ARINWhoisDBDumpError(
+                    "HTTP error while retrieving ARIN Whois DB dump "
+                    "from {}: "
+                    "code: {}, reason: {} - {}".format(
+                        url, e.code, e.reason, str(e)
+                    )
+                )
+            except Exception as e:
+                raise ARINWhoisDBDumpError(
+                    "Error while retrieving ARIN Whois DB dump "
+                    "from {}: {}".format(
+                        url, str(e)
+                    )
+                )
+        else:
+            logging.debug("Loading ARIN Whois DB dump")
+
+            path = self.source
+            if not os.path.exists(path):
+                raise ARINWhoisDBDumpError(
+                    "The ARIN Whois DB dump can't be found, "
+                    "file not found: {}".format(path)
+                )
+            try:
+                with open(path, "rb") as f:
+                    response = f.read()
+            except Exception as e:
+                raise ARINWhoisDBDumpError(
+                    "Error while reading the ARIN Whois DB dump "
+                    "from {}: {}".format(path, str(e))
+                )
+
+        if self.source.endswith(".bz2"):
+            try:
+                return decompress(response).decode("utf-8")
+            except Exception as e:
+                raise ARINWhoisDBDumpError(
+                    "An error occurred while "
+                    "decompressing BZ2 file: {}".format(str(e))
+                )
+        else:
+            return response.decode("utf-8")

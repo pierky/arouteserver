@@ -325,7 +325,7 @@ cfg:
         # It can be an 'http://' or 'https://' URL or a local file
         # path. The file must be in JSON format, accordingly to the
         # following schema:
-        # --- #TODO
+        # --- #FIXME
         # Optionally it can be compressed in BZ2 format. In that
         # case the filename must end with the ".bz2" extension.
         #

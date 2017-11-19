@@ -41,8 +41,7 @@ class ARINWhoisRecord_Proxy(object):
                     "max_length": net.max_prefixlen,
                     "exact": not self.allow_longer_prefixes,
                     "ge": net.prefixlen,
-                    "le": net.prefixlen if not self.allow_longer_prefixes
-                                        else net.max_prefixlen
+                    "le": net.prefixlen if not self.allow_longer_prefixes else net.max_prefixlen
                 }
 
 class ARINWhoisDBDumpEnricher(BaseConfigEnricher):

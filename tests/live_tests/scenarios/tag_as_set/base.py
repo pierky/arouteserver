@@ -435,6 +435,15 @@ class TagASSetScenario_WithAS_SETs(object):
                            ext_comms=[],
                            lrg_comms=lrg_comms)
 
+    def test_080_AS6_arin_whois_db_1(self):
+        """{}: AS6 ARIN Whois DB: ok"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64514", "999:0:64518"])
+        self.receive_route(self.rs, self.DATA["AS6_arin1"],
+                           self.AS6, as_path="6 3", next_hop=self.AS6,
+                           std_comms=["999:64513", "999:64514", "999:64518"],
+                           ext_comms=[],
+                           lrg_comms=lrg_comms)
+
 class TagASSetScenario_EmptyAS_SETs(object):
 
     AS_SET = {
@@ -550,6 +559,15 @@ class TagASSetScenario_EmptyAS_SETs(object):
                            self.AS6, as_path="6 3", next_hop=self.AS6,
                            ext_comms=[],
                            filtered=True)
+
+    def test_080_AS6_arin_whois_db_1(self):
+        """{}: AS6 ARIN Whois DB: ok (solely because of route white list)"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64515", "999:0:64517"])
+        self.receive_route(self.rs, self.DATA["AS6_arin1"],
+                           self.AS6, as_path="6 3", next_hop=self.AS6,
+                           std_comms=["999:64513", "999:64515", "999:64517"],
+                           ext_comms=[],
+                           lrg_comms=lrg_comms)
 
 class TagASSetScenarioBIRD(TagASSetScenario):
     __test__ = False

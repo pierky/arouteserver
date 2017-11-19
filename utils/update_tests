@@ -25,10 +25,6 @@ if [ -d "$LAST_RESULTS_DIR" -a -z "$1" ]; then
 	exit
 fi
 
-if [ ! -d $LAST_RESULTS_DIR ]; then
-	mkdir -p $LAST_RESULTS_DIR
-fi
-
 function join_last_results() {
 	if [ ! -e $LAST_RESULTS_DIR/static.last ]; then
 		echo "ERROR: static.last missing"
@@ -58,11 +54,13 @@ fi
 
 # Check for codetags
 echo "Verifying codetags..."
-egrep -r "#XXX|#FIXME|#BUG|#TODO" pierky/ templates/ scripts/ tests/
+set +e
+egrep -r "#XXX|#FIXME|#BUG" pierky/ templates/ scripts/
 if [ $? -eq 0 ]; then
 	echo "One ore more codetags found."
 	exit
 fi
+set -e
 
 # At first verify if templates and fingerprints are aligned.
 echo "Verifying if templates and fingerprints are aligned..."
@@ -82,6 +80,10 @@ echo "Verifying no VMs are running..."
 if [ "`virsh list --name --state-running | wc -w`" != "0" ]; then
 	echo "One or more VMs are already running"
 	exit
+fi
+
+if [ ! -d $LAST_RESULTS_DIR ]; then
+	mkdir -p $LAST_RESULTS_DIR
 fi
 
 if [[ -z "$1" || `echo "$1" | grep -P "\bcli\b"` ]]; then

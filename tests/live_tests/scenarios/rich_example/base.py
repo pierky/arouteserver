@@ -28,6 +28,7 @@ class RichConfigExampleScenario(LiveScenario):
 
     MOCK_RIPE_RPKI_CACHE = False
     MOCK_PEERING_DB = False
+    MOCK_ARIN_DB_DUMP = False
 
     AS_SET = {
         "AS3333": [3333],

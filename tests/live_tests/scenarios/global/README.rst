@@ -8,7 +8,7 @@ Built to group as many tests as possible in a single scenario.
   AS-SETs:
 
   - AS-AS1 (AS1, 1.0.0.0/8, 128.0.0.0/7)
-  - AS-AS1_CUSTOMERS (AS101, AS103, 101.0.0.0/16, 103.0.0.0/16)
+  - AS-AS1_CUSTOMERS (AS101, AS103, 101.0.0.0/16, 103.0.0.0/16, AS104)
   - white list: 11.1.0.0/16, ASN 1011
   - white list routes: exact 11.3.0.0/16 AS1011, 11.4.0.0/16 or more spec w/o origin AS
 
@@ -235,4 +235,5 @@ Built to group as many tests as possible in a single scenario.
 
                                          to AS2:
                                          [101 103]
+  AS104_arin_1          104.0.1.0/24     [101 104]   Accepted from AS1 via ARIN Whois DB dump; rejected by others
   ====================  ==============   =========== ==================================================================================
