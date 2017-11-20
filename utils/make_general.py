@@ -380,6 +380,10 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
 
 def main():
     with open("config.d/general.yml", "r") as f:
+        # Remove first block of comments.
+        s = f.readline()
+        while s.startswith("#"):
+            s = f.readline()
         CFG.parse(f)
     res = CFG.build_result(0)
     with open("docs/GENERAL.rst", "w") as f:

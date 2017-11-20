@@ -409,8 +409,9 @@ class ConfigureCommand(ARouteServerCommand):
 
         yml = self.configure_yml()
 
-        msg = "\n"
+        msg = "\n\n"
         msg += "Route server policy definition file generated successfully!\n"
+        msg += "===========================================================\n"
         msg += "\n"
         msg += "The content of the general configuration file "
         if dest == "-":

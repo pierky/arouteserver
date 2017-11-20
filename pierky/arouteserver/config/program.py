@@ -615,9 +615,9 @@ class ConfigParserProgram(object):
 
         if dest_dir not in self.DEFAULT_CFG_DIRS:
             self.v("WARNING: the directory that has been chosen is not one "
-                    "of those where the program looks for by default to find "
-                    "its configuration file: use the --cfg command line "
-                    "argument to allow the program to find the needed files.")
+                   "of those where the program looks for to find "
+                   "its configuration file: use the --cfg command line "
+                   "argument to allow the program to find that file.")
 
         dest_dir = os.path.expanduser(dest_dir)
         program_cfg_file_path = os.path.join(dest_dir, "arouteserver.yml")
@@ -667,9 +667,10 @@ class ConfigParserProgram(object):
             program_cfg_file_path))
         self.v("- edit the {} file to set your logging preferences".format(
             self.get("logging_config_file")))
-        self.v("- configure route server's options and policies "
-              "in the {} file".format(
-                self.get("cfg_general")))
+        self.v("- set your route server's options and policies in {}\n"
+               "  (edit it manually or use the 'arouteserver configure' "
+               "command)".format(
+                   self.get("cfg_general")))
         self.v("- configure route server clients in the {} file".format(
             self.get("cfg_clients")))
 

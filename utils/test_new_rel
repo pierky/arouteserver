@@ -91,6 +91,11 @@ function run() {
 		arouteserver setup --dest-dir $DEST_DIR
 		echo
 		echo
+
+		echo "Testing configure command..."
+		arouteserver configure --cfg $CFG_FILE --preset-answer daemon=bird asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32
+		echo
+		echo
 	fi
 
 	echo "Testing BIRD..."
@@ -99,7 +104,7 @@ function run() {
 	echo
 
 	echo "Testing OpenBGPD..."
-	arouteserver openbgpd --cfg $CFG_FILE -o /dev/null --ignore-issues path_hiding
+	arouteserver openbgpd --cfg $CFG_FILE -o /dev/null --ignore-issues path_hiding extended_communities --target-version 6.2
 	echo
 	echo
 
