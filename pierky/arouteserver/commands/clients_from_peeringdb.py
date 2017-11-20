@@ -17,7 +17,7 @@ import argparse
 import sys
 import yaml
 
-from ..ask import ask, ask_int
+from ..ask import Ask
 from .base import ARouteServerCommand
 from ..config.program import program_config
 from ..ixf_db import IXFDB
@@ -56,8 +56,8 @@ class ClientsFromPeeringDBCommand(ARouteServerCommand):
 
         print("")
         print("Select the IXP for which the clients list must be built")
-        answer_given, text = ask("Enter the text to search for "
-                                 "(IXP name, country, city):")
+        answer_given, text = Ask().ask("Enter the text to search for "
+                                       "(IXP name, country, city):")
         if not answer_given:
             return None
 
@@ -87,8 +87,8 @@ class ClientsFromPeeringDBCommand(ARouteServerCommand):
             return False
 
         print("")
-        answer_given, id = ask_int("Enter the ID of the IXP you want to use "
-                                   "to build the clients list:")
+        answer_given, id = Ask().ask_int("Enter the ID of the IXP you want to use "
+                                         "to build the clients list:")
 
         if not answer_given:
             return None

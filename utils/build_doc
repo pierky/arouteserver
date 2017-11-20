@@ -67,6 +67,21 @@ function RenderExample() {
 	fi
 }
 
+function RenderConfigureExample() {
+	DST="$1"; shift
+	ANSWERS="$1"; shift
+	CMD="./scripts/arouteserver configure --cfg $CFG_FILE --output examples/auto-config/${DST} --preset-answer $ANSWERS"
+
+	[[ -e examples/auto-config/${DST} ]] && rm examples/auto-config/${DST}
+	$CMD &>/dev/null
+
+	CMD="./scripts/arouteserver html --cfg $CFG_FILE --output examples/auto-config/${DST}.html --general examples/auto-config/${DST}"
+
+	$CMD
+
+	cp examples/auto-config/${DST}.html $DOCS_DIR/_static/examples_auto-config_${DST}.html
+}
+
 function ClientsFromEuroIX() {
 	URL="$1"; shift
 	IXP_ID="$1"; shift
@@ -82,6 +97,17 @@ function ClientsFromEuroIX() {
 	./scripts/arouteserver bird --cfg $CFG_FILE --test-only --general "config.d/general.yml" --clients $OUTPUT_FILE --bogons "config.d/bogons.yml" --ip-ver 4
 	./scripts/arouteserver bird --cfg $CFG_FILE --test-only --general "config.d/general.yml" --clients $OUTPUT_FILE --bogons "config.d/bogons.yml" --ip-ver 6
 }
+
+echo "Building example: configure command output"
+RenderConfigureExample "bird-general.yml" "daemon=bird asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32"
+RenderConfigureExample "openbgpd62-general.yml" "daemon=openbgpd version=6.2 asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32"
+
+# Clear cache for the ASNs involved in the example clients.yml file
+# because the suggested config built using the 'configure' command
+# uses the allow_longer_prefixes option while the default value used
+# by the distributed config does not.
+find var/cache/ -name AS3333-* -delete
+find var/cache/ -name AS10745-* -delete
 
 echo "Building example: default, BIRD, IPv4"
 G="config.d/general.yml"
@@ -193,7 +219,7 @@ echo "Examples of configurations" >> $DST_FILE
 echo "==========================" >> $DST_FILE
 
 cd examples
-for d in default rich bird_hooks clients-from-euroix; do
+for d in default rich bird_hooks clients-from-euroix auto-config; do
 	EXAMPLE_NAME="$d"
 	if [ -e "$EXAMPLE_NAME/README.rst" ]; then
 		echo "" >> $DST_FILE
@@ -202,13 +228,18 @@ for d in default rich bird_hooks clients-from-euroix; do
 		echo "https://github.com/pierky/arouteserver/blob/master/examples/$EXAMPLE_NAME" >> $DST_FILE
 
 		set +e
-		ls $d/*.html &>/dev/null
-		if [ $? -eq 0 ]; then
-			set -e
+		html_cnt=`ls $d/*.html 2>/dev/null | wc -l`
+		set -e
+		if [ $html_cnt -eq 1 ]; then
 			echo "" >> $DST_FILE
 			echo "See the \`textual representation of this configuration <_static/examples_$EXAMPLE_NAME.html>\`__." >> $DST_FILE
+		elif [ $html_cnt -gt 1 ]; then
+			for f in `ls $d/*.html`; do
+				filename=`basename $f`
+				echo "" >> $DST_FILE
+				echo "$filename - See the \`textual representation of this configuration <_static/examples_${EXAMPLE_NAME}_${filename}>\`__." >> $DST_FILE
+			done
 		fi
-		set -e
 	fi
 done
 

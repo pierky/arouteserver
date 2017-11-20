@@ -36,7 +36,7 @@ from .enrichers.rtt import RTTGetterConfigEnricher
 from .errors import MissingDirError, MissingFileError, BuilderError, \
                     ARouteServerError, MissingArgumentError, \
                     TemplateRenderingError, CompatibilityIssuesError, \
-                    ConfigError
+                    ConfigError, MissingGeneralConfigFileError
 from .ipaddresses import IPNetwork
 from .irrdb import IRRDBInfo
 from .cached_objects import CachedObject
@@ -379,9 +379,13 @@ class ConfigBuilder(object):
 
         self.target_version = target_version or self.DEFAULT_VERSION
 
-        self.cfg_general = self._get_cfg(cfg_general,
-                                         ConfigParserGeneral,
-                                         "general")
+        try:
+            self.cfg_general = self._get_cfg(cfg_general,
+                                             ConfigParserGeneral,
+                                             "general")
+        except MissingFileError as e:
+            raise MissingGeneralConfigFileError(e.path)
+
         self.cfg_bogons = self._get_cfg(cfg_bogons,
                                         ConfigParserBogons,
                                         "bogons")
