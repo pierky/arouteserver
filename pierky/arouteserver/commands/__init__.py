@@ -22,6 +22,7 @@ from .setup import SetupCommand
 from .setup_templates import SetupTemplatesCommand
 from .verify_templates import VerifyTemplatesCommand
 from .init_scenario import InitScenarioCommand
+from .configure import ConfigureCommand
 
 all_commands = [
     BuildCommand,
@@ -34,6 +35,7 @@ all_commands = [
     SetupCommand,
     SetupTemplatesCommand,
     VerifyTemplatesCommand,
+    ConfigureCommand,
     InitScenarioCommand,
-    CheckNewRelease,
+    CheckNewRelease
 ]

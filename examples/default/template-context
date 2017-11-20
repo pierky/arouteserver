@@ -766,10 +766,8 @@ asns
 ----
 asns:
   AS10745:
-    as_set_bundle_ids: !!set {}
     as_sets: null
   AS3333:
-    as_set_bundle_ids: !!set {}
     as_sets: null
 
 

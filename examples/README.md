@@ -17,3 +17,7 @@ A scenario where *hooks* have been used to inject custom snippet of configuratio
 ## `clients-from-euroix` - Euro-IX JSON file integration
 
 Some lists of clients built starting from Euro-IX JSON files exported by some IXs.
+
+## `auto-config` - general.yml files generated using the `configure` command
+
+`general.yml` configurations files generated with the `configure` command.

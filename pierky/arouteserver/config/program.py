@@ -24,7 +24,7 @@ import sys
 import textwrap
 import yaml
 
-from ..ask import ask, ask_yes_no
+from ..ask import Ask
 from ..irrdb import IRRDBInfo
 from ..cached_objects import CachedObject
 from ..resources import get_config_dir, get_templates_dir
@@ -271,7 +271,7 @@ class ConfigParserProgram(object):
                     bak_path = "{}.bak".format(d)
 
                     if self.ask:
-                        ret, yes_no = ask_yes_no(
+                        ret, yes_no = Ask().ask_yes_no(
                             "Do you want to create "
                             "a backup copy into {}?".format(bak_path),
                             default="yes"
@@ -294,7 +294,7 @@ class ConfigParserProgram(object):
 
         while True:
             if self.ask:
-                ret, answer = ask(
+                ret, answer = Ask().ask(
                     "already exists: do you want to overwrite it?",
                     options=["yes", "no", "diff"],
                     default="no"
@@ -600,8 +600,8 @@ class ConfigParserProgram(object):
             dest_dir = destination_directory
         else:
             if self.ask:
-                res, dest_dir = ask("Where do you want configuration files and templates "
-                                    "to be stored?", default=self.DEFAULT_CFG_DIR_USR)
+                res, dest_dir = Ask().ask("Where do you want configuration files and templates "
+                                          "to be stored?", default=self.DEFAULT_CFG_DIR_USR)
             else:
                 res = True
                 dest_dir = self.DEFAULT_CFG_DIR_USR
@@ -615,16 +615,16 @@ class ConfigParserProgram(object):
 
         if dest_dir not in self.DEFAULT_CFG_DIRS:
             self.v("WARNING: the directory that has been chosen is not one "
-                  "of those used by default by the program to look for its "
-                  "configuration file: use the --cfg command line "
-                  "argument to allow the program to find the needed files.")
+                    "of those where the program looks for by default to find "
+                    "its configuration file: use the --cfg command line "
+                    "argument to allow the program to find the needed files.")
 
         dest_dir = os.path.expanduser(dest_dir)
         program_cfg_file_path = os.path.join(dest_dir, "arouteserver.yml")
 
         if not destination_directory:
             if self.ask:
-                res, yes_or_no = ask_yes_no(
+                res, yes_or_no = Ask().ask_yes_no(
                     "Do you confirm you want ARouteServer files to be "
                     "stored at {}?".format(dest_dir), default="yes")
             else:
