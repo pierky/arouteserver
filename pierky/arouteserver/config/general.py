@@ -13,10 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from collections import OrderedDict
 import logging
 
-from .base import ConfigParserBase, convert_next_hop_policy, \
-                  convert_maxprefix_peeringdb
+from .base import ConfigParserBase, convert_deprecated
 from .validators import *
 from ..errors import ConfigError, ARouteServerError
 
@@ -91,6 +91,151 @@ class ConfigParserGeneral(ConfigParserBase):
             ]
         }
 
+    @staticmethod
+    def get_schema():
+        s = OrderedDict()
+
+        s["cfg"] = OrderedDict()
+        c = s["cfg"]
+
+        c["rs_as"] = ValidatorASN()
+        c["router_id"] = ValidatorIPv4Addr(mandatory=True)
+        c["prepend_rs_as"] = ValidatorBool(default=False)
+        c["path_hiding"] = ValidatorBool(default=True)
+        c["passive"] = ValidatorBool(default=True)
+        c["gtsm"] = ValidatorBool(default=False)
+        c["add_path"] = ValidatorBool(default=False)
+
+        c["filtering"] = OrderedDict()
+        f = c["filtering"]
+
+        f["next_hop"] = OrderedDict()
+        f["next_hop"]["policy"] = ValidatorOption(
+            "policy",
+            ("strict", "same-as", "authorized_addresses"),
+            default="strict"
+        )
+        f["ipv4_pref_len"] = ValidatorIPMinMaxLen(
+            4, default={"min": 8, "max": 24}
+        )
+        f["ipv6_pref_len"] = ValidatorIPMinMaxLen(
+            6, default={"min": 12, "max": 48}
+        )
+        f["global_black_list_pref"] = ValidatorListOf(
+            ValidatorPrefixListEntry, mandatory=False
+        )
+        f["max_as_path_len"] = ValidatorMaxASPathLen(default=32)
+        f["reject_invalid_as_in_as_path"] = ValidatorBool(default=True)
+        f["transit_free"] = OrderedDict()
+        f["transit_free"]["action"] = ValidatorOption(
+            "action", ("reject", "warning"), mandatory=False, default="reject"
+        )
+        f["transit_free"]["asns"] = ValidatorASNList(
+            mandatory=False
+        )
+
+        f["irrdb"] = OrderedDict()
+        i = f["irrdb"]
+
+        i["enforce_origin_in_as_set"] = ValidatorBool(default=True)
+        i["enforce_prefix_in_as_set"] = ValidatorBool(default=True)
+        i["allow_longer_prefixes"] = ValidatorBool(default=False)
+        i["tag_as_set"] = ValidatorBool(default=True)
+        i["peering_db"] = ValidatorBool(default=False)
+
+        i["use_rpki_roas_as_route_objects"] = OrderedDict()
+        r = i["use_rpki_roas_as_route_objects"]
+
+        r["enabled"] = ValidatorBool(default=False)
+        r["source"] = ValidatorOption("source",
+            ("ripe-rpki-validator-cache", "rtrlib"),
+            mandatory=True,
+            default="ripe-rpki-validator-cache"
+        )
+        r["ripe_rpki_validator_url"] = ValidatorText(
+            mandatory=True,
+            default="http://localcert.ripe.net:8088/export.json"
+        )
+        r["allowed_trust_anchors"] = ValidatorListOf(
+            ValidatorText, mandatory=True, default=[
+                "APNIC from AFRINIC RPKI Root",
+                "APNIC from ARIN RPKI Root",
+                "APNIC from IANA RPKI Root",
+                "APNIC from LACNIC RPKI Root",
+                "APNIC from RIPE RPKI Root",
+                "AfriNIC RPKI Root",
+                "LACNIC RPKI Root",
+                "RIPE NCC RPKI Root"
+            ]
+        )
+
+        f["rpki"] = OrderedDict()
+        r = f["rpki"]
+
+        r["enabled"] = ValidatorBool(default=False)
+        r["reject_invalid"] = ValidatorBool(mandatory=True, default=True)
+
+        f["max_prefix"] = OrderedDict()
+        m = f["max_prefix"]
+
+        m["peering_db"] = OrderedDict()
+        m["peering_db"]["enabled"] = ValidatorBool(default=True)
+        m["peering_db"]["increment"] = OrderedDict()
+        m["peering_db"]["increment"]["absolute"] = ValidatorUInt(default=100)
+        m["peering_db"]["increment"]["relative"] = ValidatorUInt(default=15)
+        m["general_limit_ipv4"] = ValidatorUInt(default=170000)
+        m["general_limit_ipv6"] = ValidatorUInt(default=12000)
+        m["action"] = ValidatorOption(
+            "action",
+            ("shutdown", "restart", "block", "warning"),
+            mandatory=False,
+            default="shutdown"
+        )
+        m["restart_after"] = ValidatorUInt(default=15, mandatory=True)
+
+        f["reject_policy"] = OrderedDict()
+        f["reject_policy"]["policy"] = ValidatorOption(
+            "policy", ("reject", "tag"), default="reject"
+        )
+
+        c["blackhole_filtering"] = OrderedDict()
+        b = c["blackhole_filtering"]
+
+        b["announce_to_client"] = ValidatorBool(mandatory=True, default=True)
+        b["policy_ipv4"] = ValidatorOption(
+            "policy_ipv4",
+            ("propagate-unchanged", "rewrite-next-hop"),
+            mandatory=False
+        )
+        b["policy_ipv6"] = ValidatorOption(
+            "policy_ipv6",
+            ("propagate-unchanged", "rewrite-next-hop"),
+            mandatory=False
+        )
+        b["rewrite_next_hop_ipv4"] = ValidatorIPv4Addr(mandatory=False)
+        b["rewrite_next_hop_ipv6"] = ValidatorIPv6Addr(mandatory=False)
+        b["add_noexport"] = ValidatorBool(default=True)
+
+        c["graceful_shutdown"] = OrderedDict()
+        c["graceful_shutdown"]["enabled"] = ValidatorBool(
+            mandatory=True, default=False
+        )
+        c["graceful_shutdown"]["local_pref"] = ValidatorUInt(
+            mandatory=True, default=0
+        )
+        c["rfc1997_wellknown_communities"] = OrderedDict()
+        c["rfc1997_wellknown_communities"]["policy"] = ValidatorOption(
+            "policy",
+            ("rfc1997", "pass"),
+            default="pass"
+        )
+        c["rtt_thresholds"] = ValidatorRTTThresholds(mandatory=False)
+
+        c["communities"] = {}
+        c["custom_communities"] = {}
+
+        return s
+
     def parse(self):
         """
         Contents of cfg dict is updated/normalized by validators.
@@ -98,132 +243,7 @@ class ConfigParserGeneral(ConfigParserBase):
 
         errors = False
 
-        schema = {
-            "cfg": {
-                "rs_as": ValidatorASN(),
-                "router_id": ValidatorIPv4Addr(mandatory=True),
-                "prepend_rs_as": ValidatorBool(default=False),
-                "path_hiding": ValidatorBool(default=True),
-                "passive": ValidatorBool(default=True),
-                "gtsm": ValidatorBool(default=False),
-                "add_path": ValidatorBool(default=False),
-                "filtering": {
-                    "next_hop": {
-                        "policy": ValidatorOption("policy",
-                                                  ("strict", "same-as",
-                                                   "authorized_addresses"),
-                                                  default="strict"),
-                    },
-                    "ipv4_pref_len": ValidatorIPMinMaxLen(4,
-                                                          default={"min": 8,
-                                                                   "max": 24}),
-                    "ipv6_pref_len": ValidatorIPMinMaxLen(6,
-                                                          default={"min": 12,
-                                                                   "max": 48}),
-                    "global_black_list_pref": ValidatorListOf(
-                        ValidatorPrefixListEntry, mandatory=False,
-                    ),
-                    "max_as_path_len": ValidatorMaxASPathLen(default=32),
-                    "reject_invalid_as_in_as_path": ValidatorBool(default=True),
-                    "transit_free": {
-                        "action": ValidatorOption("action",
-                                                  ("reject", "warning"),
-                                                  mandatory=False,
-                                                  default="reject"),
-                        "asns": ValidatorASNList(mandatory=False)
-                    },
-                    "irrdb": {
-                        "enforce_origin_in_as_set": ValidatorBool(default=True),
-                        "enforce_prefix_in_as_set": ValidatorBool(default=True),
-                        "allow_longer_prefixes": ValidatorBool(default=False),
-                        "tag_as_set": ValidatorBool(default=True),
-                        "peering_db": ValidatorBool(default=False),
-                        "use_rpki_roas_as_route_objects": {
-                            "enabled": ValidatorBool(default=False),
-                            "source": ValidatorOption("source",
-                                                      ("ripe-rpki-validator-cache",
-                                                       "rtrlib"),
-                                                      mandatory=True,
-                                                      default="ripe-rpki-validator-cache"),
-                            "ripe_rpki_validator_url": ValidatorText(
-                                mandatory=True,
-                                default="http://localcert.ripe.net:8088/export.json"
-                            ),
-                            "allowed_trust_anchors": ValidatorListOf(
-                                ValidatorText, mandatory=True, default=[
-                                    "APNIC from AFRINIC RPKI Root",
-                                    "APNIC from ARIN RPKI Root",
-                                    "APNIC from IANA RPKI Root",
-                                    "APNIC from LACNIC RPKI Root",
-                                    "APNIC from RIPE RPKI Root",
-                                    "AfriNIC RPKI Root",
-                                    "LACNIC RPKI Root",
-                                    "RIPE NCC RPKI Root"
-                                ]
-                            )
-                        }
-                    },
-                    "rpki": {
-                        "enabled": ValidatorBool(default=False),
-                        "reject_invalid": ValidatorBool(mandatory=True,
-                                                        default=True),
-                    },
-                    "max_prefix": {
-                        "peering_db": {
-                            "enabled": ValidatorBool(default=True),
-                            "increment": {
-                                "absolute": ValidatorUInt(default=100),
-                                "relative": ValidatorUInt(default=15)
-                            }
-                        },
-                        "general_limit_ipv4": ValidatorUInt(default=170000),
-                        "general_limit_ipv6": ValidatorUInt(default=12000),
-                        "action": ValidatorOption(
-                            "action",
-                            ("shutdown", "restart", "block", "warning"),
-                            mandatory=False,
-                            default="shutdown"
-                        ),
-                        "restart_after": ValidatorUInt(default=15,
-                                                       mandatory=True)
-                    },
-                    "reject_policy": {
-                        "policy": ValidatorOption("policy",
-                                                  ("reject", "tag"),
-                                                  default="reject")
-                        },
-                },
-                "blackhole_filtering": {
-                    "announce_to_client": ValidatorBool(
-                        mandatory=True, default=True
-                    ),
-                    "policy_ipv4": ValidatorOption(
-                        "policy_ipv4",
-                        ("propagate-unchanged", "rewrite-next-hop"),
-                        mandatory=False),
-                    "policy_ipv6": ValidatorOption(
-                        "policy_ipv6",
-                        ("propagate-unchanged", "rewrite-next-hop"),
-                        mandatory=False),
-                    "rewrite_next_hop_ipv4": ValidatorIPv4Addr(mandatory=False),
-                    "rewrite_next_hop_ipv6": ValidatorIPv6Addr(mandatory=False),
-                    "add_noexport": ValidatorBool(default=True),
-                },
-                "graceful_shutdown": {
-                    "enabled": ValidatorBool(mandatory=True, default=False),
-                    "local_pref": ValidatorUInt(mandatory=True, default=0)
-                },
-                "rfc1997_wellknown_communities": {
-                    "policy": ValidatorOption("policy", ("rfc1997", "pass"),
-                                              default="pass"),
-                },
-                "rtt_thresholds": ValidatorRTTThresholds(mandatory=False),
-                "communities": {
-                },
-                "custom_communities": {
-                }
-            }
-        }
+        schema = self.get_schema()
 
         if "rs_as" in self.cfg["cfg"]:
             rs_as_macro = self.cfg["cfg"]["rs_as"]
@@ -256,11 +276,7 @@ class ConfigParserGeneral(ConfigParserBase):
                     self.new_community_validator(rs_as_macro)
 
         try:
-            # Convert next_hop_policy (< v0.6.0) into the new format
-            convert_next_hop_policy(self.cfg["cfg"])
-
-            # Convert max_prefix.peering_db (< v0.13.0) into the new format
-            convert_maxprefix_peeringdb(self.cfg["cfg"])
+            convert_deprecated(self.cfg["cfg"])
 
             ConfigParserBase.validate(schema, self.cfg)
         except ARouteServerError as e:
