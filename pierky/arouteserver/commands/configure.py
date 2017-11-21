@@ -287,8 +287,14 @@ class ConfigureCommand(ARouteServerCommand):
         )
 
         filtering["max_prefix"] = {
-            "action": "shutdown"
+            "action": "shutdown",
+            "peering_db": {
+                "enabled": True
+            }
         }
+        self.notes.append(
+            "PeeringDB is used to fetch networks prefix count."
+        )
 
         cfg["blackhole_filtering"] = {}
         blackhole = cfg["blackhole_filtering"]

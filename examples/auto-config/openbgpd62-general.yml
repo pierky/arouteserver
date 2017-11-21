@@ -50,6 +50,8 @@ cfg:
         enabled: true
     max_prefix:
       action: shutdown
+      peering_db:
+        enabled: true
   blackhole_filtering:
     announce_to_client: true
     policy_ipv4: propagate-unchanged

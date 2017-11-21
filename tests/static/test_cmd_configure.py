@@ -79,7 +79,10 @@ class TestConfigureCmd(ARouteServerTestCase):
                     }
                 },
                 "max_prefix": {
-                    "action": "shutdown"
+                    "action": "shutdown",
+                    "peering_db": {
+                        "enabled": True
+                    }
                 },
             },
             "blackhole_filtering": {
