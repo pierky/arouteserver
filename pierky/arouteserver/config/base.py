@@ -148,7 +148,7 @@ class ConfigParserBase(object):
                 )
 
             else:
-                raise NotImplementedError()
+                raise NotImplementedError("prop: {}, path: {}".format(prop, path))
 
         if errors:
             raise ConfigError()
@@ -204,3 +204,10 @@ def convert_maxprefix_peeringdb(cfg):
         cfg["filtering"]["max_prefix"]["peering_db"] = {
             "enabled": peering_db
         }
+
+def convert_deprecated(cfg):
+    # Convert next_hop_policy (< v0.6.0) into the new format
+    convert_next_hop_policy(cfg)
+
+    # Convert max_prefix.peering_db (< v0.13.0) into the new format
+    convert_maxprefix_peeringdb(cfg)

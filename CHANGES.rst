@@ -6,9 +6,11 @@ Change log
 next release
 ------------
 
-- Improvement: ``configure`` command.
-  
-  It can be used to quickly generate a route server policy definition file (``general.yml``) on the basis of best practices and suggestions.
+- New feature: ``configure`` and ``show_config`` *support* commands.
+
+  - ``configure``: it can be used to quickly generate a route server policy definition file (``general.yml``) on the basis of best practices and suggestions.
+
+  - ``show_config``: to display current configuration settings and also options that have been left to their default values.
 
 v0.14.1
 -------

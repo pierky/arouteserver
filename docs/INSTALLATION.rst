@@ -127,6 +127,9 @@ ARouteServer uses the following external programs:
 Upgrading
 ---------
 
+Often upgrades bring new features and new options, sometimes they also introduce changes that might break backward compatibility with previous versions.
+It is advisable to always check the :doc:`CHANGELOG <CHANGELOG>` to verify what's new: the ``arouteserver show_config`` command can also be used to verify if new configuration options are available and how they are set by default.
+
 To upgrade the program, download the new version...
 
 .. code:: bash
