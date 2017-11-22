@@ -28,7 +28,6 @@ from ..builder import OpenBGPDConfigBuilder
 from ..config.program import program_config
 from ..errors import ARouteServerError
 from ..ipaddresses import IPNetwork
-from ..resources import get_config_dir, get_templates_dir
 
 class ConfigureCommand(ARouteServerCommand):
 
@@ -113,14 +112,14 @@ class ConfigureCommand(ARouteServerCommand):
                 return False, None
         return True, res
 
-    def ask_16bit_int(self, text, raise_exc=False):
-        answer_given, v = self.ask.ask_int(text, None, None, raise_exc)
-        if not answer_given:
-            return False, None
-        if v > 65535:
-            print("Invalid input: a 16-bit integer is expected.")
-            return False, None
-        return True, res
+    #def ask_16bit_int(self, text, raise_exc=False):
+    #    answer_given, v = self.ask.ask_int(text, None, None, raise_exc)
+    #    if not answer_given:
+    #        return False, None
+    #    if v > 65535:
+    #        print("Invalid input: a 16-bit integer is expected.")
+    #        return False, None
+    #    return True, v
 
     def collect_answers(self):
         if self.answers:
