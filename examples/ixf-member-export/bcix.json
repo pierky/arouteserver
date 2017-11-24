@@ -1,0 +1,2246 @@
+{
+  "version": "0.6", 
+  "timestamp": "2017-11-24T17:32:01Z", 
+  "ixp_list": [
+    {
+      "ixp_id": 0, 
+      "shortname": "Test IXP", 
+      "vlan": [
+        {
+          "id": 0
+        }
+      ]
+    }
+  ], 
+  "member_list": [
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-GOOGLE", 
+                "max_prefix": 15000, 
+                "address": "193.178.185.100"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-GOOGLE", 
+                "max_prefix": 750, 
+                "address": "2001:7f8:19:1::3b41:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 15169
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-QSC", 
+                "max_prefix": 250, 
+                "address": "193.178.185.60"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-QSC", 
+                "max_prefix": 80, 
+                "address": "2001:7f8:19:1::50c4:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 20676
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-DENIC-ANY", 
+                "max_prefix": 20, 
+                "address": "193.178.185.66"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-DENIC-ANY", 
+                "max_prefix": 40, 
+                "address": "2001:7f8:19:1::7b29:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 31529
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-NFLX", 
+                "max_prefix": 250, 
+                "address": "193.178.185.80"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-NFLX", 
+                "max_prefix": 13, 
+                "address": "2001:7f8:19:1::b5a:1"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-NFLX", 
+                "max_prefix": 250, 
+                "address": "193.178.185.81"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-NFLX", 
+                "max_prefix": 13, 
+                "address": "2001:7f8:19:1::b5a:2"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 2906
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "as-amazon", 
+                "max_prefix": 2000, 
+                "address": "193.178.185.95"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "as-amazon", 
+                "max_prefix": 500, 
+                "address": "2001:7f8:19:1::407d:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 16509
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS20880", 
+                "max_prefix": 50, 
+                "address": "193.178.185.29"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS20880", 
+                "max_prefix": 5, 
+                "address": "2001:7f8:19:1::5190:1"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS20880", 
+                "max_prefix": 50, 
+                "address": "193.178.185.58"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS20880", 
+                "max_prefix": 5, 
+                "address": "2001:7f8:19:1::5190:2"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 20880
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-DNSNET", 
+                "address": "193.178.185.16"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 15366
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS112", 
+                "max_prefix": 2, 
+                "address": "193.178.185.112"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS112", 
+                "max_prefix": 2, 
+                "address": "2001:7f8:19:1::70:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 112
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-MICROSOFT", 
+                "max_prefix": 1000, 
+                "address": "193.178.185.84"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-MICROSOFT", 
+                "max_prefix": 250, 
+                "address": "2001:7f8:19:1::1f8b:1"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-MICROSOFT", 
+                "max_prefix": 1000, 
+                "address": "193.178.185.104"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-MICROSOFT", 
+                "max_prefix": 250, 
+                "address": "2001:7f8:19:1::1f8b:2"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 8075
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-TAZ", 
+                "max_prefix": 1, 
+                "address": "193.178.185.91"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-TAZ", 
+                "max_prefix": 1, 
+                "address": "2001:7f8:19:1::3ecb:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 16075
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS50575", 
+                "address": "193.178.185.43"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 50575
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-BER", 
+                "max_prefix": 2, 
+                "address": "193.178.185.14"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-BER", 
+                "address": "2001:7f8:19:1::f2f1:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 62193
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS199118", 
+                "max_prefix": 5, 
+                "address": "193.178.185.86"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS199118", 
+                "max_prefix": 1, 
+                "address": "2001:7f8:19:1:0:3:9ce:1"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS199118", 
+                "max_prefix": 5, 
+                "address": "193.178.185.87"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS199118", 
+                "max_prefix": 1, 
+                "address": "2001:7f8:19:1:0:3:9ce:2"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 199118
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS13335", 
+                "max_prefix": 500, 
+                "address": "193.178.185.17"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS13335", 
+                "max_prefix": 100, 
+                "address": "2001:7f8:19:1::3417:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 13335
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-UNBELIEVABLE", 
+                "max_prefix": 100, 
+                "address": "193.178.185.33"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-UNBELIEVABLE", 
+                "max_prefix": 40, 
+                "address": "2001:7f8:19:1::bc2d:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 48173
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-STRATORZ", 
+                "max_prefix": 150, 
+                "address": "193.178.185.54"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-STRATORZ", 
+                "max_prefix": 100, 
+                "address": "2001:7f8:19:1::1a44:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 6724
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-BCIX", 
+                "address": "193.178.185.6"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-BCIX", 
+                "address": "2001:7f8:19:1::3ff6:6"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-BCIX", 
+                "address": "193.178.185.5"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-BCIX", 
+                "address": "2001:7f8:19:1::3ff6:5"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 16374
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-ALL", 
+                "address": "193.178.185.1"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-ALL", 
+                "address": "2001:7f8:19:1::31bc:1"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-ALL", 
+                "address": "193.178.185.97"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-ALL", 
+                "address": "2001:7f8:19:1::31bc:3"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-ALL", 
+                "address": "193.178.185.2"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-ALL", 
+                "address": "2001:7f8:19:1::31bc:2"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 12732
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-OPENDNS", 
+                "max_prefix": 70, 
+                "address": "193.178.185.88"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-OPENDNS", 
+                "max_prefix": 20, 
+                "address": "2001:7f8:19:1::8f54:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 36692
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-GLOBALNOC", 
+                "max_prefix": 50, 
+                "address": "193.178.185.90"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-GLOBALNOC", 
+                "max_prefix": 10, 
+                "address": "2001:7f8:19:1::6284:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 25220
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS250:AS-CUMULATIVE", 
+                "max_prefix": 5, 
+                "address": "193.178.185.23"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS250:AS-CUMULATIVE", 
+                "address": "2001:7f8:19:1::fa:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 250
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-HLKOMM", 
+                "max_prefix": 100, 
+                "address": "193.178.185.41"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-HLKOMM", 
+                "max_prefix": 5, 
+                "address": "2001:7f8:19:1::3ee1:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 16097
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-IDK", 
+                "max_prefix": 60, 
+                "address": "193.178.185.62"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 1547
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-SOVAM", 
+                "max_prefix": 20000, 
+                "address": "193.178.185.53"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-SOVAM-v6", 
+                "max_prefix": 5000, 
+                "address": "2001:7f8:19:1::c90:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 3216
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-SCALEUP", 
+                "max_prefix": 20, 
+                "address": "193.178.185.69"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-SCALEUP", 
+                "max_prefix": 10, 
+                "address": "2001:7f8:19:1::7156:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 29014
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-EDISCOM", 
+                "max_prefix": 33, 
+                "address": "193.178.185.20"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-EDISCOM", 
+                "max_prefix": 2, 
+                "address": "2001:7f8:19:1::3195:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 12693
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-CHAOS", 
+                "max_prefix": 80, 
+                "address": "193.178.185.105"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-CHAOS", 
+                "max_prefix": 10, 
+                "address": "2001:7f8:19:1::c528:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 50472
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-IN-BERLIN", 
+                "max_prefix": 20, 
+                "address": "193.178.185.50"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-IN-BERLIN", 
+                "max_prefix": 20, 
+                "address": "2001:7f8:19:1::73e6:1"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-IN-BERLIN", 
+                "max_prefix": 20, 
+                "address": "193.178.185.51"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-IN-BERLIN", 
+                "max_prefix": 20, 
+                "address": "2001:7f8:19:1::73e6:2"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 29670
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-IMMOBILIENSCOUT", 
+                "max_prefix": 2, 
+                "address": "193.178.185.70"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-IMMOBILIENSCOUT", 
+                "address": "2001:7f8:19:1::99cd:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 39373
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-BX-MH", 
+                "address": "193.178.185.68"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-BX-MH", 
+                "address": "2001:7f8:19:1::f366:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 62310
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS51224", 
+                "max_prefix": 2, 
+                "address": "193.178.185.26"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS51224", 
+                "address": "2001:7f8:19:1::c818:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 51224
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-PCH", 
+                "max_prefix": 600, 
+                "address": "193.178.185.27"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-PCH", 
+                "max_prefix": 600, 
+                "address": "2001:7f8:19:1::2a:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 42
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-VT-TRANSIT", 
+                "max_prefix": 1000, 
+                "address": "193.178.185.15"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-VT-TRANSIT", 
+                "max_prefix": 200, 
+                "address": "2001:7f8:19:1::22b1:15"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 8881
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-SGGS", 
+                "max_prefix": 4000, 
+                "address": "193.178.185.18"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-SGGS", 
+                "max_prefix": 200, 
+                "address": "2001:7f8:19:1::5fa2:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 24482
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-PCH", 
+                "max_prefix": 600, 
+                "address": "193.178.185.28"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-PCH", 
+                "max_prefix": 600, 
+                "address": "2001:7f8:19:1::f10:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 3856
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-PIN-BCIX", 
+                "max_prefix": 500, 
+                "address": "193.178.185.83"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-PIN-BCIX", 
+                "max_prefix": 25, 
+                "address": "2001:7f8:19:1::ac12:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 44050
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS50933", 
+                "address": "193.178.185.37"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS50933", 
+                "address": "2001:7f8:19:1::c6f5:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 50933
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-LWL", 
+                "max_prefix": 250, 
+                "address": "193.178.185.11"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-LWL", 
+                "max_prefix": 100, 
+                "address": "2001:7f8:19:1::c5c5:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 50629
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS200921", 
+                "max_prefix": 3, 
+                "address": "193.178.185.89"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS200921", 
+                "max_prefix": 1, 
+                "address": "2001:7f8:19:1:0:3:10d9:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 200921
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-EXARING", 
+                "max_prefix": 20, 
+                "address": "193.178.185.96"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-EXARING", 
+                "max_prefix": 20, 
+                "address": "2001:7f8:19:1::c87c:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 51324
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-NORIS", 
+                "max_prefix": 150, 
+                "address": "193.178.185.76"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-NORIS", 
+                "max_prefix": 50, 
+                "address": "2001:7f8:19:1::3031:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 12337
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-ISPPRO", 
+                "max_prefix": 15, 
+                "address": "193.178.185.35"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-ISPPRO", 
+                "max_prefix": 5, 
+                "address": "2001:7f8:19:1::8a26:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 35366
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS43503", 
+                "address": "193.178.185.21"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS43503", 
+                "address": "2001:7f8:19:1::a9ef:2"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS43503", 
+                "address": "193.178.185.63"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS43503", 
+                "address": "2001:7f8:19:1::a9ef:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 43503
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "max_prefix": 8500, 
+                "address": "193.178.185.32"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "max_prefix": 425, 
+                "address": "2001:7f8:19:1::22e0:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 8928
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-COLT", 
+                "max_prefix": 4000, 
+                "address": "193.178.185.56"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-COLT", 
+                "max_prefix": 500, 
+                "address": "2001:7f8:19:1::201c:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 8220
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-RFT", 
+                "max_prefix": 10, 
+                "address": "193.178.185.67"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-RFT", 
+                "max_prefix": 1, 
+                "address": "2001:7f8:19:1::8985:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 35205
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-KDG", 
+                "max_prefix": 200, 
+                "address": "193.178.185.36"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-KDG", 
+                "max_prefix": 75, 
+                "address": "2001:7f8:19:1::7a66:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 31334
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS31474", 
+                "max_prefix": 6, 
+                "address": "193.178.185.25"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 31474
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-AKAMAI", 
+                "max_prefix": 100, 
+                "address": "193.178.185.22"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-AKAMAI", 
+                "max_prefix": 20, 
+                "address": "2001:7f8:19:1::51cc:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 20940
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-TDDE", 
+                "max_prefix": 1000, 
+                "address": "193.178.185.108"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-TDDE", 
+                "max_prefix": 200, 
+                "address": "2001:7f8:19:1::1a95:1"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-TDDE", 
+                "max_prefix": 1000, 
+                "address": "193.178.185.101"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-TDDE", 
+                "max_prefix": 200, 
+                "address": "2001:7f8:19:1::1a95:2"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 6805
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-SYSELEVEN", 
+                "max_prefix": 500, 
+                "address": "193.178.185.48"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-SYSELEVEN", 
+                "max_prefix": 250, 
+                "address": "2001:7f8:19:1::62cb:2"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 25291
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-TELKOM-TRANSIT", 
+                "max_prefix": 10000, 
+                "address": "193.178.185.3"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-TELKOM-TRANSIT", 
+                "max_prefix": 1000, 
+                "address": "2001:7f8:19:1::1e21:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 7713
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS49492", 
+                "max_prefix": 5, 
+                "address": "193.178.185.49"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS49492", 
+                "address": "2001:7f8:19:1::c154:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 49492
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-PLANETARY", 
+                "address": "193.178.185.47"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-PLANETARY", 
+                "address": "2001:7f8:19:1::c4c4:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 50372
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS48519", 
+                "address": "193.178.185.57"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS48519", 
+                "address": "2001:7f8:19:1::bd87:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 48519
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-MPEXNETWORKS", 
+                "max_prefix": 3, 
+                "address": "193.178.185.77"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-MPEXNETWORKS", 
+                "max_prefix": 1, 
+                "address": "2001:7f8:19:1::8bf9:1"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-MPEXNETWORKS", 
+                "max_prefix": 3, 
+                "address": "193.178.185.78"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-MPEXNETWORKS", 
+                "max_prefix": 1, 
+                "address": "2001:7f8:19:1::8bf9:2"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 35833
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-RETN", 
+                "max_prefix": 25000, 
+                "address": "193.178.185.64"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-RETN6", 
+                "max_prefix": 1500, 
+                "address": "2001:7f8:19:1::232a:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 9002
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-FREIFUNK-BERLIN", 
+                "max_prefix": 10, 
+                "address": "193.178.185.82"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-FREIFUNK-BERLIN", 
+                "max_prefix": 20, 
+                "address": "2001:7f8:19:1::aca2:2"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 44194
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-PIXEL-UP", 
+                "max_prefix": 3, 
+                "address": "193.178.185.73"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-PIXEL-UP", 
+                "max_prefix": 3, 
+                "address": "193.178.185.71"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 33811
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS48145", 
+                "max_prefix": 50, 
+                "address": "193.178.185.102"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS48145", 
+                "max_prefix": 20, 
+                "address": "2001:7f8:19:1::bc11:1"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS48145", 
+                "max_prefix": 50, 
+                "address": "193.178.185.103"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS48145", 
+                "max_prefix": 20, 
+                "address": "2001:7f8:19:1::bc11:2"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 48145
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-IPB", 
+                "max_prefix": 40, 
+                "address": "193.178.185.59"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-IPB", 
+                "max_prefix": 10, 
+                "address": "2001:7f8:19:1::50a7:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 20647
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-HURRICANE", 
+                "max_prefix": 165000, 
+                "address": "193.178.185.34"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-HURRICANEv6", 
+                "max_prefix": 25000, 
+                "address": "2001:7f8:19:1::1b1b:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 6939
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS25516", 
+                "address": "193.178.185.99"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS25516", 
+                "address": "193.178.185.98"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS25516", 
+                "address": "2001:7f8:19:1::63ac:2"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 25516
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-LLNW", 
+                "max_prefix": 600, 
+                "address": "193.178.185.40"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-LLNW", 
+                "max_prefix": 30, 
+                "address": "2001:7f8:19:1::5926:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 22822
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-MDLINK", 
+                "max_prefix": 5, 
+                "address": "193.178.185.31"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-MDLINK", 
+                "max_prefix": 1, 
+                "address": "2001:7f8:19:1::a94d:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 43341
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-HGC", 
+                "max_prefix": 43, 
+                "address": "193.178.185.55"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-HGC", 
+                "max_prefix": 2, 
+                "address": "2001:7f8:19:1::736f:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 29551
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS199645", 
+                "max_prefix": 1, 
+                "address": "193.178.185.94"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS199645", 
+                "max_prefix": 1, 
+                "address": "2001:7f8:19:1:0:3:bdd:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 199645
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-IXREACH", 
+                "max_prefix": 3000, 
+                "address": "193.178.185.79"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-IXREACH", 
+                "max_prefix": 150, 
+                "address": "2001:7f8:19:1::aa0b:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 43531
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS60868", 
+                "max_prefix": 4, 
+                "address": "193.178.185.52"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS60868", 
+                "max_prefix": 3, 
+                "address": "2001:7f8:19:1::edc4:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 60868
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-NETIA", 
+                "max_prefix": 2000, 
+                "address": "193.178.185.46"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-NETIA", 
+                "max_prefix": 100, 
+                "address": "2001:7f8:19:1::31c5:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 12741
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-CBXNET", 
+                "max_prefix": 2, 
+                "address": "193.178.185.61"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 12512
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-LAMBDANET", 
+                "max_prefix": 2000, 
+                "address": "193.178.185.39"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-LAMBDANET", 
+                "max_prefix": 500, 
+                "address": "2001:7f8:19:1::33b5:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 13237
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS24993", 
+                "max_prefix": 1, 
+                "address": "193.178.185.75"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS24993", 
+                "address": "2001:7f8:19:1::61a1:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 24993
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-CORE-BACKBONE", 
+                "max_prefix": 5000, 
+                "address": "193.178.185.44"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-CORE-BACKBONE", 
+                "max_prefix": 1000, 
+                "address": "2001:7f8:19:1::8463:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 33891
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS51922", 
+                "address": "193.178.185.38"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS51922", 
+                "address": "2001:7f8:19:1::cad2:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 51922
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS50324", 
+                "max_prefix": 50, 
+                "address": "193.178.185.45"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS50324", 
+                "max_prefix": 25, 
+                "address": "2001:7f8:19:1::c494:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 50324
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-FFRL", 
+                "max_prefix": 15, 
+                "address": "193.178.185.74"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-FFRL", 
+                "max_prefix": 15, 
+                "address": "2001:7f8:19:1:0:3:13e5:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 201701
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-KPN", 
+                "max_prefix": 17500, 
+                "address": "193.178.185.65"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-KPN", 
+                "max_prefix": 1750, 
+                "address": "2001:7f8:19:1::11e:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 286
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-INIT7", 
+                "max_prefix": 4000, 
+                "address": "193.178.185.92"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-INIT7", 
+                "max_prefix": 700, 
+                "address": "2001:7f8:19:1::32e6:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 13030
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-DFNTOWINISP", 
+                "max_prefix": 800, 
+                "address": "193.178.185.42"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-DFNTOWINISP", 
+                "max_prefix": 100, 
+                "address": "2001:7f8:19:1::2a8:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 680
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-TELEAG", 
+                "max_prefix": 100, 
+                "address": "193.178.185.93"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-TELEAG", 
+                "max_prefix": 10, 
+                "address": "2001:7f8:19:1::e383:1"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 58243
+    }
+  ]
+}

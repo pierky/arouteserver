@@ -12,6 +12,8 @@ next release
 
   - ``show_config``: to display current configuration settings and also options that have been left to their default values.
 
+- New feature: ``ixf-member-export`` command, to build `IX-F Member Export JSON files <https://ml.ix-f.net/>`__ from the list of clients.
+
 v0.14.1
 -------
 
