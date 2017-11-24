@@ -98,6 +98,13 @@ function ClientsFromEuroIX() {
 	./scripts/arouteserver bird --cfg $CFG_FILE --test-only --general "config.d/general.yml" --clients $OUTPUT_FILE --bogons "config.d/bogons.yml" --ip-ver 6
 }
 
+function IXFMemberExportFromClients() {
+	CLIENTS="$1"; shift
+	DST="$1"; shift
+
+	./scripts/arouteserver ixf-member-export --cfg $CFG_FILE --clients $CLIENTS --output $DST "Test IXP"
+}
+
 echo "Building example: configure command output"
 RenderConfigureExample "bird-general.yml" "daemon=bird asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32"
 RenderConfigureExample "openbgpd62-general.yml" "daemon=openbgpd version=6.2 asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32"
@@ -156,6 +163,14 @@ read YES_NO
 if [ "$YES_NO" == "yes" ]; then
 	ClientsFromEuroIX "https://my.ams-ix.net/api/v1/members.json" 2 "examples/clients-from-euroix/amsix.yml" 502
 	ClientsFromEuroIX "https://www.inex.ie/ixp/apiv1/member-list/list" 1 "examples/clients-from-euroix/inex.yml" 2
+fi
+
+echo "Build IX-F Member Export files from clients? [yes/NO] "
+read YES_NO
+
+if [ "$YES_NO" == "yes" ]; then
+	IXFMemberExportFromClients "tests/real/clients/bcix.yml" "examples/ixf-member-export/bcix.json"
+	IXFMemberExportFromClients "tests/real/clients/gr-ix.yml" "examples/ixf-member-export/gr-ix.json"
 fi
 
 # ----------------------------------------------------
@@ -219,7 +234,7 @@ echo "Examples of configurations" >> $DST_FILE
 echo "==========================" >> $DST_FILE
 
 cd examples
-for d in default rich bird_hooks clients-from-euroix auto-config; do
+for d in default rich bird_hooks clients-from-euroix auto-config ixf-member-export; do
 	EXAMPLE_NAME="$d"
 	if [ -e "$EXAMPLE_NAME/README.rst" ]; then
 		echo "" >> $DST_FILE

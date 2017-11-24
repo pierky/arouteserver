@@ -225,7 +225,9 @@ class ConfigParserClients(ConfigParserBase):
                 continue
 
             for comm in client["cfg"]["attach_custom_communities"]:
-                if comm not in self.general_cfg["custom_communities"]:
+                if self.general_cfg and \
+                    comm not in self.general_cfg["custom_communities"]:
+
                     logging.error("The custom BGP community {} "
                                   "referenced on client {} is not declared on "
                                   "the general configuration.".format(

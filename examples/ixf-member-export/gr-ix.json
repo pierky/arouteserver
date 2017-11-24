@@ -1,0 +1,910 @@
+{
+  "version": "0.6", 
+  "timestamp": "2017-11-24T17:32:02Z", 
+  "ixp_list": [
+    {
+      "ixp_id": 0, 
+      "shortname": "Test IXP", 
+      "vlan": [
+        {
+          "id": 0
+        }
+      ]
+    }
+  ], 
+  "member_list": [
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS25152", 
+                "max_prefix": 100, 
+                "address": "176.126.38.125"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS25152", 
+                "max_prefix": 100, 
+                "address": "2001:7f8:6e::125"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 25152, 
+      "name": "K-root nameserver (operated by RIPE)"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-NETIX-INT", 
+                "max_prefix": 2500, 
+                "address": "176.126.38.4"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-NETIX-INT", 
+                "max_prefix": 125, 
+                "address": "2001:7f8:6e::4"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 57463, 
+      "name": "Netix"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-MICROSOFT", 
+                "max_prefix": 100, 
+                "address": "176.126.38.18"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-MICROSOFT", 
+                "max_prefix": 100, 
+                "address": "2001:7f8:6e::18"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-MICROSOFT", 
+                "max_prefix": 100, 
+                "address": "176.126.38.28"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-MICROSOFT", 
+                "max_prefix": 100, 
+                "address": "2001:7f8:6e::28"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 8075, 
+      "name": "Microsoft"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS702", 
+                "max_prefix": 300, 
+                "address": "176.126.38.12"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 702, 
+      "name": "Verizon"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS56910:AS-TO-AIX", 
+                "max_prefix": 100, 
+                "address": "176.126.38.13"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS56910:AS-TO-AIX", 
+                "max_prefix": 100, 
+                "address": "2001:7f8:6e::13"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS56910:AS-TO-AIX", 
+                "max_prefix": 100, 
+                "address": "176.126.38.43"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS56910:AS-TO-AIX", 
+                "max_prefix": 100, 
+                "address": "2001:7f8:6e::43"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 56910, 
+      "name": "Lamda Hellix"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS48053", 
+                "max_prefix": 10, 
+                "address": "176.126.38.25"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS48053", 
+                "max_prefix": 10, 
+                "address": "2001:7f8:6e::25"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 48053, 
+      "name": "Foundation for Research & Technology - Hellas"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS26415", 
+                "max_prefix": 10, 
+                "address": "176.126.38.124"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS26415", 
+                "max_prefix": 10, 
+                "address": "2001:7f8:6e::124"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 26415, 
+      "name": "Verisign Internet Resolution Service"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS202042:AS-TO-AIX", 
+                "max_prefix": 4, 
+                "address": "176.126.38.11"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS202042:AS-TO-AIX", 
+                "address": "2001:7f8:6e::11"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS202042:AS-TO-AIX", 
+                "max_prefix": 4, 
+                "address": "176.126.38.41"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS202042:AS-TO-AIX", 
+                "address": "2001:7f8:6e::41"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 202042, 
+      "name": "skroutz"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS3329:AS-TO-AIX", 
+                "max_prefix": 500, 
+                "address": "176.126.38.2"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS3329:AS-TO-AIX", 
+                "max_prefix": 500, 
+                "address": "2001:7f8:6e::2"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS3329:AS-TO-AIX", 
+                "max_prefix": 500, 
+                "address": "176.126.38.32"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS3329:AS-TO-AIX", 
+                "max_prefix": 500, 
+                "address": "2001:7f8:6e::32"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 3329, 
+      "name": "Vodafone"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS5408:AS-TO-AIX", 
+                "max_prefix": 200, 
+                "address": "176.126.38.1"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS5408:AS-TO-AIX", 
+                "max_prefix": 200, 
+                "address": "2001:7f8:6e::1"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS5408:AS-TO-AIX", 
+                "max_prefix": 200, 
+                "address": "176.126.38.31"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS5408:AS-TO-AIX", 
+                "max_prefix": 200, 
+                "address": "2001:7f8:6e::31"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 5408, 
+      "name": "Greek Research & Technology Network"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-O3B", 
+                "max_prefix": 300, 
+                "address": "176.126.38.17"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 60725, 
+      "name": "O3B Networks"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS199246", 
+                "max_prefix": 3, 
+                "address": "176.126.38.27"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS199246", 
+                "address": "2001:7f8:6e::27"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS199246", 
+                "max_prefix": 3, 
+                "address": "176.126.38.57"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS199246", 
+                "address": "2001:7f8:6e::57"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 199246, 
+      "name": "Top.Host"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS50148", 
+                "max_prefix": 100, 
+                "address": "176.126.38.15"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 50148, 
+      "name": "???????? ?????????? ?????????"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS198477:AS-TO-AIX", 
+                "max_prefix": 300, 
+                "address": "176.126.38.14"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS198477:AS-TO-AIX", 
+                "max_prefix": 300, 
+                "address": "2001:7f8:6e::14"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 198477, 
+      "name": "TI Sparkle Greece"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS200736", 
+                "address": "176.126.38.21"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 200736, 
+      "name": "Inalan"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS15544:AS-TO-AIX", 
+                "max_prefix": 100, 
+                "address": "176.126.38.8"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS15544:AS-TO-AIX", 
+                "max_prefix": 100, 
+                "address": "2001:7f8:6e::8"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS15544:AS-TO-AIX", 
+                "max_prefix": 100, 
+                "address": "176.126.38.38"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS15544:AS-TO-AIX", 
+                "max_prefix": 100, 
+                "address": "2001:7f8:6e::38"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 15544, 
+      "name": "Dataways"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-SYNAPSECOM", 
+                "max_prefix": 100, 
+                "address": "176.126.38.22"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-SYNAPSECOM", 
+                "max_prefix": 100, 
+                "address": "2001:7f8:6e::22"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 8280, 
+      "name": "Synapsecom Telecoms SA"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS25472:AS-TO-AIX", 
+                "max_prefix": 300, 
+                "address": "176.126.38.9"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS25472:AS-TO-AIX", 
+                "max_prefix": 300, 
+                "address": "2001:7f8:6e::9"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS25472:AS-TO-AIX", 
+                "max_prefix": 300, 
+                "address": "176.126.38.19"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS25472:AS-TO-AIX", 
+                "max_prefix": 300, 
+                "address": "2001:7f8:6e::19"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 25472, 
+      "name": "Wind"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS201494:AS-TO-AIX", 
+                "max_prefix": 100, 
+                "address": "176.126.38.20"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS201494:AS-TO-AIX", 
+                "max_prefix": 100, 
+                "address": "2001:7f8:6e::20"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 201494, 
+      "name": "modulus S.A."
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-CYTAHELLAS", 
+                "max_prefix": 2000, 
+                "address": "176.126.38.37"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-CYTAHELLAS", 
+                "max_prefix": 2000, 
+                "address": "2001:7f8:6e::37"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 6866, 
+      "name": "Cyta Hellas"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS199399", 
+                "max_prefix": 300, 
+                "address": "176.126.38.126"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS199399", 
+                "max_prefix": 300, 
+                "address": "2001:7f8:6e::126"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 199399, 
+      "name": "Greek Internet Exchange"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS197580:AS-TO-AIX", 
+                "max_prefix": 100, 
+                "address": "176.126.38.16"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS197580:AS-TO-AIX", 
+                "max_prefix": 100, 
+                "address": "2001:7f8:6e::16"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 197580, 
+      "name": "Connecticore"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-RIOT", 
+                "max_prefix": 500, 
+                "address": "176.126.38.29"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-RIOT", 
+                "max_prefix": 500, 
+                "address": "2001:7f8:6e::29"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 6507, 
+      "name": "Riot Games"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS203348", 
+                "max_prefix": 10, 
+                "address": "176.126.38.23"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS203348", 
+                "max_prefix": 10, 
+                "address": "2001:7f8:6e::23"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 203348, 
+      "name": "Hellenic Telecommunications and Post Commission"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS-CLOUDFLARE", 
+                "max_prefix": 100, 
+                "address": "176.126.38.5"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS-CLOUDFLARE", 
+                "max_prefix": 100, 
+                "address": "2001:7f8:6e::5"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 13335, 
+      "name": "CloudFlare"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS6799:AS-TO-AIX", 
+                "max_prefix": 300, 
+                "address": "176.126.38.34"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS6799:AS-TO-AIX", 
+                "max_prefix": 300, 
+                "address": "2001:7f8:6e::34"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS6799:AS-TO-AIX", 
+                "max_prefix": 300, 
+                "address": "176.126.38.24"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS6799:AS-TO-AIX", 
+                "max_prefix": 300, 
+                "address": "2001:7f8:6e::24"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 6799, 
+      "name": "OTE"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS1241:AS-TO-AIX", 
+                "max_prefix": 300, 
+                "address": "176.126.38.3"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS1241:AS-TO-AIX", 
+                "max_prefix": 300, 
+                "address": "2001:7f8:6e::3"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS1241:AS-TO-AIX", 
+                "max_prefix": 300, 
+                "address": "176.126.38.33"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS1241:AS-TO-AIX", 
+                "max_prefix": 300, 
+                "address": "2001:7f8:6e::33"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 1241, 
+      "name": "Forthnet"
+    }, 
+    {
+      "connection_list": [
+        {
+          "ixp_id": 0, 
+          "vlan_list": [
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS50520", 
+                "max_prefix": 4, 
+                "address": "176.126.38.6"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS50520", 
+                "address": "2001:7f8:6e::6"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv4": {
+                "as_macro": "AS50520", 
+                "max_prefix": 4, 
+                "address": "176.126.38.26"
+              }
+            }, 
+            {
+              "vlan_id": 0, 
+              "ipv6": {
+                "as_macro": "AS50520", 
+                "address": "2001:7f8:6e::26"
+              }
+            }
+          ]
+        }
+      ], 
+      "asnum": 50520, 
+      "name": "Hostmein"
+    }
+  ]
+}

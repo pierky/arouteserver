@@ -152,3 +152,10 @@ https://github.com/pierky/arouteserver/blob/master/examples/auto-config
 bird-general.yml.html - See the `textual representation of this configuration <_static/examples_auto-config_bird-general.yml.html>`__.
 
 openbgpd62-general.yml.html - See the `textual representation of this configuration <_static/examples_auto-config_openbgpd62-general.yml.html>`__.
+
+IX-F Member Export files
+------------------------
+
+The files reported within this directory were generated using the ``ixf-member-export`` `command <https://arouteserver.readthedocs.io/en/latest/USAGE.html#ixf-member-export-command>`__.
+
+https://github.com/pierky/arouteserver/blob/master/examples/ixf-member-export
