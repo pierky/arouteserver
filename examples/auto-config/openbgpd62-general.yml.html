@@ -452,24 +452,6 @@ Route <strong>validity state</strong> is signalled to route server clients using
 
 
 
-<h2>Blackhole filtering</h2>
-
-<ul>
-<li><p>Blackhole filtering of more specific IP prefixes can be requested by tagging them with the following <strong>BGP communities</strong>:
-65535:666 (<a href="https://tools.ietf.org/html/rfc7999#section-5">BLACKHOLE</a> well-known community)
-</p></li>
-
-<li><p>By default, routes are 
-<strong>propagated</strong> to all the clients unless they have been explicitly configured to not receive them.
-</p></li>
-
-<li><p>IPv4 routes are propagated <strong>unchanged</strong> to clients.</p></li>
-<li><p>IPv6 routes are propagated <strong>unchanged</strong> to clients.</p></li>
-<li><p>Before being announced to clients, all the routes are tagged with the BLACKHOLE well-known community.
-The NO_EXPORT well-known community is also added.
-</p></li>
-
-<li><p>Blackhole filtering requests bypass any RPKI validation check and min/max length check.</p></li>
 </ul>
 
 

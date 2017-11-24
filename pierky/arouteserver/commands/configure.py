@@ -295,16 +295,6 @@ class ConfigureCommand(ARouteServerCommand):
             "PeeringDB is used to fetch networks prefix count."
         )
 
-        cfg["blackhole_filtering"] = {}
-        blackhole = cfg["blackhole_filtering"]
-        blackhole["policy_ipv4"] = "propagate-unchanged"
-        blackhole["policy_ipv6"] = "propagate-unchanged"
-        blackhole["announce_to_client"] = True
-        self.notes.append(
-            "Routes tagged with the BLACKHOLE well-known community "
-            "(65535:666) are propagated to clients."
-        )
-
         cfg["graceful_shutdown"] = {"enabled": False}
         if self.answers["daemon"] == "bird":
             cfg["graceful_shutdown"] = {"enabled": True}

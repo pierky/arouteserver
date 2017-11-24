@@ -85,11 +85,6 @@ class TestConfigureCmd(ARouteServerTestCase):
                     }
                 },
             },
-            "blackhole_filtering": {
-                "announce_to_client": True,
-                "policy_ipv4": "propagate-unchanged",
-                "policy_ipv6": "propagate-unchanged",
-            },
             "graceful_shutdown": {
                 "enabled": True
             },
