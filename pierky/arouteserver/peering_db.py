@@ -25,6 +25,8 @@ from .errors import PeeringDBError, PeeringDBNoInfoError
 
 class PeeringDBInfo(CachedObject):
 
+    EXPIRY_TIME_TAG = "pdb_info"
+
     MISSING_INFO_EXCEPTION = PeeringDBNoInfoError
 
     def _get_peeringdb_url(self):
@@ -77,6 +79,8 @@ class PeeringDBInfo(CachedObject):
         return data["data"]
 
 class PeeringDBNet(PeeringDBInfo):
+
+    EXPIRY_TIME_TAG = "pdb_info"
 
     PEERINGDB_URL = "https://www.peeringdb.com/api/net?asn={asn}"
 

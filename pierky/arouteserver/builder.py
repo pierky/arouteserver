@@ -39,7 +39,7 @@ from .errors import MissingDirError, MissingFileError, BuilderError, \
                     ConfigError, MissingGeneralConfigFileError
 from .ipaddresses import IPNetwork
 from .irrdb import IRRDBInfo
-from .cached_objects import CachedObject
+from .cached_objects import CachedObject, normalize_expiry_time
 
 
 class ConfigBuilder(object):
@@ -188,8 +188,12 @@ class ConfigBuilder(object):
                 - *--cache-dir* CLI argument.
                 - *cache_dir* program's configuration file option.
 
-            cache_expiry (int): how long cached data must be considered valid,
-                in seconds.
+            cache_expiry (int or dict): how long cached data must be considered
+                valid, in seconds. Each "cacheable object" (PeeringDB info,
+                IRR datasets, ...) can have its own expiry time. If an int is
+                given here, all the expiry times will have the same duration,
+                otherwise cacheable objects will pick their specific value
+                or use the 'general' one if no more specific value is given.
 
                 Same of:
 
@@ -342,7 +346,7 @@ class ConfigBuilder(object):
             "cache_dir", cache_dir
         )
 
-        self.cache_expiry = cache_expiry
+        self.cache_expiry = normalize_expiry_time(cache_expiry)
 
         self.bgpq3_path = bgpq3_path
         self.bgpq3_host = bgpq3_host

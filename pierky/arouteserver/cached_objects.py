@@ -18,21 +18,81 @@ import logging
 import os
 import time
 
-from .errors import CachedObjectsError, ExternalDataNoInfoError
+from .errors import CachedObjectsError, ExternalDataNoInfoError, \
+                    CachedObjectsExpiryTimeConfigurationError
 
+
+def normalize_expiry_time(config=None):
+    res = {}
+
+    if config is None:
+        res = CachedObject.DEFAULT_EXPIRY
+    elif isinstance(config, int):
+        res["general"] = config
+    elif isinstance(config, dict):
+        try:
+            for k in config:
+                if k not in CachedObject.ALLOWED_EXPIRY_TIME_TAGS:
+                    raise ValueError(
+                        "unknown keyword: '{}'; only the following are "
+                        "allowed: {}".format(
+                            k, ", ".join(CachedObject.ALLOWED_EXPIRY_TIME_TAGS)
+                        )
+                    )
+                if not isinstance(config[k], int):
+                    raise ValueError(
+                        "invalid value for the '{}' keyword: it must be "
+                        "an integer".format(k)
+                    )
+                res[k] = int(config[k])
+        except ValueError as e:
+            raise CachedObjectsExpiryTimeConfigurationError(
+                "Error while processing the 'cache_expiry' "
+                "configuration: {}.".format(str(e))
+            )
+
+        if "general" not in res:
+            res["general"] = CachedObject.DEFAULT_EXPIRY["general"]
+    else:
+        raise CachedObjectsExpiryTimeConfigurationError(
+            "Invalid format for 'cache_expiry': it must be an "
+            "integer or a dictionary."
+        )
+    for k in CachedObject.ALLOWED_EXPIRY_TIME_TAGS:
+        if k not in res:
+            res[k] = res["general"]
+    return res
 
 class CachedObject(object):
 
-    DEFAULT_EXPIRY = 43200
+    DEFAULT_EXPIRY = {
+        "general": 43200,
+        "pdb_info": 86400,
+        "ripe_rpki_roas": 43200,
+        "irr_as_sets": 43200
+    }
+
+    # Keep in sync with config.d/arouteserver.yml cache_expiry
+    ALLOWED_EXPIRY_TIME_TAGS = ("general", "pdb_info", "ripe_rpki_roas",
+                                "irr_as_sets")
+    EXPIRY_TIME_TAG = None
+
     MISSING_INFO_EXCEPTION = ExternalDataNoInfoError
+
+    def get_expiry_time(self, cache_expiry):
+        return cache_expiry[self.EXPIRY_TIME_TAG]
 
     def __init__(self, **kwargs):
         self.cache_dir = kwargs.get("cache_dir", "var")
         if not self.cache_dir:
             raise CachedObjectsError("Missing cache directory")
 
-        self.cache_expiry_time = kwargs.get("cache_expiry",
-                                            self.DEFAULT_EXPIRY)
+        cache_expiry = kwargs.get("cache_expiry", self.DEFAULT_EXPIRY)
+        if isinstance(cache_expiry, int):
+            self.cache_expiry_time = cache_expiry
+        else:
+            self.cache_expiry_time = cache_expiry[self.EXPIRY_TIME_TAG]
+
         self.raw_data = None
 
     def _get_object_filename(self):

@@ -25,6 +25,8 @@ from .errors import RPKIValidatorCacheError
 
 class RIPE_RPKI_ROAs(CachedObject):
 
+    EXPIRY_TIME_TAG = "ripe_rpki_roas"
+
     DEFAULT_URL = "http://localcert.ripe.net:8088/export.json"
 
     def __init__(self, *args, **kwargs):

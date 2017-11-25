@@ -65,6 +65,7 @@ class IRRDBInfo(CachedObject, AS_SET_Bundle):
     BGPQ3_DEFAULT_SOURCES = ("RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,"
                              "BBOI,BELL,JPIRR,LEVEL3,RADB,RGNET,"
                              "SAVVIS,TC")
+    EXPIRY_TIME_TAG = "irr_as_sets"
 
     def __init__(self, object_names, *args, **kwargs):
         assert isinstance(object_names, list)
