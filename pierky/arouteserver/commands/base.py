@@ -154,7 +154,7 @@ class ARouteServerCommand(object):
     def check_new_release(self, print_output=False):
         checker = LastVersion(
             cache_dir=program_config.get_dir("cache_dir"),
-            cache_expiry=604800
+            cache_expiry={"general": 604800}
         )
 
         try:

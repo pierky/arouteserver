@@ -74,6 +74,14 @@ class MissingDirError(ARouteServerError):
 class CachedObjectsError(ARouteServerError):
     pass
 
+class CachedObjectsExpiryTimeConfigurationError(ARouteServerError):
+
+    def __init__(self, *args, **kwargs):
+        ARouteServerError.__init__(self, args, kwargs)
+        self._extra_info = (
+            "Plase check the program's configuration file (arouteserver.yml)."
+        )
+
 class ExternalDataNoInfoError(ARouteServerError):
     pass
 
