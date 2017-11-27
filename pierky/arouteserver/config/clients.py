@@ -16,8 +16,7 @@
 from copy import deepcopy
 import logging
 
-from .base import ConfigParserBase, convert_next_hop_policy, \
-                  convert_maxprefix_peeringdb
+from .base import ConfigParserBase, convert_deprecated
 from .validators import *
 from ..errors import ConfigError, ARouteServerError
 
@@ -146,8 +145,7 @@ class ConfigParserClients(ConfigParserBase):
             try:
                 # Convert next_hop_policy (< v0.6.0) into the new format
                 if "cfg" in client:
-                    convert_next_hop_policy(client["cfg"])
-                    convert_maxprefix_peeringdb(client["cfg"])
+                    convert_deprecated(client["cfg"])
 
                 ConfigParserBase.validate(schema, client, "clients")
             except ARouteServerError as e:
@@ -227,7 +225,9 @@ class ConfigParserClients(ConfigParserBase):
                 continue
 
             for comm in client["cfg"]["attach_custom_communities"]:
-                if comm not in self.general_cfg["custom_communities"]:
+                if self.general_cfg and \
+                    comm not in self.general_cfg["custom_communities"]:
+
                     logging.error("The custom BGP community {} "
                                   "referenced on client {} is not declared on "
                                   "the general configuration.".format(

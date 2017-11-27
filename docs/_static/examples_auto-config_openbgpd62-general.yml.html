@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+     content="width=device-width, initial-scale=1, user-scalable=yes">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+
+
+
+<h1>Configuration of route server 192.0.2.1 at AS64496</h1>
+
+<h2>BGP sessions default configuration</h2>
+
+<ul>
+<li><p><strong>Passive</strong> sessions are configured toward neighbors.</p></li>
+
+<li><p>GTSM (Generalized TTL Security Mechanism - <a href="//tools.ietf.org/html/rfc5082">RFC5082</a>) is <strong>disabled</strong> on sessions toward the neighbors.</p></li>
+
+<li><p><strong>ADD-PATH</strong> capability (<a href="//tools.ietf.org/html/rfc7911">RFC7911</a>) is <strong>not</strong> negotiated by default.</p></li>
+</ul>
+
+
+
+<h2>Route server general behaviours</h2>
+
+<ul>
+<li><p>Route server ASN is <strong>not prepended</strong> to the AS_PATH of routes announced to clients (<a href="https://tools.ietf.org/html/rfc7947#section-2.2.2.1">RFC7947 section 2.2.2.1</a>).</p></li>
+
+<li><p>Route server <strong>does not implement</strong> path-hiding mitigation techniques (<a href="https://tools.ietf.org/html/rfc7947#section-2.3.1">RFC7947 section 2.3.1</a>).</p></li>
+</ul>
+
+
+
+<h2>Default filtering policy</h2>
+
+
+
+<h3>NEXT_HOP attribute</h3>
+
+<ul>
+<li><p>The route server verifies that the NEXT_HOP attribute of routes received from a client matches the <strong>IP address of the client itself</strong>
+.
+</p></li>
+</ul>
+
+
+
+<h3>AS_PATH attribute</h3>
+
+<ul>
+<li><p>Routes whose <strong>AS_PATH is longer than 32</strong> ASNs are rejected.</p></li>
+
+<li><p>The <strong>left-most ASN</strong> in the AS_PATH of any route announced to the route server must be the ASN of the announcing client.</p></li>
+
+<li><p>Routes whose AS_PATH contains <a href="http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html"><strong>private or invalid ASNs</strong></a> are rejected.</p></li>
+
+<li><p>
+Routes with an AS_PATH containing one or more of the following <strong>"transit-free" networks</strong>' ASNs
+are <strong>rejected</strong>.
+</p>
+<p>
+List of "transit-free" networks' ASNs:
+<a href="https://stat.ripe.net/AS174">174</a>, <a href="https://stat.ripe.net/AS209">209</a>, <a href="https://stat.ripe.net/AS286">286</a>, <a href="https://stat.ripe.net/AS701">701</a>, <a href="https://stat.ripe.net/AS1239">1239</a>, <a href="https://stat.ripe.net/AS1299">1299</a>, <a href="https://stat.ripe.net/AS2828">2828</a>, <a href="https://stat.ripe.net/AS2914">2914</a>, <a href="https://stat.ripe.net/AS3257">3257</a>, <a href="https://stat.ripe.net/AS3320">3320</a>, <a href="https://stat.ripe.net/AS3356">3356</a>, <a href="https://stat.ripe.net/AS3549">3549</a>, <a href="https://stat.ripe.net/AS5511">5511</a>, <a href="https://stat.ripe.net/AS6453">6453</a>, <a href="https://stat.ripe.net/AS6461">6461</a>, <a href="https://stat.ripe.net/AS6762">6762</a>, <a href="https://stat.ripe.net/AS6830">6830</a>, <a href="https://stat.ripe.net/AS7018">7018</a>, <a href="https://stat.ripe.net/AS12956">12956</a></p>
+</li>
+</ul>
+
+
+
+<h3>IRRDBs prefix/origin ASN enforcement</h3>
+
+<ul>
+<li><p>
+Origin ASN validity is
+<strong>enforced</strong>. Routes whose origin ASN is not authorized by the client's AS-SET are rejected.
+</p></li>
+
+<li><p>Announced prefixes validity is
+<strong>enforced</strong>. Routes whose prefix is not part of the client's AS-SET are rejected.
+Longer prefixes that are covered by one entry of the resulting route set are accepted.
+</p></li>
+
+<li><p>Use <strong>RPKI ROAs</strong> to validate routes whose origin ASN is authorized by the client's AS-SET but whose prefix is not.</p></li>
+
+<li><p>RPKI ROAs are fetched from the RIPE RPKI Validator cache file at <a href="http://localcert.ripe.net:8088/export.json" rel="noopener">http://localcert.ripe.net:8088/export.json</a>. The following Trust Anchors are used: APNIC from AFRINIC RPKI Root, APNIC from ARIN RPKI Root, APNIC from IANA RPKI Root, APNIC from LACNIC RPKI Root, APNIC from RIPE RPKI Root, AfriNIC RPKI Root, LACNIC RPKI Root, RIPE NCC RPKI Root</p></li>
+
+<li><p>
+Route <strong>validity state</strong> is signalled to route server clients using the following <strong>BGP communities</strong>:
+<table class="table">
+<thead>
+  <tr>
+    <th>Validity state</th>
+    <th>Standard</th>
+    <th>Extended</th>
+    <th>Large</th>
+  <tr>
+</thead>
+<tbody>
+    <tr>
+    <td>Prefix is included in client's AS-SET</td>
+    <td>64512:11</td>
+    <td>rt:64512:11</td>
+    <td>64496:64512:11</td>
+  </tr>
+ 
+    <tr>
+    <td>Prefix is NOT included in client's AS-SET</td>
+    <td>64512:10</td>
+    <td>rt:64512:10</td>
+    <td>64496:64512:10</td>
+  </tr>
+ 
+    <tr>
+    <td>Origin ASN is included in client's AS-SET</td>
+    <td>64512:21</td>
+    <td>rt:64512:21</td>
+    <td>64496:64512:21</td>
+  </tr>
+ 
+    <tr>
+    <td>Origin ASN is NOT included in client's AS-SET</td>
+    <td>64512:20</td>
+    <td>rt:64512:20</td>
+    <td>64496:64512:20</td>
+  </tr>
+ 
+    <tr>
+    <td>Prefix matched by a RPKI ROA for the authorized origin ASN</td>
+    <td>64512:31</td>
+    <td>rt:64512:31</td>
+    <td>64496:64512:31</td>
+  </tr>
+ 
+    <tr>
+    <td>Route authorized soley because of a client white list entry</td>
+    <td>64512:41</td>
+    <td>rt:64512:41</td>
+    <td>64496:64512:41</td>
+  </tr>
+ 
+</tbody>
+</table>
+</p></li>
+</ul>
+
+
+
+<h3>RPKI validation</h3>
+
+<ul>
+
+<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI validation</a> of routes received by the route server is <strong>disabled</strong>.</p></li>
+
+</ul>
+
+
+
+<h3>Max-pref limit</h3>
+<ul>
+	<li><p>A <strong>max-prefix limit</strong> is enforced; when it triggers,
+	the session with the announcing client is <strong>shutdown</strong>.
+	</p></li>
+
+	<li><p>The limit, if not provided on a client-by-client basis, is learnt from the client's <strong>PeeringDB record</strong>.</p></li>
+	<li><p>If no more specific limits exist for the client, the <strong>general limit</strong> of 170000 IPv4 routes and 12000 IPv6 routes is enforced.</p></li>
+</ul>
+
+
+
+<h3>Min/max prefix length</h3>
+
+<ul>
+<li>
+<p>Only prefixes whose length is in the following range are accepted by the route server:</p>
+	<ul>
+	<li>IPv4: 8-24</li>
+	<li>IPv6: 12-48</li>
+	</ul>
+</li>
+</ul>
+
+
+
+<h3>Rejected prefixes</h3>
+
+<ul>
+<li><p>The following prefixes are <strong>unconditionally rejected</strong>:
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Prefix</th>
+      <th>More specific</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>192.0.2.0/24</td>
+      <td>any more specific prefix</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>2001:db8::/32</td>
+      <td>any more specific prefix</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+
+</p></li>
+
+<li><p><strong>Bogon prefixes</strong> are rejected too.
+<a data-toggle="collapse" href="#bogonprefixes">Click</a> to expand the list of these prefixes.
+<div class="collapse" id="bogonprefixes">
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Prefix</th>
+      <th>More specific</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0.0.0.0/0</td>
+      <td>only the exact prefix</td>
+      <td>Default route</td>
+    </tr>
+    <tr>
+      <td>0.0.0.0/8</td>
+      <td>any more specific prefix</td>
+      <td>IANA - Local Identification</td>
+    </tr>
+    <tr>
+      <td>10.0.0.0/8</td>
+      <td>any more specific prefix</td>
+      <td>RFC 1918 - Private Use</td>
+    </tr>
+    <tr>
+      <td>127.0.0.0/8</td>
+      <td>any more specific prefix</td>
+      <td>IANA - Loopback</td>
+    </tr>
+    <tr>
+      <td>169.254.0.0/16</td>
+      <td>any more specific prefix</td>
+      <td>RFC 3927 - Link Local</td>
+    </tr>
+    <tr>
+      <td>172.16.0.0/12</td>
+      <td>any more specific prefix</td>
+      <td>RFC 1918 - Private Use</td>
+    </tr>
+    <tr>
+      <td>192.0.2.0/24</td>
+      <td>any more specific prefix</td>
+      <td>RFC 5737 - TEST-NET-1</td>
+    </tr>
+    <tr>
+      <td>192.168.0.0/16</td>
+      <td>any more specific prefix</td>
+      <td>RFC 1918 - Private Use</td>
+    </tr>
+    <tr>
+      <td>198.18.0.0/15</td>
+      <td>any more specific prefix</td>
+      <td>RFC 2544 - Network Interconnect Device Benchmark Testing</td>
+    </tr>
+    <tr>
+      <td>198.51.100.0/24</td>
+      <td>any more specific prefix</td>
+      <td>RFC 5737 - TEST-NET-2</td>
+    </tr>
+    <tr>
+      <td>203.0.113.0/24</td>
+      <td>any more specific prefix</td>
+      <td>RFC 5737 - TEST-NET-3</td>
+    </tr>
+    <tr>
+      <td>224.0.0.0/3</td>
+      <td>any more specific prefix</td>
+      <td>RFC 5771 - Multcast (formerly Class D)</td>
+    </tr>
+    <tr>
+      <td>100.64.0.0/10</td>
+      <td>any more specific prefix</td>
+      <td>RFC 6598 - Shared Address Space</td>
+    </tr>
+    <tr>
+      <td>::/0</td>
+      <td>only the exact prefix</td>
+      <td>Default route</td>
+    </tr>
+    <tr>
+      <td>::/8</td>
+      <td>any more specific prefix</td>
+      <td>loopback, unspecified, v4-mapped</td>
+    </tr>
+    <tr>
+      <td>64:ff9b::/96</td>
+      <td>any more specific prefix</td>
+      <td>RFC 6052 - IPv4-IPv6 Translation</td>
+    </tr>
+    <tr>
+      <td>100::/8</td>
+      <td>any more specific prefix</td>
+      <td>RFC 6666 - reserved for Discard-Only Address Block</td>
+    </tr>
+    <tr>
+      <td>200::/7</td>
+      <td>any more specific prefix</td>
+      <td>RFC 4048 - Reserved by IETF</td>
+    </tr>
+    <tr>
+      <td>400::/6</td>
+      <td>any more specific prefix</td>
+      <td>RFC 4291 - Reserved by IETF</td>
+    </tr>
+    <tr>
+      <td>800::/5</td>
+      <td>any more specific prefix</td>
+      <td>RFC 4291 - Reserved by IETF</td>
+    </tr>
+    <tr>
+      <td>1000::/4</td>
+      <td>any more specific prefix</td>
+      <td>RFC 4291 - Reserved by IETF</td>
+    </tr>
+    <tr>
+      <td>2001::/33</td>
+      <td>any more specific prefix</td>
+      <td>RFC 4380 - Teredo prefix</td>
+    </tr>
+    <tr>
+      <td>2001:0:8000::/33</td>
+      <td>any more specific prefix</td>
+      <td>RFC 4380 - Teredo prefix</td>
+    </tr>
+    <tr>
+      <td>2001:2::/48</td>
+      <td>any more specific prefix</td>
+      <td>RFC 5180 - Benchmarking</td>
+    </tr>
+    <tr>
+      <td>2001:3::/32</td>
+      <td>any more specific prefix</td>
+      <td>RFC 7450 - Automatic Multicast Tunneling</td>
+    </tr>
+    <tr>
+      <td>2001:10::/28</td>
+      <td>any more specific prefix</td>
+      <td>RFC 4843 - Deprecated ORCHID</td>
+    </tr>
+    <tr>
+      <td>2001:20::/28</td>
+      <td>any more specific prefix</td>
+      <td>RFC 7343 - ORCHIDv2</td>
+    </tr>
+    <tr>
+      <td>2001:db8::/32</td>
+      <td>any more specific prefix</td>
+      <td>RFC 3849 - NON-ROUTABLE range to be used for documentation purpose</td>
+    </tr>
+    <tr>
+      <td>2002::/16</td>
+      <td>any more specific prefix</td>
+      <td>RFC 3068 - 6to4 prefix</td>
+    </tr>
+    <tr>
+      <td>3ffe::/16</td>
+      <td>any more specific prefix</td>
+      <td>RFC 5156 - used for the 6bone but was returned</td>
+    </tr>
+    <tr>
+      <td>4000::/3</td>
+      <td>any more specific prefix</td>
+      <td>RFC 4291 - Reserved by IETF</td>
+    </tr>
+    <tr>
+      <td>5f00::/8</td>
+      <td>any more specific prefix</td>
+      <td>RFC 5156 - used for the 6bone but was returned</td>
+    </tr>
+    <tr>
+      <td>6000::/3</td>
+      <td>any more specific prefix</td>
+      <td>RFC 4291 - Reserved by IETF</td>
+    </tr>
+    <tr>
+      <td>8000::/3</td>
+      <td>any more specific prefix</td>
+      <td>RFC 4291 - Reserved by IETF</td>
+    </tr>
+    <tr>
+      <td>a000::/3</td>
+      <td>any more specific prefix</td>
+      <td>RFC 4291 - Reserved by IETF</td>
+    </tr>
+    <tr>
+      <td>c000::/3</td>
+      <td>any more specific prefix</td>
+      <td>RFC 4291 - Reserved by IETF</td>
+    </tr>
+    <tr>
+      <td>e000::/4</td>
+      <td>any more specific prefix</td>
+      <td>RFC 4291 - Reserved by IETF</td>
+    </tr>
+    <tr>
+      <td>f000::/5</td>
+      <td>any more specific prefix</td>
+      <td>RFC 4291 - Reserved by IETF</td>
+    </tr>
+    <tr>
+      <td>f800::/6</td>
+      <td>any more specific prefix</td>
+      <td>RFC 4291 - Reserved by IETF</td>
+    </tr>
+    <tr>
+      <td>fc00::/7</td>
+      <td>any more specific prefix</td>
+      <td>RFC 4193 - Unique Local Unicast</td>
+    </tr>
+    <tr>
+      <td>fe80::/10</td>
+      <td>any more specific prefix</td>
+      <td>RFC 4291 - Link Local Unicast</td>
+    </tr>
+    <tr>
+      <td>fec0::/10</td>
+      <td>any more specific prefix</td>
+      <td>RFC 4291 - Reserved by IETF</td>
+    </tr>
+    <tr>
+      <td>ff00::/8</td>
+      <td>any more specific prefix</td>
+      <td>RFC 4291 - Multicast</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+</p></li>
+
+<li><p>IPv6 prefixes are accepted only if part of the IPv6 Global Unicast space 2000::/3.</p></li> 
+</ul>
+
+
+
+</ul>
+
+
+
+<h2>Graceful BGP session shutdown</h2>
+
+<ul>
+<li><p>Routes tagged with the <strong>GRACEFUL_SHUTDOWN</strong> BGP community (65535:0) have their LOCAL_PREF attribute lowered to 0.</p></li>
+</ul>
+
+
+
+<h2>Announcement control via BGP communities</h2>
+
+<ul>
+<li><p>Routes tagged with the <b>NO_EXPORT</b> or <b>NO_ADVERTISE</b> communities received by the route server are propagated to other clients with those communities unaltered.</p></li>
+</ul>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Standard</th>
+      <th>Extended</th>
+      <th>Large</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td>Do not announce to any client</td>
+    <td>0:64496</td>
+    <td>rt:0:64496</td>
+    <td>64496:0:0</td>
+  </tr>
+
+    <tr>
+    <td>Announce to peer, even if tagged with the previous community</td>
+    <td>64496:peer_as</td>
+    <td>rt:64496:peer_as</td>
+    <td>64496:1:peer_as</td>
+  </tr>
+
+  
+  
+  
+  
+    <tr>
+    <td>Do not announce to peer</td>
+    <td>0:peer_as</td>
+    <td>rt:0:peer_as</td>
+    <td>64496:0:peer_as</td>
+  </tr>
+
+
+    <tr>
+    <td>Prepend the announcing ASN once to peer</td>
+    <td>65511:peer_as</td>
+    <td>rt:65511:peer_as</td>
+    <td>64496:101:peer_as</td>
+  </tr>
+
+    <tr>
+    <td>Prepend the announcing ASN twice to peer</td>
+    <td>65512:peer_as</td>
+    <td>rt:65512:peer_as</td>
+    <td>64496:102:peer_as</td>
+  </tr>
+
+    <tr>
+    <td>Prepend the announcing ASN thrice to peer</td>
+    <td>65513:peer_as</td>
+    <td>rt:65513:peer_as</td>
+    <td>64496:103:peer_as</td>
+  </tr>
+
+
+
+    <tr>
+    <td>Prepend the announcing ASN once to any</td>
+    <td>65501:64496</td>
+    <td>rt:65501:64496</td>
+    <td>64496:101:0</td>
+  </tr>
+
+    <tr>
+    <td>Prepend the announcing ASN twice to any</td>
+    <td>65502:64496</td>
+    <td>rt:65502:64496</td>
+    <td>64496:102:0</td>
+  </tr>
+
+    <tr>
+    <td>Prepend the announcing ASN thrice to any</td>
+    <td>65503:64496</td>
+    <td>rt:65503:64496</td>
+    <td>64496:103:0</td>
+  </tr>
+
+
+  
+  
+    <tr>
+    <td>Add NO_EXPORT to peer</td>
+    <td>65281:peer_as</td>
+    <td>rt:65281:peer_as</td>
+    <td>64496:65281:peer_as</td>
+  </tr>
+
+    <tr>
+    <td>Add NO_ADVERTISE to peer</td>
+    <td>65282:peer_as</td>
+    <td>rt:65282:peer_as</td>
+    <td>64496:65282:peer_as</td>
+  </tr>
+
+
+  </tbody>
+</table>
+
+
+
+</div>
+</body>
+</html>

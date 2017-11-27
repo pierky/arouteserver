@@ -17,7 +17,7 @@ import os
 import re
 
 from .base import ARouteServerCommand
-from ..ask import ask, ask_yes_no
+from ..ask import Ask
 from ..config.program import program_config
 from ..errors import ARouteServerError
 from ..resources import get_live_test_skeleton_dir
@@ -44,7 +44,7 @@ class InitScenarioCommand(ARouteServerCommand):
               "implemented.")
         print("Examples: TagASSet, BGPCommunities, MaxPrefix, PathHiding")
         print("")
-        res, class_name = ask("Scenario class name:")
+        res, class_name = Ask().ask("Scenario class name:")
 
         if not res:
             print("")
@@ -73,7 +73,7 @@ class InitScenarioCommand(ARouteServerCommand):
                 "The directory {} already exists".format(dest_dir)
             )
 
-        res, yes_or_no = ask_yes_no(
+        res, yes_or_no = Ask().ask_yes_no(
             "The {} directory will be created: proceed?".format(dest_dir),
             default="yes"
         )

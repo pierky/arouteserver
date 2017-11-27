@@ -22,6 +22,9 @@ from .setup import SetupCommand
 from .setup_templates import SetupTemplatesCommand
 from .verify_templates import VerifyTemplatesCommand
 from .init_scenario import InitScenarioCommand
+from .configure import ConfigureCommand
+from .show_config import ShowConfigCommand
+from .ixf_member_list_from_clients import IXFMemberListFromClientsCommand
 
 all_commands = [
     BuildCommand,
@@ -34,6 +37,9 @@ all_commands = [
     SetupCommand,
     SetupTemplatesCommand,
     VerifyTemplatesCommand,
+    ConfigureCommand,
+    ShowConfigCommand,
+    IXFMemberListFromClientsCommand,
     InitScenarioCommand,
-    CheckNewRelease,
+    CheckNewRelease
 ]

@@ -3,6 +3,19 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New feature: ``configure`` and ``show_config`` *support* commands.
+
+  - ``configure``: it can be used to quickly generate a route server policy definition file (``general.yml``) on the basis of best practices and suggestions.
+
+  - ``show_config``: to display current configuration settings and also options that have been left to their default values.
+
+- New feature: ``ixf-member-export`` command, to build `IX-F Member Export JSON files <https://ml.ix-f.net/>`__ from the list of clients.
+
+- Improvement: cache expiry time values can be set for each external resource type: PeeringDB info, IRR data, ...
+
 v0.14.1
 -------
 

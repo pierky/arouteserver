@@ -80,14 +80,8 @@ class TestRealConfigs(ARouteServerTestCase):
             ip_ver="_ipv{}".format(ip_ver) if ip_ver else ""
         )
         path = os.path.join(self.rs_config_dir, filename)
-        if os.path.exists(path):
-            return path
-        path = path + ".gz"
-        if os.path.exists(path):
-            return path
-        raise ValueError("RS config file not found: {}".format(
-            os.path.join(self.rs_config_dir, filename)
-        ))
+
+        return path
 
     def print_duration(self, descr, bgp_speaker, target_ver, ip_ver, duration):
         msg = "{descr} for {daemon}, {ip_ver}: {duration} seconds".format(
@@ -157,8 +151,10 @@ class TestRealConfigs(ARouteServerTestCase):
             bgp_speaker, target_ver, ip_ver)
 
         if not os.path.exists(rs_config_file_path):
-            raise ValueError("RS config file does not exist: {}".format(
-                rs_config_file_path))
+            rs_config_file_path = rs_config_file_path + ".gz"
+            if not os.path.exists(rs_config_file_path):
+                raise ValueError("RS config file does not exist: {}".format(
+                                 rs_config_file_path))
 
         inst = inst_class(
             "rs", "2001:db8:1:1::2" if ip_ver == 6 else "192.0.2.2",

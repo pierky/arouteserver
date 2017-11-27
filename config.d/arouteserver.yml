@@ -58,7 +58,43 @@
 #threads: 4
 
 # Cache expiry time, in seconds.
+#
+# This can be a single integer value or a list of 'keyword: value'
+# pairs. If a single value is provided here, it will be used as
+# the expiry time for every kind of resource used by the program;
+# otherwise, each resource will use its own expiry time (or the
+# 'general' one if its specific expiry time is not given).
+#
+# Resources are identified by the following keywords:
+#
+# pdb_info: info fetched from PeeringDB (AS-SETs that networks
+#       configured in their IRR Record field, IPv4 and IPv6
+#       prefix count).
+#
+# ripe_rpki_roas: RPKI ROAs fetched from the RIPE RPKI Validator.
+#       See the 'general.yml' configuration file comments for more
+#       details.
+#
+# irr_as_sets: ASNs and routes fetched from IRR using clients'
+#       AS-SETs.
+#
+# Please note: if the desired behavior is to completely bypass
+# cache it is advisable to avoid setting expiry time to zero but
+# rather to set it to a duration that is enough to cover the whole
+# configuration processing time. During the configuration building
+# process some resources may be used more than once; a value of
+# zero would require them to be fetched multiple time during the
+# same execution.
+#
+# Single value:
 #cache_expiry: 43200
+#
+# Multiple values (default):
+#cache_expiry:
+#  general: 43200
+#  pdb_info: 86400
+#  ripe_rpki_roas: 43200
+#  irr_as_sets: 43200
 
 # Enable automatic checking for new release.
 # When set to True, the program automatically checks PyPI for

@@ -65,6 +65,7 @@ class IRRDBInfo(CachedObject, AS_SET_Bundle):
     BGPQ3_DEFAULT_SOURCES = ("RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,"
                              "BBOI,BELL,JPIRR,LEVEL3,RADB,RGNET,"
                              "SAVVIS,TC")
+    EXPIRY_TIME_TAG = "irr_as_sets"
 
     def __init__(self, object_names, *args, **kwargs):
         assert isinstance(object_names, list)
@@ -100,7 +101,7 @@ class IRRDBInfo(CachedObject, AS_SET_Bundle):
 class ASSet(IRRDBInfo):
 
     def load_data(self):
-        logging.debug("Getting origin ASNs for "
+        logging.debug("Getting ASNs for "
                       "{} from IRRdb".format(self.descr))
 
         IRRDBInfo.load_data(self)
@@ -112,6 +113,13 @@ class ASSet(IRRDBInfo):
         return "{}-as_set.json".format(self.name)
 
     def _get_data(self):
+        # If the list of objects to expand is made up by
+        # an 'ASxxx' element only, avoid to run bgpq3 and
+        # return only that ASN.
+        if len(self.object_names) == 1 and \
+            re.match("^AS[0-9]+$", self.object_names[0]):
+            return [int(self.object_names[0][2:])]
+
         cmd = [self.bgpq3_path]
         cmd += ["-h", self.bgpq3_host]
         cmd += ["-S", self.bgpq3_sources]

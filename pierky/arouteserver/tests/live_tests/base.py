@@ -14,11 +14,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from jinja2 import Environment, FileSystemLoader
-import json
-try:
-    import mock
-except ImportError:
-    import unittest.mock as mock
 import os
 import re
 import time
@@ -26,15 +21,9 @@ import yaml
 
 from .docker import InstanceError
 
-from pierky.arouteserver.cached_objects import CachedObject
-from pierky.arouteserver.config.validators import ValidatorPrefixListEntry
-from pierky.arouteserver.enrichers.irrdb import IRRDBConfigEnricher_OriginASNs, \
-                                                IRRDBConfigEnricher_Prefixes
-from pierky.arouteserver.enrichers.rtt import RTTGetterConfigEnricher
 from pierky.arouteserver.ipaddresses import IPAddress, IPNetwork
-from pierky.arouteserver.peering_db import PeeringDBInfo, PeeringDBNet
-from pierky.arouteserver.ripe_rpki_cache import RIPE_RPKI_ROAs
 from pierky.arouteserver.tests.base import ARouteServerTestCase
+from pierky.arouteserver.tests.mocked_env import MockedEnv
 from pierky.arouteserver.tests.live_tests.instances import BGPSpeakerInstance
 
 
@@ -329,139 +318,6 @@ class LiveScenario(ARouteServerTestCase):
         return var_path
 
     @classmethod
-    def mock_rttgetter(cls):
-
-        def _mock_RTTGetter(self):
-            rtts = {}
-            for k in cls.RTT:
-                if k in cls.DATA:
-                    # it is a prefix ID and not an IP address
-                    rtts[cls.DATA[k]] = cls.RTT[k]
-                else:
-                    rtts[k] = cls.RTT[k]
-
-            for client in self.builder.cfg_clients.cfg["clients"]:
-                if client["ip"] in rtts:
-                    client["rtt"] = rtts[client["ip"]]
-
-        mock_RTTGetter = mock.patch.object(
-            RTTGetterConfigEnricher, "enrich", autospec=True
-        ).start()
-        mock_RTTGetter.side_effect = _mock_RTTGetter
-
-    @classmethod
-    def mock_irrdb(cls):
-
-        def add_prefix_to_list(prefix_name, allow_longer_prefixes, lst):
-            obj = IPNetwork(cls.DATA[prefix_name])
-            lst.append(
-                ValidatorPrefixListEntry().validate({
-                    "prefix": obj.ip,
-                    "length": obj.prefixlen,
-                    "comment": prefix_name,
-                    "exact": not allow_longer_prefixes
-                })
-            )
-
-        def _mock_ASSet(self):
-            self.prepare()
-            for as_set_bundle_id in self.builder.irrdb_info:
-                bundle = self.builder.irrdb_info[as_set_bundle_id]
-                asns = []
-                for as_set_name in bundle.object_names:
-                    if as_set_name not in cls.AS_SET:
-                        continue
-                    asns.extend(cls.AS_SET[as_set_name])
-                if asns:
-                    bundle.save("asns", asns)
-
-        def _mock_RSet(self):
-            self.prepare()
-            allow_longer_prefixes = self.builder.cfg_general["filtering"]["irrdb"]["allow_longer_prefixes"]
-            for as_set_bundle_id in self.builder.irrdb_info:
-                bundle = self.builder.irrdb_info[as_set_bundle_id]
-                prefixes = []
-                for as_set_name in bundle.object_names:
-                    if as_set_name not in cls.R_SET:
-                        continue
-                    for prefix_name in cls.R_SET[as_set_name]:
-                        add_prefix_to_list(prefix_name, allow_longer_prefixes,
-                                           prefixes)
-                if prefixes:
-                    bundle.save("prefixes", prefixes)
-
-        mock_ASSet = mock.patch.object(
-            IRRDBConfigEnricher_OriginASNs, "enrich", autospec=True
-        ).start()
-        mock_ASSet.side_effect = _mock_ASSet
-
-        mock_RSet = mock.patch.object(
-            IRRDBConfigEnricher_Prefixes, "enrich", autospec=True
-        ).start()
-        mock_RSet.side_effect = _mock_RSet
-
-    @classmethod
-    def mock_cached_objects(cls):
-
-        def load_data_from_cache(self):
-            return False
-
-        def save_data_to_cache(self):
-            return
-
-        mock_load_data_from_cache = mock.patch.object(
-            CachedObject, "load_data_from_cache", autospec=True
-        ).start()
-        mock_load_data_from_cache.side_effect = load_data_from_cache
-
-        mock_save_data_to_cache = mock.patch.object(
-            CachedObject, "save_data_to_cache", autospec=True
-        ).start()
-        mock_save_data_to_cache.side_effect = save_data_to_cache
-
-    @classmethod
-    def mock_peering_db(cls):
-
-        def get_data_from_peeringdb(self):
-            path = "{}/{}/{}".format(
-                cls._get_module_dir(),
-                "peeringdb_data",
-                self._get_peeringdb_url()
-            )
-            with open(path, "r") as f:
-                return json.load(f)
-
-        def get_url_net(self):
-            return "net_{}.json".format(self.asn)
-
-        mock_get_data_from_peeringdb = mock.patch.object(
-            PeeringDBInfo, "_get_data_from_peeringdb", autospec=True
-        ).start()
-        mock_get_data_from_peeringdb.side_effect = get_data_from_peeringdb
-
-        mock_get_url_net = mock.patch.object(
-            PeeringDBNet, "_get_peeringdb_url", autospec=True
-        ).start()
-        mock_get_url_net.side_effect = get_url_net
-
-    @classmethod
-    def mock_ripe_rpki_cache(cls):
-
-        def get_data(self):
-            path = "{}/{}/{}".format(
-                cls._get_module_dir(),
-                "ripe-rpki-cache",
-                "ripe-rpki-cache.json"
-            )
-            with open(path, "r") as f:
-                return json.load(f)
-
-        mock_get_data = mock.patch.object(
-            RIPE_RPKI_ROAs, "_get_data", autospec=True
-        ).start()
-        mock_get_data.side_effect = get_data
-
-    @classmethod
     def _setUpClass(cls):
         for prefix_name in cls.DATA:
             prefix = cls.DATA[prefix_name]
@@ -476,16 +332,11 @@ class LiveScenario(ARouteServerTestCase):
 
         cls.info("{}: setting instances up...".format(cls.SHORT_DESCR))
 
-        if cls.MOCK_PEERING_DB or cls.MOCK_RIPE_RPKI_CACHE:
-            cls.mock_cached_objects()
-        if cls.MOCK_PEERING_DB:
-            cls.mock_peering_db()
-        if cls.MOCK_RIPE_RPKI_CACHE:
-            cls.mock_ripe_rpki_cache()
-        if cls.MOCK_IRRDB:
-            cls.mock_irrdb()
-        if cls.MOCK_RTTGETTER:
-            cls.mock_rttgetter()
+        MockedEnv(cls, base_dir=cls._get_module_dir(),
+                  peering_db=cls.MOCK_PEERING_DB,
+                  ripe_rpki_cache=cls.MOCK_RIPE_RPKI_CACHE,
+                  irrdb=cls.MOCK_IRRDB,
+                  rttgetter=cls.MOCK_RTTGETTER)
 
         try:
             cls._setup_instances()
@@ -515,7 +366,7 @@ class LiveScenario(ARouteServerTestCase):
 
     @classmethod
     def _tearDownClass(cls):
-        mock.patch.stopall()
+        MockedEnv.stopall()
 
         if cls._do_not_run_instances():
             cls.debug("Skipping stopping instances")

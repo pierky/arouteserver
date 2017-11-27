@@ -53,6 +53,18 @@ Installation
   The program will ask you to create some directories (under ``~/arouteserver`` by default) and to copy some files there.
   These paths can be changed by editing the ``arouteserver.yml`` program configuration file or by using command line arguments. More information in the :doc:`configuration section <CONFIG>`.
 
+4. Define the route server configuration policies, using the ``configure`` command or manually by editing the ``general.yml`` file:
+
+  .. code:: bash
+
+    # if you installed from GitHub
+    ./scripts/arouteserver configure
+
+    # if you used pip
+    arouteserver configure
+
+  The ``configure`` command asks some questions about the route server environment (ASN, router ID, local subnets) and then it builds a policy definition file based on best practices and suggestions which also includes a rich BGP communities list.
+
 External programs
 -----------------
 
@@ -114,6 +126,9 @@ ARouteServer uses the following external programs:
 
 Upgrading
 ---------
+
+Often upgrades bring new features and new options, sometimes they also introduce changes that might break backward compatibility with previous versions.
+It is advisable to always check the :doc:`CHANGELOG <CHANGELOG>` to verify what's new: the ``arouteserver show_config`` command can also be used to verify if new configuration options are available and how they are set by default.
 
 To upgrade the program, download the new version...
 

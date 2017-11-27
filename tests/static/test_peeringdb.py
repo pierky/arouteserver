@@ -14,13 +14,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-try:
-    import mock
-except ImportError:
-    import unittest.mock as mock
 import unittest
 
-from .mock_peeringdb import mock_peering_db
+from pierky.arouteserver.tests.mocked_env import MockedEnv
 from pierky.arouteserver.peering_db import PeeringDBNet
 from pierky.arouteserver.errors import PeeringDBNoInfoError 
 
@@ -29,11 +25,12 @@ class TestPeeringDBInfo(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        mock_peering_db(os.path.dirname(__file__) + "/peeringdb_data")
+        MockedEnv(default=False, peering_db=True,
+                  base_dir=os.path.dirname(__file__))
 
     @classmethod
     def tearDownClass(cls):
-        mock.patch.stopall()
+        MockedEnv.stopall()
 
     def test_net1(self):
         """PeeringDB network: get data"""

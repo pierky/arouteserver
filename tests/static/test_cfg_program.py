@@ -63,7 +63,14 @@ class TestProgramConfig(unittest.TestCase):
                                "BELL,JPIRR,LEVEL3,RADB,RGNET,SAVVIS,TC")),
             ("rtt_getter_path", ""),
             ("threads", 4),
-            ("cache_expiry", 43200)
+            ("cache_expiry",
+                {
+                    "general": 43200,
+                    "pdb_info": 86400,
+                    "ripe_rpki_roas": 43200,
+                    "irr_as_sets": 43200
+                }
+            )
         ]
         for exp_key, exp_val in expected_values:
             self.assertEqual(self.pr_cfg.cfg[exp_key], exp_val)

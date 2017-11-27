@@ -27,7 +27,7 @@ from .config.bogons import ConfigParserBogons
 from .config.asns import ConfigParserASNS
 from .config.clients import ConfigParserClients
 from .config.roa import ConfigParserROAEntries
-from .enrichers.irrdb import IRRDBConfigEnricher_OriginASNs, \
+from .enrichers.irrdb import IRRDBConfigEnricher_ASNs, \
                              IRRDBConfigEnricher_Prefixes
 from .enrichers.pdb_as_set import PeeringDBConfigEnricher_ASSet
 from .enrichers.pdb_max_prefix import PeeringDBConfigEnricher_MaxPrefix
@@ -36,10 +36,10 @@ from .enrichers.rtt import RTTGetterConfigEnricher
 from .errors import MissingDirError, MissingFileError, BuilderError, \
                     ARouteServerError, MissingArgumentError, \
                     TemplateRenderingError, CompatibilityIssuesError, \
-                    ConfigError
+                    ConfigError, MissingGeneralConfigFileError
 from .ipaddresses import IPNetwork
 from .irrdb import IRRDBInfo
-from .cached_objects import CachedObject
+from .cached_objects import CachedObject, normalize_expiry_time
 
 
 class ConfigBuilder(object):
@@ -188,8 +188,12 @@ class ConfigBuilder(object):
                 - *--cache-dir* CLI argument.
                 - *cache_dir* program's configuration file option.
 
-            cache_expiry (int): how long cached data must be considered valid,
-                in seconds.
+            cache_expiry (int or dict): how long cached data must be considered
+                valid, in seconds. Each "cacheable object" (PeeringDB info,
+                IRR datasets, ...) can have its own expiry time. If an int is
+                given here, all the expiry times will have the same duration,
+                otherwise cacheable objects will pick their specific value
+                or use the 'general' one if no more specific value is given.
 
                 Same of:
 
@@ -342,7 +346,7 @@ class ConfigBuilder(object):
             "cache_dir", cache_dir
         )
 
-        self.cache_expiry = cache_expiry
+        self.cache_expiry = normalize_expiry_time(cache_expiry)
 
         self.bgpq3_path = bgpq3_path
         self.bgpq3_host = bgpq3_host
@@ -379,9 +383,13 @@ class ConfigBuilder(object):
 
         self.target_version = target_version or self.DEFAULT_VERSION
 
-        self.cfg_general = self._get_cfg(cfg_general,
-                                         ConfigParserGeneral,
-                                         "general")
+        try:
+            self.cfg_general = self._get_cfg(cfg_general,
+                                             ConfigParserGeneral,
+                                             "general")
+        except MissingFileError as e:
+            raise MissingGeneralConfigFileError(e.path)
+
         self.cfg_bogons = self._get_cfg(cfg_bogons,
                                         ConfigParserBogons,
                                         "bogons")
@@ -408,9 +416,9 @@ class ConfigBuilder(object):
 
         self.kwargs = kwargs
 
-        # Initially None; is set to {} and finally populated by
+        # Initially None; is set to IRRDB() and finally populated by
         # the IRRDB enrichers.
-        # { "<as_set_bundle_id>": <AS_SET_Bundle_Proxy>, ... }
+        # { "<as_set_bundle_id>": <IRRDBRecord>, ... }
         self.irrdb_info = None
 
         # { "<origin_asn>": [{"prefix": "a/b", "max_len": c}] }
@@ -490,7 +498,7 @@ class ConfigBuilder(object):
         if irrdb_cfg["peering_db"]:
             used_enricher_classes += [PeeringDBConfigEnricher_ASSet]
 
-        used_enricher_classes += [IRRDBConfigEnricher_OriginASNs,
+        used_enricher_classes += [IRRDBConfigEnricher_ASNs,
                                   IRRDBConfigEnricher_Prefixes,
                                   PeeringDBConfigEnricher_MaxPrefix]
 

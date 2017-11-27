@@ -52,6 +52,16 @@ class MissingFileError(ARouteServerError):
     def __str__(self):
         return "The file {} does not exist".format(self.path)
 
+class MissingGeneralConfigFileError(MissingFileError):
+
+    def __init__(self, *args, **kwargs):
+        MissingFileError.__init__(self, *args, **kwargs)
+        self._extra_info = (
+            "Please edit it manually or execute the 'arouteserver configure' "
+            "command to run a brief wizard that will generate it on the basis "
+            "of your input."
+        )
+
 class MissingDirError(ARouteServerError):
 
     def __init__(self, path):
@@ -63,6 +73,14 @@ class MissingDirError(ARouteServerError):
 
 class CachedObjectsError(ARouteServerError):
     pass
+
+class CachedObjectsExpiryTimeConfigurationError(ARouteServerError):
+
+    def __init__(self, *args, **kwargs):
+        ARouteServerError.__init__(self, args, kwargs)
+        self._extra_info = (
+            "Plase check the program's configuration file (arouteserver.yml)."
+        )
 
 class ExternalDataNoInfoError(ARouteServerError):
     pass
