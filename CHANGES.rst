@@ -14,6 +14,8 @@ next release
 
 - New feature: ``ixf-member-export`` command, to build `IX-F Member Export JSON files <https://ml.ix-f.net/>`__ from the list of clients.
 
+- Improvement: cache expiry time values can be set for each external resource type: PeeringDB info, IRR data, ...
+
 v0.14.1
 -------
 

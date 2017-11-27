@@ -140,8 +140,6 @@ A list of BGP communities is also automatically built.
     - PeeringDB is used to fetch AS-SETs for those clients that are not explicitly
    configured.
     - RPKI ROAs are used as if they were route objects to further enrich IRR data.
-    - Routes tagged with the BLACKHOLE well-known community (65535:666) are
-   propagated to clients.
     - Routes tagged with the GRACEFUL_SHUTDOWN well-known community (65535:0) are
    processed accordingly to draft-ietf-grow-bgp-gshut.
 

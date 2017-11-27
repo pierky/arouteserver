@@ -185,7 +185,7 @@ class ARouteServerCommand(object):
             else:
                 logging.warning(msg)
 
-        new_rel = version.parse(last_version) >= version.parse(__version__)
+        new_rel = version.parse(last_version) > version.parse(__version__)
 
         url = "https://github.com/pierky/arouteserver/releases"
 
