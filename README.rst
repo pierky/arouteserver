@@ -127,6 +127,19 @@ Presentations
 - RIPE74, 10 May 2017, Connect Working Group: `video <https://ripe74.ripe.net/archives/video/87/>`__ (9:53), `slides <https://ripe74.ripe.net/presentations/22-RIPE74-ARouteServer.pdf>`__ (PDF)
 - Salottino MIX, 30 May 2017: `slides <https://www.slideshare.net/PierCarloChiodi/salottino-mix-2017-arouteserver-ixp-automation-made-easy>`__
 
+Mentions / endorsements:
+
+- Job Snijders, LINX99, 20 November 2017: `slides <http://instituut.net/~job/LINX99_route_servers.pdf>`__
+
+Who is using ARouteServer?
+--------------------------
+
+- `IX-Denver <http://ix-denver.org/>`__, BIRD.
+
+- `YYCIX <https://yycix.ca>`__, OpenBGPD.
+
+Are you using it? Do you want to be listed here? `Drop me a message <https://pierky.com/#contactme>`__!
+
 Status
 ------
 
