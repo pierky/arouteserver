@@ -919,7 +919,7 @@ class BasicScenario(LiveScenario):
         """{}: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any"""
         pref = self.DATA["AS4_rtt_9"]
         self.receive_route(self.rs, pref, self.AS4,
-                           std_comms=["64536:5", "64535:20", "999:65501"])
+                           std_comms=["64536:5", "64535:20", "65521:65521"])
         for inst in [self.AS1_1, self.AS1_2]:
             self.receive_route(inst, pref, self.rs, as_path="4 4 4 4",
                                std_comms=[], lrg_comms=[], ext_comms=[])

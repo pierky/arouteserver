@@ -3,6 +3,13 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- Improvement: OpenBGPD, more flexibility for inbound communities values.
+  
+  This allows to use inbound 'peer_as' communities which overlap with other inbound communities whose last *part* is a private ASN.
+
 v0.15.0
 -------
 
