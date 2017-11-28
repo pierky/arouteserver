@@ -797,16 +797,12 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._contains_err()
 
         # Testing with allow_private_asns=False...
-        with self.assertRaises(ConfigError):
-            self.cfg.check_overlapping_communities(allow_private_asns=False)
-        exp_err_msg_found = False
-        for line in self.logger_handler.msgs:
-            if "Community 'blackholing' and 'do_not_announce_to_peer' overlap: 0:65501 / 0:peer_as. Inbound communities can't have overlapping values, otherwise" in line:
-                exp_err_msg_found = True
-                break
-
-        if not exp_err_msg_found:
-            self.fail("Expected error message not found")
+        # It must work, peer_as can't be a private ASN; moreover
+        # also on OpenBGPD (where inbound communities are scrubbed
+        # using a wildcard) when the 'x:peer_as' community is
+        # deleted also the 'x:<asn>' is.
+        self.cfg.check_overlapping_communities(allow_private_asns=False)
+        self._contains_err()
 
     def test_overlapping_communities_in_in_dyn_val(self):
         """{}: overlapping communities, inbound/inbound (dyn_val)"""
