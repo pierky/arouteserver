@@ -43,6 +43,7 @@ class ConfigParserGeneral(ConfigParserBase):
         "prefix_present_in_as_set": { "type": "outbound" },
         "prefix_not_present_in_as_set": { "type": "outbound" },
         "prefix_validated_via_rpki_roas": { "type": "outbound" },
+        "prefix_validated_via_arin_whois_db_dump": { "type": "outbound" },
         "route_validated_via_white_list": { "type": "outbound" },
 
         "blackholing": { "type": "inbound" },
@@ -167,6 +168,15 @@ class ConfigParserGeneral(ConfigParserBase):
                 "LACNIC RPKI Root",
                 "RIPE NCC RPKI Root"
             ]
+        )
+
+        i["use_arin_bulk_whois_data"] = OrderedDict()
+        a = i["use_arin_bulk_whois_data"]
+
+        a["enabled"] = ValidatorBool(default=False)
+        a["source"] = ValidatorText(
+            mandatory=True,
+            default="http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
         )
 
         f["rpki"] = OrderedDict()

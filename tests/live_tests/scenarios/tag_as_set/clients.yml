@@ -88,3 +88,12 @@ clients:
                                 - "AS6"
                                 enforce_prefix_in_as_set: True
                                 enforce_origin_in_as_set: True
+                                white_list_route:
+                                  - prefix: "3.2.0.0"
+                                    length: 16
+                                    exact: False
+                                    asn: 3
+                                  - prefix: "2a03:2::"
+                                    length: 32
+                                    exact: False
+                                    asn: 3

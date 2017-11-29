@@ -432,3 +432,18 @@ function prefix_in_rpki_roas_as_route_objects() {
 	return false;
 }
 {% endif %}
+
+{% if cfg.filtering.irrdb.use_arin_bulk_whois_data.enabled %}
+# This function looks up the route's origin ASN in the ARIN
+# Whois DB: if there is such an entry for the current route's
+# origin ASN to validate the announced prefix the function
+# returns True, otherwise False.
+function prefix_in_arin_whois_db() {
+	case bgp_path.last {
+{%		for origin_asn in arin_whois_records|sort %}
+		{{ origin_asn|replace("AS", "") }}: return net ~ ARIN_Whois_db_{{ origin_asn }};
+{%		endfor %}
+	}
+	return false;
+}
+{% endif %}

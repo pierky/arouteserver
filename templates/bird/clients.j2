@@ -140,6 +140,19 @@ bool reject_because_of_bad_prefix;
 	}
 {%	endif %}
 
+{%	if client.cfg.filtering.irrdb.enforce_origin_in_as_set and
+		client.cfg.filtering.irrdb.enforce_prefix_in_as_set and
+		cfg.filtering.irrdb.use_arin_bulk_whois_data.enabled %}
+	# Origin ASN is valid, prefix is not: check if an ARIN Whois record exists.
+	if !reject_because_of_bad_origin && reject_because_of_bad_prefix && prefix_in_arin_whois_db() then {
+{%		if cfg.filtering.irrdb.tag_as_set and
+			cfg.communities.prefix_validated_via_arin_whois_db_dump|community_is_set %}
+{{			add_communities(cfg.communities.prefix_validated_via_arin_whois_db_dump) }}
+{%		endif %}
+		return true;
+	}
+{%	endif %}
+
 {%	if client.cfg.filtering.irrdb.white_list_route %}
 	# Client's white list
 {%		for route in client.cfg.filtering.irrdb.white_list_route|sort(attribute="prefix") if route.prefix is current_ipver %}

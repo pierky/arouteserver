@@ -1,0 +1,18 @@
+{
+  "json_schema": "0.0.2",
+  "source": "ARIN-WHOIS",
+  "whois_records": {
+    "v4": [
+      {
+        "originas": "AS3",
+        "prefix": "3.2.0.0/16"
+      }
+    ],
+    "v6": [
+      {
+        "originas": "AS3",
+        "prefix": "2a03:2::/32"
+      }
+    ]
+  }
+}

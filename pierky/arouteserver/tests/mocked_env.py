@@ -20,6 +20,7 @@ except ImportError:
     import unittest.mock as mock
 import os
 
+from pierky.arouteserver.arin_db_dump import ARINWhoisDBDump
 from pierky.arouteserver.cached_objects import CachedObject
 from pierky.arouteserver.config.validators import ValidatorPrefixListEntry
 from pierky.arouteserver.enrichers.irrdb import IRRDBConfigEnricher_ASNs, \
@@ -41,6 +42,7 @@ class MockedEnv(object):
 
         if mocked_env.base_dir is None:
             raise ValueError("base_dir is missing")
+
         path = os.path.join(mocked_env.base_dir, subdir, filename)
         with open(path, "r") as f:
             if ret_type == "json":
@@ -54,7 +56,8 @@ class MockedEnv(object):
             for k in mocked_env.base_inst.RTT:
                 if k in mocked_env.base_inst.DATA:
                     # it is a prefix ID and not an IP address
-                    rtts[mocked_env.base_inst.DATA[k]] = mocked_env.base_inst.RTT[k]
+                    rtts[mocked_env.base_inst.DATA[k]] = \
+                        mocked_env.base_inst.RTT[k]
                 else:
                     rtts[k] = mocked_env.base_inst.RTT[k]
 
@@ -82,7 +85,8 @@ class MockedEnv(object):
             prefix_list = []
             for obj_name in self.object_names:
                 raw = mocked_env.load("irrdb_data",
-                                      "rset_{}_ipv{}.json".format(obj_name, self.ip_ver),
+                                      "rset_{}_ipv{}.json".format(obj_name,
+                                                                  self.ip_ver),
                                       ret_type="json")
                 for prefix in raw["prefix_list"]:
                     if prefix not in prefix_list:
@@ -192,10 +196,21 @@ class MockedEnv(object):
     def do_mock_ripe_rpki_cache(mocked_env):
 
         def get_data(self):
-            return mocked_env.load("ripe-rpki-cache", "ripe-rpki-cache.json", ret_type="json")
+            return mocked_env.load("ripe-rpki-cache", "ripe-rpki-cache.json",
+                                   ret_type="json")
 
         mock_get_data = mock.patch.object(
             RIPE_RPKI_ROAs, "_get_data", autospec=True
+        ).start()
+        mock_get_data.side_effect = get_data
+
+    def do_mock_arin_db_dump(mocked_env):
+
+        def get_data(self):
+            return mocked_env.load("arin_whois_db", "dump.json")
+
+        mock_get_data = mock.patch.object(
+            ARINWhoisDBDump, "_get_data", autospec=True
         ).start()
         mock_get_data.side_effect = get_data
 
@@ -256,6 +271,13 @@ class MockedEnv(object):
 
           It uses base_inst.DATA and base_inst.RTT to fill clients' rtt
           attribute.
+
+        - arin_db_dump:
+
+          Mock the ARINWhoisDBDump._get_data() method.
+
+          The content of the ARIN DB dump is read from the local
+          <base_dir>/arin_whois_db/dump.json file.
         """
         mocked_env.base_inst = base_inst
 
@@ -267,17 +289,21 @@ class MockedEnv(object):
 
         mocked_env.irr = kwargs.get("irr", default)
 
-        mocked_env.irrdb = kwargs.get("irrdb", default and base_inst is not None)
+        mocked_env.irrdb = kwargs.get("irrdb",
+                                      default and base_inst is not None)
 
         if mocked_env.irrdb:
             assert base_inst is not None, \
                 "when irrdb is True, base_inst is needed"
 
-        mocked_env.rttgetter = kwargs.get("rttgetter", default and base_inst is not None)
+        mocked_env.rttgetter = kwargs.get("rttgetter",
+                                          default and base_inst is not None)
 
         if mocked_env.rttgetter:
             assert base_inst is not None, \
                 "when rttgetter is True, base_inst is needed"
+
+        mocked_env.arin_db_dump = kwargs.get("arin_db_dump", default)
 
         mocked_env.base_dir = base_dir
 
@@ -304,6 +330,9 @@ class MockedEnv(object):
 
         if mocked_env.rttgetter:
             mocked_env.do_mock_rttgetter()
+
+        if mocked_env.arin_db_dump:
+            mocked_env.do_mock_arin_db_dump()
 
         mocked_env.mocked_files = {}
 

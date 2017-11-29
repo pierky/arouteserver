@@ -235,6 +235,12 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._test_option(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "source", ("ripe-rpki-validator-cache","rtrlib"))
         self._test_mandatory(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "source", has_default=True)
 
+    def use_arin_whois_db_dump_enabled(self):
+        """{}: use_arin_whois_db_dump.enabled"""
+        self.assertEqual(self.cfg["filtering"]["irrdb"]["use_arin_whois_db_dump"]["enabled"], False)
+        self._test_bool_val(self.cfg["filtering"]["irrdb"]["use_arin_whois_db_dump"], "enabled")
+        self._test_mandatory(self.cfg["filtering"]["irrdb"]["use_arin_whois_db_dump"], "enabled", has_default=True)
+
     def test_rpki_enabled(self):
         """{}: rpki, enabled"""
         self.assertEqual(self.cfg["filtering"]["rpki"]["enabled"], False)
@@ -1084,6 +1090,10 @@ class TestConfigParserGeneral(TestConfigParserBase):
                             "LACNIC RPKI Root",
                             "RIPE NCC RPKI Root"
                         ]
+                    },
+                    "use_arin_bulk_whois_data": {
+                        "enabled": False,
+                        "source": "http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
                     }
                 },
                 "rpki": {
@@ -1186,6 +1196,10 @@ class TestConfigParserGeneral(TestConfigParserBase):
                             "LACNIC RPKI Root",
                             "RIPE NCC RPKI Root"
                         ]
+                    },
+                    "use_arin_bulk_whois_data": {
+                        "enabled": False,
+                        "source": "http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
                     }
                 },
                 "rpki": {

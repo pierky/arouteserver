@@ -18,7 +18,7 @@
 import sys
 import re
 
-RE_COMMENT = re.compile("^\s+#\s+([^\s].+)")
+RE_COMMENT = re.compile("^\s+#\s+([^\s].*)")
 RE_COMMENT_EMPTY_LINE = re.compile("^\s+#\s*$")
 
 class CfgStatement(object):
@@ -223,7 +223,7 @@ class CfgStatement(object):
 
             elif RE_COMMENT_EMPTY_LINE.match(line):
                 # comment, empty line
-                match = RE_COMMENT.match(line)
+                match = RE_COMMENT_EMPTY_LINE.match(line)
                 comment = "\n"
 
                 self.add_body_line(comment)
@@ -292,7 +292,11 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
                     CfgStatement("source", pre_comment=True),
                     CfgStatement("ripe_rpki_validator_url", pre_comment=True),
                     CfgStatement("allowed_trust_anchors", pre_comment=True),
-                ])
+                ]),
+                CfgStatement("use_arin_bulk_whois_data", post_comment=True, sub=[
+                    CfgStatement("enabled", pre_comment=True),
+                    CfgStatement("source", pre_comment=True)
+                ]),
             ]),
             CfgStatement("rpki", t="RPKI", sub=[
                 CfgStatement("enabled", pre_comment=True),
@@ -338,6 +342,7 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
             CommCfgStatement("origin_present_in_as_set", group_with_previous="prefix_present_in_as_set"),
             CommCfgStatement("origin_not_present_in_as_set", group_with_previous="prefix_present_in_as_set"),
             CommCfgStatement("prefix_validated_via_rpki_roas", group_with_previous="prefix_present_in_as_set"),
+            CommCfgStatement("prefix_validated_via_arin_whois_db_dump", group_with_previous="prefix_present_in_as_set"),
             CommCfgStatement("route_validated_via_white_list", group_with_previous="prefix_present_in_as_set"),
 
             CommCfgStatement("blackholing", g="Blackhole filtering", pre_comment=True),

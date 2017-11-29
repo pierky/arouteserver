@@ -107,5 +107,7 @@ class BasicScenario_Data4(object):
         "AS103_gshut_1":            "103.0.1.0/24",
         "AS103_gshut_2":            "103.0.2.0/24",
 
+        "AS104_arin_1":             "104.0.1.0/24",
+
         "Default_route":            "0.0.0.0/0",
     }

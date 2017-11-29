@@ -157,6 +157,7 @@ class LiveScenario(ARouteServerTestCase):
     MOCK_RIPE_RPKI_CACHE = True
     MOCK_IRRDB = True
     MOCK_RTTGETTER = True
+    MOCK_ARIN_DB_DUMP = True
 
     # regex: for example ^65520:(\d+)$
     REJECT_CAUSE_COMMUNITY = None
@@ -336,7 +337,8 @@ class LiveScenario(ARouteServerTestCase):
                   peering_db=cls.MOCK_PEERING_DB,
                   ripe_rpki_cache=cls.MOCK_RIPE_RPKI_CACHE,
                   irrdb=cls.MOCK_IRRDB,
-                  rttgetter=cls.MOCK_RTTGETTER)
+                  rttgetter=cls.MOCK_RTTGETTER,
+                  arin_db_dump=cls.MOCK_ARIN_DB_DUMP)
 
         try:
             cls._setup_instances()

@@ -112,6 +112,12 @@ cfg:
       peer_as: false
       std: null
       type: outbound
+    prefix_validated_via_arin_whois_db_dump:
+      ext: null
+      lrg: 999:65530:4
+      peer_as: false
+      std: '65530:4'
+      type: outbound
     prefix_validated_via_rpki_roas:
       ext: null
       lrg: 999:65530:2
@@ -240,11 +246,14 @@ cfg:
       max: 48
       min: 12
     irrdb:
-      allow_longer_prefixes: false
+      allow_longer_prefixes: true
       enforce_origin_in_as_set: true
       enforce_prefix_in_as_set: true
       peering_db: false
       tag_as_set: true
+      use_arin_bulk_whois_data:
+        enabled: true
+        source: http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2
       use_rpki_roas_as_route_objects:
         allowed_trust_anchors:
         - APNIC from AFRINIC RPKI Root
@@ -960,6 +969,41 @@ AS3333:
   length: 23
   max_length: 32
   prefix: 193.0.18.0
+
+
+arin_whois_db_records
+---------------------
+AS10745:
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
+  prefix: 199.43.0.0
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
+  prefix: 192.149.252.0
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
+  prefix: 192.136.136.0
+- exact: false
+  ge: 48
+  le: 128
+  length: 48
+  max_length: 128
+  prefix: '2001:500:4::'
+- exact: false
+  ge: 36
+  le: 128
+  length: 36
+  max_length: 128
+  prefix: '2602:ff57::'
 
 
 roas

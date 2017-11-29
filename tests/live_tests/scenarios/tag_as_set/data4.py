@@ -65,4 +65,5 @@ class TagASSetScenario_Data4(object):
         "AS6_allowed_prefixes":             "6.0.0.0/16",
         "AS6_roa1":                         "2.4.0.0/16",
         "AS6_roa2":                         "3.1.0.0/16",
+        "AS6_arin1":                        "3.2.1.0/24",
     }

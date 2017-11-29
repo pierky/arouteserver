@@ -10,6 +10,10 @@ next release
   
   This allows to use inbound 'peer_as' communities which overlap with other inbound communities whose last *part* is a private ASN.
 
+- New feature: use ARIN Whois database dump to authorize routes.
+
+  This feature allows to accept those routes whose origin ASN is authorized by a client AS-SET, whose prefix has not a corresponding route object but is covered by an ARIN Whois record for the same origin ASN.
+
 v0.15.0
 -------
 
