@@ -40,7 +40,7 @@ class ARINWhoisDBDump(CachedObject):
 
         logging.debug("Processing ARIN Whois DB dump")
 
-        dic = json.loads(self.raw_data)
+        dic = self.raw_data
 
         try:
             json_schema = dic.get("json_schema", None)
@@ -156,11 +156,21 @@ class ARINWhoisDBDump(CachedObject):
 
         if self.source.endswith(".bz2"):
             try:
-                return decompress(response).decode("utf-8")
+                raw = decompress(response).decode("utf-8")
             except Exception as e:
                 raise ARINWhoisDBDumpError(
                     "An error occurred while "
-                    "decompressing BZ2 file: {}".format(str(e))
+                    "decompressing ARIN Whois DB "
+                    "BZ2 file: {}".format(str(e))
                 )
         else:
-            return response.decode("utf-8")
+            raw = response.decode("utf-8")
+
+        try:
+            ret = json.loads(raw)
+        except Exception as e:
+            raise ARINWhoisDBDumpError(
+                "Can't parse ARIN Whois DB JSON file: {}".format(str(e))
+            )
+
+        return ret

@@ -207,7 +207,8 @@ class MockedEnv(object):
     def do_mock_arin_db_dump(mocked_env):
 
         def get_data(self):
-            return mocked_env.load("arin_whois_db", "dump.json")
+            return mocked_env.load("arin_whois_db", "dump.json",
+                                   ret_type="json")
 
         mock_get_data = mock.patch.object(
             ARINWhoisDBDump, "_get_data", autospec=True
@@ -310,7 +311,7 @@ class MockedEnv(object):
         # Setup mocks
 
         if mocked_env.peering_db or mocked_env.ripe_rpki_cache or \
-            mocked_env.irr or mocked_env.irrdb:
+            mocked_env.irr or mocked_env.irrdb or mocked_env.arin_db_dump:
             mocked_env.bypass_cache = True
 
         if mocked_env.bypass_cache:
