@@ -132,6 +132,14 @@ IX-F Member Export from clients command: lonap.yml ... ok
 IX-F Member Export from clients command: six.yml ... ok
 IX-F Member Export from clients command: sthix.yml ... ok
 IX-F Member Export from clients command: swissix.yml ... ok
+IRRDB enricher: autnum + 2 AS-SETs ... ok
+IRRDB enricher: autnum + AS-SET ... ok
+IRRDB enricher: autnum + AS-SET + ASN white list ... ok
+IRRDB enricher: autnum + AS-SET + prefix white list ... ok
+IRRDB enricher: autnum + AS-SET + prefix/ASN white list ... ok
+IRRDB enricher: autnum + AS-SET + prefix/ASN white list + empty AS-SET ... ok
+IRRDB enricher: autnum only ... ok
+IRRDB enricher: empty autnum + empty AS-SET ... ok
 Max-prefix from PeeringDB: increment ... ok
 IRRDB info: base, AS_SET bundle info (1) ... ok
 IRRDB info: base, AS_SET bundle info (3) ... ok
@@ -146,14 +154,6 @@ IRRDB info: ASNs, cache expired ... ok
 IRRDB info: RSets, simple ... ok
 IRRDB info: RSets, from cache ... ok
 IRRDB info: RSets, cache expired ... ok
-IRRDB enricher: autnum + 2 AS-SETs ... ok
-IRRDB enricher: autnum + AS-SET ... ok
-IRRDB enricher: autnum + AS-SET + ASN white list ... ok
-IRRDB enricher: autnum + AS-SET + prefix white list ... ok
-IRRDB enricher: autnum + AS-SET + prefix/ASN white list ... ok
-IRRDB enricher: autnum + AS-SET + prefix/ASN white list + empty AS-SET ... ok
-IRRDB enricher: autnum only ... ok
-IRRDB enricher: empty autnum + empty AS-SET ... ok
 PeeringDB network: get data ... ok
 PeeringDB network: missing data ... ok
 PeeringDB: AS-SETs parsing ... ok
@@ -172,7 +172,7 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 172 tests in 47.985s
+Ran 172 tests in 47.946s
 
 OK
 Live test, BIRD, hooks example, IPv4: setting instances up...
@@ -183,7 +183,7 @@ Live test, BIRD, hooks example, IPv6: instances setup ... ok
 Live test, BIRD, hooks example, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 2 tests in 9.025s
+Ran 2 tests in 8.999s
 
 OK
 Live test, BIRD, BGP communities, IPv4: setting instances up...
@@ -272,7 +272,7 @@ Live test, OpenBGPD 6.2, BGP communities, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.2, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 72 tests in 457.104s
+Ran 72 tests in 457.232s
 
 OK (SKIP=6)
 Live test, BIRD, default config, IPv4: setting instances up...
@@ -289,13 +289,14 @@ Live test, OpenBGPD 6.0, default config, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, default config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 160.389s
+Ran 4 tests in 161.137s
 
 OK
 Live test, BIRD, global scenario, IPv4: setting instances up...
 Live test, BIRD, global scenario, IPv4: instances setup ... ok
 Live test, BIRD, global scenario, IPv4: sessions are up ... ok
 Live test, BIRD, global scenario, IPv4: session configured via local include files ... ok
+Live test, BIRD, global scenario, IPv4: good prefixes because of use_arin_bulk_whois_data ... ok
 Live test, BIRD, global scenario, IPv4: good prefixes received by rs: IRRdb white-list ... ok
 Live test, BIRD, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
 Live test, BIRD, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
@@ -374,6 +375,7 @@ Live test, BIRD, global scenario, IPv4, tag: setting instances up...
 Live test, BIRD, global scenario, IPv4, tag: instances setup ... ok
 Live test, BIRD, global scenario, IPv4, tag: sessions are up ... ok
 Live test, BIRD, global scenario, IPv4, tag: session configured via local include files ... ok
+Live test, BIRD, global scenario, IPv4, tag: good prefixes because of use_arin_bulk_whois_data ... ok
 Live test, BIRD, global scenario, IPv4, tag: good prefixes received by rs: IRRdb white-list ... ok
 Live test, BIRD, global scenario, IPv4, tag: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
 Live test, BIRD, global scenario, IPv4, tag: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
@@ -454,6 +456,7 @@ Live test, BIRD, global scenario, IPv6: setting instances up...
 Live test, BIRD, global scenario, IPv6: instances setup ... ok
 Live test, BIRD, global scenario, IPv6: sessions are up ... ok
 Live test, BIRD, global scenario, IPv6: session configured via local include files ... ok
+Live test, BIRD, global scenario, IPv6: good prefixes because of use_arin_bulk_whois_data ... ok
 Live test, BIRD, global scenario, IPv6: good prefixes received by rs: IRRdb white-list ... ok
 Live test, BIRD, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
 Live test, BIRD, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
@@ -532,6 +535,7 @@ Live test, BIRD, global scenario, IPv6, tag: setting instances up...
 Live test, BIRD, global scenario, IPv6, tag: instances setup ... ok
 Live test, BIRD, global scenario, IPv6, tag: sessions are up ... ok
 Live test, BIRD, global scenario, IPv6, tag: session configured via local include files ... ok
+Live test, BIRD, global scenario, IPv6, tag: good prefixes because of use_arin_bulk_whois_data ... ok
 Live test, BIRD, global scenario, IPv6, tag: good prefixes received by rs: IRRdb white-list ... ok
 Live test, BIRD, global scenario, IPv6, tag: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
 Live test, BIRD, global scenario, IPv6, tag: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
@@ -612,6 +616,7 @@ Live test, OpenBGPD 6.0, global scenario, IPv4: setting instances up...
 Live test, OpenBGPD 6.0, global scenario, IPv4: instances setup ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: sessions are up ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: session configured via local include files ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv4: good prefixes because of use_arin_bulk_whois_data ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: good prefixes received by rs: IRRdb white-list ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: exact ... SKIP: RPKI not supported by OpenBGPD
 Live test, OpenBGPD 6.0, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: covering ... SKIP: RPKI not supported by OpenBGPD
@@ -692,6 +697,7 @@ Live test, OpenBGPD 6.0, global scenario, IPv6: setting instances up...
 Live test, OpenBGPD 6.0, global scenario, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: sessions are up ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: session configured via local include files ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv6: good prefixes because of use_arin_bulk_whois_data ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: good prefixes received by rs: IRRdb white-list ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: exact ... SKIP: RPKI not supported by OpenBGPD
 Live test, OpenBGPD 6.0, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: covering ... SKIP: RPKI not supported by OpenBGPD
@@ -772,6 +778,7 @@ Live test, OpenBGPD 6.2, global scenario, IPv4: setting instances up...
 Live test, OpenBGPD 6.2, global scenario, IPv4: instances setup ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: sessions are up ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: session configured via local include files ... ok
+Live test, OpenBGPD 6.2, global scenario, IPv4: good prefixes because of use_arin_bulk_whois_data ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: good prefixes received by rs: IRRdb white-list ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: exact ... SKIP: RPKI not supported by OpenBGPD
 Live test, OpenBGPD 6.2, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: covering ... SKIP: RPKI not supported by OpenBGPD
@@ -852,6 +859,7 @@ Live test, OpenBGPD 6.2, global scenario, IPv6: setting instances up...
 Live test, OpenBGPD 6.2, global scenario, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: sessions are up ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: session configured via local include files ... ok
+Live test, OpenBGPD 6.2, global scenario, IPv6: good prefixes because of use_arin_bulk_whois_data ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: good prefixes received by rs: IRRdb white-list ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: exact ... SKIP: RPKI not supported by OpenBGPD
 Live test, OpenBGPD 6.2, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: covering ... SKIP: RPKI not supported by OpenBGPD
@@ -930,7 +938,7 @@ Live test, OpenBGPD 6.2, global scenario, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 620 tests in 969.314s
+Ran 628 tests in 975.230s
 
 OK (SKIP=56)
 Live test, BIRD, gshut, IPv4: setting instances up...
@@ -959,7 +967,7 @@ Live test, OpenBGPD 6.2, gshut, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.2, gshut, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 16 tests in 229.361s
+Ran 16 tests in 229.133s
 
 OK
 Live test, BIRD, max-prefix, IPv4: setting instances up...
@@ -1008,7 +1016,7 @@ Live test, OpenBGPD 6.2, max-prefix, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.2, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 32 tests in 568.672s
+Ran 32 tests in 568.772s
 
 OK
 Live test, BIRD, path hiding, mitigation off, IPv4: setting instances up...
@@ -1133,7 +1141,7 @@ Live test, OpenBGPD 6.2, path hiding, mitigation on, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.2, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 96 tests in 976.671s
+Ran 96 tests in 980.137s
 
 OK (SKIP=8)
 Live test, BIRD, examples, rich config, IPv4: setting instances up...
@@ -1150,7 +1158,7 @@ Live test, OpenBGPD 6.0, examples, rich config, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, examples, rich config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 190.631s
+Ran 4 tests in 214.952s
 
 OK
 Live test, BIRD, RPKI INVALID tagging, IPv4: setting instances up...
@@ -1185,7 +1193,7 @@ Live test, BIRD, RPKI INVALID tagging, IPv6: reconfigure ... ok
 Live test, BIRD, RPKI INVALID tagging, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 53.324s
+Ran 26 tests in 53.233s
 
 OK
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: setting instances up...
@@ -1217,6 +1225,7 @@ Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 RPKI ROAs as route objects: not used ... ok
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: reconfigure ... ok
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: stopping instances...
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: setting instances up...
@@ -1257,6 +1266,7 @@ Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, o
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 RPKI ROAs as route objects: not used ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS6 ARIN Whois DB: ok ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: reconfigure ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: stopping instances...
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: setting instances up...
@@ -1288,6 +1298,7 @@ Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 RPKI ROAs as route objects: not used ... ok
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: reconfigure ... ok
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: setting instances up...
@@ -1328,6 +1339,7 @@ Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, o
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 RPKI ROAs as route objects: not used ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS6 ARIN Whois DB: ok ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: reconfigure ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: stopping instances...
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: setting instances up...
@@ -1359,6 +1371,7 @@ Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS5 white list, p
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 RPKI ROAs as route objects: not used ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: reconfigure ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: stopping instances...
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: setting instances up...
@@ -1399,6 +1412,7 @@ Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS5 white list, pref
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS2 RPKI ROAs as route objects: not used ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS6 ARIN Whois DB: ok ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: reconfigure ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: stopping instances...
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: setting instances up...
@@ -1430,6 +1444,7 @@ Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS5 white list, p
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 RPKI ROAs as route objects: not used ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: setting instances up...
@@ -1470,6 +1485,7 @@ Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS5 white list, pref
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS2 RPKI ROAs as route objects: not used ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS6 ARIN Whois DB: ok ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: stopping instances...
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: setting instances up...
@@ -1501,6 +1517,7 @@ Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, p
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 RPKI ROAs as route objects: not used ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: reconfigure ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: stopping instances...
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: setting instances up...
@@ -1541,6 +1558,7 @@ Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS5 white list, pref
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS2 RPKI ROAs as route objects: not used ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS6 ARIN Whois DB: ok ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: reconfigure ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: stopping instances...
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: setting instances up...
@@ -1572,6 +1590,7 @@ Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, p
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 RPKI ROAs as route objects: not used ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: setting instances up...
@@ -1612,11 +1631,12 @@ Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS5 white list, pref
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS2 RPKI ROAs as route objects: not used ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS6 ARIN Whois DB: ok ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 402 tests in 997.164s
+Ran 414 tests in 998.111s
 
 OK
 Live test, BIRD, 'tag' reject policy scenario, IPv4: setting instances up...
@@ -1715,6 +1735,6 @@ Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 86 tests in 308.293s
+Ran 86 tests in 308.327s
 
 OK (SKIP=4)
