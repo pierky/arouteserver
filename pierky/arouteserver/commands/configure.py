@@ -284,6 +284,13 @@ class ConfigureCommand(ARouteServerCommand):
             "RPKI ROAs are used as if they were route objects to further "
             "enrich IRR data."
         )
+        irrdb["use_arin_bulk_whois_data"] = {
+            "enabled": True
+        }
+        self.notes.append(
+            "ARIN Whois database dump is fetched from NLNOG to further "
+            "enrich IRR data."
+        )
 
         filtering["max_prefix"] = {
             "action": "shutdown",

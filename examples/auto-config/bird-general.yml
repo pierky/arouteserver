@@ -47,6 +47,8 @@ cfg:
       peering_db: true
       use_rpki_roas_as_route_objects:
         enabled: true
+      use_arin_bulk_whois_data:
+        enabled: true
     max_prefix:
       action: shutdown
       peering_db:

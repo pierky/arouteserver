@@ -76,6 +76,9 @@ class TestConfigureCmd(ARouteServerTestCase):
                     "peering_db": True,
                     "use_rpki_roas_as_route_objects": {
                         "enabled": True
+                    },
+                    "use_arin_bulk_whois_data": {
+                        "enabled": True
                     }
                 },
                 "max_prefix": {
