@@ -7,7 +7,7 @@ next release
 ------------
 
 - Improvement: OpenBGPD, more flexibility for inbound communities values.
-  
+
   This allows to use inbound 'peer_as' communities which overlap with other inbound communities whose last *part* is a private ASN.
 
 - New feature: use ARIN Whois database dump to authorize routes.

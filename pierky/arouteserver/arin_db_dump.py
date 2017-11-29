@@ -28,6 +28,8 @@ from .errors import ARINWhoisDBDumpError
 
 class ARINWhoisDBDump(CachedObject):
 
+    EXPIRY_TIME_TAG = "arin_whois_db_dump"
+
     def __init__(self, *args, **kwargs):
         CachedObject.__init__(self, *args, **kwargs)
 
