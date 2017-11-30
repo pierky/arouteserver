@@ -35,7 +35,6 @@ class TagASSetScenario_Data6(object):
         "AS2_pref_wl_origin_wl":            "2a02:2:3::/48",
         "AS2_pref_ko_origin_wl":            "2a02:3:1::/48",
         "AS2_pref_ok_origin_wl":            "2a02:0:3::/48",
-        "AS2_roa1":                         "2a02:4::/32",
 
         "AS4_allowed_prefixes":             "2a04::/32",
         "AS4_pref_ok_origin_ok1":           "2a04:0:1::/48",
@@ -63,7 +62,7 @@ class TagASSetScenario_Data6(object):
         "AS5_pref_ok_origin_wl":            "2a05:0:3::/48",
 
         "AS6_allowed_prefixes":             "2a06::/32",
-        "AS6_roa1":                         "2a02:4::/32",
-        "AS6_roa2":                         "2a03:1::/32",
-        "AS6_arin1":                        "2a03:2:1::/48",
+        "AS2_roa1":                         "2a02:4::/32",
+        "AS3_roa2":                         "2a03:1::/32",
+        "AS3_arin1":                        "2a03:2:1::/48",
 }

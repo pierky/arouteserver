@@ -217,28 +217,17 @@ class TagASSetScenario(LiveScenario):
 
     def test_060_AS5_whitelist_ko_wl(self):
         """{}: AS5 white list, prefix ko, origin WL"""
-        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64514"])
         self.receive_route(self.rs, self.DATA["AS5_pref_ko_origin_wl"],
                            self.AS5, as_path="5 51", next_hop=self.AS5,
                            ext_comms=[],
                            filtered=True)
 
-    def test_070_AS2_roas_as_route_objects_not_used(self):
-        """{}: AS2 RPKI ROAs as route objects: not used"""
-        # Because this feature is used only when both origin ASN
-        # and prefix enforcement are enabled, and AS2 has no
-        # enforcement configured.
-
-        self.receive_route(self.rs, self.DATA["AS2_roa1"],
-                           ext_comms=[],
-                           filtered=True, reject_reason=9)
-
     def test_070_AS6_roas_as_route_objects_1(self):
         """{}: AS6 RPKI ROAs as route objects: invalid origin ASN"""
-        self.receive_route(self.rs, self.DATA["AS6_roa1"],
+        self.receive_route(self.rs, self.DATA["AS2_roa1"],
                            self.AS6, as_path="6 2", next_hop=self.AS6,
                            ext_comms=[],
-                           filtered=True)
+                           filtered=True, reject_reason=9)
 
     def test_900_reconfigure(self):
         """{}: reconfigure"""
@@ -429,7 +418,7 @@ class TagASSetScenario_WithAS_SETs(object):
     def test_070_AS6_roas_as_route_objects_2(self):
         """{}: AS6 RPKI ROAs as route objects: ok"""
         lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64514", "999:0:64516"])
-        self.receive_route(self.rs, self.DATA["AS6_roa2"],
+        self.receive_route(self.rs, self.DATA["AS3_roa2"],
                            self.AS6, as_path="6 3", next_hop=self.AS6,
                            std_comms=["999:64513", "999:64514", "999:64516"],
                            ext_comms=[],
@@ -438,7 +427,7 @@ class TagASSetScenario_WithAS_SETs(object):
     def test_080_AS6_arin_whois_db_1(self):
         """{}: AS6 ARIN Whois DB: ok"""
         lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64514", "999:0:64518"])
-        self.receive_route(self.rs, self.DATA["AS6_arin1"],
+        self.receive_route(self.rs, self.DATA["AS3_arin1"],
                            self.AS6, as_path="6 3", next_hop=self.AS6,
                            std_comms=["999:64513", "999:64514", "999:64518"],
                            ext_comms=[],
@@ -555,7 +544,7 @@ class TagASSetScenario_EmptyAS_SETs(object):
 
     def test_070_AS6_roas_as_route_objects_2(self):
         """{}: AS6 RPKI ROAs as route objects: ko"""
-        self.receive_route(self.rs, self.DATA["AS6_roa2"],
+        self.receive_route(self.rs, self.DATA["AS3_roa2"],
                            self.AS6, as_path="6 3", next_hop=self.AS6,
                            ext_comms=[],
                            filtered=True)
@@ -563,7 +552,7 @@ class TagASSetScenario_EmptyAS_SETs(object):
     def test_080_AS6_arin_whois_db_1(self):
         """{}: AS6 ARIN Whois DB: ok (solely because of route white list)"""
         lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64515", "999:0:64517"])
-        self.receive_route(self.rs, self.DATA["AS6_arin1"],
+        self.receive_route(self.rs, self.DATA["AS3_arin1"],
                            self.AS6, as_path="6 3", next_hop=self.AS6,
                            std_comms=["999:64513", "999:64515", "999:64517"],
                            ext_comms=[],

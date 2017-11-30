@@ -13,18 +13,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .base import TagASSetScenario_WithAS_SETs, \
+from .base import TagASSetScenario_EmptyAS_SETs, \
                   TagASSetScenarioBIRD
 from .data4 import TagASSetScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 
-class TagASSetScenario_WithAS_SETs_BIRDIPv4(TagASSetScenario_WithAS_SETs,
-                                            TagASSetScenario_Data4,
-                                            TagASSetScenarioBIRD):
+class TagASSetScenario_EmptyAS_SETs_BIRDIPv4(TagASSetScenario_EmptyAS_SETs,
+                                             TagASSetScenario_Data4,
+                                             TagASSetScenarioBIRD):
     __test__ = True
 
     RS_INSTANCE_CLASS = BIRDInstanceIPv4
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
     IP_VER = 4
 
-    SHORT_DESCR = "Live test, BIRD, tag prefix/origin in AS-SET, IPv4"
+    SHORT_DESCR = "Live test, BIRD, tag prefix/origin empty AS-SET, IPv4"
