@@ -17,6 +17,11 @@ protocol static own_prefixes
 	route {{ data.AS2_pref_wl_origin_wl }} reject;
 	route {{ data.AS2_pref_ko_origin_wl }} reject;
 	route {{ data.AS2_pref_ok_origin_wl }} reject;
+	route {{ data.AS2_roa2 }} reject;
+	route {{ data.AS2_arin1 }} reject;
+	route {{ data.AS2_roa3_arin2 }} reject;
+	route {{ data.AS2_ok_ok_roa3 }} reject;
+	route {{ data.AS2_ok_ok_arin3 }} reject;
 }
 
 function fake_origin_as(int origin_as) {

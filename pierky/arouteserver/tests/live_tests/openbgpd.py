@@ -93,6 +93,7 @@ class OpenBGPDInstance(KVMInstance):
 
         self.run_cmd("/etc/rc.d/bgpd stop")
         time.sleep(5)
+        self.run_cmd("bgpd -dn")
         self.run_cmd("/etc/rc.d/bgpd -f start")
         time.sleep(5)
 
@@ -108,6 +109,7 @@ class OpenBGPDInstance(KVMInstance):
 
         self._mount_files()
 
+        self.run_cmd("bgpd -dn")
         self.run_cmd("/etc/rc.d/bgpd reload")
         time.sleep(5)
 

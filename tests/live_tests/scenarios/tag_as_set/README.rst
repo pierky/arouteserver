@@ -32,7 +32,12 @@ RPKI ROAs:
     prefix          ASN
     ==============  =====
     2.4.0.0/16      AS2
+    2.5.0.0/16      AS2
+    2.7.0.0/16      AS2
+    2.0.4.0/24      AS2
     3.1.0.0/16      AS3
+    3.3.0.0/16      AS3
+    6.0.1.0/24      AS6
     ==============  =====
 
 ARIN Whois DB entries:
@@ -40,7 +45,12 @@ ARIN Whois DB entries:
     ==============  =====
     prefix          ASN
     ==============  =====
+    2.6.0.0/16      AS2
+    2.7.0.0/16      AS2
     3.2.0.0/16      AS3
+    3.3.0.0/16      AS3
+    2.0.5.0/24      AS3
+    6.0.1.0/24      AS6
     ==============  =====
 
 AS2
@@ -75,6 +85,12 @@ AS2 announces:
     AS2_pref_wl_origin_wl  2.2.3.0/24      2 21            yes (WL)        yes (WL)        64512 64514        the same
     AS2_pref_ko_origin_wl  2.3.1.0/24      2 21            no              yes (WL)        64513 64514        the same
     AS2_pref_ok_origin_wl  2.0.3.0/24      2 21            yes             yes (WL)        64512 64514        64513 64514
+    AS2_roa2               2.5.0.0/16      2               no              yes             64513 64514 64516  64513 64515
+    AS2_arin1              2.6.0.0/16      2               no              yes             64513 64514 64518  64513 64515
+    AS2_roa3_arin2         2.7.0.0/16      2               no              yes             64513 64514 64516  64513 64515
+                                                                                           64518
+    AS2_ok_ok_roa3         2.0.4.0/24      2               yes             yes             64512 64514 64516  64513 64515
+    AS2_ok_ok_arin3        2.0.5.0/24      2               yes             yes             64512 64514 64518  64513 64515
     ====================== ============    ===========     ==========      ==========      =================  =================
 
 AS3
@@ -188,8 +204,12 @@ AS6 announces:
     AS2_roa1               2.4.0.0/16      6 2             no              no              rejected           rejected
     AS3_roa2               3.1.0.0/16      6 3             ROA             yes             64513 64514 64516  rejected
     AS3_arin1              3.2.1.0/24      6 3             ARIN (1)        yes             64513 64514 64518  64513 64515 64517
+    AS3_roa3_arin2         3.3.0.0/16      6 3             no              yes             64513 64514 64516  rejected
+                                                                                           64518
+    AS6_ok_ok_roa6_arin6   6.0.1.0/24      6               yes             yes             64512 64514 64516  rejected
+                                                                                           64518
     ====================== ============    ===========     ==========      ==========      =================  =================
 
 1) The route white list is used to verify that:
-- in scenario 1, 3.2.1.0/24 AS3 is accepted and tagged with the ARIN db community, and not accepted because of the white list entry;
+- in scenario 1, 3.2.1.0/24 AS3 is accepted and tagged with the ARIN db community, and not because of the white list entry;
 - in scenario 2, 3.2.1.0/24 AS3 is accepted anyway, but solely because of the route white list

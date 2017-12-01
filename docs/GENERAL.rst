@@ -398,10 +398,20 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
   If a client's **enforce_[origin|prefix]in_as_set** is True
   then unauthorized routes are rejected and not tagged
   (unless they match a client-level **white_list_route** entry).
-  BGP communities used to tag these routes are
-  **[origin|prefix]_(not_)present_in_as_set** and
-  **route_validated_via_white_list** if the route is validated
-  solely because of a client-level **white_list_route** entry.
+  BGP communities used to tag these routes are:
+
+
+  - **[origin|prefix]_(not_)present_in_as_set**
+
+
+  - **prefix_validated_via_rpki_roas**
+
+
+  - **prefix_validated_via_arin_whois_db_dump**
+
+
+  - **route_validated_via_white_list** (only for routes validated
+    solely because of a client-level **white_list_route** entry)
 
 
   Default: **True**
@@ -443,10 +453,6 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
   ASN. In this case, if **tag_as_set** is True, these routes
   are tagged with the **prefix_validated_via_rpki_roas**
   community.
-
-
-  This option is used only when **enforce_origin_in_as_set**
-  and **enforce_prefix_in_as_set** are both set to True.
 
 
 - ``enabled``:
@@ -556,10 +562,6 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
   In this case, if **tag_as_set** is True, these routes
   are tagged with the
   **prefix_validated_via_arin_whois_db_dump** community.
-
-
-  This option is used only when **enforce_origin_in_as_set**
-  and **enforce_prefix_in_as_set** are both set to True.
 
 
   The setting of the **allow_longer_prefixes** option will be

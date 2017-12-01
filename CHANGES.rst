@@ -14,6 +14,11 @@ next release
 
   This feature allows to accept those routes whose origin ASN is authorized by a client AS-SET, whose prefix has not a corresponding route object but is covered by an ARIN Whois record for the same origin ASN.
 
+- Improvement: extend the use of *RPKI ROAs as route objects* and *ARIN Whois database dump* to ``tag_as_set``-only mode.
+
+  Before of this, the *RPKI ROAs as route objects* and *ARIN Whois DB dump* features were used only when origin AS and prefix enforcing was set.
+  Starting with this release they are used even when enforcing is not configured and only the ``tag_as_set`` mode is used.
+
 v0.15.0
 -------
 
