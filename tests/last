@@ -172,7 +172,7 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 172 tests in 47.946s
+Ran 172 tests in 48.483s
 
 OK
 Live test, BIRD, hooks example, IPv4: setting instances up...
@@ -183,7 +183,7 @@ Live test, BIRD, hooks example, IPv6: instances setup ... ok
 Live test, BIRD, hooks example, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 2 tests in 8.999s
+Ran 2 tests in 9.181s
 
 OK
 Live test, BIRD, BGP communities, IPv4: setting instances up...
@@ -272,7 +272,7 @@ Live test, OpenBGPD 6.2, BGP communities, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.2, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 72 tests in 457.232s
+Ran 72 tests in 464.866s
 
 OK (SKIP=6)
 Live test, BIRD, default config, IPv4: setting instances up...
@@ -289,7 +289,7 @@ Live test, OpenBGPD 6.0, default config, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, default config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 161.137s
+Ran 4 tests in 162.182s
 
 OK
 Live test, BIRD, global scenario, IPv4: setting instances up...
@@ -938,7 +938,7 @@ Live test, OpenBGPD 6.2, global scenario, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 628 tests in 975.230s
+Ran 628 tests in 981.316s
 
 OK (SKIP=56)
 Live test, BIRD, gshut, IPv4: setting instances up...
@@ -967,7 +967,7 @@ Live test, OpenBGPD 6.2, gshut, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.2, gshut, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 16 tests in 229.133s
+Ran 16 tests in 235.950s
 
 OK
 Live test, BIRD, max-prefix, IPv4: setting instances up...
@@ -1016,7 +1016,7 @@ Live test, OpenBGPD 6.2, max-prefix, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.2, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 32 tests in 568.772s
+Ran 32 tests in 572.562s
 
 OK
 Live test, BIRD, path hiding, mitigation off, IPv4: setting instances up...
@@ -1141,7 +1141,7 @@ Live test, OpenBGPD 6.2, path hiding, mitigation on, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.2, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 96 tests in 980.137s
+Ran 96 tests in 988.342s
 
 OK (SKIP=8)
 Live test, BIRD, examples, rich config, IPv4: setting instances up...
@@ -1158,7 +1158,7 @@ Live test, OpenBGPD 6.0, examples, rich config, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, examples, rich config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 214.952s
+Ran 4 tests in 213.600s
 
 OK
 Live test, BIRD, RPKI INVALID tagging, IPv4: setting instances up...
@@ -1193,41 +1193,9 @@ Live test, BIRD, RPKI INVALID tagging, IPv6: reconfigure ... ok
 Live test, BIRD, RPKI INVALID tagging, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 53.233s
+Ran 26 tests in 53.251s
 
 OK
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: setting instances up...
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: instances setup ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: sessions are up ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 no enforcement, prefix and origin not in AS-SET ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 origin enforcement ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 prefix enforcement ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ko, origin WL ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ok, origin WL ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ko ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ok ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin WL ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (exact) ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (more spec) ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (more spec) ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (origin KO) ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (origin any) ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ko, origin WL ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ok, origin WL ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ko ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ok ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin WL ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ko, origin WL ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ok, origin WL ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 RPKI ROAs as route objects: not used ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: ko ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: reconfigure ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: stopping instances...
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: setting instances up...
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: instances setup ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: sessions are up ... ok
@@ -1263,44 +1231,56 @@ Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ok, o
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
-Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 RPKI ROAs as route objects: not used ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas) ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS6 ARIN Whois DB: ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: reconfigure ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: stopping instances...
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: setting instances up...
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: instances setup ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: sessions are up ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 no enforcement, prefix and origin not in AS-SET ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 origin enforcement ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 prefix enforcement ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ko, origin WL ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ok, origin WL ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ko ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ok ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin WL ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (exact) ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (more spec) ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (more spec) ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (origin KO) ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (origin any) ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ko, origin WL ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ok, origin WL ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ko ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ok ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin WL ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ko, origin WL ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ok, origin WL ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 RPKI ROAs as route objects: not used ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: ko ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: reconfigure ... ok
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: stopping instances...
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: setting instances up...
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: instances setup ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: sessions are up ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 no enforcement, prefix and origin not in AS-SET ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 origin enforcement ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 prefix enforcement ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (exact) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (more spec) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (more spec) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (origin KO) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (origin any) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS6 prefix ok, origin ok, ROA + ARIN: rejected ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforced (rejected) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: reconfigure ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: stopping instances...
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: setting instances up...
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: instances setup ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: sessions are up ... ok
@@ -1336,44 +1316,56 @@ Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ok, o
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
-Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 RPKI ROAs as route objects: not used ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas) ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS6 ARIN Whois DB: ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: reconfigure ... ok
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: stopping instances...
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: setting instances up...
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: instances setup ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: sessions are up ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 no enforcement, prefix and origin not in AS-SET ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 origin enforcement ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 prefix enforcement ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (exact) ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (more spec) ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (more spec) ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (origin KO) ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (origin any) ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 RPKI ROAs as route objects: not used ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: ko ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: reconfigure ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: stopping instances...
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: setting instances up...
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: instances setup ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: sessions are up ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 no enforcement, prefix and origin not in AS-SET ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 origin enforcement ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 prefix enforcement ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (exact) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (more spec) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (more spec) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (origin KO) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (origin any) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS6 prefix ok, origin ok, ROA + ARIN: rejected ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforced (rejected) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: reconfigure ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: setting instances up...
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: instances setup ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: sessions are up ... ok
@@ -1409,44 +1401,56 @@ Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS5 white list, pref
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS2 RPKI ROAs as route objects: not used ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas) ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS6 ARIN Whois DB: ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: reconfigure ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4: stopping instances...
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: setting instances up...
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: instances setup ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: sessions are up ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 no enforcement, prefix and origin not in AS-SET ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 origin enforcement ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 prefix enforcement ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (exact) ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (more spec) ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (more spec) ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (origin KO) ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (origin any) ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 RPKI ROAs as route objects: not used ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: ko ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: reconfigure ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: stopping instances...
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: setting instances up...
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: instances setup ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: sessions are up ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 no enforcement, prefix and origin not in AS-SET ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 origin enforcement ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 prefix enforcement ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (exact) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (more spec) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (more spec) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (origin KO) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (origin any) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS6 prefix ok, origin ok, ROA + ARIN: rejected ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforced (rejected) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: reconfigure ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: stopping instances...
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: setting instances up...
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: sessions are up ... ok
@@ -1482,44 +1486,56 @@ Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS5 white list, pref
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS2 RPKI ROAs as route objects: not used ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas) ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS6 ARIN Whois DB: ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: stopping instances...
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: setting instances up...
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: instances setup ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: sessions are up ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 no enforcement, prefix and origin not in AS-SET ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 origin enforcement ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 prefix enforcement ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (exact) ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (more spec) ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (more spec) ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (origin KO) ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (origin any) ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 RPKI ROAs as route objects: not used ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: ko ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: reconfigure ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: stopping instances...
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: setting instances up...
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: instances setup ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: sessions are up ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 no enforcement, prefix and origin not in AS-SET ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 origin enforcement ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 prefix enforcement ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (exact) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (more spec) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (more spec) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (origin KO) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (origin any) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: ko ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS6 prefix ok, origin ok, ROA + ARIN: rejected ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforced (rejected) ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: reconfigure ... ok
+Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: setting instances up...
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: instances setup ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: sessions are up ... ok
@@ -1555,44 +1571,56 @@ Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS5 white list, pref
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS2 RPKI ROAs as route objects: not used ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas) ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS6 ARIN Whois DB: ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: reconfigure ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv4: stopping instances...
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: setting instances up...
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: instances setup ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: sessions are up ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 no enforcement, prefix and origin not in AS-SET ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 origin enforcement ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 prefix enforcement ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (exact) ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (more spec) ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (more spec) ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (origin KO) ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (origin any) ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 RPKI ROAs as route objects: not used ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: ko ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: reconfigure ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: stopping instances...
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: setting instances up...
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: instances setup ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: sessions are up ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 no enforcement, prefix and origin not in AS-SET ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 origin enforcement ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 prefix enforcement ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (exact) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (more spec) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (more spec) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (origin KO) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (origin any) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS6 prefix ok, origin ok, ROA + ARIN: rejected ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforced (rejected) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: reconfigure ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: stopping instances...
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: setting instances up...
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: instances setup ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: sessions are up ... ok
@@ -1628,15 +1656,59 @@ Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS5 white list, pref
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS2 RPKI ROAs as route objects: not used ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas) ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS6 ARIN Whois DB: ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: stopping instances...
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: setting instances up...
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: instances setup ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: sessions are up ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 no enforcement, prefix and origin not in AS-SET ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 origin enforcement ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 prefix enforcement ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (exact) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (more spec) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (more spec) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (origin KO) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (origin any) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: ko ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS6 prefix ok, origin ok, ROA + ARIN: rejected ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforced (rejected) ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: reconfigure ... ok
+Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 414 tests in 998.111s
+Ran 486 tests in 1017.899s
 
 OK
 Live test, BIRD, 'tag' reject policy scenario, IPv4: setting instances up...
@@ -1735,6 +1807,6 @@ Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: reconfigure ... ok
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 86 tests in 308.327s
+Ran 86 tests in 311.648s
 
 OK (SKIP=4)
