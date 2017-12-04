@@ -180,7 +180,7 @@ Similarly to the previous option, ``filtering.irrdb.use_arin_bulk_whois_data`` a
 
 The ARIN Whois database can be obtained by signing an `agreement with ARIN <https://www.arin.net/resources/request/bulkwhois.html>`__. It must be then converted into the appropriate JSON format that ARouteServer expects to find; the `arin-whois-bulk-parser <https://github.com/NLNOG/arin-whois-bulk-parser>`__ script can be used for this purpose.
 
-A parsed version of the database dump is offered by NLNOG at the following URL: http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2
+A parsed version of the database dump is offered by `NLNOG <https://nlnog.net/>`__ at the following URL: http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2
 
 White lists
 ~~~~~~~~~~~
