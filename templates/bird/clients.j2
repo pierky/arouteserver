@@ -85,88 +85,95 @@ prefix set {{ client.id }}_blacklist;
 
 {% if client.cfg.filtering.irrdb.enforce_origin_in_as_set or client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}
 function verify_{{ client.id }}_irrdb()
-bool reject_because_of_bad_origin;
-bool reject_because_of_bad_prefix;
+bool origin_ok;
+bool prefix_ok;
+bool validated;
 {
-	reject_because_of_bad_origin = false;
-	reject_because_of_bad_prefix = false;
+	origin_ok = false;
+	prefix_ok = false;
+	validated = false;
 
 {% 	if client.cfg.filtering.irrdb.enforce_origin_in_as_set or cfg.filtering.irrdb.tag_as_set %}
-	# IRRdb: enforce origin via AS-SET (or tag)
-	if !origin_as_is_in_{{ client.id }}_as_set() then {
-{%		if client.cfg.filtering.irrdb.enforce_origin_in_as_set %}
-		reject_because_of_bad_origin = true;
-{%		endif %}
-{%		if cfg.communities.origin_not_present_in_as_set|community_is_set %}
-{{			add_communities(cfg.communities.origin_not_present_in_as_set) }}
-{%		else %}
-		# "'tag_as_set' is True but 'origin_not_present_in_as_set' community is not given";
-{%		endif %}
-{%		if cfg.filtering.irrdb.tag_as_set and cfg.communities.origin_present_in_as_set|community_is_set %}
-	} else {
-{{			add_communities(cfg.communities.origin_present_in_as_set) }}
-{%		endif %}
-	}
+	origin_ok = origin_as_is_in_{{ client.id }}_as_set();
 {%	endif %}
-
 {%	if client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}
-	# IRRdb: enforce prefix via AS-SET (or tag)
-	if !prefix_is_in_{{ client.id }}_as_set() then {
-{%		if client.cfg.filtering.irrdb.enforce_prefix_in_as_set %}
-		reject_because_of_bad_prefix = true;
-{%		endif %}
-{%		if cfg.communities.prefix_not_present_in_as_set|community_is_set %}
-{{			add_communities(cfg.communities.prefix_not_present_in_as_set) }}
-{%		else %}
-		# "'tag_as_set' is True but 'prefix_not_present_in_as_set' community is not given";
-{%		endif %}
-{%		if cfg.filtering.irrdb.tag_as_set and cfg.communities.prefix_present_in_as_set|community_is_set %}
-	} else {
-{{			add_communities(cfg.communities.prefix_present_in_as_set) }}
-{%		endif %}
+	prefix_ok = prefix_is_in_{{ client.id }}_as_set();
+{%	endif %}
+
+{%	if cfg.filtering.irrdb.tag_as_set and cfg.communities.origin_not_present_in_as_set|community_is_set %}
+	if !origin_ok then {
+{{		add_communities(cfg.communities.origin_not_present_in_as_set) }}
+	}
+{%	endif %}
+{%	if cfg.filtering.irrdb.tag_as_set and cfg.communities.origin_present_in_as_set|community_is_set %}
+	if origin_ok then {
+{{		add_communities(cfg.communities.origin_present_in_as_set) }}
+	}
+{%	endif %}
+{%	if cfg.filtering.irrdb.tag_as_set and cfg.communities.prefix_not_present_in_as_set|community_is_set %}
+	if !prefix_ok then {
+{{		add_communities(cfg.communities.prefix_not_present_in_as_set) }}
+	}
+{%	endif %}
+{%	if cfg.filtering.irrdb.tag_as_set and cfg.communities.prefix_present_in_as_set|community_is_set %}
+	if prefix_ok then {
+{{		add_communities(cfg.communities.prefix_present_in_as_set) }}
 	}
 {%	endif %}
 
-{%	if client.cfg.filtering.irrdb.enforce_origin_in_as_set and
-		client.cfg.filtering.irrdb.enforce_prefix_in_as_set and
-		cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled %}
+{%	if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled %}
 	# Origin ASN is valid, prefix is not: check if a RPKI ROAs exists.
-	if !reject_because_of_bad_origin && reject_because_of_bad_prefix && prefix_in_rpki_roas_as_route_objects() then {
+	if origin_ok && prefix_in_rpki_roas_as_route_objects() then {
 {%		if cfg.filtering.irrdb.tag_as_set and
 			cfg.communities.prefix_validated_via_rpki_roas|community_is_set %}
 {{			add_communities(cfg.communities.prefix_validated_via_rpki_roas) }}
 {%		endif %}
-		return true;
+		validated = true;
+	}
+{%	endif %}
+
+{%	if cfg.filtering.irrdb.use_arin_bulk_whois_data.enabled %}
+	# Origin ASN is valid, prefix is not: check if an ARIN Whois record exists.
+	if origin_ok && prefix_in_arin_whois_db() then {
+{%		if cfg.filtering.irrdb.tag_as_set and
+			cfg.communities.prefix_validated_via_arin_whois_db_dump|community_is_set %}
+{{			add_communities(cfg.communities.prefix_validated_via_arin_whois_db_dump) }}
+{%		endif %}
+		validated = true;
 	}
 {%	endif %}
 
 {%	if client.cfg.filtering.irrdb.white_list_route %}
 	# Client's white list
 {%		for route in client.cfg.filtering.irrdb.white_list_route|sort(attribute="prefix") if route.prefix is current_ipver %}
-	if net ~ [ {{ write_prefix_list_entry(route) }} ] then {
+	if !validated && net ~ [ {{ write_prefix_list_entry(route) }} ] then {
 {%			if route.asn %}
 		if bgp_path.last = {{ route.asn }} then {
 {%				if cfg.filtering.irrdb.tag_as_set and cfg.communities.route_validated_via_white_list|community_is_set %}
 {{					add_communities(cfg.communities.route_validated_via_white_list) }}
 {%				endif %}
-			return true;
+			validated = true;
 		}
 {%			else %}
 {%				if cfg.filtering.irrdb.tag_as_set and cfg.communities.route_validated_via_white_list|community_is_set %}
 {{					add_communities(cfg.communities.route_validated_via_white_list) }}
 {%				endif %}
-		return true;
+		validated = true;
 {%			endif %}
 	}
 {%		endfor %}
 {%	endif %}
 
-	if reject_because_of_bad_origin then {
+{%	if client.cfg.filtering.irrdb.enforce_origin_in_as_set %}
+	if !validated && !origin_ok then {
 		{{ reject(client, 9, '"origin ASN [", bgp_path.last, "] not in allowed as-sets - REJECTING ", net', avoid_braces=True) }}
 	}
-	if reject_because_of_bad_prefix then {
+{%	endif %}
+{%	if client.cfg.filtering.irrdb.enforce_prefix_in_as_set %}
+	if !validated && !prefix_ok then {
 		{{ reject(client, 12, '"prefix not in client\'s r_set - REJECTING ", net', avoid_braces=True) }}
 	}
+{%	endif %}
 }
 {% endif %}
 

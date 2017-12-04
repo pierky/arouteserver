@@ -43,6 +43,7 @@ class ConfigParserGeneral(ConfigParserBase):
         "prefix_present_in_as_set": { "type": "outbound" },
         "prefix_not_present_in_as_set": { "type": "outbound" },
         "prefix_validated_via_rpki_roas": { "type": "outbound" },
+        "prefix_validated_via_arin_whois_db_dump": { "type": "outbound" },
         "route_validated_via_white_list": { "type": "outbound" },
 
         "blackholing": { "type": "inbound" },
@@ -167,6 +168,15 @@ class ConfigParserGeneral(ConfigParserBase):
                 "LACNIC RPKI Root",
                 "RIPE NCC RPKI Root"
             ]
+        )
+
+        i["use_arin_bulk_whois_data"] = OrderedDict()
+        a = i["use_arin_bulk_whois_data"]
+
+        a["enabled"] = ValidatorBool(default=False)
+        a["source"] = ValidatorText(
+            mandatory=True,
+            default="http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
         )
 
         f["rpki"] = OrderedDict()
@@ -491,17 +501,24 @@ class ConfigParserGeneral(ConfigParserBase):
         'peer_as' communities having the last part in the range of globally
         routable ASN only.
         In that case, any 'outbound' community whose first part matches an
-        'inbound' 'peer_as' community and whose last part falls  within the
+        'inbound' 'peer_as' community and whose last part falls within the
         private ASNs range would not be removed.
         Unfortunately, while BIRD allows this behaviour, OpenBGPD seems to be
         able to delete communities using wildcard only, and not ranges.
+        When checking for overlapping 'inbound' communities, this flag is
+        always set; in that case, indeed, when OpenBGPD scrubs the 'inbound'
+        'peer_as' community (using a wildcard match) it also scrubs the other
+        inbound community, that is the expected behaviour. At most there
+        will be two "delete" statements: one for the 'peer_as' community and
+        one for the other.
 
         This function is called from the config parser class with
         'allow_private_asns' set to True and also from OpenBGPD builder class
         with 'allow_private_asns' set to False.
         """
 
-        def communities_overlap(comm1_tag, comm1, comm2_tag, comm2):
+        def communities_overlap(comm1_tag, comm1, comm2_tag, comm2,
+                                private_asns_collide_with_peer_as):
             rs_as = self.cfg["cfg"]["rs_as"]
 
             err_msg = ("Community '{comm1_tag}' and '{comm2_tag}' "
@@ -548,7 +565,7 @@ class ConfigParserGeneral(ConfigParserBase):
                                 continue
                             if not_peer_as == 0:
                                 continue
-                            if allow_private_asns:
+                            if not private_asns_collide_with_peer_as:
                                 if 64512 <= not_peer_as <= 65534:
                                     continue
                                 if 4200000000 <= not_peer_as <= 4294967294:
@@ -562,7 +579,9 @@ class ConfigParserGeneral(ConfigParserBase):
                     if comm1_part != comm2_part:
                         break
 
-        def compare_communities(comms1, comms2, reason_text):
+        def compare_communities(comms1, comms2,
+                                private_asns_collide_with_peer_as,
+                                reason_text):
             for tag1 in sorted(comms1):
                 for tag2 in sorted(comms2):
                     if tag1 == tag2:
@@ -570,7 +589,8 @@ class ConfigParserGeneral(ConfigParserBase):
                     try:
                         communities_overlap(
                             tag1, comms1[tag1],
-                            tag2, comms2[tag2]
+                            tag2, comms2[tag2],
+                            private_asns_collide_with_peer_as
                         )
                     except ConfigError as e:
                         logging.error(str(e) + " " + reason_text)
@@ -598,18 +618,25 @@ class ConfigParserGeneral(ConfigParserBase):
 
         errors = errors or not compare_communities(
             inbound_communities, outbound_communities,
+            not allow_private_asns,
             "Inbound communities and outbound communities "
             "can't have overlapping values, otherwise they "
             "might be scrubbed.")
 
         errors = errors or not compare_communities(
             inbound_communities, custom_communities,
+            not allow_private_asns,
             "Inbound communities and custom communities "
             "can't have overlapping values, otherwise they "
             "might be scrubbed.")
 
+        # private_asns_collide_with_peer_as is always False when
+        # looking for overlapping values among inbound communities.
+        # Please refer to the docstring of check_overlapping_communities
+        # for more details.
         errors = errors or not compare_communities(
             inbound_communities, inbound_communities,
+            False,
             "Inbound communities can't have overlapping values, "
             "otherwise their meaning could be uncertain.")
 
@@ -619,6 +646,7 @@ class ConfigParserGeneral(ConfigParserBase):
         not_internal_communities.update(custom_communities)
         errors = errors or not compare_communities(
             internal_communities, not_internal_communities,
+            not allow_private_asns,
             "Internal communities can't have overlapping values with any "
             "other community.")
 

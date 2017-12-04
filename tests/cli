@@ -191,25 +191,6 @@ SUB_TEST="$LINENO"
 build_cmd "openbgpd" --ignore-issues "blackhole_filtering_rewrite_ipv6_nh" | must_not_contain "'do_not_announce_to_peer'"
 
 # ---------------------------------------------
-TITLE="OpenBGPD peer_as communities with private ASNs"
-GENERAL="tests/var/general.yml"
-cat << EOF > $GENERAL
-cfg:
-  rs_as: 999
-  router_id: "192.0.2.2"
-  communities:
-    blackholing:
-      std: "999:65501"
-    do_not_announce_to_peer:
-      std: "999:peer_as"
-EOF
-
-EXP_ERR="OpenBGPD doesn't allow to delete BGP communities using ranges of values, but only using the wildcard"
-
-SUB_TEST="$LINENO"
-build_cmd "openbgpd" | must_contain "$EXP_ERR"
-
-# ---------------------------------------------
 reset
 TITLE="OpenBGPD large comms"
 GENERAL="tests/var/general.yml"

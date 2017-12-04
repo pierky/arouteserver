@@ -182,7 +182,7 @@ function vultr_create() {
 		fi
 		echo "OK"
 
-		VULTR_DCID=9		# 24 = Paris
+		VULTR_DCID=24		# 24 = Paris
 					#  9 = Frankfurt
 
 		VULTR_VPSPLANID=205	# 204 = 4 CPU, 8192 MB RAM,100 GB SSD,4.00 TB BW
@@ -213,7 +213,7 @@ function vultr_create() {
 	attempts=1
 	server_up=0
 	echo -n "Waiting for the server... "
-	while [[ $attempts -le 24 && $server_up -eq 0 ]]
+	while [[ $attempts -le 36 && $server_up -eq 0 ]]
 	do
 		sleep 5
 
@@ -337,8 +337,10 @@ if [[ `echo "$THESE_TESTS_ONLY" | grep -P "\bload\b"` ]]; then
 				echo "Compressing OpenBGP 6.0 rs config files..."
 				shopt -s nullglob
 				for f in $TESTS_DIR/var/configs/*_openbgpd_6.0.conf; do
-					echo "Compressing ${f}..."
-					gzip --best $f
+					if [ ! -e $TESTS_DIR/var/configs/${f}.gz ]; then
+						echo "Compressing ${f}..."
+						gzip --best $f
+					fi
 				done
 
 				vultr_create

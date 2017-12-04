@@ -25,6 +25,8 @@ cfg:
                         use_rpki_roas_as_route_objects:
                                 enabled: True
                                 source: "rtrlib"
+                        use_arin_bulk_whois_data:
+                                enabled: True
                 rpki:
                         enabled: True
         blackhole_filtering:
@@ -50,6 +52,9 @@ cfg:
                 prefix_validated_via_rpki_roas:
                         std: "65530:2"
                         lrg: "rs_as:65530:2"
+                prefix_validated_via_arin_whois_db_dump:
+                        std: "65530:3"
+                        lrg: "rs_as:65530:3"
                 do_not_announce_to_peer:
                         std: "0:peer_as"
                         ext: "rt:0:peer_as"
@@ -63,29 +68,29 @@ cfg:
                         ext: "rt:0:rs_as"
                         lrg: "rs_as:0:rs_as"
                 prepend_once_to_any:
-                        std: "rs_as:65501"
-                        ext: "rt:rs_as:65501"
-                        lrg: "rs_as:65501:rs_as"
+                        std: "65521:65521"
+                        ext: "rt:65521:65521"
+                        lrg: "rs_as:65521:65521"
                 prepend_twice_to_any:
-                        std: "rs_as:65502"
-                        ext: "rt:rs_as:65502"
-                        lrg: "rs_as:65502:rs_as"
+                        std: "65522:65522"
+                        ext: "rt:65522:65522"
+                        lrg: "rs_as:65522:65522"
                 prepend_thrice_to_any:
-                        std: "rs_as:65503"
-                        ext: "rt:rs_as:65503"
-                        lrg: "rs_as:65503:rs_as"
+                        std: "65523:65523"
+                        ext: "rt:65523:65523"
+                        lrg: "rs_as:65523:65523"
                 prepend_once_to_peer:
-                        std: "65504:peer_as"
-                        ext: "rt:65504:peer_as"
-                        lrg: "rs_as:65504:peer_as"
+                        std: "65521:peer_as"
+                        ext: "rt:65521:peer_as"
+                        lrg: "rs_as:65521:peer_as"
                 prepend_twice_to_peer:
-                        std: "65505:peer_as"
-                        ext: "rt:65505:peer_as"
-                        lrg: "rs_as:65505:peer_as"
+                        std: "65522:peer_as"
+                        ext: "rt:65522:peer_as"
+                        lrg: "rs_as:65522:peer_as"
                 prepend_thrice_to_peer:
-                        std: "65506:peer_as"
-                        ext: "rt:65506:peer_as"
-                        lrg: "rs_as:65506:peer_as"
+                        std: "65523:peer_as"
+                        ext: "rt:65523:peer_as"
+                        lrg: "rs_as:65523:peer_as"
                 add_noexport_to_any:
                         std: "65507:rs_as"
                         ext: "rt:65507:rs_as"

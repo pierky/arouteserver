@@ -217,28 +217,17 @@ class TagASSetScenario(LiveScenario):
 
     def test_060_AS5_whitelist_ko_wl(self):
         """{}: AS5 white list, prefix ko, origin WL"""
-        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64514"])
         self.receive_route(self.rs, self.DATA["AS5_pref_ko_origin_wl"],
                            self.AS5, as_path="5 51", next_hop=self.AS5,
                            ext_comms=[],
                            filtered=True)
 
-    def test_070_AS2_roas_as_route_objects_not_used(self):
-        """{}: AS2 RPKI ROAs as route objects: not used"""
-        # Because this feature is used only when both origin ASN
-        # and prefix enforcement are enabled, and AS2 has no
-        # enforcement configured.
-
-        self.receive_route(self.rs, self.DATA["AS2_roa1"],
-                           ext_comms=[],
-                           filtered=True, reject_reason=9)
-
     def test_070_AS6_roas_as_route_objects_1(self):
         """{}: AS6 RPKI ROAs as route objects: invalid origin ASN"""
-        self.receive_route(self.rs, self.DATA["AS6_roa1"],
+        self.receive_route(self.rs, self.DATA["AS2_roa1"],
                            self.AS6, as_path="6 2", next_hop=self.AS6,
                            ext_comms=[],
-                           filtered=True)
+                           filtered=True, reject_reason=9)
 
     def test_900_reconfigure(self):
         """{}: reconfigure"""
@@ -429,9 +418,81 @@ class TagASSetScenario_WithAS_SETs(object):
     def test_070_AS6_roas_as_route_objects_2(self):
         """{}: AS6 RPKI ROAs as route objects: ok"""
         lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64514", "999:0:64516"])
-        self.receive_route(self.rs, self.DATA["AS6_roa2"],
+        self.receive_route(self.rs, self.DATA["AS3_roa2"],
                            self.AS6, as_path="6 3", next_hop=self.AS6,
                            std_comms=["999:64513", "999:64514", "999:64516"],
+                           ext_comms=[],
+                           lrg_comms=lrg_comms)
+
+    def test_070_AS2_roas_as_route_objects_tag_only(self):
+        """{}: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas)"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64514", "999:0:64516"])
+        self.receive_route(self.rs, self.DATA["AS2_roa2"],
+                           self.AS2, as_path="2", next_hop=self.AS2,
+                           std_comms=["999:64513", "999:64514", "999:64516"],
+                           ext_comms=[],
+                           lrg_comms=lrg_comms)
+
+    def test_080_AS6_arin_whois_db_1(self):
+        """{}: AS6 ARIN Whois DB: ok"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64514", "999:0:64518"])
+        self.receive_route(self.rs, self.DATA["AS3_arin1"],
+                           self.AS6, as_path="6 3", next_hop=self.AS6,
+                           std_comms=["999:64513", "999:64514", "999:64518"],
+                           ext_comms=[],
+                           lrg_comms=lrg_comms)
+
+    def test_080_AS2_arin_whois_db_tag_only(self):
+        """{}: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump)"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64514", "999:0:64518"])
+        self.receive_route(self.rs, self.DATA["AS2_arin1"],
+                           self.AS2, as_path="2", next_hop=self.AS2,
+                           std_comms=["999:64513", "999:64514", "999:64518"],
+                           ext_comms=[],
+                           lrg_comms=lrg_comms)
+
+    def test_090_AS2_roa_and_arin_tag_only(self):
+        """{}: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas])"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64514", "999:0:64516", "999:0:64518"])
+        self.receive_route(self.rs, self.DATA["AS2_roa3_arin2"],
+                           self.AS2, as_path="2", next_hop=self.AS2,
+                           std_comms=["999:64513", "999:64514", "999:64516", "999:64518"],
+                           ext_comms=[],
+                           lrg_comms=lrg_comms)
+
+    def test_090_AS6_roa_and_arin_enforced(self):
+        """{}: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas])"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64514", "999:0:64516", "999:0:64518"])
+        self.receive_route(self.rs, self.DATA["AS3_roa3_arin2"],
+                           self.AS6, as_path="6 3", next_hop=self.AS6,
+                           std_comms=["999:64513", "999:64514", "999:64516", "999:64518"],
+                           ext_comms=[],
+                           lrg_comms=lrg_comms)
+
+    def test_090_AS2_pref_ok_orig_ok_roa_tag_only(self):
+        """{}: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas)"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64514", "999:0:64516"])
+        self.receive_route(self.rs, self.DATA["AS2_ok_ok_roa3"],
+                           self.AS2, as_path="2", next_hop=self.AS2,
+                           std_comms=["999:64512", "999:64514", "999:64516"],
+                           ext_comms=[],
+                           lrg_comms=lrg_comms)
+
+    def test_090_AS2_pref_ok_orig_ok_arin_tag_only(self):
+        """{}: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump)"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64514", "999:0:64518"])
+        self.receive_route(self.rs, self.DATA["AS2_ok_ok_arin3"],
+                           self.AS2, as_path="2", next_hop=self.AS2,
+                           std_comms=["999:64512", "999:64514", "999:64518"],
+                           ext_comms=[],
+                           lrg_comms=lrg_comms)
+
+    def test_090_AS6_pref_ok_orig_ok_roa_arin_enforced(self):
+        """{}: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas])"""
+        lrg_comms = self._set_lrg_comms(["999:0:64512", "999:0:64514", "999:0:64516", "999:0:64518"])
+        self.receive_route(self.rs, self.DATA["AS6_ok_ok_roa6_arin6"],
+                           self.AS6, as_path="6", next_hop=self.AS6,
+                           std_comms=["999:64512", "999:64514", "999:64516", "999:64518"],
                            ext_comms=[],
                            lrg_comms=lrg_comms)
 
@@ -546,8 +607,76 @@ class TagASSetScenario_EmptyAS_SETs(object):
 
     def test_070_AS6_roas_as_route_objects_2(self):
         """{}: AS6 RPKI ROAs as route objects: ko"""
-        self.receive_route(self.rs, self.DATA["AS6_roa2"],
+        self.receive_route(self.rs, self.DATA["AS3_roa2"],
                            self.AS6, as_path="6 3", next_hop=self.AS6,
+                           ext_comms=[],
+                           filtered=True)
+
+    def test_070_AS2_roas_as_route_objects_tag_only(self):
+        """{}: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas)"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64515"])
+        self.receive_route(self.rs, self.DATA["AS2_roa2"],
+                           self.AS2, as_path="2", next_hop=self.AS2,
+                           std_comms=["999:64513", "999:64515"],
+                           ext_comms=[],
+                           lrg_comms=lrg_comms)
+
+    def test_080_AS6_arin_whois_db_1(self):
+        """{}: AS6 ARIN Whois DB: ok (solely because of route white list)"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64515", "999:0:64517"])
+        self.receive_route(self.rs, self.DATA["AS3_arin1"],
+                           self.AS6, as_path="6 3", next_hop=self.AS6,
+                           std_comms=["999:64513", "999:64515", "999:64517"],
+                           ext_comms=[],
+                           lrg_comms=lrg_comms)
+
+    def test_080_AS2_arin_whois_db_tag_only(self):
+        """{}: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump)"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64515"])
+        self.receive_route(self.rs, self.DATA["AS2_arin1"],
+                           self.AS2, as_path="2", next_hop=self.AS2,
+                           std_comms=["999:64513", "999:64515"],
+                           ext_comms=[],
+                           lrg_comms=lrg_comms)
+
+    def test_090_AS2_roa_and_arin_tag_only(self):
+        """{}: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas])"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64515"])
+        self.receive_route(self.rs, self.DATA["AS2_roa3_arin2"],
+                           self.AS2, as_path="2", next_hop=self.AS2,
+                           std_comms=["999:64513", "999:64515"],
+                           ext_comms=[],
+                           lrg_comms=lrg_comms)
+
+    def test_090_AS6_roa_and_arin_enforced(self):
+        """{}: AS6 ROA + ARIN Whois DB: enforced (rejected)"""
+        self.receive_route(self.rs, self.DATA["AS3_roa3_arin2"],
+                           self.AS6, as_path="6 3", next_hop=self.AS6,
+                           ext_comms=[],
+                           filtered=True)
+
+    def test_090_AS2_pref_ok_orig_ok_roa_tag_only(self):
+        """{}: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas)"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64515"])
+        self.receive_route(self.rs, self.DATA["AS2_ok_ok_roa3"],
+                           self.AS2, as_path="2", next_hop=self.AS2,
+                           std_comms=["999:64513", "999:64515"],
+                           ext_comms=[],
+                           lrg_comms=lrg_comms)
+
+    def test_090_AS2_pref_ok_orig_ok_arin_tag_only(self):
+        """{}: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump)"""
+        lrg_comms = self._set_lrg_comms(["999:0:64513", "999:0:64515"])
+        self.receive_route(self.rs, self.DATA["AS2_ok_ok_arin3"],
+                           self.AS2, as_path="2", next_hop=self.AS2,
+                           std_comms=["999:64513", "999:64515"],
+                           ext_comms=[],
+                           lrg_comms=lrg_comms)
+
+    def test_090_AS6_pref_ok_orig_ok_roa_arin_enforced(self):
+        """{}: AS6 prefix ok, origin ok, ROA + ARIN: rejected"""
+        self.receive_route(self.rs, self.DATA["AS6_ok_ok_roa6_arin6"],
+                           self.AS6, as_path="6", next_hop=self.AS6,
                            ext_comms=[],
                            filtered=True)
 

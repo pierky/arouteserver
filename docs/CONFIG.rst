@@ -173,6 +173,15 @@ Use RPKI ROAs as if they were route objects
 
 If the ``filtering.irrdb.use_rpki_roas_as_route_objects`` option is enabled, RPKI ROAs are used as if they were route objects to validate routes whose origin ASN is already authorized by a client's AS-SET but whose prefix is not. A lookup into the ROA table is made on the basis of the route origin ASN and, if a covering ROA is found, the route is validated. In this case, if the ``filtering.irrdb.tag_as_set`` general option is True the ``prefix_validated_via_rpki_roas`` informative community is added to the route.
 
+Use ARIN Whois database to accept routes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Similarly to the previous option, ``filtering.irrdb.use_arin_bulk_whois_data`` allows to support IRR-based filters with additional data. Records from the ARIN Whois database are used to accept those routes whose origin ASN is authorized by the client's AS-SET but whose prefix has not a registered route object. In this case, a lookup into the ARIN Whois database is made on the basis of the origin ASN and if a covering entry is found the route is accepted.
+
+The ARIN Whois database can be obtained by signing an `agreement with ARIN <https://www.arin.net/resources/request/bulkwhois.html>`__. It must be then converted into the appropriate JSON format that ARouteServer expects to find; the `arin-whois-bulk-parser <https://github.com/NLNOG/arin-whois-bulk-parser>`__ script can be used for this purpose.
+
+A parsed version of the database dump is offered by NLNOG at the following URL: http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2
+
 White lists
 ~~~~~~~~~~~
 

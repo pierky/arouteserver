@@ -121,6 +121,9 @@ class IXFDBSchemaError(IXFDBError):
 class RPKIValidatorCacheError(ARouteServerError):
     pass
 
+class ARINWhoisDBDumpError(ARouteServerError):
+    pass
+
 class LastVersionCheckingError(ARouteServerError):
     pass
 

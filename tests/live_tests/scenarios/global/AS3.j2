@@ -35,30 +35,30 @@ filter to_rs {
 		bgp_community.add((0,999));
 	}
 	if net = {{ data.AS3_prepend1any }} then {
-		bgp_community.add((999,65501));
+		bgp_community.add((65521,65521));
 	}
 	if net = {{ data.AS3_prepend2any }} then {
-		bgp_community.add((999,65502));
+		bgp_community.add((65522,65522));
 	}
 	if net = {{ data.AS3_prepend3any }} then {
-		bgp_community.add((999,65503));
+		bgp_community.add((65523,65523));
 	}
 	if net = {{ data.AS3_prepend1_AS1 }} then {
-		bgp_community.add((65504,1));
+		bgp_community.add((65521,1));
 	}
 	if net = {{ data.AS3_prepend2_AS2 }} then {
-		bgp_community.add((65505,2));
+		bgp_community.add((65522,2));
 	}
 	if net = {{ data.AS3_prep3AS1_1any }} then {
-		bgp_community.add((65506,1));
-		bgp_community.add((999,65501));
+		bgp_community.add((65523,1));
+		bgp_community.add((65521,65521));
 	}
 	if net = {{ data.AS3_noexport_any }} then {
 		bgp_community.add((65507,999));
 	}
 	if net = {{ data.AS3_noexport_AS1 }} then {
 		bgp_community.add((65509,1));
-		bgp_community.add((65506,2));
+		bgp_community.add((65523,2));
 	}
 	if net = {{ data.AS3_rfc1997_noexp }} then {
 		bgp_community.add((65535, 65281));

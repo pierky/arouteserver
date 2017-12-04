@@ -235,6 +235,12 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._test_option(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "source", ("ripe-rpki-validator-cache","rtrlib"))
         self._test_mandatory(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "source", has_default=True)
 
+    def use_arin_whois_db_dump_enabled(self):
+        """{}: use_arin_whois_db_dump.enabled"""
+        self.assertEqual(self.cfg["filtering"]["irrdb"]["use_arin_whois_db_dump"]["enabled"], False)
+        self._test_bool_val(self.cfg["filtering"]["irrdb"]["use_arin_whois_db_dump"], "enabled")
+        self._test_mandatory(self.cfg["filtering"]["irrdb"]["use_arin_whois_db_dump"], "enabled", has_default=True)
+
     def test_rpki_enabled(self):
         """{}: rpki, enabled"""
         self.assertEqual(self.cfg["filtering"]["rpki"]["enabled"], False)
@@ -797,16 +803,12 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._contains_err()
 
         # Testing with allow_private_asns=False...
-        with self.assertRaises(ConfigError):
-            self.cfg.check_overlapping_communities(allow_private_asns=False)
-        exp_err_msg_found = False
-        for line in self.logger_handler.msgs:
-            if "Community 'blackholing' and 'do_not_announce_to_peer' overlap: 0:65501 / 0:peer_as. Inbound communities can't have overlapping values, otherwise" in line:
-                exp_err_msg_found = True
-                break
-
-        if not exp_err_msg_found:
-            self.fail("Expected error message not found")
+        # It must work, peer_as can't be a private ASN; moreover
+        # also on OpenBGPD (where inbound communities are scrubbed
+        # using a wildcard) when the 'x:peer_as' community is
+        # deleted also the 'x:<asn>' is.
+        self.cfg.check_overlapping_communities(allow_private_asns=False)
+        self._contains_err()
 
     def test_overlapping_communities_in_in_dyn_val(self):
         """{}: overlapping communities, inbound/inbound (dyn_val)"""
@@ -1088,6 +1090,10 @@ class TestConfigParserGeneral(TestConfigParserBase):
                             "LACNIC RPKI Root",
                             "RIPE NCC RPKI Root"
                         ]
+                    },
+                    "use_arin_bulk_whois_data": {
+                        "enabled": False,
+                        "source": "http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
                     }
                 },
                 "rpki": {
@@ -1190,6 +1196,10 @@ class TestConfigParserGeneral(TestConfigParserBase):
                             "LACNIC RPKI Root",
                             "RIPE NCC RPKI Root"
                         ]
+                    },
+                    "use_arin_bulk_whois_data": {
+                        "enabled": False,
+                        "source": "http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
                     }
                 },
                 "rpki": {

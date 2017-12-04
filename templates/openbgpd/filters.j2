@@ -15,38 +15,27 @@
 # satisfied. Finally, if it is still present, it means that
 # the route should be discarded.
 
-{% macro remove_internal_communities(left, all=false) %}
-{{ left }} set { ext-community delete soo 65535:1 ext-community delete soo 65535:2 }
-{% if all %}
-{{ left }} set { ext-community delete soo 65535:65281 ext-community delete soo 65535:65282 }
-{% endif %}
+{% macro internal_communities_list(all=false) %}
+ext-community delete $INTCOMM_PREF_OK_ROA ext-community delete $INTCOMM_ROUTE_OK_WL ext-community delete $INTCOMM_PREF_OK_ARINDB ext-community delete $INTCOMM_ORIGIN_OK ext-community delete $INTCOMM_ORIGIN_KO ext-community delete $INTCOMM_PREFIX_OK ext-community delete $INTCOMM_PREFIX_KO ext-community delete $INTCOMM_IRR_REJECT {% if all %} ext-community delete $INTCOMM_NO_EXPORT ext-community delete $INTCOMM_NO_ADVERTISE {% endif %}
 {% endmacro %}
 
 {% macro deny_inbound_route(tag_reject_policy, condition, cause_code) %}
+# Reject inbound routes when '{{ condition }}' - reject code: {{ cause_code }}
 {%	if tag_reject_policy %}
 {{		add_communities("match " ~ condition, cfg.communities.reject_cause, dyn_val=0) -}}
 {{		add_communities("match " ~ condition, cfg.communities.reject_cause, dyn_val=cause_code) -}}
-# Before setting the route as rejected, remove internal communities
-{{		remove_internal_communities("match " ~ condition, all=true) -}}
-match quick {{ condition }} set { localpref 1 community delete NO_ADVERTISE }
+match quick {{ condition }} set { localpref 1 community delete NO_ADVERTISE {{ internal_communities_list(all=true) }} }
 {%	else %}
 deny quick {{ condition }}
 {%	endif %}
 {% endmacro %}
 
-{% macro irrdb_filter(client, enforce_object_in_as_set, tag_as_set, objects, comm_object_present_in_as_set, comm_object_not_present_in_as_set, reject_code) %}
-# IRRDB filters for {{ client.id }}, AS{{ client.asn }}: {{ objects }}, enforcing: {{ enforce_object_in_as_set }}, tagging: {{ tag_as_set }}
-{% if enforce_object_in_as_set or tag_as_set %}
-{%	if enforce_object_in_as_set %}
-# enforcing: tag any with NO_ADVERTISE; it will be removed later if at least one AS-SET authorizes this route
-match from {{ client.ip  }} set community NO_ADVERTISE
-{%	endif %}
-{%	if tag_as_set and comm_object_not_present_in_as_set|community_is_set %}
-# tag with not_present_in_as_set; will be removed later if object is actually validated
-{{		add_communities("match from " ~ client.ip, comm_object_not_present_in_as_set) -}}
-{%	endif %}
+{% macro irrdb_filter(client, objects, int_comm_ok, int_comm_ko, comm_object_present_in_as_set, comm_object_not_present_in_as_set) %}
+# IRRDB filters for {{ client.id }}, AS{{ client.asn }}: {{ objects }}
+# add {{int_comm_ko}} to any; it will be removed later if at least one AS-SET authorizes this object
+match from {{ client.ip  }} set ext-community {{ int_comm_ko }}
 {%      if client.cfg.filtering.irrdb.as_set_bundle_ids %}
-# verifying if route is authorized by AS-SETs
+# verifying if object is authorized by AS-SETs
 {%              for as_set_bundle_id in client.cfg.filtering.irrdb.as_set_bundle_ids|sort %}
 {%			if objects == "asns" %}
 {%				set matching_element = "source-as" %}
@@ -58,49 +47,23 @@ match from {{ client.ip  }} set community NO_ADVERTISE
 {%			if as_set_data %}
 {%				for subset in as_set_data|batch(50) %}
 {%					set condition = matching_element + " $AS_SET_" ~ as_set_bundle.name ~ "_" ~ objects ~ loop.index %}
-match from {{ client.ip }} {{ condition }} set community delete NO_ADVERTISE	# {{ as_set_bundle.name }}
-{%					if tag_as_set %}
-{%						if comm_object_not_present_in_as_set|community_is_set %}
-# removing not_present_in_as_set community from matching routes
-{{ del_communities("match from " ~ client.ip ~ " " ~ condition, comm_object_not_present_in_as_set) -}}
-{%						endif %}
-{%						if comm_object_present_in_as_set|community_is_set %}
-# adding present_in_as_set community to matching routes
-{{ add_communities("match from " ~ client.ip ~ " " ~ condition, comm_object_present_in_as_set) -}}
-{%						endif %}
-{%					endif %}
+match from {{ client.ip }} {{ condition }} set { ext-community delete {{ int_comm_ko }} ext-community {{ int_comm_ok }}	} # {{ as_set_bundle.name }}
 {%				endfor %}
 {%			else %}
 # AS-SET {{ as_set_bundle.name }} referenced but empty.
 {%                      endif %}
 {%              endfor %}
 {%      endif %}
-{%	if objects == "prefixes" and
-		enforce_object_in_as_set and
-		client.cfg.filtering.irrdb.enforce_origin_in_as_set and
-		rpki_roas_as_route_objects %}
-# routes tagged with soo:65535:1 community have the prefix validated by a ROA; origin ASN previously validated
-{{			add_communities("match from " ~ client.ip ~ " community NO_ADVERTISE ext-community soo 65535:1", cfg.communities.prefix_validated_via_rpki_roas) }}
-match from {{ client.ip }} community NO_ADVERTISE ext-community soo 65535:1 set { community delete NO_ADVERTISE ext-community delete soo 65535:1 }
-{%	endif %}
-{%	if client.cfg.filtering.irrdb.white_list_route %}
-# route authorized by a client's white list?
-{%		if tag_as_set and cfg.communities.route_validated_via_white_list|community_is_set %}
-{{			del_communities("match from " ~ client.ip ~ " community NO_ADVERTISE ext-community soo 65535:2", cfg.communities.route_validated_via_white_list) }}
-{{			add_communities("match from " ~ client.ip ~ " community NO_ADVERTISE ext-community soo 65535:2", cfg.communities.route_validated_via_white_list) }}
+{%	if cfg.filtering.irrdb.tag_as_set %}
+{%		if comm_object_not_present_in_as_set|community_is_set %}
+# adding not_present_in_as_set community to unauthorized routes
+{{ add_communities("match from " ~ client.ip ~ " ext-community " ~ int_comm_ko, comm_object_not_present_in_as_set) -}}
 {%		endif %}
-match from {{ client.ip }} community NO_ADVERTISE ext-community soo 65535:2 set community delete NO_ADVERTISE
+{%		if comm_object_present_in_as_set|community_is_set %}
+# adding present_in_as_set community to authorized routes
+{{ add_communities("match from " ~ client.ip ~ " ext-community " ~ int_comm_ok, comm_object_present_in_as_set) -}}
+{%		endif %}
 {%	endif %}
-{%      if enforce_object_in_as_set %}
-# enforcing: if NO_ADVERTISE has not been removed then the route is not authorized
-{{ deny_inbound_route(client.cfg.filtering.reject_policy.policy == "tag", "from " ~ client.ip ~ " community NO_ADVERTISE", reject_code) }}
-{%	else %}
-# tag only: even if NO_ADVERTISE is still in place, remove it
-match from {{ client.ip }} community NO_ADVERTISE set community delete NO_ADVERTISE
-{%	endif %}
-{% else %}
-# not configured
-{% endif %}
 {% endmacro %}
 
 
@@ -131,31 +94,45 @@ transit_free_asns="{ {{ cfg.filtering.transit_free.asns|join(", ") }} }"
 {% endfor %}
 
 # Scrub internal communities from inbound routes
-{{ remove_internal_communities("match from group clients", all=true) -}}
+match from group clients set { {{ internal_communities_list(all=true) }} }
 
 {% if cfg.rfc1997_wellknown_communities.policy == "pass" %}
 # Internal communities used for RFC1997 well-known communities handling
 
-# Transform NO_EXPORT into soo 65535:65281
-match from group clients community NO_EXPORT set ext-community soo 65535:65281
+# Transform NO_EXPORT into $INTCOMM_NO_EXPORT
+match from group clients community NO_EXPORT set ext-community $INTCOMM_NO_EXPORT
 match from group clients community NO_EXPORT set community delete NO_EXPORT
 
-# Transform NO_ADVERTISE into soo 65535:65282
-match from group clients community NO_ADVERTISE set ext-community soo 65535:65282
+# Transform NO_ADVERTISE into $INTCOMM_NO_ADVERTISE
+match from group clients community NO_ADVERTISE set ext-community $INTCOMM_NO_ADVERTISE
 match from group clients community NO_ADVERTISE set community delete NO_ADVERTISE
 {% endif %}
 
 {% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and
 	rpki_roas_as_route_objects %}
 # RPKI ROAs used as route objects
-# Add the soo:65535:1 ext community to routes whose
+# Add the $INTCOMM_PREF_OK_ROA ext community to routes whose
 # origin ASN has a ROA for the announced prefix.
 # It will be used later during IRRDB validation in
 # case the origin ASN is authorized by a client's
 # AS-SET but the prefix is not.
 {%	for origin_asn in rpki_roas_as_route_objects %}
 {%		for prefixes in rpki_roas_as_route_objects[origin_asn].roas|batch(50) %}
-match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {{ write_prefix_list(prefixes) }} } set ext-community soo 65535:1
+match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {{ write_prefix_list(prefixes) }} } set ext-community $INTCOMM_PREF_OK_ROA
+{%		endfor %}
+{%	endfor %}
+{% endif %}
+
+{% if cfg.filtering.irrdb.use_arin_bulk_whois_data.enabled and
+	arin_whois_records %}
+# Add the $INTCOMM_PREF_OK_ARINDB ext community to routes whose
+# origin ASN has an ARIN Whois record for the announced prefix.
+# It will be used later during IRRDB validation in
+# case the origin ASN is authorized by a client's
+# AS-SET but the prefix is not.
+{%	for origin_asn in arin_whois_records %}
+{%		for prefixes in arin_whois_records[origin_asn].prefixes|batch(50) %}
+match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {{ write_prefix_list(prefixes) }} } set ext-community $INTCOMM_PREF_OK_ARINDB
 {%		endfor %}
 {%	endfor %}
 {% endif %}
@@ -255,25 +232,29 @@ match from {{ client.ip }} nexthop {{ same_as_client.ip }} set community delete 
 
 {% if client.cfg.filtering.irrdb.white_list_route %}
 # client's white list
-# Add the soo:65535:2 ext community to routes which
+# Add the $INTCOMM_ROUTE_OK_WL ext community to routes which
 # are validated by a client's white list entry.
 # It will be used later during IRRDB validation in
 # case the route is not authorized by a client's
 # AS-SET.
 {%	for route in client.cfg.filtering.irrdb.white_list_route|sort(attribute="prefix") if route.prefix is current_ipver %}
 {%		if route.asn %}
-match from {{ client.ip }} prefix {{ write_prefix_list_entry(route) }} source-as {{ route.asn }} set ext-community soo 65535:2	# {{ route.comment }}
+match from {{ client.ip }} prefix {{ write_prefix_list_entry(route) }} source-as {{ route.asn }} set ext-community $INTCOMM_ROUTE_OK_WL	# {{ route.comment }}
 {%		else %}
-match from {{ client.ip }} prefix {{ write_prefix_list_entry(route) }} set ext-community soo 65535:2	# {{ route.comment }}
+match from {{ client.ip }} prefix {{ write_prefix_list_entry(route) }} set ext-community $INTCOMM_ROUTE_OK_WL	# {{ route.comment }}
 {%		endif %}
 {%	endfor %}
 {% endif %}
 
-# AS_PATH: enforce/tag origin via AS-SET
-{{ irrdb_filter(client, client.cfg.filtering.irrdb.enforce_origin_in_as_set, cfg.filtering.irrdb.tag_as_set,
-		"asns",
-		cfg.communities.origin_present_in_as_set, cfg.communities.origin_not_present_in_as_set,
-		9) -}}
+{% if client.cfg.filtering.irrdb.enforce_origin_in_as_set or client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}
+match from {{ client.ip }} set ext-community $INTCOMM_IRR_REJECT
+{% endif %}
+
+{% if client.cfg.filtering.irrdb.enforce_origin_in_as_set or cfg.filtering.irrdb.tag_as_set %}
+# AS_PATH: check origin via AS-SET
+{{ irrdb_filter(client, "asns", "$INTCOMM_ORIGIN_OK", "$INTCOMM_ORIGIN_KO",
+		cfg.communities.origin_present_in_as_set, cfg.communities.origin_not_present_in_as_set) -}}
+{% endif %}
 
 {% if client.cfg.filtering.black_list_pref %}
 # Prefix: client's blacklist
@@ -282,18 +263,81 @@ match from {{ client.ip }} prefix {{ write_prefix_list_entry(route) }} set ext-c
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " prefix $" ~ pref_list_name, 11) }}
 {% endif %}
 
-# Prefix: enforce/tag prefix via AS-SET
-{{ irrdb_filter(client, client.cfg.filtering.irrdb.enforce_prefix_in_as_set, cfg.filtering.irrdb.tag_as_set,
-		"prefixes",
-		cfg.communities.prefix_present_in_as_set, cfg.communities.prefix_not_present_in_as_set,
-		12) -}}
+{% if client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}
+# Prefix: check prefix via AS-SET
+{{ irrdb_filter(client, "prefixes", "$INTCOMM_PREFIX_OK", "$INTCOMM_PREFIX_KO",
+		cfg.communities.prefix_present_in_as_set, cfg.communities.prefix_not_present_in_as_set) -}}
+{% endif %}
 
-# Blackhole request?
+{% if client.cfg.filtering.irrdb.enforce_origin_in_as_set or client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}
+
+{% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and rpki_roas_as_route_objects %}
+# routes tagged with $INTCOMM_PREF_OK_ROA community have the prefix validated by a ROA; origin ASN previously validated ($INTCOMM_ORIGIN_OK)
+# NO_ADVERTISE here means $INTCOMM_ORIGIN_OK
+# (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)
+match from {{ client.ip }} ext-community $INTCOMM_ORIGIN_OK set community NO_ADVERTISE
+{%	set when = "match from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_PREF_OK_ROA" %}
+{%	if cfg.filtering.irrdb.tag_as_set %}
+{{		add_communities(when, cfg.communities.prefix_validated_via_rpki_roas) }}
+{%	endif %}
+{{ when }} set ext-community delete $INTCOMM_IRR_REJECT
+match from {{ client.ip }} set community delete NO_ADVERTISE
+{% endif %}
+
+{% if cfg.filtering.irrdb.use_arin_bulk_whois_data.enabled and arin_whois_records %}
+# routes tagged with $INTCOMM_PREF_OK_ARINDB community have the prefix validated by an ARIN Whois record; origin ASN previously validated ($INTCOMM_ORIGIN_OK)
+# NO_ADVERTISE here means $INTCOMM_ORIGIN_OK
+# (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)
+match from {{ client.ip }} ext-community $INTCOMM_ORIGIN_OK set community NO_ADVERTISE
+{%	set when = "match from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_PREF_OK_ARINDB" %}
+{%	if cfg.filtering.irrdb.tag_as_set %}
+{{		add_communities(when, cfg.communities.prefix_validated_via_arin_whois_db_dump) }}
+{%	endif %}
+{{ when }} set ext-community delete $INTCOMM_IRR_REJECT
+match from {{ client.ip }} set community delete NO_ADVERTISE
+{% endif %}
+
+{% if client.cfg.filtering.irrdb.white_list_route %}
+# route authorized by a client's white list?
+# NO_ADVERTISE here means $INTCOMM_IRR_REJECT
+# (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)
+match from {{ client.ip }} ext-community $INTCOMM_IRR_REJECT set community NO_ADVERTISE
+{%	set when = "match from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_ROUTE_OK_WL" %}
+{%      if cfg.filtering.irrdb.tag_as_set %}
+{{              add_communities(when, cfg.communities.route_validated_via_white_list) }}
+{%	endif %}
+{{ when }} set ext-community delete $INTCOMM_IRR_REJECT
+match from {{ client.ip }} set community delete NO_ADVERTISE
+{% endif %}
+
+{% if client.cfg.filtering.irrdb.enforce_origin_in_as_set %}
+# enforcing: origin ASN
+# NO_ADVERTISE here means $INTCOMM_IRR_REJECT
+# (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)
+match from {{ client.ip }} ext-community $INTCOMM_IRR_REJECT set community NO_ADVERTISE
+{{ deny_inbound_route(client.cfg.filtering.reject_policy.policy == "tag",
+		      "from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_ORIGIN_KO",
+		      9) }}
+match from {{ client.ip }} set community delete NO_ADVERTISE
+{% endif %}
+{% if client.cfg.filtering.irrdb.enforce_prefix_in_as_set %}
+# enforcing: prefix
+# NO_ADVERTISE here means $INTCOMM_IRR_REJECT
+# (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)
+match from {{ client.ip }} ext-community $INTCOMM_IRR_REJECT set community NO_ADVERTISE
+{{ deny_inbound_route(client.cfg.filtering.reject_policy.policy == "tag",
+		      "from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_PREFIX_KO",
+		      12) }}
+match from {{ client.ip }} set community delete NO_ADVERTISE
+{% endif %}
+{% endif %}
+
 {% if ( client.ip|ipaddr_ver == 4 and cfg.blackhole_filtering.policy_ipv4 ) or
       ( client.ip|ipaddr_ver == 6 and cfg.blackhole_filtering.policy_ipv6 ) %}
+# Blackhole request?
 {{ del_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, replace_dyn_val=client.asn) }}
 # Remove internal communities before accepting the route
-{{ remove_internal_communities("match from " ~ client.ip ~ " community BLACKHOLE") -}}
+match from {{ client.ip }} community BLACKHOLE set { {{ internal_communities_list() }} }
 allow quick from {{ client.ip }} community BLACKHOLE
 {{ match_communities("allow quick from " ~ client.ip, cfg.communities.blackholing, "") }}
 {{ add_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, dyn_val=client.asn) }}
@@ -320,7 +364,7 @@ match from {{ client.ip }} community GRACEFUL_SHUTDOWN set community delete GRAC
 {% endif %}
 
 # Remove internal communities before accepting the route
-{{ remove_internal_communities("match from " ~ client.ip) }}
+match from {{ client.ip }} set { {{ internal_communities_list() }} }
 
 {{ del_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, replace_dyn_val=client.asn) }}
 
@@ -335,6 +379,7 @@ allow quick from {{ client.ip }}
 
 # Blackhole request?
 {% if not client.cfg.blackhole_filtering.announce_to_client %}
+# Client not enabled to receive blackhole routes
 deny quick to {{ client.ip }} community BLACKHOLE
 {{ match_communities("deny quick to " ~ client.ip, cfg.communities.blackholing, "") -}}
 {% else %}
@@ -361,7 +406,7 @@ match to {{ client.ip }} community BLACKHOLE set community NO_EXPORT
 match to {{ client.ip }} community BLACKHOLE set nexthop {{ bhn }}
 
 {%	else %}
-# Blackhole filtering requested but no policy given
+# No blackhole filtering policy given
 deny quick to {{ client.ip }} community BLACKHOLE
 {{ match_communities("deny quick to " ~ client.ip, cfg.communities.blackholing, "") -}}
 {%	endif %}
@@ -497,12 +542,12 @@ match to group clients set community GRACEFUL_SHUTDOWN
 
 {% if cfg.rfc1997_wellknown_communities.policy == "pass" %}
 # RFC1997 NO_EXPORT/NO_ADVERTISE received from clients and propagated because of pass-through policy
-match to group clients ext-community soo 65535:65281 set community NO_EXPORT
-match to group clients ext-community soo 65535:65282 set community NO_ADVERTISE
+match to group clients ext-community $INTCOMM_NO_EXPORT set community NO_EXPORT
+match to group clients ext-community $INTCOMM_NO_ADVERTISE set community NO_ADVERTISE
 {% endif %}
 
 # Remove internal communities before announcing the route
-{{ remove_internal_communities("match to group clients", all=True) }}
+match to group clients set { {{ internal_communities_list(all=True) }} }
 
 {{ "post-filters"|include_local_file -}}
 

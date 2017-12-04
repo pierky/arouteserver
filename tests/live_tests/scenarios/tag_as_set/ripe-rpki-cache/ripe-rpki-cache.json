@@ -1,6 +1,22 @@
 {"roas": [
   {"prefix": "2.4.0.0/16", "maxLength": 16, "asn": "AS2", "ta": "test"},
   {"prefix": "2a02:4::/32", "maxLength": 32, "asn": "AS2", "ta": "test"},
+
+  {"prefix": "2.5.0.0/16", "maxLength": 16, "asn": "AS2", "ta": "test"},
+  {"prefix": "2a02:5::/32", "maxLength": 32, "asn": "AS2", "ta": "test"},
+
+  {"prefix": "2.7.0.0/16", "maxLength": 16, "asn": "AS2", "ta": "test"},
+  {"prefix": "2a02:7::/32", "maxLength": 32, "asn": "AS2", "ta": "test"},
+
+  {"prefix": "2.0.4.0/24", "maxLength": 24, "asn": "AS2", "ta": "test"},
+  {"prefix": "2a02:0:4::/48", "maxLength": 48, "asn": "AS2", "ta": "test"},
+
   {"prefix": "3.1.0.0/16", "maxLength": 16, "asn": "AS3", "ta": "test"},
-  {"prefix": "2a03:1::/32", "maxLength": 32, "asn": "AS3", "ta": "test"}
+  {"prefix": "2a03:1::/32", "maxLength": 32, "asn": "AS3", "ta": "test"},
+
+  {"prefix": "3.3.0.0/16", "maxLength": 16, "asn": "AS3", "ta": "test"},
+  {"prefix": "2a03:3::/32", "maxLength": 32, "asn": "AS3", "ta": "test"},
+
+  {"prefix": "6.0.1.0/24", "maxLength": 24, "asn": "AS6", "ta": "test"},
+  {"prefix": "2a06:0:1::/48", "maxLength": 48, "asn": "AS6", "ta": "test"}
 ]}

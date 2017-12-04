@@ -1,0 +1,58 @@
+{
+  "json_schema": "0.0.2",
+  "source": "ARIN-WHOIS",
+  "whois_records": {
+    "v4": [
+      {
+        "originas": "AS3",
+        "prefix": "3.2.0.0/16"
+      },
+      {
+        "originas": "AS3",
+        "prefix": "3.3.0.0/16"
+      },
+      {
+        "originas": "AS2",
+        "prefix": "2.6.0.0/16"
+      },
+      {
+        "originas": "AS2",
+        "prefix": "2.7.0.0/16"
+      },
+      {
+        "originas": "AS2",
+        "prefix": "2.0.5.0/24"
+      },
+      {
+        "originas": "AS6",
+        "prefix": "6.0.1.0/24"
+      }
+    ],
+    "v6": [
+      {
+        "originas": "AS3",
+        "prefix": "2a03:2::/32"
+      },
+      {
+        "originas": "AS3",
+        "prefix": "2a03:3::/32"
+      },
+      {
+        "originas": "AS2",
+        "prefix": "2a02:6::/32"
+      },
+      {
+        "originas": "AS2",
+        "prefix": "2a02:7::/32"
+      },
+      {
+        "originas": "AS2",
+        "prefix": "2a02:0:5::/48"
+      },
+      {
+        "originas": "AS6",
+        "prefix": "2a06:0:1::/48"
+      }
+    ]
+  }
+}

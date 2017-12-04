@@ -8,7 +8,7 @@ Built to group as many tests as possible in a single scenario.
   AS-SETs:
 
   - AS-AS1 (AS1, 1.0.0.0/8, 128.0.0.0/7)
-  - AS-AS1_CUSTOMERS (AS101, AS103, 101.0.0.0/16, 103.0.0.0/16)
+  - AS-AS1_CUSTOMERS (AS101, AS103, 101.0.0.0/16, 103.0.0.0/16, AS104)
   - white list: 11.1.0.0/16, ASN 1011
   - white list routes: exact 11.3.0.0/16 AS1011, 11.4.0.0/16 or more spec w/o origin AS
 
@@ -123,15 +123,15 @@ Built to group as many tests as possible in a single scenario.
     AS3_cc_AS1only     3.0.2.0/24   0:999, 65501:1    seen on AS1_1/_2 only
     AS3_cc_not_AS1     3.0.3.0/24   0:1               seen on AS2 only
     AS3_cc_none        3.0.4.0/24   0:999             not seen
-    AS3_prepend1any    3.0.5.0/24   999:65501         AS_PATH 3, 3
-    AS3_prepend2any    3.0.6.0/24   999:65502         AS_PATH 3, 3, 3
-    AS3_prepend3any    3.0.7.0/24   999:65503         AS_PATH 3, 3, 3, 3
-    AS3_prepend1_AS1   3.0.8.0/24   65504:1           AS_PATH 3, 3 on AS1 clients
-    AS3_prepend2_AS2   3.0.9.0/24   65505:2           AS_PATH 3, 3, 3 on AS2 clients
-    AS3_prep3AS1_1any  3.0.10.0/24  65506:1 999:65501 AS_PATH 3, 3, 3, 3
-                                                      on AS1 clients, 3, 3 on AS2 clients
+    AS3_prepend1any    3.0.5.0/24   65521:65521       AS_PATH 3, 3
+    AS3_prepend2any    3.0.6.0/24   65522:65522       AS_PATH 3, 3, 3
+    AS3_prepend3any    3.0.7.0/24   65523:65523       AS_PATH 3, 3, 3, 3
+    AS3_prepend1_AS1   3.0.8.0/24   65521:1           AS_PATH 3, 3 on AS1 clients
+    AS3_prepend2_AS2   3.0.9.0/24   65522:2           AS_PATH 3, 3, 3 on AS2 clients
+    AS3_prep3AS1_1any  3.0.10.0/24  65523:1           AS_PATH 3, 3, 3, 3
+                                    65521:65521       on AS1 clients, 3, 3 on AS2 clients
     AS3_noexport_any   3.0.11.0/24  65507:999         received by all with NO_EXPORT
-    AS3_noexport_AS1   3.0.12.0/24  65509:1 65506:2   (prepend x3 to AS2) received by AS1 with
+    AS3_noexport_AS1   3.0.12.0/24  65509:1 65523:2   (prepend x3 to AS2) received by AS1 with
                                                       NO_EXPORT
     AS3_rfc1997_noexp  3.0.13.0/24  NO_EXPORT         received by all with NO_EXPORT
     Default_route      0.0.0.0/0                      rejected by rs
@@ -176,7 +176,7 @@ Built to group as many tests as possible in a single scenario.
     AS4_rtt_8   4.0.8.0/24   64539:100         Prepend 3x to > 100 ms, 2x to > 10 ms        AS1_1, AS1_2,
                              64538:10                                                       AS2 2x, AS3 3x
     AS4_rtt_9   4.0.9.0/24   64536:5 64535:20  Prepend 3x to <= 5 ms, 2x to <= 20, 1x to    AS1_1 & AS1_2 3x,
-                             999:65501         any                                          AS2 2x, AS3 1x
+                             65521:65521       any                                          AS2 2x, AS3 1x
     AS4_rtt_10  4.0.10.0/24  rt:64537:10       Prepend 1x to > 10 ms, 2x to > 20 ms         AS1_1 & AS1_2 no prep,
                              rt:64538:20                                                    AS2 1x, AS3 2x
     ==========  ============ ================= ============================================ ========================
@@ -235,4 +235,5 @@ Built to group as many tests as possible in a single scenario.
 
                                          to AS2:
                                          [101 103]
+  AS104_arin_1          104.0.1.0/24     [101 104]   Accepted from AS1 via ARIN Whois DB dump; rejected by others
   ====================  ==============   =========== ==================================================================================

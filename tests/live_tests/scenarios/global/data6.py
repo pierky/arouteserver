@@ -109,5 +109,7 @@ class BasicScenario_Data6(object):
         "AS103_gshut_1":            "3103:0:1::/48",
         "AS103_gshut_2":            "3103:0:2::/48",
 
+        "AS104_arin_1":             "3104:0:1::/48",
+
         "Default_route":            "::/0",
     }

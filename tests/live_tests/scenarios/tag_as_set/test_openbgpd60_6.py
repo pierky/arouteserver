@@ -16,8 +16,8 @@
 import os
 import unittest
 
-from .base import TagASSetScenario_WithAS_SETs, TagASSetScenario_EmptyAS_SETs, \
-                 TagASSetScenarioOpenBGPD60
+from .base import TagASSetScenario_WithAS_SETs, \
+                  TagASSetScenarioOpenBGPD60
 from .data6 import TagASSetScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
@@ -33,15 +33,3 @@ class TagASSetScenario_WithAS_SETs_OpenBGPDIPv6(TagASSetScenario_WithAS_SETs,
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
 
     SHORT_DESCR = "Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6"
-
-@unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
-class TagASSetScenario_EmptyAS_SETs_OpenBGPDIPv6(TagASSetScenario_EmptyAS_SETs,
-                                                 TagASSetScenario_Data6,
-                                                 TagASSetScenarioOpenBGPD60):
-    __test__ = True
-    SKIP_ON_TRAVIS = True
-
-    RS_INSTANCE_CLASS = OpenBGPD60Instance
-    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
-
-    SHORT_DESCR = "Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv6"
