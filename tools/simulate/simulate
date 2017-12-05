@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # ---------------------------
-# MRT file
+# Input MRT or raw file
 
-mrt_file=
+input_file=
 
 # ---------------------------
 # Programs
@@ -13,6 +13,8 @@ mrtparse_dir=
 
 arouteserver=arouteserver
 arouteserver_cfg=
+arouteserver_clients=
+arouteserver_general=
 
 # ---------------------------
 # Route server details
@@ -58,24 +60,30 @@ bird_dir="${var_dir}/bird"
 # CLI options
 
 cmd_parse=0
+cmd_parse_fmt=""
 cmd_build=0
 cmd_docker=0
 
 function usage() {
 	echo "Commands:"
-	echo "  parse     Parse the MRT file and build the list of"
+	echo "  parse-mrt Parse the MRT file and build the list of"
 	echo "            BGP announcements."
+	echo "  parse-raw Parse the raw file and build the list of"
+	echo "            BGP announcements."
+	echo "            File format:"
+	echo "               A|W,next_hop,peer_as,prefix,as_path"
+	echo "               A = announcement, W = withdrawal"
 	echo "  build     Only build configuration files. Needs the"
-	echo "            output of the 'parse' command (announcements"
+	echo "            output of the parse command (announcements"
 	echo "            from the MRT file)."
 	echo "  docker    Run the simulation using Docker instances."
 	echo "            Needs the output of the 'build' command."
 	echo ""
 	echo "More than one command can be used:"
-	echo "  $0 parse build"
+	echo "  $0 parse-mrt build"
 	echo ""
 	echo "Arguments:"
-	echo "  --mrt	  Path of the MRT file used to generate BGP"
+	echo "  --input	  Path of the file used to generate BGP"
 	echo "            BGP announcements."
 }
 
@@ -89,8 +97,13 @@ do
 	key="$1"
 	shift
 	case "$key" in
-		parse)
+		parse-mrt)
 			cmd_parse=1
+			cmd_parse_fmt="mrt"
+			;;
+		parse-raw)
+			cmd_parse=1
+			cmd_parse_fmt="raw"
 			;;
 		build)
 			cmd_build=1
@@ -98,8 +111,8 @@ do
 		docker)
 			cmd_docker=1
 			;;
-		--mrt)
-			mrt_file="$1"
+		--input)
+			input_file="$1"
 			shift;
 			;;
 		*)
@@ -113,38 +126,50 @@ mkdir -p ${var_dir}
 echo "WARNING: the content of this directory is wiped out at each run." > ${var_dir}/WARNING
 
 if [ $cmd_parse -eq 1 ]; then
-	if [ ! -e "${mrt_file}" ]; then
-		echo "ERROR: MRT file not found."
+	if [ ! -e "${input_file}" ]; then
+		echo "ERROR: input file not found."
 		echo ""
-		echo "Please use the '--mrt' CLI argument or set the 'mrt_file' "
-		echo "to the path of the MRT file that will be used to generate "
+		echo "Please use the '--input' CLI argument or set the 'input_file' "
+		echo "to the path of the file that will be used to generate "
 		echo "peers announcements."
 		exit 1
 	fi
 
-	if [ ! -x $mrt2bgpdump ]; then
-		echo "ERROR: mrt2bgpdump.py not found or not executable."
-		echo ""
-		echo "mrtparse is needed to convert MRT files into ExaBGP command;"
-		echo "if missing, clone it from GitHub (https://github.com/t2mune/mrtparse)"
-		echo "otherwise check that the 'mrt2bgpdump' variable is set to the "
-		echo "path where 'mrtparse/examples/mrt2bgpdump.py' can be found."
-		exit 1
+	if [ "${cmd_parse_fmt}" == "mrt" ]; then
+		if [ ! -x $mrt2bgpdump ]; then
+			echo "ERROR: mrt2bgpdump.py not found or not executable."
+			echo ""
+			echo "mrtparse is needed to convert MRT files into ExaBGP command;"
+			echo "if missing, clone it from GitHub (https://github.com/t2mune/mrtparse)"
+			echo "otherwise check that the 'mrt2bgpdump' variable is set to the "
+			echo "path where 'mrtparse/examples/mrt2bgpdump.py' can be found."
+			exit 1
+		fi
+
+		if [ -n "$mrtparse_dir" ]; then
+			export PYTHONPATH="$mrtparse_dir"
+		fi
+		$mrt2bgpdump -h &>/dev/null
+		if [ $? -ne 0 ]; then
+			echo "ERROR: the mrt2bgpdump.py cannot be executed."
+			echo ""
+			echo "Probably the mrtparse tool is not installed properly "
+			echo "or its library can't be found within the PYTHONPATH."
+			echo "Install mrtparse into the current virtual environment "
+			echo "(pip install mrtparse) or set the 'mrtparse_dir' variable "
+			echo "to the path where mrtparse is located."
+			exit 1
+		fi
 	fi
 
-	if [ -n "$mrtparse_dir" ]; then
-		export PYTHONPATH="$mrtparse_dir"
-	fi
-	$mrt2bgpdump -h &>/dev/null
-	if [ $? -ne 0 ]; then
-		echo "ERROR: the mrt2bgpdump.py cannot be executed."
-		echo ""
-		echo "Probably the mrtparse tool is not installed properly "
-		echo "or its library can't be found within the PYTHONPATH."
-		echo "Install mrtparse into the current virtual environment "
-		echo "(pip install mrtparse) or set the 'mrtparse_dir' variable "
-		echo "to the path where mrtparse is located."
-		exit 1
+	if [ "${cmd_parse_fmt}" == "raw" ]; then
+		file "${input_file}" | grep ASCII &>/dev/null
+		if [ $? -ne 0 ]; then
+			echo "ERROR: input file is not ASCII"
+			echo ""
+			echo "Raw input file must be in ASCII format."
+			exit 1
+		fi
 	fi
 fi
 
@@ -154,6 +179,18 @@ if [ $cmd_build -eq 1 ]; then
 		echo "ERROR: can't find arouteserver."
 		echo "Please install it or set the 'arouteserver' variable to point"
 		echo "to the path where it is located."
+		exit 1
+	fi
+
+	if [ -n "${arouteserver_clients}" -a ! -e "${arouteserver_clients}" ]; then
+		echo "ERROR: the clients.yml file set in arouteserver_clients (${arouteserver_clients}) does not exist."
+		echo "Please check the configuration."
+		exit 1
+	fi
+
+	if [ -n "${arouteserver_general}" -a ! -e "${arouteserver_general}" ]; then
+		echo "ERROR: the general.yml file set in arouteserver_general (${arouteserver_general}) does not exist."
+		echo "Please check the configuration."
 		exit 1
 	fi
 fi
@@ -239,40 +276,97 @@ function list_asns() {
 	find ${peers_dir}/* -type d -printf '%f\n'
 }
 
-# Process MRT file $mrt_file.
 # Create var/peers/<ASN>/<IP> files.
 # Each file contains commands (echoes) that print ExaBGP commands.
-function parse_mrt() {
-	echo "Processing MRT file ${mrt_file}..."
+function add_bgp_msg() {
+	a_w="$1"
+	if [[ "${a_w}" != "A" && "${a_w}" != "W" ]]; then
+		echo "ERROR: invalid format for a_w"
+		echo ""
+		echo "It must be 'A' or 'W'; '${a_w}' found."
+		exit 1
+	fi
+	next_hop="$2"
+	if ! [[ "${next_hop}" =~ ^[0-9a-fA-F.:]+$ ]]; then
+		echo "ERROR: invalid next_hop"
+		echo ""
+		echo "It must be an IPv4 or IPv6 address; '${next_hop}' found."
+		exit 1
+	fi
+	peer_as="$3"
+	if ! [[ ${peer_as} =~ ^[0-9]+$ ]]; then
+		echo "ERROR: invalid peer_as"
+		echo ""
+		echo "It must be numeric; '${peer_as}' found."
+		exit 1
+	fi
+	prefix="$4"
+	as_path="$5"
 
+	[[ ! -d ${peers_dir}/$peer_as ]] && mkdir ${peers_dir}/$peer_as
+
+	dest_file="${peers_dir}/$peer_as/${next_hop}"
+	if [ "${a_w}" == "A" ]; then
+		echo "echo \"announce attribute origin EGP as-path [$as_path] next-hop $next_hop nlri $prefix\"" >> ${dest_file}
+	elif [ "${a_w}" == "W" ]; then
+		echo "echo \"withdraw route $prefix next-hop $next_hop\"" >> ${dest_file}
+	fi
+	echo "sleep 0.05" >> ${dest_file}
+}
+
+function parse_init() {
 	[[ -d "${peers_dir}" ]] && rm -r ${peers_dir}
 	mkdir -p ${peers_dir}
+}
+
+function parse_fin() {
+	find ${peers_dir} -type f -exec sh -c "echo \"sleep 365d  # needed to keep ExaBGP session up\" >> {}" \;
+}
+
+# Process MRT file $input_file.
+function parse_mrt() {
+	echo "Processing MRT file ${input_file}..."
+
+	parse_init
 
 	if [ -n "$mrtparse_dir" ]; then
 		export PYTHONPATH="$mrtparse_dir"
 	fi
 
-	$mrt2bgpdump $mrt_file | \
+	$mrt2bgpdump $input_file | \
 	while read -r line; do
 		IFS='|' read -r -a fields <<< "$line"
 		a_w="${fields[2]}"
+
+		if [ "${a_w}" == "STATE" ]; then
+			continue
+		fi
+
 		next_hop="${fields[3]}"
 		peer_as="${fields[4]}"
 		prefix="${fields[5]}"
 		as_path="${fields[6]}"
 
-		[[ ! -d ${peers_dir}/$peer_as ]] && mkdir ${peers_dir}/$peer_as
-
-		dest_file="${peers_dir}/$peer_as/${next_hop}"
-		if [ "${a_w}" == "A" ]; then
-			echo "echo \"announce attribute origin EGP as-path [$as_path] next-hop $next_hop nlri $prefix\"" >> ${dest_file}
-		elif [ "${a_w}" == "W" ]; then
-			echo "echo \"withdraw route $prefix next-hop $next_hop\"" >> ${dest_file}
-		fi
-		echo "sleep 0.05" >> ${dest_file}
+		add_bgp_msg "${a_w}" "${next_hop}" "${peer_as}" "${prefix}" "${as_path}"
 	done
 
-	find ${peers_dir} -type f -exec sh -c "echo \"sleep 365d  # needed to keep ExaBGP session up\" >> {}" \;
+	parse_fin
+}
+
+# Process raw file $input_file.
+function parse_raw() {
+	echo "Processing raw file ${input_file}..."
+
+	parse_init
+
+	cat $input_file | \
+	while read -r line; do
+		IFS=',' read -r -a fields <<< "$line"
+
+		add_bgp_msg "${fields[0]}" "${fields[1]}" "${fields[2]}" "${fields[3]}" "${fields[4]}"
+	done
+
+	parse_fin
 }
 
 # Read ASNs from var/peers/ and, for each ASN, its IP addresses from var/peers/<ASN>/.
@@ -370,6 +464,11 @@ function build_startup_files() {
 # Ask to overwrite it if it already exists.
 # Only ASNs and IP addresses are used.
 function build_arouteserver_clients() {
+	if [ -n "${arouteserver_clients}" ]; then
+		echo "Using the existing clients.yml set in arouteserver_clients: ${arouteserver_clients}"
+		return
+	fi
+
 	echo "Building ARouteServer clients.yml file..."
 
 	if [ -e ${var_dir}/clients.yml ]; then
@@ -408,17 +507,17 @@ function build_arouteserver_clients() {
 }
 
 # Generate the route server configuration file on the basis of the
-# var/clients.yml file and general.yml file.
+# clients.yml file and general.yml file.
 function build_rs_config() {
 	for ver in ${ip_ver}
 	do
 		echo "Building route server IPv${ver} configuration..."
 
 		if [ -e ${bird_dir}/bird${ver}.conf ]; then
-			echo -n "The route server IPv${ver} configuration file already exists: do you want to overwrite it? [yes/NO] "
+			echo -n "The route server IPv${ver} configuration file already exists: do you want to overwrite it? [YES/no] "
 			read yes_no
 
-			if [ "${yes_no}" != "yes" ]; then
+			if ! [ "${yes_no}" == "yes" -o -z "${yes_no}" ]; then
 				continue
 			fi
 		fi
@@ -432,18 +531,31 @@ function build_rs_config() {
 
 		[[ -z "${arouteserver_cfg}" ]] && cfg_arg="" || cfg_arg="--cfg ${arouteserver_cfg}"
 
-		cat general.yml | sed -e "s/^  rs_as: [0-9]\+$/  rs_as: ${rs_asn}/" > ${var_dir}/general.yml
+		if [ -z "${arouteserver_general}" ]; then
+			cat general.yml | sed -e "s/^  rs_as: [0-9]\+$/  rs_as: ${rs_asn}/" > ${var_dir}/general.yml
+			general_file="${var_dir}/general.yml"
+		else
+			general_file="${arouteserver_general}"
+		fi
+
+		[[ -z "${arouteserver_clients}" ]] && clients_file="${var_dir}/clients.yml" || clients_file="${arouteserver_clients}"
+
+		echo " - clients.yml: ${clients_file}"
+		echo " - general.yml: ${general_file}"
 
 		$arouteserver bird $cfg_arg \
 			--ip-ver ${ver} \
-			--general ${var_dir}/general.yml \
-			--clients ${var_dir}/clients.yml \
-			--output ${bird_dir}/bird${ver}.conf
+			--general ${general_file} \
+			--clients ${clients_file} \
+			--output ${bird_dir}/bird${ver}.conf 2>&1 | \
+				tee ${var_dir}/bird${ver}.log
 
 		if [ $? -ne 0 ]; then
 			echo "ERROR: ARouteServer failed. See log for details."
 			exit 1
 		fi
+
+		echo "ARouteServer completed. Log written to ${var_dir}/bird${ver}.log"
 	done
 }
 
@@ -543,6 +655,11 @@ function run_docker() {
 	echo "- 'docker exec -it ${docker_inst_name_rs} bash' to attach to the route server instance"
 	echo "- 'docker stop ${docker_inst_name_clients} ${docker_inst_name_rs}' to kill them"
 
+	echo ""
+	echo "PLEASE NOTE: it will take some time for clients to finish announcing their routes."
+	echo "You can run the following command to watch the progress:"
+	echo "  watch docker exec -it ${docker_inst_name_rs} birdcl show route count"
+
 	cat ${var_dir}/startup.sh > ${var_dir}/docker_clients.sh
 	echo "sleep 365d" >> ${var_dir}/docker_clients.sh
 
@@ -563,7 +680,11 @@ function run_docker() {
 }
 
 if [ $cmd_parse -eq 1 ]; then
-	parse_mrt
+	if [ "${cmd_parse_fmt}" == "mrt" ]; then
+		parse_mrt
+	else
+		parse_raw
+	fi
 fi
 
 if [ $cmd_build -eq 1 ]; then

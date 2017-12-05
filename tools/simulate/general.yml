@@ -53,6 +53,9 @@ cfg:
       use_rpki_roas_as_route_objects:
         enabled: True
 
+      use_arin_bulk_whois_data:
+        enabled: True
+
     max_prefix:
       action: "restart"
       restart_after: 30
@@ -84,6 +87,9 @@ cfg:
     prefix_validated_via_rpki_roas:
       std: "65531:2"
       lrg: "rs_as:65531:2"
+    prefix_validated_via_arin_whois_db_dump:
+      std: "65531:3"
+      lrg: "rs_as:65531:3"
     route_validated_via_white_list:
       std: "65530:65530"
       lrg: "rs_as:65530:65530"
