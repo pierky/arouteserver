@@ -2,12 +2,13 @@
 # the tool. Copy this file into 'config' to make changes.
 
 # ---------------------------
-# MRT file
+# Input file
 
-# The MRT file to process to reproduce clients announcements.
-# Can be also set with the '--mrt' command line argument.
+# The MRT or the raw file to process to reproduce clients
+# announcements.
+# Can be also set with the '--input' command line argument.
 #
-mrt_file=
+input_file=
 
 # ---------------------------
 # Route server details
@@ -48,6 +49,15 @@ rs_ipv6=
 # file where the program configuration is stored. It is used to
 # set the '--cfg' command line argument of ARouteServer.
 #arouteserver_cfg=
+
+# The path to the ARouteServer clients.yml and general.yml files to
+# be used for config building.
+# If omitted,
+# - the clients.yml will be generated on the basis of the data
+#   extracted from the input file (peer ASNs and IP addresses);
+# - the general.yml distributed within this tool will be used.
+#arouteserver_clients=
+#arouteserver_general=
 
 # ---------------------------
 # Docker options
