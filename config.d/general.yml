@@ -203,10 +203,6 @@ cfg:
       # have a strict correspondence with but that are covered by a
       # prefix from the route-set are accepted as well.
       #
-      # After changing this setting the cache must be cleared,
-      # otherwise the new setting will be taken into account only
-      # once the cached results are expired.
-      #
       # Default: False
       allow_longer_prefixes: False
 

@@ -813,44 +813,44 @@ irrdb_info
   name: AS3333
   prefixes:
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 32
     length: 21
     max_length: 32
     prefix: 193.0.0.0
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 32
     length: 23
     max_length: 32
     prefix: 193.0.10.0
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 32
     length: 23
     max_length: 32
     prefix: 193.0.12.0
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 32
     length: 23
     max_length: 32
     prefix: 193.0.18.0
   - comment: null
     exact: false
     ge: 23
-    le: 23
+    le: 32
     length: 22
     max_length: 32
     prefix: 193.0.20.0
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 128
     length: 48
     max_length: 128
     prefix: '2001:67c:2e8::'
@@ -862,44 +862,44 @@ irrdb_info
   name: AS10745
   prefixes:
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 32
     length: 24
     max_length: 32
     prefix: 192.136.136.0
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 32
     length: 24
     max_length: 32
     prefix: 192.149.252.0
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 32
     length: 24
     max_length: 32
     prefix: 199.43.0.0
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 128
     length: 48
     max_length: 128
     prefix: '2001:500:4::'
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 128
     length: 48
     max_length: 128
     prefix: '2001:500:30::'
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 128
     length: 48
     max_length: 128
     prefix: '2001:500:110::'

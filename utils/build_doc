@@ -109,13 +109,6 @@ echo "Building example: configure command output"
 RenderConfigureExample "bird-general.yml" "daemon=bird asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32"
 RenderConfigureExample "openbgpd62-general.yml" "daemon=openbgpd version=6.2 asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32"
 
-# Clear cache for the ASNs involved in the example clients.yml file
-# because the suggested config built using the 'configure' command
-# uses the allow_longer_prefixes option while the default value used
-# by the distributed config does not.
-find var/cache/ -name AS3333-* -delete
-find var/cache/ -name AS10745-* -delete
-
 echo "Building example: default, BIRD, IPv4"
 G="config.d/general.yml"
 C="config.d/clients.yml"

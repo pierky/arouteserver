@@ -378,11 +378,6 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
   prefix from the route-set are accepted as well.
 
 
-  After changing this setting the cache must be cleared,
-  otherwise the new setting will be taken into account only
-  once the cached results are expired.
-
-
   Default: **False**
 
   Example:

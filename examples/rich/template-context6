@@ -809,23 +809,23 @@ irrdb_info
   name: AS10745
   prefixes:
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 128
     length: 48
     max_length: 128
     prefix: '2001:500:4::'
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 128
     length: 48
     max_length: 128
     prefix: '2001:500:30::'
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 128
     length: 48
     max_length: 128
     prefix: '2001:500:110::'

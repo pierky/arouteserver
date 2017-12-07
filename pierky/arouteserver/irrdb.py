@@ -216,7 +216,10 @@ class RSet(IRRDBInfo):
         self.prefixes = self.raw_data
 
     def _get_object_filename(self):
-        return "{}-r_set-ipv{}.json".format(self.name, self.ip_ver)
+        return "{}-r_set-ipv{}{}.json".format(
+            self.name, self.ip_ver,
+            "_and_more_specific" if self.allow_longer_prefixes else ""
+        )
 
     def _get_data(self):
         cmd = [self.bgpq3_path]
