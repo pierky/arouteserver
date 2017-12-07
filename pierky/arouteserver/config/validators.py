@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import re
+
 from ..errors import ConfigError
 from ..ipaddresses import IPAddress, IPNetwork
 
@@ -78,7 +80,66 @@ class ValidatorText(ConfigParserValidator):
         return None
 
 class ValidatorASSet(ValidatorText):
-    pass
+
+    def _validate(self, v):
+        source_macro = re.match("^([A-Za-z]+)::(.+)$", v.strip())
+        if source_macro:
+            source = source_macro.group(1)
+            macro = source_macro.group(2)
+        else:
+            source = None
+            macro = v.strip()
+
+        try:
+            macro = self._parse_asset(macro)
+        except ConfigError as e:
+            msg = "Invalid AS-SET: {}".format(v)
+            if str(e):
+                msg += ", " + str(e)
+            raise ConfigError(msg)
+
+        if source:
+            return "{}::{}".format(source, macro)
+        return macro
+
+    def _parse_asset(self, v):
+        macro = v.strip()
+
+        # "Many objects in RPSL have a name.  An <object-name> is
+        # made up of letters, digits, the character underscore "_",
+        # and the character hyphen "-"; the first character of a
+        # name must be a letter, and the last character of a name
+        # must be a letter or a digit.
+        # An AS number x is represented as the string "ASx".  That
+        # is, the AS 226 is represented as AS226."
+        # https://datatracker.ietf.org/doc/html/rfc2622#section-2
+        #
+        # "A hierarchical set name is a sequence of set names and
+        # AS numbers separated by colons ":".
+        # At least one component of such a name must be an actual
+        # set name (i.e. start with one of the prefixes above)."
+        # https://datatracker.ietf.org/doc/html/rfc2622#section-5
+        if re.match("^AS[\d]+$", macro):
+            return macro
+
+        as_dash_found = False
+        parts = []
+        for part in macro.split(":"):
+            name = part.strip().upper()
+            if not re.match("^(?:AS[\d]+|AS-[A-Z0-9_\-]*[A-Z0-9])$", name):
+                raise ConfigError("invalid name {}".format(name))
+            if name.startswith("AS-"):
+                as_dash_found = True
+            parts.append(name)
+        macro = ":".join(parts)
+
+        if not as_dash_found:
+            raise ConfigError("no ""AS-"" found")
+
+        if not macro:
+            raise ConfigError()
+
+        return macro
 
 class ValidatorASN(ConfigParserValidator):
 

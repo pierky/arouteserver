@@ -168,6 +168,8 @@ With this configuration, the following values will be used to run the bgpq3 prog
 - **AS-AS33CUSTOMERS** for the 192.0.2.33 client (the ``asns``-level configuration is ignored because a more specific one is given at client-level);
 - **AS44** for the 192.0.2.44 client, because no AS-SETs are given at any level. In this case, if the ``cfg.filtering.irrdb.peering_db`` was set to True, the AS-SET from PeeringDB would be used.
 
+Optionally, the source that must be used to expand the AS macro can be prepended, followed by two colon characters: **RIPE::AS-FOO**, **RADB::AS64496:AS-FOO**.
+
 Use RPKI ROAs as if they were route objects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
