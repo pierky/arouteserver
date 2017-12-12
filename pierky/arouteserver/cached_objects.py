@@ -95,6 +95,8 @@ class CachedObject(object):
             self.cache_expiry_time = cache_expiry[self.EXPIRY_TIME_TAG]
 
         self.raw_data = None
+        self.bypass_cache = False
+        self.from_cache = False
 
     def _get_object_filename(self):
         raise NotImplementedError()
@@ -142,8 +144,9 @@ class CachedObject(object):
         raise NotImplementedError()
 
     def load_data(self):
-        if self.load_data_from_cache():
+        if not self.bypass_cache and self.load_data_from_cache():
             logging.debug("Cache hit: {}".format(self._get_object_filepath()))
+            self.from_cache = True
             return
 
         # Children classes raise ExternalDataNoInfoError-derived exceptions
@@ -152,6 +155,7 @@ class CachedObject(object):
         # then the original exception is re-raised.
         try:
             self.raw_data = self._get_data()
+            self.from_cache = False
         except ExternalDataNoInfoError:
             self.save_data_to_cache()
             raise

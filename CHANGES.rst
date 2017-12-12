@@ -10,6 +10,11 @@ next release
 
   AS-SETs can be prepended with an optional source: ``RIPE::AS-FOO``, ``RIPE::AS64496:AS-FOO``.
 
+v0.16.1
+-------
+
+- Fix: handle the new version of the JSON schema built by `arin-whois-bulk-parser <https://github.com/NLNOG/arin-whois-bulk-parser>`__.
+
 v0.16.0
 -------
 

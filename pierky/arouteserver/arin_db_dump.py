@@ -17,6 +17,7 @@ from bz2 import decompress
 import json
 import logging
 import os
+from packaging import version
 
 from six.moves.urllib.request import urlopen
 from six.moves.urllib.error import HTTPError
@@ -48,7 +49,7 @@ class ARINWhoisDBDump(CachedObject):
             json_schema = dic.get("json_schema", None)
             if json_schema is None:
                 raise ValueError("'json_schema' key is missing")
-            if json_schema != "0.0.2":
+            if version.parse(json_schema) >= version.parse("0.2"):
                 raise ValueError(
                     "unsupported JSON schema version: {}".format(json_schema)
                 )
@@ -106,10 +107,16 @@ class ARINWhoisDBDump(CachedObject):
                             )
                         )
         except ValueError as e:
-            raise ARINWhoisDBDumpError(
+            msg = (
                 "An error occurred while processing the ARIN Whois "
                 "database dump: {}".format(str(e))
             )
+            if self.from_cache:
+                logging.warning("{} - trying to bypass the cache".format(msg))
+                self.bypass_cache = True
+                self.load_data()
+            else:
+                raise ARINWhoisDBDumpError(msg)
 
     def _get_object_filename(self):
         return "arin-whois-db-dump.json"
