@@ -1,5 +1,5 @@
 {
-  "json_schema": "0.0.2",
+  "json_schema": "0.1.0",
   "source": "ARIN-WHOIS",
   "whois_records": {
     "v4": [
