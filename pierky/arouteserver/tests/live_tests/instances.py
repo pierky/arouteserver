@@ -162,6 +162,23 @@ class BGPSpeakerInstance(object):
         """
         raise NotImplementedError()
 
+    def log_contains_errors(self, allowed_errors, list_errors=False):
+        """Returns True if the BGP speaker's log contains warning/errors.
+
+        Args:
+            allowed_errors (list): list of strings representing errors
+                that are allowed to be found within the BGP speaker's log.
+
+            list_errors (bool): when set to True, the functions returns
+                a touple (errors_found, list_of_errors).
+
+        Returns:
+            When ``list_errors`` is False: True of False if error messages
+            or warnings are found within the BGP speaker's logs.
+            When ``list_errors`` is True, a touple (bool, str).
+        """
+        raise NotImplementedError()
+
 class Route(object):
     """Details about a route.
 

@@ -163,6 +163,8 @@ class LiveScenario(ARouteServerTestCase):
     REJECT_CAUSE_COMMUNITY = None
     REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY = None
 
+    ALLOWED_LOG_ERRORS = []
+
     @classmethod
     def _get_module_dir(cls):
         return os.path.dirname(cls.MODULE_PATH)
@@ -405,6 +407,11 @@ class LiveScenario(ARouteServerTestCase):
                 route.process_reject_cause(re_pattern,
                                            rejected_route_announced_by_pattern)
 
+    def _instance_log_contains_errors_warning(self, inst):
+        if inst.log_contains_errors(self.ALLOWED_LOG_ERRORS):
+            return "\nWARNING: {} log contains errors".format(inst.name)
+        return ""
+
     def receive_route(self, inst, prefix, other_inst=None, as_path=None,
                       next_hop=None, std_comms=None, lrg_comms=None,
                       ext_comms=None, local_pref=None,
@@ -646,6 +653,7 @@ class LiveScenario(ARouteServerTestCase):
                     local_pref=local_pref,
                 ) for err_msg in errors
             ])
+            failure += self._instance_log_contains_errors_warning(inst)
             self.fail(failure)
 
     def log_contains(self, inst, msg, instances={}):
@@ -700,7 +708,11 @@ class LiveScenario(ARouteServerTestCase):
             expanded_msg = expanded_msg.format(**macros_dict)
 
         if not inst.log_contains(expanded_msg):
-            self.fail("Expected message not found on {} logs:\n\t{}".format(inst.name, expanded_msg))
+            self.fail(
+                "Expected message not found on {} logs:\n\t{}".format(
+                    inst.name, expanded_msg
+                ) + self._instance_log_contains_errors_warning(inst)
+            )
 
     def session_exists(self, inst_a, inst_b_or_ip):
         """Test if a BGP session between the two instances exists.
@@ -714,14 +726,16 @@ class LiveScenario(ARouteServerTestCase):
         """
 
         if inst_a.get_bgp_session(inst_b_or_ip) is None:
-            self.fail("A BGP session between '{}' ({}) and '{}' "
+            self.fail(
+                "A BGP session between '{}' ({}) and '{}' "
                 "does not exist.".format(
-                inst_a.name, inst_a.ip,
-                "{} ({})".format(
-                    inst_b_or_ip.name, inst_b_or_ip.ip
-                ) if isinstance(inst_b_or_ip, BGPSpeakerInstance)
-                  else inst_b_or_ip
-            ))
+                    inst_a.name, inst_a.ip,
+                    "{} ({})".format(
+                        inst_b_or_ip.name, inst_b_or_ip.ip
+                    ) if isinstance(inst_b_or_ip, BGPSpeakerInstance)
+                      else inst_b_or_ip
+                ) + self._instance_log_contains_errors_warning(inst_a)
+            )
 
     def session_is_up(self, inst_a, inst_b):
         """Test if a BGP session between the two instances is up.
@@ -739,14 +753,34 @@ class LiveScenario(ARouteServerTestCase):
 
         self.session_exists(inst_a, inst_b)
 
-        if inst_a.bgp_session_is_up(inst_b):
-            return
-        time.sleep(5)
+        for _ in range(5):
+            if inst_a.bgp_session_is_up(inst_b):
+                return
+            time.sleep(1)
         if inst_a.bgp_session_is_up(inst_b, force_update=True):
             return
-        self.fail("BGP session between '{}' ({}) and '{}' ({}) is not up.".format(
-            inst_a.name, inst_a.ip, inst_b.name, inst_b.ip
-        ))
+        self.fail(
+            "BGP session between '{}' ({}) and '{}' ({}) is not up.".format(
+                inst_a.name, inst_a.ip, inst_b.name, inst_b.ip
+            ) + self._instance_log_contains_errors_warning(inst_a)
+        )
+
+    def test_010_setup(self):
+        # Referenced by utils/update_tests, used when BUILD_ONLY=1
+        raise NotImplementedError()
+
+    def test_999_log_contains_errors(self):
+        """{}: log contains errors"""
+        try:
+            errors_found, errors = self.rs.log_contains_errors(
+                self.ALLOWED_LOG_ERRORS, True
+            )
+            if errors_found:
+                self.fail("rs log contains errors:\n{}".format(errors))
+        except AttributeError:
+            raise NotImplementedError("self.rs does not exist here")
+        except NotImplementedError:
+            raise
 
 class LiveScenario_TagRejectPolicy(object):
     """Helper class to run a scenario as if reject_policy is set to 'tag'.

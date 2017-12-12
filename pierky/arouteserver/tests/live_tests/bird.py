@@ -248,6 +248,22 @@ class BIRDInstance(DockerInstance):
         else:
             return False
 
+    def log_contains_errors(self, allowed_errors, list_errors=False):
+        out = self.run_cmd("cat /var/log/bird.log")
+
+        errors_found = False
+        errors = []
+        for line in out.split("\n"):
+            if "<ERR>" not in line:
+                continue
+            if any([msg for msg in allowed_errors if msg in line]):
+                continue
+            errors_found = True
+            errors.append(line)
+        if list_errors:
+            return errors_found, "\n".join(errors)
+        return errors_found
+
 class BIRDInstanceIPv4(BIRDInstance):
 
     def _get_start_cmd(self):
