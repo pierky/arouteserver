@@ -37,7 +37,7 @@ class BIRDInstance(DockerInstance):
         # See the docstring of _get_protocols_status()
         self.protocols_status = {}
 
-        self.routes = {}
+        self.routes = []
 
     def restart(self):
         """Restart BIRD.
@@ -144,15 +144,10 @@ class BIRDInstance(DockerInstance):
                 return
 
             new_route = Route(**route)
-
-            prefix = new_route.prefix
-
-            if prefix not in self.routes:
-                self.routes[prefix] = []
-            self.routes[prefix].append(new_route)
+            self.routes.append(new_route)
             route = {}
 
-        self.routes = {}
+        self.routes = []
 
         self._get_protocols_status()
 
@@ -222,8 +217,8 @@ class BIRDInstance(DockerInstance):
             self._get_all_routes()
 
         routes = []
-        if prefix in self.routes:
-            for route in self.routes[prefix]:
+        for route in self.routes:
+            if prefix is None or route.prefix == prefix:
                 if route.filtered and not include_filtered:
                     continue
                 if not route.best and only_best:

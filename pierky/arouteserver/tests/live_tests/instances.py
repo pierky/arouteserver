@@ -137,7 +137,7 @@ class BGPSpeakerInstance(object):
 
         Args:
             prefix (str): the IP prefix that returned routes
-                must match.
+                must match. If None, all the routes are returned.
 
             include_filtered (bool): include filtered routes / rejected
                 prefixes in the result.
@@ -300,20 +300,35 @@ class Route(object):
                         orig_list.remove(comm)
                         return
 
-    def __str__(self):
-        return str({
+    def to_dict(self):
+        return {
             "prefix": self.prefix,
             "via": self.via,
             "as_path": self.as_path,
             "next_hop": self.next_hop,
             "localpref": self.localpref,
             "filtered": self.filtered,
-            "reject_reasons": ", ".join(map(str, self.reject_reasons)),
+            "reject_reasons": ", ".join(map(str, sorted(self.reject_reasons))),
             "best": self.best,
-            "std_comms": self.std_comms,
-            "lrg_comms": self.lrg_comms,
-            "ext_comms": self.ext_comms,
-        })
+            "std_comms": ", ".join(sorted(self.std_comms)),
+            "lrg_comms": ", ".join(sorted(self.lrg_comms)),
+            "ext_comms": ", ".join(sorted(self.ext_comms)),
+        }
+
+    def dump(self, f):
+        f.write(
+            "{prefix}, AS_PATH: {as_path}, NEXT_HOP: {next_hop}, via {via}\n"
+            "  std comms: {std_comms}\n"
+            "  ext comms: {ext_comms}\n"
+            "  lrg comms: {lrg_comms}\n"
+            "  best: {best}, LOCAL_PREF: {localpref}\n"
+            "  filtered: {filtered} ({reject_reasons})\n".format(
+                **self.to_dict()
+            )
+        )
+
+    def __str__(self):
+        return str(self.to_dict())
 
     def __repr__(self):
         return self.__str__()

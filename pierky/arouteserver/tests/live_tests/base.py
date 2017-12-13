@@ -25,6 +25,11 @@ from pierky.arouteserver.ipaddresses import IPAddress, IPNetwork
 from pierky.arouteserver.tests.base import ARouteServerTestCase
 from pierky.arouteserver.tests.mocked_env import MockedEnv
 from pierky.arouteserver.tests.live_tests.instances import BGPSpeakerInstance
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, \
+                                                      BIRDInstanceIPv6
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance, \
+                                                          OpenBGPD61Instance, \
+                                                          OpenBGPD62Instance
 
 
 class LiveScenario(ARouteServerTestCase):
@@ -369,12 +374,47 @@ class LiveScenario(ARouteServerTestCase):
             raise
 
     @classmethod
+    def dump_routes(cls):
+        dest_dir = os.path.join(cls._get_module_dir(), "routes", cls.__name__)
+        if not os.path.exists(dest_dir):
+            os.makedirs(dest_dir)
+
+        for instance in cls.INSTANCES:
+            if isinstance(instance, (BIRDInstanceIPv4, BIRDInstanceIPv6)):
+                tag = "bird16"
+            elif isinstance(instance, OpenBGPD60Instance):
+                tag = "openbgpd60"
+            elif isinstance(instance, OpenBGPD61Instance):
+                tag = "openbgpd61"
+            elif isinstance(instance, OpenBGPD62Instance):
+                tag = "openbgpd62"
+            else:
+                raise ValueError(
+                    "Unknown instance type: {}".format(instance.name)
+                )
+
+            path = os.path.join(dest_dir, "{}-{}.csv".format(instance.name, tag))
+            routes = instance.get_routes(None, include_filtered=True)
+            sorted_routes = sorted(routes,
+                                   key = lambda route: (route.prefix,
+                                                        route.as_path,
+                                                        route.next_hop))
+            with open(path, "w") as f:
+                for route in sorted_routes:
+                    route.dump(f)
+
+    @classmethod
     def _tearDownClass(cls):
         MockedEnv.stopall()
 
         if cls._do_not_run_instances():
             cls.debug("Skipping stopping instances")
             return
+
+        cls.info("{}: dumping routes...".format(cls.SHORT_DESCR))
+
+        if "TRAVIS" not in os.environ:
+            cls.dump_routes()
 
         if cls._do_not_stop_instances():
             cls.debug("Skipping stopping instances")
