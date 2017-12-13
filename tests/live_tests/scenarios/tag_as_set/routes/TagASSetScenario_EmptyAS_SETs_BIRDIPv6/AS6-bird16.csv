@@ -1,0 +1,138 @@
+2a02:0:1::/48, AS_PATH: 2, NEXT_HOP: 2001:db8:1:1::21, via 2001:db8:1:1::2
+  std comms: 999:64513, 999:64515
+  ext comms: 
+  lrg comms: 999:0:64513, 999:0:64515
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a02:0:2::/48, AS_PATH: 2 3, NEXT_HOP: 2001:db8:1:1::21, via 2001:db8:1:1::2
+  std comms: 999:64513, 999:64515
+  ext comms: 
+  lrg comms: 999:0:64513, 999:0:64515
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a02:0:3::/48, AS_PATH: 2 21, NEXT_HOP: 2001:db8:1:1::21, via 2001:db8:1:1::2
+  std comms: 999:64513, 999:64514
+  ext comms: 
+  lrg comms: 999:0:64513, 999:0:64514
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a02:0:4::/48, AS_PATH: 2, NEXT_HOP: 2001:db8:1:1::21, via 2001:db8:1:1::2
+  std comms: 999:64513, 999:64515
+  ext comms: 
+  lrg comms: 999:0:64513, 999:0:64515
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a02:0:5::/48, AS_PATH: 2, NEXT_HOP: 2001:db8:1:1::21, via 2001:db8:1:1::2
+  std comms: 999:64513, 999:64515
+  ext comms: 
+  lrg comms: 999:0:64513, 999:0:64515
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a02:1::/48, AS_PATH: 2, NEXT_HOP: 2001:db8:1:1::21, via 2001:db8:1:1::2
+  std comms: 999:64513, 999:64515
+  ext comms: 
+  lrg comms: 999:0:64513, 999:0:64515
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a02:2:1::/48, AS_PATH: 2, NEXT_HOP: 2001:db8:1:1::21, via 2001:db8:1:1::2
+  std comms: 999:64512, 999:64515
+  ext comms: 
+  lrg comms: 999:0:64512, 999:0:64515
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a02:2:2::/48, AS_PATH: 2 3, NEXT_HOP: 2001:db8:1:1::21, via 2001:db8:1:1::2
+  std comms: 999:64512, 999:64515
+  ext comms: 
+  lrg comms: 999:0:64512, 999:0:64515
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a02:2:3::/48, AS_PATH: 2 21, NEXT_HOP: 2001:db8:1:1::21, via 2001:db8:1:1::2
+  std comms: 999:64512, 999:64514
+  ext comms: 
+  lrg comms: 999:0:64512, 999:0:64514
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a02:3:1::/48, AS_PATH: 2 21, NEXT_HOP: 2001:db8:1:1::21, via 2001:db8:1:1::2
+  std comms: 999:64513, 999:64514
+  ext comms: 
+  lrg comms: 999:0:64513, 999:0:64514
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a02:5::/32, AS_PATH: 2, NEXT_HOP: 2001:db8:1:1::21, via 2001:db8:1:1::2
+  std comms: 999:64513, 999:64515
+  ext comms: 
+  lrg comms: 999:0:64513, 999:0:64515
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a02:6::/32, AS_PATH: 2, NEXT_HOP: 2001:db8:1:1::21, via 2001:db8:1:1::2
+  std comms: 999:64513, 999:64515
+  ext comms: 
+  lrg comms: 999:0:64513, 999:0:64515
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a02:7::/32, AS_PATH: 2, NEXT_HOP: 2001:db8:1:1::21, via 2001:db8:1:1::2
+  std comms: 999:64513, 999:64515
+  ext comms: 
+  lrg comms: 999:0:64513, 999:0:64515
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a03:0:1::/48, AS_PATH: 2 3, NEXT_HOP: 2001:db8:1:1::21, via 2001:db8:1:1::2
+  std comms: 999:64513, 999:64515
+  ext comms: 
+  lrg comms: 999:0:64513, 999:0:64515
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a04:0:3::/48, AS_PATH: 4 41, NEXT_HOP: 2001:db8:1:1::41, via 2001:db8:1:1::2
+  std comms: 999:64513, 999:64514
+  ext comms: 
+  lrg comms: 999:0:64513, 999:0:64514
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a04:2:3::/48, AS_PATH: 4 41, NEXT_HOP: 2001:db8:1:1::41, via 2001:db8:1:1::2
+  std comms: 999:64512, 999:64514
+  ext comms: 
+  lrg comms: 999:0:64512, 999:0:64514
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a04:3:1::/48, AS_PATH: 4 41, NEXT_HOP: 2001:db8:1:1::41, via 2001:db8:1:1::2
+  std comms: 999:64513, 999:64514
+  ext comms: 
+  lrg comms: 999:0:64513, 999:0:64514
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a04:4::/32, AS_PATH: 4 44, NEXT_HOP: 2001:db8:1:1::41, via 2001:db8:1:1::2
+  std comms: 999:64513, 999:64515, 999:64517
+  ext comms: 
+  lrg comms: 999:0:64513, 999:0:64515, 999:0:64517
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a04:5:1::/48, AS_PATH: 4 43, NEXT_HOP: 2001:db8:1:1::41, via 2001:db8:1:1::2
+  std comms: 999:64513, 999:64515, 999:64517
+  ext comms: 
+  lrg comms: 999:0:64513, 999:0:64515, 999:0:64517
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a04:6:1::/48, AS_PATH: 4 45, NEXT_HOP: 2001:db8:1:1::41, via 2001:db8:1:1::2
+  std comms: 999:64513, 999:64515, 999:64517
+  ext comms: 
+  lrg comms: 999:0:64513, 999:0:64515, 999:0:64517
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a05:2:1::/48, AS_PATH: 5, NEXT_HOP: 2001:db8:1:1::51, via 2001:db8:1:1::2
+  std comms: 999:64512, 999:64515
+  ext comms: 
+  lrg comms: 999:0:64512, 999:0:64515
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a05:2:2::/48, AS_PATH: 5 3, NEXT_HOP: 2001:db8:1:1::51, via 2001:db8:1:1::2
+  std comms: 999:64512, 999:64515
+  ext comms: 
+  lrg comms: 999:0:64512, 999:0:64515
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a05:2:3::/48, AS_PATH: 5 51, NEXT_HOP: 2001:db8:1:1::51, via 2001:db8:1:1::2
+  std comms: 999:64512, 999:64514
+  ext comms: 
+  lrg comms: 999:0:64512, 999:0:64514
+  best: True, LOCAL_PREF: 100
+  filtered: False ()

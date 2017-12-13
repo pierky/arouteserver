@@ -1,0 +1,42 @@
+2a00:1::/32, AS_PATH: 2, NEXT_HOP: 2001:db8:1:1::22, via 2001:db8:1:1::22
+  std comms: 0:999, 999:1
+  ext comms: 
+  lrg comms: 
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a00:2::/32, AS_PATH: 2, NEXT_HOP: 2001:db8:1:1::22, via 2001:db8:1:1::22
+  std comms: 
+  ext comms: rt:0:999, rt:999:1
+  lrg comms: 
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a00:3::/32, AS_PATH: 2, NEXT_HOP: 2001:db8:1:1::22, via 2001:db8:1:1::22
+  std comms: 
+  ext comms: 
+  lrg comms: 999:0:999, 999:999:1
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a00:4::/32, AS_PATH: 2, NEXT_HOP: 2001:db8:1:1::22, via 2001:db8:1:1::22
+  std comms: 0:999
+  ext comms: rt:999:131073
+  lrg comms: 
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a00:5::/32, AS_PATH: 2, NEXT_HOP: 2001:db8:1:1::22, via 2001:db8:1:1::22
+  std comms: 
+  ext comms: 
+  lrg comms: 999:0:999, 999:999:131073
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a00:6::/32, AS_PATH: 2, NEXT_HOP: 2001:db8:1:1::22, via 2001:db8:1:1::22
+  std comms: 
+  ext comms: 
+  lrg comms: 
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+2a01:1::/32, AS_PATH: 1, NEXT_HOP: 2001:db8:1:1::11, via 2001:db8:1:1::11
+  std comms: 65501:65501
+  ext comms: rt:65501:65501
+  lrg comms: 999:65501:65501
+  best: True, LOCAL_PREF: 100
+  filtered: False ()

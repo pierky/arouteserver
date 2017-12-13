@@ -773,7 +773,7 @@ class LiveScenario(ARouteServerTestCase):
                     "{} ({})".format(
                         inst_b_or_ip.name, inst_b_or_ip.ip
                     ) if isinstance(inst_b_or_ip, BGPSpeakerInstance)
-                      else inst_b_or_ip
+                    else inst_b_or_ip
                 ) + self._instance_log_contains_errors_warning(inst_a)
             )
 
