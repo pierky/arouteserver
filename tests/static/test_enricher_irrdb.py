@@ -49,7 +49,7 @@ class TestIRRDBEnricher_Base(unittest.TestCase):
         ]
     }
 
-    def setup_builder(self, general, clients):
+    def setup_builder(self, general, clients, ip_ver=4):
         self.builder = TemplateContextDumper(
             template_dir="templates/template-context/",
             template_name="main.j2",
@@ -58,7 +58,7 @@ class TestIRRDBEnricher_Base(unittest.TestCase):
             cfg_bogons="config.d/bogons.yml",
             cache_dir=self.temp_dir,
             cache_expiry=120,
-            ip_ver=4
+            ip_ver=ip_ver
         )
 
     def setUp(self, *patches):
@@ -249,4 +249,32 @@ class TestIRRDBEnricher_Base(unittest.TestCase):
             self.get_client_info(self.get_client_by_id("AS2_1")),
             ([2, 20, 21, 22, 30, 31, 32], sorted(["2.0.0.0/8", "20.0.0.0/8", "21.0.0.0/8", "22.0.0.0/8",
                                                   "30.0.0.0/8", "31.0.0.0/8", "32.0.0.0/8"]))
+        )
+
+    def test_010_white_list_different_ip_ver(self, *patches):
+        """IRRDB enricher: IPv4 white list for IPv6 configs"""
+        clients = copy.deepcopy(self.CLIENTS_EMPTY_AUTNUM)
+        clients["clients"][0]["ip"] = ["192.0.2.31", "2001:db8::31"]
+        clients["clients"][0]["cfg"] = {"filtering": {"irrdb": {}}}
+        clients["clients"][0]["cfg"]["filtering"]["irrdb"]["white_list_asn"] = [300]
+        clients["clients"][0]["cfg"]["filtering"]["irrdb"]["white_list_pref"] = [
+            {"prefix": "100.0.0.0", "length": 8}, {"prefix": "101.0.0.0", "length": 8}
+        ]
+
+        # IPv4 config
+        self.setup_builder(self.GENERAL_SIMPLE, clients, ip_ver=4)
+        self.builder.render_template()
+
+        self.assertEqual(
+            self.get_client_info(self.get_client_by_id("AS3_1")),
+            ([3, 300], ["100.0.0.0/8", "101.0.0.0/8"])
+        )
+
+        # IPv6 config
+        self.setup_builder(self.GENERAL_SIMPLE, clients, ip_ver=6)
+        self.builder.render_template()
+
+        self.assertEqual(
+            self.get_client_info(self.get_client_by_id("AS3_2")),
+            ([3, 300], [])
         )
