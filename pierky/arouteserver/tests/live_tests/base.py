@@ -398,7 +398,8 @@ class LiveScenario(ARouteServerTestCase):
             sorted_routes = sorted(routes,
                                    key = lambda route: (route.prefix,
                                                         route.as_path,
-                                                        route.next_hop))
+                                                        route.next_hop,
+                                                        route.via))
             with open(path, "w") as f:
                 for route in sorted_routes:
                     route.dump(f)
