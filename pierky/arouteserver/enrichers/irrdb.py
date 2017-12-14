@@ -22,7 +22,7 @@ import tempfile
 
 from .base import BaseConfigEnricher, BaseConfigEnricherThread
 from ..errors import BuilderError, ARouteServerError
-from ..ipaddresses import IPAddress
+from ..ipaddresses import IPAddress, IPNetwork
 from ..irrdb import ASSet, RSet, AS_SET_Bundle
 
 
@@ -268,7 +268,21 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
             # IRR white lists
             for cfg_attr, obj_type in (("white_list_pref", "prefixes"),
                                        ("white_list_asn", "asns")):
-                if client_irrdb[cfg_attr]:
+
+                white_list_objects = client_irrdb[cfg_attr]
+
+                if not white_list_objects:
+                    continue
+
+                if obj_type == "prefixes" and self.builder.ip_ver:
+                    # Only consider prefixes for the current IP version.
+                    ip_ver = self.builder.ip_ver
+                    white_list_objects = [
+                        p for p in white_list_objects
+                        if IPNetwork(p["prefix"]).version == ip_ver
+                    ]
+
+                if white_list_objects:
                     # If a white list of prefixes/ASNs has been set for the
                     # client, add a fake 'white_list' AS-SET with those
                     # prefixes/ASNs.
