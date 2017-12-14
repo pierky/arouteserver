@@ -3,6 +3,11 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+v0.16.2
+-------
+
+- Fix: avoid empty lists of prefixes when a client's ``white_list_pref`` contains only prefixes for an IP version different from the current one.
+
 v0.16.1
 -------
 
