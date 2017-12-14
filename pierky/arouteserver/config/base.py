@@ -84,6 +84,14 @@ class ConfigParserBase(object):
                 "Can't parse YAML file: {}".format(str(e))
             )
 
+        if not isinstance(self.cfg, dict):
+            raise ConfigError(
+                "Error while parsing config file: invalid syntax. "
+                "Hint: check that the root element '{}' exists.".format(
+                    self.ROOT
+                )
+            )
+
     def _load_from_yaml_file(self, cfg_path):
         if not os.path.isfile(cfg_path):
             raise MissingFileError(cfg_path)
