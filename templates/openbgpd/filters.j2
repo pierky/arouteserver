@@ -116,8 +116,8 @@ match from group clients community NO_ADVERTISE set community delete NO_ADVERTIS
 # It will be used later during IRRDB validation in
 # case the origin ASN is authorized by a client's
 # AS-SET but the prefix is not.
-{%	for origin_asn in rpki_roas_as_route_objects %}
-{%		for prefixes in rpki_roas_as_route_objects[origin_asn].roas|batch(50) %}
+{%	for origin_asn in rpki_roas_as_route_objects|sort %}
+{%		for prefixes in rpki_roas_as_route_objects[origin_asn].roas|sort(attribute="prefix")|batch(50) %}
 match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {{ write_prefix_list(prefixes) }} } set ext-community $INTCOMM_PREF_OK_ROA
 {%		endfor %}
 {%	endfor %}
@@ -130,8 +130,8 @@ match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {
 # It will be used later during IRRDB validation in
 # case the origin ASN is authorized by a client's
 # AS-SET but the prefix is not.
-{%	for origin_asn in arin_whois_records %}
-{%		for prefixes in arin_whois_records[origin_asn].prefixes|batch(50) %}
+{%	for origin_asn in arin_whois_records|sort %}
+{%		for prefixes in arin_whois_records[origin_asn].prefixes|sort(attribute="prefix")|batch(50) %}
 match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {{ write_prefix_list(prefixes) }} } set ext-community $INTCOMM_PREF_OK_ARINDB
 {%		endfor %}
 {%	endfor %}

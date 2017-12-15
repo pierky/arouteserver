@@ -303,6 +303,8 @@ class LiveScenario(ARouteServerTestCase):
         with open(cfg_file_path, "w") as f:
             builder.render_template(f)
 
+        cls.rs_cfg_file_path = cfg_file_path
+
         return cfg_file_path
 
     @classmethod
@@ -347,6 +349,8 @@ class LiveScenario(ARouteServerTestCase):
                   rttgetter=cls.MOCK_RTTGETTER,
                   arin_db_dump=cls.MOCK_ARIN_DB_DUMP)
 
+        cls.rs_cfg_file_path = None
+
         try:
             cls._setup_instances()
         except:
@@ -373,6 +377,32 @@ class LiveScenario(ARouteServerTestCase):
             cls.tearDownClass()
             raise
 
+    @staticmethod
+    def get_instance_tag(instance_or_class):
+        if isinstance(instance_or_class, BGPSpeakerInstance):
+            _class = instance_or_class.__class__
+        else:
+            _class = instance_or_class
+
+        if _class is BIRDInstanceIPv4 or \
+            _class is BIRDInstanceIPv6:
+            tag = "bird16"
+        elif _class is OpenBGPD60Instance:
+            tag = "openbgpd60"
+        elif _class is OpenBGPD61Instance:
+            tag = "openbgpd61"
+        elif _class is OpenBGPD62Instance:
+            tag = "openbgpd62"
+        else:
+            msg = "Unknown instance type: "
+            if isinstance(instance_or_class, BGPSpeakerInstance):
+                msg += instance_or_class.name
+            else:
+                msg += instance_or_class.__name__
+            raise ValueError(msg)
+
+        return tag
+
     @classmethod
     def dump_routes(cls):
         dest_dir = os.path.join(cls._get_module_dir(), "routes", cls.__name__)
@@ -380,18 +410,7 @@ class LiveScenario(ARouteServerTestCase):
             os.makedirs(dest_dir)
 
         for instance in cls.INSTANCES:
-            if isinstance(instance, (BIRDInstanceIPv4, BIRDInstanceIPv6)):
-                tag = "bird16"
-            elif isinstance(instance, OpenBGPD60Instance):
-                tag = "openbgpd60"
-            elif isinstance(instance, OpenBGPD61Instance):
-                tag = "openbgpd61"
-            elif isinstance(instance, OpenBGPD62Instance):
-                tag = "openbgpd62"
-            else:
-                raise ValueError(
-                    "Unknown instance type: {}".format(instance.name)
-                )
+            tag = cls.get_instance_tag(instance)
 
             path = os.path.join(dest_dir, "{}-{}.csv".format(instance.name, tag))
             routes = instance.get_routes(None, include_filtered=True)
@@ -405,16 +424,35 @@ class LiveScenario(ARouteServerTestCase):
                     route.dump(f)
 
     @classmethod
+    def dump_rs_config(cls):
+        if not cls.rs_cfg_file_path:
+            return
+
+        dest_dir = os.path.join(cls._get_module_dir(), "configs", cls.__name__)
+        if not os.path.exists(dest_dir):
+            os.makedirs(dest_dir)
+
+        tag = cls.get_instance_tag(cls.RS_INSTANCE_CLASS)
+
+        path = os.path.join(dest_dir, "{}.conf".format(tag))
+        with open(path, "w") as dst:
+            with open(cls.rs_cfg_file_path, "r") as src:
+                dst.write(src.read())
+
+    @classmethod
     def _tearDownClass(cls):
         MockedEnv.stopall()
+
+        if "TRAVIS" not in os.environ:
+            cls.info("{}: dumping rs config...".format(cls.SHORT_DESCR))
+            cls.dump_rs_config()
 
         if cls._do_not_run_instances():
             cls.debug("Skipping stopping instances")
             return
 
-        cls.info("{}: dumping routes...".format(cls.SHORT_DESCR))
-
         if "TRAVIS" not in os.environ:
+            cls.info("{}: dumping routes...".format(cls.SHORT_DESCR))
             cls.dump_routes()
 
         if cls._do_not_stop_instances():
