@@ -175,6 +175,8 @@ Use RPKI ROAs as if they were route objects
 
 If the ``filtering.irrdb.use_rpki_roas_as_route_objects`` option is enabled, RPKI ROAs are used as if they were route objects to validate routes whose origin ASN is already authorized by a client's AS-SET but whose prefix is not. A lookup into the ROA table is made on the basis of the route origin ASN and, if a covering ROA is found, the route is validated. In this case, if the ``filtering.irrdb.tag_as_set`` general option is True the ``prefix_validated_via_rpki_roas`` informative community is added to the route.
 
+Please refer to `ROAs sources`_ in order to configure the source that should be used to gather RPKI ROAs.
+
 Use ARIN Whois database to accept routes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -210,17 +212,29 @@ Example:
 
 This configuration allows to authorize routes for 203.0.113.0/24{24-32} with origin ASN 65534 received from the client.
 
-RPKI-based filtering
-********************
+RPKI
+****
 
-RPKI-based validation of routes can be configured using the general ``filtering.rpki`` section.
+ROAs sources
+~~~~~~~~~~~~
+
+A couple of methods can be used to acquire RPKI data (ROAs):
+
+- (BIRD and OpenBGPD) the builtin method based on `RIPE RPKI Validator cache <http://localcert.ripe.net:8088/>`__ export file: the URL of a local and trusted instance of RPKI Validator should be provided to ensure that a cryptographically validated datased is used. By default, the URL of the public instance is used.
+
+- (BIRD only) external tools from the `rtrlib <http://rpki.realmv6.org/>`_ suite: `rtrlib <https://github.com/rtrlib>`__ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`__. One or more trusted local validating caches should be used to get and validate RPKI data before pushing them to BIRD. An overview is provided on the `rtrlib GitHub wiki <https://github.com/rtrlib/rtrlib/wiki/Background>`__, where also an `usage guide <https://github.com/rtrlib/rtrlib/wiki/Usage-of-the-RTRlib>`__ can be found.
+
+The configuration of ROAs source can be done within the ``rpki_roas`` section of the ``general.yml`` file.
+
+Origin validation
+~~~~~~~~~~~~~~~~~
+
+RPKI-based validation of routes can be configured using the general ``filtering.rpki_bgp_origin_validation`` section.
 RFC8097 BGP extended communities are used to mark routes on the basis of their validity state.
-Depending on the ``reject_invalid`` configuration, INVALID routes can be rejected before entering the route server or accepted for further processing from external tools or functions provided within :ref:`.local files <site-specific-custom-config>`.
+Depending on the ``reject_invalid`` configuration, INVALID routes can be rejected before entering the route server or accepted for further processing by external tools or functions provided within :ref:`.local files <site-specific-custom-config>`.
 INVALID routes are not propagated to clients.
 
-- To acquire RPKI data and load them into BIRD, a couple of external tools from the `rtrlib <http://rpki.realmv6.org/>`_ suite are used: `rtrlib <https://github.com/rtrlib>`__ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`__. One or more trusted local validating caches should be used to get and validate RPKI data before pushing them to BIRD. An overview is provided on the `rtrlib GitHub wiki <https://github.com/rtrlib/rtrlib/wiki/Background>`__, where also an `usage guide <https://github.com/rtrlib/rtrlib/wiki/Usage-of-the-RTRlib>`__ can be found.
-
-- RPKI validation is not supported by OpenBGPD.
+RPKI validation is not supported by OpenBGPD.
 
 BGP Communities
 ***************
