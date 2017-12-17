@@ -14,7 +14,7 @@ DOCS_DIR="`pwd`/docs"
 CFG_FILE="var/build_doc.yml"
 
 function publish_docs() {
-	echo "Publishing docs via HTTP"
+	title "Publishing docs via HTTP"
 
 	echo "cd $DOCS_DIR ; make html ; cd _build/html/ ; python -m SimpleHTTPServer 8000 ; cd $ROOT"
 	cd $DOCS_DIR
@@ -24,6 +24,10 @@ function publish_docs() {
 	cd $ROOT
 }
 
+function title() {
+	echo "$(tput bold)$1$(tput sgr0)"
+}
+
 if [ "$1" == "publish" ]; then
 	publish_docs
 	exit
@@ -31,10 +35,10 @@ fi
 
 # ----------------------------------------------------
 
-echo "Rendering GENERAL.rst from config.d/general.yml"
+title "Rendering GENERAL.rst from config.d/general.yml"
 ./utils/make_general.py
 
-echo "Generating examples configurations"
+title "Generating examples configurations"
 
 function RenderExample() {
 	DST="$1" ; shift
@@ -105,54 +109,54 @@ function IXFMemberExportFromClients() {
 	./scripts/arouteserver ixf-member-export --cfg $CFG_FILE --clients $CLIENTS --output $DST "Test IXP"
 }
 
-echo "Building example: configure command output"
+title "Building example: configure command output"
 RenderConfigureExample "bird-general.yml" "daemon=bird asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32"
 RenderConfigureExample "openbgpd62-general.yml" "daemon=openbgpd version=6.2 asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32"
 
-echo "Building example: default, BIRD, IPv4"
+title "Building example: default, BIRD, IPv4"
 G="config.d/general.yml"
 C="config.d/clients.yml"
 RenderExample "default" "bird" "$G" "$C" "config.d/bogons.yml" 4
 RenderExample "default" "template-context" "$G" "$C" "config.d/bogons.yml" 4
 
-echo "Building example: default, BIRD, IPv6"
+title "Building example: default, BIRD, IPv6"
 RenderExample "default" "bird" "$G" "$C" "config.d/bogons.yml" 6
 RenderExample "default" "template-context" "$G" "$C" "config.d/bogons.yml" 6
 
-echo "Building example: default, OpenBGPD, IPv4 + IPv6"
+title "Building example: default, OpenBGPD, IPv4 + IPv6"
 RenderExample "default" "openbgpd" "$G" "$C" "config.d/bogons.yml"
 RenderExample "default" "template-context" "$G" "$C" "config.d/bogons.yml"
 
-echo "Building example: default, HTML"
+title "Building example: default, HTML"
 RenderExample "default" "html" "$G" "$C" "config.d/bogons.yml"
 
-echo "Building example: rich, BIRD, IPv4"
+title "Building example: rich, BIRD, IPv4"
 G="examples/rich/general-bird.yml"
 C="examples/rich/clients.yml"
 RenderExample "rich" "bird" "$G" "$C" "config.d/bogons.yml" 4 --use-local-files client
 RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml" 4
 
-echo "Building example: rich, BIRD, IPv6"
+title "Building example: rich, BIRD, IPv6"
 RenderExample "rich" "bird" "$G" "$C" "config.d/bogons.yml" 6
 RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml" 6
 
-echo "Building example: rich, OpenBGPD, IPv4 + IPv6"
+title "Building example: rich, OpenBGPD, IPv4 + IPv6"
 G="examples/rich/general-openbgpd.yml"
 RenderExample "rich" "openbgpd" "$G" "$C" "config.d/bogons.yml"
 RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml"
 
-echo "Building example: rich, HTML"
+title "Building example: rich, HTML"
 G="examples/rich/general-bird.yml"
 RenderExample "rich" "html" "$G" "$C" "config.d/bogons.yml"
 
-echo "Building example: BIRD hooks"
+title "Building example: BIRD hooks"
 G="examples/bird_hooks/general.yml"
 C="examples/bird_hooks/clients.yml"
 HOOKS="pre_receive_from_client post_receive_from_client pre_announce_to_client post_announce_to_client scrub_communities_in scrub_communities_out apply_blackhole_filtering_policy route_can_be_announced_to announce_rpki_invalid_to_client"
 RenderExample "bird_hooks" "bird" "$G" "$C" "config.d/bogons.yml" 4 --use-hooks $HOOKS --use-local-files header
 RenderExample "bird_hooks" "bird" "$G" "$C" "config.d/bogons.yml" 6 --use-hooks $HOOKS --use-local-files header
 
-echo "Build clients from Euro-IX files? [yes/NO] "
+title "Build clients from Euro-IX files? [yes/NO] "
 read YES_NO
 
 if [ "$YES_NO" == "yes" ]; then
@@ -160,7 +164,7 @@ if [ "$YES_NO" == "yes" ]; then
 	ClientsFromEuroIX "https://www.inex.ie/ixp/apiv1/member-list/list" 1 "examples/clients-from-euroix/inex.yml" 2
 fi
 
-echo "Build IX-F Member Export files from clients? [yes/NO] "
+title "Build IX-F Member Export files from clients? [yes/NO] "
 read YES_NO
 
 if [ "$YES_NO" == "yes" ]; then
@@ -170,7 +174,7 @@ fi
 
 # ----------------------------------------------------
 
-echo "Building Live tests scenarios TOC"
+title "Building Live tests scenarios TOC"
 DST_FILE="$DOCS_DIR/LIVETESTS_SCENARIOS.rst"
 rm $DOCS_DIR/LIVETESTS_SCENARIOS_*.rst
 
@@ -193,7 +197,7 @@ cd $ROOT
 
 # ----------------------------------------------------
 
-echo "Building HTML description for real tests configuration"
+title "Building HTML description for real tests configuration"
 TMP_CLIENTS_FILE="`mktemp`"
 cat > $TMP_CLIENTS_FILE << EOF
 clients:
@@ -219,7 +223,7 @@ cd $ROOT
 
 # ----------------------------------------------------
 
-echo "Building examples"
+title "Building examples"
 DST_FILE="$DOCS_DIR/EXAMPLES.rst"
 rm $DST_FILE
 
@@ -257,7 +261,7 @@ cd $ROOT
 
 # ----------------------------------------------------
 
-echo "Building README.rst"
+title "Building README.rst"
 DST_FILE="README.rst"
 
 echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > $DST_FILE

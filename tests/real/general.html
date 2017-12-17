@@ -87,8 +87,6 @@ Origin ASN validity is
 
 <li><p>Use <strong>RPKI ROAs</strong> to validate routes whose origin ASN is authorized by the client's AS-SET but whose prefix is not.</p></li>
 
-<li><p>RPKI ROAs are fetched from the RIPE RPKI Validator cache file at <a href="http://localcert.ripe.net:8088/export.json" rel="noopener">http://localcert.ripe.net:8088/export.json</a>. The following Trust Anchors are used: APNIC from AFRINIC RPKI Root, APNIC from ARIN RPKI Root, APNIC from IANA RPKI Root, APNIC from LACNIC RPKI Root, APNIC from RIPE RPKI Root, AfriNIC RPKI Root, LACNIC RPKI Root, RIPE NCC RPKI Root</p></li>
-
 <li><p>Use <strong>ARIN Whois DB dump</strong> to validate routes whose origin ASN is authorized by the client's AS-SET but whose prefix is not.</p></li>
 
 <li><p>Database is fetched from <a href="http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2" rel="noopener">http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2</a>.</p></li>
@@ -131,12 +129,21 @@ Route <strong>validity state</strong> is signalled to route server clients using
 
 
 
-<h3>RPKI validation</h3>
+<h3>RPKI BGP Prefix Origin Validation</h3>
 
 <ul>
 
-<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI validation</a> of routes received by the route server is <strong>disabled</strong>.</p></li>
+<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI BGP Prefix Origin Validation</a> of routes received by the route server is <strong>disabled</strong>.</p></li>
 
+</ul>
+
+
+
+<h3>RPKI ROAs</h3>
+
+<ul>
+
+<li><p>RPKI ROAs are fetched from the RIPE RPKI Validator cache file at <a href="http://localcert.ripe.net:8088/export.json" rel="noopener">http://localcert.ripe.net:8088/export.json</a>. The following Trust Anchors are used: APNIC from AFRINIC RPKI Root, APNIC from ARIN RPKI Root, APNIC from IANA RPKI Root, APNIC from LACNIC RPKI Root, APNIC from RIPE RPKI Root, AfriNIC RPKI Root, LACNIC RPKI Root, RIPE NCC RPKI Root</p></li>
 </ul>
 
 

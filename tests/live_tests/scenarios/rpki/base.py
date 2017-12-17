@@ -37,7 +37,6 @@ class RPKIINVALIDScenario(LiveScenario):
                 [
                     (
                         cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                         cfg_roas="roas{}.yml".format(cls.IP_VER),
                                          local_files=[
                                              "header",
                                              "header{}".format(cls.IP_VER)

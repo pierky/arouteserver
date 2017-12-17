@@ -238,8 +238,8 @@ class LiveScenario(ARouteServerTestCase):
         return cfg_file_path
 
     @classmethod
-    def _get_cfg_general(cls):
-        return "general.yml"
+    def _get_cfg_general(cls, filename=None):
+        return filename or "general.yml"
 
     @classmethod
     def build_rs_cfg(cls, tpl_dir_name, tpl_name, out_file_name, ip_ver,
