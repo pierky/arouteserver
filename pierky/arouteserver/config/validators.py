@@ -172,48 +172,6 @@ class ValidatorASNList(ConfigParserValidator):
             asns.append(ValidatorASN().validate(part))
         return asns
 
-class ValidatorROA(ConfigParserValidator):
-
-    def _validate(self, v):
-        for prop in v:
-            if prop not in ("prefix", "asn"):
-                raise ConfigError(
-                    "Unknown statement '{}' in ROA entry "
-                    "definition".format(prop)
-                )
-        for prop in ("prefix", "asn"):
-            if prop not in v:
-                raise ConfigError(
-                    "Missing '{}' in ROA entry".format(prop)
-                )
-        try:
-            asn = ValidatorASN().validate(v["asn"])
-        except ConfigError as e:
-            err_msg = "Invalid ASN in ROA entry"
-            if str(e):
-                err_msg += ": {}".format(str(e))
-            raise ConfigError(err_msg)
-
-        try:
-            prefix = ValidatorPrefixListEntry().validate(v["prefix"])
-        except ConfigError as e:
-            err_msg = "Invalid prefix in ROA entry"
-            if str(e):
-                err_msg += ": {}".format(str(e))
-            raise ConfigError(err_msg)
-
-        if prefix["ge"] and prefix["ge"] != prefix["length"]:
-            raise ConfigError(
-                "ROA prefix 'ge' must be equal to the "
-                "prefix length: {} != {} for prefix {}".format(
-                    prefix["ge"], prefix["length"], prefix["prefix"]
-                )
-            )
-        if not prefix["le"]:
-            prefix["exact"] = True
-
-        return {"asn": asn, "prefix": prefix}
-
 class ValidatorIPAddr(ConfigParserValidator):
 
     def _validate(self, v):

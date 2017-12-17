@@ -309,7 +309,7 @@ int client_rtt;
 	return true;
 }
 
-{% if cfg.filtering.rpki.enabled %}
+{% if cfg.filtering.rpki_bgp_origin_validation.enabled %}
 # This function adds the BGP communities used to
 # keep track of RPKI validation state.
 # RFC8097 extended communities are used here.
@@ -418,17 +418,9 @@ function perform_graceful_shutdown() {
 # This function verifies if there is such a ROA for the
 # current route's origin ASN to validate the announced prefix.
 function prefix_in_rpki_roas_as_route_objects() {
-{%	if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.source == "ripe-rpki-validator-cache" %}
-	case bgp_path.last {
-{%		for origin_asn in rpki_roas_as_route_objects|sort %}
-		{{ origin_asn|replace("AS", "") }}: return net ~ RPKI_ROAs_as_route_objects_{{ origin_asn }};
-{%		endfor %}
-	}
-{%	else %}
 	case roa_check(RPKI) {
 		ROA_VALID: return true;
 	}
-{%	endif %}
 	return false;
 }
 {% endif %}

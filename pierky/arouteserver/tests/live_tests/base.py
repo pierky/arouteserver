@@ -244,7 +244,7 @@ class LiveScenario(ARouteServerTestCase):
     @classmethod
     def build_rs_cfg(cls, tpl_dir_name, tpl_name, out_file_name, ip_ver,
                       cfg_general=None, cfg_bogons="bogons.yml",
-                      cfg_clients="clients.yml", cfg_roas=None, **kwargs):
+                      cfg_clients="clients.yml", **kwargs):
         """Builds configuration file for the route server.
 
         Args:
@@ -267,9 +267,6 @@ class LiveScenario(ARouteServerTestCase):
                 IP addresses. File names are relative to the scenario
                 directory.
 
-            cfg_roas (str): name of the file containing
-                ROAs - used to populate fake RPKI table.
-
         Returns:
             the path of the local rendered file.
 
@@ -291,7 +288,6 @@ class LiveScenario(ARouteServerTestCase):
                                        cfg_general or cls._get_cfg_general()),
             cfg_bogons="{}/{}".format(cls._get_module_dir(), cfg_bogons),
             cfg_clients="{}/{}".format(cls._get_module_dir(), cfg_clients),
-            cfg_roas="{}/{}".format(cls._get_module_dir(), cfg_roas) if cfg_roas else None,
             ip_ver=ip_ver,
             ignore_errors=["*"],
             live_tests=True,

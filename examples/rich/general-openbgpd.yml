@@ -59,7 +59,7 @@ cfg:
         enabled: True
 
     rpki:
-      enabled: True
+      enabled: False
       reject_invalid: True
 
     max_prefix:
@@ -79,7 +79,7 @@ cfg:
 
   graceful_shutdown:
     enabled: True
-  
+
   rtt_thresholds: 5, 10, 15, 20, 30, 50, 100, 200, 500
 
   communities:

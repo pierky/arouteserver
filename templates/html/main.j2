@@ -117,19 +117,11 @@ Longer prefixes that are covered by one entry of the resulting route set are acc
 {% endif %}
 </p></li>
 
-{% if cfg.filtering.irrdb.enforce_origin_in_as_set and
-	cfg.filtering.irrdb.enforce_prefix_in_as_set and
-	cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled %}
+{% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled %}
 <li><p>Use <strong>RPKI ROAs</strong> to validate routes whose origin ASN is authorized by the client's AS-SET but whose prefix is not.</p></li>
-
-{%	if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.source == "ripe-rpki-validator-cache" %}
-<li><p>RPKI ROAs are fetched from the RIPE RPKI Validator cache file at {{ cfg.filtering.irrdb.use_rpki_roas_as_route_objects.ripe_rpki_validator_url|urlize }}. The following Trust Anchors are used: {{ cfg.filtering.irrdb.use_rpki_roas_as_route_objects.allowed_trust_anchors|join(", ") }}</p></li>
-{%	endif %}
 {% endif %}
 
-{% if cfg.filtering.irrdb.enforce_origin_in_as_set and
-	cfg.filtering.irrdb.enforce_prefix_in_as_set and
-	cfg.filtering.irrdb.use_arin_bulk_whois_data.enabled %}
+{% if cfg.filtering.irrdb.use_arin_bulk_whois_data.enabled %}
 <li><p>Use <strong>ARIN Whois DB dump</strong> to validate routes whose origin ASN is authorized by the client's AS-SET but whose prefix is not.</p></li>
 
 <li><p>Database is fetched from {{ cfg.filtering.irrdb.use_arin_bulk_whois_data.source|urlize }}.</p></li>
@@ -169,20 +161,36 @@ Route <strong>validity state</strong> is signalled to route server clients using
 
 
 
-<h3>RPKI validation</h3>
+<h3>RPKI BGP Prefix Origin Validation</h3>
 
 <ul>
 
-<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI validation</a> of routes received by the route server is <strong>{% if cfg.filtering.rpki.enabled %}enabled{% else %}disabled{% endif %}</strong>.</p></li>
+<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI BGP Prefix Origin Validation</a> of routes received by the route server is <strong>{% if cfg.filtering.rpki_bgp_origin_validation.enabled %}enabled{% else %}disabled{% endif %}</strong>.</p></li>
 
-{% if cfg.filtering.rpki.enabled %}
-{%	if cfg.filtering.rpki.reject_invalid %}
+{% if cfg.filtering.rpki_bgp_origin_validation.enabled %}
+{%	if cfg.filtering.rpki_bgp_origin_validation.reject_invalid %}
 <li><p>When an INVALID route is received by the route server, <strong>it is rejected</strong>.</p></li>
 {%	else %}
 <li><p>INVALID routes are not announced to clients.</p></li>
 {%	endif %}
 {% endif %}
 </ul>
+
+
+
+{% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled or
+	cfg.filtering.rpki_bgp_origin_validation.enabled %}
+<h3>RPKI ROAs</h3>
+
+<ul>
+
+{%	if cfg.rpki_roas.source == "ripe-rpki-validator-cache" %}
+<li><p>RPKI ROAs are fetched from the RIPE RPKI Validator cache file at {{ cfg.rpki_roas.ripe_rpki_validator_url|urlize }}. The following Trust Anchors are used: {{ cfg.rpki_roas.allowed_trust_anchors|join(", ") }}</p></li>
+{%	else %}
+<li><p>RPKI ROAs are supplied using an external program.</p></li>
+{%	endif %}
+</ul>
+{% endif %}
 
 
 

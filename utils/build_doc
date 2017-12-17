@@ -127,7 +127,7 @@ echo "Building example: default, HTML"
 RenderExample "default" "html" "$G" "$C" "config.d/bogons.yml"
 
 echo "Building example: rich, BIRD, IPv4"
-G="examples/rich/general.yml"
+G="examples/rich/general-bird.yml"
 C="examples/rich/clients.yml"
 RenderExample "rich" "bird" "$G" "$C" "config.d/bogons.yml" 4 --use-local-files client
 RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml" 4
@@ -137,10 +137,12 @@ RenderExample "rich" "bird" "$G" "$C" "config.d/bogons.yml" 6
 RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml" 6
 
 echo "Building example: rich, OpenBGPD, IPv4 + IPv6"
+G="examples/rich/general-openbgpd.yml"
 RenderExample "rich" "openbgpd" "$G" "$C" "config.d/bogons.yml"
 RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml"
 
 echo "Building example: rich, HTML"
+G="examples/rich/general-bird.yml"
 RenderExample "rich" "html" "$G" "$C" "config.d/bogons.yml"
 
 echo "Building example: BIRD hooks"

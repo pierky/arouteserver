@@ -168,15 +168,7 @@ class ConfigParserBase(object):
         raise NotImplementedError()
 
 def convert_next_hop_policy(cfg):
-    if not cfg:
-        return
-    if not isinstance(cfg, dict):
-        return
-    if "filtering" not in cfg:
-        return
-    if not cfg["filtering"]:
-        return
-    if not isinstance(cfg["filtering"], dict):
+    if not isinstance(cfg.get("filtering", None), dict):
         return
     if "next_hop_policy" in cfg["filtering"]:
         if "next_hop" in cfg["filtering"]:
@@ -191,15 +183,7 @@ def convert_next_hop_policy(cfg):
         del cfg["filtering"]["next_hop_policy"]
 
 def convert_maxprefix_peeringdb(cfg):
-    if not cfg:
-        return
-    if not isinstance(cfg, dict):
-        return
-    if "filtering" not in cfg:
-        return
-    if not cfg["filtering"]:
-        return
-    if not isinstance(cfg["filtering"], dict):
+    if not isinstance(cfg.get("filtering", None), dict):
         return
     if "max_prefix" not in cfg["filtering"]:
         return
@@ -213,9 +197,109 @@ def convert_maxprefix_peeringdb(cfg):
             "enabled": peering_db
         }
 
+def convert_filtering_rpki(cfg):
+    if not isinstance(cfg.get("filtering", None), dict):
+        return
+    if "rpki" not in cfg["filtering"]:
+        return
+    if "rpki_bgp_origin_validation" in cfg["filtering"]:
+        raise ConfigError(
+            "A conflict due to a deprecated syntax exists: "
+            "filtering.rpki and filtering.rpki_bgp_origin_validation "
+            "are both configured."
+        )
+    cfg["filtering"]["rpki_bgp_origin_validation"] = \
+        cfg["filtering"].pop("rpki")
+
+def build_rpki_roas(cfg):
+    """Build rpki_roas.
+
+    Also used to identify those cases where filtering.rpki is enable
+    (and then 'rtrlib' is implicitly used for ROAs collection) and
+    filtering.irrdb.rpki_roas_as_route_objects is enabled and source
+    is set to 'ripe-rpki-validator-cache'.
+    """
+
+    if not isinstance(cfg.get("filtering", None), dict):
+        return
+
+    rpki_roas = {}
+
+    def from_rpki_roas_as_route_objects():
+        """Return (used [bool], source)"""
+        irrdb = cfg["filtering"].get("irrdb", None)
+        if not isinstance(irrdb, dict):
+            return False, None
+
+        roas_as_route_objects = irrdb.get("use_rpki_roas_as_route_objects",
+                                          None)
+        if not isinstance(roas_as_route_objects, dict):
+            return False, None
+
+        if roas_as_route_objects.get("enabled", False) is not True:
+            return False, None
+
+        for k in ("source", "ripe_rpki_validator_url",
+                  "allowed_trust_anchors"):
+            if k in roas_as_route_objects:
+                rpki_roas[k] = roas_as_route_objects.pop(k)
+
+        return True, rpki_roas.get("source", None)
+
+    def from_rpki():
+        """Return (used [bool], source)"""
+        rpki = cfg["filtering"].get("rpki", None)
+        if not isinstance(rpki, dict):
+            return False, None
+
+        if rpki.get("enabled", False) is not True:
+            return False, None
+
+        rpki_roas["source"] = "rtrlib"
+
+        return True, "rtrlib"
+
+    roas_as_routes_used, roas_as_routes_src = from_rpki_roas_as_route_objects()
+    rpki_used, rpki_src = from_rpki()
+
+    if roas_as_routes_used and rpki_used and \
+        (roas_as_routes_src or rpki_src) != rpki_src:
+        raise ConfigError(
+            "A deprecated syntax triggered an issue with the configuration "
+            "of RPKI BGP Origin Validation (filtering.rpki) and ROAs-as-route-"
+            "objects (filtering.irrdb.rpki_roas_as_route_objects). "
+            "The former uses rtrlib as source for ROAs, while the "
+            "latter is configured to use the RIPE RPKI Validator "
+            "cache file. "
+            "To fix this issue, convert them to the new syntax and configure "
+            "the desired ROAs source within the 'rpki_roas' section. "
+            "Please refer to the general.yml file distributed with the tool "
+            "for the proper syntax to use."
+        )
+
+    if rpki_roas:
+        if "rpki_roas" in cfg:
+            raise ConfigError(
+                "A conflict due to a deprecated syntax exists: "
+                "please check rpki_roas, filtering.rpki and "
+                "filtering.irrdb.rpki_roas_as_route_objects."
+            )
+        cfg["rpki_roas"] = rpki_roas
+
 def convert_deprecated(cfg):
+    if not cfg:
+        return
+    if not isinstance(cfg, dict):
+        return
+
     # Convert next_hop_policy (< v0.6.0) into the new format
     convert_next_hop_policy(cfg)
 
     # Convert max_prefix.peering_db (< v0.13.0) into the new format
     convert_maxprefix_peeringdb(cfg)
+
+    # Build cfg.rpki_roas (< v0.17.0) from rpki and roas_as_route_objects
+    build_rpki_roas(cfg)
+
+    # Convert filtering.rpki (< v0.17.0) into the new format
+    convert_filtering_rpki(cfg)

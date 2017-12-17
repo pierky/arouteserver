@@ -45,23 +45,52 @@ class RPKIROAs_Proxy(object):
 
 class RPKIROAsEnricher(BaseConfigEnricher):
 
+    def _use_roas_for_this_origin(self, asn):
+        """Return True if ROAs for the given origin ASN must be used
+
+        When ROAs are used only as route objects (so, no BGP Origin
+        Validation is configured) only ROAs for authorized origin ASNs
+        are returned.
+        """
+
+        if self._origin_validation:
+            # ROAs are used to perform BGP Origin Validation, so
+            # every ROA must be used.
+            return True
+
+        if self._roas_as_route_object:
+            # If the current ROA is for an origin ASN that is
+            # not allowed for any client then skip it.
+            if int(asn) in self.origin_asns:
+                return True
+
+        return False
+
     def enrich(self):
-        if self.builder.irrdb_info is None:
-            raise BuilderError(
-                "RPKI ROAs can be fetched only after that the "
-                "list of authorized origin ASNs has been built."
-            )
+        logging.info("Updating RPKI ROAs...")
+
+        filtering = self.builder.cfg_general["filtering"]
+        self._roas_as_route_object = \
+            filtering["irrdb"]["use_rpki_roas_as_route_objects"]["enabled"]
+        self._origin_validation = \
+            filtering["rpki_bgp_origin_validation"]["enabled"]
+
+        assert self._roas_as_route_object or self._origin_validation, \
+            ("Why here? use_rpki_roas_as_route_objects and "
+             "rpki_bgp_origin_validation are both False")
 
         # List of all the origin ASNs.
-        origin_asns = set()
-        for bundle_id in self.builder.irrdb_info:
-            bundle = self.builder.irrdb_info[bundle_id]
-            origin_asns.update(bundle.asns)
+        if self._roas_as_route_object:
+            if self.builder.irrdb_info is None:
+                raise BuilderError(
+                    "RPKI ROAs can be fetched only after that the "
+                    "list of authorized origin ASNs has been built."
+                )
 
-        if not origin_asns:
-            return
-
-        logging.info("Updating RPKI ROAs...")
+            self.origin_asns = set()
+            for bundle_id in self.builder.irrdb_info:
+                bundle = self.builder.irrdb_info[bundle_id]
+                self.origin_asns.update(bundle.asns)
 
         cache_dir = self.builder.cache_dir
 
@@ -74,9 +103,10 @@ class RPKIROAsEnricher(BaseConfigEnricher):
 
         afis = [4, 6] if self.builder.ip_ver is None else [self.builder.ip_ver]
 
-        irrdb_cfg = self.builder.cfg_general["filtering"]["irrdb"]
-        roas_as_route_objects_cfg = irrdb_cfg["use_rpki_roas_as_route_objects"]
-        url = roas_as_route_objects_cfg["ripe_rpki_validator_url"]
+        rpki_roas_cfg = self.builder.cfg_general["rpki_roas"]
+        assert rpki_roas_cfg["source"] == "ripe-rpki-validator-cache", \
+            "source is not ripe-rpki-validator-cache"
+        url = rpki_roas_cfg["ripe_rpki_validator_url"]
 
         ripe_cache = RIPE_RPKI_ROAs(cache_dir=cache_dir,
                                     cache_expiry=self.builder.cache_expiry,
@@ -84,7 +114,7 @@ class RPKIROAsEnricher(BaseConfigEnricher):
         ripe_cache.load_data()
         roas = ripe_cache.roas
 
-        allowed_tas = roas_as_route_objects_cfg["allowed_trust_anchors"]
+        allowed_tas = rpki_roas_cfg["allowed_trust_anchors"]
 
         # "ASx": {"prefix": "a/b", "max_len": c}
         asn_roas = {}
@@ -107,9 +137,7 @@ class RPKIROAsEnricher(BaseConfigEnricher):
                 if not asn[2:].isdigit():
                     raise ValueError("invalid ASN: " + asn)
 
-                # If the current ROA is for an origin ASN that is
-                # not allowed for any client then skip it.
-                if int(asn[2:]) not in origin_asns:
+                if not self._use_roas_for_this_origin(asn[2:]):
                     continue
 
                 prefix = roa.get("prefix", None)
@@ -158,7 +186,7 @@ class RPKIROAsEnricher(BaseConfigEnricher):
             path = os.path.join(asn_roas_dir, "{}.json".format(asn))
             with open(path, "w") as f:
                 json.dump(asn_roas[asn], f)
-            self.builder.rpki_roas_as_route_objects[asn] = RPKIROAs_Proxy(asn, path)
+            self.builder.rpki_roas[asn] = RPKIROAs_Proxy(asn, path)
 
         del asn_roas
         del roas

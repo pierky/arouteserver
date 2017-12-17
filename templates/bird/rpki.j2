@@ -2,33 +2,21 @@
 # ---------------------------------------------------------
 # RPKI
 
-{% if cfg.filtering.rpki.enabled or (
-		cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and
-		cfg.filtering.irrdb.use_rpki_roas_as_route_objects.source == "rtrlib"
-	) %}
+{% if cfg.filtering.rpki_bgp_origin_validation.enabled or
+	cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled %}
+{%	if cfg.rpki_roas.source == "rtrlib" %}
+# ROAs can be loaded using an external tool: rtrllib
+# https://github.com/rtrlib/bird-rtrlib-cli
+{%	endif %}
 roa table RPKI {
-{% if roas %}
-{%	for roa in roas if roa.prefix.prefix is current_ipver %}
-	roa {{ roa.prefix.prefix }}/{{ roa.prefix.length -}}
-{%		if roa.prefix.le %}
- max {{ roa.prefix.le -}}
-{%		else %}
- max {{ roa.prefix.length -}}
-{%		endif %}
- as {{ roa.asn }};
-{%	endfor %}
-{% endif %}
+{%	if rpki_roas %}
+{%		for origin_asn in rpki_roas|sort %}
+{%			for roa in rpki_roas[origin_asn].roas if roa.prefix is current_ipver %}
+	roa {{ roa.prefix }}/{{ roa.length }} max {{ roa.le }} as {{ origin_asn|replace("AS", "") }};
+{%			endfor %}
+{%		endfor %}
+{%	endif %}
 };
 {% else %}
 # RPKI not used.
-{% endif %}
-
-{% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and
-	cfg.filtering.irrdb.use_rpki_roas_as_route_objects.source == "ripe-rpki-validator-cache" %}
-# RPKI ROAs used as route objects
-{%	for origin_asn in rpki_roas_as_route_objects|sort %}
-define RPKI_ROAs_as_route_objects_{{ origin_asn }} = [
-{{ write_prefix_list(rpki_roas_as_route_objects[origin_asn].roas, True) }}
-];
-{%	endfor %}
 {% endif %}

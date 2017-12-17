@@ -454,6 +454,10 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
   Set this to True to enable this feature.
 
 
+  When enabled, the **rpki_roas** section must be configured in
+  order to set the method used to gather RPKI ROAs.
+
+
   Default: **False**
 
   Example:
@@ -462,84 +466,6 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
 
      enabled: False
 
-
-
-- ``source``:
-  The source used to gather RPKI ROAs.
-
-
-  Can be one of the following options:
-
-
-  - **rtrlib**: ROAs are loaded using the external program
-    rtrllib (https://github.com/rtrlib/bird-rtrlib-cli).
-    The name of the table where send the ROAs to is **RPKI**.
-
-
-  - **ripe-rpki-validator-cache**: ROAs are fetched via
-    HTTP from the RIPE RPKI Validator cache
-    (http://localcert.ripe.net:8088/export.json by default).
-
-
-  Please note that this method is far from guaranteeing
-  that a cryptographically validated datased is retrieved
-  from a trusted cache, unless the URL of a local, trusted
-  instance of RPKI Validator is provided below in the
-  **ripe_rpki_validator_url** option.
-
-
-
-
-  OpenBGPD: only the **ripe-rpki-validator-cache** source
-  is currently supported.
-
-
-  Default: **ripe-rpki-validator-cache**
-
-  Example:
-
-  .. code:: yaml
-
-     source: "ripe-rpki-validator-cache"
-
-
-
-- ``ripe_rpki_validator_url``:
-  RIPE RPKI Validator URL.
-  Meaningful only when **source** is **ripe-rpki-validator-cache**.
-
-
-  Default: **http://localcert.ripe.net:8088/export.json**
-
-  Example:
-
-  .. code:: yaml
-
-     ripe_rpki_validator_url: "http://localcert.ripe.net:8088/export.json"
-
-
-
-- ``allowed_trust_anchors``:
-  When using the **ripe-rpki-validator-cache** source, only the
-  following Trust Anchors will be taken into account.
-
-
-  Values must be taken among those published in the RIPE RPKI
-  Validator Configured Trust Anchors page:
-  http://localcert.ripe.net:8088/trust-anchors
-
-
-  Before enabling the 'ARIN RPKI Root', please consider the
-  following URLs:
-
-
-  http://lists.arin.net/pipermail/arin-ppml/2017-January/031231.html
-
-
-  https://www.arin.net/resources/rpki/rpa.pdf
-
-
-  Default: **APNIC, AfriNIC, LACNIC and RIPE NCC.**
 
 
 
@@ -619,19 +545,18 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
 
 
 
-RPKI: ``rpki``
-~~~~~~~~~~~~~~~
+RPKI BGP Origin Validation: ``rpki_bgp_origin_validation``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 - ``enabled``:
-  Enable RPKI ROAs validation for routes received from
+  Enable BGP Prefix Origin Validation for routes received from
   clients.
   https://tools.ietf.org/html/rfc6811
 
 
-  BIRD: to load ROA entries into BIRD an external tool must
-  be used: rtrlib (https://github.com/rtrlib/bird-rtrlib-cli).
-  The name of the table where send the ROAs to is **RPKI**.
+  When enabled, the **rpki_roas** section must be configured in
+  order to set the method used to gather RPKI ROAs.
 
 
   OpenBGPD: not supported.
@@ -868,6 +793,90 @@ Reject policy: ``reject_policy``
      policy: "reject"
 
 
+
+
+
+RPKI ROAs: ``rpki_roas``
++++++++++++++++++++++++++
+
+This section is used to configure how RPKI ROAs are gathered
+when **filtering.irrdb.use_rpki_roas_as_route_objects** or
+**filtering.rpki_bgp_origin_validation** are enabled.
+
+- ``source``:
+  The source used to gather RPKI ROAs.
+
+
+  Can be one of the following options:
+
+
+  - **rtrlib**: ROAs are loaded using the external program
+    rtrllib (https://github.com/rtrlib/bird-rtrlib-cli).
+    The name of the table where send the ROAs to is **RPKI**.
+
+
+  - **ripe-rpki-validator-cache**: ROAs are fetched via
+    HTTP from the RIPE RPKI Validator cache
+    (http://localcert.ripe.net:8088/export.json by default).
+
+
+  Please note that this method is far from guaranteeing
+  that a cryptographically validated datased is retrieved
+  from a trusted cache, unless the URL of a local, trusted
+  instance of RPKI Validator is provided below in the
+  **ripe_rpki_validator_url** option.
+
+
+  OpenBGPD: only the **ripe-rpki-validator-cache** source
+  is currently supported.
+
+
+  Default: **ripe-rpki-validator-cache**
+
+  Example:
+
+  .. code:: yaml
+
+     source: "ripe-rpki-validator-cache"
+
+
+
+- ``ripe_rpki_validator_url``:
+  RIPE RPKI Validator URL.
+  Meaningful only when **source** is **ripe-rpki-validator-cache**.
+
+
+  Default: **http://localcert.ripe.net:8088/export.json**
+
+  Example:
+
+  .. code:: yaml
+
+     ripe_rpki_validator_url: "http://localcert.ripe.net:8088/export.json"
+
+
+
+- ``allowed_trust_anchors``:
+  When using the **ripe-rpki-validator-cache** source, only the
+  following Trust Anchors will be taken into account.
+
+
+  Values must be taken among those published in the RIPE RPKI
+  Validator Configured Trust Anchors page:
+  http://localcert.ripe.net:8088/trust-anchors
+
+
+  Before enabling the 'ARIN RPKI Root', please consider the
+  following URLs:
+
+
+  http://lists.arin.net/pipermail/arin-ppml/2017-January/031231.html
+
+
+  https://www.arin.net/resources/rpki/rpa.pdf
+
+
+  Default: **APNIC, AfriNIC, LACNIC and RIPE NCC.**
 
 
 

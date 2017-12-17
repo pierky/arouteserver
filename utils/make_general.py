@@ -289,16 +289,13 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
                 CfgStatement("peering_db", pre_comment=True),
                 CfgStatement("use_rpki_roas_as_route_objects", post_comment=True, sub=[
                     CfgStatement("enabled", pre_comment=True),
-                    CfgStatement("source", pre_comment=True),
-                    CfgStatement("ripe_rpki_validator_url", pre_comment=True),
-                    CfgStatement("allowed_trust_anchors", pre_comment=True),
                 ]),
                 CfgStatement("use_arin_bulk_whois_data", post_comment=True, sub=[
                     CfgStatement("enabled", pre_comment=True),
                     CfgStatement("source", pre_comment=True)
                 ]),
             ]),
-            CfgStatement("rpki", t="RPKI", sub=[
+            CfgStatement("rpki_bgp_origin_validation", t="RPKI BGP Origin Validation", sub=[
                 CfgStatement("enabled", pre_comment=True),
                 CfgStatement("reject_invalid", pre_comment=True)
             ]),
@@ -318,6 +315,11 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
             CfgStatement("reject_policy", t="Reject policy", sub=[
                 CfgStatement("policy", pre_comment=True)
             ]),
+        ]),
+        CfgStatement("rpki_roas", t="RPKI ROAs", post_comment=True, sub=[
+            CfgStatement("source", pre_comment=True),
+            CfgStatement("ripe_rpki_validator_url", pre_comment=True),
+            CfgStatement("allowed_trust_anchors", pre_comment=True),
         ]),
         CfgStatement("blackhole_filtering", t="Blackhole filtering", post_comment=True, sub=[
             CfgStatement("policy_ipv4", pre_comment=True),

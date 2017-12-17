@@ -109,15 +109,15 @@ match from group clients community NO_ADVERTISE set community delete NO_ADVERTIS
 {% endif %}
 
 {% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and
-	rpki_roas_as_route_objects %}
+	rpki_roas %}
 # RPKI ROAs used as route objects
 # Add the $INTCOMM_PREF_OK_ROA ext community to routes whose
 # origin ASN has a ROA for the announced prefix.
 # It will be used later during IRRDB validation in
 # case the origin ASN is authorized by a client's
 # AS-SET but the prefix is not.
-{%	for origin_asn in rpki_roas_as_route_objects|sort %}
-{%		for prefixes in rpki_roas_as_route_objects[origin_asn].roas|sort(attribute="prefix")|batch(50) %}
+{%	for origin_asn in rpki_roas|sort %}
+{%		for prefixes in rpki_roas[origin_asn].roas|sort(attribute="prefix")|batch(50) %}
 match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {{ write_prefix_list(prefixes) }} } set ext-community $INTCOMM_PREF_OK_ROA
 {%		endfor %}
 {%	endfor %}
@@ -271,7 +271,7 @@ match from {{ client.ip }} set ext-community $INTCOMM_IRR_REJECT
 
 {% if client.cfg.filtering.irrdb.enforce_origin_in_as_set or client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}
 
-{% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and rpki_roas_as_route_objects %}
+{% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and rpki_roas %}
 # routes tagged with $INTCOMM_PREF_OK_ROA community have the prefix validated by a ROA; origin ASN previously validated ($INTCOMM_ORIGIN_OK)
 # NO_ADVERTISE here means $INTCOMM_ORIGIN_OK
 # (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)

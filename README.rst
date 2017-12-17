@@ -73,8 +73,10 @@ Features
   - support for **IRR sources** (RIPE::AS-FOO, RADB::AS-BAR);
   - **white lists** support;
   - extended dataset for filters generation:
+
     - RPKI **ROAs used as route objects**;
     - `Origin AS <https://teamarin.net/2016/07/07/origin-as-an-easier-way-to-validate-letters-of-authority/>`_ from **ARIN Whois** database dump;
+
   - **RPKI**-based filtering (BGP Prefix Origin Validation - `RFC6811`_).
 
 - **Blackhole filtering** support:
