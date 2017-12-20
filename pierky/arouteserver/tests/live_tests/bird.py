@@ -243,7 +243,7 @@ class BIRDInstance(DockerInstance):
         else:
             return False
 
-    def log_contains_errors(self, allowed_errors, list_errors=False):
+    def log_contains_errors(self, allowed_errors=[], list_errors=False):
         out = self.run_cmd("cat /var/log/bird.log")
 
         errors_found = False

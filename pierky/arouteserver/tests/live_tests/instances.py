@@ -162,7 +162,7 @@ class BGPSpeakerInstance(object):
         """
         raise NotImplementedError()
 
-    def log_contains_errors(self, allowed_errors, list_errors=False):
+    def log_contains_errors(self, allowed_errors=[], list_errors=False):
         """Returns True if the BGP speaker's log contains warning/errors.
 
         Args:

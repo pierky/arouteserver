@@ -280,7 +280,7 @@ class OpenBGPDInstance(KVMInstance):
     def log_contains(self, s):
         return True
 
-    def log_contains_errors(self, allowed_errors, list_errors=False):
+    def log_contains_errors(self, allowed_errors=[], list_errors=False):
         if list_errors:
             return False, ""
         return False
