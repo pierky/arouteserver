@@ -9,13 +9,9 @@
 # https://github.com/rtrlib/bird-rtrlib-cli
 {%	endif %}
 roa table RPKI {
-{%	if rpki_roas %}
-{%		for origin_asn in rpki_roas|sort %}
-{%			for roa in rpki_roas[origin_asn].roas if roa.prefix is current_ipver %}
-	roa {{ roa.prefix }}/{{ roa.length }} max {{ roa.le }} as {{ origin_asn|replace("AS", "") }};
-{%			endfor %}
-{%		endfor %}
-{%	endif %}
+{%	for roa in rpki_roas %}
+	roa {{ roa.prefix }} max {{ roa.max_len }} as {{ roa.asn }};
+{%	endfor %}
 };
 {% else %}
 # RPKI not used.

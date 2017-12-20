@@ -854,8 +854,8 @@ irrdb_info
 
 
 rpki_roas
---------------------------
-{}
+---------
+[]
 
 
 arin_whois_db_records

@@ -58,14 +58,18 @@ cfg:
       use_arin_bulk_whois_data:
         enabled: True
 
-    rpki:
-      enabled: False
+    rpki_bgp_origin_validation:
+      enabled: True
       reject_invalid: True
 
     max_prefix:
       action: "restart"
       restart_after: 30
       peering_db: True
+
+  rpki_roas:
+      source: "ripe-rpki-validator-cache"
+      ripe_rpki_validator_url: "examples/rich/ripe-rpki-cache.json"
 
   blackhole_filtering:
     policy_ipv4: "rewrite-next-hop"

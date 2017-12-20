@@ -234,8 +234,6 @@ RFC8097 BGP extended communities are used to mark routes on the basis of their v
 Depending on the ``reject_invalid`` configuration, INVALID routes can be rejected before entering the route server or accepted for further processing by external tools or functions provided within :ref:`.local files <site-specific-custom-config>`.
 INVALID routes are not propagated to clients.
 
-RPKI validation is not supported by OpenBGPD.
-
 BGP Communities
 ***************
 
@@ -487,8 +485,6 @@ The following list of limitations is based on the currently supported versions o
 - OpenBGPD
 
   - Currently, **path hiding** mitigation is not implemented for OpenBGPD configurations. Only single-RIB configurations are generated.
-
-  - **RPKI** validation is not supported by OpenBGPD.
 
   - **ADD-PATH** is not supported by OpenBGPD.
 

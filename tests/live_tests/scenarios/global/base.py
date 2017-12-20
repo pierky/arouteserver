@@ -450,8 +450,6 @@ class BasicScenario(LiveScenario):
 
     def test_045_rpki_valid_prefix(self):
         """{}: RPKI, valid prefix received by rs"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("RPKI not supported by OpenBGPD")
 
         self.receive_route(self.rs, self.DATA["AS101_roa_valid1"], self.AS1_1,
                            as_path="1 101")
@@ -460,39 +458,41 @@ class BasicScenario(LiveScenario):
 
     def test_045_rpki_invalid_prefix_asn(self):
         """{}: RPKI, invalid prefix (bad ASN) received by rs"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("RPKI not supported by OpenBGPD")
+
+        if isinstance(self.rs, BIRDInstance):
+            ext_comm_rpki_invalid = ["generic:0x43000000:0x2"]
+        else:
+            ext_comm_rpki_invalid = []
 
         self.receive_route(self.rs, self.DATA["AS101_roa_invalid1"], self.AS1_1,
                            as_path="1 101", filtered=True,
-                           ext_comms=["generic:0x43000000:0x2"])
+                           ext_comms=ext_comm_rpki_invalid)
         self.receive_route(self.rs, self.DATA["AS101_roa_invalid1"], self.AS2,
                            as_path="2 101", filtered=True,
-                           ext_comms=["generic:0x43000000:0x2"])
+                           ext_comms=ext_comm_rpki_invalid)
 
     def test_045_rpki_invalid_prefix_length(self):
         """{}: RPKI, invalid prefix (bad length) received by rs"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("RPKI not supported by OpenBGPD")
+
+        if isinstance(self.rs, BIRDInstance):
+            ext_comm_rpki_invalid = ["generic:0x43000000:0x2"]
+        else:
+            ext_comm_rpki_invalid = []
 
         self.receive_route(self.rs, self.DATA["AS101_roa_badlen"], self.AS1_1,
                            as_path="1 101", filtered=True,
-                           ext_comms=["generic:0x43000000:0x2"])
+                           ext_comms=ext_comm_rpki_invalid)
         self.receive_route(self.rs, self.DATA["AS101_roa_badlen"], self.AS2,
                            as_path="2 101", filtered=True,
-                           ext_comms=["generic:0x43000000:0x2"])
+                           ext_comms=ext_comm_rpki_invalid)
 
     def test_045_rpki_valid_prefix_propagated_to_clients(self):
         """{}: RPKI, valid prefix propagated to clients"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("RPKI not supported by OpenBGPD")
 
         self.receive_route(self.AS3, self.DATA["AS101_roa_valid1"], self.rs)
 
     def test_045_rpki_invalid_prefixes_not_propagated_to_clients(self):
         """{}: RPKI, invalid prefix (bad ASN) not propagated to clients"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("RPKI not supported by OpenBGPD")
 
         for pref_id in ("AS101_roa_invalid1", "AS101_roa_badlen"):
             with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
@@ -500,8 +500,6 @@ class BasicScenario(LiveScenario):
 
     def test_045_blackhole_with_roa(self):
         """{}: RPKI, blackhole request for a covered prefix"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("RPKI not supported by OpenBGPD")
 
         self.receive_route(self.rs, self.DATA["AS101_roa_blackhole"], self.AS1_1, as_path="1 101",
                            std_comms=["65535:666"], lrg_comms=[])
@@ -510,8 +508,15 @@ class BasicScenario(LiveScenario):
         for inst in (self.AS1_1, self.AS2):
             self.log_contains(self.rs, "blackhole filtering request from {{inst}} - ACCEPTING {}".format(
                 self.DATA["AS101_roa_blackhole"]), {"inst": inst})
+
+        next_hop = self.DATA["blackhole_IP"]
+        if isinstance(self.rs, OpenBGPD60Instance) and ":" in self.DATA["AS101_roa_blackhole"]:
+            # OpenBGPD < 6.1 bug: https://github.com/pierky/arouteserver/issues/3
+            # fixed by https://github.com/openbsd/src/commit/f1385c8f4f9b9e193ff65d9f2039862d3e230a45
+            next_hop = "2001:db8:1:1::2"
+
         self.receive_route(self.AS3, self.DATA["AS101_roa_blackhole"], self.rs,
-                           next_hop=self.DATA["blackhole_IP"],
+                           next_hop=next_hop,
                            std_comms=["65535:666", "65535:65281"], lrg_comms=[])
 
     def test_050_prefixes_from_AS101_received_by_its_upstreams(self):

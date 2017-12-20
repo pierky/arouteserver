@@ -13,6 +13,11 @@ ROOT="`pwd`"
 DOCS_DIR="`pwd`/docs"
 CFG_FILE="var/build_doc.yml"
 
+OPTS="--cfg $CFG_FILE"
+if [ "$DEBUG" == "1" ]; then
+	OPTS="$OPTS --logging-level DEBUG"
+fi
+
 function publish_docs() {
 	title "Publishing docs via HTTP"
 
@@ -28,9 +33,32 @@ function title() {
 	echo "$(tput bold)$1$(tput sgr0)"
 }
 
+function filter() {
+	if [ -n "$FILTER_EXAMPLE_ID" -a "$FILTER_EXAMPLE_ID" != "$1" ]; then
+		title "SKIP $1 $2"
+		return 1
+	fi
+	if [ -n "$FILTER_EXAMPLE_ARG1" -a "$FILTER_EXAMPLE_ARG1" != "$2" ]; then
+		title "SKIP $1 $2"
+		return 1
+	fi
+	return 0
+}
+
 if [ "$1" == "publish" ]; then
 	publish_docs
 	exit
+fi
+
+FILTER_EXAMPLE_ID=""
+FILTER_EXAMPLE_ARG1=""
+if [ -n "$1" ]; then
+	FILTER_EXAMPLE_ID="$1"
+	shift
+fi
+if [ -n "$1" ]; then
+	FILTER_EXAMPLE_ARG1="$1"
+	shift
 fi
 
 # ----------------------------------------------------
@@ -47,7 +75,9 @@ function RenderExample() {
 	CLIENTS="$1" ; shift
 	BOGONS="$1" ; shift
 
-	CMD="./scripts/arouteserver $COMMAND --cfg $CFG_FILE --general $GENERAL --clients $CLIENTS --bogons $BOGONS"
+	filter "$DST" "$COMMAND" || return 0
+
+	CMD="./scripts/arouteserver $COMMAND $OPTS --general $GENERAL --clients $CLIENTS --bogons $BOGONS"
 
 	if [ "$COMMAND" == "bird" ]; then
 		IP_VER="$1" ; shift
@@ -72,14 +102,18 @@ function RenderExample() {
 }
 
 function RenderConfigureExample() {
+	DAEMON="$1"; shift
 	DST="$1"; shift
 	ANSWERS="$1"; shift
-	CMD="./scripts/arouteserver configure --cfg $CFG_FILE --output examples/auto-config/${DST} --preset-answer $ANSWERS"
+
+	filter "configure" "$1" || return 0
+
+	CMD="./scripts/arouteserver configure $OPTS --output examples/auto-config/${DST} --preset-answer $ANSWERS"
 
 	[[ -e examples/auto-config/${DST} ]] && rm examples/auto-config/${DST}
 	$CMD &>/dev/null
 
-	CMD="./scripts/arouteserver html --cfg $CFG_FILE --output examples/auto-config/${DST}.html --general examples/auto-config/${DST}"
+	CMD="./scripts/arouteserver html $OPTS --output examples/auto-config/${DST}.html --general examples/auto-config/${DST}"
 
 	$CMD
 
@@ -91,27 +125,33 @@ function ClientsFromEuroIX() {
 	IXP_ID="$1"; shift
 	OUTPUT_FILE="$1"; shift
 	VLAN_ID="$1"; shift
-	CMD="./scripts/arouteserver clients-from-euroix --cfg $CFG_FILE --url $URL $IXP_ID -o $OUTPUT_FILE"
+	CMD="./scripts/arouteserver clients-from-euroix $OPTS --url $URL $IXP_ID -o $OUTPUT_FILE"
 	if [ -n "$VLAN_ID" ]; then
 		CMD="$CMD --vlan $VLAN_ID"
 	fi
 
 	$CMD
 
-	./scripts/arouteserver bird --cfg $CFG_FILE --test-only --general "config.d/general.yml" --clients $OUTPUT_FILE --bogons "config.d/bogons.yml" --ip-ver 4
-	./scripts/arouteserver bird --cfg $CFG_FILE --test-only --general "config.d/general.yml" --clients $OUTPUT_FILE --bogons "config.d/bogons.yml" --ip-ver 6
+	./scripts/arouteserver bird $OPTS --test-only --general "config.d/general.yml" --clients $OUTPUT_FILE --bogons "config.d/bogons.yml" --ip-ver 4
+	./scripts/arouteserver bird $OPTS --test-only --general "config.d/general.yml" --clients $OUTPUT_FILE --bogons "config.d/bogons.yml" --ip-ver 6
 }
 
 function IXFMemberExportFromClients() {
 	CLIENTS="$1"; shift
 	DST="$1"; shift
 
-	./scripts/arouteserver ixf-member-export --cfg $CFG_FILE --clients $CLIENTS --output $DST "Test IXP"
+	./scripts/arouteserver ixf-member-export $OPTS --clients $CLIENTS --output $DST "Test IXP"
 }
 
 title "Building example: configure command output"
-RenderConfigureExample "bird-general.yml" "daemon=bird asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32"
-RenderConfigureExample "openbgpd62-general.yml" "daemon=openbgpd version=6.2 asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32"
+RenderConfigureExample "bird" "bird-general.yml" "daemon=bird asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32"
+RenderConfigureExample "openbgpd" "openbgpd62-general.yml" "daemon=openbgpd version=6.2 asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32"
+
+# Invalidating the cache because the previous commands fetched the real (huge)
+# dataset from the RIPE RPKI Validator, while the following commands just need
+# to used a very small subset of data for the sake of readability of the
+# example configs that are going to build.
+rm var/build_doc_cache/ripe-rpki-cache.json
 
 title "Building example: default, BIRD, IPv4"
 G="config.d/general.yml"
@@ -131,7 +171,7 @@ title "Building example: default, HTML"
 RenderExample "default" "html" "$G" "$C" "config.d/bogons.yml"
 
 title "Building example: rich, BIRD, IPv4"
-G="examples/rich/general-bird.yml"
+G="examples/rich/general.yml"
 C="examples/rich/clients.yml"
 RenderExample "rich" "bird" "$G" "$C" "config.d/bogons.yml" 4 --use-local-files client
 RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml" 4
@@ -141,12 +181,10 @@ RenderExample "rich" "bird" "$G" "$C" "config.d/bogons.yml" 6
 RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml" 6
 
 title "Building example: rich, OpenBGPD, IPv4 + IPv6"
-G="examples/rich/general-openbgpd.yml"
 RenderExample "rich" "openbgpd" "$G" "$C" "config.d/bogons.yml"
 RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml"
 
 title "Building example: rich, HTML"
-G="examples/rich/general-bird.yml"
 RenderExample "rich" "html" "$G" "$C" "config.d/bogons.yml"
 
 title "Building example: BIRD hooks"

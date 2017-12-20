@@ -559,9 +559,6 @@ RPKI BGP Origin Validation: ``rpki_bgp_origin_validation``
   order to set the method used to gather RPKI ROAs.
 
 
-  OpenBGPD: not supported.
-
-
   Default: **False**
 
   Example:
@@ -844,6 +841,8 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
 - ``ripe_rpki_validator_url``:
   RIPE RPKI Validator URL.
   Meaningful only when **source** is **ripe-rpki-validator-cache**.
+  It can be an **http://** or **https://** URL or the path of a
+  local file.
 
 
   Default: **http://localcert.ripe.net:8088/export.json**

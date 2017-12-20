@@ -202,12 +202,6 @@
   lrg comms: 
   best: True, LOCAL_PREF: 100
   filtered: False ()
-3101:0:8000::/48, AS_PATH: 1 101, NEXT_HOP: 2001:db8:1:1::11, via 2001:db8:1:1::2
-  std comms: 
-  ext comms: 
-  lrg comms: 
-  best: False, LOCAL_PREF: 100
-  filtered: False ()
 3101:0:8000::/48, AS_PATH: 101, NEXT_HOP: 2001:db8:1:1::101, via 2001:db8:1:1::101
   std comms: 
   ext comms: 
@@ -237,12 +231,6 @@
   ext comms: 
   lrg comms: 
   best: True, LOCAL_PREF: 100
-  filtered: False ()
-3101:0:9::/48, AS_PATH: 1 101, NEXT_HOP: 2001:db8:1:1::11, via 2001:db8:1:1::2
-  std comms: 
-  ext comms: 
-  lrg comms: 
-  best: False, LOCAL_PREF: 100
   filtered: False ()
 3101:0:9::/48, AS_PATH: 101, NEXT_HOP: 2001:db8:1:1::101, via 2001:db8:1:1::101
   std comms: 

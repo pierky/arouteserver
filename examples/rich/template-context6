@@ -317,8 +317,8 @@ cfg:
     - AfriNIC RPKI Root
     - LACNIC RPKI Root
     - RIPE NCC RPKI Root
-    ripe_rpki_validator_url: http://localcert.ripe.net:8088/export.json
-    source: rtrlib
+    ripe_rpki_validator_url: examples/rich/ripe-rpki-cache.json
+    source: ripe-rpki-validator-cache
   rs_as: 999
   rtt_thresholds:
   - 5
@@ -834,8 +834,23 @@ irrdb_info
 
 
 rpki_roas
---------------------------
-{}
+---------
+- asn: 25152
+  length: 32
+  max_len: 32
+  prefix: 2001:7fd::/32
+- asn: 3333
+  length: 42
+  max_len: 42
+  prefix: 2001:610:240::/42
+- asn: 3333
+  length: 48
+  max_len: 48
+  prefix: 2001:67c:2e8::/48
+- asn: 25152
+  length: 48
+  max_len: 48
+  prefix: 2001:7fd::/48
 
 
 arin_whois_db_records
@@ -847,9 +862,3 @@ AS10745:
   length: 48
   max_length: 128
   prefix: '2001:500:4::'
-- exact: false
-  ge: 36
-  le: 128
-  length: 36
-  max_length: 128
-  prefix: '2602:ff57::'

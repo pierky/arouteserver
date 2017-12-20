@@ -306,8 +306,6 @@ cfg:
       # When enabled, the 'rpki_roas' section must be configured in
       # order to set the method used to gather RPKI ROAs.
       #
-      # OpenBGPD: not supported.
-      #
       # Default: False
       enabled: False
 
@@ -318,6 +316,8 @@ cfg:
       # to be used by external custom functions implemented in .local
       # files.
       # INVALID routes are not announced to clients.
+      #
+      # OpenBGPD: RFC8097 BGP communities tagging not yet implemented
       #
       # Can be overwritten on a client-by-client basis.
       #
@@ -455,6 +455,8 @@ cfg:
 
     # RIPE RPKI Validator URL.
     # Meaningful only when 'source' is 'ripe-rpki-validator-cache'.
+    # It can be an 'http://' or 'https://' URL or the path of a
+    # local file.
     #
     # Default: http://localcert.ripe.net:8088/export.json
     ripe_rpki_validator_url: "http://localcert.ripe.net:8088/export.json"

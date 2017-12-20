@@ -10,6 +10,15 @@ next release
 
   AS-SETs can be prepended with an optional source: ``RIPE::AS-FOO``, ``RIPE::AS64496:AS-FOO``.
 
+- New feature: support for RPKI-based Origin Validation added to OpenBGPD configurations.
+
+  RPKI ROAs must be loaded from a RIPE RPKI Validator cache file (local or via HTTP).
+  Mostly inspired by Job Snijders' tool https://github.com/job/rtrsub
+
+- Improvement: RPKI ROAs can be loaded from a local file too.
+
+  The file must be in RIPE RPKI Validator cache format.
+
 v0.16.1
 -------
 

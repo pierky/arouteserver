@@ -74,7 +74,6 @@ class RichConfigExampleScenarioBIRD(RichConfigExampleScenario):
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                     cfg_general=cls._get_cfg_general("general-bird.yml"),
                                      local_files=["client"]),
                     "/etc/bird/bird.conf"
                 ),
@@ -98,8 +97,7 @@ class RichConfigExampleScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
             cls.DATA["rs_IPAddress"],
             [
                 (
-                    cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
-                                     cfg_general=cls._get_cfg_general("general-openbgpd.yml")),
+                    cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None),
                     "/etc/bgpd.conf"
                 )
             ]

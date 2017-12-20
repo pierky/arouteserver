@@ -16,7 +16,7 @@
 # the route should be discarded.
 
 {% macro internal_communities_list(all=false) %}
-ext-community delete $INTCOMM_PREF_OK_ROA ext-community delete $INTCOMM_ROUTE_OK_WL ext-community delete $INTCOMM_PREF_OK_ARINDB ext-community delete $INTCOMM_ORIGIN_OK ext-community delete $INTCOMM_ORIGIN_KO ext-community delete $INTCOMM_PREFIX_OK ext-community delete $INTCOMM_PREFIX_KO ext-community delete $INTCOMM_IRR_REJECT {% if all %} ext-community delete $INTCOMM_NO_EXPORT ext-community delete $INTCOMM_NO_ADVERTISE {% endif %}
+ext-community delete $INTCOMM_PREF_OK_ROA ext-community delete $INTCOMM_ROUTE_OK_WL ext-community delete $INTCOMM_PREF_OK_ARINDB ext-community delete $INTCOMM_ORIGIN_OK ext-community delete $INTCOMM_ORIGIN_KO ext-community delete $INTCOMM_PREFIX_OK ext-community delete $INTCOMM_PREFIX_KO ext-community delete $INTCOMM_IRR_REJECT ext-community delete $INTCOMM_RPKI_UNKNOWN ext-community delete $INTCOMM_RPKI_INVALID ext-community delete $INTCOMM_RPKI_VALID {% if all %} ext-community delete $INTCOMM_NO_EXPORT ext-community delete $INTCOMM_NO_ADVERTISE {% endif %}
 {% endmacro %}
 
 {% macro deny_inbound_route(tag_reject_policy, condition, cause_code) %}
@@ -108,6 +108,28 @@ match from group clients community NO_ADVERTISE set ext-community $INTCOMM_NO_AD
 match from group clients community NO_ADVERTISE set community delete NO_ADVERTISE
 {% endif %}
 
+{% if cfg.filtering.rpki_bgp_origin_validation.enabled and
+	rpki_roas %}
+# RPKI-based Origin Validation
+# 1. Add $INTCOMM_RPKI_UNKNOWN ext community to all the routes.
+# 2. Add $INTCOMM_RPKI_INVALID ext community to all the routes
+#    whose prefix is covered by a ROA.
+# 3. Add $INTCOMM_RPKI_VALID ext community to and remove the
+#    $INTCOMM_RPKI_INVALID ext community from the routes whose
+#    prefix matches a ROA (both prefix and origin ASN).
+match from group clients set ext-community $INTCOMM_RPKI_UNKNOWN
+{%	for roa in rpki_roas %}
+match from group clients prefix {{ roa.prefix }} or-longer set ext-community $INTCOMM_RPKI_INVALID
+{%	endfor %}
+{%	for roa in rpki_roas %}
+match from group clients source-as {{ roa.asn }} prefix {{ roa.prefix }}
+{%-		if roa.length != roa.max_len %}
+ prefixlen {{ roa.length }} - {{ roa.max_len }}
+{%-		endif %}
+ set { ext-community $INTCOMM_RPKI_VALID ext-community delete $INTCOMM_RPKI_INVALID }
+{%	endfor %}
+{% endif %}
+
 {% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and
 	rpki_roas %}
 # RPKI ROAs used as route objects
@@ -116,11 +138,20 @@ match from group clients community NO_ADVERTISE set community delete NO_ADVERTIS
 # It will be used later during IRRDB validation in
 # case the origin ASN is authorized by a client's
 # AS-SET but the prefix is not.
-{%	for origin_asn in rpki_roas|sort %}
-{%		for prefixes in rpki_roas[origin_asn].roas|sort(attribute="prefix")|batch(50) %}
-match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {{ write_prefix_list(prefixes) }} } set ext-community $INTCOMM_PREF_OK_ROA
+{%	if cfg.filtering.rpki_bgp_origin_validation.enabled %}
+# Since RPKI-based Origin Validation is already performed above,
+# use the $INTCOMM_RPKI_VALID ext community to identify valid
+# routes.
+match from group clients ext-community $INTCOMM_RPKI_VALID set ext-community $INTCOMM_PREF_OK_ROA
+{%	else %}
+{%		for roa in rpki_roas %}
+match from group clients source-as {{ roa.asn }} prefix {{ roa.prefix }}
+{%-			if roa.length != roa.max_len %}
+ prefixlen {{ roa.length }} - {{ roa.max_len }}
+{%-			endif %}
+ set ext-community $INTCOMM_PREF_OK_ROA
 {%		endfor %}
-{%	endfor %}
+{%	endif %}
 {% endif %}
 
 {% if cfg.filtering.irrdb.use_arin_bulk_whois_data.enabled and
@@ -343,6 +374,14 @@ allow quick from {{ client.ip }} community BLACKHOLE
 {{ add_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, dyn_val=client.asn) }}
 {% endif %}
 
+{% if cfg.filtering.rpki_bgp_origin_validation.enabled and
+	client.cfg.filtering.rpki_bgp_origin_validation.enabled and
+	client.cfg.filtering.rpki_bgp_origin_validation.reject_invalid and
+	rpki_roas %}
+# RPKI-based Origin Validation
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " ext-community $INTCOMM_RPKI_INVALID", 14) }}
+{% endif %}
+
 # Prefix: length
 {% if client.ip|ipaddr_ver == 4 %}
 {% set min_pref_len = client.cfg.filtering.ipv4_pref_len.min %}
@@ -410,6 +449,12 @@ match to {{ client.ip }} community BLACKHOLE set nexthop {{ bhn }}
 deny quick to {{ client.ip }} community BLACKHOLE
 {{ match_communities("deny quick to " ~ client.ip, cfg.communities.blackholing, "") -}}
 {%	endif %}
+{% endif %}
+
+{% if cfg.filtering.rpki_bgp_origin_validation.enabled %}
+# RPKI-based Origin Validation
+# Do not announce INVALID to clients
+deny quick to {{ client.ip }} ext-community $INTCOMM_RPKI_INVALID
 {% endif %}
 
 # NO_EXPORT and NO_ADVERTISE communities

@@ -23,8 +23,8 @@ irrdb_info
 {{ irrdb_info|parse_irrdb_info|sort(attribute="id")|to_yaml }}
 
 rpki_roas
---------------------------
-{{ rpki_roas|parse_rpki_roas|to_yaml }}
+---------
+{{ rpki_roas|to_yaml }}
 
 arin_whois_db_records
 ---------------------

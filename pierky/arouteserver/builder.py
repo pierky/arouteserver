@@ -414,8 +414,7 @@ class ConfigBuilder(object):
         # { "<as_set_bundle_id>": <IRRDBRecord>, ... }
         self.irrdb_info = None
 
-        # { "<origin_asn>": [RPKIROAs_Proxy] }
-        # RPKIROAs_Proxy.roas [{"prefix": "a.b.c.d", "length": x, "le": y}]
+        # { "<len>": [{"prefix": "<ip>/<len>", "max_len": x, "asn": "AS<n>"}]
         self.rpki_roas = {}
 
         # { "<origin_asn>": ["a/b", "c/d"] }
@@ -545,6 +544,16 @@ class ConfigBuilder(object):
                 be written.
         """
 
+        def sorted_rpki_roas():
+            """Returns a list of ROAs, sorted by prefix length, prefix, ASN"""
+            res = []
+            prefix_lengths = sorted(map(int, self.rpki_roas.keys()))
+            for pref_len in prefix_lengths:
+                for roa in sorted(self.rpki_roas[str(pref_len)],
+                                  key=lambda r: (r["prefix"], r["asn"])):
+                    res.append(roa)
+            return res
+
         self.data = {}
         self.data["ip_ver"] = self.ip_ver
         self.data["cfg"] = self.cfg_general
@@ -552,7 +561,7 @@ class ConfigBuilder(object):
         self.data["clients"] = self.cfg_clients
         self.data["asns"] = self.cfg_asns
         self.data["irrdb_info"] = self.irrdb_info
-        self.data["rpki_roas"] = self.rpki_roas
+        self.data["rpki_roas"] = sorted_rpki_roas()
         self.data["arin_whois_records"] = self.arin_whois_records
         self.data["live_tests"] = self.live_tests
         self.data["rtt_based_functions_are_used"] = \
@@ -724,7 +733,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
     AVAILABLE_VERSION = ["6.0", "6.1", "6.2"]
     DEFAULT_VERSION = "6.0"
 
-    IGNORABLE_ISSUES = ["path_hiding", "transit_free_action", "rpki",
+    IGNORABLE_ISSUES = ["path_hiding", "transit_free_action",
                         "add_path", "max_prefix_action",
                         "blackhole_filtering_rewrite_ipv6_nh",
                         "large_communities", "extended_communities",
@@ -760,14 +769,6 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                 "Transit free ASNs policy is configured with "
                 "'action' = '{}' but only 'reject' is supported "
                 "for OpenBGPD.".format(transit_free_action)
-            ):
-                res = False
-
-        if self.cfg_general["filtering"]["rpki_bgp_origin_validation"]["enabled"]:
-            if not self.process_bgpspeaker_specific_compatibility_issue(
-                "rpki",
-                "RPKI BGP Prefix Origin Validation is configured but not supported "
-                "by OpenBGPD."
             ):
                 res = False
 
@@ -1039,12 +1040,6 @@ class TemplateContextDumper(ConfigBuilder):
                 lst.append(bundle.to_dict())
             return lst
 
-        def parse_rpki_roas(rpki_roas):
-            res = {}
-            for origin_asn in rpki_roas:
-                res[origin_asn] = list(rpki_roas[origin_asn].roas)
-            return res
-
         def parse_arin_whois_records(records):
             res = {}
             for origin_asn in records:
@@ -1053,5 +1048,4 @@ class TemplateContextDumper(ConfigBuilder):
 
         env.filters["to_yaml"] = to_yaml
         env.filters["parse_irrdb_info"] = parse_irrdb_info
-        env.filters["parse_rpki_roas"] = parse_rpki_roas
         env.filters["parse_arin_whois_records"] = parse_arin_whois_records
