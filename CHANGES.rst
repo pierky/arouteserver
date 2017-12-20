@@ -19,6 +19,10 @@ next release
 
   The file must be in RIPE RPKI Validator cache format.
 
+- Fix (minor): remove internal communities before accepting blackhole routes tagged with a custom blackhole community.
+
+  This bug did not affect routes tagged with the BLACKHOLE community; anyway, the internal communities were scrubbed before routes were announced to clients.
+
 v0.16.1
 -------
 

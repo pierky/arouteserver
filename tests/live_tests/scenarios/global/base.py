@@ -591,7 +591,7 @@ class BasicScenario(LiveScenario):
         """{}: blackhole filtering requests as seen by rs (std cust)"""
 
         self.receive_route(self.rs, self.DATA["AS2_blackhole2"], self.AS2, next_hop=self.AS2, as_path="2",
-                           std_comms=["65534:0"], lrg_comms=[])
+                           std_comms=["65534:0"], lrg_comms=[], ext_comms=[])
         self.log_contains(self.rs, "blackhole filtering request from {AS2_1} - ACCEPTING " + self.DATA["AS2_blackhole2"], {"AS2_1": self.AS2})
 
     def test_070_blackhole_filtering_as_seen_by_rs_lrg_cust(self):
