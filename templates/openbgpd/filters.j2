@@ -118,8 +118,8 @@ match from group clients community NO_ADVERTISE set community delete NO_ADVERTIS
 #    $INTCOMM_RPKI_INVALID ext community from the routes whose
 #    prefix matches a ROA (both prefix and origin ASN).
 match from group clients set ext-community $INTCOMM_RPKI_UNKNOWN
-{%	for roa in rpki_roas %}
-match from group clients prefix {{ roa.prefix }} or-longer set ext-community $INTCOMM_RPKI_INVALID
+{%	for prefix in rpki_roas_covered_space %}
+match from group clients prefix {{ prefix }} or-longer set ext-community $INTCOMM_RPKI_INVALID
 {%	endfor %}
 {%	for roa in rpki_roas %}
 match from group clients source-as {{ roa.asn }} prefix {{ roa.prefix }}

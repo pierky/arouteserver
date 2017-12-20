@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from aggregate6 import aggregate
 import logging
 import os
 from packaging import version
@@ -1021,10 +1022,18 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                     return False
             return True
 
+        def aggregated_roas_covered_space():
+            prefixes = []
+            for pref_len in self.rpki_roas:
+                for roa in self.rpki_roas[pref_len]:
+                    prefixes.append(roa["prefix"])
+            return aggregate(prefixes)
+
         env.filters["convert_ext_comm"] = convert_ext_comm
         env.filters["community_is_set"] = community_is_set
         self.data["at_least_one_client_uses_tag_reject_policy"] = \
             at_least_one_client_uses_tag_reject_policy()
+        self.data["rpki_roas_covered_space"] = aggregated_roas_covered_space()
 
 class TemplateContextDumper(ConfigBuilder):
 

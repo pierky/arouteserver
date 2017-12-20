@@ -151,7 +151,7 @@ RenderConfigureExample "openbgpd" "openbgpd62-general.yml" "daemon=openbgpd vers
 # dataset from the RIPE RPKI Validator, while the following commands just need
 # to used a very small subset of data for the sake of readability of the
 # example configs that are going to build.
-rm var/build_doc_cache/ripe-rpki-cache.json
+rm var/build_doc_cache/ripe-rpki-cache.json || true
 
 title "Building example: default, BIRD, IPv4"
 G="config.d/general.yml"
