@@ -66,6 +66,15 @@ match from {{ client.ip }} {{ condition }} set { ext-community delete {{ int_com
 {%	endif %}
 {% endmacro %}
 
+{% macro write_roas(action) %}
+{%	for roa in rpki_roas %}
+match from group clients source-as {{ roa.asn }} prefix {{ roa.prefix }}
+{%-		if roa.length != roa.max_len %}
+ prefixlen {{ roa.length }} - {{ roa.max_len }}
+{%-		endif %}
+ {{ action }}
+{%	endfor %}
+{% endmacro %}
 
 {% if cfg.filtering.global_black_list_pref %}
 global_black_list_pref="{ {{ write_prefix_list(cfg.filtering.global_black_list_pref) }} }"
@@ -121,13 +130,7 @@ match from group clients set ext-community $INTCOMM_RPKI_UNKNOWN
 {%	for prefix in rpki_roas_covered_space %}
 match from group clients prefix {{ prefix }} or-longer set ext-community $INTCOMM_RPKI_INVALID
 {%	endfor %}
-{%	for roa in rpki_roas %}
-match from group clients source-as {{ roa.asn }} prefix {{ roa.prefix }}
-{%-		if roa.length != roa.max_len %}
- prefixlen {{ roa.length }} - {{ roa.max_len }}
-{%-		endif %}
- set { ext-community $INTCOMM_RPKI_VALID ext-community delete $INTCOMM_RPKI_INVALID }
-{%	endfor %}
+{{	write_roas("set { ext-community $INTCOMM_RPKI_VALID ext-community delete $INTCOMM_RPKI_INVALID }") }}
 {% endif %}
 
 {% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and
@@ -144,13 +147,7 @@ match from group clients source-as {{ roa.asn }} prefix {{ roa.prefix }}
 # routes.
 match from group clients ext-community $INTCOMM_RPKI_VALID set ext-community $INTCOMM_PREF_OK_ROA
 {%	else %}
-{%		for roa in rpki_roas %}
-match from group clients source-as {{ roa.asn }} prefix {{ roa.prefix }}
-{%-			if roa.length != roa.max_len %}
- prefixlen {{ roa.length }} - {{ roa.max_len }}
-{%-			endif %}
- set ext-community $INTCOMM_PREF_OK_ROA
-{%		endfor %}
+{{		write_roas("set ext-community $INTCOMM_PREF_OK_ROA") }}
 {%	endif %}
 {% endif %}
 
