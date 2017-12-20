@@ -38,6 +38,7 @@ class BIRDInstance(DockerInstance):
         self.protocols_status = {}
 
         self.routes = []
+        self.log = None
 
     def restart(self):
         """Restart BIRD.
@@ -237,8 +238,10 @@ class BIRDInstance(DockerInstance):
         )
 
     def log_contains(self, s):
-        out = self.run_cmd("cat /var/log/bird.log")
-        if s in out:
+        if not self.log:
+            self.log = self.run_cmd("cat /var/log/bird.log")
+
+        if s in self.log:
             return True
         else:
             return False
