@@ -67,7 +67,7 @@ match from {{ client.ip }} {{ condition }} set { ext-community delete {{ int_com
 {% endmacro %}
 
 {% macro write_roas(action) %}
-{%	for roa in rpki_roas %}
+{%	for roa in rpki_roas if roa.asn != 0 %}
 match from group clients source-as {{ roa.asn }} prefix {{ roa.prefix }}
 {%-		if roa.length != roa.max_len %}
  prefixlen {{ roa.length }} - {{ roa.max_len }}
@@ -121,8 +121,9 @@ match from group clients community NO_ADVERTISE set community delete NO_ADVERTIS
 	rpki_roas %}
 # RPKI-based Origin Validation
 # 1. Add $INTCOMM_RPKI_UNKNOWN ext community to all the routes.
-# 2. Add $INTCOMM_RPKI_INVALID ext community to all the routes
-#    whose prefix is covered by a ROA.
+# 2. Add $INTCOMM_RPKI_INVALID ext community to all those routes
+#    whose prefix is covered by a ROA. Here, the aggregated address
+#    space made up by all the ROAs prefixes is used.
 # 3. Add $INTCOMM_RPKI_VALID ext community to and remove the
 #    $INTCOMM_RPKI_INVALID ext community from the routes whose
 #    prefix matches a ROA (both prefix and origin ASN).
@@ -130,7 +131,9 @@ match from group clients set ext-community $INTCOMM_RPKI_UNKNOWN
 {%	for prefix in rpki_roas_covered_space %}
 match from group clients prefix {{ prefix }} or-longer set ext-community $INTCOMM_RPKI_INVALID
 {%	endfor %}
-{{	write_roas("set { ext-community $INTCOMM_RPKI_VALID ext-community delete $INTCOMM_RPKI_INVALID }") }}
+{{	write_roas("set ext-community $INTCOMM_RPKI_VALID") }}
+match from group clients ext-community $INTCOMM_RPKI_VALID set { ext-community delete $INTCOMM_RPKI_UNKNOWN ext-community delete $INTCOMM_RPKI_INVALID }
+match from group clients ext-community $INTCOMM_RPKI_INVALID set ext-community delete $INTCOMM_RPKI_UNKNOWN
 {% endif %}
 
 {% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and
