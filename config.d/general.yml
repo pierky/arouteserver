@@ -266,6 +266,9 @@ cfg:
         #
         # The setting of the 'allow_longer_prefixes' option will be
         # honored.
+        #
+        # See also:
+        # https://mailman.nanog.org/pipermail/nanog/2017-December/093525.html
 
         # Set this to True to enable this feature.
         #

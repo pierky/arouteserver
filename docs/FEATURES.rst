@@ -65,9 +65,9 @@ Features
   - extended dataset for filters generation:
 
     - RPKI **ROAs used as route objects**;
-    - `Origin AS <https://teamarin.net/2016/07/07/origin-as-an-easier-way-to-validate-letters-of-authority/>`_ from **ARIN Whois** database dump;
+    - `Origin AS <https://mailman.nanog.org/pipermail/nanog/2017-December/093525.html>`_ from **ARIN Whois** database dump;
 
-  - **RPKI**-based filtering (BGP Prefix Origin Validation - `RFC6811`_).
+  - **RPKI**-based filtering (BGP Prefix Origin Validation).
 
 - **Blackhole filtering** support:
 

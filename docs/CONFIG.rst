@@ -186,6 +186,8 @@ The ARIN Whois database can be obtained by signing an `agreement with ARIN <http
 
 A parsed version of the database dump is offered by `NLNOG <https://nlnog.net/>`__ at the following URL: http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2
 
+Further details can be found in `this message <https://mailman.nanog.org/pipermail/nanog/2017-December/093525.html>`__ appeared on the NANOG mailing list.
+
 White lists
 ~~~~~~~~~~~
 

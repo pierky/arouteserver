@@ -489,6 +489,10 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
   honored.
 
 
+  See also:
+  https://mailman.nanog.org/pipermail/nanog/2017-December/093525.html
+
+
 - ``enabled``:
   Set this to True to enable this feature.
 
