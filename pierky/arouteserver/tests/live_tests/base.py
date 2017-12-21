@@ -401,14 +401,14 @@ class LiveScenario(ARouteServerTestCase):
 
     @classmethod
     def dump_routes(cls):
-        dest_dir = os.path.join(cls._get_module_dir(), "routes", cls.__name__)
+        rs_tag = cls.get_instance_tag(cls.RS_INSTANCE_CLASS)
+
+        dest_dir = os.path.join(cls._get_module_dir(), "routes", cls.__name__, rs_tag)
         if not os.path.exists(dest_dir):
             os.makedirs(dest_dir)
 
         for instance in cls.INSTANCES:
-            tag = cls.get_instance_tag(instance)
-
-            path = os.path.join(dest_dir, "{}-{}.csv".format(instance.name, tag))
+            path = os.path.join(dest_dir, "{}.txt".format(instance.name))
             routes = instance.get_routes(None, include_filtered=True)
             sorted_routes = sorted(routes,
                                    key = lambda route: (route.prefix,

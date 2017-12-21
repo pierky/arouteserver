@@ -316,7 +316,7 @@ class Route(object):
         }
 
     def dump(self, f):
-        f.write(
+        s = (
             "{prefix}, AS_PATH: {as_path}, NEXT_HOP: {next_hop}, via {via}\n"
             "  std comms: {std_comms}\n"
             "  ext comms: {ext_comms}\n"
@@ -326,6 +326,8 @@ class Route(object):
                 **self.to_dict()
             )
         )
+        for line in s.split("\n"):
+            f.write(line.rstrip() + "\n")
 
     def __str__(self):
         return str(self.to_dict())
