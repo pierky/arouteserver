@@ -339,7 +339,7 @@ if [[ `echo "$THESE_TESTS_ONLY" | grep -P "\bload\b"` ]]; then
 				for f in $TESTS_DIR/var/configs/*_openbgpd_6.0.conf; do
 					if [ ! -e $TESTS_DIR/var/configs/${f}.gz ]; then
 						echo "Compressing ${f}..."
-						gzip --best $f
+						gzip --force --best $f
 					fi
 				done
 
