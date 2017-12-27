@@ -114,4 +114,3 @@ More feature are already planned: see the `Future work <https://arouteserver.rea
 .. _RFC7948: https://tools.ietf.org/html/rfc7948
 .. _RFC5082: https://tools.ietf.org/html/rfc5082
 .. _RFC7911: https://tools.ietf.org/html/rfc7911
-.. _RFC6811: https://tools.ietf.org/html/rfc6811
