@@ -268,7 +268,7 @@ class OpenBGPDInstance(KVMInstance):
         res = []
 
         for route in self.routes["main"]:
-            if route.prefix.lower() != prefix.lower():
+            if prefix and route.prefix.lower() != prefix.lower():
                 continue
             if only_best and not route.best:
                 continue
@@ -279,6 +279,11 @@ class OpenBGPDInstance(KVMInstance):
 
     def log_contains(self, s):
         return True
+
+    def log_contains_errors(self, allowed_errors=[], list_errors=False):
+        if list_errors:
+            return False, ""
+        return False
 
 class OpenBGPD60Instance(OpenBGPDInstance):
 

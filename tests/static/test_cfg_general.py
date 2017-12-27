@@ -229,11 +229,11 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._test_bool_val(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "enabled")
         self._test_mandatory(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "enabled", has_default=True)
         
-    def test_use_rpki_roas_as_route_objects_source(self):
-        """{}: use_rpki_roas_as_route_objects.source"""
-        self.assertEqual(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["source"], "ripe-rpki-validator-cache")
-        self._test_option(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "source", ("ripe-rpki-validator-cache","rtrlib"))
-        self._test_mandatory(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "source", has_default=True)
+    def test_use_rpki_roas_source(self):
+        """{}: rpki_roas.source"""
+        self.assertEqual(self.cfg["rpki_roas"]["source"], "ripe-rpki-validator-cache")
+        self._test_option(self.cfg["rpki_roas"], "source", ("ripe-rpki-validator-cache","rtrlib"))
+        self._test_mandatory(self.cfg["rpki_roas"], "source", has_default=True)
 
     def use_arin_whois_db_dump_enabled(self):
         """{}: use_arin_whois_db_dump.enabled"""
@@ -242,16 +242,16 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._test_mandatory(self.cfg["filtering"]["irrdb"]["use_arin_whois_db_dump"], "enabled", has_default=True)
 
     def test_rpki_enabled(self):
-        """{}: rpki, enabled"""
-        self.assertEqual(self.cfg["filtering"]["rpki"]["enabled"], False)
-        self._test_bool_val(self.cfg["filtering"]["rpki"], "enabled")
-        self._test_mandatory(self.cfg["filtering"]["rpki"], "enabled", has_default=True)
+        """{}: rpki_bgp_origin_validation, enabled"""
+        self.assertEqual(self.cfg["filtering"]["rpki_bgp_origin_validation"]["enabled"], False)
+        self._test_bool_val(self.cfg["filtering"]["rpki_bgp_origin_validation"], "enabled")
+        self._test_mandatory(self.cfg["filtering"]["rpki_bgp_origin_validation"], "enabled", has_default=True)
 
     def test_rpki_reject_invalid(self):
-        """{}: rpki, reject_invalid"""
-        self.assertEqual(self.cfg["filtering"]["rpki"]["reject_invalid"], True)
-        self._test_bool_val(self.cfg["filtering"]["rpki"], "reject_invalid")
-        self._test_optional(self.cfg["filtering"]["rpki"], "reject_invalid")
+        """{}: rpki_bgp_origin_validation, reject_invalid"""
+        self.assertEqual(self.cfg["filtering"]["rpki_bgp_origin_validation"]["reject_invalid"], True)
+        self._test_bool_val(self.cfg["filtering"]["rpki_bgp_origin_validation"], "reject_invalid")
+        self._test_optional(self.cfg["filtering"]["rpki_bgp_origin_validation"], "reject_invalid")
 
     def test_reject_policy(self):
         """{}: reject_policy"""
@@ -1037,7 +1037,6 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "  rs_as: 999\n"
             "  router_id: 192.0.2.2"
         )
-        self.cfg.parse()
         self._contains_err()
 
         exp_res = {
@@ -1078,25 +1077,13 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "peering_db": False,
                     "use_rpki_roas_as_route_objects": {
                         "enabled": False,
-                        "source": "ripe-rpki-validator-cache",
-                        "ripe_rpki_validator_url": "http://localcert.ripe.net:8088/export.json",
-                        "allowed_trust_anchors": [
-                            "APNIC from AFRINIC RPKI Root",
-                            "APNIC from ARIN RPKI Root",
-                            "APNIC from IANA RPKI Root",
-                            "APNIC from LACNIC RPKI Root",
-                            "APNIC from RIPE RPKI Root",
-                            "AfriNIC RPKI Root",
-                            "LACNIC RPKI Root",
-                            "RIPE NCC RPKI Root"
-                        ]
                     },
                     "use_arin_bulk_whois_data": {
                         "enabled": False,
                         "source": "http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
                     }
                 },
-                "rpki": {
+                "rpki_bgp_origin_validation": {
                     "enabled": False,
                     "reject_invalid": True,
                 },
@@ -1115,6 +1102,20 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 },
             },
             "rtt_thresholds": None,
+            "rpki_roas": {
+                "source": "ripe-rpki-validator-cache",
+                "ripe_rpki_validator_url": "http://localcert.ripe.net:8088/export.json",
+                "allowed_trust_anchors": [
+                    "APNIC from AFRINIC RPKI Root",
+                    "APNIC from ARIN RPKI Root",
+                    "APNIC from IANA RPKI Root",
+                    "APNIC from LACNIC RPKI Root",
+                    "APNIC from RIPE RPKI Root",
+                    "AfriNIC RPKI Root",
+                    "LACNIC RPKI Root",
+                    "RIPE NCC RPKI Root"
+                ]
+            },
             "blackhole_filtering": {
                 "policy_ipv4": None,
                 "policy_ipv6": None,
@@ -1184,25 +1185,13 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "peering_db": False,
                     "use_rpki_roas_as_route_objects": {
                         "enabled": False,
-                        "source": "ripe-rpki-validator-cache",
-                        "ripe_rpki_validator_url": "http://localcert.ripe.net:8088/export.json",
-                        "allowed_trust_anchors": [
-                            "APNIC from AFRINIC RPKI Root",
-                            "APNIC from ARIN RPKI Root",
-                            "APNIC from IANA RPKI Root",
-                            "APNIC from LACNIC RPKI Root",
-                            "APNIC from RIPE RPKI Root",
-                            "AfriNIC RPKI Root",
-                            "LACNIC RPKI Root",
-                            "RIPE NCC RPKI Root"
-                        ]
                     },
                     "use_arin_bulk_whois_data": {
                         "enabled": False,
                         "source": "http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
                     }
                 },
-                "rpki": {
+                "rpki_bgp_origin_validation": {
                     "enabled": False,
                     "reject_invalid": True,
                 },
@@ -1221,6 +1210,20 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 },
             },
             "rtt_thresholds": [5, 10, 15, 20, 30, 50, 100, 200, 500],
+            "rpki_roas": {
+                "source": "ripe-rpki-validator-cache",
+                "ripe_rpki_validator_url": "http://localcert.ripe.net:8088/export.json",
+                "allowed_trust_anchors": [
+                    "APNIC from AFRINIC RPKI Root",
+                    "APNIC from ARIN RPKI Root",
+                    "APNIC from IANA RPKI Root",
+                    "APNIC from LACNIC RPKI Root",
+                    "APNIC from RIPE RPKI Root",
+                    "AfriNIC RPKI Root",
+                    "LACNIC RPKI Root",
+                    "RIPE NCC RPKI Root"
+                ]
+            },
             "blackhole_filtering": {
                 "policy_ipv4": None,
                 "policy_ipv6": None,
@@ -1245,3 +1248,79 @@ class TestConfigParserGeneral(TestConfigParserBase):
             yaml.safe_dump(self.cfg.cfg, default_flow_style=False),
             yaml.safe_dump({"cfg": exp_res}, default_flow_style=False)
         )
+
+    def test_deprecated_rpki_validation(self):
+        """{}: deprecated syntax, RPKI Origin Validation"""
+        cfg = {
+            "cfg": {
+                "rs_as": 999,
+                "router_id": "192.0.2.2",
+                "filtering": {
+                    "rpki": {
+                        "enabled": True
+                    }
+                }
+            }
+        }
+        self.load_config(yaml=yaml.dump(cfg))
+        self._contains_err()
+        self.assertEqual(self.cfg.cfg["cfg"]["filtering"]["rpki_bgp_origin_validation"]["enabled"], True)
+
+        cfg["cfg"]["filtering"]["rpki_bgp_origin_validation"] = {}
+        self.load_config(yaml=yaml.dump(cfg))
+        self._contains_err("A conflict due to a deprecated syntax exists: filtering.rpki and filtering.rpki_bgp_origin_validation are both configured.")
+
+    def test_deprecated_rpki_roas_source(self):
+        """{}: deprecated syntax, RPKI ROAs source"""
+        cfg = {
+            "cfg": {
+                "rs_as": 999,
+                "router_id": "192.0.2.2",
+                "filtering": {
+                    "irrdb": {
+                        "use_rpki_roas_as_route_objects": {
+                            "enabled": True
+                        }
+                    },
+                    "rpki": {
+                        "enabled": True
+                    }
+                }
+            }
+        }
+        self.load_config(yaml=yaml.dump(cfg))
+        self._contains_err()
+        self.assertEqual(self.cfg.cfg["cfg"]["rpki_roas"]["source"], "rtrlib")
+
+        cfg["cfg"]["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["source"] = "ripe-rpki-validator-cache"
+        self.load_config(yaml=yaml.dump(cfg))
+        self._contains_err("A deprecated syntax triggered an issue with the configuration of RPKI BGP Origin Validation (filtering.rpki) and ROAs-as-route-objects (filtering.irrdb.rpki_roas_as_route_objects). The former uses rtrlib as source for ROAs, while the latter is configured to use the RIPE RPKI Validator")
+
+        del cfg["cfg"]["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["source"]
+        cfg["cfg"]["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["enabled"] = False
+        self.load_config(yaml=yaml.dump(cfg))
+        self._contains_err()
+        self.assertEqual(self.cfg.cfg["cfg"]["rpki_roas"]["source"], "rtrlib")
+
+        cfg["cfg"]["filtering"]["rpki"]["enabled"] = False
+        self.load_config(yaml=yaml.dump(cfg))
+        self._contains_err()
+        self.assertTrue("rpki_roas" not in self.cfg.cfg)
+
+        cfg["cfg"]["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["enabled"] = True
+        cfg["cfg"]["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["source"] = "ripe-rpki-validator-cache"
+        self.load_config(yaml=yaml.dump(cfg))
+        self._contains_err()
+        self.assertEqual(self.cfg.cfg["cfg"]["rpki_roas"]["source"], "ripe-rpki-validator-cache")
+
+        cfg["cfg"]["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["ripe_rpki_validator_url"] = "Foo"
+        cfg["cfg"]["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["allowed_trust_anchors"] = ["bar"]
+        self.load_config(yaml=yaml.dump(cfg))
+        self._contains_err()
+        self.assertEqual(self.cfg.cfg["cfg"]["rpki_roas"]["source"], "ripe-rpki-validator-cache")
+        self.assertEqual(self.cfg.cfg["cfg"]["rpki_roas"]["ripe_rpki_validator_url"], "Foo")
+        self.assertEqual(self.cfg.cfg["cfg"]["rpki_roas"]["allowed_trust_anchors"], ["bar"])
+
+        cfg["cfg"]["rpki_roas"] = {}
+        self.load_config(yaml=yaml.dump(cfg))
+        self._contains_err("A conflict due to a deprecated syntax exists: please check rpki_roas, filtering.rpki and filtering.irrdb.rpki_roas_as_route_objects.")

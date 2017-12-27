@@ -3,6 +3,26 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New feature: allow to set the source of IRR objects.
+
+  AS-SETs can be prepended with an optional source: ``RIPE::AS-FOO``, ``RIPE::AS64496:AS-FOO``.
+
+- New feature: support for RPKI-based Origin Validation added to OpenBGPD configurations.
+
+  RPKI ROAs must be loaded from a RIPE RPKI Validator cache file (local or via HTTP).
+  Mostly inspired by Job Snijders' tool https://github.com/job/rtrsub
+
+- Improvement: RPKI ROAs can be loaded from a local file too.
+
+  The file must be in RIPE RPKI Validator cache format.
+
+- Fix (minor): remove internal communities before accepting blackhole routes tagged with a custom blackhole community.
+
+  This bug did not affect routes tagged with the BLACKHOLE community; anyway, the internal communities were scrubbed before routes were announced to clients.
+
 v0.16.2
 -------
 

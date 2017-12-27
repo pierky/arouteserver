@@ -64,11 +64,11 @@ set -e
 
 # At first verify if templates and fingerprints are aligned.
 echo "Verifying if templates and fingerprints are aligned..."
-nosetests -vs -x tests/static/test_cfg_program.py
+nosetests -vs -x tests/static/test_cfg_program.py 2>&1
 
 # Then check the code
 echo "Checking code via tox..."
-tox -e py34-syntax,py27-flake8,py34-flake8
+tox -e py34-syntax,py27-flake8,py34-flake8 2>&1
 
 echo "Verifying no Docker instances are running..."
 if [ "`docker ps | wc -l`" != "1" ]; then
@@ -88,7 +88,7 @@ fi
 
 if [[ -z "$1" || `echo "$1" | grep -P "\bcli\b"` ]]; then
 	echo -n "Testing CLI commands... "
-	./tests/cli
+	./tests/cli 2>&1
 fi
 
 if [[ -z "$1" || `echo "$1" | grep -P "\bstatic\b"` ]]; then
@@ -97,7 +97,7 @@ if [[ -z "$1" || `echo "$1" | grep -P "\bstatic\b"` ]]; then
 fi
 
 echo "Testing live scenarios with BUILD_ONLY=1..."
-BUILD_ONLY=1 nosetests -vs -x $TESTS_DIR/live_tests
+BUILD_ONLY=1 nosetests -vs -x $TESTS_DIR/live_tests/scenarios/*/test_*.py -m test_010_setup
 
 echo "Running live tests..."
 for d in $TESTS_DIR/live_tests/scenarios/*; do

@@ -255,18 +255,7 @@ cfg:
         enabled: true
         source: http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2
       use_rpki_roas_as_route_objects:
-        allowed_trust_anchors:
-        - APNIC from AFRINIC RPKI Root
-        - APNIC from ARIN RPKI Root
-        - APNIC from IANA RPKI Root
-        - APNIC from LACNIC RPKI Root
-        - APNIC from RIPE RPKI Root
-        - AfriNIC RPKI Root
-        - LACNIC RPKI Root
-        - RIPE NCC RPKI Root
         enabled: true
-        ripe_rpki_validator_url: http://localcert.ripe.net:8088/export.json
-        source: ripe-rpki-validator-cache
     max_as_path_len: 32
     max_prefix:
       action: restart
@@ -283,7 +272,7 @@ cfg:
     reject_invalid_as_in_as_path: true
     reject_policy:
       policy: reject
-    rpki:
+    rpki_bgp_origin_validation:
       enabled: true
       reject_invalid: true
     transit_free:
@@ -318,6 +307,18 @@ cfg:
   rfc1997_wellknown_communities:
     policy: pass
   router_id: 192.0.2.2
+  rpki_roas:
+    allowed_trust_anchors:
+    - APNIC from AFRINIC RPKI Root
+    - APNIC from ARIN RPKI Root
+    - APNIC from IANA RPKI Root
+    - APNIC from LACNIC RPKI Root
+    - APNIC from RIPE RPKI Root
+    - AfriNIC RPKI Root
+    - LACNIC RPKI Root
+    - RIPE NCC RPKI Root
+    ripe_rpki_validator_url: examples/rich/ripe-rpki-cache.json
+    source: ripe-rpki-validator-cache
   rs_as: 999
   rtt_thresholds:
   - 5
@@ -682,7 +683,7 @@ clients:
       reject_invalid_as_in_as_path: true
       reject_policy:
         policy: reject
-      rpki:
+      rpki_bgp_origin_validation:
         enabled: true
         reject_invalid: true
     graceful_shutdown:
@@ -733,7 +734,7 @@ clients:
       reject_invalid_as_in_as_path: true
       reject_policy:
         policy: reject
-      rpki:
+      rpki_bgp_origin_validation:
         enabled: true
         reject_invalid: true
     graceful_shutdown:
@@ -784,7 +785,7 @@ clients:
       reject_invalid_as_in_as_path: true
       reject_policy:
         policy: reject
-      rpki:
+      rpki_bgp_origin_validation:
         enabled: true
         reject_invalid: true
     graceful_shutdown:
@@ -813,44 +814,44 @@ irrdb_info
   name: AS3333
   prefixes:
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 32
     length: 21
     max_length: 32
     prefix: 193.0.0.0
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 32
     length: 23
     max_length: 32
     prefix: 193.0.10.0
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 32
     length: 23
     max_length: 32
     prefix: 193.0.12.0
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 32
     length: 23
     max_length: 32
     prefix: 193.0.18.0
   - comment: null
     exact: false
     ge: 23
-    le: 23
+    le: 32
     length: 22
     max_length: 32
     prefix: 193.0.20.0
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 128
     length: 48
     max_length: 128
     prefix: '2001:67c:2e8::'
@@ -862,113 +863,108 @@ irrdb_info
   name: AS10745
   prefixes:
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 32
     length: 24
     max_length: 32
     prefix: 192.136.136.0
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 32
     length: 24
     max_length: 32
     prefix: 192.149.252.0
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 32
     length: 24
     max_length: 32
     prefix: 199.43.0.0
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 128
     length: 48
     max_length: 128
     prefix: '2001:500:4::'
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 128
     length: 48
     max_length: 128
     prefix: '2001:500:30::'
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 128
     length: 48
     max_length: 128
     prefix: '2001:500:110::'
   used_by: client AS10745_1, client AS10745_2
 
 
-rpki_roas_as_route_objects
---------------------------
-AS3333:
-- exact: true
-  ge: 23
-  le: 23
-  length: 23
-  max_length: 32
-  prefix: 193.0.20.0
-- exact: false
-  ge: 22
-  le: 26
-  length: 22
-  max_length: 32
-  prefix: 193.0.24.0
-- exact: true
-  ge: 23
-  le: 23
-  length: 23
-  max_length: 32
-  prefix: 193.0.10.0
-- exact: true
-  ge: 21
-  le: 21
+rpki_roas
+---------
+- asn: 3333
   length: 21
-  max_length: 32
-  prefix: 193.0.0.0
-- exact: true
-  ge: 23
-  le: 23
+  max_len: 21
+  prefix: 193.0.0.0/21
+- asn: 3333
+  length: 22
+  max_len: 26
+  prefix: 193.0.24.0/22
+- asn: 3333
   length: 23
-  max_length: 32
-  prefix: 193.0.22.0
-- exact: true
-  ge: 24
-  le: 24
+  max_len: 23
+  prefix: 193.0.10.0/23
+- asn: 3333
+  length: 23
+  max_len: 23
+  prefix: 193.0.12.0/23
+- asn: 25152
+  length: 23
+  max_len: 23
+  prefix: 193.0.14.0/23
+- asn: 3333
+  length: 23
+  max_len: 23
+  prefix: 193.0.18.0/23
+- asn: 3333
+  length: 23
+  max_len: 23
+  prefix: 193.0.20.0/23
+- asn: 3333
+  length: 23
+  max_len: 23
+  prefix: 193.0.22.0/23
+- asn: 25152
   length: 24
-  max_length: 32
-  prefix: 193.0.24.0
-- exact: true
-  ge: 23
-  le: 23
-  length: 23
-  max_length: 32
-  prefix: 193.0.12.0
-- exact: true
-  ge: 42
-  le: 42
+  max_len: 24
+  prefix: 193.0.14.0/24
+- asn: 3333
+  length: 24
+  max_len: 24
+  prefix: 193.0.24.0/24
+- asn: 25152
+  length: 32
+  max_len: 32
+  prefix: 2001:7fd::/32
+- asn: 3333
   length: 42
-  max_length: 128
-  prefix: '2001:610:240::'
-- exact: true
-  ge: 48
-  le: 48
+  max_len: 42
+  prefix: 2001:610:240::/42
+- asn: 3333
   length: 48
-  max_length: 128
-  prefix: '2001:67c:2e8::'
-- exact: true
-  ge: 23
-  le: 23
-  length: 23
-  max_length: 32
-  prefix: 193.0.18.0
+  max_len: 48
+  prefix: 2001:67c:2e8::/48
+- asn: 25152
+  length: 48
+  max_len: 48
+  prefix: 2001:7fd::/48
 
 
 arin_whois_db_records
@@ -998,13 +994,3 @@ AS10745:
   length: 48
   max_length: 128
   prefix: '2001:500:4::'
-- exact: false
-  ge: 36
-  le: 128
-  length: 36
-  max_length: 128
-  prefix: '2602:ff57::'
-
-
-roas
-----

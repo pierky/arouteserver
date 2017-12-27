@@ -65,12 +65,21 @@ filter to_rs {
 	}
 	accept;
 }
+filter from_rs {
+	# Since AS3 is configured with ADD_PATH, this allows
+	# to have a more stable behaviour and to avoid having
+	# a diff in routes dumps.
+	if bgp_path ~ [= 999 1 * =] then {
+		bgp_local_pref = 101;
+	}
+	accept;
+}
 protocol bgp the_rs {
 	local as 3;
 	neighbor {{ data.rs_IPAddress }} as 999;
 	passive on;
 	add paths rx;
-	import all;
+	import filter from_rs;
 	export filter to_rs;
 	connect delay time 1;
 	connect retry time 1;

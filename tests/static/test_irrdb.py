@@ -83,6 +83,7 @@ class TestIRRDBInfo(TestIRRDBInfo_Base):
         self.assertEqual(self.obj.object_names, ["AA-TWO@"])
         self.assertEqual(self.obj.descr, "AA-TWO@")
         self.assertEqual(self.obj.name, "AA_TWO_")
+        self.assertEqual(self.obj.source, None)
 
     def test_010_as_set_bundle3(self):
         """IRRDB info: base, AS_SET bundle info (3)"""
@@ -90,6 +91,7 @@ class TestIRRDBInfo(TestIRRDBInfo_Base):
         self.assertEqual(self.obj.object_names, ["AA-TWO@", "BB", "CC_ONE"])
         self.assertEqual(self.obj.descr, "AA-TWO@, BB, CC_ONE")
         self.assertEqual(self.obj.name, "AA_TWO__BB_CC_ONE")
+        self.assertEqual(self.obj.source, None)
 
     def test_010_as_set_bundle4(self):
         """IRRDB info: base, AS_SET bundle info (4)"""
@@ -97,6 +99,47 @@ class TestIRRDBInfo(TestIRRDBInfo_Base):
         self.assertEqual(self.obj.object_names, ["-THREE", "AA-TWO@", "BB", "CC_ONE"])
         self.assertEqual(self.obj.descr, "-THREE, AA-TWO@, BB and 1 more")
         self.assertTrue(self.obj.name.startswith("_THREE_and_3_more_"))
+        self.assertEqual(self.obj.source, None)
+
+    def test_010_as_set_bundle5(self):
+        """IRRDB info: base, AS_SET bundle info (5 with RIPE::)"""
+        self.setup_obj(["bb", "Cc_one", "AA-two@", "-three", "RIPE::AS-ONE"])
+        self.assertEqual(self.obj.object_names, ["-THREE", "AA-TWO@", "BB", "CC_ONE", "RIPE::AS-ONE"])
+        self.assertEqual(self.obj.descr, "-THREE, AA-TWO@, BB and 2 more")
+        self.assertTrue(self.obj.name.startswith("_THREE_and_4_more_"))
+        self.assertEqual(self.obj.source, "RIPE")
+
+    def test_010_as_set_bundle6(self):
+        """IRRDB info: base, AS_SET bundle info (5 with RIPE:: and ARIN::)"""
+        self.setup_obj(["bb", "RIPE::Cc_one", "AA-two@", "-three", "ARIN::AS-ONE"])
+        self.assertEqual(self.obj.object_names, ["-THREE", "AA-TWO@", "ARIN::AS-ONE", "BB", "RIPE::CC_ONE"])
+        self.assertEqual(self.obj.descr, "-THREE, AA-TWO@, ARIN::AS-ONE and 2 more")
+        self.assertTrue(self.obj.name.startswith("_THREE_and_4_more_"))
+        self.assertEqual(self.obj.source, "RIPE")
+
+    def test_010_as_set_bundle7(self):
+        """IRRDB info: base, AS_SET bundle info (5 with ARIN:: and RIPE::)"""
+        self.setup_obj(["bb", "ARIN::Cc_one", "AA-two@", "-three", "RIPE::AS-ONE"])
+        self.assertEqual(self.obj.object_names, ["-THREE", "AA-TWO@", "ARIN::CC_ONE", "BB", "RIPE::AS-ONE"])
+        self.assertEqual(self.obj.descr, "-THREE, AA-TWO@, ARIN::CC_ONE and 2 more")
+        self.assertTrue(self.obj.name.startswith("_THREE_and_4_more_"))
+        self.assertEqual(self.obj.source, "ARIN")
+
+    def test_010_as_set_bundle8(self):
+        """IRRDB info: base, AS_SET bundle info (1 with RIPE::)"""
+        self.setup_obj(["RIPE::AS-ONE"])
+        self.assertEqual(self.obj.object_names, ["RIPE::AS-ONE"])
+        self.assertEqual(self.obj.descr, "RIPE::AS-ONE")
+        self.assertEqual(self.obj.name, "RIPE__AS_ONE")
+        self.assertEqual(self.obj.source, "RIPE")
+
+    def test_010_as_set_bundle8(self):
+        """IRRDB info: base, AS_SET bundle info (2 with RIPE:: and ARIN::)"""
+        self.setup_obj(["RIPE::AS-ONE", "ARIN::AS-TWO"])
+        self.assertEqual(self.obj.object_names, ["ARIN::AS-TWO", "RIPE::AS-ONE"])
+        self.assertEqual(self.obj.descr, "ARIN::AS-TWO, RIPE::AS-ONE")
+        self.assertEqual(self.obj.name, "ARIN__AS_TWO_RIPE__AS_ONE")
+        self.assertEqual(self.obj.source, "RIPE")
 
     @mock.patch.object(FakeIRRDBObject, "_get_object_filename", return_value="test1_file")
     @mock.patch.object(FakeIRRDBObject, "_run_cmd", return_value="test1")

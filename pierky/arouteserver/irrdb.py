@@ -27,8 +27,37 @@ from .ipaddresses import IPNetwork
 
 class AS_SET_Bundle(object):
 
+    @staticmethod
+    def get_source(object_names):
+        """Returns (source_to_use, is_same_for_all)
+
+        In case of multiple objects, the first specific source found
+        will be used. Otherwise source_to_use will be None (use the
+        default sources).
+        """
+
+        sources = []
+        for name in object_names:
+            source_macro = name.split("::")
+            if len(source_macro) > 1:
+                sources.append(source_macro[0])
+            else:
+                sources.append(None)
+
+        same_for_all = len(set(sources)) == 1
+
+        not_none = [_ for _ in sources if _ is not None]
+        if not_none:
+            used_source = not_none[0].upper()
+        else:
+            used_source = None
+
+        return (used_source, same_for_all)
+
     def __init__(self, object_names):
         assert isinstance(object_names, list)
+
+        self.source, _ = self.get_source(object_names)
 
         self.object_names = sorted([n.upper() for n in set(object_names)])
 
@@ -78,6 +107,21 @@ class IRRDBInfo(CachedObject, AS_SET_Bundle):
 
         AS_SET_Bundle.__init__(self, object_names)
 
+    def _get_bgpq3_sources(self):
+        if self.source:
+            return "{},{}".format(self.source, self.bgpq3_sources)
+        return self.bgpq3_sources
+
+    def _get_bgpq3_names(self):
+        res = []
+        for name in self.object_names:
+            source_macro = name.split("::")
+            if len(source_macro) > 1:
+                res.append(source_macro[1])
+            else:
+                res.append(source_macro[0])
+        return res
+
     def _run_cmd(self, cmd):
         proc = subprocess.Popen(cmd,
                                 stdout=subprocess.PIPE,
@@ -113,21 +157,23 @@ class ASSet(IRRDBInfo):
         return "{}-as_set.json".format(self.name)
 
     def _get_data(self):
+        object_names = self._get_bgpq3_names()
+
         # If the list of objects to expand is made up by
         # an 'ASxxx' element only, avoid to run bgpq3 and
         # return only that ASN.
-        if len(self.object_names) == 1 and \
-            re.match("^AS[0-9]+$", self.object_names[0]):
-            return [int(self.object_names[0][2:])]
+        if len(object_names) == 1 and \
+            re.match("^AS[0-9]+$", object_names[0]):
+            return [int(object_names[0][2:])]
 
         cmd = [self.bgpq3_path]
         cmd += ["-h", self.bgpq3_host]
-        cmd += ["-S", self.bgpq3_sources]
+        cmd += ["-S", self._get_bgpq3_sources()]
         cmd += ["-3"]
         cmd += ["-j"]
         cmd += ["-f", "1"]
         cmd += ["-l", "asn_list"]
-        cmd += self.object_names
+        cmd += object_names
 
         try:
             out = self._run_cmd(cmd)
@@ -170,12 +216,15 @@ class RSet(IRRDBInfo):
         self.prefixes = self.raw_data
 
     def _get_object_filename(self):
-        return "{}-r_set-ipv{}.json".format(self.name, self.ip_ver)
+        return "{}-r_set-ipv{}{}.json".format(
+            self.name, self.ip_ver,
+            "_and_more_specific" if self.allow_longer_prefixes else ""
+        )
 
     def _get_data(self):
         cmd = [self.bgpq3_path]
         cmd += ["-h", self.bgpq3_host]
-        cmd += ["-S", self.bgpq3_sources]
+        cmd += ["-S", self._get_bgpq3_sources()]
         cmd += ["-3"]
         cmd += ["-4"] if self.ip_ver == 4 else ["-6"]
         cmd += ["-A"]
@@ -184,7 +233,7 @@ class RSet(IRRDBInfo):
         if self.allow_longer_prefixes:
             cmd += ["-R"]
             cmd += ["32"] if self.ip_ver == 4 else ["128"]
-        cmd += self.object_names
+        cmd += self._get_bgpq3_names()
 
         try:
             out = self._run_cmd(cmd)

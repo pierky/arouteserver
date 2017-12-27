@@ -1,3 +1,4 @@
+aggregate6>=1.0.12
 ipaddr>=2.1.11;python_version<"3.3"
 Jinja2>=2.9.4
 mock>=2.0.0;python_version<"3.3"

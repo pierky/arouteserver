@@ -253,10 +253,10 @@ filter receive_from_{{ client.id }} {
 	if is_blackhole_filtering_request() then {
 		accept "blackhole filtering request from {{ client.id }} - ACCEPTING ", net;
 	} else {
-		{% if cfg.filtering.rpki.enabled %}
+		{% if cfg.filtering.rpki_bgp_origin_validation.enabled %}
 		perform_rpki_validation();
 
-		{%	if client.cfg.filtering.rpki.reject_invalid %}
+		{%	if client.cfg.filtering.rpki_bgp_origin_validation.reject_invalid %}
 		if route_is_rpki_invalid() then
 			{{ reject(client, 14, '"RPKI, route is INVALID - REJECTING ", net') }}
 		{%	endif %}
@@ -307,7 +307,7 @@ filter announce_to_{{ client.id }} {
 	{% else %}
 		apply_blackhole_filtering_policy();
 	{% endif %}
-	{% if cfg.filtering.rpki.enabled %}
+	{% if cfg.filtering.rpki_bgp_origin_validation.enabled %}
 	} else {
 		# RPKI: do not announce INVALID to clients
 		if route_is_rpki_invalid() then {

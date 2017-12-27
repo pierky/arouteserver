@@ -233,18 +233,7 @@ cfg:
         enabled: false
         source: http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2
       use_rpki_roas_as_route_objects:
-        allowed_trust_anchors:
-        - APNIC from AFRINIC RPKI Root
-        - APNIC from ARIN RPKI Root
-        - APNIC from IANA RPKI Root
-        - APNIC from LACNIC RPKI Root
-        - APNIC from RIPE RPKI Root
-        - AfriNIC RPKI Root
-        - LACNIC RPKI Root
-        - RIPE NCC RPKI Root
         enabled: false
-        ripe_rpki_validator_url: http://localcert.ripe.net:8088/export.json
-        source: ripe-rpki-validator-cache
     max_as_path_len: 32
     max_prefix:
       action: null
@@ -261,7 +250,7 @@ cfg:
     reject_invalid_as_in_as_path: true
     reject_policy:
       policy: reject
-    rpki:
+    rpki_bgp_origin_validation:
       enabled: false
       reject_invalid: true
     transit_free:
@@ -296,6 +285,18 @@ cfg:
   rfc1997_wellknown_communities:
     policy: pass
   router_id: 192.0.2.2
+  rpki_roas:
+    allowed_trust_anchors:
+    - APNIC from AFRINIC RPKI Root
+    - APNIC from ARIN RPKI Root
+    - APNIC from IANA RPKI Root
+    - APNIC from LACNIC RPKI Root
+    - APNIC from RIPE RPKI Root
+    - AfriNIC RPKI Root
+    - LACNIC RPKI Root
+    - RIPE NCC RPKI Root
+    ripe_rpki_validator_url: http://localcert.ripe.net:8088/export.json
+    source: ripe-rpki-validator-cache
   rs_as: 999
   rtt_thresholds:
   - 5
@@ -659,7 +660,7 @@ clients:
       reject_invalid_as_in_as_path: true
       reject_policy:
         policy: reject
-      rpki:
+      rpki_bgp_origin_validation:
         enabled: false
         reject_invalid: true
     graceful_shutdown:
@@ -708,7 +709,7 @@ clients:
       reject_invalid_as_in_as_path: true
       reject_policy:
         policy: reject
-      rpki:
+      rpki_bgp_origin_validation:
         enabled: false
         reject_invalid: true
     graceful_shutdown:
@@ -755,7 +756,7 @@ clients:
       reject_invalid_as_in_as_path: true
       reject_policy:
         policy: reject
-      rpki:
+      rpki_bgp_origin_validation:
         enabled: false
         reject_invalid: true
     graceful_shutdown:
@@ -852,15 +853,11 @@ irrdb_info
   used_by: client AS10745_1
 
 
-rpki_roas_as_route_objects
---------------------------
-{}
+rpki_roas
+---------
+[]
 
 
 arin_whois_db_records
 ---------------------
 {}
-
-
-roas
-----

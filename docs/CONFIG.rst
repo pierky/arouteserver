@@ -168,10 +168,14 @@ With this configuration, the following values will be used to run the bgpq3 prog
 - **AS-AS33CUSTOMERS** for the 192.0.2.33 client (the ``asns``-level configuration is ignored because a more specific one is given at client-level);
 - **AS44** for the 192.0.2.44 client, because no AS-SETs are given at any level. In this case, if the ``cfg.filtering.irrdb.peering_db`` was set to True, the AS-SET from PeeringDB would be used.
 
+Optionally, the source that must be used to expand the AS macro can be prepended, followed by two colon characters: **RIPE::AS-FOO**, **RADB::AS64496:AS-FOO**.
+
 Use RPKI ROAs as if they were route objects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If the ``filtering.irrdb.use_rpki_roas_as_route_objects`` option is enabled, RPKI ROAs are used as if they were route objects to validate routes whose origin ASN is already authorized by a client's AS-SET but whose prefix is not. A lookup into the ROA table is made on the basis of the route origin ASN and, if a covering ROA is found, the route is validated. In this case, if the ``filtering.irrdb.tag_as_set`` general option is True the ``prefix_validated_via_rpki_roas`` informative community is added to the route.
+
+Please refer to `ROAs sources`_ in order to configure the source that should be used to gather RPKI ROAs.
 
 Use ARIN Whois database to accept routes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -181,6 +185,8 @@ Similarly to the previous option, ``filtering.irrdb.use_arin_bulk_whois_data`` a
 The ARIN Whois database can be obtained by signing an `agreement with ARIN <https://www.arin.net/resources/request/bulkwhois.html>`__. It must be then converted into the appropriate JSON format that ARouteServer expects to find; the `arin-whois-bulk-parser <https://github.com/NLNOG/arin-whois-bulk-parser>`__ script can be used for this purpose.
 
 A parsed version of the database dump is offered by `NLNOG <https://nlnog.net/>`__ at the following URL: http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2
+
+Further details can be found in `this message <https://mailman.nanog.org/pipermail/nanog/2017-December/093525.html>`__ appeared on the NANOG mailing list.
 
 White lists
 ~~~~~~~~~~~
@@ -208,17 +214,27 @@ Example:
 
 This configuration allows to authorize routes for 203.0.113.0/24{24-32} with origin ASN 65534 received from the client.
 
-RPKI-based filtering
-********************
+RPKI
+****
 
-RPKI-based validation of routes can be configured using the general ``filtering.rpki`` section.
+ROAs sources
+~~~~~~~~~~~~
+
+A couple of methods can be used to acquire RPKI data (ROAs):
+
+- (BIRD and OpenBGPD) the builtin method based on `RIPE RPKI Validator cache <http://localcert.ripe.net:8088/>`__ export file: the URL of a local and trusted instance of RPKI Validator should be provided to ensure that a cryptographically validated datased is used. By default, the URL of the public instance is used.
+
+- (BIRD only) external tools from the `rtrlib <http://rpki.realmv6.org/>`_ suite: `rtrlib <https://github.com/rtrlib>`__ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`__. One or more trusted local validating caches should be used to get and validate RPKI data before pushing them to BIRD. An overview is provided on the `rtrlib GitHub wiki <https://github.com/rtrlib/rtrlib/wiki/Background>`__, where also an `usage guide <https://github.com/rtrlib/rtrlib/wiki/Usage-of-the-RTRlib>`__ can be found.
+
+The configuration of ROAs source can be done within the ``rpki_roas`` section of the ``general.yml`` file.
+
+Origin validation
+~~~~~~~~~~~~~~~~~
+
+RPKI-based validation of routes can be configured using the general ``filtering.rpki_bgp_origin_validation`` section.
 RFC8097 BGP extended communities are used to mark routes on the basis of their validity state.
-Depending on the ``reject_invalid`` configuration, INVALID routes can be rejected before entering the route server or accepted for further processing from external tools or functions provided within :ref:`.local files <site-specific-custom-config>`.
+Depending on the ``reject_invalid`` configuration, INVALID routes can be rejected before entering the route server or accepted for further processing by external tools or functions provided within :ref:`.local files <site-specific-custom-config>`.
 INVALID routes are not propagated to clients.
-
-- To acquire RPKI data and load them into BIRD, a couple of external tools from the `rtrlib <http://rpki.realmv6.org/>`_ suite are used: `rtrlib <https://github.com/rtrlib>`__ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`__. One or more trusted local validating caches should be used to get and validate RPKI data before pushing them to BIRD. An overview is provided on the `rtrlib GitHub wiki <https://github.com/rtrlib/rtrlib/wiki/Background>`__, where also an `usage guide <https://github.com/rtrlib/rtrlib/wiki/Usage-of-the-RTRlib>`__ can be found.
-
-- RPKI validation is not supported by OpenBGPD.
 
 BGP Communities
 ***************
@@ -471,8 +487,6 @@ The following list of limitations is based on the currently supported versions o
 - OpenBGPD
 
   - Currently, **path hiding** mitigation is not implemented for OpenBGPD configurations. Only single-RIB configurations are generated.
-
-  - **RPKI** validation is not supported by OpenBGPD.
 
   - **ADD-PATH** is not supported by OpenBGPD.
 

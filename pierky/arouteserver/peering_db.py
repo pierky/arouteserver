@@ -20,7 +20,9 @@ from six.moves.urllib.request import urlopen
 from six.moves.urllib.error import HTTPError
 
 from .cached_objects import CachedObject
-from .errors import PeeringDBError, PeeringDBNoInfoError
+from .config.validators import ValidatorASSet
+from .errors import PeeringDBError, PeeringDBNoInfoError, ConfigError
+from .irrdb import IRRDBInfo
 
 
 class PeeringDBInfo(CachedObject):
@@ -117,17 +119,6 @@ class PeeringDBNet(PeeringDBInfo):
 
         guessed = False
 
-        # Removing things like "<registry>::" and "<registry>: ".
-        pattern = re.compile("^(?:RIPE|APNIC|AFRINIC|ARIN|NTTCOM|"
-                             "ALTDB|BBOI|BELL|JPIRR|LEVEL3|RADB|"
-                             "RGNET|SAVVIS|TC):[:\s]", flags=re.IGNORECASE)
-        v, number_of_subs_made = pattern.subn("", v)
-        if number_of_subs_made > 0:
-            v = v.strip()
-            guessed = True
-        if not v:
-            return None
-
         # Removing "ipv4:" and "ipv6:".
         pattern = re.compile("^(?:ipv4|ipv6):", flags=re.IGNORECASE)
         v, number_of_subs_made = pattern.subn("", v)
@@ -137,44 +128,38 @@ class PeeringDBNet(PeeringDBInfo):
         if not v:
             return None
 
-        # "Many objects in RPSL have a name.  An <object-name> is
-        # made up of letters, digits, the character underscore "_",
-        # and the character hyphen "-"; the first character of a
-        # name must be a letter, and the last character of a name
-        # must be a letter or a digit.
-        # An AS number x is represented as the string "ASx".  That
-        # is, the AS 226 is represented as AS226."
-        # https://datatracker.ietf.org/doc/html/rfc2622#section-2
-        #
-        # "A hierarchical set name is a sequence of set names and
-        # AS numbers separated by colons ":".
-        # At least one component of such a name must be an actual
-        # set name (i.e. start with one of the prefixes above)."
-        # https://datatracker.ietf.org/doc/html/rfc2622#section-5
-        as_dash_found = False
-        parts = []
-        for part in v.split(":"):
-            name = part.strip().upper()
-            if not re.match("^(?:AS[\d]+|AS-[A-Z0-9_\-]*[A-Z0-9])$", name):
-                logging.debug("AS-SET from PeeringDB for AS{}: "
-                              "ignoring {}, invalid name {}".format(
-                                  self.asn, v, name))
-                return None
-            if name.startswith("AS-"):
-                as_dash_found = True
-            parts.append(name)
-        v = ":".join(parts)
+        # IRR record source
+        valid_sources_regex = IRRDBInfo.BGPQ3_DEFAULT_SOURCES.replace(",", "|")
 
-        if not as_dash_found:
+        # Converting stuff like AS-FOO@SOURCE in SOURCE::AS-FOO
+        pattern = re.compile(
+            "^([^@]+)@({sources})$".format(sources=valid_sources_regex),
+            flags=re.IGNORECASE
+        )
+        v, number_of_subs_made = pattern.subn("\\2::\\1", v)
+        if number_of_subs_made > 0:
+            guessed = True
+
+        # Converting "SOURCE:AS-FOO" format (single colon) to "SOURCE::AS-FOO"
+        # (only for known sources)
+        pattern = re.compile(
+            "^({sources}):([^:].+)$".format(sources=valid_sources_regex),
+            flags=re.IGNORECASE
+        )
+        v, number_of_subs_made = pattern.subn("\\1::\\2", v)
+        if number_of_subs_made > 0:
+            guessed = True
+
+        try:
+            v = ValidatorASSet().validate(v)
+        except ConfigError as e:
             logging.debug("AS-SET from PeeringDB for AS{}: "
-                          "ignoring {}, no ""AS-"" found".format(
-                              self.asn, v))
+                          "ignoring {}, {}".format(self.asn, v, str(e)))
             return None
 
         if guessed:
             logging.info("AS-SET from PeeringDB for AS{}: "
-                         "guessed {} from {}".format(
-                             self.asn, v, in_value))
+                         "guessed {} from {}".format(self.asn, v, in_value))
 
         return v
 

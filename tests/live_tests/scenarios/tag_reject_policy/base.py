@@ -322,7 +322,6 @@ class TagRejectPolicyScenarioBIRD(LiveScenario_TagRejectPolicy, TagRejectPolicyS
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                        cfg_roas="roas{}.yml".format(cls.IP_VER),
                                         local_files=["footer{}".format(cls.IP_VER)]),
                     "/etc/bird/bird.conf"
                 ),

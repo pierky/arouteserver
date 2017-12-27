@@ -98,7 +98,7 @@ ARouteServer uses the following external programs:
 
   More details: https://wiki.debian.org/KVM
 
-- (optional) `rtrlib <https://github.com/rtrlib>`_ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`_; indirectly ARouteServer needs these tools to load RPKI data into BIRD.
+- (optional) `rtrlib <https://github.com/rtrlib>`_ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`_; ARouteServer can use these tools to load RPKI data into BIRD. More details in :ref:`ROAs sources`.
 
   To install them:
 

@@ -146,44 +146,20 @@ class ConfigParserGeneral(ConfigParserBase):
 
         i["use_rpki_roas_as_route_objects"] = OrderedDict()
         r = i["use_rpki_roas_as_route_objects"]
-
         r["enabled"] = ValidatorBool(default=False)
-        r["source"] = ValidatorOption("source",
-            ("ripe-rpki-validator-cache", "rtrlib"),
-            mandatory=True,
-            default="ripe-rpki-validator-cache"
-        )
-        r["ripe_rpki_validator_url"] = ValidatorText(
-            mandatory=True,
-            default="http://localcert.ripe.net:8088/export.json"
-        )
-        r["allowed_trust_anchors"] = ValidatorListOf(
-            ValidatorText, mandatory=True, default=[
-                "APNIC from AFRINIC RPKI Root",
-                "APNIC from ARIN RPKI Root",
-                "APNIC from IANA RPKI Root",
-                "APNIC from LACNIC RPKI Root",
-                "APNIC from RIPE RPKI Root",
-                "AfriNIC RPKI Root",
-                "LACNIC RPKI Root",
-                "RIPE NCC RPKI Root"
-            ]
-        )
 
         i["use_arin_bulk_whois_data"] = OrderedDict()
         a = i["use_arin_bulk_whois_data"]
-
         a["enabled"] = ValidatorBool(default=False)
         a["source"] = ValidatorText(
             mandatory=True,
             default="http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
         )
 
-        f["rpki"] = OrderedDict()
-        r = f["rpki"]
-
-        r["enabled"] = ValidatorBool(default=False)
-        r["reject_invalid"] = ValidatorBool(mandatory=True, default=True)
+        f["rpki_bgp_origin_validation"] = OrderedDict()
+        o = f["rpki_bgp_origin_validation"]
+        o["enabled"] = ValidatorBool(default=False)
+        o["reject_invalid"] = ValidatorBool(mandatory=True, default=True)
 
         f["max_prefix"] = OrderedDict()
         m = f["max_prefix"]
@@ -206,6 +182,30 @@ class ConfigParserGeneral(ConfigParserBase):
         f["reject_policy"] = OrderedDict()
         f["reject_policy"]["policy"] = ValidatorOption(
             "policy", ("reject", "tag"), default="reject"
+        )
+
+        c["rpki_roas"] = OrderedDict()
+        r = c["rpki_roas"]
+        r["source"] = ValidatorOption("source",
+            ("ripe-rpki-validator-cache", "rtrlib"),
+            mandatory=True,
+            default="ripe-rpki-validator-cache"
+        )
+        r["ripe_rpki_validator_url"] = ValidatorText(
+            mandatory=True,
+            default="http://localcert.ripe.net:8088/export.json"
+        )
+        r["allowed_trust_anchors"] = ValidatorListOf(
+            ValidatorText, mandatory=True, default=[
+                "APNIC from AFRINIC RPKI Root",
+                "APNIC from ARIN RPKI Root",
+                "APNIC from IANA RPKI Root",
+                "APNIC from LACNIC RPKI Root",
+                "APNIC from RIPE RPKI Root",
+                "AfriNIC RPKI Root",
+                "LACNIC RPKI Root",
+                "RIPE NCC RPKI Root"
+            ]
         )
 
         c["blackhole_filtering"] = OrderedDict()
@@ -422,6 +422,12 @@ class ConfigParserGeneral(ConfigParserBase):
                     "Some RTT-based functions are configured but the "
                     "RTT thresholds list is empty."
                 )
+
+        # Are RPKI ROAs needed?
+        filtering = self.cfg["cfg"]["filtering"]
+        self.rpki_roas_needed = \
+            filtering["irrdb"]["use_rpki_roas_as_route_objects"]["enabled"] or \
+            filtering["rpki_bgp_origin_validation"]["enabled"]
 
         if errors:
             raise ConfigError()

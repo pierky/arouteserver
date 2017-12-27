@@ -167,8 +167,12 @@ class TestRealConfigs(ARouteServerTestCase):
 
         time_a = int(time.time())
         inst.start()
-        inst.stop()
         time_b = int(time.time())
+        time.sleep(5)
+        errors_found, errors = inst.log_contains_errors(list_errors=True)
+        inst.stop()
+        if errors_found:
+            self.fail("Log contains errors:\n\n{}".format(errors))
         self.print_duration("Loading config", bgp_speaker, target_ver, ip_ver,
                             time_b - time_a)
 

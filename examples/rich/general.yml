@@ -58,7 +58,7 @@ cfg:
       use_arin_bulk_whois_data:
         enabled: True
 
-    rpki:
+    rpki_bgp_origin_validation:
       enabled: True
       reject_invalid: True
 
@@ -66,6 +66,10 @@ cfg:
       action: "restart"
       restart_after: 30
       peering_db: True
+
+  rpki_roas:
+      source: "ripe-rpki-validator-cache"
+      ripe_rpki_validator_url: "examples/rich/ripe-rpki-cache.json"
 
   blackhole_filtering:
     policy_ipv4: "rewrite-next-hop"
@@ -79,7 +83,7 @@ cfg:
 
   graceful_shutdown:
     enabled: True
-  
+
   rtt_thresholds: 5, 10, 15, 20, 30, 50, 100, 200, 500
 
   communities:

@@ -50,10 +50,20 @@ class IRRDB(object):
     def request(self, names, used_by, object_types=set(["prefixes", "asns"])):
         assert object_types.issubset(set(["prefixes", "asns"]))
 
-        new_record = IRRDBRecord(
-            names if isinstance(names, list) else [names],
-            self.irrdb_pickle_dir
-        )
+        names_list = names if isinstance(names, list) else [names]
+
+        used_source, same_for_all = AS_SET_Bundle.get_source(names_list)
+        if not same_for_all:
+            logging.info(
+                "IRRDB: the source of the bundle '{}' "
+                "used by {} is not the same for all the items: "
+                "{} will be used for all".format(
+                    ", ".join(names_list), used_by,
+                    used_source if used_source else "the default sources"
+                )
+            )
+
+        new_record = IRRDBRecord(names_list, self.irrdb_pickle_dir)
 
         if new_record.id not in self.records:
             self.records[new_record.id] = new_record
@@ -63,11 +73,6 @@ class IRRDB(object):
         record.requested_objects.update(object_types)
 
         return record.id
-
-    def get_by_name(self, name):
-        for record_id, record in self.records.items():
-            if record.object_names == [name]:
-                return record
 
     def __getitem__(self, name):
         return self.records[name]

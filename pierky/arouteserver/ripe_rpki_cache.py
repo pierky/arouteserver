@@ -38,7 +38,7 @@ class RIPE_RPKI_ROAs(CachedObject):
         self.roas = {}
 
     def load_data(self):
-        logging.debug("Downloading RIPE RPKI cache")
+        logging.debug("Fetching RPKI ROAs from {}".format(self.url))
 
         CachedObject.load_data(self)
 
@@ -48,26 +48,37 @@ class RIPE_RPKI_ROAs(CachedObject):
         return "ripe-rpki-cache.json"
 
     def _get_data(self):
-        try:
-            response = urlopen(self.url)
-        except HTTPError as e:
-            raise RPKIValidatorCacheError(
-                "HTTP error while retrieving ROAs from "
-                "RIPE RPKI Validator cache ({}): "
-                "code: {}, reason: {} - {}".format(
-                    self.url, e.code, e.reason, str(e)
+        if self.url.lower().startswith(("http://", "https://")):
+            try:
+                raw = urlopen(self.url)
+            except HTTPError as e:
+                raise RPKIValidatorCacheError(
+                    "HTTP error while retrieving ROAs from "
+                    "RIPE RPKI Validator cache ({}): "
+                    "code: {}, reason: {} - {}".format(
+                        self.url, e.code, e.reason, str(e)
+                    )
                 )
-            )
-        except Exception as e:
-            raise RPKIValidatorCacheError(
-                "Error while retrieving ROAs from "
-                "RIPE RPKI Validator cache ({}): {}".format(
-                    self.url, str(e)
+            except Exception as e:
+                raise RPKIValidatorCacheError(
+                    "Error while retrieving ROAs from "
+                    "RIPE RPKI Validator cache ({}): {}".format(
+                        self.url, str(e)
+                    )
                 )
-            )
+        else:
+            try:
+                raw = open(self.url, "rb")
+            except Exception as e:
+                raise RPKIValidatorCacheError(
+                    "Error while reading ROAs from file "
+                    "{}: {}".format(
+                        self.url, str(e)
+                    )
+                )
 
         try:
-            roas = json.loads(response.read().decode("utf-8"))
+            roas = json.loads(raw.read().decode("utf-8"))
         except Exception as e:
             raise RPKIValidatorCacheError(
                 "Error while parsing ROAs from "

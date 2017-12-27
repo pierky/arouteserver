@@ -37,6 +37,9 @@ class BIRDInstance(DockerInstance):
         # See the docstring of _get_protocols_status()
         self.protocols_status = {}
 
+        self.routes = []
+        self.log = None
+
     def restart(self):
         """Restart BIRD.
 
@@ -135,56 +138,94 @@ class BIRDInstance(DockerInstance):
                 return self.protocols_status[proto]
         return None
 
+    def _get_all_routes(self):
+
+        def add_route(route):
+            if not route:
+                return
+
+            new_route = Route(**route)
+            self.routes.append(new_route)
+            route = {}
+
+        self.routes = []
+
+        self._get_protocols_status()
+
+        # ' via 192.0.2.11 on eth0 [AS1_1 09:57:45] * (100) [AS101i]'
+        #       ----------          -----
+        route_beginning_re = (
+            "[ ]+via "
+            "(?P<via>[0-9\.\:a-f]+)"
+            "[^\[]+"
+            "\[(?P<via_name>[^\s]+)"
+        )
+
+        # '101.2.128.0/24     via 192.0.2.11 on eth0 [AS1_1 09:57:45] * (100) [AS101i]'
+        #  --------------         ----------          -----
+        prefix_beginning_re = "^(?P<prefix>[0-9\.\:a-f]+/[0-9]+){}".format(
+            route_beginning_re
+        )
+
+        route_beginning_patt = re.compile(route_beginning_re)
+        prefix_beginning_patt = re.compile(prefix_beginning_re)
+
+        last_prefix = None
+        route = {}
+        for option in ["", "filtered"]:
+            cmd = "show route all {}".format(option)
+            out = self._birdcl(cmd)
+            for line in out.split("\n"):
+                new_prefix_match = prefix_beginning_patt.search(line)
+                new_route_match = route_beginning_patt.search(line)
+                if new_prefix_match or new_route_match:
+                    # A new route for the last prefix or a block of routes for
+                    # a new prefix begins here.
+                    add_route(route)
+                    route = {}
+
+                    if new_prefix_match:
+                        last_prefix = new_prefix_match.group("prefix")
+                        via_name = new_prefix_match.group("via_name")
+                    else:
+                        via_name = new_route_match.group("via_name")
+
+                    route["prefix"] = last_prefix
+                    route["via"] = self.protocols_status[via_name]["ip"]
+                    route["best"] = (option == "" and " * " in line)
+                    route["filtered"] = option == "filtered"
+                else:
+                    if "BGP.as_path:" in line:
+                        route["as_path"] = line.split(": ")[1].strip()
+                    if "BGP.next_hop:" in line:
+                        route["next_hop"] = line.split(": ")[1].strip()
+                    if "BGP.community:" in line:
+                        route["std_comms"] = line.split(": ")[1].strip()
+                    if "BGP.large_community:" in line:
+                        route["lrg_comms"] = line.split(": ")[1].strip()
+                    if "BGP.ext_community:" in line:
+                        route["ext_comms"] = line.split(": ")[1].strip()
+                    if "BGP.local_pref:" in line:
+                        route["localpref"] = line.split(": ")[1].strip()
+            add_route(route)
+            route = {}
+
     def get_routes(self, prefix, include_filtered=False, only_best=False):
         if include_filtered and only_best:
             raise Exception("Can't set both include_filtered and only_best")
 
-        self._get_protocols_status()
+        if not self.routes:
+            self._get_all_routes()
+
         routes = []
+        for route in self.routes:
+            if prefix is None or route.prefix == prefix:
+                if route.filtered and not include_filtered:
+                    continue
+                if not route.best and only_best:
+                    continue
+                routes.append(route)
 
-        regex = "[ ]+via ([0-9\.\:a-f]+)[^\[]+\[([^\s]+)[^\n]+"
-
-        options = [""]
-        if include_filtered:
-            options.append("filtered")
-        if only_best:
-            options.append("primary")
-
-        for option in options:
-            cmd = "show route {} all {}".format(prefix, option)
-            out = self._birdcl(cmd)
-            match = re.search("^[0-9\.\:a-f]+/[0-9]+{}".format(regex), out,
-                              re.MULTILINE)
-            if match:
-                route = {}
-                lines = out.split("\n")
-                for line in lines:
-                    if not line.strip():
-                        continue
-                    match = re.search(regex, line)
-                    if match:
-                        if route:
-                            route["filtered"] = option == "filtered"
-                            routes.append(Route(**route))
-                            route = {}
-                        route["prefix"] = prefix
-                        via_name = match.group(2)
-                        route["via"] = self.protocols_status[via_name]["ip"]
-                    else:
-                        if "BGP.as_path:" in line:
-                            route["as_path"] = line.split(": ")[1].strip()
-                        if "BGP.next_hop:" in line:
-                            route["next_hop"] = line.split(": ")[1].strip()
-                        if "BGP.community:" in line:
-                            route["std_comms"] = line.split(": ")[1].strip()
-                        if "BGP.large_community:" in line:
-                            route["lrg_comms"] = line.split(": ")[1].strip()
-                        if "BGP.ext_community:" in line:
-                            route["ext_comms"] = line.split(": ")[1].strip()
-                        if "BGP.local_pref:" in line:
-                            route["localpref"] = line.split(": ")[1].strip()
-                route["filtered"] = option == "filtered"
-                routes.append(Route(**route))
         return routes
 
     def get_protocol_name_by_ip(self, ip):
@@ -197,11 +238,29 @@ class BIRDInstance(DockerInstance):
         )
 
     def log_contains(self, s):
-        out = self.run_cmd("cat /var/log/bird.log")
-        if s in out:
+        if not self.log:
+            self.log = self.run_cmd("cat /var/log/bird.log")
+
+        if s in self.log:
             return True
         else:
             return False
+
+    def log_contains_errors(self, allowed_errors=[], list_errors=False):
+        out = self.run_cmd("cat /var/log/bird.log")
+
+        errors_found = False
+        errors = []
+        for line in out.split("\n"):
+            if "<ERR>" not in line:
+                continue
+            if any([msg for msg in allowed_errors if msg in line]):
+                continue
+            errors_found = True
+            errors.append(line)
+        if list_errors:
+            return errors_found, "\n".join(errors)
+        return errors_found
 
 class BIRDInstanceIPv4(BIRDInstance):
 

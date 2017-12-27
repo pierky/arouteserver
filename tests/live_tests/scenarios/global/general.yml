@@ -24,10 +24,9 @@ cfg:
                         allow_longer_prefixes: True
                         use_rpki_roas_as_route_objects:
                                 enabled: True
-                                source: "rtrlib"
                         use_arin_bulk_whois_data:
                                 enabled: True
-                rpki:
+                rpki_bgp_origin_validation:
                         enabled: True
         blackhole_filtering:
                 policy_ipv4: "rewrite-next-hop"
@@ -38,6 +37,10 @@ cfg:
         graceful_shutdown:
                 enabled: True
                 local_pref: 5
+        rpki_roas:
+                source: "ripe-rpki-validator-cache"
+                allowed_trust_anchors:
+                - "test"
         rtt_thresholds: 5, 10, 15, 20, 30, 50, 100, 200, 500
         communities:
                 blackholing:

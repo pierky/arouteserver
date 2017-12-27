@@ -255,18 +255,7 @@ cfg:
         enabled: true
         source: http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2
       use_rpki_roas_as_route_objects:
-        allowed_trust_anchors:
-        - APNIC from AFRINIC RPKI Root
-        - APNIC from ARIN RPKI Root
-        - APNIC from IANA RPKI Root
-        - APNIC from LACNIC RPKI Root
-        - APNIC from RIPE RPKI Root
-        - AfriNIC RPKI Root
-        - LACNIC RPKI Root
-        - RIPE NCC RPKI Root
         enabled: true
-        ripe_rpki_validator_url: http://localcert.ripe.net:8088/export.json
-        source: ripe-rpki-validator-cache
     max_as_path_len: 32
     max_prefix:
       action: restart
@@ -283,7 +272,7 @@ cfg:
     reject_invalid_as_in_as_path: true
     reject_policy:
       policy: reject
-    rpki:
+    rpki_bgp_origin_validation:
       enabled: true
       reject_invalid: true
     transit_free:
@@ -318,6 +307,18 @@ cfg:
   rfc1997_wellknown_communities:
     policy: pass
   router_id: 192.0.2.2
+  rpki_roas:
+    allowed_trust_anchors:
+    - APNIC from AFRINIC RPKI Root
+    - APNIC from ARIN RPKI Root
+    - APNIC from IANA RPKI Root
+    - APNIC from LACNIC RPKI Root
+    - APNIC from RIPE RPKI Root
+    - AfriNIC RPKI Root
+    - LACNIC RPKI Root
+    - RIPE NCC RPKI Root
+    ripe_rpki_validator_url: examples/rich/ripe-rpki-cache.json
+    source: ripe-rpki-validator-cache
   rs_as: 999
   rtt_thresholds:
   - 5
@@ -680,7 +681,7 @@ clients:
       reject_invalid_as_in_as_path: true
       reject_policy:
         policy: reject
-      rpki:
+      rpki_bgp_origin_validation:
         enabled: true
         reject_invalid: true
     graceful_shutdown:
@@ -729,7 +730,7 @@ clients:
       reject_invalid_as_in_as_path: true
       reject_policy:
         policy: reject
-      rpki:
+      rpki_bgp_origin_validation:
         enabled: true
         reject_invalid: true
     graceful_shutdown:
@@ -780,7 +781,7 @@ clients:
       reject_invalid_as_in_as_path: true
       reject_policy:
         policy: reject
-      rpki:
+      rpki_bgp_origin_validation:
         enabled: true
         reject_invalid: true
     graceful_shutdown:
@@ -809,32 +810,47 @@ irrdb_info
   name: AS10745
   prefixes:
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 128
     length: 48
     max_length: 128
     prefix: '2001:500:4::'
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 128
     length: 48
     max_length: 128
     prefix: '2001:500:30::'
   - comment: null
-    exact: true
+    exact: false
     ge: null
-    le: null
+    le: 128
     length: 48
     max_length: 128
     prefix: '2001:500:110::'
   used_by: client AS10745_2
 
 
-rpki_roas_as_route_objects
---------------------------
-{}
+rpki_roas
+---------
+- asn: 25152
+  length: 32
+  max_len: 32
+  prefix: 2001:7fd::/32
+- asn: 3333
+  length: 42
+  max_len: 42
+  prefix: 2001:610:240::/42
+- asn: 3333
+  length: 48
+  max_len: 48
+  prefix: 2001:67c:2e8::/48
+- asn: 25152
+  length: 48
+  max_len: 48
+  prefix: 2001:7fd::/48
 
 
 arin_whois_db_records
@@ -846,13 +862,3 @@ AS10745:
   length: 48
   max_length: 128
   prefix: '2001:500:4::'
-- exact: false
-  ge: 36
-  le: 128
-  length: 36
-  max_length: 128
-  prefix: '2602:ff57::'
-
-
-roas
-----

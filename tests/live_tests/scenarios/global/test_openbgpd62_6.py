@@ -22,7 +22,7 @@ from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD62Instance
 
 @unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
-class BasicScenario_OpenBGPDIPv4(BasicScenario_Data6, BasicScenarioOpenBGPD62):
+class BasicScenario_OpenBGPDIPv6(BasicScenario_Data6, BasicScenarioOpenBGPD62):
 
     __test__ = True
     SKIP_ON_TRAVIS = True

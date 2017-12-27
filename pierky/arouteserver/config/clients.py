@@ -85,7 +85,7 @@ class ConfigParserClients(ConfigParserBase):
                             ValidatorWhiteListRouteEntry, mandatory=False
                         )
                     },
-                    "rpki": {
+                    "rpki_bgp_origin_validation": {
                         "enabled": ValidatorBool(mandatory=False),
                         "reject_invalid": ValidatorBool(mandatory=False),
                     },

@@ -26,6 +26,8 @@ class BasicScenario_BIRDIPv6(BasicScenario_Data6, BasicScenarioBIRD):
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
     IP_VER = 6
 
+    ALLOWED_LOG_ERRORS = ["AS1_2: Invalid NEXT_HOP attribute in route 2a01:0:3::/48"]
+
 class BasicScenario_BIRDIPv6_Reject(BasicScenario_BIRDIPv6):
 
     __test__ = True

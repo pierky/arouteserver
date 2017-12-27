@@ -1,0 +1,16 @@
+{"roas": [
+  {"prefix": "101.0.8.0/24", "maxLength": 24, "asn": "AS101", "ta": "test"},
+  {"prefix": "101.0.9.0/24", "maxLength": 24, "asn": "AS102", "ta": "test"},
+  {"prefix": "101.0.128.0/20", "maxLength": 23, "asn": "AS101", "ta": "test"},
+  {"prefix": "101.2.0.0/17", "maxLength": 17, "asn": "AS101", "ta": "test"},
+  {"prefix": "101.2.128.0/17", "maxLength": 24, "asn": "AS101", "ta": "test"},
+  {"prefix": "101.3.0.0/16", "maxLength": 24, "asn": "AS105", "ta": "test"},
+
+  {"prefix": "3101:0:8::/48", "maxLength": 48, "asn": "AS101", "ta": "test"},
+  {"prefix": "3101:0:9::/48", "maxLength": 48, "asn": "AS102", "ta": "test"},
+  {"prefix": "3101:0:8000::/33", "maxLength": 34, "asn": "AS101", "ta": "test"},
+  {"prefix": "3101:2::/33", "maxLength": 33, "asn": "AS101", "ta": "test"},
+  {"prefix": "3101:2:8000::/33", "maxLength": 48, "asn": "AS101", "ta": "test"},
+  {"prefix": "3101:3::/32", "maxLength": 48, "asn": "AS105", "ta": "test"}
+]}
+

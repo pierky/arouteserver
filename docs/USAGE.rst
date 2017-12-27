@@ -199,16 +199,17 @@ Since the popular `IXP-Manager <https://github.com/inex/IXP-Manager>`_ allows to
         set -e
 
         # Setup an API key on IXP-Manager and write it below.
-        # https://github.com/inex/IXP-Manager/wiki/Euro-IX-Member-Data-Export#setting-up-an-api-key
+        # http://docs.ixpmanager.org/features/api/#creating-an-api-key
         api_key="YOURAPIKEY"
 
-        # Adjust the URL and point it to your IXP-Manager application.
-        url="https://www.example.com/ixp/apiv1/member-list/list/key/$api_key"
+        # Adjust the URL below and point it to your IXP-Manager application.
+        url="http://www.example.com/api/v4/member-export/ixf/0.6?apikey=$api_key"
 
         # This is the IXP ID you want to export members from.
+        # It must match with the 'ixp_id' field.
         ixp_id=1
 
-        # Path to the clients file.
+        # Path of the output clients file that will be built.
         clients_file=~/ars/clients-from-ixpmanager.yml
 
         # Build the clients file using info from IXP-Manager.
