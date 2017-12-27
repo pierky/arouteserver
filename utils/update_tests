@@ -21,11 +21,7 @@ TESTS_DIR="`pwd`/tests"
 LAST_RESULTS_DIR="$TESTS_DIR/last_results"
 
 BGPSPEAKERS="bird openbgpd60 openbgpd62"
-
-if [ -d "$LAST_RESULTS_DIR" -a -z "$1" ]; then
-	echo "Last results directory already existing: please check and then remove it - rmdir $LAST_RESULTS_DIR"
-	exit
-fi
+LIVE_TEST_IDS="`find $TESTS_DIR/live_tests/scenarios/* -maxdepth 0 -type d -printf '%f '`"
 
 function join_last_results() {
 	if [ ! -e $LAST_RESULTS_DIR/static.last ]; then
@@ -53,13 +49,44 @@ function join_last_results() {
 	rmdir $LAST_RESULTS_DIR
 }
 
+function usage() {
+	echo "$0 [ join_only | \"<list_of_test_ids>\" [ \"<list_of_bgp_speakers>\" ] ]"
+	echo ""
+	echo "Test IDs:"
+	echo " - cli"
+	echo " - static"
+	echo " - build_only"
+	echo " - all"
+	for id in $LIVE_TEST_IDS; do
+		echo " - $id"
+	done
+	echo ""
+	echo "BGP speakers:"
+	for s in $BGPSPEAKERS; do
+		echo " - $s"
+	done
+	exit 1
+}
+
 if [ "$1" == "join_only" ]; then
 	join_last_results
 	exit
 fi
 
+for test_id in $1; do
+	egrep "^(cli|static|build_only|all|`tr ' ' '|' <<< $LIVE_TEST_IDS`)$" <<< "$test_id" &>/dev/null || { usage ; exit 1; }
+done
+
 if [ -n "$2" ]; then
+	for speaker in $2; do
+		egrep "^(`tr ' ' '|' <<< $BGPSPEAKERS`)$" <<< "$speaker" &>/dev/null || { usage ; exit 1; }
+	done
 	BGPSPEAKERS="$2"
+fi
+
+if [ -d "$LAST_RESULTS_DIR" -a -z "$1" ]; then
+	echo "Last results directory already existing: please check and then remove it - rmdir $LAST_RESULTS_DIR"
+	exit
 fi
 
 # Check for codetags
@@ -106,8 +133,8 @@ if [[ -z "$1" || `echo "$1" | grep -P "\bstatic\b"` ]]; then
 	nosetests -vs -x $TESTS_DIR/static 2>&1 | tee $LAST_RESULTS_DIR/static.last
 fi
 
-echo "Testing live scenarios with BUILD_ONLY=1..."
 if [[ -z "$1" || `echo "$1" | grep -P "\bbuild_only\b"` ]]; then
+	echo "Testing live scenarios with BUILD_ONLY=1..."
 	BUILD_ONLY=1 nosetests -vs -x $TESTS_DIR/live_tests/scenarios/*/test_*.py -m test_010_setup
 fi
 
@@ -117,7 +144,7 @@ for bgpspeaker in $BGPSPEAKERS; do
 		if [ -d $d ]; then
 			LIVE_TEST_NAME="`basename $d`"
 
-			if [[ -z "$1" || `echo "$1" | grep -P "\b$LIVE_TEST_NAME\b"` ]]; then
+			if [[ -z "$1" || "$1" == "*" || `echo "$1" | grep -P "\b$LIVE_TEST_NAME\b"` ]]; then
 				if [[ `find $d/test_${bgpspeaker}*.py 2>/dev/null | wc -l` -gt 0 ]]; then
 					echo " - live test: $LIVE_TEST_NAME, $bgpspeaker"
 					TARGET_FILE="live_${LIVE_TEST_NAME}_${bgpspeaker}.last"
