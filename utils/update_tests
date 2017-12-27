@@ -20,6 +20,8 @@ ROOT="`pwd`"
 TESTS_DIR="`pwd`/tests"
 LAST_RESULTS_DIR="$TESTS_DIR/last_results"
 
+BGPSPEAKERS="bird openbgpd60 openbgpd62"
+
 if [ -d "$LAST_RESULTS_DIR" -a -z "$1" ]; then
 	echo "Last results directory already existing: please check and then remove it - rmdir $LAST_RESULTS_DIR"
 	exit
@@ -32,15 +34,19 @@ function join_last_results() {
 	fi
 	cat $LAST_RESULTS_DIR/static.last > $TESTS_DIR/last
 
-	for d in $TESTS_DIR/live_tests/scenarios/*; do
-		if [ -d $d ]; then
-			TARGET_FILE="live_`basename $d`.last"
-			if [ ! -e $LAST_RESULTS_DIR/$TARGET_FILE ]; then
-				echo "ERROR: $TARGET_FILE missing"
-				exit 1
+	for bgpspeaker in $BGPSPEAKERS; do
+		for d in $TESTS_DIR/live_tests/scenarios/*; do
+			if [ -d $d ]; then
+				if [[ `find $d/test_${bgpspeaker}*.py 2>/dev/null | wc -l` -gt 0 ]]; then
+					TARGET_FILE="live_`basename $d`_${bgpspeaker}.last"
+					if [ ! -e $LAST_RESULTS_DIR/$TARGET_FILE ]; then
+						echo "ERROR: $TARGET_FILE missing"
+						exit 1
+					fi
+					cat $LAST_RESULTS_DIR/$TARGET_FILE >> $TESTS_DIR/last
+				fi
 			fi
-			cat $LAST_RESULTS_DIR/$TARGET_FILE >> $TESTS_DIR/last
-		fi
+		done
 	done
 
 	rm $LAST_RESULTS_DIR/*.last
@@ -50,6 +56,10 @@ function join_last_results() {
 if [ "$1" == "join_only" ]; then
 	join_last_results
 	exit
+fi
+
+if [ -n "$2" ]; then
+	BGPSPEAKERS="$2"
 fi
 
 # Check for codetags
@@ -97,19 +107,25 @@ if [[ -z "$1" || `echo "$1" | grep -P "\bstatic\b"` ]]; then
 fi
 
 echo "Testing live scenarios with BUILD_ONLY=1..."
-BUILD_ONLY=1 nosetests -vs -x $TESTS_DIR/live_tests/scenarios/*/test_*.py -m test_010_setup
+if [[ -z "$1" || `echo "$1" | grep -P "\bbuild_only\b"` ]]; then
+	BUILD_ONLY=1 nosetests -vs -x $TESTS_DIR/live_tests/scenarios/*/test_*.py -m test_010_setup
+fi
 
 echo "Running live tests..."
-for d in $TESTS_DIR/live_tests/scenarios/*; do
-	if [ -d $d ]; then
-		LIVE_TEST_NAME="`basename $d`"
+for bgpspeaker in $BGPSPEAKERS; do
+	for d in $TESTS_DIR/live_tests/scenarios/*; do
+		if [ -d $d ]; then
+			LIVE_TEST_NAME="`basename $d`"
 
-		if [[ -z "$1" || `echo "$1" | grep -P "\b$LIVE_TEST_NAME\b"` ]]; then
-			echo " - live test: $LIVE_TEST_NAME"
-			TARGET_FILE="live_$LIVE_TEST_NAME.last"
-			nosetests -vs -x $d 2>&1 | tee $LAST_RESULTS_DIR/$TARGET_FILE
+			if [[ -z "$1" || `echo "$1" | grep -P "\b$LIVE_TEST_NAME\b"` ]]; then
+				if [[ `find $d/test_${bgpspeaker}*.py 2>/dev/null | wc -l` -gt 0 ]]; then
+					echo " - live test: $LIVE_TEST_NAME, $bgpspeaker"
+					TARGET_FILE="live_${LIVE_TEST_NAME}_${bgpspeaker}.last"
+					nosetests -vs -x $d/test_${bgpspeaker}*.py 2>&1 | tee $LAST_RESULTS_DIR/$TARGET_FILE
+				fi
+			fi
 		fi
-	fi
+	done
 done
 
 join_last_results
