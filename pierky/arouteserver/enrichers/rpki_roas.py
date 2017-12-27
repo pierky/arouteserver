@@ -89,10 +89,8 @@ class RPKIROAsEnricher(BaseConfigEnricher):
 
         allowed_tas = rpki_roas_cfg["allowed_trust_anchors"]
 
-        max_invalid_roas = 10
         roas_cnt = {
             "total": 0,
-            "invalid": 0,
             "invalid_ta": 0,
             "unused": 0,
             "used": {
@@ -103,60 +101,23 @@ class RPKIROAsEnricher(BaseConfigEnricher):
         for roa in roas["roas"]:
             roas_cnt["total"] += 1
 
-            try:
-                asn = roa.get("asn", None)
-                if not asn:
-                    raise ValueError("missing ASN")
-                if not asn.startswith("AS"):
-                    raise ValueError("invalid ASN: " + asn)
-                if not asn[2:].isdigit():
-                    raise ValueError("invalid ASN: " + asn)
-                asn = int(asn[2:])
-
-                if not self._use_roas_for_this_origin(asn):
-                    roas_cnt["unused"] += 1
-                    continue
-
-                ta = roa.get("ta", None)
-                if not ta:
-                    raise ValueError("missing trust anchor")
-                if ta not in allowed_tas:
-                    roas_cnt["invalid_ta"] += 1
-                    continue
-
-                prefix = roa.get("prefix", None)
-                if not prefix:
-                    raise ValueError("missing prefix")
-                try:
-                    prefix_obj = IPNetwork(prefix)
-                except:
-                    raise ValueError("invalid prefix: " + prefix)
-
-                if prefix_obj.version not in afis:
-                    continue
-
-                max_len = roa.get("maxLength", None)
-                if not max_len:
-                    raise ValueError("missing maxLength")
-                if not isinstance(max_len, int):
-                    if not max_len.isdigit():
-                        raise ValueError("invalid maxLength: " + max_len)
-                    max_len = int(max_len)
-
-            except ValueError as e:
-                logging.warning("Invalid ROA: {}, {}".format(
-                    str(roa), str(e)
-                ))
-
-                roas_cnt["invalid"] += 1
-                if roas_cnt["invalid"] > max_invalid_roas:
-                    logging.error(
-                        "More than {} invalid ROAs have been found. "
-                        "Aborting.".format(max_invalid_roas)
-                    )
-                    raise BuilderError()
-
+            asn = int(roa["asn"][2:])
+            if not self._use_roas_for_this_origin(asn):
+                roas_cnt["unused"] += 1
                 continue
+
+            ta = roa["ta"]
+            if ta not in allowed_tas:
+                roas_cnt["invalid_ta"] += 1
+                continue
+
+            prefix = roa["prefix"]
+
+            prefix_obj = IPNetwork(prefix)
+            if prefix_obj.version not in afis:
+                continue
+
+            max_len = int(roa["maxLength"])
 
             roa_payload = {"prefix": prefix, "length": prefix_obj.prefixlen,
                            "max_len": max_len, "asn": asn}
@@ -171,7 +132,6 @@ class RPKIROAsEnricher(BaseConfigEnricher):
 
         stats = "RPKI ROAs: "
         stats += "{} total".format(roas_cnt["total"])
-        stats += ", {} invalid".format(roas_cnt["invalid"])
         if roas_cnt["invalid_ta"] > 0:
             stats += ", {} from not allowed TAs".format(roas_cnt["invalid_ta"])
         if roas_cnt["unused"] > 0:
