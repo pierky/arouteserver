@@ -115,10 +115,18 @@ class KVMInstance(BGPSpeakerInstance):
             )
 
     def start(self):
-        if not self.is_remote:
-            if self.is_running():
-                raise InstanceError("Instance '{}' already running.".format(self.name))
+        need_to_start = True
 
+        if self.is_remote:
+            need_to_start = False
+        else:
+            if self.is_running():
+                if "REUSE_KVM_INSTANCES" in os.environ:
+                    need_to_start = False
+                else:
+                    raise InstanceError("Instance '{}' already running.".format(self.name))
+
+        if need_to_start:
             self._check_env()
 
             res = self._run("virsh start {}".format(self.domain_name))
@@ -169,6 +177,9 @@ class KVMInstance(BGPSpeakerInstance):
             return
 
         if not self.is_running():
+            return
+
+        if "REUSE_KVM_INSTANCES" in os.environ:
             return
 
         self._graceful_shutdown()

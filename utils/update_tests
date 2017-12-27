@@ -121,11 +121,31 @@ for bgpspeaker in $BGPSPEAKERS; do
 				if [[ `find $d/test_${bgpspeaker}*.py 2>/dev/null | wc -l` -gt 0 ]]; then
 					echo " - live test: $LIVE_TEST_NAME, $bgpspeaker"
 					TARGET_FILE="live_${LIVE_TEST_NAME}_${bgpspeaker}.last"
-					nosetests -vs -x $d/test_${bgpspeaker}*.py 2>&1 | tee $LAST_RESULTS_DIR/$TARGET_FILE
+					REUSE_KVM_INSTANCES=1 nosetests -vs -x $d/test_${bgpspeaker}*.py 2>&1 | tee $LAST_RESULTS_DIR/$TARGET_FILE
 				fi
 			fi
 		fi
 	done
+	if [ "${bgpspeaker}" == "openbgpd60" -o "${bgpspeaker}" == "openbgpd62" ]; then
+		echo "Shutting down rs KVM instance..."
+		./utils/run rs 'shutdown -p now'
+
+		attempts=1
+		vm_up=1
+		while [[ $attempts -le 15 && $vm_up -eq 1 ]]
+		do
+			sleep 1
+
+			set +e
+			virsh list --name --state-running | egrep "^.+$" &>/dev/null
+			if [ $? -ne 0 ]; then
+				vm_up=0
+			fi
+			set -e
+
+			attempts=`expr $attempts + 1`
+		done
+	fi
 done
 
 join_last_results
