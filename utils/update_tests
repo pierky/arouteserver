@@ -30,6 +30,12 @@ function join_last_results() {
 	fi
 	cat $LAST_RESULTS_DIR/static.last > $TESTS_DIR/last
 
+	if [ ! -e $LAST_RESULTS_DIR/extres.last ]; then
+		echo "ERROR: extres.last missing"
+		exit 1
+	fi
+	cat $LAST_RESULTS_DIR/extres.last > $TESTS_DIR/last
+
 	for bgpspeaker in $BGPSPEAKERS; do
 		for d in $TESTS_DIR/live_tests/scenarios/*; do
 			if [ -d $d ]; then
@@ -56,6 +62,7 @@ function usage() {
 	echo " - cli"
 	echo " - static"
 	echo " - build_only"
+	echo " - extres"
 	echo " - all"
 	for id in $LIVE_TEST_IDS; do
 		echo " - $id"
@@ -131,6 +138,11 @@ fi
 if [[ -z "$1" || `echo "$1" | grep -P "\bstatic\b"` ]]; then
 	echo "Running static tests..."
 	nosetests -vs -x $TESTS_DIR/static 2>&1 | tee $LAST_RESULTS_DIR/static.last
+fi
+
+if [[ -z "$1" || `echo "$1" | grep -P "\bextres\b"` ]]; then
+	echo "Running external resources tests..."
+	nosetests -vs -x $TESTS_DIR/external_resources 2>&1 | tee $LAST_RESULTS_DIR/extres.last
 fi
 
 if [[ -z "$1" || `echo "$1" | grep -P "\bbuild_only\b"` ]]; then
