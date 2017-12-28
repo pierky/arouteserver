@@ -12,31 +12,42 @@ jobs:
 
     # All the "standard" tests, run on push/PR.
     - stage: test
+      env: TOXENV=py34-syntax
       install:
         - pip install tox
-      env: TOXENV=py34-syntax
     - env: TOXENV=py27-flake8
+      install:
+        - pip install tox
     - env: TOXENV=py34-flake8
-  #    - env: TOXENV=py27
-  #      install:
-  #        - pip install tox
-  #        - docker pull pierky/bird:1.6.3
-  #    - env: TOXENV=py34
-  #    - env: TOXENV=py27-coverage
-  #      install:
-  #        - pip install tox
-  #        - pip install coveralls
-  #      after_success:
-  #        - coveralls
+      install:
+        - pip install tox
+    - env: TOXENV=py27
+      install:
+        - pip install tox
+        - docker pull pierky/bird:1.6.3
+    - env: TOXENV=py34
+      install:
+        - pip install tox
+        - docker pull pierky/bird:1.6.3
+    - env: TOXENV=py27-coverage
+      install:
+        - pip install tox
+        - pip install coveralls
+      after_success:
+        - coveralls
 
     # External resources tests, run via cron job.
     - stage: test external resources
+      env: TOXENV=py34-extres
       install:
         - pip install tox
-      env: TOXENV=py34-extres
       before_script:
         - ./tests/external_resources/install_bgpq3.sh
     - env: TOXENV=py27-extres
+      install:
+        - pip install tox
+      before_script:
+        - ./tests/external_resources/install_bgpq3.sh
 
     # Deploy to the test instance of PyPI.
     # Only "vX.Y.Z-alphaN" releases from 'dev' branch go here.
