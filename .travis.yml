@@ -5,16 +5,6 @@ sudo: required
 services:
   - docker
 
-env:
-  - TOXENV=py34-syntax
-  - TOXENV=py27-flake8
-  - TOXENV=py34-flake8
-  #- TOXENV=py27
-  #- TOXENV=py34
-  #- TOXENV=py27-coverage
-
-script: tox
-
 jobs:
   include:
 
@@ -22,10 +12,21 @@ jobs:
     - stage: test
       install:
         - pip install tox
-        - pip install coveralls
-        - docker pull pierky/bird:1.6.3
-      after_success:
-        - coveralls
+      env: TOXENV=py34-syntax
+      script: tox
+    - env: TOXENV=py27-flake8
+    - env: TOXENV=py34-flake8
+  #    - env: TOXENV=py27
+  #      install:
+  #        - pip install tox
+  #        - docker pull pierky/bird:1.6.3
+  #    - env: TOXENV=py34
+  #    - env: TOXENV=py27-coverage
+  #      install:
+  #        - pip install tox
+  #        - pip install coveralls
+  #      after_success:
+  #        - coveralls
 
     # External resources tests, run via cron job.
     - stage: test external resources
@@ -34,6 +35,7 @@ jobs:
       env: TOXENV=py34-extres
       before_script:
         - ./tests/external_resources/install_bgpq3.sh
+      script: tox
     - env: TOXENV=py27-extres
 
     # Deploy to the test instance of PyPI.
