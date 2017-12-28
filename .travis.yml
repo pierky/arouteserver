@@ -31,13 +31,12 @@ jobs:
     - stage: test external resources
       install:
         - pip install tox
-      env:
-        - TOXENV=py34-extres
-        - TOXENV=py27-extres
+      env: TOXENV=py34-extres
       before_script:
         - ./tests/external_resources/install_bgpq3.sh
       script:
         - tox
+    - env: TOXENV=py27-extres
 
     # Deploy to the test instance of PyPI.
     # Only "vX.Y.Z-alphaN" releases from 'dev' branch go here.
