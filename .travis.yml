@@ -5,6 +5,8 @@ sudo: required
 services:
   - docker
 
+script: tox
+
 jobs:
   include:
 
@@ -13,7 +15,6 @@ jobs:
       install:
         - pip install tox
       env: TOXENV=py34-syntax
-      script: tox
     - env: TOXENV=py27-flake8
     - env: TOXENV=py34-flake8
   #    - env: TOXENV=py27
@@ -35,7 +36,6 @@ jobs:
       env: TOXENV=py34-extres
       before_script:
         - ./tests/external_resources/install_bgpq3.sh
-      script: tox
     - env: TOXENV=py27-extres
 
     # Deploy to the test instance of PyPI.
