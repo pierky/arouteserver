@@ -20,7 +20,7 @@ import unittest
 
 from pierky.arouteserver.arin_db_dump import ARINWhoisDBDump
 from pierky.arouteserver.config.general import ConfigParserGeneral
-from pierky.arouteserver.irrdb import ASSet
+from pierky.arouteserver.irrdb import ASSet, RSet
 from pierky.arouteserver.ixf_db import IXFDB
 from pierky.arouteserver.last_version import LastVersion
 from pierky.arouteserver.peering_db import PeeringDBNet
@@ -77,10 +77,18 @@ class TestExternalResources(unittest.TestCase):
         ripe_rpki_cache = RIPE_RPKI_ROAs(ripe_rpki_validator_url=url, **cache_cfg)
         ripe_rpki_cache.load_data()
         self.assertTrue(len(ripe_rpki_cache.roas) > 0)
+        self.assertTrue(any([r for r in ripe_rpki_cache.roas["roas"] if r["prefix"] == "193.0.0.0/21"]))
 
     def test_asset(self):
-        """External resources: AS-SET via bgpq3"""
+        """External resources: ASNs from AS-SET via bgpq3"""
         asset = ASSet(["AS-RIPENCC"], bgpq3_path="bgpq3", **cache_cfg)
         asset.load_data()
         self.assertTrue(len(asset.asns) > 0)
         self.assertTrue(3333 in asset.asns)
+
+    def test_rset(self):
+        """External resources: prefixes from AS-SET via bgpq3"""
+        rset = RSet(["AS-RIPENCC"], 4, False, bgpq3_path="bgpq3", **cache_cfg)
+        rset.load_data()
+        self.assertTrue(len(rset.prefixes) > 0)
+        self.assertTrue(any([p for p in rset.prefixes if p["prefix"] == "193.0.0.0"]))
