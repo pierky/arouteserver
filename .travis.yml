@@ -5,6 +5,14 @@ sudo: required
 services:
   - docker
 
+env:
+  - TOXENV=py34-syntax
+  - TOXENV=py27-flake8
+  - TOXENV=py34-flake8
+  #- TOXENV=py27
+  #- TOXENV=py34
+  #- TOXENV=py27-coverage
+
 jobs:
   include:
 
@@ -14,13 +22,6 @@ jobs:
         - pip install tox
         - pip install coveralls
         - docker pull pierky/bird:1.6.3
-      env:
-        - TOXENV=py34-syntax
-        - TOXENV=py27-flake8
-        - TOXENV=py34-flake8
-        #- TOXENV=py27
-        #- TOXENV=py34
-        #- TOXENV=py27-coverage
       script:
         - tox
       after_success:
