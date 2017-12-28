@@ -5,30 +5,44 @@ sudo: required
 services:
   - docker
 
-before_install:
-  - docker pull pierky/bird:1.6.3 
-
-install:
-  - pip install tox
-  - pip install coveralls
-
-env:
-   - TOXENV=py34-syntax
-   - TOXENV=py27-flake8
-   - TOXENV=py34-flake8
-   - TOXENV=py27
-   - TOXENV=py34
-   - TOXENV=py27-coverage
-
-script: tox
-
-after_success:
- - coveralls
-
 jobs:
   include:
+
+    # All the "standard" tests, run on push/PR.
+    - stage: test
+      install:
+        - pip install tox
+        - pip install coveralls
+        - docker pull pierky/bird:1.6.3
+      env:
+        - TOXENV=py34-syntax
+        - TOXENV=py27-flake8
+        - TOXENV=py34-flake8
+        - TOXENV=py27
+        - TOXENV=py34
+        - TOXENV=py27-coverage
+      script:
+        - tox
+      after_success:
+        - coveralls
+
+    # External resources tests, run via cron job.
+    - stage: test external resources
+      install:
+        - pip install tox
+      env:
+        - TOXENV=py34-extres
+        - TOXENV=py27-extres
+      before_script:
+        - ./tests/external_resources/install_bgpq3.sh
+      script:
+        - tox
+
+    # Deploy to the test instance of PyPI.
+    # Only "vX.Y.Z-alphaN" releases from 'dev' branch go here.
     - stage: deploy test
       script: skip
+      install: skip
       deploy:
         # Test
         - provider: pypi
@@ -40,8 +54,12 @@ jobs:
           on:
             branch: dev
             tags: true
+
+    # Deploy to the production instance of PyPI.
+    # Only "vX.Y.Z" releases from 'master' branch go here.
     - stage: deploy production
       script: skip
+      install: skip
       deploy:
         # Production
         - provider: pypi
@@ -54,8 +72,11 @@ jobs:
             tags: true
 
 stages:
-  - test
+  - name: test
+    if: type IN (push, pull_request)
+  - name: test external resources
+    if: type IN (push, pull_request, cron, api)
   - name: deploy test
-    if: tag IS present AND tag =~ ^v\d+\.\d+\.\d+-alpha\d+\S*$
+    if: type IN (push, pull_request) AND tag IS present AND tag =~ ^v\d+\.\d+\.\d+-alpha\d+\S*$
   - name: deploy production
-    if: tag IS present AND tag =~ ^v\d+\.\d+\.\d+$
+    if: type IN (push, pull_request) AND tag IS present AND tag =~ ^v\d+\.\d+\.\d+$
