@@ -13,6 +13,8 @@ env:
   #- TOXENV=py34
   #- TOXENV=py27-coverage
 
+script: tox
+
 jobs:
   include:
 
@@ -22,8 +24,6 @@ jobs:
         - pip install tox
         - pip install coveralls
         - docker pull pierky/bird:1.6.3
-      script:
-        - tox
       after_success:
         - coveralls
 
@@ -34,8 +34,6 @@ jobs:
       env: TOXENV=py34-extres
       before_script:
         - ./tests/external_resources/install_bgpq3.sh
-      script:
-        - tox
     - env: TOXENV=py27-extres
 
     # Deploy to the test instance of PyPI.
