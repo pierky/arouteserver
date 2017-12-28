@@ -23,7 +23,6 @@ from .data6 import PathHidingScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
 
-@unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
 class PathHidingScenario_MitigationOn_OpenBGPDIPv6(PathHidingScenario_Data6,
                                                    PathHidingScenario_MitigationOn,
                                                    PathHidingScenarioOpenBGPD60):
@@ -35,7 +34,6 @@ class PathHidingScenario_MitigationOn_OpenBGPDIPv6(PathHidingScenario_Data6,
 
     SHORT_DESCR = "Live test, OpenBGPD 6.0, path hiding, mitigation on, IPv6"
 
-@unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
 class PathHidingScenario_MitigationOff_OpenBGPDIPv6(PathHidingScenario_Data6,
                                                     PathHidingScenario_MitigationOff,
                                                     PathHidingScenarioOpenBGPD60):

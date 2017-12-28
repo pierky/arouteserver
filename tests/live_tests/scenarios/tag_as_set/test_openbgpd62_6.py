@@ -22,7 +22,6 @@ from .data6 import TagASSetScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD62Instance
 
-@unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
 class TagASSetScenario_WithAS_SETs_OpenBGPDIPv6(TagASSetScenario_WithAS_SETs,
                                                 TagASSetScenario_Data6,
                                                 TagASSetScenarioOpenBGPD62):

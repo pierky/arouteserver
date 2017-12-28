@@ -21,7 +21,6 @@ from .data6 import BGPCommunitiesScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
 
-@unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
 class BGPCommunitiesScenario_OpenBGPDIPv6(BGPCommunitiesScenario_Data6,
                                           BGPCommunitiesScenarioOpenBGPD60):
     __test__ = True

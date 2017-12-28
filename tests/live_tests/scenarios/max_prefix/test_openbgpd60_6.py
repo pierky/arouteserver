@@ -21,7 +21,6 @@ from .data6 import MaxPrefixScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
 
-@unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
 class MaxPrefixScenario_OpenBGPDIPv6(MaxPrefixScenario_Data6,
                                      MaxPrefixScenarioOpenBGPD60):
 

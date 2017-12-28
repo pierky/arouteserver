@@ -21,7 +21,6 @@ from .data4 import RichConfigExampleScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
 
-@unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
 class RichConfigExampleScenarioOpenBGPD_IPv4(RichConfigExampleScenario_Data4,
                                              RichConfigExampleScenarioOpenBGPD):
     __test__ = True
