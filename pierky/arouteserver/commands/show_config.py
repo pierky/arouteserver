@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import sys
 import yaml
 
 from .base import ARouteServerCommand
@@ -41,6 +42,11 @@ class ShowConfigCommand(ARouteServerCommand):
             dest="cfg_general")
 
     def run(self):
+        current_config_path = program_config.get("cfg_general")
+        self.show_config(current_config_path, sys.stdout)
+
+    @staticmethod
+    def show_config(current_config_path, output):
 
         def wr_line(configured, level, line):
             if configured is True:
@@ -50,13 +56,12 @@ class ShowConfigCommand(ARouteServerCommand):
             else:
                 status = ""
 
-            print("{status:<15} {indent}{line}".format(
+            output.write("{status:<15} {indent}{line}\n".format(
                 status=status,
                 indent="  " * level,
                 line=line
             ))
 
-        current_config_path = program_config.get("cfg_general")
         with open(current_config_path, "r") as f:
             current_config = yaml.safe_load(f)
         convert_deprecated(current_config["cfg"])
@@ -75,7 +80,7 @@ class ShowConfigCommand(ARouteServerCommand):
 
         def get_val_repr(val):
             if isinstance(val, dict):
-                return ", ".join("{}: {}".format(k, v) for k, v in val.items())
+                return ", ".join("{}: {}".format(k, v) for k, v in sorted(val.items()))
             else:
                 return str(val).strip()
 

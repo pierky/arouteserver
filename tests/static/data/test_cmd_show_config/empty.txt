@@ -1,0 +1,70 @@
+                cfg:
+configured        rs_as: 65534
+configured        router_id: 192.0.2.1
+default           prepend_rs_as: False
+default           path_hiding: True
+default           passive: True
+default           gtsm: False
+default           add_path: False
+                  filtering:
+                    next_hop:
+default               policy: strict
+default             ipv4_pref_len: max: 24, min: 8
+default             ipv6_pref_len: max: 48, min: 12
+default             global_black_list_pref: None
+default             max_as_path_len: 32
+default             reject_invalid_as_in_as_path: True
+                    transit_free:
+default               action: None
+default               asns: None
+                    irrdb:
+default               enforce_origin_in_as_set: True
+default               enforce_prefix_in_as_set: True
+default               allow_longer_prefixes: False
+default               tag_as_set: True
+default               peering_db: False
+                      use_rpki_roas_as_route_objects:
+default                 enabled: False
+                      use_arin_bulk_whois_data:
+default                 enabled: False
+default                 source: http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2
+                    rpki_bgp_origin_validation:
+default               enabled: False
+default               reject_invalid: True
+                    max_prefix:
+                      peering_db:
+default                 enabled: True
+                        increment:
+default                   absolute: 100
+default                   relative: 15
+default               general_limit_ipv4: 170000
+default               general_limit_ipv6: 12000
+default               action: None
+default               restart_after: 15
+                    reject_policy:
+default               policy: reject
+                  rpki_roas:
+default             source: ripe-rpki-validator-cache
+default             ripe_rpki_validator_url: http://localcert.ripe.net:8088/export.json
+default             allowed_trust_anchors:
+default               - APNIC from AFRINIC RPKI Root
+default               - APNIC from ARIN RPKI Root
+default               - APNIC from IANA RPKI Root
+default               - APNIC from LACNIC RPKI Root
+default               - APNIC from RIPE RPKI Root
+default               - AfriNIC RPKI Root
+default               - LACNIC RPKI Root
+default               - RIPE NCC RPKI Root
+                  blackhole_filtering:
+default             announce_to_client: True
+default             policy_ipv4: None
+default             policy_ipv6: None
+default             rewrite_next_hop_ipv4: None
+default             rewrite_next_hop_ipv6: None
+default             add_noexport: True
+                  graceful_shutdown:
+default             enabled: False
+default             local_pref: 0
+                  rfc1997_wellknown_communities:
+default             policy: pass
+default           rtt_thresholds: None
