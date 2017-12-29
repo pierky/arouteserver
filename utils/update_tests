@@ -43,6 +43,9 @@ function join_last_results() {
 		fi
 	done
 
+	num_of_tests="`cat $TESTS_DIR/last | egrep -v "^(Ran|OK|---|$)" | egrep "... ok$" | wc -l`"
+	echo "{\"unique_test_cases\": ${num_of_tests}}" > $TESTS_DIR/last.json
+
 	rm $LAST_RESULTS_DIR/*.last
 	rmdir $LAST_RESULTS_DIR
 }
