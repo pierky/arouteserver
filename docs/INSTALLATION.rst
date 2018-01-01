@@ -39,6 +39,8 @@ Installation
 
         .. note:: If you receive the following error while installing the program (or its requirements) using pip: **error in setup command: 'install_requires' must be a string or list of strings containing valid project/version requirement specifiers** then please upgrade the *setuptools* package that is used in your virtualenv: ``pip install --upgrade setuptools``.
 
+        .. note:: Python dev header files and static libraries are needed to compile a module on which ARouteServer depends on: in the case the pip installation process breaks with the **Failed building wheel for py-radix / fatal error: Python.h: No such file or directory** error, please install the appropriate python-dev package: ``sudo apt-get install python-dev`` for Python2, ``sudo apt-get install python3-dev`` for Python 3.
+
 3. Setup your system layout (confirmation will be asked before each action):
 
   .. code:: bash
