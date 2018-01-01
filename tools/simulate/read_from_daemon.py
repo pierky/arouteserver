@@ -121,7 +121,7 @@ def read_from_openbgpd():
 def read_from_bird():
     bird = FakeBIRDInstance(sys.stdin.read())
     for route in bird.get_routes(None):
-        add(route.prefix, route.next_hop, route.as_path)
+        add(route.prefix, route.next_hop.split(" ")[0], route.as_path)
 
 if src_format == "bird":
     err = read_from_bird()
