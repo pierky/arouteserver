@@ -15,39 +15,39 @@ jobs:
       env: TOXENV=py34-syntax
       install:
         - pip install tox
-  #    - env: TOXENV=py27-flake8
-  #      install:
-  #        - pip install tox
-  #    - env: TOXENV=py34-flake8
-  #      install:
-  #        - pip install tox
-  #    - env: TOXENV=py27
-  #      install:
-  #        - pip install tox
-  #        - docker pull pierky/bird:1.6.3
-  #    - env: TOXENV=py34
-  #      install:
-  #        - pip install tox
-  #        - docker pull pierky/bird:1.6.3
-  #    - env: TOXENV=py27-coverage
-  #      install:
-  #        - pip install tox
-  #        - pip install coveralls
-  #      after_success:
-  #        - coveralls
-  #
-  #    # External resources tests, run on push/PR and via cron job.
-  #    - stage: test external resources
-  #      env: TOXENV=py34-extres
-  #      install:
-  #        - pip install tox
-  #      before_script:
-  #        - ./tests/external_resources/install_bgpq3.sh
-  #    - env: TOXENV=py27-extres
-  #      install:
-  #        - pip install tox
-  #      before_script:
-  #        - ./tests/external_resources/install_bgpq3.sh
+    - env: TOXENV=py27-flake8
+      install:
+        - pip install tox
+    - env: TOXENV=py34-flake8
+      install:
+        - pip install tox
+    - env: TOXENV=py27
+      install:
+        - pip install tox
+        - docker pull pierky/bird:1.6.3
+    - env: TOXENV=py34
+      install:
+        - pip install tox
+        - docker pull pierky/bird:1.6.3
+    - env: TOXENV=py27-coverage
+      install:
+        - pip install tox
+        - pip install coveralls
+      after_success:
+        - coveralls
+
+    # External resources tests, run on push/PR and via cron job.
+    - stage: test external resources
+      env: TOXENV=py34-extres
+      install:
+        - pip install tox
+      before_script:
+        - ./tests/external_resources/install_bgpq3.sh
+    - env: TOXENV=py27-extres
+      install:
+        - pip install tox
+      before_script:
+        - ./tests/external_resources/install_bgpq3.sh
 
     # Installation tests on Ubuntu, Debian, CentOS.
     # CentOS, latest
@@ -126,7 +126,7 @@ stages:
   - name: test external resources
     if: type IN (push, pull_request, cron)
   - name: installation tests
-    if: type IN (push, pull_request)
+    if: type IN (push, pull_request) AND tag IS present
   - name: deploy test
     if: type IN (push, pull_request) AND tag IS present AND tag =~ ^v\d+\.\d+\.\d+-alpha\d+\S*$
   - name: deploy production
