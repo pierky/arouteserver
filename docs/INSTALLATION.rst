@@ -15,6 +15,8 @@ Some components used by ARouteServer need Python dev header files and static lib
    # CentOS
    yum -y install gcc python-devel
 
+Please note that ARouteServer also needs `bgpq3 <https://github.com/snar/bgpq3>`_ to build IRR-based filters: details on its installation can be found within the :ref:`External programs` section.
+
 Install using ``pip`` (suggested)
 ---------------------------------
 
