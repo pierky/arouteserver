@@ -111,11 +111,11 @@ function RenderConfigureExample() {
 	CMD="./scripts/arouteserver configure $OPTS --output examples/auto-config/${DST} --preset-answer $ANSWERS"
 
 	[[ -e examples/auto-config/${DST} ]] && rm examples/auto-config/${DST}
-	$CMD &>/dev/null
+	$CMD
 
 	CMD="./scripts/arouteserver html $OPTS --output examples/auto-config/${DST}.html --general examples/auto-config/${DST}"
 
-	$CMD
+	$CMD &>/dev/null
 
 	cp examples/auto-config/${DST}.html $DOCS_DIR/_static/examples_auto-config_${DST}.html
 }
@@ -144,8 +144,29 @@ function IXFMemberExportFromClients() {
 }
 
 title "Building example: configure command output"
-RenderConfigureExample "bird" "bird-general.yml" "daemon=bird asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32"
-RenderConfigureExample "openbgpd" "openbgpd62-general.yml" "daemon=openbgpd version=6.2 asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32"
+
+D="examples/auto-config/README.rst"
+cat << EOF > $D
+.. DO NOT EDIT: this file is automatically created by /utils/build_doc
+
+\`\`configure\`\` command output
+----------------------------
+
+The \`\`configure\`\` command can be used to quickly generate policy definition files (*general.yml*) which are based on suggested settings and best practices.
+
+A list of BGP communities is also automatically built.
+
+.. code-block:: console
+
+   $ arouteserver configure --output $D
+EOF
+RenderConfigureExample "bird" "bird-general.yml" \
+	"daemon=bird asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" | \
+		sed 's/^/   /' >> $D
+echo "The textual description (HTML) generated on the basis of the *general.yml* files produced by this command is also reported here." >> $D
+
+RenderConfigureExample "openbgpd" "openbgpd62-general.yml" \
+	"daemon=openbgpd version=6.2 asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" &>/dev/null
 
 # Invalidating the cache because the previous commands fetched the real (huge)
 # dataset from the RIPE RPKI Validator, while the following commands just need
