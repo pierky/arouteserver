@@ -190,7 +190,7 @@ To get a list of all the available options, run the ``arouteserver clients-from-
 Integration with IXP-Manager
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Since the popular `IXP-Manager <https://github.com/inex/IXP-Manager>`_ allows to `export the list of members in Euro-IX JSON format <https://github.com/inex/IXP-Manager/wiki/Euro-IX-Member-Data-Export>`_, this ARouteServer's command can also be used to integrate the two tools:
+Since the popular `IXP-Manager <https://github.com/inex/IXP-Manager>`_ allows to `export the list of members in Euro-IX JSON format <https://github.com/inex/IXP-Manager/wiki/Euro-IX-Member-Data-Export>`_, the ``arouteserver clients-from-euroix`` command can also be used to integrate the two tools and to build ARouteServer's list of clients automatically:
 
 .. code:: bash
 
