@@ -833,8 +833,10 @@ class LiveScenario(ARouteServerTestCase):
             if inst_a.bgp_session_is_up(inst_b):
                 return
             time.sleep(1)
-        if inst_a.bgp_session_is_up(inst_b, force_update=True):
-            return
+        for _ in range(10):
+            if inst_a.bgp_session_is_up(inst_b, force_update=True):
+                return
+            time.sleep(1)
         self.fail(
             "BGP session between '{}' ({}) and '{}' ({}) is not up.".format(
                 inst_a.name, inst_a.ip, inst_b.name, inst_b.ip

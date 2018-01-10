@@ -20,7 +20,8 @@ ROOT="`pwd`"
 TESTS_DIR="`pwd`/tests"
 LAST_RESULTS_DIR="$TESTS_DIR/last_results"
 
-BGPSPEAKERS="bird openbgpd60 openbgpd62"
+ALL_BGPSPEAKERS="bird openbgpd60 openbgpd62"
+BGPSPEAKERS="$ALL_BGPSPEAKERS"
 LIVE_TEST_IDS="`find $TESTS_DIR/live_tests/scenarios/* -maxdepth 0 -type d -printf '%f '`"
 
 function join_last_results() {
@@ -34,9 +35,9 @@ function join_last_results() {
 		echo "ERROR: extres.last missing"
 		exit 1
 	fi
-	cat $LAST_RESULTS_DIR/extres.last > $TESTS_DIR/last
+	cat $LAST_RESULTS_DIR/extres.last >> $TESTS_DIR/last
 
-	for bgpspeaker in $BGPSPEAKERS; do
+	for bgpspeaker in $ALL_BGPSPEAKERS; do
 		for d in $TESTS_DIR/live_tests/scenarios/*; do
 			if [ -d $d ]; then
 				if [[ `find $d/test_${bgpspeaker}*.py 2>/dev/null | wc -l` -gt 0 ]]; then
@@ -54,8 +55,8 @@ function join_last_results() {
 	num_of_tests="`cat $TESTS_DIR/last | egrep -v "^(Ran|OK|---|$)" | egrep "... ok$" | wc -l`"
 	echo "{\"unique_test_cases\": ${num_of_tests}}" > $TESTS_DIR/last.json
 
-	rm $LAST_RESULTS_DIR/*.last
-	rmdir $LAST_RESULTS_DIR
+	#rm $LAST_RESULTS_DIR/*.last
+	#rmdir $LAST_RESULTS_DIR
 }
 
 function usage() {
@@ -72,7 +73,7 @@ function usage() {
 	done
 	echo ""
 	echo "BGP speakers:"
-	for s in $BGPSPEAKERS; do
+	for s in $ALL_BGPSPEAKERS; do
 		echo " - $s"
 	done
 	exit 1
@@ -89,7 +90,7 @@ done
 
 if [ -n "$2" ]; then
 	for speaker in $2; do
-		egrep "^(`tr ' ' '|' <<< $BGPSPEAKERS`)$" <<< "$speaker" &>/dev/null || { usage ; exit 1; }
+		egrep "^(`tr ' ' '|' <<< $ALL_BGPSPEAKERS`)$" <<< "$speaker" &>/dev/null || { usage ; exit 1; }
 	done
 	BGPSPEAKERS="$2"
 fi
@@ -159,7 +160,7 @@ for bgpspeaker in $BGPSPEAKERS; do
 		if [ -d $d ]; then
 			LIVE_TEST_NAME="`basename $d`"
 
-			if [[ -z "$1" || "$1" == "*" || `echo "$1" | grep -P "\b$LIVE_TEST_NAME\b"` ]]; then
+			if [[ -z "$1" || "$1" == "all" || `echo "$1" | grep -P "\b$LIVE_TEST_NAME\b"` ]]; then
 				if [[ `find $d/test_${bgpspeaker}*.py 2>/dev/null | wc -l` -gt 0 ]]; then
 					echo " - live test: $LIVE_TEST_NAME, $bgpspeaker"
 					TARGET_FILE="live_${LIVE_TEST_NAME}_${bgpspeaker}.last"
@@ -169,24 +170,27 @@ for bgpspeaker in $BGPSPEAKERS; do
 		fi
 	done
 	if [ "${bgpspeaker}" == "openbgpd60" -o "${bgpspeaker}" == "openbgpd62" ]; then
-		echo "Shutting down rs KVM instance..."
-		./utils/run rs 'shutdown -p now'
 
-		attempts=1
-		vm_up=1
-		while [[ $attempts -le 15 && $vm_up -eq 1 ]]
-		do
-			sleep 1
+		if [ `virsh list --name --state-running | egrep -v "^$" | wc -l` -gt 0 ]; then
+			echo "Shutting down rs KVM instance..."
+			./utils/run rs 'shutdown -p now'
 
-			set +e
-			virsh list --name --state-running | egrep "^.+$" &>/dev/null
-			if [ $? -ne 0 ]; then
-				vm_up=0
-			fi
-			set -e
+			attempts=1
+			vm_up=1
+			while [[ $attempts -le 15 && $vm_up -eq 1 ]]
+			do
+				sleep 1
 
-			attempts=`expr $attempts + 1`
-		done
+				set +e
+				virsh list --name --state-running | egrep "^.+$" &>/dev/null
+				if [ $? -ne 0 ]; then
+					vm_up=0
+				fi
+				set -e
+
+				attempts=`expr $attempts + 1`
+			done
+		fi
 	fi
 done
 

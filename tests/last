@@ -130,6 +130,8 @@ IX-F Member Export from clients command: lonap.yml ... ok
 IX-F Member Export from clients command: six.yml ... ok
 IX-F Member Export from clients command: sthix.yml ... ok
 IX-F Member Export from clients command: swissix.yml ... ok
+Show config command: distributed config ... ok
+Show config command: empty config ... ok
 IRRDB enricher: autnum + 2 AS-SETs ... ok
 IRRDB enricher: autnum + AS-SET ... ok
 IRRDB enricher: autnum + AS-SET + ASN white list ... ok
@@ -175,7 +177,19 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 175 tests in 49.284s
+Ran 177 tests in 49.156s
+
+OK
+External resources: ARIN Whois database dump ... ok
+External resources: ASNs from AS-SET via bgpq3 ... ok
+External resources: IXF DB ... ok
+External resources: last version via PyPI ... ok
+External resources: PeeringDB, max-prefix and AS-SET ... ok
+External resources: RIPE RPKI cache ... ok
+External resources: prefixes from AS-SET via bgpq3 ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 29.679s
 
 OK
 Live test, BIRD, hooks example, IPv4: setting instances up...
@@ -192,7 +206,7 @@ Live test, BIRD, hooks example, IPv6: dumping routes...
 Live test, BIRD, hooks example, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 10.535s
+Ran 4 tests in 10.753s
 
 OK
 Live test, BIRD, BGP communities, IPv4: setting instances up...
@@ -231,7 +245,7 @@ Live test, BIRD, BGP communities, IPv6: dumping routes...
 Live test, BIRD, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 39.753s
+Ran 26 tests in 41.370s
 
 OK
 Live test, BIRD, default config, IPv4: setting instances up...
@@ -248,7 +262,7 @@ Live test, BIRD, default config, IPv6: dumping routes...
 Live test, BIRD, default config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 10.887s
+Ran 4 tests in 11.062s
 
 OK
 Live test, BIRD, global scenario, IPv4: setting instances up...
@@ -585,7 +599,7 @@ Live test, BIRD, global scenario, IPv6, tag: dumping routes...
 Live test, BIRD, global scenario, IPv6, tag: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 316 tests in 176.746s
+Ran 316 tests in 183.456s
 
 OK (SKIP=4)
 Live test, BIRD, gshut, IPv4: setting instances up...
@@ -608,7 +622,7 @@ Live test, BIRD, gshut, IPv6: dumping routes...
 Live test, BIRD, gshut, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 10 tests in 28.814s
+Ran 10 tests in 29.454s
 
 OK
 Live test, BIRD, max-prefix, IPv4: setting instances up...
@@ -639,7 +653,7 @@ Live test, BIRD, max-prefix, IPv6: dumping routes...
 Live test, BIRD, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 18 tests in 47.091s
+Ran 18 tests in 48.606s
 
 OK
 Live test, BIRD, path hiding, mitigation off, IPv4: setting instances up...
@@ -696,7 +710,7 @@ Live test, BIRD, path hiding, mitigation on, IPv6: dumping routes...
 Live test, BIRD, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 36 tests in 113.750s
+Ran 36 tests in 117.866s
 
 OK
 Live test, BIRD, examples, rich config, IPv4: setting instances up...
@@ -713,7 +727,7 @@ Live test, BIRD, examples, rich config, IPv6: dumping routes...
 Live test, BIRD, examples, rich config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 34.168s
+Ran 4 tests in 34.680s
 
 OK
 Live test, BIRD, RPKI INVALID tagging, IPv4: setting instances up...
@@ -754,7 +768,7 @@ Live test, BIRD, RPKI INVALID tagging, IPv6: dumping routes...
 Live test, BIRD, RPKI INVALID tagging, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 28 tests in 50.122s
+Ran 28 tests in 51.464s
 
 OK
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: setting instances up...
@@ -941,7 +955,7 @@ Live test, BIRD, tag prefix/origin in AS-SET, IPv6: dumping routes...
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 166 tests in 111.719s
+Ran 166 tests in 117.668s
 
 OK
 Live test, BIRD, 'tag' reject policy scenario, IPv4: setting instances up...
@@ -998,7 +1012,7 @@ Live test, BIRD, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, BIRD, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 44 tests in 72.966s
+Ran 44 tests in 74.757s
 
 OK (SKIP=1)
 Live test, OpenBGPD 6.0, BGP communities, IPv4: setting instances up...
@@ -1037,7 +1051,7 @@ Live test, OpenBGPD 6.0, BGP communities, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 122.793s
+Ran 26 tests in 144.130s
 
 OK (SKIP=6)
 Live test, OpenBGPD 6.0, default config, IPv4: setting instances up...
@@ -1054,7 +1068,7 @@ Live test, OpenBGPD 6.0, default config, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, default config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 32.420s
+Ran 4 tests in 32.373s
 
 OK
 Live test, OpenBGPD 6.0, global scenario, IPv4: setting instances up...
@@ -1227,7 +1241,7 @@ Live test, OpenBGPD 6.0, global scenario, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, global scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 160 tests in 132.981s
+Ran 160 tests in 134.921s
 
 OK (SKIP=16)
 Live test, OpenBGPD 6.0, max-prefix, IPv4: setting instances up...
@@ -1250,7 +1264,7 @@ Live test, OpenBGPD 6.0, max-prefix, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 10 tests in 128.120s
+Ran 10 tests in 129.533s
 
 OK
 Live test, OpenBGPD 6.0, path hiding, mitigation off, IPv4: setting instances up...
@@ -1307,7 +1321,7 @@ Live test, OpenBGPD 6.0, path hiding, mitigation on, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 36 tests in 186.812s
+Ran 36 tests in 190.209s
 
 OK (SKIP=4)
 Live test, OpenBGPD 6.0, examples, rich config, IPv4: setting instances up...
@@ -1324,7 +1338,7 @@ Live test, OpenBGPD 6.0, examples, rich config, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, examples, rich config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 58.368s
+Ran 4 tests in 59.338s
 
 OK
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: setting instances up...
@@ -1511,7 +1525,7 @@ Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 166 tests in 184.927s
+Ran 166 tests in 193.944s
 
 OK
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: setting instances up...
@@ -1570,7 +1584,7 @@ Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 46 tests in 115.084s
+Ran 46 tests in 163.504s
 
 OK (SKIP=3)
 Live test, OpenBGPD 6.2, BGP communities, IPv4: setting instances up...
@@ -1609,7 +1623,7 @@ Live test, OpenBGPD 6.2, BGP communities, IPv6: dumping routes...
 Live test, OpenBGPD 6.2, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 141.172s
+Ran 26 tests in 133.496s
 
 OK
 Live test, OpenBGPD 6.2, global scenario, IPv4: setting instances up...
@@ -1782,7 +1796,7 @@ Live test, OpenBGPD 6.2, global scenario, IPv6: dumping routes...
 Live test, OpenBGPD 6.2, global scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 160 tests in 134.492s
+Ran 160 tests in 136.517s
 
 OK (SKIP=4)
 Live test, OpenBGPD 6.2, gshut, IPv4: setting instances up...
@@ -1805,7 +1819,7 @@ Live test, OpenBGPD 6.2, gshut, IPv6: dumping routes...
 Live test, OpenBGPD 6.2, gshut, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 10 tests in 63.886s
+Ran 10 tests in 64.613s
 
 OK
 Live test, OpenBGPD 6.2, max-prefix, IPv4: setting instances up...
@@ -1828,7 +1842,7 @@ Live test, OpenBGPD 6.2, max-prefix, IPv6: dumping routes...
 Live test, OpenBGPD 6.2, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 10 tests in 127.797s
+Ran 10 tests in 242.716s
 
 OK
 Live test, OpenBGPD 6.2, path hiding, mitigation off, IPv4: setting instances up...
@@ -1885,7 +1899,7 @@ Live test, OpenBGPD 6.2, path hiding, mitigation on, IPv6: dumping routes...
 Live test, OpenBGPD 6.2, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 36 tests in 186.761s
+Ran 36 tests in 189.643s
 
 OK (SKIP=4)
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: setting instances up...
@@ -2072,6 +2086,6 @@ Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: dumping routes...
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 166 tests in 184.740s
+Ran 166 tests in 187.284s
 
 OK
