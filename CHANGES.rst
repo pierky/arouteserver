@@ -3,6 +3,13 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next-release
+------------
+
+- Fix: ``configure`` command, omit extended communities for OpenBGPD configurations.
+
+  This is to avoid the need of using the ``--ignore-issues extended_communities`` command line argument.
+
 v0.17.1
 -------
 

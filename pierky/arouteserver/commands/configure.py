@@ -203,9 +203,24 @@ class ConfigureCommand(ARouteServerCommand):
             if name not in cfg["communities"]:
                 cfg["communities"][name] = OrderedDict()
 
-            for comm_type, comm_val in (("std", std),
-                                        ("ext", "rt:{}".format(std)),
-                                        ("lrg", lrg)):
+            if self.answers["daemon"] == "openbgpd":
+                if version.parse(self.answers["version"]) > version.parse("6.0"):
+                    communities = (
+                        ("std", std),
+                        ("lrg", lrg)
+                    )
+                else:
+                    communities = (
+                        ("std", std),
+                    )
+            else:
+                communities = (
+                    ("std", std),
+                    ("ext", "rt:{}".format(std)),
+                    ("lrg", lrg)
+                )
+
+            for comm_type, comm_val in communities:
                 if comm_val:
                     cfg["communities"][name][comm_type] = \
                         comm_val.format(

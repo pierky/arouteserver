@@ -106,35 +106,35 @@ Route <strong>validity state</strong> is signalled to route server clients using
     <tr>
     <td>Prefix is included in client's AS-SET</td>
     <td>64512:11</td>
-    <td>rt:64512:11</td>
+    <td>None</td>
     <td>64496:64512:11</td>
   </tr>
  
     <tr>
     <td>Prefix is NOT included in client's AS-SET</td>
     <td>64512:10</td>
-    <td>rt:64512:10</td>
+    <td>None</td>
     <td>64496:64512:10</td>
   </tr>
  
     <tr>
     <td>Origin ASN is included in client's AS-SET</td>
     <td>64512:21</td>
-    <td>rt:64512:21</td>
+    <td>None</td>
     <td>64496:64512:21</td>
   </tr>
  
     <tr>
     <td>Origin ASN is NOT included in client's AS-SET</td>
     <td>64512:20</td>
-    <td>rt:64512:20</td>
+    <td>None</td>
     <td>64496:64512:20</td>
   </tr>
  
     <tr>
     <td>Prefix matched by a RPKI ROA for the authorized origin ASN</td>
     <td>64512:31</td>
-    <td>rt:64512:31</td>
+    <td>None</td>
     <td>64496:64512:31</td>
   </tr>
  
@@ -142,7 +142,7 @@ Route <strong>validity state</strong> is signalled to route server clients using
     <tr>
     <td>Route authorized soley because of a client white list entry</td>
     <td>64512:41</td>
-    <td>rt:64512:41</td>
+    <td>None</td>
     <td>64496:64512:41</td>
   </tr>
  
@@ -495,14 +495,14 @@ Route <strong>validity state</strong> is signalled to route server clients using
     <tr>
     <td>Do not announce to any client</td>
     <td>0:64496</td>
-    <td>rt:0:64496</td>
+    <td>None</td>
     <td>64496:0:0</td>
   </tr>
 
     <tr>
     <td>Announce to peer, even if tagged with the previous community</td>
     <td>64496:peer_as</td>
-    <td>rt:64496:peer_as</td>
+    <td>None</td>
     <td>64496:1:peer_as</td>
   </tr>
 
@@ -513,7 +513,7 @@ Route <strong>validity state</strong> is signalled to route server clients using
     <tr>
     <td>Do not announce to peer</td>
     <td>0:peer_as</td>
-    <td>rt:0:peer_as</td>
+    <td>None</td>
     <td>64496:0:peer_as</td>
   </tr>
 
@@ -521,21 +521,21 @@ Route <strong>validity state</strong> is signalled to route server clients using
     <tr>
     <td>Prepend the announcing ASN once to peer</td>
     <td>65511:peer_as</td>
-    <td>rt:65511:peer_as</td>
+    <td>None</td>
     <td>64496:101:peer_as</td>
   </tr>
 
     <tr>
     <td>Prepend the announcing ASN twice to peer</td>
     <td>65512:peer_as</td>
-    <td>rt:65512:peer_as</td>
+    <td>None</td>
     <td>64496:102:peer_as</td>
   </tr>
 
     <tr>
     <td>Prepend the announcing ASN thrice to peer</td>
     <td>65513:peer_as</td>
-    <td>rt:65513:peer_as</td>
+    <td>None</td>
     <td>64496:103:peer_as</td>
   </tr>
 
@@ -544,21 +544,21 @@ Route <strong>validity state</strong> is signalled to route server clients using
     <tr>
     <td>Prepend the announcing ASN once to any</td>
     <td>65501:64496</td>
-    <td>rt:65501:64496</td>
+    <td>None</td>
     <td>64496:101:0</td>
   </tr>
 
     <tr>
     <td>Prepend the announcing ASN twice to any</td>
     <td>65502:64496</td>
-    <td>rt:65502:64496</td>
+    <td>None</td>
     <td>64496:102:0</td>
   </tr>
 
     <tr>
     <td>Prepend the announcing ASN thrice to any</td>
     <td>65503:64496</td>
-    <td>rt:65503:64496</td>
+    <td>None</td>
     <td>64496:103:0</td>
   </tr>
 
@@ -568,14 +568,14 @@ Route <strong>validity state</strong> is signalled to route server clients using
     <tr>
     <td>Add NO_EXPORT to peer</td>
     <td>65281:peer_as</td>
-    <td>rt:65281:peer_as</td>
+    <td>None</td>
     <td>64496:65281:peer_as</td>
   </tr>
 
     <tr>
     <td>Add NO_ADVERTISE to peer</td>
     <td>65282:peer_as</td>
-    <td>rt:65282:peer_as</td>
+    <td>None</td>
     <td>64496:65282:peer_as</td>
   </tr>
 

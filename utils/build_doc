@@ -160,13 +160,19 @@ A list of BGP communities is also automatically built.
 
    $ arouteserver configure --output $D
 EOF
-RenderConfigureExample "bird" "bird-general.yml" \
+
+G="bird-general.yml"
+RenderConfigureExample "bird" $G \
 	"daemon=bird asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" | \
 		sed 's/^/   /' >> $D
-echo "The textual description (HTML) generated on the basis of the *general.yml* files produced by this command is also reported here." >> $D
+./scripts/arouteserver bird $OPTS --ip-ver 4 --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
 
-RenderConfigureExample "openbgpd" "openbgpd62-general.yml" \
+G="openbgpd62-general.yml"
+RenderConfigureExample "openbgpd" $G \
 	"daemon=openbgpd version=6.2 asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" &>/dev/null
+./scripts/arouteserver openbgpd $OPTS --target-version 6.2 --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
+
+echo "The textual description (HTML) generated on the basis of the *general.yml* files produced by this command is also reported here." >> $D
 
 # Invalidating the cache because the previous commands fetched the real (huge)
 # dataset from the RIPE RPKI Validator, while the following commands just need
