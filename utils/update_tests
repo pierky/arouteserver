@@ -20,10 +20,9 @@ ROOT="`pwd`"
 TESTS_DIR="`pwd`/tests"
 LAST_RESULTS_DIR="$TESTS_DIR/last_results"
 
-if [ -d "$LAST_RESULTS_DIR" -a -z "$1" ]; then
-	echo "Last results directory already existing: please check and then remove it - rmdir $LAST_RESULTS_DIR"
-	exit
-fi
+ALL_BGPSPEAKERS="bird openbgpd60 openbgpd62"
+BGPSPEAKERS="$ALL_BGPSPEAKERS"
+LIVE_TEST_IDS="`find $TESTS_DIR/live_tests/scenarios/* -maxdepth 0 -type d -printf '%f '`"
 
 function join_last_results() {
 	if [ ! -e $LAST_RESULTS_DIR/static.last ]; then
@@ -32,26 +31,72 @@ function join_last_results() {
 	fi
 	cat $LAST_RESULTS_DIR/static.last > $TESTS_DIR/last
 
-	for d in $TESTS_DIR/live_tests/scenarios/*; do
-		if [ -d $d ]; then
-			TARGET_FILE="live_`basename $d`.last"
-			if [ ! -e $LAST_RESULTS_DIR/$TARGET_FILE ]; then
-				echo "ERROR: $TARGET_FILE missing"
-				exit 1
+	if [ ! -e $LAST_RESULTS_DIR/extres.last ]; then
+		echo "ERROR: extres.last missing"
+		exit 1
+	fi
+	cat $LAST_RESULTS_DIR/extres.last >> $TESTS_DIR/last
+
+	for bgpspeaker in $ALL_BGPSPEAKERS; do
+		for d in $TESTS_DIR/live_tests/scenarios/*; do
+			if [ -d $d ]; then
+				if [[ `find $d/test_${bgpspeaker}*.py 2>/dev/null | wc -l` -gt 0 ]]; then
+					TARGET_FILE="live_`basename $d`_${bgpspeaker}.last"
+					if [ ! -e $LAST_RESULTS_DIR/$TARGET_FILE ]; then
+						echo "ERROR: $TARGET_FILE missing"
+						exit 1
+					fi
+					cat $LAST_RESULTS_DIR/$TARGET_FILE >> $TESTS_DIR/last
+				fi
 			fi
-			cat $LAST_RESULTS_DIR/$TARGET_FILE >> $TESTS_DIR/last
-		fi
+		done
 	done
 
 	num_of_tests="`cat $TESTS_DIR/last | egrep -v "^(Ran|OK|---|$)" | egrep "... ok$" | wc -l`"
 	echo "{\"unique_test_cases\": ${num_of_tests}}" > $TESTS_DIR/last.json
 
-	rm $LAST_RESULTS_DIR/*.last
-	rmdir $LAST_RESULTS_DIR
+	#rm $LAST_RESULTS_DIR/*.last
+	#rmdir $LAST_RESULTS_DIR
+}
+
+function usage() {
+	echo "$0 [ join_only | \"<list_of_test_ids>\" [ \"<list_of_bgp_speakers>\" ] ]"
+	echo ""
+	echo "Test IDs:"
+	echo " - cli"
+	echo " - static"
+	echo " - build_only"
+	echo " - extres"
+	echo " - all"
+	for id in $LIVE_TEST_IDS; do
+		echo " - $id"
+	done
+	echo ""
+	echo "BGP speakers:"
+	for s in $ALL_BGPSPEAKERS; do
+		echo " - $s"
+	done
+	exit 1
 }
 
 if [ "$1" == "join_only" ]; then
 	join_last_results
+	exit
+fi
+
+for test_id in $1; do
+	egrep "^(cli|static|build_only|all|`tr ' ' '|' <<< $LIVE_TEST_IDS`)$" <<< "$test_id" &>/dev/null || { usage ; exit 1; }
+done
+
+if [ -n "$2" ]; then
+	for speaker in $2; do
+		egrep "^(`tr ' ' '|' <<< $ALL_BGPSPEAKERS`)$" <<< "$speaker" &>/dev/null || { usage ; exit 1; }
+	done
+	BGPSPEAKERS="$2"
+fi
+
+if [ -d "$LAST_RESULTS_DIR" -a -z "$1" ]; then
+	echo "Last results directory already existing: please check and then remove it - rmdir $LAST_RESULTS_DIR"
 	exit
 fi
 
@@ -99,18 +144,52 @@ if [[ -z "$1" || `echo "$1" | grep -P "\bstatic\b"` ]]; then
 	nosetests -vs -x $TESTS_DIR/static 2>&1 | tee $LAST_RESULTS_DIR/static.last
 fi
 
-echo "Testing live scenarios with BUILD_ONLY=1..."
-BUILD_ONLY=1 nosetests -vs -x $TESTS_DIR/live_tests/scenarios/*/test_*.py -m test_010_setup
+if [[ -z "$1" || `echo "$1" | grep -P "\bextres\b"` ]]; then
+	echo "Running external resources tests..."
+	nosetests -vs -x $TESTS_DIR/external_resources 2>&1 | tee $LAST_RESULTS_DIR/extres.last
+fi
+
+if [[ -z "$1" || `echo "$1" | grep -P "\bbuild_only\b"` ]]; then
+	echo "Testing live scenarios with BUILD_ONLY=1..."
+	BUILD_ONLY=1 nosetests -vs -x $TESTS_DIR/live_tests/scenarios/*/test_*.py -m test_010_setup
+fi
 
 echo "Running live tests..."
-for d in $TESTS_DIR/live_tests/scenarios/*; do
-	if [ -d $d ]; then
-		LIVE_TEST_NAME="`basename $d`"
+for bgpspeaker in $BGPSPEAKERS; do
+	for d in $TESTS_DIR/live_tests/scenarios/*; do
+		if [ -d $d ]; then
+			LIVE_TEST_NAME="`basename $d`"
 
-		if [[ -z "$1" || `echo "$1" | grep -P "\b$LIVE_TEST_NAME\b"` ]]; then
-			echo " - live test: $LIVE_TEST_NAME"
-			TARGET_FILE="live_$LIVE_TEST_NAME.last"
-			nosetests -vs -x $d 2>&1 | tee $LAST_RESULTS_DIR/$TARGET_FILE
+			if [[ -z "$1" || "$1" == "all" || `echo "$1" | grep -P "\b$LIVE_TEST_NAME\b"` ]]; then
+				if [[ `find $d/test_${bgpspeaker}*.py 2>/dev/null | wc -l` -gt 0 ]]; then
+					echo " - live test: $LIVE_TEST_NAME, $bgpspeaker"
+					TARGET_FILE="live_${LIVE_TEST_NAME}_${bgpspeaker}.last"
+					REUSE_KVM_INSTANCES=1 nosetests -vs -x $d/test_${bgpspeaker}*.py 2>&1 | tee $LAST_RESULTS_DIR/$TARGET_FILE
+				fi
+			fi
+		fi
+	done
+	if [ "${bgpspeaker}" == "openbgpd60" -o "${bgpspeaker}" == "openbgpd62" ]; then
+
+		if [ `virsh list --name --state-running | egrep -v "^$" | wc -l` -gt 0 ]; then
+			echo "Shutting down rs KVM instance..."
+			./utils/run rs 'shutdown -p now'
+
+			attempts=1
+			vm_up=1
+			while [[ $attempts -le 15 && $vm_up -eq 1 ]]
+			do
+				sleep 1
+
+				set +e
+				virsh list --name --state-running | egrep "^.+$" &>/dev/null
+				if [ $? -ne 0 ]; then
+					vm_up=0
+				fi
+				set -e
+
+				attempts=`expr $attempts + 1`
+			done
 		fi
 	fi
 done

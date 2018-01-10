@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ from six.moves.urllib.error import HTTPError
 
 from .cached_objects import CachedObject
 from .errors import RPKIValidatorCacheError
+from .ipaddresses import IPNetwork
 
 
 class RIPE_RPKI_ROAs(CachedObject):
@@ -86,5 +87,54 @@ class RIPE_RPKI_ROAs(CachedObject):
                     self.url, str(e)
                 )
             )
+
+        if "roas" not in roas:
+            raise RPKIValidatorCacheError("missing 'roas' root element")
+        if not isinstance(roas["roas"], list):
+            raise RPKIValidatorCacheError("'roas' root element is not a list")
+
+        max_invalid_roas = 10
+        invalid = 0
+        for roa in roas["roas"]:
+            try:
+                asn = roa.get("asn", None)
+                if not asn:
+                    raise ValueError("missing ASN")
+                if not asn.startswith("AS"):
+                    raise ValueError("invalid ASN: " + asn)
+                if not asn[2:].isdigit():
+                    raise ValueError("invalid ASN: " + asn)
+
+                if "ta" not in roa:
+                    raise ValueError("missing trust anchor")
+
+                prefix = roa.get("prefix", None)
+                if not prefix:
+                    raise ValueError("missing prefix")
+                try:
+                    IPNetwork(prefix)
+                except:
+                    raise ValueError("invalid prefix: " + prefix)
+
+                max_len = roa.get("maxLength", None)
+                if not max_len:
+                    raise ValueError("missing maxLength")
+                if not isinstance(max_len, int):
+                    if not max_len.isdigit():
+                        raise ValueError("invalid maxLength: " + max_len)
+
+            except ValueError as e:
+                logging.warning("Invalid ROA: {}, {}".format(
+                    str(roa), str(e)
+                ))
+
+                invalid += 1
+                if invalid > max_invalid_roas:
+                    raise RPKIValidatorCacheError(
+                        "More than {} invalid ROAs have been found. "
+                        "Aborting.".format(max_invalid_roas)
+                    )
+
+                continue
 
         return roas

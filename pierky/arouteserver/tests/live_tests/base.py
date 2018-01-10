@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -197,10 +197,6 @@ class LiveScenario(ARouteServerTestCase):
         return cls.DO_NOT_STOP_INSTANCES or "REUSE_INSTANCES" in os.environ
 
     @classmethod
-    def _do_not_run_instances(cls):
-        return "BUILD_ONLY" in os.environ
-
-    @classmethod
     def build_other_cfg(cls, tpl_name):
         """Builds configuration files for BGP speakers which are not the route server.
 
@@ -353,7 +349,8 @@ class LiveScenario(ARouteServerTestCase):
             cls.tearDownClass()
             raise
 
-        if cls._do_not_run_instances():
+        if "BUILD_ONLY" in os.environ or \
+            (cls.SKIP_ON_TRAVIS and "TRAVIS" in os.environ):
             cls.debug("Skipping starting instances")
             return
 
@@ -443,7 +440,8 @@ class LiveScenario(ARouteServerTestCase):
             cls.info("{}: dumping rs config...".format(cls.SHORT_DESCR))
             cls.dump_rs_config()
 
-        if cls._do_not_run_instances():
+        if "BUILD_ONLY" in os.environ or \
+            (cls.SKIP_ON_TRAVIS and "TRAVIS" in os.environ):
             cls.debug("Skipping stopping instances")
             return
 
@@ -465,8 +463,11 @@ class LiveScenario(ARouteServerTestCase):
         raise NotImplementedError()
 
     def _setUp(self):
-        if self._do_not_run_instances():
+        if "BUILD_ONLY" in os.environ:
             self.skipTest("Build only")
+
+        if self.SKIP_ON_TRAVIS and "TRAVIS" in os.environ:
+            self.skipTest("not supported on Travis CI")
 
         self.set_instance_variables()
 
@@ -832,8 +833,10 @@ class LiveScenario(ARouteServerTestCase):
             if inst_a.bgp_session_is_up(inst_b):
                 return
             time.sleep(1)
-        if inst_a.bgp_session_is_up(inst_b, force_update=True):
-            return
+        for _ in range(10):
+            if inst_a.bgp_session_is_up(inst_b, force_update=True):
+                return
+            time.sleep(1)
         self.fail(
             "BGP session between '{}' ({}) and '{}' ({}) is not up.".format(
                 inst_a.name, inst_a.ip, inst_b.name, inst_b.ip

@@ -1,0 +1,90 @@
+#!/bin/bash
+LEN=`wc -l COPYRIGHT | cut -d " " -f 1`
+FIRST_LINE="`head -n 1 COPYRIGHT`"
+
+function apply_to_file() {
+	F="$1"
+	cat COPYRIGHT "$F" > "$F.copyright"
+	mv "$F.copyright" "$F"
+	echo "$F - added"
+}
+
+function update_file() {
+	# update file if only the first line is different
+	F="$1"
+
+	head -n 1 "$F" | grep "$FIRST_LINE" &>/dev/null
+
+	if [ $? -ne 0 ]; then
+		DIFF_LINES_NUM=`head -n $LEN "$F" | diff COPYRIGHT - | egrep "^<" | wc -l`
+
+		if [ "$DIFF_LINES_NUM" == "1" ]; then
+			head -n 1 COPYRIGHT > "$F.copyright"
+			tail -n +2 "$F" >> "$F.copyright"
+			mv "$F.copyright" "$F"
+			echo "$F - updated"
+			return
+		fi
+	fi
+
+	echo "$F - !!!!!!!!!!!!!!!!!!!!!! CAN'T UPDATE !!!!!!!!!!!!!!!!!!!!!!"
+}
+
+function do_file() {
+	F="$1"
+
+	head -n 1 "$F" | grep "Copyright" | grep "Pier Carlo Chiodi" &>/dev/null
+
+	if [ $? -eq 0 ]; then
+		# copyright statement already there
+
+		# is the current one?
+		head -n 1 "$F" | grep "$FIRST_LINE" &>/dev/null
+
+		if [ $? -eq 0 ]; then
+#			echo "$F - ok"
+true
+		else
+			# copyright statement outdated
+			update_file "$F"
+		fi
+	else
+		# copyright statement missing
+		head -n 1 "$F" | egrep "^#" &>/dev/null
+
+		if [ $? -eq 0 ]; then
+			echo "$F - !!!!!!!!!!!!!!!!!!!!!! SPECIAL ATTENTION NEEDED !!!!!!!!!!!!!!!!!!!!!!"
+		else
+			apply_to_file "$F"
+		fi
+	fi
+}
+
+function do_dir() {
+	DIR="$1"
+	PATTERN="$2"
+
+	for f in $DIR/$PATTERN
+	do
+		if [ -f "$f" ]; then
+			do_file "$f"
+		fi
+	done
+}
+
+function do_subdirs() {
+	DIR="$1"
+	PATTERN="$2"
+
+	for d in `find "$DIR" -type d`
+	do
+		do_dir "$d" "$PATTERN"
+	done
+}
+
+do_subdirs "pierky" "*.py"
+do_subdirs "scripts" "*"
+do_subdirs "tests" "*.py"
+do_subdirs "utils" "*"
+
+python -c 'from pierky.arouteserver.version import COPYRIGHT_YEAR; print("COPYRIGHT_YEAR: ", COPYRIGHT_YEAR)'

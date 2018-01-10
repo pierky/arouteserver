@@ -87,6 +87,8 @@ Some clients files automatically built from `Euro-IX member list JSON files <htt
 
 https://github.com/pierky/arouteserver/blob/master/examples/clients-from-euroix
 
+.. DO NOT EDIT: this file is automatically created by /utils/build_doc
+
 ``configure`` command output
 ----------------------------
 
@@ -96,7 +98,7 @@ A list of BGP communities is also automatically built.
 
 .. code-block:: console
 
-   $ arouteserver configure --output general.yml
+   $ arouteserver configure --output examples/auto-config/README.rst
    
    BGP daemon
    ==========
@@ -109,17 +111,14 @@ A list of BGP communities is also automatically built.
    limitations
    
    Which BGP daemon will be used? [bird/openbgpd] bird
-   
    Router server's ASN
    ===================
    
    What's the ASN of the route server? 64496
-   
    Route server's BGP router-id
    ============================
    
    Please enter the route server BGP router-id: 192.0.2.1
-   
    List of local networks
    ======================
    
@@ -130,8 +129,10 @@ A list of BGP communities is also automatically built.
    
    
    Route server policy definition file generated successfully!
+   ===========================================================
    
-   The content of the general configuration file will now be written to general.yml
+   The content of the general configuration file will now be written to examples
+   /auto-config/bird-general.yml
    
    Some notes:
    
@@ -143,9 +144,11 @@ A list of BGP communities is also automatically built.
     - PeeringDB is used to fetch AS-SETs for those clients that are not explicitly
    configured.
     - RPKI ROAs are used as if they were route objects to further enrich IRR data.
+    - ARIN Whois database dump is fetched from NLNOG to further enrich IRR data.
+    - PeeringDB is used to fetch networks prefix count.
     - Routes tagged with the GRACEFUL_SHUTDOWN well-known community (65535:0) are
    processed accordingly to draft-ietf-grow-bgp-gshut.
-
+   
 The textual description (HTML) generated on the basis of the *general.yml* files produced by this command is also reported here.
 
 https://github.com/pierky/arouteserver/blob/master/examples/auto-config

@@ -1,0 +1,53 @@
+#!/bin/bash
+
+set -e
+
+if [ ! -e "setup.py" ]; then
+	echo "The script must be executed from within the repository's root directory."
+	exit 1
+fi
+
+if [ -z "$DISTRO" ]; then
+	echo "ERROR: DISTRO env var is empty."
+	exit 1
+fi
+
+if [ -z "$PYVER" ]; then
+	echo "ERROR: PYVER env var is empty."
+	exit 1
+fi
+
+root="`pwd`"
+
+python setup.py sdist
+
+ars_ver="`python -c 'from pierky.arouteserver.version import __version__; print(__version__)'`"
+ars_package="${root}/dist/arouteserver-${ars_ver}.tar.gz"
+
+if [ ! -e "${ars_package}" ]; then
+	echo "ERROR: can't find $ars_package"
+	exit 1
+fi
+
+cd tests/docker
+
+[[ ! -d var ]] && mkdir var || true
+
+cp -f $ars_package var/arouteserver.tar.gz
+
+fname="${DISTRO}_py${PYVER}.m4"
+
+if [ ! -e $fname ]; then
+	echo "ERROR: can't find $fname"
+	exit 1
+fi
+
+tagname="ars_${ars_ver}_docker_test_${DISTRO}_py${PYVER}"
+
+m4 -I ./ ${fname} > var/Dockerfile
+
+cd var
+
+docker build \
+	-t ${tagname} \
+	-f Dockerfile .

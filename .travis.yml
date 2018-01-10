@@ -5,30 +5,102 @@ sudo: required
 services:
   - docker
 
-before_install:
-  - docker pull pierky/bird:1.6.3 
-
-install:
-  - pip install tox
-  - pip install coveralls
-
-env:
-   - TOXENV=py34-syntax
-   - TOXENV=py27-flake8
-   - TOXENV=py34-flake8
-   - TOXENV=py27
-   - TOXENV=py34
-   - TOXENV=py27-coverage
-
 script: tox
-
-after_success:
- - coveralls
 
 jobs:
   include:
+
+    # All the "standard" tests, run on push/PR.
+    - stage: test
+      env: TOXENV=py34-syntax
+      python: "3.4"
+      install:
+        - pip install tox
+    - env: TOXENV=py27-flake8
+      python: "2.7"
+      install:
+        - pip install tox
+    - env: TOXENV=py34-flake8
+      python: "3.4"
+      install:
+        - pip install tox
+    - env: TOXENV=py27
+      python: "2.7"
+      install:
+        - pip install tox
+        - docker pull pierky/bird:1.6.3
+    - env: TOXENV=py34
+      python: "3.4"
+      install:
+        - pip install tox
+        - docker pull pierky/bird:1.6.3
+    - env: TOXENV=py27-coverage
+      python: "2.7"
+      install:
+        - pip install tox
+        - pip install coveralls
+      after_success:
+        - coveralls
+
+    # External resources tests, run on push/PR and via cron job.
+    - stage: test external resources
+      env: TOXENV=py34-extres
+      python: "3.4"
+      install:
+        - pip install tox
+      before_script:
+        - ./tests/external_resources/install_bgpq3.sh
+    - env: TOXENV=py27-extres
+      python: "2.7"
+      install:
+        - pip install tox
+      before_script:
+        - ./tests/external_resources/install_bgpq3.sh
+
+    # Installation tests on Ubuntu, Debian, CentOS, run on push/PR with tags.
+
+    # CentOS, latest
+    - &installation-stage
+      stage: installation tests
+      install: skip
+      script: ./tests/docker/build
+      env: DISTRO=centos-latest PYVER=2
+
+    # Ubuntu, latest
+    - <<: *installation-stage
+      env: DISTRO=ubuntu-latest PYVER=2
+    - <<: *installation-stage
+      env: DISTRO=ubuntu-latest PYVER=3
+
+    # Ubuntu, rolling
+    - <<: *installation-stage
+      env: DISTRO=ubuntu-rolling PYVER=2
+    - <<: *installation-stage
+      env: DISTRO=ubuntu-rolling PYVER=3
+
+    # Ubuntu, Trusty
+    - <<: *installation-stage
+      env: DISTRO=ubuntu-trusty PYVER=2
+    - <<: *installation-stage
+      env: DISTRO=ubuntu-trusty PYVER=3
+
+    # Debian, stable
+    - <<: *installation-stage
+      env: DISTRO=debian-stable PYVER=2
+    - <<: *installation-stage
+      env: DISTRO=debian-stable PYVER=3
+
+    # Debian, oldstable
+    - <<: *installation-stage
+      env: DISTRO=debian-oldstable PYVER=2
+    - <<: *installation-stage
+      env: DISTRO=debian-oldstable PYVER=3
+
+    # Deploy to the test instance of PyPI.
+    # Only "vX.Y.Z-alphaN" releases from 'dev' branch go here.
     - stage: deploy test
       script: skip
+      install: skip
       deploy:
         # Test
         - provider: pypi
@@ -40,8 +112,12 @@ jobs:
           on:
             branch: dev
             tags: true
+
+    # Deploy to the production instance of PyPI.
+    # Only "vX.Y.Z" releases from 'master' branch go here.
     - stage: deploy production
       script: skip
+      install: skip
       deploy:
         # Production
         - provider: pypi
@@ -54,8 +130,13 @@ jobs:
             tags: true
 
 stages:
-  - test
+  - name: test
+    if: type IN (push, pull_request)
+  - name: test external resources
+    if: type IN (push, pull_request, cron)
+  - name: installation tests
+    if: type IN (push, pull_request) AND tag IS present
   - name: deploy test
-    if: tag IS present AND tag =~ ^v\d+\.\d+\.\d+-alpha\d+\S*$
+    if: type IN (push, pull_request) AND tag IS present AND tag =~ ^v\d+\.\d+\.\d+-alpha\d+\S*$
   - name: deploy production
-    if: tag IS present AND tag =~ ^v\d+\.\d+\.\d+$
+    if: type IN (push, pull_request) AND tag IS present AND tag =~ ^v\d+\.\d+\.\d+$

@@ -246,7 +246,7 @@ v0.5.0
 
 - Fix: avoid the use of standard communities in the range 65535:x.
 - Improvement: option to set max-prefix restart timer for OpenBGPD.
-- Deleted feature: tagging of routes à la RPKI-Light has been removed.
+- Deleted feature: tagging of routes a' la RPKI-Light has been removed.
 
   - The ``reject_invalid`` flag, that previously was on general scope only, now can be set on a client-by-client basis.
   - The ``roa_valid``, ``roa_invalid``, and ``roa_unknown`` communities no longer exist.
