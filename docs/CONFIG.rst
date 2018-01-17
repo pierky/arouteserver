@@ -8,6 +8,8 @@ ARouteServer needs the following files to read its own configuration and to dete
 
 - ``arouteserver.yml``: the main ARouteServer configuration file; it contains options and paths to other files (templates, cache directory, external tools...). By default, ARouteServer looks for this file in ``~/arouteserver`` and ``/etc/arouteserver``. This path can be changed using the ``--cfg`` command line argument. See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/arouteserver.yml>`__.
 
+  The ``logging_config_file`` parameter here included can be used to :doc:`configure logging <LOGGING>`.
+
   For details regarding the ``rtt_getter_path`` option please see :doc:`RTT_GETTER`.
 
 - ``general.yml``: this is the most important configuration file, where the route server's options and policies are configured.
