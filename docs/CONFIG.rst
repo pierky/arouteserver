@@ -40,11 +40,28 @@ Details about some particular topics are reported below.
 .. contents::
    :local:
 
-YAML files inclusion
-********************
+YAML files inclusion and environment variables expansion
+********************************************************
 
-YAML configuration files can contain a custom directive (``!include <filepath>``) that can be used to include other files.
-This can be useful, for example, when the same configuration is shared by two route servers that differ only in their router ID:
+ARouteServer's YAML configuration files can contain a custom directive (``!include <filepath>``) that can be used to include other files.
+Moreover, environment variables (``${VAR_NAME}``) are expanded when the configuration files are loaded.
+This can be useful, for example, when the same configuration is shared by two route servers that differ only in their router ID.
+
+Example with environment variables expansion:
+
+**general.yml**
+
+.. code:: yaml
+
+   cfg:
+     router_id: "${ROUTER_ID}"
+     rs_as: 999
+     passive: True
+     gtsm: True
+     filtering:
+       [...]
+
+Example with file inclusion:
 
 **general-rs1.yml**
 

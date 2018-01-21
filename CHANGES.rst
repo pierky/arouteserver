@@ -10,6 +10,8 @@ next-release
 
   This is to avoid the need of using the ``--ignore-issues extended_communities`` command line argument.
 
+- Improvement: environment variables expansion when YAML configuration files are read.
+
 v0.17.1
 -------
 
