@@ -15,6 +15,7 @@
 
 import os
 import logging
+import re
 import yaml
 
 
@@ -74,8 +75,16 @@ class ConfigParserBase(object):
 
             return res
 
+        def expand_env_vars(doc):
+            res = doc
+            for v in os.environ:
+                res = re.sub("\$\{" + v + "\}", os.environ[v], res)
+            res = re.sub("\$\{[A-Za-z0-9_]+\}", "", res)
+            return res
+
         lines = doc.split("\n")
         expanded_doc = expand_include(lines)
+        expanded_doc = expand_env_vars(expanded_doc)
 
         try:
             self.cfg = yaml.safe_load(expanded_doc)

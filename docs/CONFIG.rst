@@ -8,6 +8,8 @@ ARouteServer needs the following files to read its own configuration and to dete
 
 - ``arouteserver.yml``: the main ARouteServer configuration file; it contains options and paths to other files (templates, cache directory, external tools...). By default, ARouteServer looks for this file in ``~/arouteserver`` and ``/etc/arouteserver``. This path can be changed using the ``--cfg`` command line argument. See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/arouteserver.yml>`__.
 
+  The ``logging_config_file`` parameter here included can be used to :doc:`configure logging <LOGGING>`.
+
   For details regarding the ``rtt_getter_path`` option please see :doc:`RTT_GETTER`.
 
 - ``general.yml``: this is the most important configuration file, where the route server's options and policies are configured.
@@ -38,11 +40,28 @@ Details about some particular topics are reported below.
 .. contents::
    :local:
 
-YAML files inclusion
-********************
+YAML files inclusion and environment variables expansion
+********************************************************
 
-YAML configuration files can contain a custom directive (``!include <filepath>``) that can be used to include other files.
-This can be useful, for example, when the same configuration is shared by two route servers that differ only in their router ID:
+ARouteServer's YAML configuration files can contain a custom directive (``!include <filepath>``) that can be used to include other files.
+Moreover, environment variables (``${VAR_NAME}``) are expanded when the configuration files are loaded.
+This can be useful, for example, when the same configuration is shared by two route servers that differ only in their router ID.
+
+Example with environment variables expansion:
+
+**general.yml**
+
+.. code:: yaml
+
+   cfg:
+     router_id: "${ROUTER_ID}"
+     rs_as: 999
+     passive: True
+     gtsm: True
+     filtering:
+       [...]
+
+Example with file inclusion:
 
 **general-rs1.yml**
 

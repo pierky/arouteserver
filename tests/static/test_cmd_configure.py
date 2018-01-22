@@ -208,7 +208,12 @@ class TestConfigureCmd(ARouteServerTestCase):
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
         ])
-        self.configure_and_build()
+        dic = self.configure_and_build()
+
+        for comm_name in dic["cfg"]["communities"]:
+            self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
+            self.assertTrue("ext" in dic["cfg"]["communities"][comm_name])
+            self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
 
     def test_openbgpd60_simple(self):
         """Configure command: OpenBGPD 6.0, simple"""
@@ -221,7 +226,12 @@ class TestConfigureCmd(ARouteServerTestCase):
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
         ])
-        self.configure_and_build()
+        dic = self.configure_and_build()
+
+        for comm_name in dic["cfg"]["communities"]:
+            self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
+            self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
+            self.assertTrue("lrg" not in dic["cfg"]["communities"][comm_name])
 
     def test_openbgpd61_simple(self):
         """Configure command: OpenBGPD 6.1, simple"""
@@ -234,7 +244,12 @@ class TestConfigureCmd(ARouteServerTestCase):
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
         ])
-        self.configure_and_build()
+        dic = self.configure_and_build()
+
+        for comm_name in dic["cfg"]["communities"]:
+            self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
+            self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
+            self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
 
     def test_openbgpd62_simple(self):
         """Configure command: OpenBGPD 6.2, simple"""
@@ -246,7 +261,12 @@ class TestConfigureCmd(ARouteServerTestCase):
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
         ])
-        self.configure_and_build()
+        dic = self.configure_and_build()
+
+        for comm_name in dic["cfg"]["communities"]:
+            self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
+            self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
+            self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
 
     def test_32bit_asn(self):
         """Configure command: 32 bit route server ASN"""

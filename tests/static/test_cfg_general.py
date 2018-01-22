@@ -13,6 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+try:
+    import mock
+except ImportError:
+    import unittest.mock as mock
 import os
 import unittest
 
@@ -1324,3 +1328,45 @@ class TestConfigParserGeneral(TestConfigParserBase):
         cfg["cfg"]["rpki_roas"] = {}
         self.load_config(yaml=yaml.dump(cfg))
         self._contains_err("A conflict due to a deprecated syntax exists: please check rpki_roas, filtering.rpki and filtering.irrdb.rpki_roas_as_route_objects.")
+
+    @mock.patch.dict(os.environ, {"ROUTER_ID": "192.0.2.1"})
+    def test_env_vars_ok(self):
+        """{}: environment variables: ok"""
+
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: ${ROUTER_ID}\n"
+        )
+        self.cfg.parse()
+        self._contains_err()
+
+        self.assertEqual(self.cfg["router_id"], "192.0.2.1")
+
+    @mock.patch.dict(os.environ, {"ROUTER_ID": "192.0.2.1"})
+    def test_env_vars_missing(self):
+        """{}: environment variables: ok"""
+
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: ${ROUTER_ID}\n"
+            "  filtering:\n"
+            "    global_black_list_pref: ${GLOBAL_BLACK_LIST_PREF}\n"
+        )
+        self.cfg.parse()
+        self._contains_err()
+
+        self.assertEqual(self.cfg["router_id"], "192.0.2.1")
+        self.assertEqual(self.cfg["filtering"]["global_black_list_pref"], None)
+
+    @mock.patch.dict(os.environ, {"ROUTER_ID": "192.0.2.1"})
+    def test_env_vars_corrupted(self):
+        """{}: environment variables: corrupted"""
+
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: ${ROUTER_ID\n"
+        )
+        self._contains_err("Invalid IPv4 address: ${ROUTER_ID")

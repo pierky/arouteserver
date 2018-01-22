@@ -189,3 +189,10 @@ To install or to upgrade to `the latest pre-release version <https://test.pypi.o
 .. code:: bash
 
     pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple --pre arouteserver
+
+Ansible role
+------------
+
+An Ansible role to install and configure ARouteServer can be found on `Galaxy <https://galaxy.ansible.com/pierky/arouteserver/>`__ or on `GitHub <https://github.com/pierky/ansible-role-arouteserver>`__.
+
+It is tested on Debian (Jessie, Stretch), Ubuntu (Trusty, Xenial) and CentOS 7.
