@@ -34,7 +34,7 @@ class TestClientsFromEuroIX(unittest.TestCase):
 
     def _run(self, filename, *args, **kwargs):
         data = self._load(filename)
-        euro_ix = EuroIXMemberList(data)
+        euro_ix = EuroIXMemberList(data, None, None)
         self.clients = euro_ix.get_clients(*args, **kwargs)
 
     def _result_match_file(self, json_in_filename, yml_res_filename=None,
