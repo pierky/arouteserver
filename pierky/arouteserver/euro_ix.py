@@ -38,7 +38,10 @@ class EuroIXMemberList(object):
     ]
     INFO_FROM_PEERINGDB = ["as-set", "max-prefix"]
 
-    def __init__(self, input_object):
+    def __init__(self, input_object, cache_dir, cache_expiry):
+        self.cache_dir = cache_dir
+        self.cache_expiry = cache_expiry
+
         self.raw_data = None
 
         if isinstance(input_object, dict):
@@ -247,7 +250,9 @@ class EuroIXMemberList(object):
 
                 if fetch_from_pdb:
                     try:
-                        pdb_net = PeeringDBNet(client["asn"])
+                        pdb_net = PeeringDBNet(client["asn"],
+                                               cache_dir=self.cache_dir,
+                                               cache_expiry=self.cache_expiry)
                         pdb_net.load_data()
                     except PeeringDBNoInfoError:
                         continue

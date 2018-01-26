@@ -19,6 +19,7 @@ import sys
 import yaml
 
 from .base import ARouteServerCommand
+from ..config.program import program_config
 from ..euro_ix import EuroIXMemberList
 
 class ClientsFromEuroIXCommand(ARouteServerCommand):
@@ -103,7 +104,9 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
             dest="output_file")
 
     def run(self):
-        euro_ix = EuroIXMemberList(self.args.url or self.args.input_file)
+        euro_ix = EuroIXMemberList(self.args.url or self.args.input_file,
+                                   program_config.get_dir("cache_dir"),
+                                   program_config.get("cache_expiry"))
 
         if self.args.ixp_id:
             clients = euro_ix.get_clients(

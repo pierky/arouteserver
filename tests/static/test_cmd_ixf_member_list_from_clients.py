@@ -57,7 +57,7 @@ class TestIXFMemberListFromClientsCommand(ARouteServerTestCase):
 
         # Test if the file generated can be read by ARouteServer itself
         with open(self.write_file("ixf.json", json.dumps(dic)), "rb") as f:
-            clients_from_ixf_member_list = EuroIXMemberList(f)
+            clients_from_ixf_member_list = EuroIXMemberList(f, None, None)
 
         clients_from_ixf_member_list.get_clients(1, 1)
 
