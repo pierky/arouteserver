@@ -44,8 +44,6 @@ General config parser: deprecated syntax, RPKI Origin Validation ... ok
 General config parser: distributed config ... ok
 General config parser: duplicate communities ... ok
 General config parser: dyn_val macro usage in communities ... ok
-General config parser: enforce_origin_in_as_set ... ok
-General config parser: enforce_prefix_in_as_set ... ok
 General config parser: global_black_list_pref ... ok
 General config parser: graceful shutdown ... ok
 General config parser: gtsm ... ok

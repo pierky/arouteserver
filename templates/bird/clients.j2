@@ -83,7 +83,6 @@ prefix set {{ client.id }}_blacklist;
 }
 {% endif %}
 
-{% if client.cfg.filtering.irrdb.enforce_origin_in_as_set or client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}
 function verify_{{ client.id }}_irrdb()
 bool origin_ok;
 bool prefix_ok;
@@ -93,12 +92,8 @@ bool validated;
 	prefix_ok = false;
 	validated = false;
 
-{% 	if client.cfg.filtering.irrdb.enforce_origin_in_as_set or cfg.filtering.irrdb.tag_as_set %}
 	origin_ok = origin_as_is_in_{{ client.id }}_as_set();
-{%	endif %}
-{%	if client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}
 	prefix_ok = prefix_is_in_{{ client.id }}_as_set();
-{%	endif %}
 
 {%	if cfg.filtering.irrdb.tag_as_set and cfg.communities.origin_not_present_in_as_set|community_is_set %}
 	if !origin_ok then {
@@ -164,18 +159,13 @@ bool validated;
 {%		endfor %}
 {%	endif %}
 
-{%	if client.cfg.filtering.irrdb.enforce_origin_in_as_set %}
 	if !validated && !origin_ok then {
 		{{ reject(client, 9, '"origin ASN [", bgp_path.last, "] not in allowed as-sets - REJECTING ", net', avoid_braces=True) }}
 	}
-{%	endif %}
-{%	if client.cfg.filtering.irrdb.enforce_prefix_in_as_set %}
 	if !validated && !prefix_ok then {
 		{{ reject(client, 12, '"prefix not in client\'s r_set - REJECTING ", net', avoid_braces=True) }}
 	}
-{%	endif %}
 }
-{% endif %}
 
 filter receive_from_{{ client.id }} {
 	if !(source = RTS_BGP ) then
@@ -244,10 +234,8 @@ filter receive_from_{{ client.id }} {
 	if prefix_is_bogon() then
 		{{ reject(client, 2, '"prefix is bogon - REJECTING ", net') }}
 
-	{% if client.cfg.filtering.irrdb.enforce_origin_in_as_set or client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}
-	# IRRdb checks
+	# Filter checks
 	verify_{{ client.id }}_irrdb();
-	{% endif %}
 
 	# Blackhole request?
 	if is_blackhole_filtering_request() then {

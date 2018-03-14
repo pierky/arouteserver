@@ -279,8 +279,6 @@ class ConfigureCommand(ARouteServerCommand):
 
         filtering["irrdb"] = OrderedDict()
         irrdb = filtering["irrdb"]
-        irrdb["enforce_origin_in_as_set"] = True
-        irrdb["enforce_prefix_in_as_set"] = True
         irrdb["allow_longer_prefixes"] = True
         self.notes.append(
             "IRR-based filters are enabled; prefixes that are more specific "

@@ -31,8 +31,6 @@ class TestIRRDBEnricher_Base(unittest.TestCase):
             "router_id": "192.0.2.2",
             "filtering": {
                 "irrdb": {
-                    "enforce_origin_in_as_set": True,
-                    "enforce_prefix_in_as_set": True
                 }
             }
         }

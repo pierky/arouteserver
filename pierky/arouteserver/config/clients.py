@@ -75,8 +75,6 @@ class ConfigParserClients(ConfigParserBase):
                     "irrdb": {
                         "as_sets": ValidatorListOf(ValidatorASSet,
                                                    mandatory=False),
-                        "enforce_origin_in_as_set": ValidatorBool(mandatory=False),
-                        "enforce_prefix_in_as_set": ValidatorBool(mandatory=False),
                         "white_list_pref": ValidatorListOf(
                             ValidatorPrefixListEntry, mandatory=False,
                         ),

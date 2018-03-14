@@ -22,7 +22,7 @@ import unittest
 
 import yaml
 
-from .cfg_base import TestConfigParserBase 
+from .cfg_base import TestConfigParserBase
 from pierky.arouteserver.config.general import ConfigParserGeneral
 from pierky.arouteserver.errors import ConfigError
 
@@ -53,7 +53,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
             self.cfg["rs_as"] = asn
             self._contains_err("Error parsing 'rs_as' at 'cfg' level - Invalid ASN: {}".format(str(asn)))
 
-        for asn in (1, 65535, 4294967295): 
+        for asn in (1, 65535, 4294967295):
             self.cfg["rs_as"] = asn
             self._contains_err()
 
@@ -209,18 +209,6 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._test_bool_val(self.cfg["filtering"]["irrdb"], "tag_as_set")
         self._test_mandatory(self.cfg["filtering"]["irrdb"], "tag_as_set", has_default=True)
 
-    def test_enforce_origin_in_as_set(self):
-        """{}: enforce_origin_in_as_set"""
-        self.assertEqual(self.cfg["filtering"]["irrdb"]["enforce_origin_in_as_set"], True)
-        self._test_bool_val(self.cfg["filtering"]["irrdb"], "enforce_origin_in_as_set")
-        self._test_mandatory(self.cfg["filtering"]["irrdb"], "enforce_origin_in_as_set", has_default=True)
-
-    def test_enforce_prefix_in_as_set(self):
-        """{}: enforce_prefix_in_as_set"""
-        self.assertEqual(self.cfg["filtering"]["irrdb"]["enforce_prefix_in_as_set"], True)
-        self._test_bool_val(self.cfg["filtering"]["irrdb"], "enforce_prefix_in_as_set")
-        self._test_mandatory(self.cfg["filtering"]["irrdb"], "enforce_prefix_in_as_set", has_default=True)
-
     def test_allow_longer_prefixes(self):
         """{}: allow_longer_prefixes"""
         self.assertEqual(self.cfg["filtering"]["irrdb"]["allow_longer_prefixes"], False)
@@ -232,7 +220,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.assertEqual(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["enabled"], False)
         self._test_bool_val(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "enabled")
         self._test_mandatory(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "enabled", has_default=True)
-        
+
     def test_use_rpki_roas_source(self):
         """{}: rpki_roas.source"""
         self.assertEqual(self.cfg["rpki_roas"]["source"], "ripe-rpki-validator-cache")
@@ -1075,8 +1063,6 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 },
                 "irrdb": {
                     "tag_as_set": True,
-                    "enforce_origin_in_as_set": True,
-                    "enforce_prefix_in_as_set": True,
                     "allow_longer_prefixes": False,
                     "peering_db": False,
                     "use_rpki_roas_as_route_objects": {

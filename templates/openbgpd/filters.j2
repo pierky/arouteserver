@@ -277,15 +277,11 @@ match from {{ client.ip }} prefix {{ write_prefix_list_entry(route) }} set ext-c
 {%	endfor %}
 {% endif %}
 
-{% if client.cfg.filtering.irrdb.enforce_origin_in_as_set or client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}
 match from {{ client.ip }} set ext-community $INTCOMM_IRR_REJECT
-{% endif %}
 
-{% if client.cfg.filtering.irrdb.enforce_origin_in_as_set or cfg.filtering.irrdb.tag_as_set %}
 # AS_PATH: check origin via AS-SET
 {{ irrdb_filter(client, "asns", "$INTCOMM_ORIGIN_OK", "$INTCOMM_ORIGIN_KO",
 		cfg.communities.origin_present_in_as_set, cfg.communities.origin_not_present_in_as_set) -}}
-{% endif %}
 
 {% if client.cfg.filtering.black_list_pref %}
 # Prefix: client's blacklist
@@ -294,13 +290,10 @@ match from {{ client.ip }} set ext-community $INTCOMM_IRR_REJECT
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " prefix $" ~ pref_list_name, 11) }}
 {% endif %}
 
-{% if client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}
 # Prefix: check prefix via AS-SET
 {{ irrdb_filter(client, "prefixes", "$INTCOMM_PREFIX_OK", "$INTCOMM_PREFIX_KO",
 		cfg.communities.prefix_present_in_as_set, cfg.communities.prefix_not_present_in_as_set) -}}
-{% endif %}
 
-{% if client.cfg.filtering.irrdb.enforce_origin_in_as_set or client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}
 
 {% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and rpki_roas %}
 # routes tagged with $INTCOMM_PREF_OK_ROA community have the prefix validated by a ROA; origin ASN previously validated ($INTCOMM_ORIGIN_OK)
@@ -341,7 +334,6 @@ match from {{ client.ip }} ext-community $INTCOMM_IRR_REJECT set community NO_AD
 match from {{ client.ip }} set community delete NO_ADVERTISE
 {% endif %}
 
-{% if client.cfg.filtering.irrdb.enforce_origin_in_as_set %}
 # enforcing: origin ASN
 # NO_ADVERTISE here means $INTCOMM_IRR_REJECT
 # (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)
@@ -350,8 +342,7 @@ match from {{ client.ip }} ext-community $INTCOMM_IRR_REJECT set community NO_AD
 		      "from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_ORIGIN_KO",
 		      9) }}
 match from {{ client.ip }} set community delete NO_ADVERTISE
-{% endif %}
-{% if client.cfg.filtering.irrdb.enforce_prefix_in_as_set %}
+
 # enforcing: prefix
 # NO_ADVERTISE here means $INTCOMM_IRR_REJECT
 # (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)
@@ -360,8 +351,7 @@ match from {{ client.ip }} ext-community $INTCOMM_IRR_REJECT set community NO_AD
 		      "from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_PREFIX_KO",
 		      12) }}
 match from {{ client.ip }} set community delete NO_ADVERTISE
-{% endif %}
-{% endif %}
+
 
 {% if ( client.ip|ipaddr_ver == 4 and cfg.blackhole_filtering.policy_ipv4 ) or
       ( client.ip|ipaddr_ver == 6 and cfg.blackhole_filtering.policy_ipv6 ) %}

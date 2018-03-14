@@ -17,7 +17,7 @@ import unittest
 
 import yaml
 
-from .cfg_base import TestConfigParserBase 
+from .cfg_base import TestConfigParserBase
 from pierky.arouteserver.config.clients import ConfigParserClients
 from pierky.arouteserver.config.general import ConfigParserGeneral
 
@@ -160,8 +160,6 @@ class TestConfigParserClients(TestConfigParserBase):
             "      add_path: True",
             "      filtering:",
             "        irrdb:",
-            "          enforce_origin_in_as_set: False",
-            "          enforce_prefix_in_as_set: False",
             "          white_list_pref:",
             "            - prefix: 192.0.2.0",
             "              length: 24",
@@ -219,8 +217,6 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["passive"], True)
         self.assertEqual(client["cfg"]["add_path"], False)
         self.assertEqual(client["cfg"]["prepend_rs_as"], False)
-        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_origin_in_as_set"], True)
-        self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_prefix_in_as_set"], True)
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_pref"], None)
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_asn"], None)
         self.assertEqual(client["cfg"]["filtering"]["rpki_bgp_origin_validation"]["enabled"], False)
@@ -282,7 +278,7 @@ class TestConfigParserClients(TestConfigParserBase):
             "  - asn: 111",
             "    ip: 192.0.2.11",
             "    cfg:",
-            "      blackhole_filtering:",             
+            "      blackhole_filtering:",
             "  - asn: 222",
             "    ip: 192.0.2.21",
             "    cfg:",
@@ -325,7 +321,7 @@ class TestConfigParserClients(TestConfigParserBase):
             "  rs_as: 999",
             "  router_id: 192.0.2.2",
             "  blackhole_filtering:",
-            "    announce_to_client: False"  
+            "    announce_to_client: False"
         ]))
         general.parse()
 

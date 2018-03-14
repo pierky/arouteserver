@@ -247,8 +247,6 @@ cfg:
       min: 12
     irrdb:
       allow_longer_prefixes: true
-      enforce_origin_in_as_set: true
-      enforce_prefix_in_as_set: true
       peering_db: false
       tag_as_set: true
       use_arin_bulk_whois_data:
@@ -659,8 +657,6 @@ clients:
       irrdb:
         as_set_bundle_ids: !!set {}
         as_sets: null
-        enforce_origin_in_as_set: true
-        enforce_prefix_in_as_set: true
         white_list_asn: null
         white_list_pref: null
         white_list_route: null
@@ -708,8 +704,6 @@ clients:
       irrdb:
         as_set_bundle_ids: !!set {}
         as_sets: null
-        enforce_origin_in_as_set: true
-        enforce_prefix_in_as_set: true
         white_list_asn: null
         white_list_pref: null
         white_list_route: null

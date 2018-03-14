@@ -168,34 +168,6 @@ cfg:
         6762, 6830, 7018, 12956
 
     irrdb:
-      # With regards of the following two options, if no AS-SET
-      # is given in the clients configuration file for the
-      # specific client nor for its AS, then only the ASN
-      # of the announcing client is expanded and used to gather
-      # authorized origin ASNs and prefixes.
-      # If the 'peering_db' option below within this section is set
-      # to True, ARouteServer acquires the AS-SET of the client ASN
-      # from PeeringDB.
-      #
-      # More details on the Configuration page on ReadTheDocs:
-      # https://arouteserver.readthedocs.io/en/latest/CONFIG.html
-
-      # Accept only routes whose origin ASN is registered in
-      # the expanded AS-SET of the announcing client.
-      #
-      # Can be overwritten on a client-by-client basis.
-      #
-      # Default: True
-      enforce_origin_in_as_set: True
-
-      # Accept only prefixes which are present in the expanded
-      # AS-SET of the announcing client.
-      #
-      # Can be overwritten on a client-by-client basis.
-      #
-      # Default: True
-      enforce_prefix_in_as_set: True
-
       # By default, only prefixes that have a strict correspondence
       # in the route-set obtained by expading the AS-SET are
       # allowed.

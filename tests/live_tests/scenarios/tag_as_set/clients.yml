@@ -31,7 +31,6 @@ clients:
           cfg:
                 filtering:
                         irrdb:
-                                enforce_origin_in_as_set: True
                                 as_sets:
                                 - "AS-AS4"
                                 white_list_pref:
@@ -68,7 +67,6 @@ clients:
           cfg:
                 filtering:
                         irrdb:
-                                enforce_prefix_in_as_set: True
                                 white_list_pref:
                                   - prefix: "5.2.0.0"
                                     length: 16
@@ -86,8 +84,6 @@ clients:
                         irrdb:
                                 as_sets:
                                 - "AS6"
-                                enforce_prefix_in_as_set: True
-                                enforce_origin_in_as_set: True
                                 white_list_route:
                                   - prefix: "3.2.0.0"
                                     length: 16

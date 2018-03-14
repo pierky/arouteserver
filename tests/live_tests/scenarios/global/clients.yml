@@ -77,8 +77,6 @@ clients:
                 add_path: True
                 filtering:
                         irrdb:
-                                enforce_origin_in_as_set: False
-                                enforce_prefix_in_as_set: False
                         black_list_pref:
                                 - prefix: "3.0.1.0"
                                   length: 24
@@ -94,5 +92,3 @@ clients:
           cfg:
                 filtering:
                         irrdb:
-                                enforce_origin_in_as_set: False
-                                enforce_prefix_in_as_set: False

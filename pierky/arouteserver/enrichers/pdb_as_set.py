@@ -77,12 +77,6 @@ class PeeringDBConfigEnricher_ASSet(BaseConfigEnricher):
         for client in self.builder.cfg_clients.cfg["clients"]:
             client_irrdb = client["cfg"]["filtering"]["irrdb"]
 
-            if not client_irrdb["enforce_origin_in_as_set"] and \
-                not client_irrdb["enforce_prefix_in_as_set"] and \
-                not self.builder.cfg_general["filtering"]["irrdb"]["tag_as_set"]:
-                # Client does not require AS-SETs info to be gathered.
-                continue
-
             if client_irrdb["as_sets"]:
                 # Client has its own specific set of AS-SETs.
                 continue

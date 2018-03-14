@@ -138,8 +138,6 @@ class ConfigParserGeneral(ConfigParserBase):
         f["irrdb"] = OrderedDict()
         i = f["irrdb"]
 
-        i["enforce_origin_in_as_set"] = ValidatorBool(default=True)
-        i["enforce_prefix_in_as_set"] = ValidatorBool(default=True)
         i["allow_longer_prefixes"] = ValidatorBool(default=False)
         i["tag_as_set"] = ValidatorBool(default=True)
         i["peering_db"] = ValidatorBool(default=False)

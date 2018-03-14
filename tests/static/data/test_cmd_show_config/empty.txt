@@ -18,8 +18,6 @@ default             reject_invalid_as_in_as_path: True
 default               action: None
 default               asns: None
                     irrdb:
-default               enforce_origin_in_as_set: True
-default               enforce_prefix_in_as_set: True
 default               allow_longer_prefixes: False
 default               tag_as_set: True
 default               peering_db: False

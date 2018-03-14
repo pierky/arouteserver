@@ -40,8 +40,6 @@ cfg:
       - 7018
       - 12956
     irrdb:
-      enforce_origin_in_as_set: true
-      enforce_prefix_in_as_set: true
       allow_longer_prefixes: true
       tag_as_set: true
       peering_db: true

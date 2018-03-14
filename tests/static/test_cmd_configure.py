@@ -69,8 +69,6 @@ class TestConfigureCmd(ARouteServerTestCase):
                     ]
                 },
                 "irrdb": {
-                    "enforce_origin_in_as_set": True,
-                    "enforce_prefix_in_as_set": True,
                     "allow_longer_prefixes": True,
                     "tag_as_set": True,
                     "peering_db": True,

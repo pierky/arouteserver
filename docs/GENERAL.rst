@@ -333,41 +333,6 @@ from PeeringDB.
 More details on the Configuration page on ReadTheDocs:
 https://arouteserver.readthedocs.io/en/latest/CONFIG.html
 
-- ``enforce_origin_in_as_set``:
-  Accept only routes whose origin ASN is registered in
-  the expanded AS-SET of the announcing client.
-
-
-  Can be overwritten on a client-by-client basis.
-
-
-  Default: **True**
-
-  Example:
-
-  .. code:: yaml
-
-     enforce_origin_in_as_set: True
-
-
-
-- ``enforce_prefix_in_as_set``:
-  Accept only prefixes which are present in the expanded
-  AS-SET of the announcing client.
-
-
-  Can be overwritten on a client-by-client basis.
-
-
-  Default: **True**
-
-  Example:
-
-  .. code:: yaml
-
-     enforce_prefix_in_as_set: True
-
-
 
 - ``allow_longer_prefixes``:
   By default, only prefixes that have a strict correspondence

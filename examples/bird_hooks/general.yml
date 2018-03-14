@@ -44,10 +44,6 @@ cfg:
         6762, 6830, 7018, 12956
 
     irrdb:
-      enforce_origin_in_as_set: True
-
-      enforce_prefix_in_as_set: True
-
       tag_as_set: True
 
     rpki:

@@ -282,8 +282,6 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
                 CfgStatement("asns", pre_comment=True)
             ]),
             CfgStatement("irrdb", t="IRRDB filters", post_comment=True, sub=[
-                CfgStatement("enforce_origin_in_as_set", pre_comment=True),
-                CfgStatement("enforce_prefix_in_as_set", pre_comment=True),
                 CfgStatement("allow_longer_prefixes", pre_comment=True),
                 CfgStatement("tag_as_set", pre_comment=True),
                 CfgStatement("peering_db", pre_comment=True),
