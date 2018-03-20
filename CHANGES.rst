@@ -3,6 +3,13 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- Improvement: transit-free ASNs filters are applied to sessions toward transit-free peer also.
+
+  Related: `issue #21 on GitHub <https://github.com/pierky/arouteserver/issues/21>`_.
+
 v0.17.3
 -------
 

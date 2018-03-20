@@ -134,6 +134,8 @@ Built to group as many tests as possible in a single scenario.
     AS3_noexport_AS1   3.0.12.0/24  65509:1 65523:2   (prepend x3 to AS2) received by AS1 with
                                                       NO_EXPORT
     AS3_rfc1997_noexp  3.0.13.0/24  NO_EXPORT         received by all with NO_EXPORT
+    AS3_transitfree_2  3.0.14.0/24                    AS_PATH 3, 174, 33: rejected even if 3 is in
+                                                      the transit-free ASN list
     Default_route      0.0.0.0/0                      rejected by rs
     =================  ============ ================= ============================================
 

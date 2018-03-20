@@ -70,6 +70,7 @@ class BasicScenario_Data6(object):
         "AS3_noexport_any":         "2a03:0:b::/48",
         "AS3_noexport_AS1":         "2a03:0:c::/48",
         "AS3_rfc1997_noexp":        "2a03:0:d::/48",
+        "AS3_transitfree_2":        "2a03:0:e::/48",
 
         "AS4_rtt_1":                "2a04:0:1::/48",
         "AS4_rtt_2":                "2a04:0:2::/48",
