@@ -46,6 +46,9 @@ General config parser: duplicate communities ... ok
 General config parser: dyn_val macro usage in communities ... ok
 General config parser: enforce_origin_in_as_set ... ok
 General config parser: enforce_prefix_in_as_set ... ok
+General config parser: environment variables: corrupted ... ok
+General config parser: environment variables: ok ... ok
+General config parser: environment variables: ok ... ok
 General config parser: global_black_list_pref ... ok
 General config parser: graceful shutdown ... ok
 General config parser: gtsm ... ok
@@ -177,7 +180,7 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 177 tests in 49.156s
+Ran 180 tests in 28.660s
 
 OK
 External resources: ARIN Whois database dump ... ok
@@ -189,7 +192,7 @@ External resources: RIPE RPKI cache ... ok
 External resources: prefixes from AS-SET via bgpq3 ... ok
 
 ----------------------------------------------------------------------
-Ran 7 tests in 29.679s
+Ran 7 tests in 13.402s
 
 OK
 Live test, BIRD, hooks example, IPv4: setting instances up...
@@ -206,7 +209,7 @@ Live test, BIRD, hooks example, IPv6: dumping routes...
 Live test, BIRD, hooks example, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 10.753s
+Ran 4 tests in 10.323s
 
 OK
 Live test, BIRD, BGP communities, IPv4: setting instances up...
@@ -245,7 +248,7 @@ Live test, BIRD, BGP communities, IPv6: dumping routes...
 Live test, BIRD, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 41.370s
+Ran 26 tests in 41.840s
 
 OK
 Live test, BIRD, default config, IPv4: setting instances up...
@@ -262,7 +265,7 @@ Live test, BIRD, default config, IPv6: dumping routes...
 Live test, BIRD, default config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 11.062s
+Ran 4 tests in 10.537s
 
 OK
 Live test, BIRD, global scenario, IPv4: setting instances up...
@@ -288,6 +291,7 @@ Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: origin not 
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: prefix not in AS-SET ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: invalid prefix-len ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
+Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: unknown NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: RPKI ROAs as route objects failed ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: default route ... ok
@@ -370,6 +374,7 @@ Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: origin
 Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: prefix not in AS-SET ... ok
 Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: invalid prefix-len ... ok
 Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
+Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer ... ok
 Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: unknown NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: RPKI ROAs as route objects failed ... ok
 Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: default route ... ok
@@ -454,6 +459,7 @@ Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: origin not 
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: prefix not in AS-SET ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: invalid prefix-len ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
+Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: unknown NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: RPKI ROAs as route objects failed ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: default route ... ok
@@ -536,6 +542,7 @@ Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: origin
 Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: prefix not in AS-SET ... ok
 Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: invalid prefix-len ... ok
 Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
+Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer ... ok
 Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: unknown NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: RPKI ROAs as route objects failed ... ok
 Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: default route ... ok
@@ -599,7 +606,7 @@ Live test, BIRD, global scenario, IPv6, tag: dumping routes...
 Live test, BIRD, global scenario, IPv6, tag: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 316 tests in 183.456s
+Ran 320 tests in 194.078s
 
 OK (SKIP=4)
 Live test, BIRD, gshut, IPv4: setting instances up...
@@ -622,7 +629,7 @@ Live test, BIRD, gshut, IPv6: dumping routes...
 Live test, BIRD, gshut, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 10 tests in 29.454s
+Ran 10 tests in 29.410s
 
 OK
 Live test, BIRD, max-prefix, IPv4: setting instances up...
@@ -653,7 +660,7 @@ Live test, BIRD, max-prefix, IPv6: dumping routes...
 Live test, BIRD, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 18 tests in 48.606s
+Ran 18 tests in 48.780s
 
 OK
 Live test, BIRD, path hiding, mitigation off, IPv4: setting instances up...
@@ -710,7 +717,7 @@ Live test, BIRD, path hiding, mitigation on, IPv6: dumping routes...
 Live test, BIRD, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 36 tests in 117.866s
+Ran 36 tests in 117.595s
 
 OK
 Live test, BIRD, examples, rich config, IPv4: setting instances up...
@@ -727,7 +734,7 @@ Live test, BIRD, examples, rich config, IPv6: dumping routes...
 Live test, BIRD, examples, rich config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 34.680s
+Ran 4 tests in 22.104s
 
 OK
 Live test, BIRD, RPKI INVALID tagging, IPv4: setting instances up...
@@ -768,7 +775,7 @@ Live test, BIRD, RPKI INVALID tagging, IPv6: dumping routes...
 Live test, BIRD, RPKI INVALID tagging, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 28 tests in 51.464s
+Ran 28 tests in 52.118s
 
 OK
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: setting instances up...
@@ -955,7 +962,7 @@ Live test, BIRD, tag prefix/origin in AS-SET, IPv6: dumping routes...
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 166 tests in 117.668s
+Ran 166 tests in 114.974s
 
 OK
 Live test, BIRD, 'tag' reject policy scenario, IPv4: setting instances up...
@@ -1012,7 +1019,7 @@ Live test, BIRD, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, BIRD, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 44 tests in 74.757s
+Ran 44 tests in 76.507s
 
 OK (SKIP=1)
 Live test, OpenBGPD 6.0, BGP communities, IPv4: setting instances up...
@@ -1051,7 +1058,7 @@ Live test, OpenBGPD 6.0, BGP communities, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 144.130s
+Ran 26 tests in 114.177s
 
 OK (SKIP=6)
 Live test, OpenBGPD 6.0, default config, IPv4: setting instances up...
@@ -1068,7 +1075,7 @@ Live test, OpenBGPD 6.0, default config, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, default config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 32.373s
+Ran 4 tests in 28.428s
 
 OK
 Live test, OpenBGPD 6.0, global scenario, IPv4: setting instances up...
@@ -1094,6 +1101,7 @@ Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: ori
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: prefix not in AS-SET ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: invalid prefix-len ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: unknown NEXT_HOP ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: RPKI ROAs as route objects failed ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: bad prefixes received by rs: default route ... ok
@@ -1178,6 +1186,7 @@ Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: ori
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: prefix not in AS-SET ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: invalid prefix-len ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: unknown NEXT_HOP ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: RPKI ROAs as route objects failed ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: bad prefixes received by rs: default route ... ok
@@ -1241,7 +1250,7 @@ Live test, OpenBGPD 6.0, global scenario, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, global scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 160 tests in 134.921s
+Ran 162 tests in 137.541s
 
 OK (SKIP=16)
 Live test, OpenBGPD 6.0, max-prefix, IPv4: setting instances up...
@@ -1264,7 +1273,7 @@ Live test, OpenBGPD 6.0, max-prefix, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 10 tests in 129.533s
+Ran 10 tests in 230.263s
 
 OK
 Live test, OpenBGPD 6.0, path hiding, mitigation off, IPv4: setting instances up...
@@ -1321,7 +1330,7 @@ Live test, OpenBGPD 6.0, path hiding, mitigation on, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 36 tests in 190.209s
+Ran 36 tests in 182.493s
 
 OK (SKIP=4)
 Live test, OpenBGPD 6.0, examples, rich config, IPv4: setting instances up...
@@ -1338,7 +1347,7 @@ Live test, OpenBGPD 6.0, examples, rich config, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, examples, rich config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 59.338s
+Ran 4 tests in 41.460s
 
 OK
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: setting instances up...
@@ -1525,7 +1534,7 @@ Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 166 tests in 193.944s
+Ran 166 tests in 178.777s
 
 OK
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: setting instances up...
@@ -1584,7 +1593,7 @@ Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 46 tests in 163.504s
+Ran 46 tests in 113.619s
 
 OK (SKIP=3)
 Live test, OpenBGPD 6.2, BGP communities, IPv4: setting instances up...
@@ -1623,7 +1632,7 @@ Live test, OpenBGPD 6.2, BGP communities, IPv6: dumping routes...
 Live test, OpenBGPD 6.2, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 133.496s
+Ran 26 tests in 124.452s
 
 OK
 Live test, OpenBGPD 6.2, global scenario, IPv4: setting instances up...
@@ -1649,6 +1658,7 @@ Live test, OpenBGPD 6.2, global scenario, IPv4: bad prefixes received by rs: ori
 Live test, OpenBGPD 6.2, global scenario, IPv4: bad prefixes received by rs: prefix not in AS-SET ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: bad prefixes received by rs: invalid prefix-len ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
+Live test, OpenBGPD 6.2, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: bad prefixes received by rs: unknown NEXT_HOP ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: bad prefixes received by rs: RPKI ROAs as route objects failed ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: bad prefixes received by rs: default route ... ok
@@ -1733,6 +1743,7 @@ Live test, OpenBGPD 6.2, global scenario, IPv6: bad prefixes received by rs: ori
 Live test, OpenBGPD 6.2, global scenario, IPv6: bad prefixes received by rs: prefix not in AS-SET ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: bad prefixes received by rs: invalid prefix-len ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
+Live test, OpenBGPD 6.2, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: bad prefixes received by rs: unknown NEXT_HOP ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: bad prefixes received by rs: RPKI ROAs as route objects failed ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: bad prefixes received by rs: default route ... ok
@@ -1796,7 +1807,7 @@ Live test, OpenBGPD 6.2, global scenario, IPv6: dumping routes...
 Live test, OpenBGPD 6.2, global scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 160 tests in 136.517s
+Ran 162 tests in 136.224s
 
 OK (SKIP=4)
 Live test, OpenBGPD 6.2, gshut, IPv4: setting instances up...
@@ -1819,7 +1830,7 @@ Live test, OpenBGPD 6.2, gshut, IPv6: dumping routes...
 Live test, OpenBGPD 6.2, gshut, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 10 tests in 64.613s
+Ran 10 tests in 60.214s
 
 OK
 Live test, OpenBGPD 6.2, max-prefix, IPv4: setting instances up...
@@ -1842,7 +1853,7 @@ Live test, OpenBGPD 6.2, max-prefix, IPv6: dumping routes...
 Live test, OpenBGPD 6.2, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 10 tests in 242.716s
+Ran 10 tests in 229.714s
 
 OK
 Live test, OpenBGPD 6.2, path hiding, mitigation off, IPv4: setting instances up...
@@ -1899,7 +1910,7 @@ Live test, OpenBGPD 6.2, path hiding, mitigation on, IPv6: dumping routes...
 Live test, OpenBGPD 6.2, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 36 tests in 189.643s
+Ran 36 tests in 181.642s
 
 OK (SKIP=4)
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: setting instances up...
@@ -2086,6 +2097,6 @@ Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: dumping routes...
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 166 tests in 187.284s
+Ran 166 tests in 178.923s
 
 OK

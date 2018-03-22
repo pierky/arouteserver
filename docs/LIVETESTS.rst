@@ -32,7 +32,7 @@ Setting up the environment to run live tests
 
      docker network create --ipv6 --subnet=192.0.2.0/24 --subnet=2001:db8:1:1::/64 arouteserver
 
-3. Route server client instances used in live tests are based on BIRD 1.6.3, as well as the BIRD-based version of the route server used in built-in live tests; the ``pierky/bird:1.6.3`` image is expected to be found on the local Docker repository.
+3. Route server client instances used in live tests are based on BIRD 1.6.4, as well as the BIRD-based version of the route server used in built-in live tests; the ``pierky/bird:1.6.4`` image is expected to be found on the local Docker repository.
    Build the Docker image (or pull it from `Dockerhub <https://hub.docker.com/r/pierky/bird/>`_):
 
    .. code:: bash
@@ -41,11 +41,11 @@ Setting up the environment to run live tests
       # from https://github.com/pierky/dockerfiles
       mkdir ~/dockerfiles
       cd ~/dockerfiles
-      curl -o Dockerfile.bird -L https://raw.githubusercontent.com/pierky/dockerfiles/master/bird/1.6.3/Dockerfile
-      docker build -t pierky/bird:1.6.3 -f Dockerfile.bird .
+      curl -o Dockerfile.bird -L https://raw.githubusercontent.com/pierky/dockerfiles/master/bird/1.6.4/Dockerfile
+      docker build -t pierky/bird:1.6.4 -f Dockerfile.bird .
 
       # or pull it from Dockerhub
-      docker pull pierky/bird:1.6.3
+      docker pull pierky/bird:1.6.4
 
 If there is no plan to run tests on the OpenBGPD-based version of the route server, no further settings are needed.
 To run tests on the OpenBGPD-based version too, the following steps must be done as well.
@@ -110,7 +110,12 @@ OpenBGPD live-tests environment
 
    The SSH username and key file path can be changed by setting the ``SSH_USERNAME`` and ``SSH_KEY_PATH`` environment variables before running the tests.
 
-   Be sure the ``bgpd`` daemon and the ``bgpctl`` tool can be executed correctly on the OpenBSD VM: ``chmod 0555 /var/www/bin/bgpctl``.
+   Be sure that the ``bgpd`` daemon will startup automatically at boot and that the ``bgpctl`` tool can be executed correctly on the OpenBSD VM:
+
+   .. code:: bash
+
+      echo "bgpd_flags=" >> /etc/rc.conf.local
+      chmod 0555 /var/www/bin/bgpctl
 
 How to run built-in live tests
 ------------------------------

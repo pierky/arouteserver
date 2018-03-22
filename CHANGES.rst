@@ -10,6 +10,8 @@ next release
 
   Related: `issue #21 on GitHub <https://github.com/pierky/arouteserver/issues/21>`_.
 
+- New: BIRD 1.6.4 tested.
+
 v0.17.3
 -------
 

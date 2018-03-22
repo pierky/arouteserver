@@ -4,7 +4,7 @@ set -e
 
 THESE_TESTS_ONLY="build load"
 THESE_IXP_IDS_ONLY="ams_ix bcix bix gr_ix inex lonap six sthix swissix"
-THESE_DAEMONS_ONLY="bird163 openbgpd62 openbgpd60"
+THESE_DAEMONS_ONLY="bird164 openbgpd62 openbgpd60"
 JOIN_ONLY=0
 DESTROY_VULTR_SERVER_ON_EXIT=0
 DESTROY_VULTR_SERVER_ONLY=0
@@ -101,7 +101,7 @@ function join_result() {
 
 	echo "Joining ${1}..."
 
-	for ext in .build.bird163 .build.openbgpd60 .build.openbgpd62 .load.bird163 .load.openbgpd60 .load.openbgpd62; do
+	for ext in .build.bird164 .build.openbgpd60 .build.openbgpd62 .load.bird164 .load.openbgpd60 .load.openbgpd62; do
 		result_file="${1}${ext}"
 		if [ ! -e $LAST_RESULTS_DIR/$result_file ]; then
 			echo "ERROR: $result_file missing"
