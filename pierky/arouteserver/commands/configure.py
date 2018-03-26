@@ -104,7 +104,7 @@ class ConfigureCommand(ARouteServerCommand):
         res = []
         for s in v.split(","):
             try:
-                prefix = IPNetwork(s)
+                prefix = IPNetwork(s.strip())
                 res.append("{}/{}".format(prefix.ip, prefix.prefixlen))
             except:
                 print("Invalid input: a list of IP prefixes is expected. "
