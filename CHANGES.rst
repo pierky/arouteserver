@@ -6,9 +6,11 @@ Change log
 next release
 ------------
 
-- Improvement: transit-free ASNs filters are applied to sessions toward transit-free peer also.
+- Improvement: transit-free ASNs filters are applied also to sessions toward transit-free peers.
 
   Related: `issue #21 on GitHub <https://github.com/pierky/arouteserver/issues/21>`_.
+
+- Fix (minor): better handling of user answers in ``configure`` and ``setup`` commands.
 
 - New: BIRD 1.6.4 tested.
 
