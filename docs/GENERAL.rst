@@ -825,7 +825,7 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
 
 
   Please note that this method is far from guaranteeing
-  that a cryptographically validated datased is retrieved
+  that a cryptographically validated dataset is retrieved
   from a trusted cache, unless the URL of a local, trusted
   instance of RPKI Validator is provided below in the
   **ripe_rpki_validator_url** option.
