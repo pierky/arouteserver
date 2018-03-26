@@ -420,7 +420,7 @@ class ConfigureCommand(ARouteServerCommand):
                     "proceed anyway?".format(dest),
                     default="no"
                 )
-                if yes_no != "yes":
+                if yes_no.lower() != "yes":
                     print("Aborted!")
                     return
 

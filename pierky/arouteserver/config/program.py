@@ -283,7 +283,7 @@ class ConfigParserProgram(object):
                     if not ret:
                         return False
 
-                    if yes_no == "yes":
+                    if yes_no.lower() == "yes":
                         self.cp_file(s, bak_path)
                         self.cp_file(s, d)
                         write_title()
@@ -631,7 +631,7 @@ class ConfigParserProgram(object):
                 res = True
                 yes_or_no = "yes"
 
-            if not res or yes_or_no != "yes":
+            if not res or yes_or_no.lower() != "yes":
                 self.v("")
                 self.v("Setup aborted: destination directory not confirmed")
                 return False
