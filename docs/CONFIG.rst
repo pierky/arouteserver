@@ -501,7 +501,7 @@ Caveats and limitations
 ***********************
 
 Not all features offered by ARouteServer are supported by both BIRD and OpenBGPD.
-The following list of limitations is based on the currently supported versions of BIRD (1.6.3 and 1.6.4) and OpenBGPD (OpenBSD 6.0, 6.1 and 6.2).
+The following list of limitations is based on the currently supported versions of BIRD (1.6.3 and 1.6.4) and OpenBGPD (OpenBSD 6.0 up to 6.3).
 
 - OpenBGPD
 

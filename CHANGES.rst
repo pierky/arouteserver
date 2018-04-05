@@ -12,7 +12,7 @@ next release
 
 - Fix (minor): better handling of user answers in ``configure`` and ``setup`` commands.
 
-- New: BIRD 1.6.4 tested.
+- New: BIRD 1.6.4 and OpenBGPD on OpenBSD 6.3 tested.
 
 v0.17.3
 -------

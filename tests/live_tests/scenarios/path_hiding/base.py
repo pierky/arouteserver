@@ -192,6 +192,11 @@ class PathHidingScenarioOpenBGPD62(PathHidingScenarioOpenBGPD):
 
     TARGET_VERSION = "6.2"
 
+class PathHidingScenarioOpenBGPD63(PathHidingScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.3"
+
 class PathHidingScenario_MitigationOn(object):
 
     CFG_GENERAL = "general_on.yml"
