@@ -155,7 +155,7 @@ EOF
 EXP_ERR="ERROR Compatibility issue ID 'large_communities'. The community 'do_not_announce_to_peer'"
 
 SUB_TEST="$LINENO"
-build_cmd "openbgpd" | must_contain "$EXP_ERR"
+build_cmd "openbgpd" | must_not_contain "$EXP_ERR"
 
 SUB_TEST="$LINENO"
 build_cmd "openbgpd" --target-version 6.0 | must_contain "$EXP_ERR"
@@ -179,7 +179,7 @@ EOF
 EXP_ERR="Compatibility issue ID 'blackhole_filtering_rewrite_ipv6_nh'. On OpenBSD < 6.1"
 
 SUB_TEST="$LINENO"
-build_cmd "openbgpd" | must_contain "$EXP_ERR"
+build_cmd "openbgpd" | must_not_contain "$EXP_ERR"
 
 SUB_TEST="$LINENO"
 build_cmd "openbgpd" --target-version 6.0 | must_contain "$EXP_ERR"
@@ -207,7 +207,7 @@ EOF
 EXP_ERR="'do_not_announce_to_peer' has been configured to be implemented using also the large community '999:0:peer_as';"
 
 SUB_TEST="$LINENO"
-build_cmd "openbgpd" | must_contain "$EXP_ERR"
+build_cmd "openbgpd" | must_not_contain "$EXP_ERR"
 
 SUB_TEST="$LINENO"
 build_cmd "openbgpd" --target-version 6.0 | must_contain "$EXP_ERR"

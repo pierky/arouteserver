@@ -97,7 +97,8 @@ class RichConfigExampleScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
             cls.DATA["rs_IPAddress"],
             [
                 (
-                    cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None),
+                    cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
+                                     target_version="6.0"),
                     "/etc/bgpd.conf"
                 )
             ]
