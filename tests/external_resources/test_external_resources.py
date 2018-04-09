@@ -21,9 +21,8 @@ import unittest
 from pierky.arouteserver.arin_db_dump import ARINWhoisDBDump
 from pierky.arouteserver.config.general import ConfigParserGeneral
 from pierky.arouteserver.irrdb import ASSet, RSet
-from pierky.arouteserver.ixf_db import IXFDB
 from pierky.arouteserver.last_version import LastVersion
-from pierky.arouteserver.peering_db import PeeringDBNet
+from pierky.arouteserver.peering_db import PeeringDBNet, PeeringDBIXList
 from pierky.arouteserver.ripe_rpki_cache import RIPE_RPKI_ROAs
 
 cache_dir = None
@@ -58,9 +57,10 @@ class TestExternalResources(unittest.TestCase):
         self.assertTrue(len(db_dump.whois_records) > 0)
 
     def test_ixf_db(self):
-        """External resources: IXF DB"""
-        db = IXFDB()
-        self.assertTrue(len(db.ixp_list) > 0)
+        """External resources: PeeringDB IX list"""
+        ixp_list = PeeringDBIXList()
+        ixp_list.load_data()
+        self.assertTrue(len(ixp_list.ixp_list) > 0)
 
     def test_last_version(self):
         """External resources: last version via PyPI"""

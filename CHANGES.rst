@@ -3,6 +3,21 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+This release **breaks backward compatibility** (OpenBGPD configs only): the default target version used to build OpenBGPD configurations (when the ``--target-version`` argument is not given) is now 6.2; previously it was 6.0. Use the ``--target-version 6.0`` command line argument to build 6.0 compatible configurations.
+
+- Improvement: transit-free ASNs filters are applied also to sessions toward transit-free peers.
+
+  Related: `issue #21 on GitHub <https://github.com/pierky/arouteserver/issues/21>`_.
+
+- Fix (minor): better handling of user answers in ``configure`` and ``setup`` commands.
+
+- Fix: ``clients-from-peeringdb``, list of IXPs retrieved from PeeringDB and no longer from IXFDB.
+
+- New: add support for BIRD 1.6.4 and OpenBGPD/OpenBSD 6.3.
+
 v0.17.3
 -------
 

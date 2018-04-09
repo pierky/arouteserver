@@ -29,7 +29,8 @@ from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, \
                                                       BIRDInstanceIPv6
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance, \
                                                           OpenBGPD61Instance, \
-                                                          OpenBGPD62Instance
+                                                          OpenBGPD62Instance, \
+                                                          OpenBGPD63Instance
 
 
 class LiveScenario(ARouteServerTestCase):
@@ -386,6 +387,8 @@ class LiveScenario(ARouteServerTestCase):
             tag = "openbgpd61"
         elif _class is OpenBGPD62Instance:
             tag = "openbgpd62"
+        elif _class is OpenBGPD63Instance:
+            tag = "openbgpd63"
         else:
             msg = "Unknown instance type: "
             if isinstance(instance_or_class, BGPSpeakerInstance):
@@ -833,7 +836,7 @@ class LiveScenario(ARouteServerTestCase):
             if inst_a.bgp_session_is_up(inst_b):
                 return
             time.sleep(1)
-        for _ in range(10):
+        for _ in range(20):
             if inst_a.bgp_session_is_up(inst_b, force_update=True):
                 return
             time.sleep(1)

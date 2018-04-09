@@ -188,6 +188,34 @@ class PeeringDBNetIXLan(PeeringDBInfo):
     def _get_peeringdb_url(self):
         return self.PEERINGDB_URL.format(ixlanid=self.ixlanid)
 
+class PeeringDBIXList(PeeringDBInfo):
+
+    PEERINGDB_URL = "https://peeringdb.com/api/ix"
+
+    def __init__(self, **kwargs):
+        PeeringDBInfo.__init__(self, **kwargs)
+
+        self.ixp_list = []
+
+    def load_data(self):
+        logging.debug("Getting the list of IXs from PeeringDB")
+
+        PeeringDBInfo.load_data(self)
+
+        for ixp in self.raw_data:
+            self.ixp_list.append({
+                "city": ixp["city"],
+                "country": ixp["country"],
+                "full_name": ixp["name_long"],
+                "short_name": ixp["name"],
+                "peeringdb_handle": ixp["id"]
+            })
+
+    def _get_object_filename(self):
+        return "peeringdb_ixlist.json"
+
+    def _get_peeringdb_url(self):
+        return self.PEERINGDB_URL
 
 def clients_from_peeringdb(netixlanid, cache_dir):
     clients = []
@@ -203,14 +231,14 @@ def clients_from_peeringdb(netixlanid, cache_dir):
             }
             for ipver in ("ipaddr4", "ipaddr6"):
                 if netixlan[ipver]:
-                    client["ip"].append(netixlan[ipver].encode("ascii", "ignore"))
+                    client["ip"].append(netixlan[ipver].encode("ascii", "ignore").decode("utf-8"))
             clients.append(client)
 
     asns = {}
 
     for client in clients:
         asn = client["asn"]
-        net = PeeringDBNet(asn)
+        net = PeeringDBNet(asn, cache_dir=cache_dir)
         net.load_data()
 
         if not net.irr_as_sets:
@@ -225,7 +253,7 @@ def clients_from_peeringdb(netixlanid, cache_dir):
         for irr_as_set in net.irr_as_sets:
             irr_as_set = irr_as_set.strip()
             if irr_as_set not in asns[key]["as_sets"]:
-                asns[key]["as_sets"].append(irr_as_set.encode("ascii", "ignore"))
+                asns[key]["as_sets"].append(irr_as_set.encode("ascii", "ignore").decode("utf-8"))
 
     data = {
         "asns": asns,

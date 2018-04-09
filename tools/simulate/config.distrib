@@ -83,7 +83,7 @@ docker_network_ipv6=
 
 # Docker images used for the clients and for the BIRD route server.
 #docker_exabgp_image="pierky/exabgp:3.4.19"
-#docker_bird_image="pierky/bird:1.6.3"
+#docker_bird_image="pierky/bird:1.6.4"
 
 # ---------------------------
 # Layout options

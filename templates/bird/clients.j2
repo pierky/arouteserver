@@ -214,13 +214,14 @@ filter receive_from_{{ client.id }} {
 		{{ reject(client, 7, '"AS_PATH [", bgp_path ,"] contains invalid ASN - REJECTING ", net') }}
 	{% endif %}
 
-	{% if cfg.filtering.transit_free.action %}
+	{% set client_transit_free_asns = cfg.filtering.transit_free.asns|select("ne", client.asn) %}
+	{% if cfg.filtering.transit_free.action and client_transit_free_asns %}
 	# AS_PATH: transit-free ASNs
-	if as_path_contains_transit_free_asn() then
+	if bgp_path ~ [{{ client_transit_free_asns|sort|join(", ")}}] then
 	{%	if cfg.filtering.transit_free.action == "reject" %}
 		{{ reject(client, 8, '"AS_PATH [", bgp_path ,"] contains transit-free ASN - REJECTING ", net') }}
 	{%	else %}
-		print "AS_PATH [", bgp_path ,"] contains transit-free ASN - REJECTING ", net;
+		print "AS_PATH [", bgp_path ,"] contains transit-free ASN - WARNING ", net;
 	{%	endif %}
 	{% endif %}
 

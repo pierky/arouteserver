@@ -63,7 +63,7 @@ class Ask(object):
 
         answer = answer.strip()
         if answer:
-            if options and answer not in options:
+            if options and answer.lower() not in [_.lower() for _ in options]:
                 print("Invalid choice: {} - must be one of {}.".format(
                     answer, ", ".join(options)))
                 return False, None

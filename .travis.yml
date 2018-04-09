@@ -28,12 +28,12 @@ jobs:
       python: "2.7"
       install:
         - pip install tox
-        - docker pull pierky/bird:1.6.3
+        - docker pull pierky/bird:1.6.4
     - env: TOXENV=py34
       python: "3.4"
       install:
         - pip install tox
-        - docker pull pierky/bird:1.6.3
+        - docker pull pierky/bird:1.6.4
     - env: TOXENV=py27-coverage
       python: "2.7"
       install:

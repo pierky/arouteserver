@@ -313,6 +313,14 @@ class BasicScenario(LiveScenario):
                            next_hop=self.AS1_1, filtered=True, reject_reason=8)
         self.log_contains(self.rs, "AS_PATH [(path 1 101 174)] contains transit-free ASN - REJECTING " + self.DATA["AS101_transitfree_1"])
 
+    def test_040_bad_prefixes_received_by_rs_transitfree_as_path_transit_peer(self):
+        """{}: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer"""
+
+        self.receive_route(self.rs, self.DATA["AS3_transitfree_2"],
+                           self.AS3, as_path="3 174 33",
+                           next_hop=self.AS3, filtered=True, reject_reason=8)
+        self.log_contains(self.rs, "AS_PATH [(path 3 174 33)] contains transit-free ASN - REJECTING " + self.DATA["AS3_transitfree_2"])
+
     def test_040_bad_prefixes_received_by_rs_aspath_len(self):
         """{}: bad prefixes received by rs: AS_PATH len"""
 
@@ -1130,3 +1138,8 @@ class BasicScenarioOpenBGPD62(BasicScenarioOpenBGPD):
     __test__ = False
 
     TARGET_VERSION = "6.2"
+
+class BasicScenarioOpenBGPD63(BasicScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.3"

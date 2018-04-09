@@ -144,6 +144,8 @@ class TestRealConfigs(ARouteServerTestCase):
                 inst_class = OpenBGPD60Instance
             elif target_ver == "6.2":
                 inst_class = OpenBGPD62Instance
+            elif target_ver == "6.3":
+                inst_class = OpenBGPD63Instance
             else:
                 raise ValueError("Unknown target_ver: {}".format(target_ver))
 
@@ -184,13 +186,13 @@ class TestRealConfigs_BIRD(TestRealConfigs):
 
     REMOTE_IP_NEEDED = False
 
-    def test_bird163_4_010_build(self):
+    def test_bird164_4_010_build(self):
         """BIRD, IPv4, build"""
         if self.IP_VER and self.IP_VER != 4:
             self.skipTest("IPv{} only".format(self.IP_VER))
         self.build_config("bird", None, 4)
 
-    def test_bird163_4_020_load(self):
+    def test_bird164_4_020_load(self):
         """BIRD, IPv4, load"""
         if self.IP_VER and self.IP_VER != 4:
             self.skipTest("IPv{} only".format(self.IP_VER))
@@ -198,13 +200,13 @@ class TestRealConfigs_BIRD(TestRealConfigs):
             self.skipTest("Build only")
         self.load_config("bird", None, 4)
 
-    def test_bird163_6_010_build(self):
+    def test_bird164_6_010_build(self):
         """BIRD, IPv6, build"""
         if self.IP_VER and self.IP_VER != 6:
             self.skipTest("IPv{} only".format(self.IP_VER))
         self.build_config("bird", None, 6)
 
-    def test_bird163_6_020_load(self):
+    def test_bird164_6_020_load(self):
         """BIRD, IPv6, load"""
         if self.IP_VER and self.IP_VER != 6:
             self.skipTest("IPv{} only".format(self.IP_VER))
@@ -228,18 +230,18 @@ class TestRealConfigs_OpenBGPD60(TestRealConfigs):
             self.skipTest("Build only")
         self.load_config("openbgpd", "6.0", None)
 
-class TestRealConfigs_OpenBGPD62(TestRealConfigs):
+class TestRealConfigs_OpenBGPD63(TestRealConfigs):
     __test__ = False
 
     REMOTE_IP_NEEDED = False
 
-    def test_openbgpd62_any_010_build(self):
-        """OpenBGPD 6.2, build"""
-        self.build_config("openbgpd", "6.2", None)
+    def test_openbgpd63_any_010_build(self):
+        """OpenBGPD 6.3, build"""
+        self.build_config("openbgpd", "6.3", None)
 
     @unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
-    def test_openbgpd62_any_020_load(self):
-        """OpenBGPD 6.2, load"""
+    def test_openbgpd63_any_020_load(self):
+        """OpenBGPD 6.3, load"""
         if "BUILD_ONLY" in os.environ:
             self.skipTest("Build only")
-        self.load_config("openbgpd", "6.2", None)
+        self.load_config("openbgpd", "6.3", None)

@@ -80,7 +80,7 @@ class InitScenarioCommand(ARouteServerCommand):
 
         print("")
 
-        if not res or yes_or_no != "yes":
+        if not res or yes_or_no.lower() != "yes":
             print("Aborted.")
             return False
 

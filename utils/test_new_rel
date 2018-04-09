@@ -104,7 +104,7 @@ function run() {
 	echo
 
 	echo "Testing OpenBGPD..."
-	arouteserver openbgpd --cfg $CFG_FILE -o /dev/null --ignore-issues path_hiding extended_communities --target-version 6.2
+	arouteserver openbgpd --cfg $CFG_FILE -o /dev/null --ignore-issues path_hiding extended_communities --target-version 6.3
 	echo
 	echo
 

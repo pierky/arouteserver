@@ -679,8 +679,8 @@ class BIRDConfigBuilder(ConfigBuilder):
              "scrub_communities_in", "scrub_communities_out",
              "apply_blackhole_filtering_policy"]
 
-    AVAILABLE_VERSION = ["1.6.3"]
-    DEFAULT_VERSION = "1.6.3"
+    AVAILABLE_VERSION = ["1.6.3", "1.6.4"]
+    DEFAULT_VERSION = "1.6.4"
 
     def validate_bgpspeaker_specific_configuration(self):
         if self.ip_ver is None:
@@ -731,8 +731,8 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                        "footer"]
     LOCAL_FILES_BASE_DIR = "/etc/bgpd"
 
-    AVAILABLE_VERSION = ["6.0", "6.1", "6.2"]
-    DEFAULT_VERSION = "6.0"
+    AVAILABLE_VERSION = ["6.0", "6.1", "6.2", "6.3"]
+    DEFAULT_VERSION = "6.2"
 
     IGNORABLE_ISSUES = ["path_hiding", "transit_free_action",
                         "add_path", "max_prefix_action",
@@ -812,7 +812,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                 res = False
 
         if self.cfg_general["blackhole_filtering"]["policy_ipv6"] == "rewrite-next-hop" and \
-            version.parse(self.target_version or "6.0") < version.parse("6.1"):
+            version.parse(self.target_version) < version.parse("6.1"):
             if not self.process_bgpspeaker_specific_compatibility_issue(
                 "blackhole_filtering_rewrite_ipv6_nh",
                 "On OpenBSD < 6.1 there is an issue related to next-hop rewriting "
@@ -857,7 +857,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                               "(--target-version command line argument).")
 
         if only_large_comms and \
-            version.parse(self.target_version or "6.0") < version.parse("6.1"):
+            version.parse(self.target_version) < version.parse("6.1"):
             comms = only_large_comms
             if not self.process_bgpspeaker_specific_compatibility_issue(
                 "large_communities",
@@ -880,7 +880,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                 res = False
 
         if large_comms_used and \
-            version.parse(self.target_version or "6.0") < version.parse("6.1"):
+            version.parse(self.target_version) < version.parse("6.1"):
             comms = large_comms_used
             if not self.process_bgpspeaker_specific_compatibility_issue(
                 "large_communities",
@@ -937,7 +937,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
 
         if (self.cfg_general["graceful_shutdown"]["enabled"] or \
             self.perform_graceful_shutdown) and \
-            version.parse(self.target_version or "6.0") <= version.parse("6.1"):
+            version.parse(self.target_version) <= version.parse("6.1"):
             if not self.process_bgpspeaker_specific_compatibility_issue(
                 "graceful_shutdown",
                 "GRACEFUL_SHUTDOWN BGP community is not implemented "
@@ -1014,7 +1014,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                 return False
             # OpenBGPD <= 6.0 does not implement large BGP communities,
             # so only standard and extended ones are considered.
-            if version.parse(self.target_version or "6.0") < version.parse("6.1"):
+            if version.parse(self.target_version) < version.parse("6.1"):
                 if not comm["std"] and not comm["ext"]:
                     return False
             else:
