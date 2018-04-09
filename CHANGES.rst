@@ -14,6 +14,8 @@ This release **breaks backward compatibility** (OpenBGPD configs only): the defa
 
 - Fix (minor): better handling of user answers in ``configure`` and ``setup`` commands.
 
+- Fix: ``clients-from-peeringdb``, list of IXPs retrieved from PeeringDB and no longer from IXFDB.
+
 - New: add support for BIRD 1.6.4 and OpenBGPD/OpenBSD 6.3.
 
 v0.17.3

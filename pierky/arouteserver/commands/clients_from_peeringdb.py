@@ -20,8 +20,7 @@ import yaml
 from ..ask import Ask
 from .base import ARouteServerCommand
 from ..config.program import program_config
-from ..ixf_db import IXFDB
-from ..peering_db import clients_from_peeringdb
+from ..peering_db import PeeringDBIXList, clients_from_peeringdb
 
 class ClientsFromPeeringDBCommand(ARouteServerCommand):
 
@@ -50,8 +49,12 @@ class ClientsFromPeeringDBCommand(ARouteServerCommand):
                  "will be used to show a list of IXPs.")
 
     def get_netixlanid(self):
-        sys.stdout.write("Loading IX-F database... ")
-        ixf_db = IXFDB()
+        sys.stdout.write("Loading list of IXs... ")
+        ix_list = PeeringDBIXList(
+            cache_dir=program_config.get_dir("cache_dir"),
+            cache_expiry=program_config.get("cache_expiry")
+        )
+        ix_list.load_data()
         sys.stdout.write("OK\n")
 
         print("")
@@ -66,7 +69,7 @@ class ClientsFromPeeringDBCommand(ARouteServerCommand):
         print("{:>7}  {}".format("ID", "IXP description"))
 
         found = False
-        for ixp in ixf_db.ixp_list:
+        for ixp in ix_list.ixp_list:
             if text in ixp["city"].lower() or \
                 text in ixp["country"].lower() or \
                 text in ixp["full_name"].lower() or \
@@ -76,10 +79,10 @@ class ClientsFromPeeringDBCommand(ARouteServerCommand):
 
                 print("{:>7}  {}, {}, {} ({})".format(
                     ixp["peeringdb_handle"],
-                    ixp["country"].encode("ascii", "replace"),
-                    ixp["city"].encode("ascii", "replace"),
-                    ixp["full_name"].encode("ascii", "replace"),
-                    ixp["short_name"].encode("ascii", "replace")
+                    ixp["country"].encode("ascii", "replace").decode("utf-8"),
+                    ixp["city"].encode("ascii", "replace").decode("utf-8"),
+                    ixp["full_name"].encode("ascii", "replace").decode("utf-8"),
+                    ixp["short_name"].encode("ascii", "replace").decode("utf-8")
                 ))
 
         if not found:
