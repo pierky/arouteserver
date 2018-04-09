@@ -836,7 +836,7 @@ class LiveScenario(ARouteServerTestCase):
             if inst_a.bgp_session_is_up(inst_b):
                 return
             time.sleep(1)
-        for _ in range(10):
+        for _ in range(20):
             if inst_a.bgp_session_is_up(inst_b, force_update=True):
                 return
             time.sleep(1)
