@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,13 +16,10 @@
 import logging
 import json
 import re
-try:
-    # For Python 3.0 and later
-    from urllib.request import urlopen
-except ImportError:
-    # Fall back to Python 2's urllib2
-    from urllib2 import urlopen
+import six
+from six.moves.urllib.request import urlopen
 
+from .peering_db import PeeringDBNet, PeeringDBNoInfoError
 from .errors import EuroIXError, EuroIXSchemaError
 
 class EuroIXMemberList(object):
@@ -39,15 +36,17 @@ class EuroIXMemberList(object):
         ("city", "city"),
         ("country", "country")
     ]
+    INFO_FROM_PEERINGDB = ["as-set", "max-prefix"]
 
-    def __init__(self, input_object):
+    def __init__(self, input_object, cache_dir, cache_expiry):
+        self.cache_dir = cache_dir
+        self.cache_expiry = cache_expiry
+
         self.raw_data = None
 
         if isinstance(input_object, dict):
             self.raw_data = input_object
-        elif isinstance(input_object, file):
-            raw = input_object.read()
-        else:
+        elif isinstance(input_object, six.string_types):
             try:
                 response = urlopen(input_object)
                 raw = response.read().decode("utf-8")
@@ -58,6 +57,8 @@ class EuroIXMemberList(object):
                         input_object, str(e)
                     )
                 )
+        else:
+            raw = input_object.read().decode("utf-8")
 
         if not self.raw_data:
             try:
@@ -75,13 +76,13 @@ class EuroIXMemberList(object):
     @staticmethod
     def _check_type(v, vname, expected_type):
         if expected_type is str:
-            expected_type_set = (str, unicode)
+            expected_type_set = six.string_types
         else:
             expected_type_set = expected_type
 
         if not isinstance(v, expected_type_set):
             if expected_type is int and \
-                isinstance(v, (str, unicode)) and \
+                isinstance(v, six.string_types) and \
                 v.isdigit():
                 return int(v)
 
@@ -105,6 +106,24 @@ class EuroIXMemberList(object):
             val = EuroIXMemberList._check_type(val, key, expected_type)
         return val
 
+    @staticmethod
+    def mk_parents_and_set(d, p, v=None):
+        if v is not None:
+            parents = p.split(".")[:-1]
+            val_key = p.split(".")[-1]
+        else:
+            parents = p.split(".")
+            val_key = None
+
+        last = d
+        for key in parents:
+            if key not in last:
+                last[key] = {}
+            last = last[key]
+
+        if val_key:
+            last[val_key] = v
+
     def check_schema_version(self):
         data = self.raw_data
 
@@ -120,13 +139,15 @@ class EuroIXMemberList(object):
 
     def get_clients(self, ixp_id, vlan_id=None,
                     routeserver_only=False,
-                    guess_custom_bgp_communities=[]):
+                    guess_custom_bgp_communities=[],
+                    merge_from_peeringdb=[]):
 
         def new_client(asn, description):
             client = {}
             client["asn"] = asn
             if description:
                 client["description"] = description.encode("ascii", "replace")
+                client["description"] = client["description"].strip().decode("utf-8")
             return client
 
         def get_descr(member, connection=None):
@@ -162,8 +183,7 @@ class EuroIXMemberList(object):
                 return "unknown"
 
         def normalize_bgp_community(s):
-            res = s
-            res = res.encode("ascii", "ignore")
+            res = s.decode("utf-8")
             res = res.lower()
             res = re.sub("[\\/\[ \]+-]", "_", res)
             res = re.sub("[^0-9a-zA-Z_]", "", res)
@@ -172,11 +192,7 @@ class EuroIXMemberList(object):
         def attach_custom_bgp_community(client, prefix, name):
             community_tag = normalize_bgp_community(name)
 
-            if "cfg" not in client:
-                client["cfg"] = {}
-
-            if "attach_custom_communities" not in client["cfg"]:
-                client["cfg"]["attach_custom_communities"] = []
+            self.mk_parents_and_set(client, "cfg.attach_custom_communities", [])
 
             if community_tag not in client["cfg"]["attach_custom_communities"]:
                 client["cfg"]["attach_custom_communities"].append(
@@ -197,20 +213,70 @@ class EuroIXMemberList(object):
                     return
 
                 if not str(switch_id) in self.switches:
-                    print("D")
                     return
 
                 switch_info = self.switches[str(switch_id)]
 
                 for attribute, prefix in self.EUROIX_SWITCH_ATTRIBUTES_COMMUNITIES_MAP:
-                    if not prefix in guess_custom_bgp_communities:
+                    if prefix not in guess_custom_bgp_communities:
                         continue
-                    if not attribute in switch_info:
+                    if attribute not in switch_info:
                         continue
                     attribute_val = switch_info[attribute]
 
                     for client in clients:
                         attach_custom_bgp_community(client, prefix, attribute_val)
+
+        def enrich_with_peeringdb_info(clients):
+            if not merge_from_peeringdb:
+                return
+
+            for client in clients:
+                fetch_from_pdb = []
+                if "as-set" in merge_from_peeringdb:
+                    try:
+                        if not client["cfg"]["filtering"]["irrdb"]["as_sets"]:
+                            raise KeyError()
+                    except KeyError:
+                        fetch_from_pdb.append("as-set")
+
+                if "max-prefix" in merge_from_peeringdb:
+                    for ip_ver in [4, 6]:
+                        try:
+                            if not client["cfg"]["filtering"]["max_prefix"]["limit_ipv{}".format(ip_ver)]:
+                                raise KeyError()
+                        except KeyError:
+                            fetch_from_pdb.append("max-prefix{}".format(ip_ver))
+
+                if fetch_from_pdb:
+                    try:
+                        pdb_net = PeeringDBNet(client["asn"],
+                                               cache_dir=self.cache_dir,
+                                               cache_expiry=self.cache_expiry)
+                        pdb_net.load_data()
+                    except PeeringDBNoInfoError:
+                        continue
+
+                    as_sets = pdb_net.irr_as_sets
+                    if as_sets and "as-set" in fetch_from_pdb:
+                        self.mk_parents_and_set(
+                            client,
+                            "cfg.filtering.irrdb.as_sets",
+                            as_sets
+                        )
+
+                    for ip_ver in [4, 6]:
+                        if ip_ver == 4:
+                            max_prefix = pdb_net.info_prefixes4
+                        else:
+                            max_prefix = pdb_net.info_prefixes6
+
+                        if max_prefix and "max-prefix{}".format(ip_ver) in fetch_from_pdb:
+                            self.mk_parents_and_set(
+                                client,
+                                "cfg.filtering.max_prefix.limit_ipv{}".format(ip_ver),
+                                max_prefix
+                            )
 
         def process_member(member):
             if self._get_item("member_type", member, str, True) == "routeserver":
@@ -226,7 +292,17 @@ class EuroIXMemberList(object):
                     if new_clients:
                         enrich_with_custom_bgp_communities(new_clients,
                                                            connection)
-                        clients.extend(new_clients)
+
+                        enrich_with_peeringdb_info(new_clients)
+
+                        for new_client in new_clients:
+                            duplicate_found = False
+                            for existing_client in clients:
+                                if new_client == existing_client:
+                                    duplicate_found = True
+                                    break
+                            if not duplicate_found:
+                                clients.append(new_client)
                 except EuroIXError as e:
                     if str(e):
                         logging.error(
@@ -295,18 +371,16 @@ class EuroIXMemberList(object):
                     as_macro = self._get_item("as_macro", ip_info, str, True)
                     max_prefix = self._get_item("max_prefix", ip_info, int, True)
 
-                    if as_macro or max_prefix:
-                        client["cfg"] = {
-                            "filtering": {}
-                        }
                     if as_macro:
-                        client["cfg"]["filtering"]["irrdb"] = {
-                            "as_sets": [as_macro]
-                        }
+                        self.mk_parents_and_set(
+                            client, "cfg.filtering.irrdb.as_sets", [as_macro]
+                        )
                     if max_prefix:
-                        client["cfg"]["filtering"]["max_prefix"] = {
-                            "limit_ipv{}".format(ip_ver): max_prefix
-                        }
+                        self.mk_parents_and_set(
+                            client,
+                            "cfg.filtering.max_prefix.limit_ipv{}".format(ip_ver),
+                            max_prefix
+                        )
                     if guess_custom_bgp_communities and \
                         "member_type" in guess_custom_bgp_communities:
                         if member_type:
@@ -321,7 +395,7 @@ class EuroIXMemberList(object):
 
                     clients.append(client)
 
-                return clients
+            return clients
 
         def get_custom_bgp_comms_data(ixp):
             raw_switches = self._get_item("switch", ixp, list, True)
@@ -468,4 +542,3 @@ class EuroIXMemberList(object):
                     s = "VLAN " + s
 
                 out_file.write(" - " + s + "\n")
-

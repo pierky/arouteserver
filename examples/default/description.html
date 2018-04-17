@@ -76,17 +76,22 @@ Origin ASN validity is
 <strong>enforced</strong>. Routes whose prefix is not part of the client's AS-SET are rejected.
 </p></li>
 
+
+
 </ul>
 
 
 
-<h3>RPKI validation</h3>
+<h3>RPKI BGP Prefix Origin Validation</h3>
 
 <ul>
 
-<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI validation</a> of routes received by the route server is <strong>disabled</strong>.</p></li>
+<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI BGP Prefix Origin Validation</a> of routes received by the route server is <strong>disabled</strong>.</p></li>
 
 </ul>
+
+
+
 
 
 
@@ -114,7 +119,14 @@ Origin ASN validity is
 
 
 
+
+
+
 <h2>Announcement control via BGP communities</h2>
+
+<ul>
+<li><p>Routes tagged with the <b>NO_EXPORT</b> or <b>NO_ADVERTISE</b> communities received by the route server are propagated to other clients with those communities unaltered.</p></li>
+</ul>
 
 <table class="table table-striped">
   <thead>
@@ -129,10 +141,15 @@ Origin ASN validity is
   
   
   
+  
+  
+  
+  
 
   
   
   
+
 
   
   
@@ -145,6 +162,7 @@ Origin ASN validity is
 
   </tbody>
 </table>
+
 
 
 </div>

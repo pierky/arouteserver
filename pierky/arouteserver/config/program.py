@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -11,7 +11,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  Ifnot, see <http://www.gnu.org/licenses/>.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from copy import deepcopy
 import difflib
@@ -19,15 +19,17 @@ import hashlib
 import filecmp
 import logging
 import os
+import six
 import sys
 import textwrap
 import yaml
 
-from ..ask import ask, ask_yes_no
-from ..irrdb import IRRDBTools
+from ..ask import Ask
+from ..irrdb import IRRDBInfo
 from ..cached_objects import CachedObject
 from ..resources import get_config_dir, get_templates_dir
-from ..errors import ConfigError, ARouteServerError, MissingFileError
+from ..errors import ConfigError, ARouteServerError, MissingFileError, \
+                     ProgramConfigError
 
 
 class ConfigParserProgram(object):
@@ -56,39 +58,63 @@ class ConfigParserProgram(object):
         "cache_expiry": CachedObject.DEFAULT_EXPIRY,
 
         "bgpq3_path": "bgpq3",
-        "bgpq3_host": IRRDBTools.BGPQ3_DEFAULT_HOST,
-        "bgpq3_sources": IRRDBTools.BGPQ3_DEFAULT_SOURCES,
+        "bgpq3_host": IRRDBInfo.BGPQ3_DEFAULT_HOST,
+        "bgpq3_sources": IRRDBInfo.BGPQ3_DEFAULT_SOURCES,
+
+        "rtt_getter_path": "",
 
         "threads": 4,
+
+        "check_new_release": True
     }
 
     PATH_KEYS = ("logging_config_file", "cfg_general", "cfg_clients",
-                 "cfg_bogons", "templates_dir", "cache_dir")
+                 "cfg_bogons", "templates_dir", "cache_dir", "rtt_getter_path")
 
     FINGERPRINTS_FILENAME = "fingerprints.yml"
 
-    def __init__(self):
+    def v(self, text, new_line=True):
+        if self.verbose:
+            sys.stdout.write("{}{}".format(
+                text, "\n" if new_line else ""
+            ))
+
+    def __init__(self, verbose=True, ask=True):
         self._reset_to_default()
+        self.verbose = verbose
+        self.ask = ask
 
     def _reset_to_default(self):
         self.cfg = deepcopy(self.DEFAULT)
 
-    def load(self, path):
+    def load(self, path_or_file):
         self._reset_to_default()
 
-        if not os.path.exists(path):
-            raise MissingFileError(path)
+        if isinstance(path_or_file, six.string_types):
+            path = path_or_file
+
+            if path and not os.path.exists(os.path.expanduser(path)):
+                raise MissingFileError(path)
+
+            f = None
+        else:
+            path = "<file> object"
+            f = path_or_file
 
         try:
-            with open(path, "r") as f:
+            if f:
                 cfg_from_file = yaml.safe_load(f.read())
-                if cfg_from_file:
-                    for key in cfg_from_file:
-                        if key not in ConfigParserProgram.DEFAULT:
-                            raise ConfigError(
-                                "Unknown statement: {}".format(key)
-                            )
-                    self.cfg.update(cfg_from_file)
+            else:
+                with open(os.path.expanduser(path), "r") as f:
+                    cfg_from_file = yaml.safe_load(f.read())
+
+            if cfg_from_file:
+                for key in cfg_from_file:
+                    if key not in ConfigParserProgram.DEFAULT:
+                        raise ConfigError(
+                            "Unknown statement: {}".format(key)
+                        )
+                self.cfg.update(cfg_from_file)
 
         except Exception as e:
             logging.error("An error occurred while reading program "
@@ -99,10 +125,12 @@ class ConfigParserProgram(object):
         if self.cfg["cfg_dir"]:
             self.cfg["cfg_dir"] = os.path.expanduser(self.cfg["cfg_dir"])
         else:
-            self.cfg["cfg_dir"] = os.path.dirname(path)
+            self.cfg["cfg_dir"] = os.path.dirname(os.path.expanduser(path))
 
         # relative path -> absolute path
         for cfg_key in self.PATH_KEYS:
+            if not self.cfg[cfg_key]:
+                continue
             val = os.path.expanduser(self.cfg[cfg_key])
             if not os.path.isabs(val):
                 self.cfg[cfg_key] = os.path.join(self.cfg["cfg_dir"], val)
@@ -122,22 +150,50 @@ class ConfigParserProgram(object):
                 self.cfg[option_name] = args_dict[option_name]
 
     def get(self, cfg_key):
-        return self.expanduser(cfg_key)
+        if self.cfg[cfg_key]:
+            return self.expanduser(cfg_key)
+        return None
 
-    @staticmethod
-    def mk_dir(d):
-        sys.stdout.write("Creating {}... ".format(d))
+    def get_dir(self, cfg_key):
+        v = self.get(cfg_key)
+        if not v:
+            raise ProgramConfigError(
+                "The value of '{}' is missing.".format(cfg_key)
+            )
+        if not os.path.exists(v):
+            raise ProgramConfigError(
+                "The path configured for '{}' ({}) does not exist.".format(
+                    cfg_key, v
+                )
+            )
+        if not os.path.isdir(v):
+            raise ProgramConfigError(
+                "The path configured for '{}' ({}) is not a directory.".format(
+                    cfg_key, v
+                )
+            )
+        return v
+
+    def mk_dir(self, d):
+        self.v("Creating {}... ".format(d), new_line=False)
         if os.path.exists(d):
-            print("already exists")
+            self.v("already exists")
         else:
             try:
                 os.makedirs(d)
-                print("OK")
+                self.v("OK")
             except OSError as e:
                 raise ARouteServerError(str(e))
 
-    @staticmethod
-    def cp_file(s, d):
+    def cp_file(self, s, d):
+        if os.path.abspath(s) == os.path.abspath(d):
+            return
+        # Avoid .swp files
+        if s.endswith(".swp"):
+            return
+
+        assert os.path.exists(s), "The {} file does not exist.".format(s)
+
         try:
             with open(s, "r") as src:
                 with open(d, "w") as dst:
@@ -145,34 +201,34 @@ class ConfigParserProgram(object):
         except (IOError, OSError) as e:
             raise ARouteServerError(str(e))
 
-    @staticmethod
-    def show_diff(s, d):
+    def show_diff(self, s, d):
         with open(s, "r") as f:
             fromlines = f.readlines()
         with open(d, "r") as f:
             tolines = f.readlines()
         diff = difflib.unified_diff(fromlines, tolines,
                                     "currently installed", "new")
-        print("")
+        self.v("")
         sys.stdout.writelines(diff)
-        print("")
+        self.v("")
 
-    @staticmethod
-    def process_file(s, d, fps_status=None, rel_path=None):
+    def process_file(self, s, d, fps_status=None, rel_path=None):
+        assert os.path.exists(s), "The {} file does not exist.".format(s)
+
         filename = os.path.basename(s)
 
         def write_title():
-            sys.stdout.write("- {}... ".format(filename))
+            self.v("- {}... ".format(filename), new_line=False)
 
         write_title()
 
         if not os.path.exists(d):
-            ConfigParserProgram.cp_file(s, d)
-            print("OK (created)")
+            self.cp_file(s, d)
+            self.v("OK (created)")
             return True
 
         if filecmp.cmp(s, d, shallow=False):
-            print("skipped (equal files)")
+            self.v("skipped (same content)")
             return True
 
         if fps_status:
@@ -180,84 +236,95 @@ class ConfigParserProgram(object):
                 fps_status, rel_path)
 
             if fps_status["new_file"]:
-                ConfigParserProgram.cp_file(s, d)
-                print("OK (created)")
+                self.cp_file(s, d)
+                self.v("OK (created)")
                 return True
 
             if fps_status["same_file"]:
-                print("skipped (equal files)")
+                self.v("skipped (same content)")
                 return True
 
             if fps_status["local_unknown"]:
-                print("WARNING!")
-                print("")
-                print(
+                self.v("WARNING!")
+                self.v("")
+                self.v(
                     "   " +
                     "\n   ".join(textwrap.wrap(status_descr, width=60))
                 )
-                print("")
+                self.v("")
                 write_title()
             else:
                 if fps_status["installed_version_mismatch"]:
                     if not fps_status["locally_edited"]:
-                        ConfigParserProgram.cp_file(s, d)
-                        print("OK (updated)")
+                        self.cp_file(s, d)
+                        self.v("OK (updated)")
                         return True
 
                 if fps_status["locally_edited"]:
-                    print("WARNING!")
-                    print("")
-                    print(
+                    self.v("WARNING!")
+                    self.v("")
+                    self.v(
                         "   " +
                         "\n   ".join(textwrap.wrap(status_descr, width=60))
                     )
-                    print("")
+                    self.v("")
                     bak_path = "{}.bak".format(d)
-                    ret, yes_no = ask_yes_no(
-                        "Do you want to create "
-                        "a backup copy into {}?".format(bak_path),
-                        default="yes"
-                    )
+
+                    if self.ask:
+                        ret, yes_no = Ask().ask_yes_no(
+                            "Do you want to create "
+                            "a backup copy into {}?".format(bak_path),
+                            default="yes"
+                        )
+                    else:
+                        ret = True
+                        yes_no = "yes"
 
                     if not ret:
                         return False
 
-                    if yes_no == "yes":
-                        ConfigParserProgram.cp_file(s, bak_path)
-                        ConfigParserProgram.cp_file(s, d)
+                    if yes_no.lower() == "yes":
+                        self.cp_file(s, bak_path)
+                        self.cp_file(s, d)
                         write_title()
-                        print("OK (backed up and updated)")
+                        self.v("OK (backed up and updated)")
                         return True
                     else:
                         write_title()
 
         while True:
-            ret, answer = ask(
-                "already exists: do you want to overwrite it?",
-                options=["yes", "no", "diff"],
-                default="no"
-            )
+            if self.ask:
+                ret, answer = Ask().ask(
+                    "already exists: do you want to overwrite it?",
+                    options=["yes", "no", "diff"],
+                    default="no"
+                )
+            else:
+                ret = True
+                answer = "yes"
 
             if not ret:
                 return False
 
             if answer == "diff":
-                ConfigParserProgram.show_diff(s, d)
+                self.show_diff(s, d)
                 write_title()
             else:
                 write_title()
 
                 if answer != "yes":
-                    print("skipped")
+                    self.v("skipped")
                     return True
 
-                ConfigParserProgram.cp_file(s, d)
-                print("OK")
+                self.cp_file(s, d)
+                self.v("OK")
                 return True
 
-    @staticmethod
-    def process_dir(s, d, fps_status=None, rel_path=None):
-        print("Populating {}...".format(d))
+    def process_dir(self, s, d, fps_status=None, rel_path=None):
+        assert os.path.exists(s) and os.path.isdir(s), \
+            "The {} directory does not exist.".format(s)
+
+        self.v("Populating {}...".format(d))
 
         for filename in os.listdir(s):
             if filename == ConfigParserProgram.FINGERPRINTS_FILENAME:
@@ -271,8 +338,8 @@ class ConfigParserProgram(object):
                 new_rel_path = os.path.join(rel_path, filename)
 
             if os.path.isdir(os.path.join(s, filename)):
-                ConfigParserProgram.mk_dir(os.path.join(d, filename))
-                if not ConfigParserProgram.process_dir(
+                self.mk_dir(os.path.join(d, filename))
+                if not self.process_dir(
                     os.path.join(s, filename),
                     os.path.join(d, filename),
                     fps_status=new_fps_status,
@@ -282,7 +349,7 @@ class ConfigParserProgram(object):
             else:
                 if new_fps_status:
                     new_fps_status = new_fps_status["status"]
-                if not ConfigParserProgram.process_file(
+                if not self.process_file(
                     os.path.join(s, filename),
                     os.path.join(d, filename),
                     fps_status=new_fps_status,
@@ -294,10 +361,14 @@ class ConfigParserProgram(object):
 
     @staticmethod
     def calculate_fingerprints(d):
+        assert os.path.exists(d) and os.path.isdir(d), \
+            "The {} directory does not exist.".format(d)
 
         def iterate_dir(d, dic):
             for filename in os.listdir(d):
                 if filename == ConfigParserProgram.FINGERPRINTS_FILENAME:
+                    continue
+                if filename.endswith(".swp"):
                     continue
                 path = os.path.join(d, filename)
                 if os.path.isdir(path):
@@ -316,13 +387,15 @@ class ConfigParserProgram(object):
 
     @staticmethod
     def load_fingerprints_from_file(path):
+        assert os.path.exists(path), "The {} file does not exist.".format(path)
+
         with open(path, "r") as f:
             return yaml.safe_load(f.read())
 
     def get_local_fingerprints(self):
         """Calculate fingerprints from local template files."""
 
-        templates_dir = self.get("templates_dir")
+        templates_dir = self.get_dir("templates_dir")
         return self.calculate_fingerprints(templates_dir)
 
     def get_local_distrib_fingerprints(self):
@@ -336,7 +409,7 @@ class ConfigParserProgram(object):
         been edited on the local system after the package installation.
         """
 
-        templates_dir = self.get("templates_dir")
+        templates_dir = self.get_dir("templates_dir")
         path = os.path.join(templates_dir, self.FINGERPRINTS_FILENAME)
         if os.path.exists(path):
             return self.load_fingerprints_from_file(path)
@@ -354,7 +427,12 @@ class ConfigParserProgram(object):
 
         distrib_templates_dir = get_templates_dir()
         path = os.path.join(distrib_templates_dir, self.FINGERPRINTS_FILENAME)
-        return self.load_fingerprints_from_file(path)
+        res = self.load_fingerprints_from_file(path)
+
+        assert res is not None and res != {}, \
+            "Empty fingerprints from {}.".format(path)
+
+        return res
 
     @staticmethod
     def get_fingerprints_status_descr(status, filename):
@@ -379,7 +457,7 @@ class ConfigParserProgram(object):
 
         if status["installed_version_mismatch"]:
             s = ("the installed version of {filename} is not aligned "
-                    "with the one used by the current version of the program")
+                 "with the one used by the current version of the program")
             if status["locally_edited"]:
                 s += ("; moreover, it seems that it has been edited "
                         "after the installation on the local system")
@@ -489,73 +567,83 @@ class ConfigParserProgram(object):
     def setup_templates(self):
         distrib_templates_dir = get_templates_dir()
 
+        # Using .get and not .get_dir because the dest dir may not exist.
         dest_dir = self.get("templates_dir")
 
-        print("Installing templates into {}...".format(dest_dir))
-        print("")
+        self.v("Installing templates into {}...".format(dest_dir))
+        self.v("")
 
-        ConfigParserProgram.mk_dir(dest_dir)
+        self.mk_dir(dest_dir)
 
         fps_status = self.get_fingerprints_status()
 
-        if not ConfigParserProgram.process_dir(
+        if not self.process_dir(
             distrib_templates_dir, dest_dir, fps_status, "templates"
         ):
-            print("")
-            print("Templates installation aborted")
+            self.v("")
+            self.v("Templates installation aborted")
             return False
 
-        ConfigParserProgram.cp_file(
+        self.cp_file(
             os.path.join(distrib_templates_dir, self.FINGERPRINTS_FILENAME),
             os.path.join(dest_dir, self.FINGERPRINTS_FILENAME)
         )
         return True
 
     def setup(self, destination_directory=None):
-        print("ARouteServer setup")
-        print("")
+        self.v("ARouteServer setup")
+        self.v("")
 
         distrib_config_dir = get_config_dir()
 
         if destination_directory:
             dest_dir = destination_directory
         else:
-            res, dest_dir = ask("Where do you want configuration files and templates "
-                                "to be stored?", default=self.DEFAULT_CFG_DIR_USR)
+            if self.ask:
+                res, dest_dir = Ask().ask("Where do you want configuration files and templates "
+                                          "to be stored?", default=self.DEFAULT_CFG_DIR_USR)
+            else:
+                res = True
+                dest_dir = self.DEFAULT_CFG_DIR_USR
+
             if not res:
-                print("")
-                print("Setup aborted")
+                self.v("")
+                self.v("Setup aborted: no destination directory given")
                 return False
 
         dest_dir = dest_dir.strip()
 
         if dest_dir not in self.DEFAULT_CFG_DIRS:
-            print("WARNING: the directory that has been chosen is not one "
-                  "of those used by default by the program to look for its "
-                  "configuration file: use the --cfg command line "
-                  "argument to allow the program to find the needed files.")
+            self.v("WARNING: the directory that has been chosen is not one "
+                   "of those where the program looks for to find "
+                   "its configuration file: use the --cfg command line "
+                   "argument to allow the program to find that file.")
 
         dest_dir = os.path.expanduser(dest_dir)
         program_cfg_file_path = os.path.join(dest_dir, "arouteserver.yml")
 
         if not destination_directory:
-            res, yes_or_no = ask_yes_no(
-                "Do you confirm you want ARouteServer files to be "
-                "stored at {}?".format(dest_dir), default="yes")
+            if self.ask:
+                res, yes_or_no = Ask().ask_yes_no(
+                    "Do you confirm you want ARouteServer files to be "
+                    "stored at {}?".format(dest_dir), default="yes")
+            else:
+                res = True
+                yes_or_no = "yes"
 
-            if not res or yes_or_no != "yes":
-                print("")
-                print("Setup aborted")
+            if not res or yes_or_no.lower() != "yes":
+                self.v("")
+                self.v("Setup aborted: destination directory not confirmed")
                 return False
 
-        print("Installing configuration files into {}...".format(dest_dir))
-        print("")
+        self.v("Installing configuration files into {}...".format(dest_dir))
+        self.v("")
 
-        ConfigParserProgram.mk_dir(dest_dir)
+        self.mk_dir(dest_dir)
 
-        if not ConfigParserProgram.process_dir(distrib_config_dir, dest_dir):
-            print("")
-            print("Setup aborted")
+        if not self.process_dir(distrib_config_dir, dest_dir):
+            self.v("")
+            self.v("Setup aborted while populating destination directory")
             return False
 
         # Load the new configuration, so that the following .setup_templates()
@@ -563,25 +651,27 @@ class ConfigParserProgram(object):
         self.load(program_cfg_file_path)
 
         if not self.setup_templates():
-            print("")
-            print("Setup aborted")
+            self.v("")
+            self.v("Setup aborted while populating templates directory")
             return False
 
-        # Creating cache directory
+        # Creating cache directory.
+        # Using .get and not .get_dir because the dest dir may not exist.
         cache_dir = self.get("cache_dir")
         self.mk_dir(cache_dir)
 
-        print("")
-        print("Configuration complete!")
-        print("")
-        print("- edit the {} file to configure program's options".format(
+        self.v("")
+        self.v("Configuration complete!")
+        self.v("")
+        self.v("- edit the {} file to configure program's options".format(
             program_cfg_file_path))
-        print("- edit the {} file to set your logging preferences".format(
+        self.v("- edit the {} file to set your logging preferences".format(
             self.get("logging_config_file")))
-        print("- configure route server's options and policies "
-              "in the {} file".format(
-                self.get("cfg_general")))
-        print("- configure route server clients in the {} file".format(
+        self.v("- set your route server's options and policies in {}\n"
+               "  (edit it manually or use the 'arouteserver configure' "
+               "command)".format(
+                   self.get("cfg_general")))
+        self.v("- configure route server clients in the {} file".format(
             self.get("cfg_clients")))
 
         return True

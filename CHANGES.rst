@@ -1,7 +1,247 @@
 Change log
 ==========
 
-.. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`_ section of the documentation.
+.. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
+
+next release
+------------
+
+This release **breaks backward compatibility** (OpenBGPD configs only): the default target version used to build OpenBGPD configurations (when the ``--target-version`` argument is not given) is now 6.2; previously it was 6.0. Use the ``--target-version 6.0`` command line argument to build 6.0 compatible configurations.
+
+- Improvement: transit-free ASNs filters are applied also to sessions toward transit-free peers.
+
+  Related: `issue #21 on GitHub <https://github.com/pierky/arouteserver/issues/21>`_.
+
+- Fix (minor): better handling of user answers in ``configure`` and ``setup`` commands.
+
+- Fix: ``clients-from-peeringdb``, list of IXPs retrieved from PeeringDB and no longer from IXFDB.
+
+- New: add support for BIRD 1.6.4 and OpenBGPD/OpenBSD 6.3.
+
+v0.17.3
+-------
+
+- Fix: ``clients-from-euroix`` command, use the configured cache directory.
+
+v0.17.2
+-------
+
+- Fix: ``configure`` command, omit extended communities for OpenBGPD configurations.
+
+  This is to avoid the need of using the ``--ignore-issues extended_communities`` command line argument.
+
+- Improvement: environment variables expansion when YAML configuration files are read.
+
+v0.17.1
+-------
+
+- Fix: minor installation issues.
+
+v0.17.0
+-------
+
+- New feature: allow to set the source of IRR objects.
+
+  AS-SETs can be prepended with an optional source: ``RIPE::AS-FOO``, ``RIPE::AS64496:AS-FOO``.
+
+- New feature: support for RPKI-based Origin Validation added to OpenBGPD configurations.
+
+  RPKI ROAs must be loaded from a RIPE RPKI Validator cache file (local or via HTTP).
+  Mostly inspired by Job Snijders' tool https://github.com/job/rtrsub
+
+- Improvement: RPKI ROAs can be loaded from a local file too.
+
+  The file must be in RIPE RPKI Validator cache format.
+
+- Fix (minor): remove internal communities before accepting blackhole routes tagged with a custom blackhole community.
+
+  This bug did not affect routes tagged with the BLACKHOLE community; anyway, the internal communities were scrubbed before routes were announced to clients.
+
+v0.16.2
+-------
+
+- Fix: avoid empty lists of prefixes when a client's ``white_list_pref`` contains only prefixes for an IP version different from the current one.
+
+v0.16.1
+-------
+
+- Fix: handle the new version of the JSON schema built by `arin-whois-bulk-parser <https://github.com/NLNOG/arin-whois-bulk-parser>`__.
+
+v0.16.0
+-------
+
+- Improvement: OpenBGPD, more flexibility for inbound communities values.
+
+  This allows to use inbound 'peer_as' communities which overlap with other inbound communities whose last *part* is a private ASN.
+
+- New feature: use ARIN Whois database dump to authorize routes.
+
+  This feature allows to accept those routes whose origin ASN is authorized by a client AS-SET, whose prefix has not a corresponding route object but is covered by an ARIN Whois record for the same origin ASN.
+
+- Improvement: extend the use of *RPKI ROAs as route objects* and *ARIN Whois database dump* to ``tag_as_set``-only mode.
+
+  Before of this, the *RPKI ROAs as route objects* and *ARIN Whois DB dump* features were used only when origin AS and prefix enforcing was set.
+  Starting with this release they are used even when enforcing is not configured and only the ``tag_as_set`` mode is used.
+
+v0.15.0
+-------
+
+- New feature: ``configure`` and ``show_config`` *support* commands.
+
+  - ``configure``: it can be used to quickly generate a route server policy definition file (``general.yml``) on the basis of best practices and suggestions.
+
+  - ``show_config``: to display current configuration settings and also options that have been left to their default values.
+
+- New feature: ``ixf-member-export`` command, to build `IX-F Member Export JSON files <https://ml.ix-f.net/>`__ from the list of clients.
+
+- Improvement: cache expiry time values can be set for each external resource type: PeeringDB info, IRR data, ...
+
+v0.14.1
+-------
+
+- Fix: BIRD, "Unknown instruction 8574 in same (~)" error when reloading IPv6 configurations.
+
+  A `missing case <http://bird.network.cz/pipermail/bird-users/2017-January/010880.html>`__ for the ``!~`` operator triggers this bug when neighbors are established and trying to reload bird6 configuration.
+
+  Related: `issue #20 on GitHub <https://github.com/pierky/arouteserver/issues/20>`_.
+
+v0.14.0
+-------
+
+This release **breaks backward compatibility** (OpenBGPD configs only): for OpenBGPD configurations, starting with this release the Site of Origin Extended BGP communities in the range 65535:* (``soo 65535:*``) are reserved for internal reasons.
+
+- New feature: use RPKI ROAs as if they were route objects.
+
+  This feature allows to accept those routes whose origin ASN is authorized by a client AS-SET, whose prefix is not but it is covered by a RPKI ROA for the same origin ASN.
+
+  Related: `issue #19 on GitHub <https://github.com/pierky/arouteserver/issues/19>`_.
+
+- New feature: automatic checking for new releases.
+
+  This can be disabled by setting ``check_new_release`` to False in ``arouteserver.yml``.
+
+- Improvement: routes accepted solely because of a ``white_list_route`` entry are now tagged with the ``route_validated_via_white_list`` BGP community.
+
+- Fix: on OpenBGPD configurations, in case of duplicate definition of a client's AS-SETs, duplicate BGP informational communities were added after the IRR validation process.
+
+v0.13.0
+-------
+
+- New feature: an option to set RFC1997 well-known communities (NO_EXPORT/NO_ADVERTISE) handling policy: pass-through or strict RFC1997 behaviour.
+
+  This **breaks backward compatibility**: previously, NO_EXPORT/NO_ADVERTISE communities were treated accordingly to the default implementation of the BGP speaker daemon (BIRD, OpenBGPD). Now, ARouteServer's default setting is to treat routes tagged with those communities transparently, that is to announce them to other clients and to pass-through the original RFC1997 communities.
+
+- Improvement: when using PeeringDB records to configure the max-prefix limits, a margin is took into account to accomodate networks that fill the PeeringDB records with their exact route announcement count.
+
+  This **breaks backward compatibility**: if using max-prefix from PeeringDB, current limits will be raised by the default increment values (+100, +15%): this behaviour can be reverted to the pre-v0.13.0 situation by explicitly setting the ``max_prefix.peering_db.increment`` configuration section to ``0/0``.
+
+  Related: `issue #12 on GitHub <https://github.com/pierky/arouteserver/issues/12>`_.
+
+- New feature: client-level white lists for IRRdb-based filters.
+
+  This allows to manually enter routes that must always be accepted by IRRdb-level checks and prefixes and ASNs that must be treated as if they were included within client's AS-SETs.
+
+  Related: `issue #16 on GitHub <https://github.com/pierky/arouteserver/issues/16>`_.
+
+v0.12.3
+-------
+
+- Improvement: always take the AS*n* macro into account when building IRRdb-based filters.
+
+  Related: `issue #15 on GitHub <https://github.com/pierky/arouteserver/issues/15>`_.
+  
+v0.12.2
+-------
+
+- Fix: an issue on OpenBGPD builder class was preventing features offered via large BGP communities only from being actually implemented into the final configuration.
+
+  Related: `issue #11 on GitHub <https://github.com/pierky/arouteserver/issues/11>`_.
+
+v0.12.1
+-------
+
+- Fix an issue that was impacting templates upgrading under certain circumstances.
+
+  Related: `issue #10 on GitHub <https://github.com/pierky/arouteserver/issues/10>`_.
+
+v0.12.0
+-------
+
+- OpenBGPD 6.2 support.
+
+- New feature: `Graceful BGP session shutdown <https://tools.ietf.org/html/draft-ietf-grow-bgp-gshut-11>`_ support, to honor GRACEFUL_SHUTDOWN communities received from clients and also to perform graceful shutdown of the route server itself (``--perform-graceful-shutdown`` `command line argument <https://arouteserver.readthedocs.io/en/latest/USAGE.html#perform-graceful-shutdown>`__).
+
+v0.11.0
+-------
+
+- Python 3.4 support.
+
+- Improvement: GT registry removed from the sources used to gather info from IRRDB.
+
+  Related: `PR #8 on GitHub <https://github.com/pierky/arouteserver/pull/8>`_.
+
+- Improvement: multiple AS-SETs used for the same client are now grouped together and queried at one time.
+  This allows to leverage bgpq3's ability and speed to aggregate results in order to have smaller configuration files.
+
+v0.10.0
+-------
+
+- New feature: when IRRDB-based filters are enabled and no AS-SETs are configured for a client, if the ``cfg.filtering.irrdb.peering_db`` option is set ARouteServer tries to fetch their values from the client's ASN record on PeeringDB.
+
+  Related: `issue #7 on GitHub <https://github.com/pierky/arouteserver/issues/7>`_.
+
+- Improvement: config building process performances,
+
+  - reduced memory consumption by moving IRRDB information from memory to temporary files;
+
+  - responses for empty/missing resources are also cached;
+
+  - fix a wrong behaviour that led to multiple PeeringDB requests for the same ASN.
+
+- Improvement: ``clients-from-euroix`` command, the new ``--merge-from-peeringdb`` option can be used to integrate missing information into the output clients list by fetching AS-SETs and max-prefix limit from PeeringDB.
+
+v0.9.3
+------
+
+- Fix: OpenBGPD, an issue was causing values > 65535 to be used in standard BGP communities matching.
+
+v0.9.2
+------
+
+- Fix: remove quotes from clients description.
+
+- Fix: OpenBGPD, syntax error for prefix lists with 'range X - X' format.
+
+- Fix: ``clients-from-euroix`` command, members with multiple ``vlan`` objects with the same ``vlan_id`` were not properly listed in the output, only the first object was used.
+
+v0.9.1
+------
+
+- Improvement: BIRD, new default debug options (``states, routes, filters, interfaces, events``, was ``all``).
+
+  If needed, they can be overwritten using the ``header`` `custom .local file <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#site-specific-custom-config>`_.
+
+- Fix: *enrichers* errors handling reported a generic message with no further details.
+
+- Fix: HTTP 404 error handling for "Entity not found" error from PeeringDB.
+
+- Fix: OpenBGPD, large prefix lists were causing a "string too long" error.
+
+- Fix: OpenBGPD, clients descriptions longer than 31 characters were not properly truncated.
+
+v0.9.0
+------
+
+- New feature: RTT-based communities to control propagation of routes on the basis of peers round trip time.
+
+- Improvement: in conjunction with the "tag" reject policy, the ``rejected_route_announced_by`` BGP community can be used to track the ASN of the client that announced an invalid route to the server.
+
+- Fix: when the "tag" reject policy is used, verify that the ``reject_cause`` BGP community is also set.
+
+v0.8.1
+------
+
+- Fix: default user configuration path not working.
 
 v0.8.0
 ------
@@ -21,7 +261,7 @@ v0.7.0
   Error is given if a peer-AS-specific BGP community overlaps with another community, even if the last part of the latter is a private/reserved ASN.
 - Improvement: the custom ``!include <filepath>`` statement can be used now in YAML configuration files to include other files.
 
-  More details `here <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#yaml-files-inclusion>`_.
+  More details `here <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#yaml-files-inclusion>`__.
 - Improvement: IRRDB-based filters can be configured to allow more specific prefixes (``allow_longer_prefixes`` option).
 
 v0.6.0
@@ -40,7 +280,7 @@ v0.5.0
 
 - Fix: avoid the use of standard communities in the range 65535:x.
 - Improvement: option to set max-prefix restart timer for OpenBGPD.
-- Deleted feature: tagging of routes à la RPKI-Light has been removed.
+- Deleted feature: tagging of routes a' la RPKI-Light has been removed.
 
   - The ``reject_invalid`` flag, that previously was on general scope only, now can be set on a client-by-client basis.
   - The ``roa_valid``, ``roa_invalid``, and ``roa_unknown`` communities no longer exist.
@@ -92,7 +332,7 @@ v0.1.2
 - Fix local files usage among IPv4/IPv6 processes.
 
   Before of this release, only *.local* files were included into the route server configuration, for both the IPv4 and IPv6 configurations.
-  After this, *.local* files continue to be used for both the address families but *.local4* and *.local6* files can also be used to include IP version specific options, depending on the IP version used to build the configuration. Details `here <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#site-specific-custom-configuration-files>`_.
+  After this, *.local* files continue to be used for both the address families but *.local4* and *.local6* files can also be used to include IP version specific options, depending on the IP version used to build the configuration. Details `here <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#site-specific-custom-configuration-files>`__.
 
 To upgrade:
 

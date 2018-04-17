@@ -10,6 +10,28 @@ clients:
                                 as_sets:
                                 - "AS-AS1"
                                 - "AS-AS1_CUSTOMERS"
+                                white_list_pref:
+                                - prefix: "11.1.0.0"
+                                  length: 16
+                                  le: 32
+                                - prefix: "2a11:1::"
+                                  length: 32
+                                  le: 128
+                                white_list_asn:
+                                - 1011
+                                white_list_route:
+                                - prefix: "11.3.0.0"
+                                  length: 16
+                                  exact: True
+                                  asn: 1011
+                                - prefix: "2a11:3::"
+                                  length: 32
+                                  exact: True
+                                  asn: 1011
+                                - prefix: "11.4.0.0"
+                                  length: 16
+                                - prefix: "2a11:4::"
+                                  length: 32
         - asn: 1
           ip:
           - "192.0.2.12"
@@ -42,6 +64,8 @@ clients:
                                 as_sets:
                                 - "AS-AS2"
                                 - "AS-AS2_CUSTOMERS"
+                graceful_shutdown:
+                        enabled: False
         - asn: 3
           ip:
           - "192.0.2.31"
@@ -62,3 +86,13 @@ clients:
                                 - prefix: "2a03:0:1::"
                                   length: 48
                                   comment: "bad network"
+        - asn: 4
+          ip:
+          - "192.0.2.41"
+          - "2001:db8:1:1::41"
+          description: "AS4_1 client"
+          cfg:
+                filtering:
+                        irrdb:
+                                enforce_origin_in_as_set: False
+                                enforce_prefix_in_as_set: False

@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,17 +16,16 @@
 import os
 import unittest
 
-from base import PathHidingScenario_MitigationOn, \
+from .base import PathHidingScenario_MitigationOn, \
                  PathHidingScenario_MitigationOff, \
                  PathHidingScenarioOpenBGPD60
-from data6 import PathHidingScenario_Data6
+from .data6 import PathHidingScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
 
-@unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
-class PathHidingScenario_MitigationOn_BIRDIPv6(PathHidingScenario_Data6,
-                                               PathHidingScenario_MitigationOn,
-                                               PathHidingScenarioOpenBGPD60):
+class PathHidingScenario_MitigationOn_OpenBGPDIPv6(PathHidingScenario_Data6,
+                                                   PathHidingScenario_MitigationOn,
+                                                   PathHidingScenarioOpenBGPD60):
     __test__ = True
     SKIP_ON_TRAVIS = True
 
@@ -35,10 +34,9 @@ class PathHidingScenario_MitigationOn_BIRDIPv6(PathHidingScenario_Data6,
 
     SHORT_DESCR = "Live test, OpenBGPD 6.0, path hiding, mitigation on, IPv6"
 
-@unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
-class PathHidingScenario_MitigationOff_BIRDIPv6(PathHidingScenario_Data6,
-                                                PathHidingScenario_MitigationOff,
-                                                PathHidingScenarioOpenBGPD60):
+class PathHidingScenario_MitigationOff_OpenBGPDIPv6(PathHidingScenario_Data6,
+                                                    PathHidingScenario_MitigationOff,
+                                                    PathHidingScenarioOpenBGPD60):
     __test__ = True
     SKIP_ON_TRAVIS = True
 

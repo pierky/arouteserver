@@ -9,6 +9,10 @@ cfg:
                         enforce_prefix_in_as_set: False
                 max_prefix:
                         action: "block"
-                        peering_db: True
+                        peering_db:
+                                enabled: True
+                                increment:
+                                        absolute: 1
+                                        relative: 20
                         general_limit_ipv4: 4
                         general_limit_ipv6: 4

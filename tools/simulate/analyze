@@ -1,0 +1,151 @@
+#!/bin/bash
+
+ip_ver=4
+reject_cause_prefix=65520
+
+function run() {
+	[[ ${ip_ver} -eq 4 ]] && local birdcl="birdcl" || local birdcl="birdcl6"
+	#echo "Running '${birdcl} $@'" >&2
+	docker exec -it ars_rs ${birdcl} $@ | \
+		egrep -v "^BIRD" | \
+		sed "s/\(${reject_cause_prefix},[0-9]*\)/$(tput bold)$(tput setaf 1)&\x1B[0m/g"
+}
+
+function usage() {
+	echo "analyze -4 -6 --asn N --prefix P --where filter --reject-cause X"
+}
+
+function prline() {
+	printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
+}
+
+asn=""
+prefix=""
+where=""
+reject_cause=""
+reject_cause_condition=""
+while [[ $# -gt 0 ]]
+do
+	key="$1"
+	shift
+	case "$key" in
+		-4)
+			ip_ver=4
+			;;
+		-6)
+			ip_ver=6
+			;;
+		--asn)
+			asn="$1"
+			shift
+			;;
+		--prefix)
+			prefix="$1"
+			shift
+			;;
+		--where)
+			where="$1"
+			shift
+			;;
+		--reject-cause)
+			reject_cause="$1"
+			reject_cause_condition=" && (${reject_cause_prefix}, ${reject_cause}) ~ bgp_community"
+			shift
+			;;
+		*)
+			usage
+			exit
+			;;
+	esac
+done
+
+if [ -z "${asn}" -a -z "${prefix}" -a -z "${where}" ]; then
+	echo "Accepted routes by ASN:"
+	run "show route all where ((${reject_cause_prefix}, 0) !~ bgp_community)" | \
+		grep "BGP.as_path" | cut -d ' ' -f 2 | egrep -o '[0-9]+' | sort -i | uniq -c | sort -rn
+	echo ""
+
+	echo -n "Number of accepted (best) routes: "
+	run "show route where ((${reject_cause_prefix}, 0) !~ bgp_community) primary" | wc -l
+	echo ""
+
+	echo "Rejected routes by ASN:"
+	run "show route all where ((${reject_cause_prefix}, 0) ~ bgp_community ${reject_cause_condition})" | \
+		grep "BGP.as_path" | cut -d ' ' -f 2 | egrep -o '[0-9]+' | sort -i | uniq -c | sort -rn
+	echo ""
+
+	echo -n "Number of rejected routes: "
+	run "show route where ((${reject_cause_prefix}, 0) ~ bgp_community ${reject_cause_condition})" | wc -l
+	echo ""
+
+	echo "Rejected routes by cause:"
+	run "show route all where ((${reject_cause_prefix}, 0) ~ bgp_community)" | \
+		grep "BGP.community" | egrep -o "${reject_cause_prefix},[0-9]+" | grep -v "${reject_cause_prefix},0" | sort -i | uniq -c | sort -rn
+	echo ""
+
+	if [ -n "${reject_cause}" ]; then
+		echo "Rejected routes, cause ${reject_cause}"
+		prline
+		run "show route all where (${reject_cause_prefix},${reject_cause}) ~ bgp_community" | \
+			egrep "via|BGP.as_path|BGP.community"
+		prline
+		echo ""
+	fi
+
+	exit 0
+fi
+
+if [ -n "${asn}" ]; then
+	echo -n "AS${asn} - number of accepted routes: "
+	run "show route where ((${reject_cause_prefix}, 0) !~ bgp_community && bgp_path.first = ${asn})" | wc -l
+	echo -e "\n"
+
+	echo "AS${asn} - rejected routes"
+	prline
+	run "show route all where ((${reject_cause_prefix}, 0) ~ bgp_community && bgp_path.first = ${asn} ${reject_cause_condition})" | \
+		egrep "via|BGP.as_path|BGP.community"
+	prline
+	echo -e "\n"
+
+	echo "AS${asn} - messages logged during the config building process"
+	prline
+	cat var/bird${ip_ver}.log | grep ${asn}
+	[[ $? -ne 0 ]] && echo "none"
+	prline
+	echo -e "\n"
+
+	echo "AS${asn} - Rejected routes by cause:"
+	run "show route all where ((${reject_cause_prefix}, 0) ~ bgp_community && bgp_path.first = ${asn})" | \
+		grep "BGP.community" | egrep -o "${reject_cause_prefix},[0-9]+" | grep -v "${reject_cause_prefix},0" | sort -i | uniq -c | sort -rn
+	echo ""
+
+	if [ -n "${reject_cause}" ]; then
+		echo "AS${asn} - Rejected routes, cause ${reject_cause}"
+		prline
+		run "show route all where (bgp_path.first = ${asn} && (${reject_cause_prefix},${reject_cause}) ~ bgp_community)" | \
+			egrep "via|BGP.as_path|BGP.community"
+		prline
+		echo ""
+	fi
+
+	echo "Tools"
+	echo "- PeeringDB: https://www.peeringdb.com/asn/${asn}"
+	echo "- RIPE Whois: https://apps.db.ripe.net/db-web-ui/#/query?searchtext=AS${asn}"
+	echo "- ARIN Whois: https://whois.arin.net/rest/asn/AS${asn}/pft?s=AS${asn}"
+	echo "- ARouteServer reject causes: https://arouteserver.readthedocs.io/en/latest/CONFIG.html#reject-policy-and-invalid-routes-tracking"
+	echo -e "\n"
+fi
+
+if [ -n "${prefix}" ]; then
+	echo "Prefix ${prefix}"
+	prline
+	run "show route all ${prefix}"
+	prline
+	echo -e "\n"
+fi
+
+if [ -n "${where}" ]; then
+	echo "Where ${where}"
+	prline
+	run "show route all where (${where})"
+fi

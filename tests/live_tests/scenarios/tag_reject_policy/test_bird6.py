@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,8 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import TagRejectPolicyScenarioBIRD
-from data6 import BasicScenario_Data6
+from .base import TagRejectPolicyScenarioBIRD
+from .data6 import BasicScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 
 class TagRejectPolicyScenario_BIRDIPv6(BasicScenario_Data6, TagRejectPolicyScenarioBIRD):
@@ -25,3 +25,5 @@ class TagRejectPolicyScenario_BIRDIPv6(BasicScenario_Data6, TagRejectPolicyScena
     RS_INSTANCE_CLASS = BIRDInstanceIPv6
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
     IP_VER = 6
+
+    ALLOWED_LOG_ERRORS = ["AS1_2: Invalid NEXT_HOP attribute in route 2a01:0:3::/48"]

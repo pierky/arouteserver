@@ -1,10 +1,142 @@
 language: python
+
 sudo: required
+
 services:
   - docker
-before_install:
-  - docker pull pierky/bird:1.6.3 
-install:
-  - pip install -r requirements.txt
-script:
- - nosetests -vs tests/
+
+script: tox
+
+jobs:
+  include:
+
+    # All the "standard" tests, run on push/PR.
+    - stage: test
+      env: TOXENV=py34-syntax
+      python: "3.4"
+      install:
+        - pip install tox
+    - env: TOXENV=py27-flake8
+      python: "2.7"
+      install:
+        - pip install tox
+    - env: TOXENV=py34-flake8
+      python: "3.4"
+      install:
+        - pip install tox
+    - env: TOXENV=py27
+      python: "2.7"
+      install:
+        - pip install tox
+        - docker pull pierky/bird:1.6.4
+    - env: TOXENV=py34
+      python: "3.4"
+      install:
+        - pip install tox
+        - docker pull pierky/bird:1.6.4
+    - env: TOXENV=py27-coverage
+      python: "2.7"
+      install:
+        - pip install tox
+        - pip install coveralls
+      after_success:
+        - coveralls
+
+    # External resources tests, run on push/PR and via cron job.
+    - stage: test external resources
+      env: TOXENV=py34-extres
+      python: "3.4"
+      install:
+        - pip install tox
+      before_script:
+        - ./tests/external_resources/install_bgpq3.sh
+    - env: TOXENV=py27-extres
+      python: "2.7"
+      install:
+        - pip install tox
+      before_script:
+        - ./tests/external_resources/install_bgpq3.sh
+
+    # Installation tests on Ubuntu, Debian, CentOS, run on push/PR with tags.
+
+    # CentOS, latest
+    - &installation-stage
+      stage: installation tests
+      install: skip
+      script: ./tests/docker/build
+      env: DISTRO=centos-latest PYVER=2
+
+    # Ubuntu, latest
+    - <<: *installation-stage
+      env: DISTRO=ubuntu-latest PYVER=2
+    - <<: *installation-stage
+      env: DISTRO=ubuntu-latest PYVER=3
+
+    # Ubuntu, rolling
+    - <<: *installation-stage
+      env: DISTRO=ubuntu-rolling PYVER=2
+    - <<: *installation-stage
+      env: DISTRO=ubuntu-rolling PYVER=3
+
+    # Ubuntu, Trusty
+    - <<: *installation-stage
+      env: DISTRO=ubuntu-trusty PYVER=2
+    - <<: *installation-stage
+      env: DISTRO=ubuntu-trusty PYVER=3
+
+    # Debian, stable
+    - <<: *installation-stage
+      env: DISTRO=debian-stable PYVER=2
+    - <<: *installation-stage
+      env: DISTRO=debian-stable PYVER=3
+
+    # Debian, oldstable
+    - <<: *installation-stage
+      env: DISTRO=debian-oldstable PYVER=2
+    - <<: *installation-stage
+      env: DISTRO=debian-oldstable PYVER=3
+
+    # Deploy to the test instance of PyPI.
+    # Only "vX.Y.Z-alphaN" releases from 'dev' branch go here.
+    - stage: deploy test
+      script: skip
+      install: skip
+      deploy:
+        # Test
+        - provider: pypi
+          server: https://test.pypi.org/legacy/
+          distributions: sdist
+          user: pierky
+          password:
+            secure: "PRWFP9vzvIf2SO9cjEY/jPSxlK+zHA2EYM6oxa49ND4mbgeY32HJ6YGcorWNwETdmuIMXEC89mIWdJ0rX5Mx4qdJ9y2Hea0djo58PGw1W6LP85lg/3URIVBjcsihWYlx5lSLdUL0KQ57glST0KmirloYbNkGBdaJrS6HFiFZbOok25gBtUxsKpz6Mz9D7+PP/K9hfNVfDoxokEovstjJkdGs5qsVYk6uK3cCh1FsDUSHk4/nDcdXLPhnPKwPYhuZTu8PunHPVLk9xvq/KCg+oqbRJEzKn7wUyEhxOkosbOCpYIV1Q+UaMLJWH/9+FXB3HdloBsXUT/P626lGIGPw+k6DFJBdmnrm+cmOQBjylv/w2AJTWGCFpPg0mIyFKML78UDHVl8PHoeq2xYc7Ci/k+v2JSeGoB8GpVa74MPGLiOgcHppidZIMF96xR0FFf+ZuRF/E+kwpVjxDL6kDKGiYF4kzlkDz+50fdBBUNsNcY/AEtYXKIUcLthQcPkUFtTgogra9EjrAGVbIKOzQnLU96pPriZlct204xUOz4g+MNajF8ll04Ub58hwJK3o5DGHYRaFWyoXaf3VGMQnRB/reHJB9ljz4jB1T/ensOtiARzgGTpk0rOHv491kRJRs6nl/2o0YTQZjPsST03PCMfhenjfQR6i6tlKzh7pVMp1XGw="
+          on:
+            branch: dev
+            tags: true
+
+    # Deploy to the production instance of PyPI.
+    # Only "vX.Y.Z" releases from 'master' branch go here.
+    - stage: deploy production
+      script: skip
+      install: skip
+      deploy:
+        # Production
+        - provider: pypi
+          distributions: sdist
+          user: pierky
+          password:
+            secure: "BPeL143U0knmholVOZp85ZiX5zQAr00sytCPOth/VFKqz4J104ifu53oY3OpIRTbpMQksNhlLCbv57nSUn1eaX/Pvf7GRdYcDhnaePr0sffPQRYLcKnGoQbV+5A3qqqGOSpYQX1MhHy2ZtBlIqaqzkfuYQi1c/MJE4z1aVwDNvyMAXXJkwPxClyoe8hSxKxp1oxYJWCEsdgXz6c3QfNjDeREk9rql6BQwkgSdEhhah5v6oMib0xtV7cLTl6SenpAtTA2FinIw57kxAZVBD2RNPFRZ0cw23ZDL/08BYrjF2jmuMN2ySyww3wM8Xg5hmQxh+7qVLatrRZyWznt7RAdkA168ODae84L5OUNevR8vjtuAoz6wOFIQX3+sdTFuHe8Dio/BxScJzSwk7t+NnPi1JXs43qxFnyD+2KFYiQmVnaSeyUhzH8hcriIkOjm5JSsd/cQZ7FZ/MUApJZcJkSMWSqih1cqVwVgxZWta6Lu7mbWZAJ3hhz8gTlqq89xy3UskJollS5jesRaMUOjrek6eh/4pZ+P+EqOTBkiqAe60tAtCplrAg40PPzFJ7Z/LtfgwmOsthsWVbAvbkewH5B9oibKQmdipUS1nkU+nuQXUeqDxg9pDCwu1miwpT6yd8U3JElHO3QJztyz7VKVMw1AjjUb/GNrzwCEynikF64FhNY="
+          on:
+            branch: master
+            tags: true
+
+stages:
+  - name: test
+    if: type IN (push, pull_request)
+  - name: test external resources
+    if: type IN (push, pull_request, cron)
+  - name: installation tests
+    if: type IN (push, pull_request) AND tag IS present
+  - name: deploy test
+    if: type IN (push, pull_request) AND tag IS present AND tag =~ ^v\d+\.\d+\.\d+-alpha\d+\S*$
+  - name: deploy production
+    if: type IN (push, pull_request) AND tag IS present AND tag =~ ^v\d+\.\d+\.\d+$

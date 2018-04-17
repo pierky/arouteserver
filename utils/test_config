@@ -1,0 +1,72 @@
+#!/bin/bash
+
+function usage() {
+	echo "utils/test_config [bird4 | bird6 | openbgpd60 | openbgpd61 | openbgpd62 | openbgpd63] <config_file_path>"
+}
+
+if [ ! -e "setup.py" ]; then
+	echo "The script must be executed from within the repository's root directory."
+	exit
+fi
+
+if [ $# -ne 2 ]; then
+	usage
+	exit
+fi
+
+abs_path=`echo "$(dirname $(readlink -e $2))/$(basename $2)"`
+
+if [ "$1" == "bird4" ]; then
+	docker run \
+		--rm -it \
+		--net=arouteserver \
+		--ip=192.0.2.2 \
+		--name=ars_rs \
+		-v$abs_path:/etc/bird/bird.conf \
+		pierky/bird:1.6.3 \
+		bird -c /etc/bird/bird.conf -d
+
+elif [ "$1" == "bird6" ]; then
+	docker run \
+		--rm -it \
+		--net=arouteserver \
+		--ip6=2001:db8:1:1::2 \
+		--name=ars_rs \
+		-v$abs_path:/etc/bird/bird.conf \
+		pierky/bird:1.6.3 \
+		bird6 -c /etc/bird/bird.conf -d
+
+elif [ "$1" == "openbgpd60" -o "$1" == "openbgpd61" -o "$1" == "openbgpd62" -o "$1" == "openbgpd63" ]; then
+	virsh \
+		start arouteserver_$1
+	echo ""
+	virsh list
+	echo ""
+	while true; do
+		echo "Waiting for server reachability... "
+		ssh -i ~/.ssh/arouteserver -o StrictHostKeyChecking=no -o ConnectTimeout=5 -o ServerAliveInterval=10 -q root@192.0.2.2 echo "Up!"
+		if [ $? -eq 0 ]; then
+			echo "VM is up & running"
+
+			echo "Copying configuration..."
+			scp -i ~/.ssh/arouteserver -o StrictHostKeyChecking=no -q $2 root@192.0.2.2:/etc/bgpd.conf
+			if [ $? -ne 0 ]; then
+				echo "ERROR while copying configuration"
+				exit 1
+			fi
+
+			echo "Testing config on the VM... "
+			ssh -i ~/.ssh/arouteserver -o StrictHostKeyChecking=no -q root@192.0.2.2 "/etc/rc.d/bgpd stop ; bgpd -dn"
+			if [ $? -eq 0 ]; then
+				echo "SUCCESS"
+			else
+				echo "FAILURE"
+			fi
+			exit
+		fi
+		sleep 5
+	done
+else
+	echo "Unknown target"
+	usage
+fi

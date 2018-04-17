@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,8 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import BGPCommunitiesScenarioBIRD
-from data6 import BGPCommunitiesScenario_Data6
+from .base import BGPCommunitiesScenarioBIRD
+from .data6 import BGPCommunitiesScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 
 class BGPCommunitiesScenario_BIRDIPv6(BGPCommunitiesScenario_Data6,

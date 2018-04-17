@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,34 +13,36 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import ipaddr
 from jinja2 import Environment, FileSystemLoader
-import mock
 import os
 import re
 import time
 import yaml
 
-from docker import InstanceError
+from .docker import InstanceError
 
-from pierky.arouteserver.config.validators import ValidatorPrefixListEntry
-from pierky.arouteserver.enrichers.irrdb import IRRDBConfigEnricher_OriginASNs, \
-                                                IRRDBConfigEnricher_Prefixes
+from pierky.arouteserver.ipaddresses import IPAddress, IPNetwork
 from pierky.arouteserver.tests.base import ARouteServerTestCase
-from pierky.arouteserver.tests.mock_peeringdb import mock_peering_db
+from pierky.arouteserver.tests.mocked_env import MockedEnv
 from pierky.arouteserver.tests.live_tests.instances import BGPSpeakerInstance
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, \
+                                                      BIRDInstanceIPv6
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance, \
+                                                          OpenBGPD61Instance, \
+                                                          OpenBGPD62Instance, \
+                                                          OpenBGPD63Instance
 
 
 class LiveScenario(ARouteServerTestCase):
     """An helper class to run tests for a given scenario.
-    
+
     This class must be derived by scenario-specific classes that
     must:
 
     - set the ``MODULE_PATH`` attribute to ``__file__``, in order
       to correctly locate files needed by the scenario.
 
-    - fill the ``INSTANCES`` list with a list of 
+    - fill the ``INSTANCES`` list with a list of
       :class:`BGPSpeakerInstance`
       (or derived) instances representing all the BGP speakers involved in the
       scenario.
@@ -96,6 +98,19 @@ class LiveScenario(ARouteServerTestCase):
         }
 
     - optionally, if it's needed by the scenario, the derived classes
+      can also set the ``RTT`` dictionary with the values of the RTTs
+      of the clients. Keys can be IP addresses of clients or the
+      prefix IDs used in the ``DATA`` dictionary to represent them.
+
+      Example::
+
+        RTT = {
+            "192.0.2.11": 14,
+            "2001:db8::11": 165,
+            "AS1_IPAddress": 44
+        }
+
+    - optionally, if it's needed by the scenario, the derived classes
       can also set the ``REJECT_CAUSE_COMMUNITY`` attribute with the
       pattern followed by BGP communities used to tag routes that are
       considered to be rejected (see the ``filtering.reject_policy``
@@ -108,6 +123,9 @@ class LiveScenario(ARouteServerTestCase):
       If this attribute is not None, routes that have LOCAL_PREF == 1
       and the ``reject_cause`` BGP community with ``dyn_val == 0``
       are considered as filtered.
+      The ``REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY`` attribute can also
+      be set to match the community used to track the announcing ASN of
+      invalid routes.
 
     - implement the ``set_instance_variables`` method, used to set
       local instance attributes for the instances used within the
@@ -133,6 +151,7 @@ class LiveScenario(ARouteServerTestCase):
     DATA = {}
     AS_SET = {}
     R_SET = {}
+    RTT = {}
     INSTANCES = []
 
     DEBUG = False
@@ -140,8 +159,17 @@ class LiveScenario(ARouteServerTestCase):
 
     CONFIG_BUILDER_CLASS = None
 
+    MOCK_PEERING_DB = True
+    MOCK_RIPE_RPKI_CACHE = True
+    MOCK_IRRDB = True
+    MOCK_RTTGETTER = True
+    MOCK_ARIN_DB_DUMP = True
+
     # regex: for example ^65520:(\d+)$
     REJECT_CAUSE_COMMUNITY = None
+    REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY = None
+
+    ALLOWED_LOG_ERRORS = []
 
     @classmethod
     def _get_module_dir(cls):
@@ -168,10 +196,6 @@ class LiveScenario(ARouteServerTestCase):
     @classmethod
     def _do_not_stop_instances(cls):
         return cls.DO_NOT_STOP_INSTANCES or "REUSE_INSTANCES" in os.environ
-
-    @classmethod
-    def _do_not_run_instances(cls):
-        return "BUILD_ONLY" in os.environ
 
     @classmethod
     def build_other_cfg(cls, tpl_name):
@@ -211,13 +235,13 @@ class LiveScenario(ARouteServerTestCase):
         return cfg_file_path
 
     @classmethod
-    def _get_cfg_general(cls):
-        return "general.yml"
+    def _get_cfg_general(cls, filename=None):
+        return filename or "general.yml"
 
     @classmethod
     def build_rs_cfg(cls, tpl_dir_name, tpl_name, out_file_name, ip_ver,
                       cfg_general=None, cfg_bogons="bogons.yml",
-                      cfg_clients="clients.yml", cfg_roas=None, **kwargs):
+                      cfg_clients="clients.yml", **kwargs):
         """Builds configuration file for the route server.
 
         Args:
@@ -240,9 +264,6 @@ class LiveScenario(ARouteServerTestCase):
                 IP addresses. File names are relative to the scenario
                 directory.
 
-            cfg_roas (str): name of the file containing
-                ROAs - used to populate fake RPKI table.
-
         Returns:
             the path of the local rendered file.
 
@@ -264,7 +285,6 @@ class LiveScenario(ARouteServerTestCase):
                                        cfg_general or cls._get_cfg_general()),
             cfg_bogons="{}/{}".format(cls._get_module_dir(), cfg_bogons),
             cfg_clients="{}/{}".format(cls._get_module_dir(), cfg_clients),
-            cfg_roas="{}/{}".format(cls._get_module_dir(), cfg_roas) if cfg_roas else None,
             ip_ver=ip_ver,
             ignore_errors=["*"],
             live_tests=True,
@@ -274,7 +294,9 @@ class LiveScenario(ARouteServerTestCase):
         cfg_file_path = "{}/{}".format(var_dir, out_file_name)
 
         with open(cfg_file_path, "w") as f:
-            cfg = builder.render_template(f)
+            builder.render_template(f)
+
+        cls.rs_cfg_file_path = cfg_file_path
 
         return cfg_file_path
 
@@ -299,57 +321,37 @@ class LiveScenario(ARouteServerTestCase):
         return var_path
 
     @classmethod
-    def mock_irrdb(cls):
-    
-        def add_prefix_to_list(prefix_name, allow_longer_prefixes, lst):
-            obj = ipaddr.IPNetwork(cls.DATA[prefix_name])
-            lst.append(
-                ValidatorPrefixListEntry().validate({
-                    "prefix": str(obj.ip),
-                    "length": obj.prefixlen,
-                    "comment": prefix_name,
-                    "exact": not allow_longer_prefixes
-                })
-            )
-
-        def _mock_ASSet(self):
-            self.prepare()
-            for as_set_id in self.builder.as_sets:
-                as_set = self.builder.as_sets[as_set_id]
-                as_set_name = as_set["name"]
-                if as_set_name in cls.AS_SET:
-                    as_set["asns"].extend(cls.AS_SET[as_set_name])
-
-        def _mock_RSet(self):
-            self.prepare()
-            allow_longer_prefixes = self.builder.cfg_general["filtering"]["irrdb"]["allow_longer_prefixes"]
-            for as_set_id in self.builder.as_sets:
-                as_set = self.builder.as_sets[as_set_id]
-                as_set_name = as_set["name"]
-                if as_set_name in cls.R_SET:
-                    for prefix_name in cls.R_SET[as_set_name]:
-                        add_prefix_to_list(prefix_name, allow_longer_prefixes,
-                                           as_set["prefixes"])
-
-        mock_ASSet = mock.patch.object(
-            IRRDBConfigEnricher_OriginASNs, "enrich", autospec=True
-        ).start()
-        mock_ASSet.side_effect = _mock_ASSet
-
-        mock_RSet = mock.patch.object(
-            IRRDBConfigEnricher_Prefixes, "enrich", autospec=True
-        ).start()
-        mock_RSet.side_effect = _mock_RSet
-
-    @classmethod
     def _setUpClass(cls):
+        for prefix_name in cls.DATA:
+            prefix = cls.DATA[prefix_name]
+            net = IPNetwork(prefix) if "/" in prefix else IPAddress(prefix)
+            if str(net) != prefix:
+                raise ValueError(
+                    "Prefix '{}' is not represented in its canonical form: "
+                    "'{}' used, '{}' expected.".format(
+                        prefix_name, prefix, str(net)
+                    )
+                )
+
         cls.info("{}: setting instances up...".format(cls.SHORT_DESCR))
 
-        mock_peering_db(cls._get_module_dir() + "/peeringdb_data")
-        cls.mock_irrdb()
-        cls._setup_instances()
+        MockedEnv(cls, base_dir=cls._get_module_dir(),
+                  peering_db=cls.MOCK_PEERING_DB,
+                  ripe_rpki_cache=cls.MOCK_RIPE_RPKI_CACHE,
+                  irrdb=cls.MOCK_IRRDB,
+                  rttgetter=cls.MOCK_RTTGETTER,
+                  arin_db_dump=cls.MOCK_ARIN_DB_DUMP)
 
-        if cls._do_not_run_instances():
+        cls.rs_cfg_file_path = None
+
+        try:
+            cls._setup_instances()
+        except:
+            cls.tearDownClass()
+            raise
+
+        if "BUILD_ONLY" in os.environ or \
+            (cls.SKIP_ON_TRAVIS and "TRAVIS" in os.environ):
             cls.debug("Skipping starting instances")
             return
 
@@ -369,13 +371,86 @@ class LiveScenario(ARouteServerTestCase):
             cls.tearDownClass()
             raise
 
+    @staticmethod
+    def get_instance_tag(instance_or_class):
+        if isinstance(instance_or_class, BGPSpeakerInstance):
+            _class = instance_or_class.__class__
+        else:
+            _class = instance_or_class
+
+        if _class is BIRDInstanceIPv4 or \
+            _class is BIRDInstanceIPv6:
+            tag = "bird16"
+        elif _class is OpenBGPD60Instance:
+            tag = "openbgpd60"
+        elif _class is OpenBGPD61Instance:
+            tag = "openbgpd61"
+        elif _class is OpenBGPD62Instance:
+            tag = "openbgpd62"
+        elif _class is OpenBGPD63Instance:
+            tag = "openbgpd63"
+        else:
+            msg = "Unknown instance type: "
+            if isinstance(instance_or_class, BGPSpeakerInstance):
+                msg += instance_or_class.name
+            else:
+                msg += instance_or_class.__name__
+            raise ValueError(msg)
+
+        return tag
+
+    @classmethod
+    def dump_routes(cls):
+        rs_tag = cls.get_instance_tag(cls.RS_INSTANCE_CLASS)
+
+        dest_dir = os.path.join(cls._get_module_dir(), "routes", cls.__name__, rs_tag)
+        if not os.path.exists(dest_dir):
+            os.makedirs(dest_dir)
+
+        for instance in cls.INSTANCES:
+            path = os.path.join(dest_dir, "{}.txt".format(instance.name))
+            routes = instance.get_routes(None, include_filtered=True)
+            sorted_routes = sorted(routes,
+                                   key = lambda route: (route.prefix,
+                                                        route.as_path,
+                                                        route.next_hop,
+                                                        route.via))
+            with open(path, "w") as f:
+                for route in sorted_routes:
+                    route.dump(f)
+
+    @classmethod
+    def dump_rs_config(cls):
+        if not cls.rs_cfg_file_path:
+            return
+
+        dest_dir = os.path.join(cls._get_module_dir(), "configs", cls.__name__)
+        if not os.path.exists(dest_dir):
+            os.makedirs(dest_dir)
+
+        tag = cls.get_instance_tag(cls.RS_INSTANCE_CLASS)
+
+        path = os.path.join(dest_dir, "{}.conf".format(tag))
+        with open(path, "w") as dst:
+            with open(cls.rs_cfg_file_path, "r") as src:
+                dst.write(src.read())
+
     @classmethod
     def _tearDownClass(cls):
-        mock.patch.stopall()
+        MockedEnv.stopall()
 
-        if cls._do_not_run_instances():
+        if "TRAVIS" not in os.environ:
+            cls.info("{}: dumping rs config...".format(cls.SHORT_DESCR))
+            cls.dump_rs_config()
+
+        if "BUILD_ONLY" in os.environ or \
+            (cls.SKIP_ON_TRAVIS and "TRAVIS" in os.environ):
             cls.debug("Skipping stopping instances")
             return
+
+        if "TRAVIS" not in os.environ:
+            cls.info("{}: dumping routes...".format(cls.SHORT_DESCR))
+            cls.dump_routes()
 
         if cls._do_not_stop_instances():
             cls.debug("Skipping stopping instances")
@@ -391,16 +466,30 @@ class LiveScenario(ARouteServerTestCase):
         raise NotImplementedError()
 
     def _setUp(self):
-        if self._do_not_run_instances():
+        if "BUILD_ONLY" in os.environ:
             self.skipTest("Build only")
+
+        if self.SKIP_ON_TRAVIS and "TRAVIS" in os.environ:
+            self.skipTest("not supported on Travis CI")
 
         self.set_instance_variables()
 
     def process_reject_cause_routes(self, routes):
         if self.REJECT_CAUSE_COMMUNITY is not None:
             re_pattern = re.compile(self.REJECT_CAUSE_COMMUNITY)
+            rejected_route_announced_by_pattern = None
+            if self.REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY:
+                rejected_route_announced_by_pattern = \
+                    re.compile(self.REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY)
+
             for route in routes:
-                route.process_reject_cause(re_pattern)
+                route.process_reject_cause(re_pattern,
+                                           rejected_route_announced_by_pattern)
+
+    def _instance_log_contains_errors_warning(self, inst):
+        if inst.log_contains_errors(self.ALLOWED_LOG_ERRORS):
+            return "\nWARNING: {} log contains errors".format(inst.name)
+        return ""
 
     def receive_route(self, inst, prefix, other_inst=None, as_path=None,
                       next_hop=None, std_comms=None, lrg_comms=None,
@@ -451,7 +540,7 @@ class LiveScenario(ARouteServerTestCase):
             "inst must be of class BGPSpeakerInstance"
 
         try:
-            prefix_ip = ipaddr.IPNetwork(prefix)
+            IPNetwork(prefix)
         except:
             raise AssertionError("prefix must be a valid IPv4/IPv6 prefix")
 
@@ -477,7 +566,7 @@ class LiveScenario(ARouteServerTestCase):
                  "a BGPSpeakerInstance object")
             next_hop_ip = next_hop if isinstance(next_hop, str) else next_hop.ip
             try:
-                ip = ipaddr.IPAddress(next_hop_ip)
+                IPAddress(next_hop_ip)
             except:
                 raise AssertionError("Invalid next_hop IP address: {}".format(
                     next_hop_ip
@@ -574,6 +663,11 @@ class LiveScenario(ARouteServerTestCase):
                             reject_reason_found = True
 
                     if not reject_reason_found:
+                        if len(reject_reasons) == 1:
+                            exp_reason = reject_reasons[0]
+                        else:
+                            exp_reason = "one of {}".format(", ".join(map(str, reject_reasons)))
+
                         errors.append(
                             "{{inst}} receives {{prefix}} from {via}, AS_PATH {as_path}, NEXT_HOP {next_hop}, "
                             "it is filtered but reject reasons don't match: real reasons {reason}, "
@@ -582,13 +676,12 @@ class LiveScenario(ARouteServerTestCase):
                                 as_path=route.as_path,
                                 next_hop=route.next_hop,
                                 reason=", ".join(map(str, route.reject_reasons)),
-                                exp_reason=reject_reasons[0] if len(reject_reasons) == 1 else
-                                        "one of {}".format(", ".join(map(str, reject_reasons)))
+                                exp_reason=exp_reason
                             )
                         )
                         err = True
                 if not err:
-                    return
+                    return route
 
         if errors:
             criteria = []
@@ -627,7 +720,7 @@ class LiveScenario(ARouteServerTestCase):
                 criteria=", ".join(criteria)
             )
             failure += "\n\t".join([
-                err.format(
+                err_msg.format(
                     inst=inst.name,
                     prefix=prefix,
                     other_inst="{} ({})".format(other_inst.ip, other_inst.name) if other_inst else "",
@@ -637,8 +730,9 @@ class LiveScenario(ARouteServerTestCase):
                     lrg_comms=lrg_comms,
                     ext_comms=ext_comms,
                     local_pref=local_pref,
-                ) for err in errors
+                ) for err_msg in errors
             ])
+            failure += self._instance_log_contains_errors_warning(inst)
             self.fail(failure)
 
     def log_contains(self, inst, msg, instances={}):
@@ -693,7 +787,11 @@ class LiveScenario(ARouteServerTestCase):
             expanded_msg = expanded_msg.format(**macros_dict)
 
         if not inst.log_contains(expanded_msg):
-            self.fail("Expected message not found on {} logs:\n\t{}".format(inst.name, expanded_msg))
+            self.fail(
+                "Expected message not found on {} logs:\n\t{}".format(
+                    inst.name, expanded_msg
+                ) + self._instance_log_contains_errors_warning(inst)
+            )
 
     def session_exists(self, inst_a, inst_b_or_ip):
         """Test if a BGP session between the two instances exists.
@@ -707,14 +805,16 @@ class LiveScenario(ARouteServerTestCase):
         """
 
         if inst_a.get_bgp_session(inst_b_or_ip) is None:
-            self.fail("A BGP session between '{}' ({}) and '{}' "
+            self.fail(
+                "A BGP session between '{}' ({}) and '{}' "
                 "does not exist.".format(
-                inst_a.name, inst_a.ip,
-                "{} ({})".format(
-                    inst_b_or_ip.name, inst_b_or_ip.ip
-                ) if isinstance(inst_b_or_ip, BGPSpeakerInstance)
-                  else inst_b_or_ip
-            ))
+                    inst_a.name, inst_a.ip,
+                    "{} ({})".format(
+                        inst_b_or_ip.name, inst_b_or_ip.ip
+                    ) if isinstance(inst_b_or_ip, BGPSpeakerInstance)
+                    else inst_b_or_ip
+                ) + self._instance_log_contains_errors_warning(inst_a)
+            )
 
     def session_is_up(self, inst_a, inst_b):
         """Test if a BGP session between the two instances is up.
@@ -732,21 +832,44 @@ class LiveScenario(ARouteServerTestCase):
 
         self.session_exists(inst_a, inst_b)
 
-        if inst_a.bgp_session_is_up(inst_b):
-            return
-        time.sleep(5)
-        if inst_a.bgp_session_is_up(inst_b, force_update=True):
-            return
-        self.fail("BGP session between '{}' ({}) and '{}' ({}) is not up.".format(
-            inst_a.name, inst_a.ip, inst_b.name, inst_b.ip
-        ))
+        for _ in range(5):
+            if inst_a.bgp_session_is_up(inst_b):
+                return
+            time.sleep(1)
+        for _ in range(20):
+            if inst_a.bgp_session_is_up(inst_b, force_update=True):
+                return
+            time.sleep(1)
+        self.fail(
+            "BGP session between '{}' ({}) and '{}' ({}) is not up.".format(
+                inst_a.name, inst_a.ip, inst_b.name, inst_b.ip
+            ) + self._instance_log_contains_errors_warning(inst_a)
+        )
+
+    def test_010_setup(self):
+        # Referenced by utils/update_tests, used when BUILD_ONLY=1
+        raise NotImplementedError()
+
+    def test_999_log_contains_errors(self):
+        """{}: log contains errors"""
+        try:
+            errors_found, errors = self.rs.log_contains_errors(
+                self.ALLOWED_LOG_ERRORS, True
+            )
+            if errors_found:
+                self.fail("rs log contains errors:\n{}".format(errors))
+        except AttributeError:
+            raise NotImplementedError("self.rs does not exist here")
+        except NotImplementedError:
+            raise
 
 class LiveScenario_TagRejectPolicy(object):
     """Helper class to run a scenario as if reject_policy is set to 'tag'.
 
     When a scenario inherits this class, its route server is configured as
-    if the ``reject_policy.policy`` is ``tag`` and the ``65520:dyn_val``
-    value is used for the ``reject_cause`` BGP community.
+    if the ``reject_policy.policy`` is ``tag``, the ``65520:dyn_val``
+    value is used for the ``reject_cause`` BGP community and the
+    ``rt:65520:dyn_val`` value for the ``rejected_route_announced_by`` one.
 
     The ``general.yml`` file, or the file given in the ``orig_file`` argument
     of ``_get_cfg_general`` method, is cloned and reconfigured with the
@@ -766,6 +889,7 @@ class LiveScenario_TagRejectPolicy(object):
     """
 
     REJECT_CAUSE_COMMUNITY = "^65520:(\d+)$"
+    REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY = "^rt:65520:(\d+)$"
 
     @classmethod
     def _get_cfg_general(cls, orig_file="general.yml"):
@@ -780,6 +904,7 @@ class LiveScenario_TagRejectPolicy(object):
         if "communities" not in cfg["cfg"]:
             cfg["cfg"]["communities"] = {}
         cfg["cfg"]["communities"]["reject_cause"] = {"std": "65520:dyn_val"}
+        cfg["cfg"]["communities"]["rejected_route_announced_by"] = {"ext": "rt:65520:dyn_val"}
 
         with open(dest_path, "w") as f:
             yaml.safe_dump(cfg, f, default_flow_style=False)

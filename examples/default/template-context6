@@ -1,0 +1,819 @@
+ip_ver
+------
+6
+...
+
+
+cfg
+---
+cfg:
+  add_path: false
+  blackhole_filtering:
+    add_noexport: true
+    announce_to_client: true
+    policy_ipv4: null
+    policy_ipv6: null
+    rewrite_next_hop_ipv4: null
+    rewrite_next_hop_ipv6: null
+  communities:
+    add_noadvertise_to_any:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: inbound
+    add_noadvertise_to_peer:
+      ext: null
+      lrg: null
+      peer_as: true
+      std: null
+      type: inbound
+    add_noexport_to_any:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: inbound
+    add_noexport_to_peer:
+      ext: null
+      lrg: null
+      peer_as: true
+      std: null
+      type: inbound
+    announce_to_peer:
+      ext: null
+      lrg: null
+      peer_as: true
+      std: null
+      type: inbound
+    announce_to_peers_with_rtt_higher_than:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: inbound
+    announce_to_peers_with_rtt_lower_than:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: inbound
+    blackholing:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: inbound
+    do_not_announce_to_any:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: inbound
+    do_not_announce_to_peer:
+      ext: null
+      lrg: null
+      peer_as: true
+      std: null
+      type: inbound
+    do_not_announce_to_peers_with_rtt_higher_than:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: inbound
+    do_not_announce_to_peers_with_rtt_lower_than:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: inbound
+    origin_not_present_in_as_set:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: outbound
+    origin_present_in_as_set:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: outbound
+    prefix_not_present_in_as_set:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: outbound
+    prefix_present_in_as_set:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: outbound
+    prefix_validated_via_arin_whois_db_dump:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: outbound
+    prefix_validated_via_rpki_roas:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: outbound
+    prepend_once_to_any:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: inbound
+    prepend_once_to_peer:
+      ext: null
+      lrg: null
+      peer_as: true
+      std: null
+      type: inbound
+    prepend_once_to_peers_with_rtt_higher_than:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: inbound
+    prepend_once_to_peers_with_rtt_lower_than:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: inbound
+    prepend_thrice_to_any:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: inbound
+    prepend_thrice_to_peer:
+      ext: null
+      lrg: null
+      peer_as: true
+      std: null
+      type: inbound
+    prepend_thrice_to_peers_with_rtt_higher_than:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: inbound
+    prepend_thrice_to_peers_with_rtt_lower_than:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: inbound
+    prepend_twice_to_any:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: inbound
+    prepend_twice_to_peer:
+      ext: null
+      lrg: null
+      peer_as: true
+      std: null
+      type: inbound
+    prepend_twice_to_peers_with_rtt_higher_than:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: inbound
+    prepend_twice_to_peers_with_rtt_lower_than:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: inbound
+    reject_cause:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    rejected_route_announced_by:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    route_validated_via_white_list:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: outbound
+  custom_communities: {}
+  filtering:
+    global_black_list_pref: null
+    ipv4_pref_len:
+      max: 24
+      min: 8
+    ipv6_pref_len:
+      max: 48
+      min: 12
+    irrdb:
+      allow_longer_prefixes: false
+      enforce_origin_in_as_set: true
+      enforce_prefix_in_as_set: true
+      peering_db: false
+      tag_as_set: true
+      use_arin_bulk_whois_data:
+        enabled: false
+        source: http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2
+      use_rpki_roas_as_route_objects:
+        enabled: false
+    max_as_path_len: 32
+    max_prefix:
+      action: null
+      general_limit_ipv4: 170000
+      general_limit_ipv6: 12000
+      peering_db:
+        enabled: true
+        increment:
+          absolute: 100
+          relative: 15
+      restart_after: 15
+    next_hop:
+      policy: strict
+    reject_invalid_as_in_as_path: true
+    reject_policy:
+      policy: reject
+    rpki_bgp_origin_validation:
+      enabled: false
+      reject_invalid: true
+    transit_free:
+      action: null
+      asns:
+      - 174
+      - 209
+      - 286
+      - 701
+      - 1239
+      - 1299
+      - 2828
+      - 2914
+      - 3257
+      - 3320
+      - 3356
+      - 3549
+      - 5511
+      - 6453
+      - 6461
+      - 6762
+      - 6830
+      - 7018
+      - 12956
+  graceful_shutdown:
+    enabled: false
+    local_pref: 0
+  gtsm: false
+  passive: true
+  path_hiding: true
+  prepend_rs_as: false
+  rfc1997_wellknown_communities:
+    policy: pass
+  router_id: 192.0.2.2
+  rpki_roas:
+    allowed_trust_anchors:
+    - APNIC from AFRINIC RPKI Root
+    - APNIC from ARIN RPKI Root
+    - APNIC from IANA RPKI Root
+    - APNIC from LACNIC RPKI Root
+    - APNIC from RIPE RPKI Root
+    - AfriNIC RPKI Root
+    - LACNIC RPKI Root
+    - RIPE NCC RPKI Root
+    ripe_rpki_validator_url: http://localcert.ripe.net:8088/export.json
+    source: ripe-rpki-validator-cache
+  rs_as: 999
+  rtt_thresholds:
+  - 5
+  - 10
+  - 15
+  - 20
+  - 30
+  - 50
+  - 100
+  - 200
+  - 500
+
+
+bogons
+------
+bogons:
+- comment: Default route
+  exact: true
+  ge: null
+  le: null
+  length: 0
+  max_length: 32
+  prefix: 0.0.0.0
+- comment: IANA - Local Identification
+  exact: false
+  ge: null
+  le: null
+  length: 8
+  max_length: 32
+  prefix: 0.0.0.0
+- comment: RFC 1918 - Private Use
+  exact: false
+  ge: null
+  le: null
+  length: 8
+  max_length: 32
+  prefix: 10.0.0.0
+- comment: IANA - Loopback
+  exact: false
+  ge: null
+  le: null
+  length: 8
+  max_length: 32
+  prefix: 127.0.0.0
+- comment: RFC 3927 - Link Local
+  exact: false
+  ge: null
+  le: null
+  length: 16
+  max_length: 32
+  prefix: 169.254.0.0
+- comment: RFC 1918 - Private Use
+  exact: false
+  ge: null
+  le: null
+  length: 12
+  max_length: 32
+  prefix: 172.16.0.0
+- comment: RFC 5737 - TEST-NET-1
+  exact: false
+  ge: null
+  le: null
+  length: 24
+  max_length: 32
+  prefix: 192.0.2.0
+- comment: RFC 1918 - Private Use
+  exact: false
+  ge: null
+  le: null
+  length: 16
+  max_length: 32
+  prefix: 192.168.0.0
+- comment: RFC 2544 - Network Interconnect Device Benchmark Testing
+  exact: false
+  ge: null
+  le: null
+  length: 15
+  max_length: 32
+  prefix: 198.18.0.0
+- comment: RFC 5737 - TEST-NET-2
+  exact: false
+  ge: null
+  le: null
+  length: 24
+  max_length: 32
+  prefix: 198.51.100.0
+- comment: RFC 5737 - TEST-NET-3
+  exact: false
+  ge: null
+  le: null
+  length: 24
+  max_length: 32
+  prefix: 203.0.113.0
+- comment: RFC 5771 - Multcast (formerly Class D)
+  exact: false
+  ge: null
+  le: null
+  length: 3
+  max_length: 32
+  prefix: 224.0.0.0
+- comment: RFC 6598 - Shared Address Space
+  exact: false
+  ge: null
+  le: null
+  length: 10
+  max_length: 32
+  prefix: 100.64.0.0
+- comment: Default route
+  exact: true
+  ge: null
+  le: null
+  length: 0
+  max_length: 128
+  prefix: '::'
+- comment: loopback, unspecified, v4-mapped
+  exact: false
+  ge: null
+  le: null
+  length: 8
+  max_length: 128
+  prefix: '::'
+- comment: RFC 6052 - IPv4-IPv6 Translation
+  exact: false
+  ge: null
+  le: null
+  length: 96
+  max_length: 128
+  prefix: '64:ff9b::'
+- comment: RFC 6666 - reserved for Discard-Only Address Block
+  exact: false
+  ge: null
+  le: null
+  length: 8
+  max_length: 128
+  prefix: '100::'
+- comment: RFC 4048 - Reserved by IETF
+  exact: false
+  ge: null
+  le: null
+  length: 7
+  max_length: 128
+  prefix: '200::'
+- comment: RFC 4291 - Reserved by IETF
+  exact: false
+  ge: null
+  le: null
+  length: 6
+  max_length: 128
+  prefix: '400::'
+- comment: RFC 4291 - Reserved by IETF
+  exact: false
+  ge: null
+  le: null
+  length: 5
+  max_length: 128
+  prefix: '800::'
+- comment: RFC 4291 - Reserved by IETF
+  exact: false
+  ge: null
+  le: null
+  length: 4
+  max_length: 128
+  prefix: '1000::'
+- comment: RFC 4380 - Teredo prefix
+  exact: false
+  ge: null
+  le: null
+  length: 33
+  max_length: 128
+  prefix: '2001::'
+- comment: RFC 4380 - Teredo prefix
+  exact: false
+  ge: null
+  le: null
+  length: 33
+  max_length: 128
+  prefix: '2001:0:8000::'
+- comment: RFC 5180 - Benchmarking
+  exact: false
+  ge: null
+  le: null
+  length: 48
+  max_length: 128
+  prefix: '2001:2::'
+- comment: RFC 7450 - Automatic Multicast Tunneling
+  exact: false
+  ge: null
+  le: null
+  length: 32
+  max_length: 128
+  prefix: '2001:3::'
+- comment: RFC 4843 - Deprecated ORCHID
+  exact: false
+  ge: null
+  le: null
+  length: 28
+  max_length: 128
+  prefix: '2001:10::'
+- comment: RFC 7343 - ORCHIDv2
+  exact: false
+  ge: null
+  le: null
+  length: 28
+  max_length: 128
+  prefix: '2001:20::'
+- comment: RFC 3849 - NON-ROUTABLE range to be used for documentation purpose
+  exact: false
+  ge: null
+  le: null
+  length: 32
+  max_length: 128
+  prefix: '2001:db8::'
+- comment: RFC 3068 - 6to4 prefix
+  exact: false
+  ge: null
+  le: null
+  length: 16
+  max_length: 128
+  prefix: '2002::'
+- comment: RFC 5156 - used for the 6bone but was returned
+  exact: false
+  ge: null
+  le: null
+  length: 16
+  max_length: 128
+  prefix: '3ffe::'
+- comment: RFC 4291 - Reserved by IETF
+  exact: false
+  ge: null
+  le: null
+  length: 3
+  max_length: 128
+  prefix: '4000::'
+- comment: RFC 5156 - used for the 6bone but was returned
+  exact: false
+  ge: null
+  le: null
+  length: 8
+  max_length: 128
+  prefix: '5f00::'
+- comment: RFC 4291 - Reserved by IETF
+  exact: false
+  ge: null
+  le: null
+  length: 3
+  max_length: 128
+  prefix: '6000::'
+- comment: RFC 4291 - Reserved by IETF
+  exact: false
+  ge: null
+  le: null
+  length: 3
+  max_length: 128
+  prefix: '8000::'
+- comment: RFC 4291 - Reserved by IETF
+  exact: false
+  ge: null
+  le: null
+  length: 3
+  max_length: 128
+  prefix: 'a000::'
+- comment: RFC 4291 - Reserved by IETF
+  exact: false
+  ge: null
+  le: null
+  length: 3
+  max_length: 128
+  prefix: 'c000::'
+- comment: RFC 4291 - Reserved by IETF
+  exact: false
+  ge: null
+  le: null
+  length: 4
+  max_length: 128
+  prefix: 'e000::'
+- comment: RFC 4291 - Reserved by IETF
+  exact: false
+  ge: null
+  le: null
+  length: 5
+  max_length: 128
+  prefix: 'f000::'
+- comment: RFC 4291 - Reserved by IETF
+  exact: false
+  ge: null
+  le: null
+  length: 6
+  max_length: 128
+  prefix: 'f800::'
+- comment: RFC 4193 - Unique Local Unicast
+  exact: false
+  ge: null
+  le: null
+  length: 7
+  max_length: 128
+  prefix: 'fc00::'
+- comment: RFC 4291 - Link Local Unicast
+  exact: false
+  ge: null
+  le: null
+  length: 10
+  max_length: 128
+  prefix: 'fe80::'
+- comment: RFC 4291 - Reserved by IETF
+  exact: false
+  ge: null
+  le: null
+  length: 10
+  max_length: 128
+  prefix: 'fec0::'
+- comment: RFC 4291 - Multicast
+  exact: false
+  ge: null
+  le: null
+  length: 8
+  max_length: 128
+  prefix: 'ff00::'
+
+
+clients
+-------
+clients:
+- asn: 3333
+  cfg:
+    add_path: false
+    attach_custom_communities: null
+    blackhole_filtering:
+      announce_to_client: true
+    filtering:
+      black_list_pref: null
+      ipv4_pref_len: &id001
+        max: 24
+        min: 8
+      ipv6_pref_len: &id002
+        max: 48
+        min: 12
+      irrdb:
+        as_set_bundle_ids: !!set {}
+        as_sets: null
+        enforce_origin_in_as_set: true
+        enforce_prefix_in_as_set: true
+        white_list_asn: null
+        white_list_pref: null
+        white_list_route: null
+      max_as_path_len: 32
+      max_prefix:
+        action: null
+        limit_ipv4: null
+        limit_ipv6: null
+        peering_db:
+          enabled: true
+          increment:
+            absolute: 100
+            relative: 15
+        restart_after: 15
+      next_hop:
+        authorized_addresses_list: null
+        policy: strict
+      reject_invalid_as_in_as_path: true
+      reject_policy:
+        policy: reject
+      rpki_bgp_origin_validation:
+        enabled: false
+        reject_invalid: true
+    graceful_shutdown:
+      enabled: false
+    gtsm: false
+    passive: true
+    prepend_rs_as: false
+  description: null
+  id: AS3333_1
+  ip: 192.0.2.11
+  password: null
+- asn: 10745
+  cfg:
+    add_path: false
+    attach_custom_communities: null
+    blackhole_filtering:
+      announce_to_client: true
+    filtering:
+      black_list_pref: null
+      ipv4_pref_len: *id001
+      ipv6_pref_len: *id002
+      irrdb:
+        as_set_bundle_ids: !!set {}
+        as_sets: null
+        enforce_origin_in_as_set: true
+        enforce_prefix_in_as_set: true
+        white_list_asn: null
+        white_list_pref: null
+        white_list_route: null
+      max_as_path_len: 32
+      max_prefix:
+        action: null
+        limit_ipv4: null
+        limit_ipv6: null
+        peering_db:
+          enabled: true
+          increment:
+            absolute: 100
+            relative: 15
+        restart_after: 15
+      next_hop:
+        authorized_addresses_list: null
+        policy: strict
+      reject_invalid_as_in_as_path: true
+      reject_policy:
+        policy: reject
+      rpki_bgp_origin_validation:
+        enabled: false
+        reject_invalid: true
+    graceful_shutdown:
+      enabled: false
+    gtsm: false
+    passive: true
+    prepend_rs_as: false
+  description: null
+  id: AS10745_1
+  ip: 192.0.2.22
+  password: null
+- asn: 10745
+  cfg:
+    add_path: false
+    attach_custom_communities: null
+    blackhole_filtering:
+      announce_to_client: true
+    filtering:
+      black_list_pref: null
+      ipv4_pref_len: *id001
+      ipv6_pref_len: *id002
+      irrdb:
+        as_set_bundle_ids: !!set
+          ? a47487d3c1df7a14133a9cff3612f3af305e57bc54f1f212d6f8fb2da1da11949dea574d2c972b103143a62afb13ce6c93f8f89d3b0102b7113b54f8e1c8b341
+          : null
+        as_sets: null
+        enforce_origin_in_as_set: true
+        enforce_prefix_in_as_set: true
+        white_list_asn: null
+        white_list_pref: null
+        white_list_route: null
+      max_as_path_len: 32
+      max_prefix:
+        action: null
+        limit_ipv4: null
+        limit_ipv6: null
+        peering_db:
+          enabled: true
+          increment:
+            absolute: 100
+            relative: 15
+        restart_after: 15
+      next_hop:
+        authorized_addresses_list: null
+        policy: strict
+      reject_invalid_as_in_as_path: true
+      reject_policy:
+        policy: reject
+      rpki_bgp_origin_validation:
+        enabled: false
+        reject_invalid: true
+    graceful_shutdown:
+      enabled: false
+    gtsm: false
+    passive: true
+    prepend_rs_as: false
+  description: null
+  id: AS10745_2
+  ip: 2001:db:1:1::22
+  password: null
+
+
+asns
+----
+asns:
+  AS10745:
+    as_sets: null
+  AS3333:
+    as_sets: null
+
+
+irrdb_info
+----------
+- asns:
+  - 10745
+  descr: AS10745
+  id: a47487d3c1df7a14133a9cff3612f3af305e57bc54f1f212d6f8fb2da1da11949dea574d2c972b103143a62afb13ce6c93f8f89d3b0102b7113b54f8e1c8b341
+  name: AS10745
+  prefixes:
+  - comment: null
+    exact: true
+    ge: null
+    le: null
+    length: 48
+    max_length: 128
+    prefix: '2001:500:4::'
+  - comment: null
+    exact: true
+    ge: null
+    le: null
+    length: 48
+    max_length: 128
+    prefix: '2001:500:30::'
+  - comment: null
+    exact: true
+    ge: null
+    le: null
+    length: 48
+    max_length: 128
+    prefix: '2001:500:110::'
+  used_by: client AS10745_2
+
+
+rpki_roas
+---------
+[]
+
+
+arin_whois_db_records
+---------------------
+{}

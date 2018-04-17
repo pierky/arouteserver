@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,8 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import BasicScenarioBIRD, BasicScenario_TagRejectPolicy
-from data4 import BasicScenario_Data4
+from .base import BasicScenarioBIRD, BasicScenario_TagRejectPolicy
+from .data4 import BasicScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 
 class BasicScenario_BIRDIPv4(BasicScenario_Data4, BasicScenarioBIRD):
@@ -25,6 +25,8 @@ class BasicScenario_BIRDIPv4(BasicScenario_Data4, BasicScenarioBIRD):
     RS_INSTANCE_CLASS = BIRDInstanceIPv4
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
     IP_VER = 4
+
+    ALLOWED_LOG_ERRORS = ["AS1_1: Invalid NEXT_HOP attribute in route 1.0.3.0/24"]
 
 class BasicScenario_BIRDIPv4_Reject(BasicScenario_BIRDIPv4):
 

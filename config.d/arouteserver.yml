@@ -41,7 +41,16 @@
 
 # Sources used by bgpq3
 # (bgpq3 -S argument).
-#bgpq3_sources: "RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,BBOI,BELL,GT,JPIRR,LEVEL3,RADB,RGNET,SAVVIS,TC"
+#bgpq3_sources: "RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,BBOI,BELL,JPIRR,LEVEL3,RADB,RGNET,SAVVIS,TC"
+
+# Path to the program used to determine the RTT of peers.
+#
+# An example is provided within the config directory and
+# can be used by setting rtt_getter_path to "rtt_getter.sh".
+#
+# Syntax and details can be found at the following URL:
+# https://arouteserver.readthedocs.io/en/latest/RTT_GETTER.html
+#rtt_getter_path:
 
 # How many threads will be used to acquire data from
 # external sources (IRRDB info, PeeringDB for max-prefix
@@ -49,4 +58,46 @@
 #threads: 4
 
 # Cache expiry time, in seconds.
+#
+# This can be a single integer value or a list of 'keyword: value'
+# pairs. If a single value is provided here, it will be used as
+# the expiry time for every kind of resource used by the program;
+# otherwise, each resource will use its own expiry time (or the
+# 'general' one if its specific expiry time is not given).
+#
+# Resources are identified by the following keywords:
+#
+# pdb_info: info fetched from PeeringDB (AS-SETs that networks
+#       configured in their IRR Record field, IPv4 and IPv6
+#       prefix count).
+#
+# ripe_rpki_roas: RPKI ROAs fetched from the RIPE RPKI Validator.
+#       See the 'general.yml' configuration file comments for more
+#       details.
+#
+# irr_as_sets: ASNs and routes fetched from IRR using clients'
+#       AS-SETs.
+#
+# Please note: if the desired behavior is to completely bypass
+# cache it is advisable to avoid setting expiry time to zero but
+# rather to set it to a duration that is enough to cover the whole
+# configuration processing time. During the configuration building
+# process some resources may be used more than once; a value of
+# zero would require them to be fetched multiple time during the
+# same execution.
+#
+# Single value:
 #cache_expiry: 43200
+#
+# Multiple values (default):
+#cache_expiry:
+#  general: 43200
+#  pdb_info: 86400
+#  ripe_rpki_roas: 43200
+#  irr_as_sets: 43200
+#  arin_whois_db_dump: 43200
+
+# Enable automatic checking for new release.
+# When set to True, the program automatically checks PyPI for
+# a new release; if found, it logs a warning message.
+#check_new_release: True

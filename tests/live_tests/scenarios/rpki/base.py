@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -12,6 +12,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+import six
 
 from pierky.arouteserver.builder import BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
@@ -35,7 +37,6 @@ class RPKIINVALIDScenario(LiveScenario):
                 [
                     (
                         cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                         cfg_roas="roas{}.yml".format(cls.IP_VER),
                                          local_files=[
                                              "header",
                                              "header{}".format(cls.IP_VER)
@@ -122,7 +123,7 @@ class RPKIINVALIDScenario(LiveScenario):
         self.receive_route(self.rs, prefix, self.AS2, as_path="2")
         self.receive_route(self.AS1, prefix, self.rs, as_path="2",
                            std_comms=["64512:2"], lrg_comms=[], ext_comms=[])
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS4, prefix, self.rs)
 
     def test_030_rpki_AS2_invalid_bad_len(self):
@@ -131,7 +132,7 @@ class RPKIINVALIDScenario(LiveScenario):
         self.receive_route(self.rs, prefix, self.AS2, as_path="2 101")
         self.receive_route(self.AS1, prefix, self.rs, as_path="2 101",
                            std_comms=["64512:2"], lrg_comms=[], ext_comms=[])
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS4, prefix, self.rs)
 
     def test_040_rpki_AS2_valid_1(self):
@@ -161,25 +162,25 @@ class RPKIINVALIDScenario(LiveScenario):
     def test_050_rpki_AS3_invalid_bad_asn(self):
         """{}: RPKI, AS3 invalid prefix, bad ASN"""
         prefix = self.DATA["AS3_invalid1"]
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.rs, prefix, self.AS3)
         self.log_contains(self.rs,
                           "RPKI, route is INVALID - REJECTING {}".format(
                               prefix))
         for inst in (self.AS1, self.AS4):
-            with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                 self.receive_route(inst, prefix, self.rs)
 
     def test_050_rpki_AS3_invalid_bad_len(self):
         """{}: RPKI, AS3 invalid prefix, bad length"""
         prefix = self.DATA["AS3_badlen"]
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.rs, prefix, self.AS3)
         self.log_contains(self.rs,
                           "RPKI, route is INVALID - REJECTING {}".format(
                               prefix))
         for inst in (self.AS1, self.AS4):
-                with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+                with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                     self.receive_route(inst, prefix, self.rs)
 
     def test_060_rpki_AS3_valid_1(self):
@@ -205,3 +206,8 @@ class RPKIINVALIDScenario(LiveScenario):
         for inst in (self.AS1, self.AS4):
             self.receive_route(inst, prefix, self.rs, as_path="3",
                                std_comms=["64512:3"], lrg_comms=[], ext_comms=[])
+
+    def test_900_reconfigure(self):
+        """{}: reconfigure"""
+        self.rs.reload_config()
+        self.test_020_sessions_up()

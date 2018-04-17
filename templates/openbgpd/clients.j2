@@ -4,16 +4,21 @@
 {{ "pre-clients"|include_local_file -}}
 
 group "clients" {
-{% for client in clients if client.ip is current_ipver %}
+{% for client in clients|sort(attribute="id") if client.ip is current_ipver %}
 
+{%	if "rtt" in client and client["rtt"] %}
+	# RTT: {{ client["rtt"] }} ms (normalized value: {{ client["rtt"]|get_normalized_rtt }})
+{%	endif %}
 	neighbor {{ client.ip }} {
 		{{ "client"|include_local_file -}}
-
-		softreconfig in yes
-{%	if client.description %}
-		descr "{{ client.description|truncate(31) }}"
-{%	endif %}
 		remote-as {{ client.asn }}
+
+{%	if "6.1"|target_version_le %}
+		softreconfig in yes
+{%	endif %}
+{%	if client.description %}
+		descr "{{ client.description|replace("\"", "")|truncate(31, true, "...", 0) }}"
+{%	endif %}
 {%	if client.cfg.passive %}
 		passive
 {%	endif %}

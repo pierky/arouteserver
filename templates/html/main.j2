@@ -117,11 +117,23 @@ Longer prefixes that are covered by one entry of the resulting route set are acc
 {% endif %}
 </p></li>
 
+{% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled %}
+<li><p>Use <strong>RPKI ROAs</strong> to validate routes whose origin ASN is authorized by the client's AS-SET but whose prefix is not.</p></li>
+{% endif %}
+
+{% if cfg.filtering.irrdb.use_arin_bulk_whois_data.enabled %}
+<li><p>Use <strong>ARIN Whois DB dump</strong> to validate routes whose origin ASN is authorized by the client's AS-SET but whose prefix is not.</p></li>
+
+<li><p>Database is fetched from {{ cfg.filtering.irrdb.use_arin_bulk_whois_data.source|urlize }}.</p></li>
+{% endif %}
+
 {% if cfg.filtering.irrdb.tag_as_set and
 	(cfg.communities.prefix_present_in_as_set|community_is_set or
 	 cfg.communities.prefix_not_present_in_as_set|community_is_set or
 	 cfg.communities.origin_present_in_as_set|community_is_set or
-	 cfg.communities.origin_not_present_in_as_set|community_is_set)%}
+	 cfg.communities.origin_not_present_in_as_set|community_is_set or
+	 cfg.communities.prefix_validated_via_rpki_roas|community_is_set or
+	 cfg.communities.prefix_validated_via_arin_whois_db_dump|community_is_set)%}
 <li><p>
 Route <strong>validity state</strong> is signalled to route server clients using the following <strong>BGP communities</strong>:
 <table class="table">
@@ -138,6 +150,9 @@ Route <strong>validity state</strong> is signalled to route server clients using
   {{ write_communities_table_row(cfg.communities.prefix_not_present_in_as_set, "Prefix is NOT included in client's AS-SET") }} 
   {{ write_communities_table_row(cfg.communities.origin_present_in_as_set, "Origin ASN is included in client's AS-SET") }} 
   {{ write_communities_table_row(cfg.communities.origin_not_present_in_as_set, "Origin ASN is NOT included in client's AS-SET") }} 
+  {{ write_communities_table_row(cfg.communities.prefix_validated_via_rpki_roas, "Prefix matched by a RPKI ROA for the authorized origin ASN") }} 
+  {{ write_communities_table_row(cfg.communities.prefix_validated_via_arin_whois_db_dump, "Prefix matched by an entry of the ARIN Whois DB dump") }}
+  {{ write_communities_table_row(cfg.communities.route_validated_via_white_list, "Route authorized soley because of a client white list entry") }} 
 </tbody>
 </table>
 </p></li>
@@ -146,20 +161,36 @@ Route <strong>validity state</strong> is signalled to route server clients using
 
 
 
-<h3>RPKI validation</h3>
+<h3>RPKI BGP Prefix Origin Validation</h3>
 
 <ul>
 
-<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI validation</a> of routes received by the route server is <strong>{% if cfg.filtering.rpki.enabled %}enabled{% else %}disabled{% endif %}</strong>.</p></li>
+<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI BGP Prefix Origin Validation</a> of routes received by the route server is <strong>{% if cfg.filtering.rpki_bgp_origin_validation.enabled %}enabled{% else %}disabled{% endif %}</strong>.</p></li>
 
-{% if cfg.filtering.rpki.enabled %}
-{%	if cfg.filtering.rpki.reject_invalid %}
+{% if cfg.filtering.rpki_bgp_origin_validation.enabled %}
+{%	if cfg.filtering.rpki_bgp_origin_validation.reject_invalid %}
 <li><p>When an INVALID route is received by the route server, <strong>it is rejected</strong>.</p></li>
 {%	else %}
 <li><p>INVALID routes are not announced to clients.</p></li>
 {%	endif %}
 {% endif %}
 </ul>
+
+
+
+{% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled or
+	cfg.filtering.rpki_bgp_origin_validation.enabled %}
+<h3>RPKI ROAs</h3>
+
+<ul>
+
+{%	if cfg.rpki_roas.source == "ripe-rpki-validator-cache" %}
+<li><p>RPKI ROAs are fetched from the RIPE RPKI Validator cache file at {{ cfg.rpki_roas.ripe_rpki_validator_url|urlize }}. The following Trust Anchors are used: {{ cfg.rpki_roas.allowed_trust_anchors|join(", ") }}</p></li>
+{%	else %}
+<li><p>RPKI ROAs are supplied using an external program.</p></li>
+{%	endif %}
+</ul>
+{% endif %}
 
 
 
@@ -178,7 +209,7 @@ Route <strong>validity state</strong> is signalled to route server clients using
 {%	endif %}
 	</p></li>
 
-{%	if cfg.filtering.max_prefix.peering_db %}
+{%	if cfg.filtering.max_prefix.peering_db.enabled %}
 	<li><p>The limit, if not provided on a client-by-client basis, is learnt from the client's <strong>PeeringDB record</strong>.</p></li>
 {%	endif %}
 	<li><p>If no more specific limits exist for the client, the <strong>general limit</strong> of {{ cfg.filtering.max_prefix.general_limit_ipv4 }} IPv4 routes and {{ cfg.filtering.max_prefix.general_limit_ipv6 }} IPv6 routes is enforced.</p></li>
@@ -271,7 +302,25 @@ The NO_EXPORT well-known community is also added.
 
 
 
+{% if cfg.graceful_shutdown.enabled %}
+<h2>Graceful BGP session shutdown</h2>
+
+<ul>
+<li><p>Routes tagged with the <strong>GRACEFUL_SHUTDOWN</strong> BGP community (65535:0) have their LOCAL_PREF attribute lowered to {{ cfg.graceful_shutdown.local_pref }}.</p></li>
+</ul>
+{% endif %}
+
+
+
 <h2>Announcement control via BGP communities</h2>
+
+<ul>
+{% if cfg.rfc1997_wellknown_communities.policy == "strict" %}
+<li><p><b>NO_EXPORT</b> and <b>NO_ADVERTISE</b> communities are processed accordingly to RFC1997.</p></li>
+{% else %}
+<li><p>Routes tagged with the <b>NO_EXPORT</b> or <b>NO_ADVERTISE</b> communities received by the route server are propagated to other clients with those communities unaltered.</p></li>
+{% endif %}
+</ul>
 
 <table class="table table-striped">
   <thead>
@@ -285,15 +334,30 @@ The NO_EXPORT well-known community is also added.
   <tbody>
   {{ write_communities_table_row(cfg.communities.do_not_announce_to_any, "Do not announce to any client") }}
   {{ write_communities_table_row(cfg.communities.announce_to_peer, "Announce to peer, even if tagged with the previous community") }}
+{% for ann_do_not, descr in [("do_not_announce", "Do not announce"), ("announce", "Announce")] %}
+{%	for lower_higher, op in [("lower", "<="), ("higher", ">")] %}
+{%		set comm = cfg.communities[ann_do_not ~ "_to_peers_with_rtt_" ~ lower_higher ~ "_than"] %}
+  {{ write_communities_table_row(comm, descr ~ "_to peers with RTT " ~ op ~ " than <em>X</em> ms (*)", dyn_val="X") }}
+{%	endfor %}
+{% endfor %}
   {{ write_communities_table_row(cfg.communities.do_not_announce_to_peer, "Do not announce to peer") }}
-
-  {{ write_communities_table_row(cfg.communities.prepend_once_to_any, "Prepend the announcing ASN once to any") }}
-  {{ write_communities_table_row(cfg.communities.prepend_twice_to_any, "Prepend the announcing ASN twice to any") }}
-  {{ write_communities_table_row(cfg.communities.prepend_thrice_to_any, "Prepend the announcing ASN thrice to any") }}
 
   {{ write_communities_table_row(cfg.communities.prepend_once_to_peer, "Prepend the announcing ASN once to peer") }}
   {{ write_communities_table_row(cfg.communities.prepend_twice_to_peer, "Prepend the announcing ASN twice to peer") }}
   {{ write_communities_table_row(cfg.communities.prepend_thrice_to_peer, "Prepend the announcing ASN thrice to peer") }}
+
+{% for lower_higher, op in [("higher", ">"), ("lower", "<=")] %}
+{%	for times, times_num in [("once", 1), ("twice", 2), ("thrice", 3)] %}
+{%		set comm = cfg.communities["prepend_" ~ times ~ "_to_peers_with_rtt_" ~ lower_higher ~ "_than"] %}
+{%		if comm|community_is_set %}
+  {{ write_communities_table_row(comm, "Prepend " ~ times ~ " to peers with RTT " ~ op ~ " than <em>X</em> ms (*)", dyn_val="X") }}
+{%		endif %}
+{%	endfor %}
+{% endfor %}
+
+  {{ write_communities_table_row(cfg.communities.prepend_once_to_any, "Prepend the announcing ASN once to any") }}
+  {{ write_communities_table_row(cfg.communities.prepend_twice_to_any, "Prepend the announcing ASN twice to any") }}
+  {{ write_communities_table_row(cfg.communities.prepend_thrice_to_any, "Prepend the announcing ASN thrice to any") }}
 
   {{ write_communities_table_row(cfg.communities.add_noexport_to_any, "Add NO_EXPORT to any") }}
   {{ write_communities_table_row(cfg.communities.add_noadvertise_to_any, "Add NO_ADVERTISE to any") }}
@@ -302,6 +366,13 @@ The NO_EXPORT well-known community is also added.
 
   </tbody>
 </table>
+
+{% if rtt_based_functions_are_used %}
+* For RTT-based communities, the following values can be used for <em>X</em>: 
+{%	for threshold_val in cfg.rtt_thresholds %}
+{{ threshold_val }}{% if not loop.last %}, {% endif %}
+{%	endfor %}
+{% endif %}
 
 
 </div>

@@ -3,10 +3,9 @@ include README.rst
 include CHANGES.rst
 include MANIFEST.in
 include requirements.txt
+include setup.cfg
 recursive-include pierky *.py
-recursive-include pierky/arouteserver/config.d
 recursive-include pierky/arouteserver/config.d *
-recursive-include pierky/arouteserver/templates
 recursive-include pierky/arouteserver/templates *
 recursive-include pierky/arouteserver/tests/live_tests/skeleton *.py
 recursive-include pierky/arouteserver/tests/live_tests/skeleton *.j2

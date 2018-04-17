@@ -12,21 +12,31 @@ protocol static own_prefixes
 	route {{ data.AS5_pref_ko_origin_ok1 }} reject;
 	route {{ data.AS3_pref_ok_origin_ko3 }} reject;
 	route {{ data.AS3_pref_ko_origin_ko1 }} reject;
+	route {{ data.AS5_pref_wl_origin_ok }} reject;
+	route {{ data.AS5_pref_wl_origin_ko }} reject;
+	route {{ data.AS5_pref_wl_origin_wl }} reject;
+	route {{ data.AS5_pref_ko_origin_wl }} reject;
+	route {{ data.AS5_pref_ok_origin_wl }} reject;
 }
 
-function fake_AS3() {
-	# build an AS_PATH == " 3", so that the
-	# origin ASN (3) is not included in AS5's AS-SET
+
+function fake_origin_as(int origin_as) {
+	# build an AS_PATH == "2 <origin_as>", so that the
+	# origin ASN is not included in AS2's AS-SET
 	# and the prefix is marked with the
 	# not_present_in_as_set community.
 	bgp_path.delete(5);
-	bgp_path.prepend(3);
+	bgp_path.prepend(origin_as);
 	bgp_path.prepend(5);
 }
 filter outgoing {
-	if net = {{ data.AS3_pref_ok_origin_ko3 }} then fake_AS3();
-	if net = {{ data.AS3_pref_ko_origin_ko1 }} then fake_AS3();
-	accept;
+	if net = {{ data.AS3_pref_ok_origin_ko3 }} then fake_origin_as(3);
+	if net = {{ data.AS3_pref_ko_origin_ko1 }} then fake_origin_as(3);
+	if net = {{ data.AS5_pref_wl_origin_ko }} then fake_origin_as(3);
+	if net = {{ data.AS5_pref_wl_origin_wl }} then fake_origin_as(51);
+	if net = {{ data.AS5_pref_ko_origin_wl }} then fake_origin_as(51);
+	if net = {{ data.AS5_pref_ok_origin_wl }} then fake_origin_as(51);
+accept;
 }
 
 protocol bgp the_rs {

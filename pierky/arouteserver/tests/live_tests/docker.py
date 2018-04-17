@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,11 +14,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import re
 import subprocess
 import time
 
-from instances import InstanceError, BGPSpeakerInstance
+from .instances import InstanceError, BGPSpeakerInstance, InstanceNotRunning
 
 class DockerInstance(BGPSpeakerInstance):
 
@@ -37,7 +36,7 @@ class DockerInstance(BGPSpeakerInstance):
         try:
             if detached:
                 dev_null = open(os.devnull, "w")
-                process = subprocess.Popen(
+                subprocess.Popen(
                     cmd.split(),
                     stdin=None,
                     stdout=dev_null,
@@ -45,7 +44,7 @@ class DockerInstance(BGPSpeakerInstance):
                 )
                 return None
             else:
-                stdout = subprocess.check_output(cmd.split())
+                stdout = subprocess.check_output(cmd.split()).decode("utf-8")
                 return stdout
         except subprocess.CalledProcessError as e:
             raise InstanceError(
@@ -165,7 +164,7 @@ class DockerInstance(BGPSpeakerInstance):
                     )
             )
 
-            res = self._run(cmd, detached=True)
+            self._run(cmd, detached=True)
             time.sleep(3)
             if not self.is_running():
                 process = subprocess.Popen(

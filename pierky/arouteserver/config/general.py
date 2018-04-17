@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,9 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from collections import OrderedDict
 import logging
 
-from .base import ConfigParserBase, convert_next_hop_policy
+from .base import ConfigParserBase, convert_deprecated
 from .validators import *
 from ..errors import ConfigError, ARouteServerError
 
@@ -41,23 +42,40 @@ class ConfigParserGeneral(ConfigParserBase):
         "origin_not_present_in_as_set": { "type": "outbound" },
         "prefix_present_in_as_set": { "type": "outbound" },
         "prefix_not_present_in_as_set": { "type": "outbound" },
+        "prefix_validated_via_rpki_roas": { "type": "outbound" },
+        "prefix_validated_via_arin_whois_db_dump": { "type": "outbound" },
+        "route_validated_via_white_list": { "type": "outbound" },
 
         "blackholing": { "type": "inbound" },
+
         "do_not_announce_to_any": { "type": "inbound" },
         "do_not_announce_to_peer": { "type": "inbound", "peer_as": True },
         "announce_to_peer": { "type": "inbound", "peer_as": True },
+        "do_not_announce_to_peers_with_rtt_lower_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "do_not_announce_to_peers_with_rtt_higher_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "announce_to_peers_with_rtt_lower_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "announce_to_peers_with_rtt_higher_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+
         "prepend_once_to_any": { "type": "inbound" },
         "prepend_twice_to_any": { "type": "inbound" },
         "prepend_thrice_to_any": { "type": "inbound" },
         "prepend_once_to_peer": { "type": "inbound", "peer_as": True },
         "prepend_twice_to_peer": { "type": "inbound", "peer_as": True },
         "prepend_thrice_to_peer": { "type": "inbound", "peer_as": True },
+        "prepend_once_to_peers_with_rtt_lower_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "prepend_twice_to_peers_with_rtt_lower_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "prepend_thrice_to_peers_with_rtt_lower_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "prepend_once_to_peers_with_rtt_higher_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "prepend_twice_to_peers_with_rtt_higher_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+        "prepend_thrice_to_peers_with_rtt_higher_than": { "type": "inbound", "dyn_val": True, "rtt": True },
+
         "add_noexport_to_any": { "type": "inbound" },
         "add_noadvertise_to_any": { "type": "inbound" },
         "add_noexport_to_peer": { "type": "inbound", "peer_as": True },
         "add_noadvertise_to_peer": { "type": "inbound", "peer_as": True },
 
         "reject_cause": { "type": "internal", "dyn_val": True },
+        "rejected_route_announced_by": { "type": "internal", "dyn_val": True },
     }
 
     @staticmethod
@@ -74,6 +92,160 @@ class ConfigParserGeneral(ConfigParserBase):
             ]
         }
 
+    @staticmethod
+    def get_schema():
+        s = OrderedDict()
+
+        s["cfg"] = OrderedDict()
+        c = s["cfg"]
+
+        c["rs_as"] = ValidatorASN()
+        c["router_id"] = ValidatorIPv4Addr(mandatory=True)
+        c["prepend_rs_as"] = ValidatorBool(default=False)
+        c["path_hiding"] = ValidatorBool(default=True)
+        c["passive"] = ValidatorBool(default=True)
+        c["gtsm"] = ValidatorBool(default=False)
+        c["add_path"] = ValidatorBool(default=False)
+
+        c["filtering"] = OrderedDict()
+        f = c["filtering"]
+
+        f["next_hop"] = OrderedDict()
+        f["next_hop"]["policy"] = ValidatorOption(
+            "policy",
+            ("strict", "same-as", "authorized_addresses"),
+            default="strict"
+        )
+        f["ipv4_pref_len"] = ValidatorIPMinMaxLen(
+            4, default={"min": 8, "max": 24}
+        )
+        f["ipv6_pref_len"] = ValidatorIPMinMaxLen(
+            6, default={"min": 12, "max": 48}
+        )
+        f["global_black_list_pref"] = ValidatorListOf(
+            ValidatorPrefixListEntry, mandatory=False
+        )
+        f["max_as_path_len"] = ValidatorMaxASPathLen(default=32)
+        f["reject_invalid_as_in_as_path"] = ValidatorBool(default=True)
+        f["transit_free"] = OrderedDict()
+        f["transit_free"]["action"] = ValidatorOption(
+            "action", ("reject", "warning"), mandatory=False, default="reject"
+        )
+        f["transit_free"]["asns"] = ValidatorASNList(
+            mandatory=False
+        )
+
+        f["irrdb"] = OrderedDict()
+        i = f["irrdb"]
+
+        i["enforce_origin_in_as_set"] = ValidatorBool(default=True)
+        i["enforce_prefix_in_as_set"] = ValidatorBool(default=True)
+        i["allow_longer_prefixes"] = ValidatorBool(default=False)
+        i["tag_as_set"] = ValidatorBool(default=True)
+        i["peering_db"] = ValidatorBool(default=False)
+
+        i["use_rpki_roas_as_route_objects"] = OrderedDict()
+        r = i["use_rpki_roas_as_route_objects"]
+        r["enabled"] = ValidatorBool(default=False)
+
+        i["use_arin_bulk_whois_data"] = OrderedDict()
+        a = i["use_arin_bulk_whois_data"]
+        a["enabled"] = ValidatorBool(default=False)
+        a["source"] = ValidatorText(
+            mandatory=True,
+            default="http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
+        )
+
+        f["rpki_bgp_origin_validation"] = OrderedDict()
+        o = f["rpki_bgp_origin_validation"]
+        o["enabled"] = ValidatorBool(default=False)
+        o["reject_invalid"] = ValidatorBool(mandatory=True, default=True)
+
+        f["max_prefix"] = OrderedDict()
+        m = f["max_prefix"]
+
+        m["peering_db"] = OrderedDict()
+        m["peering_db"]["enabled"] = ValidatorBool(default=True)
+        m["peering_db"]["increment"] = OrderedDict()
+        m["peering_db"]["increment"]["absolute"] = ValidatorUInt(default=100)
+        m["peering_db"]["increment"]["relative"] = ValidatorUInt(default=15)
+        m["general_limit_ipv4"] = ValidatorUInt(default=170000)
+        m["general_limit_ipv6"] = ValidatorUInt(default=12000)
+        m["action"] = ValidatorOption(
+            "action",
+            ("shutdown", "restart", "block", "warning"),
+            mandatory=False,
+            default="shutdown"
+        )
+        m["restart_after"] = ValidatorUInt(default=15, mandatory=True)
+
+        f["reject_policy"] = OrderedDict()
+        f["reject_policy"]["policy"] = ValidatorOption(
+            "policy", ("reject", "tag"), default="reject"
+        )
+
+        c["rpki_roas"] = OrderedDict()
+        r = c["rpki_roas"]
+        r["source"] = ValidatorOption("source",
+            ("ripe-rpki-validator-cache", "rtrlib"),
+            mandatory=True,
+            default="ripe-rpki-validator-cache"
+        )
+        r["ripe_rpki_validator_url"] = ValidatorText(
+            mandatory=True,
+            default="http://localcert.ripe.net:8088/export.json"
+        )
+        r["allowed_trust_anchors"] = ValidatorListOf(
+            ValidatorText, mandatory=True, default=[
+                "APNIC from AFRINIC RPKI Root",
+                "APNIC from ARIN RPKI Root",
+                "APNIC from IANA RPKI Root",
+                "APNIC from LACNIC RPKI Root",
+                "APNIC from RIPE RPKI Root",
+                "AfriNIC RPKI Root",
+                "LACNIC RPKI Root",
+                "RIPE NCC RPKI Root"
+            ]
+        )
+
+        c["blackhole_filtering"] = OrderedDict()
+        b = c["blackhole_filtering"]
+
+        b["announce_to_client"] = ValidatorBool(mandatory=True, default=True)
+        b["policy_ipv4"] = ValidatorOption(
+            "policy_ipv4",
+            ("propagate-unchanged", "rewrite-next-hop"),
+            mandatory=False
+        )
+        b["policy_ipv6"] = ValidatorOption(
+            "policy_ipv6",
+            ("propagate-unchanged", "rewrite-next-hop"),
+            mandatory=False
+        )
+        b["rewrite_next_hop_ipv4"] = ValidatorIPv4Addr(mandatory=False)
+        b["rewrite_next_hop_ipv6"] = ValidatorIPv6Addr(mandatory=False)
+        b["add_noexport"] = ValidatorBool(default=True)
+
+        c["graceful_shutdown"] = OrderedDict()
+        c["graceful_shutdown"]["enabled"] = ValidatorBool(
+            mandatory=True, default=False
+        )
+        c["graceful_shutdown"]["local_pref"] = ValidatorUInt(
+            mandatory=True, default=0
+        )
+        c["rfc1997_wellknown_communities"] = OrderedDict()
+        c["rfc1997_wellknown_communities"]["policy"] = ValidatorOption(
+            "policy",
+            ("rfc1997", "pass"),
+            default="pass"
+        )
+        c["rtt_thresholds"] = ValidatorRTTThresholds(mandatory=False)
+
+        c["communities"] = {}
+        c["custom_communities"] = {}
+
+        return s
+
     def parse(self):
         """
         Contents of cfg dict is updated/normalized by validators.
@@ -81,92 +253,7 @@ class ConfigParserGeneral(ConfigParserBase):
 
         errors = False
 
-        schema = {
-            "cfg": {
-                "rs_as": ValidatorASN(),
-                "router_id": ValidatorIPv4Addr(mandatory=True),
-                "prepend_rs_as": ValidatorBool(default=False),
-                "path_hiding": ValidatorBool(default=True),
-                "passive": ValidatorBool(default=True),
-                "gtsm": ValidatorBool(default=False),
-                "add_path": ValidatorBool(default=False),
-                "filtering": {
-                    "next_hop": {
-                        "policy": ValidatorOption("policy",
-                                                  ("strict", "same-as",
-                                                   "authorized_addresses"),
-                                                  default="strict"),
-                    },
-                    "ipv4_pref_len": ValidatorIPMinMaxLen(4,
-                                                          default={"min": 8,
-                                                                   "max": 24}),
-                    "ipv6_pref_len": ValidatorIPMinMaxLen(6,
-                                                          default={"min": 12,
-                                                                   "max": 48}),
-                    "global_black_list_pref": ValidatorListOf(
-                        ValidatorPrefixListEntry, mandatory=False,
-                    ),
-                    "max_as_path_len": ValidatorMaxASPathLen(default=32),
-                    "reject_invalid_as_in_as_path": ValidatorBool(default=True),
-                    "transit_free": {
-                        "action": ValidatorOption("action",
-                                                  ("reject", "warning"),
-                                                  mandatory=False,
-                                                  default="reject"),
-                        "asns": ValidatorASNList(mandatory=False)
-                    },
-                    "irrdb": {
-                        "enforce_origin_in_as_set": ValidatorBool(default=True),
-                        "enforce_prefix_in_as_set": ValidatorBool(default=True),
-                        "allow_longer_prefixes": ValidatorBool(default=False),
-                        "tag_as_set": ValidatorBool(default=True)
-                    },
-                    "rpki": {
-                        "enabled": ValidatorBool(default=False),
-                        "reject_invalid": ValidatorBool(mandatory=True,
-                                                        default=True),
-                    },
-                    "max_prefix": {
-                        "peering_db": ValidatorBool(default=True),
-                        "general_limit_ipv4": ValidatorUInt(default=170000),
-                        "general_limit_ipv6": ValidatorUInt(default=12000),
-                        "action": ValidatorOption(
-                            "action",
-                            ("shutdown", "restart", "block", "warning"),
-                            mandatory=False,
-                            default="shutdown"
-                        ),
-                        "restart_after": ValidatorUInt(default=15,
-                                                       mandatory=True)
-                    },
-                    "reject_policy": {
-                        "policy": ValidatorOption("policy",
-                                                  ("reject", "tag"),
-                                                  default="reject")
-                        },
-                },
-                "blackhole_filtering": {
-                    "announce_to_client": ValidatorBool(
-                        mandatory=True, default=True
-                    ),
-                    "policy_ipv4": ValidatorOption(
-                        "policy_ipv4",
-                        ("propagate-unchanged", "rewrite-next-hop"),
-                        mandatory=False),
-                    "policy_ipv6": ValidatorOption(
-                        "policy_ipv6",
-                        ("propagate-unchanged", "rewrite-next-hop"),
-                        mandatory=False),
-                    "rewrite_next_hop_ipv4": ValidatorIPv4Addr(mandatory=False),
-                    "rewrite_next_hop_ipv6": ValidatorIPv6Addr(mandatory=False),
-                    "add_noexport": ValidatorBool(default=True),
-                },
-                "communities": {
-                },
-                "custom_communities": {
-                }
-            }
-        }
+        schema = self.get_schema()
 
         if "rs_as" in self.cfg["cfg"]:
             rs_as_macro = self.cfg["cfg"]["rs_as"]
@@ -199,8 +286,8 @@ class ConfigParserGeneral(ConfigParserBase):
                     self.new_community_validator(rs_as_macro)
 
         try:
-            # Convert next_hop_policy (< v0.6.0) into the new format
-            convert_next_hop_policy(self.cfg["cfg"])
+            convert_deprecated(self.cfg["cfg"])
+
             ConfigParserBase.validate(schema, self.cfg)
         except ARouteServerError as e:
             errors = True
@@ -265,7 +352,7 @@ class ConfigParserGeneral(ConfigParserBase):
         unique_communities = []
         for comms in (self.cfg["cfg"]["communities"],
                       self.cfg["cfg"]["custom_communities"]):
-            for comm_tag in comms:
+            for comm_tag in sorted(comms):
                 comm = comms[comm_tag]
                 for fmt in ("std", "lrg", "ext"):
                     if comm[fmt]:
@@ -279,18 +366,32 @@ class ConfigParserGeneral(ConfigParserBase):
                         else:
                             unique_communities.append(comm[fmt])
 
-        # The 'reject_cause' community can be set only if 'reject_policy'
-        # is 'tag'.
+        # The 'reject_cause' and 'rejected_route_announced_by' communities
+        # can be set only if 'reject_policy' is 'tag'.
         if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] != "tag":
-            reject_cause_is_set = False
+            for comm in ("reject_cause", "rejected_route_announced_by"):
+                reject_comm_is_set = False
+                for fmt in ("std", "ext", "lrg"):
+                    if self.cfg["cfg"]["communities"][comm][fmt]:
+                        reject_comm_is_set = True
+                        break
+                if reject_comm_is_set:
+                    errors = True
+                    logging.error(
+                        "The '{}' community can be set only if "
+                        "'reject_policy.policy' is 'tag'.".format(comm))
+
+        # The 'reject_cause' comm is mandatory when 'reject_policy' is 'tag'.
+        if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] == "tag":
+            reject_comm_is_set = False
             for fmt in ("std", "ext", "lrg"):
                 if self.cfg["cfg"]["communities"]["reject_cause"][fmt]:
-                    reject_cause_is_set = True
+                    reject_comm_is_set = True
                     break
-            if reject_cause_is_set:
+            if not reject_comm_is_set:
                 errors = True
                 logging.error(
-                    "The 'reject_cause' community can be set only if "
+                    "The 'reject_cause' community must be configured when "
                     "'reject_policy.policy' is 'tag'.")
 
         # Overlapping communities?
@@ -300,6 +401,33 @@ class ConfigParserGeneral(ConfigParserBase):
             errors = True
             if str(e):
                 logging.error(str(e))
+
+        # Are RTT-based functions used?
+        self.rtt_based_functions_are_used = False
+        for comm_name in self.cfg["cfg"]["communities"]:
+            comm_schema = self.COMMUNITIES_SCHEMA[comm_name]
+            if not comm_schema.get("rtt", False):
+                continue
+
+            comm = self.cfg["cfg"]["communities"][comm_name]
+            if comm["std"] or comm["ext"] or comm["lrg"]:
+                self.rtt_based_functions_are_used = True
+                break
+
+        # RTT-based functions are used: is RTT thresholds list set?
+        if self.rtt_based_functions_are_used:
+            if not self.cfg["cfg"]["rtt_thresholds"]:
+                errors = True
+                logging.error(
+                    "Some RTT-based functions are configured but the "
+                    "RTT thresholds list is empty."
+                )
+
+        # Are RPKI ROAs needed?
+        filtering = self.cfg["cfg"]["filtering"]
+        self.rpki_roas_needed = \
+            filtering["irrdb"]["use_rpki_roas_as_route_objects"]["enabled"] or \
+            filtering["rpki_bgp_origin_validation"]["enabled"]
 
         if errors:
             raise ConfigError()
@@ -379,17 +507,24 @@ class ConfigParserGeneral(ConfigParserBase):
         'peer_as' communities having the last part in the range of globally
         routable ASN only.
         In that case, any 'outbound' community whose first part matches an
-        'inbound' 'peer_as' community and whose last part falls  within the
+        'inbound' 'peer_as' community and whose last part falls within the
         private ASNs range would not be removed.
         Unfortunately, while BIRD allows this behaviour, OpenBGPD seems to be
         able to delete communities using wildcard only, and not ranges.
+        When checking for overlapping 'inbound' communities, this flag is
+        always set; in that case, indeed, when OpenBGPD scrubs the 'inbound'
+        'peer_as' community (using a wildcard match) it also scrubs the other
+        inbound community, that is the expected behaviour. At most there
+        will be two "delete" statements: one for the 'peer_as' community and
+        one for the other.
 
         This function is called from the config parser class with
         'allow_private_asns' set to True and also from OpenBGPD builder class
         with 'allow_private_asns' set to False.
         """
 
-        def communities_overlap(comm1_tag, comm1, comm2_tag, comm2):
+        def communities_overlap(comm1_tag, comm1, comm2_tag, comm2,
+                                private_asns_collide_with_peer_as):
             rs_as = self.cfg["cfg"]["rs_as"]
 
             err_msg = ("Community '{comm1_tag}' and '{comm2_tag}' "
@@ -436,7 +571,7 @@ class ConfigParserGeneral(ConfigParserBase):
                                 continue
                             if not_peer_as == 0:
                                 continue
-                            if allow_private_asns:
+                            if not private_asns_collide_with_peer_as:
                                 if 64512 <= not_peer_as <= 65534:
                                     continue
                                 if 4200000000 <= not_peer_as <= 4294967294:
@@ -450,15 +585,18 @@ class ConfigParserGeneral(ConfigParserBase):
                     if comm1_part != comm2_part:
                         break
 
-        def compare_communities(comms1, comms2, reason_text):
-            for tag1 in comms1:
-                for tag2 in comms2:
+        def compare_communities(comms1, comms2,
+                                private_asns_collide_with_peer_as,
+                                reason_text):
+            for tag1 in sorted(comms1):
+                for tag2 in sorted(comms2):
                     if tag1 == tag2:
                         continue
                     try:
                         communities_overlap(
                             tag1, comms1[tag1],
-                            tag2, comms2[tag2]
+                            tag2, comms2[tag2],
+                            private_asns_collide_with_peer_as
                         )
                     except ConfigError as e:
                         logging.error(str(e) + " " + reason_text)
@@ -486,18 +624,25 @@ class ConfigParserGeneral(ConfigParserBase):
 
         errors = errors or not compare_communities(
             inbound_communities, outbound_communities,
+            not allow_private_asns,
             "Inbound communities and outbound communities "
             "can't have overlapping values, otherwise they "
             "might be scrubbed.")
 
         errors = errors or not compare_communities(
             inbound_communities, custom_communities,
+            not allow_private_asns,
             "Inbound communities and custom communities "
             "can't have overlapping values, otherwise they "
             "might be scrubbed.")
 
+        # private_asns_collide_with_peer_as is always False when
+        # looking for overlapping values among inbound communities.
+        # Please refer to the docstring of check_overlapping_communities
+        # for more details.
         errors = errors or not compare_communities(
             inbound_communities, inbound_communities,
+            False,
             "Inbound communities can't have overlapping values, "
             "otherwise their meaning could be uncertain.")
 
@@ -507,6 +652,7 @@ class ConfigParserGeneral(ConfigParserBase):
         not_internal_communities.update(custom_communities)
         errors = errors or not compare_communities(
             internal_communities, not_internal_communities,
+            not allow_private_asns,
             "Internal communities can't have overlapping values with any "
             "other community.")
 

@@ -1,0 +1,33 @@
+[{
+  "length": 16,
+  "exact": false,
+  "max_length": 32,
+  "comment": null,
+  "le": 24,
+  "prefix": "1.0.0.0",
+  "ge": null
+ }, {
+  "length": 16,
+  "exact": false,
+  "max_length": 32,
+  "comment": null,
+  "le": 22,
+  "prefix": "2.0.0.0",
+  "ge": null
+ }, {
+  "length": 16,
+  "exact": true,
+  "max_length": 32,
+  "comment": null,
+  "le": null,
+  "prefix": "3.0.0.0",
+  "ge": null
+ }, {
+  "length": 8,
+  "exact": false,
+  "max_length": 32,
+  "comment": null,
+  "le": 24,
+  "prefix": "4.0.0.0",
+  "ge": 16
+ }]

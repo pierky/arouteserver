@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,6 +15,7 @@
 
 import json
 import os
+import six
 import unittest
 import yaml
 
@@ -33,11 +34,11 @@ class TestClientsFromEuroIX(unittest.TestCase):
 
     def _run(self, filename, *args, **kwargs):
         data = self._load(filename)
-        euro_ix = EuroIXMemberList(data)
+        euro_ix = EuroIXMemberList(data, None, None)
         self.clients = euro_ix.get_clients(*args, **kwargs)
 
     def _result_match_file(self, json_in_filename, yml_res_filename=None,
-                       *args, **kwargs):
+                           *args, **kwargs):
         self._run(json_in_filename, *args, **kwargs)
         res = {"clients": self.clients}
 
@@ -67,7 +68,7 @@ class TestClientsFromEuroIX(unittest.TestCase):
         self._result_match_file("official_more_complex_example",
             ixp_id=42, vlan_id=0, routeserver_only=True)
 
-        with self.assertRaisesRegexp(Exception, "IXP ID 1 not found"):
+        with six.assertRaisesRegex(self, Exception, "IXP ID 1 not found"):
             self._run("official_more_complex_example", ixp_id=1)
 
         self._run("official_more_complex_example", ixp_id=42, vlan_id=1)

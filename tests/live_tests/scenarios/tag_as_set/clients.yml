@@ -13,6 +13,16 @@ clients:
           - "192.0.2.21"
           - "2001:db8:1:1::21"
           description: "AS2_1 client, AS-SET from AS2 configuration"
+          cfg:
+                  filtering:
+                          irrdb:
+                                  white_list_pref:
+                                  - prefix: "2.2.0.0"
+                                    length: 16
+                                  - prefix: "2a02:2::"
+                                    length: 32
+                                  white_list_asn:
+                                  - 21
         - asn: 4
           ip:
           - "192.0.2.41"
@@ -24,14 +34,66 @@ clients:
                                 enforce_origin_in_as_set: True
                                 as_sets:
                                 - "AS-AS4"
+                                white_list_pref:
+                                  - prefix: "4.2.0.0"
+                                    length: 16
+                                  - prefix: "2a04:2::"
+                                    length: 32
+                                white_list_asn:
+                                  - 41
+                                white_list_route:
+                                  - prefix: "4.4.0.0"
+                                    length: 16
+                                    exact: True
+                                    asn: 44
+                                  - prefix: "2a04:4::"
+                                    length: 32
+                                    exact: True
+                                    asn: 44
+                                  - prefix: "4.5.0.0"
+                                    length: 16
+                                    asn: 43
+                                  - prefix: "2a04:5::"
+                                    length: 32
+                                    asn: 43
+                                  - prefix: "4.6.0.0"
+                                    length: 16
+                                  - prefix: "2a04:6::"
+                                    length: 32
         - asn: 5
           ip:
           - "192.0.2.51"
           - "2001:db8:1:1::51"
-          description: "AS5_1 client"
+          description: "AS5_1 client, AS-SET from PeeringDB"
           cfg:
                 filtering:
                         irrdb:
                                 enforce_prefix_in_as_set: True
+                                white_list_pref:
+                                  - prefix: "5.2.0.0"
+                                    length: 16
+                                  - prefix: "2a05:2::"
+                                    length: 32
+                                white_list_asn:
+                                  - 51
+        - asn: 6
+          ip:
+          - "192.0.2.61"
+          - "2001:db8:1:1::61"
+          description: "AS6_1 client"
+          cfg:
+                filtering:
+                        irrdb:
                                 as_sets:
-                                - "AS-AS5"
+                                - "AS6"
+                                enforce_prefix_in_as_set: True
+                                enforce_origin_in_as_set: True
+                                white_list_route:
+                                  - prefix: "3.2.0.0"
+                                    length: 16
+                                    exact: False
+                                    asn: 3
+                                  - prefix: "2a03:2::"
+                                    length: 32
+                                    exact: False
+                                    asn: 3

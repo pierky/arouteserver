@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import ipaddr
 import logging
 
 from .base import ConfigParserBase
@@ -40,10 +39,10 @@ class ConfigParserBogons(ConfigParserBase):
             try:
                 bogon = ValidatorPrefixListEntry().validate(bogon)
             except ARouteServerError as e:
+                msg = "Error in bogon definition"
                 if str(e):
-                    logging.error("Error in bogon definition: {}.".format(str(e)))
-                else:
-                    logging.error("Error in bogon definition")
+                    msg += ": {}.".format(str(e))
+                logging.error(msg)
                 errors = True
 
         if errors:

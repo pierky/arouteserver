@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,6 +26,10 @@ class RichConfigExampleScenario(LiveScenario):
     CLIENT_INSTANCE_CLASS = None
     CONFIG_BUILDER_CLASS = None
 
+    MOCK_RIPE_RPKI_CACHE = False
+    MOCK_PEERING_DB = False
+    MOCK_ARIN_DB_DUMP = False
+
     AS_SET = {
         "AS3333": [3333],
         "AS10745": [10745],
@@ -37,6 +41,11 @@ class RichConfigExampleScenario(LiveScenario):
         "AS3333": [
             "AS3333_allowed_prefixes"
         ],
+    }
+    RTT = {
+        "192.0.2.11": 114,
+        "192.0.2.22": 224,
+        "2001:db8:1:1::22": 226
     }
 
     @classmethod
@@ -88,7 +97,8 @@ class RichConfigExampleScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
             cls.DATA["rs_IPAddress"],
             [
                 (
-                    cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None),
+                    cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
+                                     target_version="6.0"),
                     "/etc/bgpd.conf"
                 )
             ]

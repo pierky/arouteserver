@@ -13,9 +13,60 @@ ROOT="`pwd`"
 DOCS_DIR="`pwd`/docs"
 CFG_FILE="var/build_doc.yml"
 
+OPTS="--cfg $CFG_FILE"
+if [ "$DEBUG" == "1" ]; then
+	OPTS="$OPTS --logging-level DEBUG"
+fi
+
+function publish_docs() {
+	title "Publishing docs via HTTP"
+
+	echo "cd $DOCS_DIR ; make html ; cd _build/html/ ; python -m SimpleHTTPServer 8000 ; cd $ROOT"
+	cd $DOCS_DIR
+	make html
+	cd _build/html/
+	python -m SimpleHTTPServer 8000
+	cd $ROOT
+}
+
+function title() {
+	echo "$(tput bold)$1$(tput sgr0)"
+}
+
+function filter() {
+	if [ -n "$FILTER_EXAMPLE_ID" -a "$FILTER_EXAMPLE_ID" != "$1" ]; then
+		title "SKIP $1 $2"
+		return 1
+	fi
+	if [ -n "$FILTER_EXAMPLE_ARG1" -a "$FILTER_EXAMPLE_ARG1" != "$2" ]; then
+		title "SKIP $1 $2"
+		return 1
+	fi
+	return 0
+}
+
+if [ "$1" == "publish" ]; then
+	publish_docs
+	exit
+fi
+
+FILTER_EXAMPLE_ID=""
+FILTER_EXAMPLE_ARG1=""
+if [ -n "$1" ]; then
+	FILTER_EXAMPLE_ID="$1"
+	shift
+fi
+if [ -n "$1" ]; then
+	FILTER_EXAMPLE_ARG1="$1"
+	shift
+fi
+
 # ----------------------------------------------------
 
-echo "Generating examples configurations"
+title "Rendering GENERAL.rst from config.d/general.yml"
+./utils/make_general.py
+
+title "Generating examples configurations"
 
 function RenderExample() {
 	DST="$1" ; shift
@@ -24,19 +75,49 @@ function RenderExample() {
 	CLIENTS="$1" ; shift
 	BOGONS="$1" ; shift
 
-	CMD="./scripts/arouteserver $COMMAND --cfg $CFG_FILE --general $GENERAL --clients $CLIENTS --bogons $BOGONS"
+	filter "$DST" "$COMMAND" || return 0
+
+	CMD="./scripts/arouteserver $COMMAND $OPTS --general $GENERAL --clients $CLIENTS --bogons $BOGONS"
 
 	if [ "$COMMAND" == "bird" ]; then
 		IP_VER="$1" ; shift
 		$CMD --ip-ver $IP_VER -o examples/$DST/bird$IP_VER.conf $@
 	elif [ "$COMMAND" == "openbgpd" ]; then
-		$CMD -o examples/$DST/openbgpd.conf --ignore-issues \* --target-version 6.1
+		$CMD -o examples/$DST/openbgpd.conf --ignore-issues \* --target-version 6.3
 	elif [ "$COMMAND" == "html" ]; then
 		$CMD -o examples/$DST/description.html
 		cp examples/$DST/description.html $DOCS_DIR/_static/examples_$DST.html
+	elif [ "$COMMAND" == "template-context" ]; then
+		if [ "$#" -gt 0 ]; then
+			IP_VER="$1" ; shift
+			IP_VER_OPT="--ip-ver $IP_VER"
+		else
+			IP_VER=""
+			IP_VER_OPT=""
+		fi
+		$CMD $IP_VER_OPT -o examples/$DST/template-context$IP_VER
 	else
 		echo "Command unknown: $COMMAND"
 	fi
+}
+
+function RenderConfigureExample() {
+	DAEMON="$1"; shift
+	DST="$1"; shift
+	ANSWERS="$1"; shift
+
+	filter "configure" "$1" || return 0
+
+	CMD="./scripts/arouteserver configure $OPTS --output examples/auto-config/${DST} --preset-answer $ANSWERS"
+
+	[[ -e examples/auto-config/${DST} ]] && rm examples/auto-config/${DST}
+	$CMD
+
+	CMD="./scripts/arouteserver html $OPTS --output examples/auto-config/${DST}.html --general examples/auto-config/${DST}"
+
+	$CMD &>/dev/null
+
+	cp examples/auto-config/${DST}.html $DOCS_DIR/_static/examples_auto-config_${DST}.html
 }
 
 function ClientsFromEuroIX() {
@@ -44,55 +125,121 @@ function ClientsFromEuroIX() {
 	IXP_ID="$1"; shift
 	OUTPUT_FILE="$1"; shift
 	VLAN_ID="$1"; shift
-	CMD="./scripts/arouteserver clients-from-euroix --cfg $CFG_FILE --url $URL $IXP_ID -o $OUTPUT_FILE"
+	CMD="./scripts/arouteserver clients-from-euroix $OPTS --url $URL $IXP_ID -o $OUTPUT_FILE"
 	if [ -n "$VLAN_ID" ]; then
 		CMD="$CMD --vlan $VLAN_ID"
 	fi
 
 	$CMD
 
-	./scripts/arouteserver bird --cfg $CFG_FILE --test-only --general "config.d/general.yml" --clients $OUTPUT_FILE --bogons "config.d/bogons.yml" --ip-ver 4
-	./scripts/arouteserver bird --cfg $CFG_FILE --test-only --general "config.d/general.yml" --clients $OUTPUT_FILE --bogons "config.d/bogons.yml" --ip-ver 6
+	./scripts/arouteserver bird $OPTS --test-only --general "config.d/general.yml" --clients $OUTPUT_FILE --bogons "config.d/bogons.yml" --ip-ver 4
+	./scripts/arouteserver bird $OPTS --test-only --general "config.d/general.yml" --clients $OUTPUT_FILE --bogons "config.d/bogons.yml" --ip-ver 6
 }
 
-echo "Building example: default, IPv4"
-RenderExample "default" "bird" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml" 4
-RenderExample "default" "openbgpd" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml"
+function IXFMemberExportFromClients() {
+	CLIENTS="$1"; shift
+	DST="$1"; shift
 
-echo "Building example: default, IPv6"
-RenderExample "default" "bird" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml" 6
-RenderExample "default" "openbgpd" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml"
+	./scripts/arouteserver ixf-member-export $OPTS --clients $CLIENTS --output $DST "Test IXP"
+}
 
-echo "Building example HTML: default"
-RenderExample "default" "html" "config.d/general.yml" "config.d/clients.yml" "config.d/bogons.yml"
+title "Building example: configure command output"
 
-echo "Building example: rich, IPv4"
-RenderExample "rich" "bird" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml" 4 --use-local-files client
-RenderExample "rich" "openbgpd" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml"
+D="examples/auto-config/README.rst"
+cat << EOF > $D
+.. DO NOT EDIT: this file is automatically created by /utils/build_doc
 
-echo "Building example: rich, IPv6"
-RenderExample "rich" "bird" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml" 6
-RenderExample "rich" "openbgpd" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml"
+\`\`configure\`\` command output
+----------------------------
 
-echo "Building example HTML: rich"
-RenderExample "rich" "html" "examples/rich/general.yml" "examples/rich/clients.yml" "config.d/bogons.yml"
+The \`\`configure\`\` command can be used to quickly generate policy definition files (*general.yml*) which are based on suggested settings and best practices.
 
-echo "Building example: BIRD hooks"
+A list of BGP communities is also automatically built.
+
+.. code-block:: console
+
+   $ arouteserver configure --output $D
+EOF
+
+G="bird-general.yml"
+RenderConfigureExample "bird" $G \
+	"daemon=bird asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" | \
+		sed 's/^/   /' >> $D
+./scripts/arouteserver bird $OPTS --ip-ver 4 --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
+
+G="openbgpd62-general.yml"
+RenderConfigureExample "openbgpd" $G \
+	"daemon=openbgpd version=6.3 asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" &>/dev/null
+./scripts/arouteserver openbgpd $OPTS --target-version 6.3 --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
+
+echo "The textual description (HTML) generated on the basis of the *general.yml* files produced by this command is also reported here." >> $D
+
+# Invalidating the cache because the previous commands fetched the real (huge)
+# dataset from the RIPE RPKI Validator, while the following commands just need
+# to used a very small subset of data for the sake of readability of the
+# example configs that are going to build.
+rm var/build_doc_cache/ripe-rpki-cache.json || true
+
+title "Building example: default, BIRD, IPv4"
+G="config.d/general.yml"
+C="config.d/clients.yml"
+RenderExample "default" "bird" "$G" "$C" "config.d/bogons.yml" 4
+RenderExample "default" "template-context" "$G" "$C" "config.d/bogons.yml" 4
+
+title "Building example: default, BIRD, IPv6"
+RenderExample "default" "bird" "$G" "$C" "config.d/bogons.yml" 6
+RenderExample "default" "template-context" "$G" "$C" "config.d/bogons.yml" 6
+
+title "Building example: default, OpenBGPD, IPv4 + IPv6"
+RenderExample "default" "openbgpd" "$G" "$C" "config.d/bogons.yml"
+RenderExample "default" "template-context" "$G" "$C" "config.d/bogons.yml"
+
+title "Building example: default, HTML"
+RenderExample "default" "html" "$G" "$C" "config.d/bogons.yml"
+
+title "Building example: rich, BIRD, IPv4"
+G="examples/rich/general.yml"
+C="examples/rich/clients.yml"
+RenderExample "rich" "bird" "$G" "$C" "config.d/bogons.yml" 4 --use-local-files client
+RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml" 4
+
+title "Building example: rich, BIRD, IPv6"
+RenderExample "rich" "bird" "$G" "$C" "config.d/bogons.yml" 6
+RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml" 6
+
+title "Building example: rich, OpenBGPD, IPv4 + IPv6"
+RenderExample "rich" "openbgpd" "$G" "$C" "config.d/bogons.yml"
+RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml"
+
+title "Building example: rich, HTML"
+RenderExample "rich" "html" "$G" "$C" "config.d/bogons.yml"
+
+title "Building example: BIRD hooks"
+G="examples/bird_hooks/general.yml"
+C="examples/bird_hooks/clients.yml"
 HOOKS="pre_receive_from_client post_receive_from_client pre_announce_to_client post_announce_to_client scrub_communities_in scrub_communities_out apply_blackhole_filtering_policy route_can_be_announced_to announce_rpki_invalid_to_client"
-RenderExample "bird_hooks" "bird" "examples/bird_hooks/general.yml" "examples/bird_hooks/clients.yml" "config.d/bogons.yml" 4 --use-hooks $HOOKS --use-local-files header
-RenderExample "bird_hooks" "bird" "examples/bird_hooks/general.yml" "examples/bird_hooks/clients.yml" "config.d/bogons.yml" 6 --use-hooks $HOOKS --use-local-files header
+RenderExample "bird_hooks" "bird" "$G" "$C" "config.d/bogons.yml" 4 --use-hooks $HOOKS --use-local-files header
+RenderExample "bird_hooks" "bird" "$G" "$C" "config.d/bogons.yml" 6 --use-hooks $HOOKS --use-local-files header
 
-echo "Build clients from Euro-IX files? [yes/NO] "
+title "Build clients from Euro-IX files? [yes/NO] "
 read YES_NO
 
 if [ "$YES_NO" == "yes" ]; then
-	ClientsFromEuroIX "https://my.ams-ix.net/api/v1/members.json" 1 "examples/clients-from-euroix/amsix.yml" 502
+	ClientsFromEuroIX "https://my.ams-ix.net/api/v1/members.json" 2 "examples/clients-from-euroix/amsix.yml" 502
 	ClientsFromEuroIX "https://www.inex.ie/ixp/apiv1/member-list/list" 1 "examples/clients-from-euroix/inex.yml" 2
+fi
+
+title "Build IX-F Member Export files from clients? [yes/NO] "
+read YES_NO
+
+if [ "$YES_NO" == "yes" ]; then
+	IXFMemberExportFromClients "tests/real/clients/bcix.yml" "examples/ixf-member-export/bcix.json"
+	IXFMemberExportFromClients "tests/real/clients/gr-ix.yml" "examples/ixf-member-export/gr-ix.json"
 fi
 
 # ----------------------------------------------------
 
-echo "Building Live tests scenarios TOC"
+title "Building Live tests scenarios TOC"
 DST_FILE="$DOCS_DIR/LIVETESTS_SCENARIOS.rst"
 rm $DOCS_DIR/LIVETESTS_SCENARIOS_*.rst
 
@@ -115,7 +262,33 @@ cd $ROOT
 
 # ----------------------------------------------------
 
-echo "Building examples"
+title "Building HTML description for real tests configuration"
+TMP_CLIENTS_FILE="`mktemp`"
+cat > $TMP_CLIENTS_FILE << EOF
+clients:
+  - asn: 1
+    ip: 1.1.1.1
+EOF
+
+./scripts/arouteserver html --cfg tests/real/arouteserver.yml --clients $TMP_CLIENTS_FILE -o tests/real/general.html
+cp tests/real/general.html $DOCS_DIR/_static/tests_real_general.html
+cp tests/real/last $DOCS_DIR/_static/tests_real_results.last
+rm $TMP_CLIENTS_FILE
+
+DST_FILE="$DOCS_DIR/REALTESTS.rst"
+
+echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > $DST_FILE
+echo "" >> $DST_FILE
+cat tests/real/README.rst >> $DST_FILE
+echo "They are also reported below." >> $DST_FILE
+echo "" >> $DST_FILE
+echo ".. literalinclude:: _static/tests_real_results.last" >> $DST_FILE
+
+cd $ROOT
+
+# ----------------------------------------------------
+
+title "Building examples"
 DST_FILE="$DOCS_DIR/EXAMPLES.rst"
 rm $DST_FILE
 
@@ -125,7 +298,7 @@ echo "Examples of configurations" >> $DST_FILE
 echo "==========================" >> $DST_FILE
 
 cd examples
-for d in default rich bird_hooks clients-from-euroix; do
+for d in default rich bird_hooks clients-from-euroix auto-config ixf-member-export; do
 	EXAMPLE_NAME="$d"
 	if [ -e "$EXAMPLE_NAME/README.rst" ]; then
 		echo "" >> $DST_FILE
@@ -134,13 +307,18 @@ for d in default rich bird_hooks clients-from-euroix; do
 		echo "https://github.com/pierky/arouteserver/blob/master/examples/$EXAMPLE_NAME" >> $DST_FILE
 
 		set +e
-		ls $d/*.html &>/dev/null
-		if [ $? -eq 0 ]; then
-			set -e
-			echo "" >> $DST_FILE
-			echo "See the \`textual representation of this configuration <_static/examples_$EXAMPLE_NAME.html>\`_." >> $DST_FILE
-		fi
+		html_cnt=`ls $d/*.html 2>/dev/null | wc -l`
 		set -e
+		if [ $html_cnt -eq 1 ]; then
+			echo "" >> $DST_FILE
+			echo "See the \`textual representation of this configuration <_static/examples_$EXAMPLE_NAME.html>\`__." >> $DST_FILE
+		elif [ $html_cnt -gt 1 ]; then
+			for f in `ls $d/*.html`; do
+				filename=`basename $f`
+				echo "" >> $DST_FILE
+				echo "$filename - See the \`textual representation of this configuration <_static/examples_${EXAMPLE_NAME}_${filename}>\`__." >> $DST_FILE
+			done
+		fi
 	fi
 done
 
@@ -148,7 +326,7 @@ cd $ROOT
 
 # ----------------------------------------------------
 
-echo "Building README.rst"
+title "Building README.rst"
 DST_FILE="README.rst"
 
 echo ".. DO NOT EDIT: this file is automatically created by /utils/build_doc" > $DST_FILE
@@ -161,11 +339,4 @@ cat $DOCS_DIR/README_footer.txt >> $DST_FILE
 
 # ----------------------------------------------------
 
-echo "Publishing docs via HTTP"
-
-echo "cd $DOCS_DIR ; make html ; cd _build/html/ ; python -m SimpleHTTPServer 8000 ; cd $ROOT"
-cd $DOCS_DIR
-make html
-cd _build/html/
-python -m SimpleHTTPServer 8000
-cd $ROOT
+publish_docs

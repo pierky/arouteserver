@@ -1,0 +1,18 @@
+{
+  "json_schema": "0.0.2",
+  "source": "ARIN-WHOIS",
+  "whois_records": {
+    "v4": [
+      {
+        "originas": "AS104",
+        "prefix": "104.0.0.0/23"
+      }
+    ],
+    "v6": [
+      {
+        "originas": "AS104",
+        "prefix": "3104:0::/32"
+      }
+    ]
+  }
+}

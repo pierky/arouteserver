@@ -18,12 +18,14 @@ asns
 ----
 {{ asns.cfg|to_yaml }}
 
-as_sets
--------
-{{ as_sets|to_yaml }}
+irrdb_info
+----------
+{{ irrdb_info|parse_irrdb_info|sort(attribute="id")|to_yaml }}
 
-roas
-----
-{% if roas %}
-{{ roas.cfg|to_yaml }}
-{% endif %}
+rpki_roas
+---------
+{{ rpki_roas|to_yaml }}
+
+arin_whois_db_records
+---------------------
+{{ arin_whois_records|parse_arin_whois_records|to_yaml }}

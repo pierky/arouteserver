@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,6 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+try:
+    import mock
+except ImportError:
+    import unittest.mock as mock
 import os
 import unittest
 
@@ -101,7 +105,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._test_option(self.cfg["filtering"]["next_hop"], "policy", ("strict", "same-as"))
         self._test_mandatory(self.cfg["filtering"]["next_hop"], "policy", has_default=True)
 
-    def test_next_hop_policy(self):
+    def test_next_hop_policy_pre_0_6_0(self):
         """{}: next_hop_policy (pre v0.6.0 format)"""
 
         self.cfg._load_from_yaml(
@@ -223,22 +227,51 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._test_bool_val(self.cfg["filtering"]["irrdb"], "allow_longer_prefixes")
         self._test_mandatory(self.cfg["filtering"]["irrdb"], "allow_longer_prefixes", has_default=True)
 
+    def test_use_rpki_roas_as_route_objects_enabled(self):
+        """{}: use_rpki_roas_as_route_objects.enabled"""
+        self.assertEqual(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["enabled"], False)
+        self._test_bool_val(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "enabled")
+        self._test_mandatory(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "enabled", has_default=True)
+        
+    def test_use_rpki_roas_source(self):
+        """{}: rpki_roas.source"""
+        self.assertEqual(self.cfg["rpki_roas"]["source"], "ripe-rpki-validator-cache")
+        self._test_option(self.cfg["rpki_roas"], "source", ("ripe-rpki-validator-cache","rtrlib"))
+        self._test_mandatory(self.cfg["rpki_roas"], "source", has_default=True)
+
+    def use_arin_whois_db_dump_enabled(self):
+        """{}: use_arin_whois_db_dump.enabled"""
+        self.assertEqual(self.cfg["filtering"]["irrdb"]["use_arin_whois_db_dump"]["enabled"], False)
+        self._test_bool_val(self.cfg["filtering"]["irrdb"]["use_arin_whois_db_dump"], "enabled")
+        self._test_mandatory(self.cfg["filtering"]["irrdb"]["use_arin_whois_db_dump"], "enabled", has_default=True)
+
     def test_rpki_enabled(self):
-        """{}: rpki, enabled"""
-        self.assertEqual(self.cfg["filtering"]["rpki"]["enabled"], False)
-        self._test_bool_val(self.cfg["filtering"]["rpki"], "enabled")
-        self._test_mandatory(self.cfg["filtering"]["rpki"], "enabled", has_default=True)
+        """{}: rpki_bgp_origin_validation, enabled"""
+        self.assertEqual(self.cfg["filtering"]["rpki_bgp_origin_validation"]["enabled"], False)
+        self._test_bool_val(self.cfg["filtering"]["rpki_bgp_origin_validation"], "enabled")
+        self._test_mandatory(self.cfg["filtering"]["rpki_bgp_origin_validation"], "enabled", has_default=True)
 
     def test_rpki_reject_invalid(self):
-        """{}: rpki, reject_invalid"""
-        self.assertEqual(self.cfg["filtering"]["rpki"]["reject_invalid"], True)
-        self._test_bool_val(self.cfg["filtering"]["rpki"], "reject_invalid")
-        self._test_optional(self.cfg["filtering"]["rpki"], "reject_invalid")
+        """{}: rpki_bgp_origin_validation, reject_invalid"""
+        self.assertEqual(self.cfg["filtering"]["rpki_bgp_origin_validation"]["reject_invalid"], True)
+        self._test_bool_val(self.cfg["filtering"]["rpki_bgp_origin_validation"], "reject_invalid")
+        self._test_optional(self.cfg["filtering"]["rpki_bgp_origin_validation"], "reject_invalid")
 
     def test_reject_policy(self):
         """{}: reject_policy"""
         self.assertEqual(self.cfg["filtering"]["reject_policy"]["policy"], "reject")
-        self._test_option(self.cfg["filtering"]["reject_policy"], "policy", ("reject", "tag"))
+        self._contains_err()
+
+        self.cfg["communities"]["reject_cause"]["std"] = "65520:dyn_val"
+        self.cfg["filtering"]["reject_policy"]["policy"] = "tag"
+        self._contains_err()
+
+        del self.cfg["communities"]["reject_cause"]["std"]
+        self.cfg["filtering"]["reject_policy"]["policy"] = "tag"
+        self._contains_err("The 'reject_cause' community must be configured when 'reject_policy.policy' is 'tag'.")
+
+        self._test_option(self.cfg["filtering"]["reject_policy"], "policy", ())
+
         self._test_mandatory(self.cfg["filtering"]["reject_policy"], "policy", has_default=True)
 
     def test_blackhole_announce_to_client(self):
@@ -286,6 +319,67 @@ class TestConfigParserGeneral(TestConfigParserBase):
             self.cfg["blackhole_filtering"]["rewrite_next_hop_ipv4"] = ip
             self._contains_err("Error parsing 'rewrite_next_hop_ipv4' at 'cfg.blackhole_filtering' level - Invalid IPv4 address: {}.".format(ip))
         self._test_optional(self.cfg["blackhole_filtering"], "rewrite_next_hop_ipv4")
+
+    def test_graceful_shutdown(self):
+        """{}: graceful shutdown"""
+        self.assertEqual(self.cfg["graceful_shutdown"]["enabled"], False)
+        self._test_bool_val(self.cfg["graceful_shutdown"], "enabled")
+
+    def test_rfc1997_wellknown_communities(self):
+        """{}: RFC1997 well-known communities"""
+        self.assertEqual(self.cfg["rfc1997_wellknown_communities"]["policy"], "pass")
+        self._test_option(self.cfg["rfc1997_wellknown_communities"], "policy", ("rfc1997", "pass"))
+
+    def test_rtt_thresholds_str(self):
+        """{}: RTT thresholds as comma separated string"""
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: 192.0.2.2\n"
+            "  rtt_thresholds: '1, 2, 3'"
+        )
+        self._contains_err()
+
+    def test_rtt_thresholds_int(self):
+        """{}: RTT thresholds as list of int"""
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: 192.0.2.2\n"
+            "  rtt_thresholds: 1, 2, 3"
+        )
+        self._contains_err()
+
+    def test_rtt_thresholds_empty(self):
+        """{}: RTT thresholds, empty"""
+
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: 192.0.2.2\n"
+            "  rtt_thresholds: "
+        )
+        self._contains_err()
+
+    def test_rtt_thresholds_invalid(self):
+        """{}: RTT thresholds, invalid values"""
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: 192.0.2.2\n"
+            "  rtt_thresholds: 1, 2a, 3"
+        )
+        self._contains_err("RTT thresholds list items must be positive integers:  2a")
+
+    def test_rtt_thresholds_order(self):
+        """{}: RTT thresholds, out of order"""
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: 192.0.2.2\n"
+            "  rtt_thresholds: 3, 2, 1"
+        )
+        self._contains_err("RTT thresholds list items must be provided in ascending order: 2 < 3")
 
     def test_blackhole_filtering_ipv6(self):
         """{}: blackhole_filtering, rewrite_next_hop, ipv6"""
@@ -372,24 +466,43 @@ class TestConfigParserGeneral(TestConfigParserBase):
     def test_mandatory_dyn_val_communities(self):
         """{}: communities that need dyn_val macro"""
 
-        comm = "reject_cause"
-        for c in self.VALID_STD_COMMS:
-            self.cfg["communities"][comm]["std"] = c
-            self._contains_err("'dyn_val' macro is mandatory in this community")
-        self.cfg["communities"][comm]["std"] = None
-        for c in self.VALID_LRG_COMMS:
-            self.cfg["communities"][comm]["lrg"] = c
-            self._contains_err("'dyn_val' macro is mandatory in this community")
-        self.cfg["communities"][comm]["lrg"] = None
-        for c in self.VALID_EXT_COMMS:
-            self.cfg["communities"][comm]["ext"] = c
-            self._contains_err("'dyn_val' macro is mandatory in this community")
-        self.cfg["communities"][comm]["ext"] = None
+        for comm in ("reject_cause", "rejected_route_announced_by",
+                     "do_not_announce_to_peers_with_rtt_lower_than",
+                     "do_not_announce_to_peers_with_rtt_higher_than",
+                     "announce_to_peers_with_rtt_lower_than",
+                     "announce_to_peers_with_rtt_higher_than",
+                     "prepend_once_to_peers_with_rtt_lower_than",
+                     "prepend_twice_to_peers_with_rtt_lower_than",
+                     "prepend_thrice_to_peers_with_rtt_lower_than",
+                     "prepend_once_to_peers_with_rtt_higher_than",
+                     "prepend_twice_to_peers_with_rtt_higher_than",
+                     "prepend_thrice_to_peers_with_rtt_higher_than"):
+            for c in self.VALID_STD_COMMS:
+                self.cfg["communities"][comm]["std"] = c
+                self._contains_err("'dyn_val' macro is mandatory in this community")
+            self.cfg["communities"][comm]["std"] = None
+            for c in self.VALID_LRG_COMMS:
+                self.cfg["communities"][comm]["lrg"] = c
+                self._contains_err("'dyn_val' macro is mandatory in this community")
+            self.cfg["communities"][comm]["lrg"] = None
+            for c in self.VALID_EXT_COMMS:
+                self.cfg["communities"][comm]["ext"] = c
+                self._contains_err("'dyn_val' macro is mandatory in this community")
+            self.cfg["communities"][comm]["ext"] = None
 
     def test_reject_cause_community_with_no_reject_policy(self):
         """{}: reject_cause can be set only with 'tag' reject_policy"""
         self.cfg["communities"]["reject_cause"]["std"] = "0:dyn_val"
         self._contains_err("The 'reject_cause' community can be set only if 'reject_policy.policy' is 'tag'.")
+
+        self.cfg["filtering"]["reject_policy"]["policy"] = "tag"
+        self._contains_err()
+
+    def test_rejected_route_announced_by_with_no_reject_policy(self):
+        """{}: rejected_route_announced_by can be set only with 'tag' reject_policy"""
+        self.cfg["communities"]["reject_cause"]["std"] = "65520:dyn_val"
+        self.cfg["communities"]["rejected_route_announced_by"]["std"] = "0:dyn_val"
+        self._contains_err("The 'rejected_route_announced_by' community can be set only if 'reject_policy.policy' is 'tag'.")
 
         self.cfg["filtering"]["reject_policy"]["policy"] = "tag"
         self._contains_err()
@@ -694,16 +807,63 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._contains_err()
 
         # Testing with allow_private_asns=False...
-        with self.assertRaises(ConfigError):
-            self.cfg.check_overlapping_communities(allow_private_asns=False)
-        exp_err_msg_found = False
-        for line in self.logger_handler.msgs:
-            if "Community 'blackholing' and 'do_not_announce_to_peer' overlap: 0:65501 / 0:peer_as. Inbound communities can't have overlapping values, otherwise" in line:
-                exp_err_msg_found = True
-                break
+        # It must work, peer_as can't be a private ASN; moreover
+        # also on OpenBGPD (where inbound communities are scrubbed
+        # using a wildcard) when the 'x:peer_as' community is
+        # deleted also the 'x:<asn>' is.
+        self.cfg.check_overlapping_communities(allow_private_asns=False)
+        self._contains_err()
 
-        if not exp_err_msg_found:
-            self.fail("Expected error message not found")
+    def test_overlapping_communities_in_in_dyn_val(self):
+        """{}: overlapping communities, inbound/inbound (dyn_val)"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  communities:"
+        ]
+
+        # blackholing: inbound
+        # do_not_announce_to_peers_with_rtt_lower_than: inbound with dyn_val
+        yaml_lines = tpl + [
+            "    blackholing:",
+            "      std: '0:666'",
+            "    do_not_announce_to_peers_with_rtt_lower_than:",
+            "      std: '0:dyn_val'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err("Community 'blackholing' and 'do_not_announce_to_peers_with_rtt_lower_than' overlap: 0:666 / 0:dyn_val. Inbound communities can't have overlapping values, otherwise their meaning could be uncertain.")
+
+        # do_not_announce_to_peer: inbound with peer_as
+        # do_not_announce_to_peers_with_rtt_lower_than: inbound with dyn_val
+        yaml_lines = tpl + [
+            "    do_not_announce_to_peer:",
+            "      std: '0:peer_as'",
+            "    do_not_announce_to_peers_with_rtt_lower_than:",
+            "      std: '0:dyn_val'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err("Community 'do_not_announce_to_peer' and 'do_not_announce_to_peers_with_rtt_lower_than' overlap: 0:peer_as / 0:dyn_val. Inbound communities can't have overlapping values, otherwise their meaning could be uncertain.")
+
+    def test_overlapping_communities_out_in_dyn_val(self):
+        """{}: overlapping communities, outbound/inbound (dyn_val)"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  communities:"
+        ]
+
+        # prefix_not_present_in_as_set: outbound
+        # do_not_announce_to_peers_with_rtt_lower_than: inbound with dyn_val
+        yaml_lines = tpl + [
+            "    prefix_not_present_in_as_set:",
+            "      std: '0:1'",
+            "    do_not_announce_to_peers_with_rtt_lower_than:",
+            "      std: '0:dyn_val'"
+        ]
+        self.load_config(yaml="\n".join(yaml_lines))
+        self._contains_err("Community 'do_not_announce_to_peers_with_rtt_lower_than' and 'prefix_not_present_in_as_set' overlap: 0:dyn_val / 0:1. Inbound communities and outbound communities can't have overlapping values, otherwise they might be scrubbed.")
 
     def test_overlapping_communities_in_cust(self):
         """{}: overlapping communities, inbound/custom"""
@@ -748,6 +908,31 @@ class TestConfigParserGeneral(TestConfigParserBase):
         if not exp_err_msg_found:
             self.fail("Expected error message not found")
 
+    def test_rtt_based_communities_without_rtt_thresholds(self):
+        """{}: RTT-based communities without RTT thresholds"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  communities:",
+            "    do_not_announce_to_peers_with_rtt_lower_than:",
+            "      std: '0:dyn_val'"
+        ]
+        self.load_config(yaml="\n".join(tpl))
+        self._contains_err("Some RTT-based functions are configured but the RTT thresholds list is empty.")
+
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  rtt_thresholds: 1, 2",
+            "  communities:",
+            "    do_not_announce_to_peers_with_rtt_lower_than:",
+            "      std: '0:dyn_val'"
+        ]
+        self.load_config(yaml="\n".join(tpl))
+        self._contains_err()
+
     def test_max_pref_action(self):
         """{}: max_prefix action"""
         self.assertEqual(self.cfg["filtering"]["max_prefix"]["action"], None)
@@ -756,9 +941,46 @@ class TestConfigParserGeneral(TestConfigParserBase):
 
     def test_max_pref_peeringdb(self):
         """{}: max_prefix PeeringDB"""
-        self.assertEqual(self.cfg["filtering"]["max_prefix"]["peering_db"], True)
-        self._test_bool_val(self.cfg["filtering"]["max_prefix"], "peering_db")
-        self._test_optional(self.cfg["filtering"]["max_prefix"], "peering_db")
+        self.assertEqual(self.cfg["filtering"]["max_prefix"]["peering_db"], {
+            "enabled": True,
+            "increment": {
+                "absolute": 100,
+                "relative": 15
+            }
+        })
+        self._test_bool_val(self.cfg["filtering"]["max_prefix"]["peering_db"], "enabled")
+        self._test_optional(self.cfg["filtering"]["max_prefix"]["peering_db"], "enabled")
+
+    def test_max_pref_peeringdb_pre_0_13_0(self):
+        """{}: max_prefix PeeringDB (pre v0.13.0 format)"""
+
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: 192.0.2.2\n"
+            "  filtering:\n"
+            "    max_prefix:\n"
+            "      peering_db: True\n"
+        )
+        self.cfg.parse()
+        self._contains_err()
+
+        self.assertEqual(self.cfg["filtering"]["max_prefix"]["peering_db"]["enabled"], True)
+        self.assertEqual(self.cfg["filtering"]["max_prefix"]["peering_db"]["increment"]["absolute"], 100)
+        self.assertEqual(self.cfg["filtering"]["max_prefix"]["peering_db"]["increment"]["relative"], 15)
+
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: 192.0.2.2\n"
+            "  filtering:\n"
+            "    max_prefix:\n"
+            "      peering_db: False\n"
+        )
+        self.cfg.parse()
+        self._contains_err()
+
+        self.assertEqual(self.cfg["filtering"]["max_prefix"]["peering_db"]["enabled"], False)
 
     def test_max_pref_general_limit_ipv4(self):
         """{}: max_prefix general_limit_ipv4"""
@@ -819,7 +1041,6 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "  rs_as: 999\n"
             "  router_id: 192.0.2.2"
         )
-        self.cfg.parse()
         self._contains_err()
 
         exp_res = {
@@ -856,19 +1077,48 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "tag_as_set": True,
                     "enforce_origin_in_as_set": True,
                     "enforce_prefix_in_as_set": True,
-                    "allow_longer_prefixes": False
+                    "allow_longer_prefixes": False,
+                    "peering_db": False,
+                    "use_rpki_roas_as_route_objects": {
+                        "enabled": False,
+                    },
+                    "use_arin_bulk_whois_data": {
+                        "enabled": False,
+                        "source": "http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
+                    }
                 },
-                "rpki": {
+                "rpki_bgp_origin_validation": {
                     "enabled": False,
                     "reject_invalid": True,
                 },
                 "max_prefix": {
                     "action": None,
                     "restart_after": 15,
-                    "peering_db": True,
+                    "peering_db": {
+                        "enabled": True,
+                        "increment": {
+                            "absolute": 100,
+                            "relative": 15
+                        }
+                    },
                     "general_limit_ipv4": 170000,
                     "general_limit_ipv6": 12000
                 },
+            },
+            "rtt_thresholds": None,
+            "rpki_roas": {
+                "source": "ripe-rpki-validator-cache",
+                "ripe_rpki_validator_url": "http://localcert.ripe.net:8088/export.json",
+                "allowed_trust_anchors": [
+                    "APNIC from AFRINIC RPKI Root",
+                    "APNIC from ARIN RPKI Root",
+                    "APNIC from IANA RPKI Root",
+                    "APNIC from LACNIC RPKI Root",
+                    "APNIC from RIPE RPKI Root",
+                    "AfriNIC RPKI Root",
+                    "LACNIC RPKI Root",
+                    "RIPE NCC RPKI Root"
+                ]
             },
             "blackhole_filtering": {
                 "policy_ipv4": None,
@@ -877,6 +1127,13 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 "rewrite_next_hop_ipv6": None,
                 "announce_to_client": True,
                 "add_noexport": True,
+            },
+            "graceful_shutdown": {
+                "enabled": False,
+                "local_pref": 0
+            },
+            "rfc1997_wellknown_communities": {
+                "policy": "pass"
             }
         }
 
@@ -887,3 +1144,229 @@ class TestConfigParserGeneral(TestConfigParserBase):
             yaml.safe_dump(self.cfg.cfg, default_flow_style=False),
             yaml.safe_dump({"cfg": exp_res}, default_flow_style=False)
         )
+
+    def test_distrib_config(self):
+        """{}: distributed config"""
+        self.load_config(file_name="config.d/general.yml")
+        self.cfg.parse()
+        self._contains_err()
+
+        exp_res = {
+            "rs_as": 999,
+            "router_id": "192.0.2.2",
+            "prepend_rs_as": False,
+            "path_hiding": True,
+            "passive": True,
+            "gtsm": False,
+            "add_path": False,
+            "filtering": {
+                "next_hop": {
+                    "policy": "strict"
+                },
+                "global_black_list_pref": None,
+                "ipv4_pref_len": {
+                    "min": 8,
+                    "max": 24
+                },
+                "ipv6_pref_len": {
+                    "min": 12,
+                    "max": 48
+                },
+                "max_as_path_len": 32,
+                "reject_invalid_as_in_as_path": True,
+                "reject_policy": {
+                    "policy": "reject"
+                },
+                "transit_free": {
+                    "action": None,
+                    "asns": [174, 209, 286, 701, 1239, 1299, 2828, 2914, 3257, 3320, 3356, 3549, 5511, 6453, 6461, 6762, 6830, 7018, 12956]
+                },
+                "irrdb": {
+                    "tag_as_set": True,
+                    "enforce_origin_in_as_set": True,
+                    "enforce_prefix_in_as_set": True,
+                    "allow_longer_prefixes": False,
+                    "peering_db": False,
+                    "use_rpki_roas_as_route_objects": {
+                        "enabled": False,
+                    },
+                    "use_arin_bulk_whois_data": {
+                        "enabled": False,
+                        "source": "http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
+                    }
+                },
+                "rpki_bgp_origin_validation": {
+                    "enabled": False,
+                    "reject_invalid": True,
+                },
+                "max_prefix": {
+                    "action": None,
+                    "restart_after": 15,
+                    "peering_db": {
+                        "enabled": True,
+                        "increment": {
+                            "absolute": 100,
+                            "relative": 15
+                        }
+                    },
+                    "general_limit_ipv4": 170000,
+                    "general_limit_ipv6": 12000
+                },
+            },
+            "rtt_thresholds": [5, 10, 15, 20, 30, 50, 100, 200, 500],
+            "rpki_roas": {
+                "source": "ripe-rpki-validator-cache",
+                "ripe_rpki_validator_url": "http://localcert.ripe.net:8088/export.json",
+                "allowed_trust_anchors": [
+                    "APNIC from AFRINIC RPKI Root",
+                    "APNIC from ARIN RPKI Root",
+                    "APNIC from IANA RPKI Root",
+                    "APNIC from LACNIC RPKI Root",
+                    "APNIC from RIPE RPKI Root",
+                    "AfriNIC RPKI Root",
+                    "LACNIC RPKI Root",
+                    "RIPE NCC RPKI Root"
+                ]
+            },
+            "blackhole_filtering": {
+                "policy_ipv4": None,
+                "policy_ipv6": None,
+                "rewrite_next_hop_ipv4": None,
+                "rewrite_next_hop_ipv6": None,
+                "announce_to_client": True,
+                "add_noexport": True,
+            },
+            "graceful_shutdown": {
+                "enabled": False,
+                "local_pref": 0
+            },
+            "rfc1997_wellknown_communities": {
+                "policy": "pass"
+            }
+        }
+
+        self.maxDiff = None
+        del self.cfg["communities"]
+        del self.cfg["custom_communities"]
+        self.assertMultiLineEqual(
+            yaml.safe_dump(self.cfg.cfg, default_flow_style=False),
+            yaml.safe_dump({"cfg": exp_res}, default_flow_style=False)
+        )
+
+    def test_deprecated_rpki_validation(self):
+        """{}: deprecated syntax, RPKI Origin Validation"""
+        cfg = {
+            "cfg": {
+                "rs_as": 999,
+                "router_id": "192.0.2.2",
+                "filtering": {
+                    "rpki": {
+                        "enabled": True
+                    }
+                }
+            }
+        }
+        self.load_config(yaml=yaml.dump(cfg))
+        self._contains_err()
+        self.assertEqual(self.cfg.cfg["cfg"]["filtering"]["rpki_bgp_origin_validation"]["enabled"], True)
+
+        cfg["cfg"]["filtering"]["rpki_bgp_origin_validation"] = {}
+        self.load_config(yaml=yaml.dump(cfg))
+        self._contains_err("A conflict due to a deprecated syntax exists: filtering.rpki and filtering.rpki_bgp_origin_validation are both configured.")
+
+    def test_deprecated_rpki_roas_source(self):
+        """{}: deprecated syntax, RPKI ROAs source"""
+        cfg = {
+            "cfg": {
+                "rs_as": 999,
+                "router_id": "192.0.2.2",
+                "filtering": {
+                    "irrdb": {
+                        "use_rpki_roas_as_route_objects": {
+                            "enabled": True
+                        }
+                    },
+                    "rpki": {
+                        "enabled": True
+                    }
+                }
+            }
+        }
+        self.load_config(yaml=yaml.dump(cfg))
+        self._contains_err()
+        self.assertEqual(self.cfg.cfg["cfg"]["rpki_roas"]["source"], "rtrlib")
+
+        cfg["cfg"]["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["source"] = "ripe-rpki-validator-cache"
+        self.load_config(yaml=yaml.dump(cfg))
+        self._contains_err("A deprecated syntax triggered an issue with the configuration of RPKI BGP Origin Validation (filtering.rpki) and ROAs-as-route-objects (filtering.irrdb.rpki_roas_as_route_objects). The former uses rtrlib as source for ROAs, while the latter is configured to use the RIPE RPKI Validator")
+
+        del cfg["cfg"]["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["source"]
+        cfg["cfg"]["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["enabled"] = False
+        self.load_config(yaml=yaml.dump(cfg))
+        self._contains_err()
+        self.assertEqual(self.cfg.cfg["cfg"]["rpki_roas"]["source"], "rtrlib")
+
+        cfg["cfg"]["filtering"]["rpki"]["enabled"] = False
+        self.load_config(yaml=yaml.dump(cfg))
+        self._contains_err()
+        self.assertTrue("rpki_roas" not in self.cfg.cfg)
+
+        cfg["cfg"]["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["enabled"] = True
+        cfg["cfg"]["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["source"] = "ripe-rpki-validator-cache"
+        self.load_config(yaml=yaml.dump(cfg))
+        self._contains_err()
+        self.assertEqual(self.cfg.cfg["cfg"]["rpki_roas"]["source"], "ripe-rpki-validator-cache")
+
+        cfg["cfg"]["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["ripe_rpki_validator_url"] = "Foo"
+        cfg["cfg"]["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["allowed_trust_anchors"] = ["bar"]
+        self.load_config(yaml=yaml.dump(cfg))
+        self._contains_err()
+        self.assertEqual(self.cfg.cfg["cfg"]["rpki_roas"]["source"], "ripe-rpki-validator-cache")
+        self.assertEqual(self.cfg.cfg["cfg"]["rpki_roas"]["ripe_rpki_validator_url"], "Foo")
+        self.assertEqual(self.cfg.cfg["cfg"]["rpki_roas"]["allowed_trust_anchors"], ["bar"])
+
+        cfg["cfg"]["rpki_roas"] = {}
+        self.load_config(yaml=yaml.dump(cfg))
+        self._contains_err("A conflict due to a deprecated syntax exists: please check rpki_roas, filtering.rpki and filtering.irrdb.rpki_roas_as_route_objects.")
+
+    @mock.patch.dict(os.environ, {"ROUTER_ID": "192.0.2.1"})
+    def test_env_vars_ok(self):
+        """{}: environment variables: ok"""
+
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: ${ROUTER_ID}\n"
+        )
+        self.cfg.parse()
+        self._contains_err()
+
+        self.assertEqual(self.cfg["router_id"], "192.0.2.1")
+
+    @mock.patch.dict(os.environ, {"ROUTER_ID": "192.0.2.1"})
+    def test_env_vars_missing(self):
+        """{}: environment variables: ok"""
+
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: ${ROUTER_ID}\n"
+            "  filtering:\n"
+            "    global_black_list_pref: ${GLOBAL_BLACK_LIST_PREF}\n"
+        )
+        self.cfg.parse()
+        self._contains_err()
+
+        self.assertEqual(self.cfg["router_id"], "192.0.2.1")
+        self.assertEqual(self.cfg["filtering"]["global_black_list_pref"], None)
+
+    @mock.patch.dict(os.environ, {"ROUTER_ID": "192.0.2.1"})
+    def test_env_vars_corrupted(self):
+        """{}: environment variables: corrupted"""
+
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: ${ROUTER_ID\n"
+        )
+        self._contains_err("Invalid IPv4 address: ${ROUTER_ID")

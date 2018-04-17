@@ -1,0 +1,70 @@
+                cfg:
+configured        rs_as: 999
+configured        router_id: 192.0.2.2
+configured        prepend_rs_as: False
+configured        path_hiding: True
+configured        passive: True
+configured        gtsm: False
+configured        add_path: False
+                  filtering:
+                    next_hop:
+configured            policy: strict
+configured          ipv4_pref_len: max: 24, min: 8
+configured          ipv6_pref_len: max: 48, min: 12
+configured          global_black_list_pref: None
+configured          max_as_path_len: 32
+configured          reject_invalid_as_in_as_path: True
+                    transit_free:
+default               action: None
+configured            asns: 174, 209, 286, 701, 1239, 1299, 2828, 2914, 3257, 3320, 3356, 3549, 5511, 6453, 6461, 6762, 6830, 7018, 12956
+                    irrdb:
+configured            enforce_origin_in_as_set: True
+configured            enforce_prefix_in_as_set: True
+configured            allow_longer_prefixes: False
+configured            tag_as_set: True
+configured            peering_db: False
+                      use_rpki_roas_as_route_objects:
+configured              enabled: False
+                      use_arin_bulk_whois_data:
+configured              enabled: False
+configured              source: http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2
+                    rpki_bgp_origin_validation:
+configured            enabled: False
+configured            reject_invalid: True
+                    max_prefix:
+                      peering_db:
+configured              enabled: True
+                        increment:
+configured                absolute: 100
+configured                relative: 15
+default               general_limit_ipv4: 170000
+default               general_limit_ipv6: 12000
+default               action: None
+default               restart_after: 15
+                    reject_policy:
+configured            policy: reject
+                  rpki_roas:
+configured          source: ripe-rpki-validator-cache
+configured          ripe_rpki_validator_url: http://localcert.ripe.net:8088/export.json
+configured          allowed_trust_anchors:
+configured            - APNIC from AFRINIC RPKI Root
+configured            - APNIC from ARIN RPKI Root
+configured            - APNIC from IANA RPKI Root
+configured            - APNIC from LACNIC RPKI Root
+configured            - APNIC from RIPE RPKI Root
+configured            - AfriNIC RPKI Root
+configured            - LACNIC RPKI Root
+configured            - RIPE NCC RPKI Root
+                  blackhole_filtering:
+configured          announce_to_client: True
+default             policy_ipv4: None
+default             policy_ipv6: None
+default             rewrite_next_hop_ipv4: None
+default             rewrite_next_hop_ipv6: None
+default             add_noexport: True
+                  graceful_shutdown:
+configured          enabled: False
+configured          local_pref: 0
+                  rfc1997_wellknown_communities:
+configured          policy: pass
+configured        rtt_thresholds: 5, 10, 15, 20, 30, 50, 100, 200, 500

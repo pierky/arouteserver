@@ -83,7 +83,14 @@ Origin ASN validity is
 
 <li><p>Announced prefixes validity is
 <strong>enforced</strong>. Routes whose prefix is not part of the client's AS-SET are rejected.
+Longer prefixes that are covered by one entry of the resulting route set are accepted.
 </p></li>
+
+<li><p>Use <strong>RPKI ROAs</strong> to validate routes whose origin ASN is authorized by the client's AS-SET but whose prefix is not.</p></li>
+
+<li><p>Use <strong>ARIN Whois DB dump</strong> to validate routes whose origin ASN is authorized by the client's AS-SET but whose prefix is not.</p></li>
+
+<li><p>Database is fetched from <a href="http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2" rel="noopener">http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2</a>.</p></li>
 
 <li><p>
 Route <strong>validity state</strong> is signalled to route server clients using the following <strong>BGP communities</strong>:
@@ -113,6 +120,27 @@ Route <strong>validity state</strong> is signalled to route server clients using
     <td>999:65530:0</td>
   </tr>
  
+    <tr>
+    <td>Prefix matched by a RPKI ROA for the authorized origin ASN</td>
+    <td>65530:2</td>
+    <td>None</td>
+    <td>999:65530:2</td>
+  </tr>
+ 
+    <tr>
+    <td>Prefix matched by an entry of the ARIN Whois DB dump</td>
+    <td>65530:4</td>
+    <td>None</td>
+    <td>999:65530:4</td>
+  </tr>
+
+    <tr>
+    <td>Route authorized soley because of a client white list entry</td>
+    <td>65530:3</td>
+    <td>None</td>
+    <td>999:65530:3</td>
+  </tr>
+ 
 </tbody>
 </table>
 </p></li>
@@ -120,13 +148,22 @@ Route <strong>validity state</strong> is signalled to route server clients using
 
 
 
-<h3>RPKI validation</h3>
+<h3>RPKI BGP Prefix Origin Validation</h3>
 
 <ul>
 
-<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI validation</a> of routes received by the route server is <strong>enabled</strong>.</p></li>
+<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI BGP Prefix Origin Validation</a> of routes received by the route server is <strong>enabled</strong>.</p></li>
 
 <li><p>When an INVALID route is received by the route server, <strong>it is rejected</strong>.</p></li>
+</ul>
+
+
+
+<h3>RPKI ROAs</h3>
+
+<ul>
+
+<li><p>RPKI ROAs are fetched from the RIPE RPKI Validator cache file at examples/rich/ripe-rpki-cache.json. The following Trust Anchors are used: APNIC from AFRINIC RPKI Root, APNIC from ARIN RPKI Root, APNIC from IANA RPKI Root, APNIC from LACNIC RPKI Root, APNIC from RIPE RPKI Root, AfriNIC RPKI Root, LACNIC RPKI Root, RIPE NCC RPKI Root</p></li>
 </ul>
 
 
@@ -447,7 +484,19 @@ The NO_EXPORT well-known community is also added.
 
 
 
+<h2>Graceful BGP session shutdown</h2>
+
+<ul>
+<li><p>Routes tagged with the <strong>GRACEFUL_SHUTDOWN</strong> BGP community (65535:0) have their LOCAL_PREF attribute lowered to 0.</p></li>
+</ul>
+
+
+
 <h2>Announcement control via BGP communities</h2>
+
+<ul>
+<li><p>Routes tagged with the <b>NO_EXPORT</b> or <b>NO_ADVERTISE</b> communities received by the route server are propagated to other clients with those communities unaltered.</p></li>
+</ul>
 
 <table class="table table-striped">
   <thead>
@@ -474,32 +523,38 @@ The NO_EXPORT well-known community is also added.
   </tr>
 
     <tr>
+    <td>Do not announce_to peers with RTT <= than <em>X</em> ms (*)</td>
+    <td>64511:X</td>
+    <td>rt:64511:X</td>
+    <td>999:64511:X</td>
+  </tr>
+
+    <tr>
+    <td>Do not announce_to peers with RTT > than <em>X</em> ms (*)</td>
+    <td>64512:X</td>
+    <td>rt:64512:X</td>
+    <td>999:64512:X</td>
+  </tr>
+
+    <tr>
+    <td>Announce_to peers with RTT <= than <em>X</em> ms (*)</td>
+    <td>64513:X</td>
+    <td>rt:64513:X</td>
+    <td>999:64513:X</td>
+  </tr>
+
+    <tr>
+    <td>Announce_to peers with RTT > than <em>X</em> ms (*)</td>
+    <td>64514:X</td>
+    <td>rt:64514:X</td>
+    <td>999:64514:X</td>
+  </tr>
+
+    <tr>
     <td>Do not announce to peer</td>
     <td>0:peer_as</td>
     <td>rt:0:peer_as</td>
     <td>999:0:peer_as</td>
-  </tr>
-
-
-    <tr>
-    <td>Prepend the announcing ASN once to any</td>
-    <td>65501:999</td>
-    <td>rt:65501:999</td>
-    <td>999:65501:999</td>
-  </tr>
-
-    <tr>
-    <td>Prepend the announcing ASN twice to any</td>
-    <td>65502:999</td>
-    <td>rt:65502:999</td>
-    <td>999:65502:999</td>
-  </tr>
-
-    <tr>
-    <td>Prepend the announcing ASN thrice to any</td>
-    <td>65503:999</td>
-    <td>rt:65503:999</td>
-    <td>999:65503:999</td>
   </tr>
 
 
@@ -522,6 +577,71 @@ The NO_EXPORT well-known community is also added.
     <td>65506:peer_as</td>
     <td>rt:65506:peer_as</td>
     <td>999:65506:peer_as</td>
+  </tr>
+
+
+    <tr>
+    <td>Prepend once to peers with RTT > than <em>X</em> ms (*)</td>
+    <td>64518:X</td>
+    <td>rt:64518:X</td>
+    <td>999:64518:X</td>
+  </tr>
+
+    <tr>
+    <td>Prepend twice to peers with RTT > than <em>X</em> ms (*)</td>
+    <td>64519:X</td>
+    <td>rt:64519:X</td>
+    <td>999:64519:X</td>
+  </tr>
+
+    <tr>
+    <td>Prepend thrice to peers with RTT > than <em>X</em> ms (*)</td>
+    <td>64520:X</td>
+    <td>rt:64520:X</td>
+    <td>999:64520:X</td>
+  </tr>
+
+    <tr>
+    <td>Prepend once to peers with RTT <= than <em>X</em> ms (*)</td>
+    <td>64515:X</td>
+    <td>rt:64515:X</td>
+    <td>999:64515:X</td>
+  </tr>
+
+    <tr>
+    <td>Prepend twice to peers with RTT <= than <em>X</em> ms (*)</td>
+    <td>64516:X</td>
+    <td>rt:64516:X</td>
+    <td>999:64516:X</td>
+  </tr>
+
+    <tr>
+    <td>Prepend thrice to peers with RTT <= than <em>X</em> ms (*)</td>
+    <td>64517:X</td>
+    <td>rt:64517:X</td>
+    <td>999:64517:X</td>
+  </tr>
+
+
+    <tr>
+    <td>Prepend the announcing ASN once to any</td>
+    <td>65501:999</td>
+    <td>rt:65501:999</td>
+    <td>999:65501:999</td>
+  </tr>
+
+    <tr>
+    <td>Prepend the announcing ASN twice to any</td>
+    <td>65502:999</td>
+    <td>rt:65502:999</td>
+    <td>999:65502:999</td>
+  </tr>
+
+    <tr>
+    <td>Prepend the announcing ASN thrice to any</td>
+    <td>65503:999</td>
+    <td>rt:65503:999</td>
+    <td>999:65503:999</td>
   </tr>
 
 
@@ -557,6 +677,8 @@ The NO_EXPORT well-known community is also added.
   </tbody>
 </table>
 
+* For RTT-based communities, the following values can be used for <em>X</em>: 
+5, 10, 15, 20, 30, 50, 100, 200, 500
 
 </div>
 </body>

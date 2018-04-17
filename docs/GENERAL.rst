@@ -1,0 +1,1509 @@
+.. DO NOT EDIT: this file is automatically created by /utils/build_general.py
+
+.. include:: GENERAL.txt
+
+General options: ``cfg``
+-------------------------
+
+
+- ``rs_as``:
+  The route server AS number.
+
+  Example:
+
+  .. code:: yaml
+
+     rs_as: 999
+
+
+
+- ``router_id``:
+  The route server's router ID.
+
+  Example:
+
+  .. code:: yaml
+
+     router_id: "192.0.2.2"
+
+
+
+- ``prepend_rs_as``:
+  Prepend the route server's AS number to the AS_PATH of routes
+  that it announces to clients.
+  https://tools.ietf.org/html/rfc7947#section-2.2.2.1
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+  Default: **False**
+
+  Example:
+
+  .. code:: yaml
+
+     prepend_rs_as: False
+
+
+
+- ``path_hiding``:
+  Path-hiding mitigation technique: if True, enable path
+  hiding mitigation.
+  (https://tools.ietf.org/html/rfc7947#section-2.3.1)
+
+
+  BIRD: the "secondary" option is used.
+  "Usually, if an export filter rejects a selected route, no
+  other route is propagated for that network. This option
+  allows to try the next route in order until one that is
+  accepted is found or all routes for that network are rejected."
+  (http://bird.network.cz/?get_doc&f=bird-6.html#bgp-secondary)
+
+
+  OpenBGPD: not implemented in ARouteServer. Single RIB only.
+
+
+  Default: **True**
+
+  Example:
+
+  .. code:: yaml
+
+     path_hiding: True
+
+
+
+- ``passive``:
+  Configure passive sessions.
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+  Default: **True**
+
+  Example:
+
+  .. code:: yaml
+
+     passive: True
+
+
+
+- ``gtsm``:
+  Use GTSM (Generalized TTL Security Mechanism).
+  https://tools.ietf.org/html/rfc5082
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+  Default: **False**
+
+  Example:
+
+  .. code:: yaml
+
+     gtsm: False
+
+
+
+- ``add_path``:
+  Use ADD-PATH (RFC7911).
+  The route server will be configure as "able to send multiple
+  paths to its peer".
+
+
+  OpenBGPD: not supported.
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+  Default: **False**
+
+  Example:
+
+  .. code:: yaml
+
+     add_path: False
+
+
+
+Filtering: ``filtering``
++++++++++++++++++++++++++
+
+
+NEXT_HOP: ``next_hop``
+~~~~~~~~~~~~~~~~~~~~~~~
+
+NEXT_HOP checks
+
+
+
+- ``policy``:
+  The **policy** option can be set using the following values:
+
+
+  - **strict**: "check that the BGP NEXT_HOP attribute for BGP
+    routes received from a route server client matches the
+    interface address of the client."
+
+
+  - **same-as**: permit next-hop rewriting for the same AS; this
+    "allows an organization with multiple connections into an
+    IXP configured with different IP addresses to direct traffic
+    off the IXP infrastructure through any of their connections
+    for traffic engineering or other purposes."
+    In this mode, all the IP addresses of clients that fall
+    under the same ASN will be allowed. This is limited to the
+    IP addresses of known clients configured in the **clients.yml**
+    file.
+
+
+  - **authorized_addresses**: check that the BGP NEXT_HOP attribute
+    for routes received from a route server client matches one
+    of the IP addresses reported in the client-specific
+    **authorized_addresses_list** option.
+    This allows a route server client to announce routes whose
+    NEXT_HOP attribute is the IP address of a non-client router.
+    The **authorized_addresses_list** option must be configured
+    in the **clients.yml** file for those clients that have
+    **policy** set to **authorized_addresses**.
+
+
+  https://tools.ietf.org/html/rfc7948#section-4.8
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+  Default: **strict**
+
+  Example:
+
+  .. code:: yaml
+
+     policy: "strict"
+
+
+
+
+Prefix length: ``ipv4_pref_len`` and ``ipv6_pref_len``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Min and max prefix length for IPv4 and IPv6 prefixes accepted
+by the route server. Boundaries are inclusive.
+
+
+Can be overwritten on a client-by-client basis.
+
+
+Default: **8-24 for IPv4, 12-48 for IPv6**
+
+
+
+
+Filtered prefixes: ``global_black_list_pref``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+List of prefixes that are unconditionally rejected.
+For example: local networks.
+
+
+A list of prefixes is expected to be found here, like the one
+reported in the **bogons.yml** file.
+
+
+Default: **none**
+
+Example:
+
+.. code:: yaml
+
+   global_black_list_pref: 
+      - prefix: "192.0.2.0"
+        length: 24
+        comment: "Local network"
+
+
+
+Max AS_PATH length: ``max_as_path_len``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Max length of AS_PATH attribute.
+
+
+Can be overwritten on a client-by-client basis.
+
+
+Default: **32**
+
+Example:
+
+.. code:: yaml
+
+   max_as_path_len: 32
+
+
+Invalid ASNs in AS_PATH: ``reject_invalid_as_in_as_path``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Reject routes that carry private/invalid AS numbers in
+their AS_PATH.
+http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html
+
+
+Can be overwritten on a client-by-client basis.
+
+
+Default: **True**
+
+Example:
+
+.. code:: yaml
+
+   reject_invalid_as_in_as_path: True
+
+
+Transit-free networks: ``transit_free``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Transit-free networks' ASNs should appear in AS_PATH only
+in the left-most position.
+
+- ``action``:
+  If a policy is given here, it is applied to routes whose
+  AS_PATH contains one of the following ASN in any position
+  different from the first:
+
+
+
+
+  - **reject**: the route is discarded.
+
+
+  - **warning**: a warning is logged.
+
+
+  OpenBGPD: used only if action is **reject**.
+
+
+  Default: **none**
+
+  Example:
+
+  .. code:: yaml
+
+     action: "reject"
+
+
+
+- ``asns``:
+  Comma separated list of ASNs which are considered
+  transit-free. Used only if an **action** is provided above.
+
+  Example:
+
+  .. code:: yaml
+
+     asns: >
+          174, 209, 286, 701, 1239, 1299, 2828, 2914,
+          3257, 3320, 3356, 3549, 5511, 6453, 6461,
+          6762, 6830, 7018, 12956
+
+
+
+
+
+IRRDB filters: ``irrdb``
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+With regards of the following two options, if no AS-SET
+is given in the clients configuration file for the
+specific client nor for its AS, then only the ASN
+of the announcing client is expanded and used to gather
+authorized origin ASNs and prefixes.
+If the **peering_db** option below within this section is set
+to True, ARouteServer acquires the AS-SET of the client ASN
+from PeeringDB.
+
+
+More details on the Configuration page on ReadTheDocs:
+https://arouteserver.readthedocs.io/en/latest/CONFIG.html
+
+- ``enforce_origin_in_as_set``:
+  Accept only routes whose origin ASN is registered in
+  the expanded AS-SET of the announcing client.
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+  Default: **True**
+
+  Example:
+
+  .. code:: yaml
+
+     enforce_origin_in_as_set: True
+
+
+
+- ``enforce_prefix_in_as_set``:
+  Accept only prefixes which are present in the expanded
+  AS-SET of the announcing client.
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+  Default: **True**
+
+  Example:
+
+  .. code:: yaml
+
+     enforce_prefix_in_as_set: True
+
+
+
+- ``allow_longer_prefixes``:
+  By default, only prefixes that have a strict correspondence
+  in the route-set obtained by expading the AS-SET are
+  allowed.
+  If this is set to True, more specific prefixes that don't
+  have a strict correspondence with but that are covered by a
+  prefix from the route-set are accepted as well.
+
+
+  Default: **False**
+
+  Example:
+
+  .. code:: yaml
+
+     allow_longer_prefixes: False
+
+
+
+- ``tag_as_set``:
+  Tag routes whose prefix is (not) present in a client's AS-SET.
+  If a client's **enforce_[origin|prefix]in_as_set** is True
+  then unauthorized routes are rejected and not tagged
+  (unless they match a client-level **white_list_route** entry).
+  BGP communities used to tag these routes are:
+
+
+  - **[origin|prefix]_(not_)present_in_as_set**
+
+
+  - **prefix_validated_via_rpki_roas**
+
+
+  - **prefix_validated_via_arin_whois_db_dump**
+
+
+  - **route_validated_via_white_list** (only for routes validated
+    solely because of a client-level **white_list_route** entry)
+
+
+  Default: **True**
+
+  Example:
+
+  .. code:: yaml
+
+     tag_as_set: True
+
+
+
+- ``peering_db``:
+  If this option is set to True and no AS-SETs are given for
+  a client nor for its ASN then ARouteServer tries to acquire
+  the AS-SET from PeeringDB.
+  Please note that data quality in PeeringDB has large
+  variations; setting this option to True could lead to
+  unwanted and unpredictable behaviours.
+
+
+  Default: **False**
+
+  Example:
+
+  .. code:: yaml
+
+     peering_db: False
+
+
+
+- ``use_rpki_roas_as_route_objects``:
+  With regards of prefix validation, when this option is
+  enabled ARouteServer uses RPKI ROAs as if they were route
+  objects.
+  Routes whose origin ASN is authorized by a client's AS-SET
+  but whose prefix has not a corresponding route object will
+  be accepted if a covering ROA exists for that origin
+  ASN. In this case, if **tag_as_set** is True, these routes
+  are tagged with the **prefix_validated_via_rpki_roas**
+  community.
+
+
+- ``enabled``:
+  Set this to True to enable this feature.
+
+
+  When enabled, the **rpki_roas** section must be configured in
+  order to set the method used to gather RPKI ROAs.
+
+
+  Default: **False**
+
+  Example:
+
+  .. code:: yaml
+
+     enabled: False
+
+
+
+
+- ``use_arin_bulk_whois_data``:
+  Similarly to the **use_rpki_roas_as_route_objects** option,
+  this one allows to back IRR filters up by using "Origin AS"
+  data from an ARIN bulk Whois database dump. It is a dump
+  of the whole ARIN Whois database that contains all the
+  prefixes for which one or more authorized origin ASNs
+  have been set by the resource holder.
+  Routes whose origin ASN is authorized by a client's AS-SET
+  but whose prefix has not a corresponding route object will
+  be accepted if an entry exists in this database for that
+  origin ASN.
+  In this case, if **tag_as_set** is True, these routes
+  are tagged with the
+  **prefix_validated_via_arin_whois_db_dump** community.
+
+
+  The setting of the **allow_longer_prefixes** option will be
+  honored.
+
+
+  See also:
+  https://mailman.nanog.org/pipermail/nanog/2017-December/093525.html
+
+
+- ``enabled``:
+  Set this to True to enable this feature.
+
+
+  Default: **False**
+
+  Example:
+
+  .. code:: yaml
+
+     enabled: False
+
+
+
+- ``source``:
+  The source of the data must be set here.
+
+
+  It can be an **http://** or **https://** URL or a local file
+  path. The file must be in JSON format, accordingly to the
+  following schema:
+
+
+  {
+  "json_schema": "0.0.2",
+  "source": "ARIN-WHOIS",
+  "whois_records": {
+  "v4": [{"originas": "ASxxx", "prefix": "w.x.y.z/l"}],
+  "v6": [{"originas": "ASxxx", "prefix": "a:b:c:d::/l"}]
+  }
+  }
+
+
+  Optionally it can be compressed in BZ2 format. In that
+  case the filename must end with the ".bz2" extension.
+
+
+  The following script can be used to convert the original
+  XML file provided by ARIN into the expected JSON format:
+
+
+  https://github.com/NLNOG/arin-whois-bulk-parser
+
+
+  Default: **URL of the dump parsed and published by NLNOG.**
+
+  Example:
+
+  .. code:: yaml
+
+     source: "http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
+
+
+
+
+
+RPKI BGP Origin Validation: ``rpki_bgp_origin_validation``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+- ``enabled``:
+  Enable BGP Prefix Origin Validation for routes received from
+  clients.
+  https://tools.ietf.org/html/rfc6811
+
+
+  When enabled, the **rpki_roas** section must be configured in
+  order to set the method used to gather RPKI ROAs.
+
+
+  Default: **False**
+
+  Example:
+
+  .. code:: yaml
+
+     enabled: False
+
+
+
+- ``reject_invalid``:
+  If **reject_invalid** is True, when an INVALID route is received
+  the route server rejects it.
+  If it is False, INVALID routes are accepted and tagged with
+  RFC8097 BGP communities for further internal processing or
+  to be used by external custom functions implemented in .local
+  files.
+  INVALID routes are not announced to clients.
+
+
+  OpenBGPD: RFC8097 BGP communities tagging not yet implemented
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+  Default: **True**
+
+  Example:
+
+  .. code:: yaml
+
+     reject_invalid: True
+
+
+
+
+Max prefix: ``max_prefix``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Dynamically adjust max-prefix limit of each client on the
+basis of the following criteria, in priority order:
+
+
+
+
+- client's **limit_ipv[4|6]** configuration statement, if
+  given;
+
+
+- client's ASN PeeringDB record, if enabled by the
+  **peering_db** option;
+
+
+- general limit set in **general_limit_ipv[4|6]**, if given.
+
+
+In the end, if no limit is found for a given AF or if
+it is 0, no max-prefix limit is configured fot the
+specific client.
+
+- ``action``:
+  If **action** is not given, no max-prefix enforcement
+  will be implemented.
+
+
+  Action to be taken when the limit is hit by clients:
+
+
+  - **shutdown**: the BGP session is disabled.
+
+
+  - **restart**: the BGP session is restarted.
+
+
+  - **block**: new routes are discarded.
+
+
+  - **warning**: log a warning message.
+
+
+  OpenBGPD: used only if action is **shutdown** or **restart**.
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+  Default: **none**
+
+  Example:
+
+  .. code:: yaml
+
+     action: "shutdown"
+
+
+
+- ``restart_after``:
+  OpenBGPD only: for the **restart** action, sessions will be
+  restarted after **restart_after** minutes.
+
+  Example:
+
+  .. code:: yaml
+
+     restart_after: 15
+
+
+
+- ``peering_db``:
+  Used to set client's max-pref limit if **limit_ipv[4|6]**
+  option is not given for the specific client.
+
+
+- ``enabled``:
+  If **enabled** is True and client's max-pref limit is not
+  set, ARouteServer fetches the limits from PeeringDB.
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+  Default: **True**
+
+  Example:
+
+  .. code:: yaml
+
+     enabled: True
+
+
+
+- ``increment``:
+  The following section can be used to accommodate cases of
+  networks that fill the PeeringDB records using their exact
+  route announcement count rather than a recommendation on
+  what others should configure as max-prefix limit.
+
+
+  The value that will be used is given by:
+  (<PeeringDB value> + <absolute>) * (1 + <relative> / 100)
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+- ``absolute``:
+  Absolute increment in terms of number of prefixes.
+
+
+  Default: **100**
+
+  Example:
+
+  .. code:: yaml
+
+     absolute: 100
+
+
+
+- ``relative``:
+  Relative increment in terms of percentage.
+
+
+  Default: **15**
+
+  Example:
+
+  .. code:: yaml
+
+     relative: 15
+
+
+
+
+
+- ``general_limit_ipv4`` and ``general_limit_ipv6``:
+  Used to set client's max-pref limit if **limit_ipv[4|6]**
+  option is not given for the specific client and if the
+  PeeringDB option is disabled or a PeeringDB record can't
+  be found.
+
+
+  Default: **170000 for IPv4 and 12000 for IPv6**
+
+  Example:
+
+  .. code:: yaml
+
+     general_limit_ipv4: 170000
+
+
+
+
+Reject policy: ``reject_policy``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+- ``policy``:
+  The route server can be configured to immediately discard the
+  routes that are considered to be rejected or to keep them and
+  tag them with a BGP community that describes the cause for
+  which they are considered so. These routes are not propagated
+  to other clients anyway, but they can be used for analysis,
+  statistics or reports.
+  A numeric value is used to identify the reason that led to
+  consider them as invalid; this identifier is used in the last
+  part of the **reject_cause** BGP community, that is finally
+  attached to the route.
+  The LOCAL_PREF attribute is also set to a value lower than the
+  default one, to avoid invalid routes to be preferred over
+  valid ones even in cases where path-hiding mitigation is not
+  enabled.
+
+
+  If **policy** is set to **reject**, invalid routes are
+  immediately discarded as they enter the route server.
+  If it is set to **tag**, they are tagged as described above
+  (and not propagated anyway to other clients). In this case,
+  the **reject_cause** BGP community must be also set.
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+  Default: **reject**
+
+  Example:
+
+  .. code:: yaml
+
+     policy: "reject"
+
+
+
+
+
+RPKI ROAs: ``rpki_roas``
++++++++++++++++++++++++++
+
+This section is used to configure how RPKI ROAs are gathered
+when **filtering.irrdb.use_rpki_roas_as_route_objects** or
+**filtering.rpki_bgp_origin_validation** are enabled.
+
+- ``source``:
+  The source used to gather RPKI ROAs.
+
+
+  Can be one of the following options:
+
+
+  - **rtrlib**: ROAs are loaded using the external program
+    rtrllib (https://github.com/rtrlib/bird-rtrlib-cli).
+    The name of the table where send the ROAs to is **RPKI**.
+
+
+  - **ripe-rpki-validator-cache**: ROAs are fetched via
+    HTTP from the RIPE RPKI Validator cache
+    (http://localcert.ripe.net:8088/export.json by default).
+
+
+  Please note that this method is far from guaranteeing
+  that a cryptographically validated dataset is retrieved
+  from a trusted cache, unless the URL of a local, trusted
+  instance of RPKI Validator is provided below in the
+  **ripe_rpki_validator_url** option.
+
+
+  OpenBGPD: only the **ripe-rpki-validator-cache** source
+  is currently supported.
+
+
+  Default: **ripe-rpki-validator-cache**
+
+  Example:
+
+  .. code:: yaml
+
+     source: "ripe-rpki-validator-cache"
+
+
+
+- ``ripe_rpki_validator_url``:
+  RIPE RPKI Validator URL.
+  Meaningful only when **source** is **ripe-rpki-validator-cache**.
+  It can be an **http://** or **https://** URL or the path of a
+  local file.
+
+
+  Default: **http://localcert.ripe.net:8088/export.json**
+
+  Example:
+
+  .. code:: yaml
+
+     ripe_rpki_validator_url: "http://localcert.ripe.net:8088/export.json"
+
+
+
+- ``allowed_trust_anchors``:
+  When using the **ripe-rpki-validator-cache** source, only the
+  following Trust Anchors will be taken into account.
+
+
+  Values must be taken among those published in the RIPE RPKI
+  Validator Configured Trust Anchors page:
+  http://localcert.ripe.net:8088/trust-anchors
+
+
+  Before enabling the 'ARIN RPKI Root', please consider the
+  following URLs:
+
+
+  http://lists.arin.net/pipermail/arin-ppml/2017-January/031231.html
+
+
+  https://www.arin.net/resources/rpki/rpa.pdf
+
+
+  Default: **APNIC, AfriNIC, LACNIC and RIPE NCC.**
+
+
+
+Blackhole filtering: ``blackhole_filtering``
++++++++++++++++++++++++++++++++++++++++++++++
+
+Destination-based blackholing policy: if a policy is given,
+accept prefixes of any length if they are tagged with the
+**blackholing** BGP community and if they are "covered by an
+equal or shorter prefix that the neighboring network is
+authorized to advertise."
+(https://tools.ietf.org/html/rfc7999#section-3.3).
+
+- ``policy_ipv4`` and ``policy_ipv6``:
+  How to treat prefixes subject to blackhole filtering.
+
+
+  If no policy is provided here then blackhole filtering is
+  not implemented in the route server.
+
+
+  Options:
+
+
+  - **propagate-unchanged**: the route is accepted and propagated
+    to clients unchanged. If missing, the BLACKHOLE well-known
+    community 65535:666 is added. Other local **blackholing**
+    communities are scrubbed.
+    It's up to the receiving client to accept the route and to
+    discard traffic toward its prefix.
+
+
+  - **rewrite-next-hop**: same behaviour of **propagate-unchanged**
+    option; in addition, the route server rewrites the NEXT_HOP
+    attribute of the advertised route with the address of the
+    blackhole next-hop (BN). BN should have a unique MAC
+    address determined by ARP/NDP used to filter L2 frames
+    entering clients ports on the basis of their destination
+    MAC address.
+
+
+  OpenBGPD: there is an issue that prevents the **rewrite-next-hop**
+  option to work for IPv6 on versions prior to OpenBSD 6.1.
+  https://github.com/pierky/arouteserver/issues/3
+
+
+  Default: **none**
+
+
+- ``rewrite_next_hop_ipv4`` and ``rewrite_next_hop_ipv6``:
+  IP addresses of BN used for **rewrite-next-hop** option:
+
+
+  Default: **none**
+
+  Example:
+
+  .. code:: yaml
+
+     rewrite_next_hop_ipv4: "192.0.2.66"
+
+
+
+- ``announce_to_client``:
+  How tagged routes should be propagated to clients.
+  This configuration statement works together with the same
+  client-level **blackhole_filtering.announce_to_client** option.
+  If here **announce_to_client** is True, tagged routes
+  are announced to clients unless they have their
+  **announce_to_client** option explicitly set to False.
+  If here **announce_to_client** is False, tagged routes
+  are announced to clients only if they have the
+  **announce_to_client** option explicitly set to True.
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+  Default: **True**
+
+  Example:
+
+  .. code:: yaml
+
+     announce_to_client: True
+
+
+
+- ``add_noexport``:
+  Automatically add the NO_EXPORT well-known community to
+  tagged routes before announcing them to clients.
+
+  Example:
+
+  .. code:: yaml
+
+     add_noexport: True
+
+
+
+
+Graceful shutdown: ``graceful_shutdown``
++++++++++++++++++++++++++++++++++++++++++
+
+Graceful BGP session shutdown (gshut) can be configured here.
+When **enabled** is True, the route server processes the routes
+that are tagged with the GRACEFUL_SHUTDOWN BGP community
+(65535:0) accordingly to draft-ietf-grow-bgp-gshut, that is
+it lowers their LOCAL_PREF to the value set in **local_pref**.
+(https://tools.ietf.org/html/draft-ietf-grow-bgp-gshut-11)
+
+- ``enabled``:
+  Enable processing of GRACEFUL_SHUTDOWN BGP community.
+
+
+  If **enabled** is False in the general.yml configuration then
+  routes tagged with the GRACEFUL_SHUTDOWN BGP community are
+  treated transparently; the gshut community is not stripped
+  off.
+
+
+  If **enabled** is True in the general.yml configuration but
+  False on a specific client configuration then routes tagged
+  with the GRACEFUL_SHUTDOWN BGP community received from that
+  client will be treated as if the gshut community was missing
+  and the community stripped off.
+
+
+  OpenBGPD: GRACEFUL_SHUTDOWN BGP community is not implemented
+  on versions prior to 6.2.
+  Can be overwritten on a client-by-client basis.
+
+
+  Default: **False**
+
+  Example:
+
+  .. code:: yaml
+
+     enabled: False
+
+
+
+- ``local_pref``:
+  Value used to set the new LOCAL_PREF attribute of routes
+  processed accordingly to gshut.
+  Meaningful only when **enabled** is True.
+
+
+  Default: **0**
+
+  Example:
+
+  .. code:: yaml
+
+     local_pref: 0
+
+
+
+
+RFC1997 well-known communities: ``rfc1997_wellknown_communities``
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+RFC1997 well-known communities (NO_EXPORT and NO_ADVERTISE)
+can be locally interpreted or passed through the route server,
+depending on the policy that a route server operator decides
+to implement.
+This section allows to configure this policy.
+
+- ``policy``:
+  The policy used to process routes tagged with NO_EXPORT or
+  NO_ADVERTISE that are received from clients.
+
+
+  Options:
+
+
+  - **rfc1997**: routes are processed accordingly to RFC1997;
+
+
+  - **pass**: routes are propagated to other clients with the
+    NO_EXPORT/NO_ADVERTISE communities unaltered.
+
+
+  Default: **pass**
+
+  Example:
+
+  .. code:: yaml
+
+     policy: "pass"
+
+
+
+
+RTT thresholds: ``rtt_thresholds``
++++++++++++++++++++++++++++++++++++
+
+Thresholds used for actions that are performed on the basis
+of clients RTT, triggered using RTT-based BGP communities.
+
+
+Used only if one or more of those BGP communities are set.
+
+
+The value in the last part of the community identifies the
+threshold for which the action is requested; only values from
+the **rtt_thresholds** are taken into account and actually used
+to understand if the desired action should be performed.
+
+
+Lower-than actions are inclusive, higher-than are exclusive.
+
+
+Some examples (based on the default values below):
+
+
+
+
+- 15, lower-than: action is performed for peers with RTT <= 15
+
+
+- 30, higher-than: action is performed for peers with RTT > 30
+
+
+- 1000, not in **rtt_thresholds**, action not performed
+
+
+- 0, not in **rtt_thresholds**, action not performed
+
+
+The values must be provided in ascending order.
+
+Example:
+
+.. code:: yaml
+
+   rtt_thresholds: 5, 10, 15, 20, 30, 50, 100, 200, 500
+
+
+BGP Communities: ``communities``
++++++++++++++++++++++++++++++++++
+
+For each community name below, Standard, Large and Extended
+BGP Communities can be provided in the **std**, **lrg** and **ext**
+statements respectively.
+Communities values must be given using the following formats:
+
+
+- **std**: **x:x**
+
+
+- **lrg**: **x:x:x**
+
+
+- **ext**: **[rt|ro]:x:x**
+
+
+The **rs_as** macro is replaced with the route server ASN given
+in **cfg.rs_as**.
+The **peer_as** macro, where allowed, is replaced with the ASN
+of the client the route is announced to.
+The **dyn_val** macro, where allowed, is replaced with a
+numeric value that is significant to the function the BGP
+community is responsible for.
+
+
+OpenBGPD: large communities are not supported on versions prior
+to OpenBSD 6.1, so they are not taken into account when
+building the configuration. If supported by the release of
+OpenBGPD running on the route server, enable them by setting
+the configuration target version to a value greater than or
+equal to "6.1" (--target-version command line argument).
+Moreover, ext communities that use the **peer_as** macro or the
+**dyn_val** macro can't be scrubbed from outbound routes
+(routes announced by the route server to the clients) because
+of lack of wildcard
+matching.
+
+Prefix/origin AS present in client's AS-SET
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- ``prefix_present_in_as_set``, ``prefix_not_present_in_as_set``, ``origin_present_in_as_set``, ``origin_not_present_in_as_set``, ``prefix_validated_via_rpki_roas``, ``prefix_validated_via_arin_whois_db_dump`` and ``route_validated_via_white_list``:
+  Prefix/origin AS present in client's AS-SET.
+
+
+  If **tag_as_set** = True, prefixes that are (not) part of an
+  AS-SET or whose origin ASN is (not) part of an AS-SET are
+  tagged with the following BGP communities, provided that they
+  are set below.
+
+
+  The following communities are scrubbed from inbound routes.
+
+
+  The **rs_as** macro can be used here.
+
+
+
+
+
+
+Blackhole filtering
+~~~~~~~~~~~~~~~~~~~~
+
+- ``blackholing``:
+  Blackhole filtering.
+
+
+  If a policy is given in **blackhole_filtering**, it is applied to
+  routes tagged with one of the following communities:
+
+
+  - the BLACKHOLE well-known community 65535:666, that is always
+    implemented if a **blackhole_filtering** policy is given
+    (https://tools.ietf.org/html/rfc7999#section-5)
+
+
+  - one of the following **blackholing** Standard, Large or
+    Extended BGP communities.
+
+
+  The following community is scrubbed from outbound routes.
+
+
+  The **rs_as** macro can be used here.
+
+
+
+
+
+
+Propagation control
+~~~~~~~~~~~~~~~~~~~~
+
+- ``do_not_announce_to_any``:
+  Control communities.
+
+
+  Routes that are tagged with the following community are not
+  announced to any client, unless they are also tagged with the
+  **announce_to_peer** communities: in this case, such routes are
+  announced only to the clients whose ASN matches the value given
+  in the **announce_to_peer** communities.
+
+
+  The following community is scrubbed from outbound routes.
+
+
+  The **rs_as** macro can be used here.
+
+
+
+
+
+
+- ``do_not_announce_to_peer``:
+  Routes that are tagged with the following community are not
+  announced to clients whose ASN matches the value given in the
+  community itself.
+  If a route is tagged with the two conflicting communities
+  **do_not_announce_to_peer** and **announce_to_peer**, the route
+  is not advertised to the peer.
+
+
+  The following community is scrubbed from outbound routes.
+
+
+  The **rs_as** macro can be used here.
+  The **peer_as** macro must appear in the last part of values.
+
+
+
+
+
+
+- ``announce_to_peer``:
+  Routes that are tagged with the following community are
+  announced to clients whose ASN matches the value given in the
+  community itself even if they are tagged with the
+  **do_not_announce_to_any** community.
+  If a route is tagged with the two conflicting communities
+  **do_not_announce_to_peer** and **announce_to_peer**, the route
+  is not advertised to the peer.
+
+
+  The following community is scrubbed from outbound routes.
+
+
+  The **rs_as** macro can be used here.
+  The **peer_as** macro must appear in the last part of values.
+
+
+
+
+
+
+- ``do_not_announce_to_peers_with_rtt_lower_than`` and ``do_not_announce_to_peers_with_rtt_higher_than``:
+  Routes that are tagged with the following community are not
+  announced to clients that have a RTT lower/higher than the
+  value of the threshold identified by the last part of the
+  community.
+
+
+  The following communities are scrubbed from outbound routes.
+
+
+  The **rs_as** macro can be used here.
+  The **dyn_val** macro must appear in the last part of values.
+  The **dyn_val** macro must contain a value from the
+  **rtt_thresholds** list that identifies the RTT value for
+  which the action is requested.
+
+
+
+
+
+
+- ``announce_to_peers_with_rtt_lower_than`` and ``announce_to_peers_with_rtt_higher_than``:
+  Routes that are tagged with the following community are
+  announced to clients that have a RTT lower/higher than the
+  value of the threshold identified by the last part of the
+  community, even if they are tagged with the
+  **do_not_announce_to_any** community.
+  If a route is also tagged with the **do_not_announce_to_peer**
+  community it is not advertised to the client even if it
+  matches the RTT criterion.
+
+
+  The following communities are scrubbed from outbound routes.
+
+
+  The **rs_as** macro can be used here.
+  The **dyn_val** macro must appear in the last part of values.
+  The **dyn_val** macro must contain a value from the
+  **rtt_thresholds** list that identifies the RTT value for
+  which the action is requested.
+
+
+
+
+
+
+Prepending
+~~~~~~~~~~~
+
+- ``prepend_once_to_any``, ``prepend_twice_to_any`` and ``prepend_thrice_to_any``:
+  Prepending communities.
+
+
+  The 3 "flavors" of prepending actions (to_peer, rtt
+  based and to_any) are applied in the following order:
+
+
+  - prepend_x_to_peer
+
+
+  - prepend_x_to_peers_with_rtt_higher_than (RTTs in desc order)
+
+
+  - prepend_x_to_peers_with_rtt_lower_than (RTTs in asc order)
+
+
+  - prepend_x_to_any
+    (x is always in the ascending order: once, twice, thrice).
+
+
+  For example, if a route is tagged with both a
+  **prepend_x_to_any** and a **prepend_x_to_peer** community, only
+  the latter will be considered when announcing to the clients
+  whose ASN match the one given in its value.
+  Routes that are tagged with the following communities are
+  propagated to all the clients with an AS_PATH prepended once,
+  twice or thrice with the announcing client's ASN.
+
+
+  The following communities are scrubbed from outbound routes.
+
+
+  The **rs_as** macro can be used here.
+
+
+
+
+
+
+- ``prepend_once_to_peer``, ``prepend_twice_to_peer`` and ``prepend_thrice_to_peer``:
+  Routes that are tagged with the following communities are
+  propagated to the clients whose ASN matches the one given in
+  the community with an AS_PATH prepended once, twice or thrice
+  with the announcing client's ASN.
+
+
+  The following communities are scrubbed from outbound routes.
+
+
+  The **rs_as** macro can be used here.
+  The **peer_as** macro must appear in the last part of values.
+
+
+
+
+
+
+- ``prepend_once_to_peers_with_rtt_lower_than``, ``prepend_twice_to_peers_with_rtt_lower_than``, ``prepend_thrice_to_peers_with_rtt_lower_than``, ``prepend_once_to_peers_with_rtt_higher_than``, ``prepend_twice_to_peers_with_rtt_higher_than`` and ``prepend_thrice_to_peers_with_rtt_higher_than``:
+  Routes that are tagged with the following communities are
+  propagated to clients having a RTT lower/higher than the value
+  of the threshold identified by the last part of the community
+  with an AS_PATH prepended once, twice or thrice with the
+  announcing client's ASN.
+
+
+  The following communities are scrubbed from outbound routes.
+  The **peer_as** macro must appear in the last part of values.
+
+
+  The **rs_as** macro can be used here.
+  The **dyn_val** macro must appear in the last part of values.
+  The **dyn_val** macro must contain a value from the
+  **rtt_thresholds** list that identifies the RTT value for
+  which the action is requested.
+
+
+
+
+
+
+NO_EXPORT / NO_ADVERTISE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- ``add_noexport_to_any`` and ``add_noadvertise_to_any``:
+  Routes that are tagged with the following communities are
+  propagated to other clients before the NO_EXPORT (65535:65281)
+  and/or the NO_ADVERTISE (65535:65282) well-known communities
+  are added.
+  When **rfc1997_wellknown_communities.enabled** is set to **pass**
+  this behaviour can be obtained by announcing routes to the
+  route server after tagging them with RFC1997 NO_EXPORT or
+  NO_ADVERTISE.
+
+
+  The following communities are scrubbed from outbound routes.
+
+
+  The **rs_as** macro can be used here.
+
+
+
+
+
+
+- ``add_noexport_to_peer`` and ``add_noadvertise_to_peer``:
+
+
+  The **rs_as** macro can be used here.
+  The **peer_as** macro must appear in the last part of values.
+
+
+
+
+
+
+Reject cause
+~~~~~~~~~~~~~
+
+- ``reject_cause``:
+  This BGP community is used when the **reject_policy** option is
+  set to **tag**. It is used to track the code of the reason that
+  led the route to be considered as invalid.
+
+
+  The following community is scrubbed from inbound routes.
+
+
+  The **rs_as** macro can be used here.
+  The **dyn_val** macro must appear in the last part of values.
+
+
+
+
+
+
+- ``rejected_route_announced_by``:
+  This BGP community is used when the **reject_policy** option is
+  set to **tag**. If configured, it is used to track the ASN
+  of the peer that announced the invalid route to the route
+  server.
+
+
+  The following community is scrubbed from inbound routes.
+
+
+  The **rs_as** macro can be used here.
+  The **dyn_val** macro must appear in the last part of values.
+
+
+
+
+
+
+
+Custom BGP communities: ``custom_communities``
++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+- ``custom_community1_name``:
+  Custom BGP communities can be added to routes that enter the
+  route server from clients.
+  Each client can be configured with a set of custom communities
+  that are added to the routes it announces to the route
+  server; these communities will be then propagated to other
+  clients as the routes leave the server.
+
+
+  The name of a custom BGP community can't be the same of any
+  built-in community.
+
+
+  The **rs_as** macro can be used here.
+
+
+
+
+

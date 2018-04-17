@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -105,11 +105,29 @@ class TemplateRenderingCommands(ARouteServerCommand):
         group.add_argument(
             "--ip-ver",
             help="IP version. "
-                "Default: both IPv4 and IPv6",
+                 "Default: both IPv4 and IPv6",
             default=None,
             choices=[4, 6],
             type=int,
             dest="ip_ver")
+
+        group.add_argument(
+            "--perform-graceful-shutdown",
+            help="When set, the configuration built by the program "
+                 "includes an outbound policy which is applied to "
+                 "BGP sessions toward the clients and which adds "
+                 "the GRACEFUL_SHUTDOWN BGP community (65535:0) to "
+                 "all the routes that the route server announces to "
+                 "them. This can be useful to perform a graceful "
+                 "shutdown of the route server itself. "
+                 "This argument works regardless of the setting of "
+                 "graceful_shutdown.enabled option in general.yml file. "
+                 "Please note: the configuration generated when this "
+                 "flag is set should be used only temporarly and "
+                 "must be replaced with the production configuration "
+                 "before the route server is reloaded.",
+            action="store_true",
+            dest="perform_graceful_shutdown")
 
     def _get_template_sub_dir(self):
         raise NotImplementedError()
@@ -131,14 +149,16 @@ class TemplateRenderingCommands(ARouteServerCommand):
             "cfg_general": program_config.get("cfg_general"),
             "cfg_clients": program_config.get("cfg_clients"),
             "cfg_bogons": program_config.get("cfg_bogons"),
-            "cache_dir": program_config.get("cache_dir"),
+            "cache_dir": program_config.get_dir("cache_dir"),
             "cache_expiry": program_config.get("cache_expiry"),
             "bgpq3_path": program_config.get("bgpq3_path"),
             "bgpq3_host": program_config.get("bgpq3_host"),
             "bgpq3_sources": program_config.get("bgpq3_sources"),
-            "template_dir": program_config.get("templates_dir"),
+            "rtt_getter_path": program_config.get("rtt_getter_path"),
+            "template_dir": program_config.get_dir("templates_dir"),
             "template_name": program_config.get("template_name"),
             "ip_ver": self.args.ip_ver,
+            "perform_graceful_shutdown": self.args.perform_graceful_shutdown,
             "threads": program_config.get("threads"),
             "ignore_errors": self.args.ignore_errors,
         }
@@ -234,7 +254,7 @@ class BuildCommand(TemplateRenderingCommands):
         parser.add_argument(
             "--speaker",
             help="The BGP speaker target implementation for "
-                "the configuration that will be built.",
+                 "the configuration that will be built.",
             dest="speaker",
             choices=["BIRD"],
             default="BIRD")

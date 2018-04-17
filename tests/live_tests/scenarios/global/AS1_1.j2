@@ -17,6 +17,12 @@ protocol static bad_prefixes {
 	route {{ data.peer_as1 }} reject;
 	route {{ data.invalid_asn1 }} reject;
 	route {{ data.aspath_len1 }} reject;
+	route {{ data.AS1_whitel_1 }} reject;
+	route {{ data.AS1_whitel_2 }} reject;
+	route {{ data.AS1_whitel_3 }} reject;
+	route {{ data.AS1_whitel_4 }} reject;
+	route {{ data.AS1_whitel_5 }} reject;
+	route {{ data.AS1_whitel_6 }} reject;
 }
 
 filter to_the_rs {
@@ -35,14 +41,54 @@ filter to_the_rs {
 		bgp_path.prepend(2);
 		bgp_path.prepend(1);
 	}
+	if net = {{ data.AS103_gshut_1 }} then {
+		bgp_community.add((65535, 0));
+	}
+	if net = {{ data.AS1_whitel_1 }} then {
+		bgp_path.delete(1);
+		bgp_path.prepend(1011);
+		bgp_path.prepend(1);
+	}
+	if net = {{ data.AS1_whitel_2 }} then {
+		bgp_path.delete(1);
+		bgp_path.prepend(1000);
+		bgp_path.prepend(1);
+	}
+	if net = {{ data.AS1_whitel_3 }} then {
+		bgp_path.delete(1);
+		bgp_path.prepend(1011);
+		bgp_path.prepend(1);
+	}
+	if net = {{ data.AS1_whitel_4 }} then {
+		bgp_path.delete(1);
+		bgp_path.prepend(1011);
+		bgp_path.prepend(1);
+	}
+	if net = {{ data.AS1_whitel_5 }} then {
+		bgp_path.delete(1);
+		bgp_path.prepend(1000);
+		bgp_path.prepend(1);
+	}
+	if net = {{ data.AS1_whitel_6 }} then {
+		bgp_path.delete(1);
+		bgp_path.prepend(1011);
+		bgp_path.prepend(1);
+	}
 	accept;
 }
-
+filter from_rs {
+	# AS1 must announce AS103_gshut_* to test gshut.
+	if net = {{ data.AS103_gshut_1 }} then
+		reject;
+	if net = {{ data.AS103_gshut_2 }} then
+		reject;
+	accept;
+}
 protocol bgp the_rs {
 	local as 1;
 	neighbor {{ data.rs_IPAddress }} as 999;
 	next hop self;
-	import all;
+	import filter from_rs;
 	export filter to_the_rs;
 	connect delay time 1;
 	connect retry time 1;

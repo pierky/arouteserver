@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,15 +27,18 @@ class CaptureLog(logging.Handler):
 
     def reset_messages(self):
         self.msgs = []
+        self.warnings = []
 
     def emit(self, record):
         self.acquire()
         try:
             if record.levelname.lower() == "error":
                 self.msgs.append(record.getMessage())
+            if record.levelname.lower() == "warning":
+                self.warnings.append(record.getMessage())
         finally:
             self.release()
-    
+
     def reset(self):
         self.acquire()
         try:
@@ -49,15 +52,6 @@ class ARouteServerTestCase(unittest.TestCase):
     SHORT_DESCR = ""
     DEBUG = False
     SKIP_ON_TRAVIS = False
-    UNCONDITIONALLY_SKIP_THIS_CLASS = False
-
-    @classmethod
-    def should_be_skipped(cls):
-        if cls.UNCONDITIONALLY_SKIP_THIS_CLASS:
-            return True
-        if cls.SKIP_ON_TRAVIS and "TRAVIS" in os.environ:
-            return True
-        return False
 
     def _capture_log(self):
         self.logger_handler = None
@@ -76,8 +70,6 @@ class ARouteServerTestCase(unittest.TestCase):
         pass
 
     def setUp(self):
-        if self.should_be_skipped():
-            return
         self._capture_log()
         self._setUp()
 
@@ -87,8 +79,6 @@ class ARouteServerTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        if cls.should_be_skipped():
-            return
         cls._setUpClass()
 
     @classmethod
@@ -97,8 +87,6 @@ class ARouteServerTestCase(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        if cls.should_be_skipped():
-            return
         cls._tearDownClass()
 
     @classmethod
@@ -116,4 +104,3 @@ class ARouteServerTestCase(unittest.TestCase):
 
     def shortDescription(self):
         return self._testMethodDoc.format(self.SHORT_DESCR)
-

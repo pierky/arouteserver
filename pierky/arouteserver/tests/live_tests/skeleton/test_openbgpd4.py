@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 import os
 import unittest
 
-from base import SkeletonScenario
+from .base import SkeletonScenario
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4

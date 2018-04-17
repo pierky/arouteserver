@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,11 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import ipaddr
+from aggregate6 import aggregate
 import logging
 import os
 from packaging import version
-import re
 import sys
 import time
 import yaml
@@ -28,17 +27,20 @@ from .config.general import ConfigParserGeneral
 from .config.bogons import ConfigParserBogons
 from .config.asns import ConfigParserASNS
 from .config.clients import ConfigParserClients
-from .config.roa import ConfigParserROAEntries
-from .enrichers.irrdb import IRRDBConfigEnricher_OriginASNs, \
+from .enrichers.arin_db_dump import ARINWhoisDBDumpEnricher
+from .enrichers.irrdb import IRRDBConfigEnricher_ASNs, \
                              IRRDBConfigEnricher_Prefixes
-from .enrichers.peeringdb import PeeringDBConfigEnricher
+from .enrichers.pdb_as_set import PeeringDBConfigEnricher_ASSet
+from .enrichers.pdb_max_prefix import PeeringDBConfigEnricher_MaxPrefix
+from .enrichers.rpki_roas import RPKIROAsEnricher
+from .enrichers.rtt import RTTGetterConfigEnricher
 from .errors import MissingDirError, MissingFileError, BuilderError, \
-                    ARouteServerError, PeeringDBError, PeeringDBNoInfoError, \
-                    MissingArgumentError, TemplateRenderingError, \
-                    CompatibilityIssuesError, ConfigError
-from .irrdb import ASSet, RSet, IRRDBTools
-from .cached_objects import CachedObject
-from .peering_db import PeeringDBNet
+                    ARouteServerError, MissingArgumentError, \
+                    TemplateRenderingError, CompatibilityIssuesError, \
+                    ConfigError, MissingGeneralConfigFileError
+from .ipaddresses import IPNetwork
+from .irrdb import IRRDBInfo
+from .cached_objects import CachedObject, normalize_expiry_time
 
 
 class ConfigBuilder(object):
@@ -119,12 +121,13 @@ class ConfigBuilder(object):
 
     def __init__(self, template_dir=None, template_name=None,
                  cache_dir=None, cache_expiry=CachedObject.DEFAULT_EXPIRY,
-                 bgpq3_path="bgpq3", bgpq3_host=IRRDBTools.BGPQ3_DEFAULT_HOST,
-                 bgpq3_sources=IRRDBTools.BGPQ3_DEFAULT_SOURCES, threads=4,
-                 ip_ver=None, ignore_errors=[], live_tests=False,
+                 bgpq3_path="bgpq3", bgpq3_host=IRRDBInfo.BGPQ3_DEFAULT_HOST,
+                 bgpq3_sources=IRRDBInfo.BGPQ3_DEFAULT_SOURCES,
+                 rtt_getter_path=None, threads=4,
+                 ip_ver=None, perform_graceful_shutdown=False,
+                 ignore_errors=[], live_tests=False,
                  local_files=[], local_files_dir=None, target_version=None,
                  cfg_general=None, cfg_bogons=None, cfg_clients=None,
-                 cfg_roas=None,
                  **kwargs):
         """Initialize the configuration builder.
 
@@ -185,8 +188,12 @@ class ConfigBuilder(object):
                 - *--cache-dir* CLI argument.
                 - *cache_dir* program's configuration file option.
 
-            cache_expiry (int): how long cached data must be considered valid,
-                in seconds.
+            cache_expiry (int or dict): how long cached data must be considered
+                valid, in seconds. Each "cacheable object" (PeeringDB info,
+                IRR datasets, ...) can have its own expiry time. If an int is
+                given here, all the expiry times will have the same duration,
+                otherwise cacheable objects will pick their specific value
+                or use the 'general' one if no more specific value is given.
 
                 Same of:
 
@@ -199,6 +206,16 @@ class ConfigBuilder(object):
                 Same of:
 
                 - *--ip-ver* CLI argument.
+
+            perform_graceful_shutdown (bool): when True, the output config
+                includes an outbound policy which is applied to BGP
+                sessions toward the clients and which adds the
+                GRACEFUL_SHUTDOWN BGP community (65535:0) to all the
+                routes that the route server announces to them.
+
+                Same of:
+
+                - *--perform-graceful-shutdown* CLI argument.
 
             target_version (str): the BGP daemon target version for which the
                 output configuration must be generated.
@@ -288,6 +305,15 @@ class ConfigBuilder(object):
 
                 - *bgpq3_sources* program's configuration file option.
 
+            rtt_getter_path (str): path to the program that is executed to
+                determine the RTT of a peer.
+                Syntax and details can be found at the following URL:
+                https://arouteserver.readthedocs.io/en/latest/RTT_GETTER.html
+
+                Same of:
+
+                - *rtt_getter_path* program's configuration file option.
+
             threads (int): number of concurrent threads used to gather
                 additional data from external sources (bgpq3, PeeringDB, ...)
 
@@ -320,11 +346,13 @@ class ConfigBuilder(object):
             "cache_dir", cache_dir
         )
 
-        self.cache_expiry = cache_expiry
+        self.cache_expiry = normalize_expiry_time(cache_expiry)
 
         self.bgpq3_path = bgpq3_path
         self.bgpq3_host = bgpq3_host
         self.bgpq3_sources = bgpq3_sources
+
+        self.rtt_getter_path = rtt_getter_path
 
         self.threads = threads
 
@@ -344,6 +372,8 @@ class ConfigBuilder(object):
             if self.ip_ver not in (4, 6):
                 raise BuilderError("Invalid IP version: {}".format(ip_ver))
 
+        self.perform_graceful_shutdown = perform_graceful_shutdown
+
         self.ignore_errors = ignore_errors or []
 
         self.live_tests = live_tests
@@ -353,9 +383,13 @@ class ConfigBuilder(object):
 
         self.target_version = target_version or self.DEFAULT_VERSION
 
-        self.cfg_general = self._get_cfg(cfg_general,
-                                         ConfigParserGeneral,
-                                         "general")
+        try:
+            self.cfg_general = self._get_cfg(cfg_general,
+                                             ConfigParserGeneral,
+                                             "general")
+        except MissingFileError as e:
+            raise MissingGeneralConfigFileError(e.path)
+
         self.cfg_bogons = self._get_cfg(cfg_bogons,
                                         ConfigParserBogons,
                                         "bogons")
@@ -373,16 +407,19 @@ class ConfigBuilder(object):
                                          ConfigParserClients,
                                          "clients",
                                          general_cfg=self.cfg_general)
-        if cfg_roas:
-            self.cfg_roas = self._get_cfg(cfg_roas,
-                                          ConfigParserROAEntries,
-                                          "roas")
-        else:
-            self.cfg_roas = None
 
         self.kwargs = kwargs
 
-        self.as_sets = None
+        # Initially None; is set to IRRDB() and finally populated by
+        # the IRRDB enrichers.
+        # { "<as_set_bundle_id>": <IRRDBRecord>, ... }
+        self.irrdb_info = None
+
+        # { "<len>": [{"prefix": "<ip>/<len>", "max_len": x, "asn": "AS<n>"}]
+        self.rpki_roas = {}
+
+        # { "<origin_asn>": ["a/b", "c/d"] }
+        self.arin_whois_records = {}
 
         # Validation
 
@@ -448,9 +485,34 @@ class ConfigBuilder(object):
             self.cfg_general["communities"][comm_name]["peer_as"] = comm.get("peer_as", False)
 
         # Enrichers
-        for enricher_class in (IRRDBConfigEnricher_OriginASNs,
-                               IRRDBConfigEnricher_Prefixes,
-                               PeeringDBConfigEnricher):
+        # Order matters: AS-SET from PeeringDB must be run first
+        # in order to acquire missing AS-SETs that are processed
+        # later by IRRDB enrichers. RPKI ROAs (when only used as
+        # route objects) are processed only
+        # for those origin ASNs that have been gathered from AS-SETs.
+        filtering = self.cfg_general["filtering"]
+        irrdb_cfg = filtering["irrdb"]
+        used_enricher_classes = []
+
+        if irrdb_cfg["peering_db"]:
+            used_enricher_classes += [PeeringDBConfigEnricher_ASSet]
+
+        used_enricher_classes += [IRRDBConfigEnricher_ASNs,
+                                  IRRDBConfigEnricher_Prefixes,
+                                  PeeringDBConfigEnricher_MaxPrefix]
+
+        if self.cfg_general.rtt_based_functions_are_used:
+            used_enricher_classes.append(RTTGetterConfigEnricher)
+
+        if self.cfg_general.rpki_roas_needed and \
+            self.cfg_general["rpki_roas"]["source"] == \
+                "ripe-rpki-validator-cache":
+            used_enricher_classes.append(RPKIROAsEnricher)
+
+        if irrdb_cfg["use_arin_bulk_whois_data"]["enabled"]:
+            used_enricher_classes.append(ARINWhoisDBDumpEnricher)
+
+        for enricher_class in used_enricher_classes:
             enricher = enricher_class(self, threads=self.threads)
             try:
                 enricher.enrich()
@@ -461,22 +523,6 @@ class ConfigBuilder(object):
 
         if errors:
             raise BuilderError()
-
-    @staticmethod
-    def community_is_set(comm):
-        """Helper filter used by Jinja2 templates.
-
-        It's defined at class-level because different BGP-speaker-specific
-        builder classes may have a diffent way to treat communities:
-        OpenBGPD 6.0, for example, does not implement large communities, so
-        a community defined with only large values must have a return value
-        False.
-        """
-        if not comm:
-            return False
-        if not comm["std"] and not comm["lrg"] and not comm["ext"]:
-            return False
-        return True
 
     def _include_local_file(self, local_file_id):
         raise NotImplementedError()
@@ -499,23 +545,37 @@ class ConfigBuilder(object):
                 be written.
         """
 
+        def sorted_rpki_roas():
+            """Returns a list of ROAs, sorted by prefix length, prefix, ASN"""
+            res = []
+            prefix_lengths = sorted(map(int, self.rpki_roas.keys()))
+            for pref_len in prefix_lengths:
+                for roa in sorted(self.rpki_roas[str(pref_len)],
+                                  key=lambda r: (r["prefix"], r["asn"])):
+                    res.append(roa)
+            return res
+
         self.data = {}
         self.data["ip_ver"] = self.ip_ver
         self.data["cfg"] = self.cfg_general
         self.data["bogons"] = self.cfg_bogons
         self.data["clients"] = self.cfg_clients
         self.data["asns"] = self.cfg_asns
-        self.data["as_sets"] = self.as_sets
-        self.data["roas"] = self.cfg_roas
+        self.data["irrdb_info"] = self.irrdb_info
+        self.data["rpki_roas"] = sorted_rpki_roas()
+        self.data["arin_whois_records"] = self.arin_whois_records
         self.data["live_tests"] = self.live_tests
+        self.data["rtt_based_functions_are_used"] = \
+            self.cfg_general.rtt_based_functions_are_used
+        self.data["perform_graceful_shutdown"] = self.perform_graceful_shutdown
 
         def ipaddr_ver(ip):
-            return ipaddr.IPAddress(ip).version
+            return IPNetwork(ip).version
 
         def current_ipver(ip):
             if self.ip_ver is None:
                 return True
-            return ipaddr.IPAddress(ip).version == self.ip_ver
+            return IPNetwork(ip).version == self.ip_ver
 
         def include_local_file(local_file_id):
             if local_file_id not in self.LOCAL_FILES_IDS:
@@ -535,6 +595,27 @@ class ConfigBuilder(object):
                 return version.parse(self.target_version) >= version.parse(v)
             return False
 
+        def target_version_le(v):
+            if self.target_version:
+                return version.parse(self.target_version) <= version.parse(v)
+            return False
+
+        def get_normalized_rtt(v):
+            if not v:
+                return 0
+            if v < 1:
+                return 1
+            if v > 60000:
+                return 60000
+            return int(round(v))
+
+        def community_is_set(comm):
+            if not comm:
+                return False
+            if not comm["std"] and not comm["lrg"] and not comm["ext"]:
+                return False
+            return True
+
         env = Environment(
             loader=FileSystemLoader(self.template_dir),
             trim_blocks=True,
@@ -542,10 +623,12 @@ class ConfigBuilder(object):
             undefined=StrictUndefined
         )
         env.tests["current_ipver"] = current_ipver
-        env.filters["community_is_set"] = self.community_is_set
+        env.filters["community_is_set"] = community_is_set
         env.filters["ipaddr_ver"] = ipaddr_ver
         env.filters["include_local_file"] = include_local_file
         env.filters["target_version_ge"] = target_version_ge
+        env.filters["target_version_le"] = target_version_le
+        env.filters["get_normalized_rtt"] = get_normalized_rtt
 
         self.enrich_j2_environment(env)
 
@@ -596,8 +679,8 @@ class BIRDConfigBuilder(ConfigBuilder):
              "scrub_communities_in", "scrub_communities_out",
              "apply_blackhole_filtering_policy"]
 
-    AVAILABLE_VERSION = ["1.6.3"]
-    DEFAULT_VERSION = "1.6.3"
+    AVAILABLE_VERSION = ["1.6.3", "1.6.4"]
+    DEFAULT_VERSION = "1.6.4"
 
     def validate_bgpspeaker_specific_configuration(self):
         if self.ip_ver is None:
@@ -813,21 +896,16 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                        "footer"]
     LOCAL_FILES_BASE_DIR = "/etc/bgpd"
 
-    AVAILABLE_VERSION = ["6.0", "6.1"]
-    DEFAULT_VERSION = "6.0"
+    AVAILABLE_VERSION = ["6.0", "6.1", "6.2", "6.3"]
+    DEFAULT_VERSION = "6.2"
 
-    IGNORABLE_ISSUES = ["path_hiding", "transit_free_action", "rpki",
+    IGNORABLE_ISSUES = ["path_hiding", "transit_free_action",
                         "add_path", "max_prefix_action",
                         "blackhole_filtering_rewrite_ipv6_nh",
-                        "large_communities", "extended_communities"]
-
-    @staticmethod
-    def community_is_set(comm):
-        if not comm:
-            return False
-        if not comm["std"] and not comm["ext"]:
-            return False
-        return True
+                        "large_communities", "extended_communities",
+                        "graceful_shutdown", "internal_communities",
+                        "rpki_roas_as_route_objects_source",
+                        "rpki_roas_source"]
 
     def _include_local_file(self, local_file_id):
         return 'include "{}"\n\n'.format(
@@ -860,14 +938,6 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             ):
                 res = False
 
-        if self.cfg_general["filtering"]["rpki"]["enabled"]:
-            if not self.process_bgpspeaker_specific_compatibility_issue(
-                "rpki",
-                "RPKI-based filtering is configured but not supported "
-                "by OpenBGPD."
-            ):
-                res = False
-
         add_path_clients = []
         max_prefix_action_clients = []
         for client in self.cfg_clients.cfg["clients"]:
@@ -881,37 +951,33 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
 
         if add_path_clients:
             clients = add_path_clients
+            cnt = len(clients)
             if not self.process_bgpspeaker_specific_compatibility_issue(
                 "add_path",
                 "ADD_PATH not supported by OpenBGPD but "
                 "enabled for the following clients: {}{}.".format(
                     ", ".join(clients[:3]),
-                    "" if len(clients) <= 3 else
-                        " and {} more".format(
-                           len(clients) - 3
-                        )
+                    "" if cnt <= 3 else " and {} more".format(cnt - 3)
                 )
             ):
                 res = False
 
         if max_prefix_action_clients:
             clients = max_prefix_action_clients
+            cnt = len(clients)
             if not self.process_bgpspeaker_specific_compatibility_issue(
                 "max_prefix_action",
                 "Invalid max-prefix 'action' for the following "
                 "clients: {}{}; only 'shutdown' and 'restart' "
                 "are supported by OpenBGPD.".format(
                     ", ".join(clients[:3]),
-                    "" if len(clients) <= 3 else
-                        " and {} more".format(
-                           len(clients) - 3
-                        )
+                    "" if cnt <= 3 else " and {} more".format(cnt - 3)
                 )
             ):
                 res = False
 
         if self.cfg_general["blackhole_filtering"]["policy_ipv6"] == "rewrite-next-hop" and \
-            version.parse(self.target_version or "6.0") < version.parse("6.1"):
+            version.parse(self.target_version) < version.parse("6.1"):
             if not self.process_bgpspeaker_specific_compatibility_issue(
                 "blackhole_filtering_rewrite_ipv6_nh",
                 "On OpenBSD < 6.1 there is an issue related to next-hop rewriting "
@@ -956,7 +1022,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                               "(--target-version command line argument).")
 
         if only_large_comms and \
-            version.parse(self.target_version or "6.0") < version.parse("6.1"):
+            version.parse(self.target_version) < version.parse("6.1"):
             comms = only_large_comms
             if not self.process_bgpspeaker_specific_compatibility_issue(
                 "large_communities",
@@ -979,7 +1045,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                 res = False
 
         if large_comms_used and \
-            version.parse(self.target_version or "6.0") < version.parse("6.1"):
+            version.parse(self.target_version) < version.parse("6.1"):
             comms = large_comms_used
             if not self.process_bgpspeaker_specific_compatibility_issue(
                 "large_communities",
@@ -1034,6 +1100,63 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                               str(e) + " " if str(e) else ""
                             ))
 
+        if (self.cfg_general["graceful_shutdown"]["enabled"] or \
+            self.perform_graceful_shutdown) and \
+            version.parse(self.target_version) <= version.parse("6.1"):
+            if not self.process_bgpspeaker_specific_compatibility_issue(
+                "graceful_shutdown",
+                "GRACEFUL_SHUTDOWN BGP community is not implemented "
+                "on OpenBGPD versions prior to 6.2. By marking this issue "
+                "as ignored the graceful shutdown option will not be "
+                "considered and the feature will be not included into the "
+                "configuration. "
+                "If the release running on the route server is 6.2 or later "
+                "please consider to enable this feature by "
+                "setting the configuration target version to a value "
+                "greater than or equal to '6.2' (--target-version command "
+                "line argument)."
+            ):
+                res = False
+
+        internal_communities_collistion = []
+        for comm_name in ConfigParserGeneral.COMMUNITIES_SCHEMA:
+            comm = self.cfg_general["communities"][comm_name]
+            if comm["ext"] and comm["ext"].startswith("ro:65535:"):
+                internal_communities_collistion.append(comm_name)
+        if internal_communities_collistion:
+            if not self.process_bgpspeaker_specific_compatibility_issue(
+                "internal_communities",
+                "The Extended BGP communities in the range ro:65535:* "
+                "are reserved for internal purposes. "
+                "A collision has been detected with the following "
+                "communit{y_ies}: {comms}".format(
+                    y_ies="y" if len(internal_communities_collistion) == 1 else "ies",
+                    comms=", ".join(internal_communities_collistion)
+                )
+            ):
+                res = False
+
+        # Kept for backward compatibility
+        use_rpki_roas_as_route_objects_cfg = \
+            self.cfg_general["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]
+        if use_rpki_roas_as_route_objects_cfg["enabled"]:
+            if self.cfg_general["rpki_roas"]["source"] != "ripe-rpki-validator-cache":
+                if not self.process_bgpspeaker_specific_compatibility_issue(
+                    "rpki_roas_as_route_objects_source",
+                    "For OpenBGPD only the 'ripe-rpki-validator-cache' "
+                    "value is allowed for the 'rpki_roas.source' option."
+                ):
+                    res = False
+
+        if self.cfg_general.rpki_roas_needed:
+            if self.cfg_general["rpki_roas"]["source"] != "ripe-rpki-validator-cache":
+                if not self.process_bgpspeaker_specific_compatibility_issue(
+                    "rpki_roas_source",
+                    "For OpenBGPD only the 'ripe-rpki-validator-cache' "
+                    "value is allowed for the 'rpki_roas.source' option."
+                ):
+                    res = False
+
         return res
 
     def enrich_j2_environment(self, env):
@@ -1051,9 +1174,31 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                     return True
             return False
 
+        def community_is_set(comm):
+            if not comm:
+                return False
+            # OpenBGPD <= 6.0 does not implement large BGP communities,
+            # so only standard and extended ones are considered.
+            if version.parse(self.target_version) < version.parse("6.1"):
+                if not comm["std"] and not comm["ext"]:
+                    return False
+            else:
+                if not comm["std"] and not comm["ext"] and not comm["lrg"]:
+                    return False
+            return True
+
+        def aggregated_roas_covered_space():
+            prefixes = []
+            for pref_len in self.rpki_roas:
+                for roa in self.rpki_roas[pref_len]:
+                    prefixes.append(roa["prefix"])
+            return aggregate(prefixes)
+
         env.filters["convert_ext_comm"] = convert_ext_comm
+        env.filters["community_is_set"] = community_is_set
         self.data["at_least_one_client_uses_tag_reject_policy"] = \
             at_least_one_client_uses_tag_reject_policy()
+        self.data["rpki_roas_covered_space"] = aggregated_roas_covered_space()
 
 class TemplateContextDumper(ConfigBuilder):
 
@@ -1062,4 +1207,19 @@ class TemplateContextDumper(ConfigBuilder):
         def to_yaml(obj):
             return yaml.safe_dump(obj, default_flow_style=False)
 
+        def parse_irrdb_info(irrdb_info):
+            lst = []
+            for bundle_id in irrdb_info:
+                bundle = irrdb_info[bundle_id]
+                lst.append(bundle.to_dict())
+            return lst
+
+        def parse_arin_whois_records(records):
+            res = {}
+            for origin_asn in records:
+                res[origin_asn] = list(records[origin_asn].prefixes)
+            return res
+
         env.filters["to_yaml"] = to_yaml
+        env.filters["parse_irrdb_info"] = parse_irrdb_info
+        env.filters["parse_arin_whois_records"] = parse_arin_whois_records

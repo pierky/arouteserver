@@ -1,0 +1,713 @@
+#!/bin/bash
+
+# ---------------------------
+# Input MRT or raw file
+
+input_file=
+
+# ---------------------------
+# Programs
+
+mrt2bgpdump=~/mrtparse/examples/mrt2bgpdump.py
+mrtparse_dir=
+
+arouteserver=arouteserver
+arouteserver_cfg=
+arouteserver_clients=
+arouteserver_general=
+
+# ---------------------------
+# Route server details
+
+rs_asn=64512
+rs_ipv4=
+rs_ipv6=
+ip_ver=
+
+# ---------------------------
+# Docker options
+
+docker_network_name=arouteserver_simulate_network
+docker_network_ipv4=
+docker_network_ipv6=
+docker_inst_name_rs=ars_rs
+docker_inst_name_clients=ars_clients
+docker_exabgp_image="pierky/exabgp:3.4.19"
+docker_bird_image="pierky/bird:1.6.4"
+
+# ---------------------------
+# Layout options
+
+eth_iface="eth0"
+exabgp_bin="exabgp-3.4.19/sbin/exabgp"
+
+# ---------------------------
+# Local directories
+
+var_dir="`pwd`/var"
+peers_dir="${var_dir}/peers"
+exabgp_dir="${var_dir}/exabgp"
+bird_dir="${var_dir}/bird"
+
+# ---------------------------
+# Local configuration
+
+[[ -e config ]] && . config
+
+[[ -z "${ip_ver}" ]] && ip_ver="4 6"
+
+# ---------------------------
+# CLI options
+
+cmd_parse=0
+cmd_parse_fmt=""
+cmd_build=0
+cmd_docker=0
+
+function usage() {
+	echo "Commands:"
+	echo "  parse-mrt Parse the MRT file and build the list of"
+	echo "            BGP announcements."
+	echo "  parse-raw Parse the raw file and build the list of"
+	echo "            BGP announcements."
+	echo "            File format:"
+	echo "               A|W,next_hop,peer_as,prefix,as_path"
+	echo "               A = announcement, W = withdrawal"
+	echo "  build     Only build configuration files. Needs the"
+	echo "            output of the parse command (announcements"
+	echo "            from the MRT file)."
+	echo "  docker    Run the simulation using Docker instances."
+	echo "            Needs the output of the 'build' command."
+	echo ""
+	echo "More than one command can be used:"
+	echo "  $0 parse-mrt build"
+	echo ""
+	echo "Arguments:"
+	echo "  --input	  Path of the file used to generate BGP"
+	echo "            BGP announcements."
+}
+
+if [ $# -eq 0 ]; then
+	usage
+	exit 1
+fi
+
+while [[ $# -gt 0 ]]
+do
+	key="$1"
+	shift
+	case "$key" in
+		parse-mrt)
+			cmd_parse=1
+			cmd_parse_fmt="mrt"
+			;;
+		parse-raw)
+			cmd_parse=1
+			cmd_parse_fmt="raw"
+			;;
+		build)
+			cmd_build=1
+			;;
+		docker)
+			cmd_docker=1
+			;;
+		--input)
+			input_file="$1"
+			shift;
+			;;
+		*)
+			usage
+			exit
+			;;
+	esac
+done
+
+mkdir -p ${var_dir}
+echo "WARNING: the content of this directory is wiped out at each run." > ${var_dir}/WARNING
+
+if [ $cmd_parse -eq 1 ]; then
+	if [ ! -e "${input_file}" ]; then
+		echo "ERROR: input file not found."
+		echo ""
+		echo "Please use the '--input' CLI argument or set the 'input_file' "
+		echo "to the path of the file that will be used to generate "
+		echo "peers announcements."
+		exit 1
+	fi
+
+	if [ "${cmd_parse_fmt}" == "mrt" ]; then
+		if [ ! -x $mrt2bgpdump ]; then
+			echo "ERROR: mrt2bgpdump.py not found or not executable."
+			echo ""
+			echo "mrtparse is needed to convert MRT files into ExaBGP command;"
+			echo "if missing, clone it from GitHub (https://github.com/t2mune/mrtparse)"
+			echo "otherwise check that the 'mrt2bgpdump' variable is set to the "
+			echo "path where 'mrtparse/examples/mrt2bgpdump.py' can be found."
+			exit 1
+		fi
+
+		if [ -n "$mrtparse_dir" ]; then
+			export PYTHONPATH="$mrtparse_dir"
+		fi
+		$mrt2bgpdump -h &>/dev/null
+		if [ $? -ne 0 ]; then
+			echo "ERROR: the mrt2bgpdump.py cannot be executed."
+			echo ""
+			echo "Probably the mrtparse tool is not installed properly "
+			echo "or its library can't be found within the PYTHONPATH."
+			echo "Install mrtparse into the current virtual environment "
+			echo "(pip install mrtparse) or set the 'mrtparse_dir' variable "
+			echo "to the path where mrtparse is located."
+			exit 1
+		fi
+	fi
+
+	if [ "${cmd_parse_fmt}" == "raw" ]; then
+		file "${input_file}" | grep ASCII &>/dev/null
+		if [ $? -ne 0 ]; then
+			echo "ERROR: input file is not ASCII"
+			echo ""
+			echo "Raw input file must be in ASCII format."
+			exit 1
+		fi
+	fi
+fi
+
+if [ $cmd_build -eq 1 ]; then
+	which ${arouteserver} &>/dev/null
+	if [ $? -ne 0 ]; then
+		echo "ERROR: can't find arouteserver."
+		echo "Please install it or set the 'arouteserver' variable to point"
+		echo "to the path where it is located."
+		exit 1
+	fi
+
+	if [ -n "${arouteserver_clients}" -a ! -e "${arouteserver_clients}" ]; then
+		echo "ERROR: the clients.yml file set in arouteserver_clients (${arouteserver_clients}) does not exist."
+		echo "Please check the configuration."
+		exit 1
+	fi
+
+	if [ -n "${arouteserver_general}" -a ! -e "${arouteserver_general}" ]; then
+		echo "ERROR: the general.yml file set in arouteserver_general (${arouteserver_general}) does not exist."
+		echo "Please check the configuration."
+		exit 1
+	fi
+fi
+
+if [ $cmd_docker -eq 1 ]; then
+	if [ -z "${docker_network_name}" ]; then
+		echo "ERROR: a Docker network must be set in the 'docker_network_name' variable."
+		echo ""
+		echo "When using Docker to simulate the scenario a Docker network "
+		echo "name must be provided within the 'docker_network_name' variable."
+		echo "Please note that this network will be recreated every time the "
+		echo "simulation is run."
+		exit 1
+	else
+		for ver in ${ip_ver}
+		do
+			missing_docker_subnet=0
+			if [ "${ver}" == "4" -a -z "${docker_network_ipv4}" ]; then
+				missing_docker_subnet=1
+			elif [ "${ver}" == "6" -a -z "${docker_network_ipv6}" ]; then
+				missing_docker_subnet=1
+			fi
+			if [ $missing_docker_subnet -eq 1 ]; then
+				echo "ERROR: missing IPv${ver} subnet for the Docker network."
+				echo ""
+				echo "A subnet must be provided in the 'docker_network_ipv${ver}' variable."
+				echo "It must represent the network where route server and clients are attached."
+				exit 1
+			fi
+		done
+	fi
+
+	for docker_img in $docker_bird_image $docker_exabgp_image
+	do
+		if [ `docker image ls ${docker_img} | wc -l` -le 1 ]; then
+			echo "WARNING: missing ${docker_img} Docker image."
+			echo -n "Do you want to fetch it now from Docker Hub? [YES/no] "
+			read yes_no
+			[[ "${yes_no}" == "yes" || -z "${yes_no}" ]] && { echo "Fetching ${docker_img}..."; docker pull ${docker_img}; } || exit 1
+		fi
+	done
+
+	for docker_inst in $docker_inst_name_rs $docker_inst_name_clients
+	do
+		docker ps --filter name=${docker_inst} | grep ${docker_inst} &>/dev/null
+		if [ $? -eq 0 ]; then
+			echo "WARNING: the Docker instance ${docker_inst} is already running."
+			echo -n "Do you want to stop it now? [yes/NO] "
+			read yes_no
+			[[ "${yes_no}" == "yes" ]] && { echo "Stopping ${docker_inst}... "; docker stop ${docker_inst}; } || exit 1
+		fi
+	done
+fi
+
+if [ $cmd_build -eq 1 -o $cmd_docker -eq 1 ]; then
+	if [[ -z "$rs_ipv4" && "${ip_ver}" == *"4"* ]]; then
+		echo "ERROR: missing route server IPv4 address."
+		echo ""
+		echo "Please set the 'rs_ipv4' variable."
+		exit 1
+	fi
+	if [[ -z "$rs_ipv6" && "${ip_ver}" == *"6"* ]]; then
+		echo "ERROR: missing route server IPv6 address."
+		echo ""
+		echo "Please set the 'rs_ipv6' variable."
+		exit 1
+	fi
+fi
+
+function list_ip_addrs() {
+	# $1: ASN or "*"
+	# $2 (optional): IP version
+	if [ "$2" == "4" ]; then
+		find ${peers_dir}/$1/ -type f -printf '%f\n' | grep "\."
+	elif [ "$2" == "6" ]; then
+		find ${peers_dir}/$1/ -type f -printf '%f\n' | grep ":"
+	else
+		find ${peers_dir}/$1/ -type f -printf '%f\n'
+	fi
+}
+
+function list_asns() {
+	find ${peers_dir}/* -type d -printf '%f\n'
+}
+
+# Create var/peers/<ASN>/<IP> files.
+# Each file contains commands (echoes) that print ExaBGP commands.
+function add_bgp_msg() {
+	a_w="$1"
+	if [[ "${a_w}" != "A" && "${a_w}" != "W" ]]; then
+		echo "ERROR: invalid format for a_w"
+		echo ""
+		echo "It must be 'A' or 'W'; '${a_w}' found."
+		exit 1
+	fi
+	next_hop="$2"
+	if ! [[ "${next_hop}" =~ ^[0-9a-fA-F.:]+$ ]]; then
+		echo "ERROR: invalid next_hop"
+		echo ""
+		echo "It must be an IPv4 or IPv6 address; '${next_hop}' found."
+		exit 1
+	fi
+	peer_as="$3"
+	if ! [[ ${peer_as} =~ ^[0-9]+$ ]]; then
+		echo "ERROR: invalid peer_as"
+		echo ""
+		echo "It must be numeric; '${peer_as}' found."
+		exit 1
+	fi
+	prefix="$4"
+	as_path="$5"
+
+	[[ ! -d ${peers_dir}/$peer_as ]] && mkdir ${peers_dir}/$peer_as
+
+	dest_file="${peers_dir}/$peer_as/${next_hop}"
+	if [ "${a_w}" == "A" ]; then
+		echo "echo \"announce attribute origin EGP as-path [$as_path] next-hop $next_hop nlri $prefix\"" >> ${dest_file}
+	elif [ "${a_w}" == "W" ]; then
+		echo "echo \"withdraw route $prefix next-hop $next_hop\"" >> ${dest_file}
+	fi
+	echo "sleep 0.05" >> ${dest_file}
+}
+
+function parse_init() {
+	[[ -d "${peers_dir}" ]] && rm -r ${peers_dir}
+	mkdir -p ${peers_dir}
+}
+
+function parse_fin() {
+	find ${peers_dir} -type f -exec sh -c "echo \"sleep 365d  # needed to keep ExaBGP session up\" >> {}" \;
+}
+
+# Process MRT file $input_file.
+function parse_mrt() {
+	echo "Processing MRT file ${input_file}..."
+
+	parse_init
+
+	if [ -n "$mrtparse_dir" ]; then
+		export PYTHONPATH="$mrtparse_dir"
+	fi
+
+	$mrt2bgpdump $input_file | \
+	while read -r line; do
+		IFS='|' read -r -a fields <<< "$line"
+		a_w="${fields[2]}"
+
+		if [ "${a_w}" == "STATE" ]; then
+			continue
+		fi
+
+		next_hop="${fields[3]}"
+		peer_as="${fields[4]}"
+		prefix="${fields[5]}"
+		as_path="${fields[6]}"
+
+		add_bgp_msg "${a_w}" "${next_hop}" "${peer_as}" "${prefix}" "${as_path}"
+	done
+
+	parse_fin
+}
+
+# Process raw file $input_file.
+function parse_raw() {
+	echo "Processing raw file ${input_file}..."
+
+	parse_init
+
+	cat $input_file | \
+	while read -r line; do
+		IFS=',' read -r -a fields <<< "$line"
+
+		add_bgp_msg "${fields[0]}" "${fields[1]}" "${fields[2]}" "${fields[3]}" "${fields[4]}"
+	done
+
+	parse_fin
+}
+
+# Read ASNs from var/peers/ and, for each ASN, its IP addresses from var/peers/<ASN>/.
+# Write ExaBGP configuration files under var/exabgp/<ASN>-<IP>.
+function process_files() {
+	echo "Building ExaBGP configuration files..."
+
+	[[ -d "${exabgp_dir}" ]] && rm -r ${exabgp_dir} || true
+	mkdir -p ${exabgp_dir}
+
+	cnt=1	# 10.0.0.1 is the router-id used by the route server
+
+	list_asns | \
+	while read -r asn; do
+		let cnt+=1
+		router_id="10.0.0.${cnt}"
+
+		list_ip_addrs "${asn}" "${ip_ver}" | \
+		while read -r ip; do
+			dest_file=${exabgp_dir}/${asn}-${ip}
+
+			src_file="/root/var/peers/${asn}/${ip}"
+
+			if [[ ${ip} == *":"* ]]; then
+				echo "neighbor ${rs_ipv6} {"	>> ${dest_file}
+			else
+				echo "neighbor ${rs_ipv4} {"	>> ${dest_file}
+			fi
+			echo "  peer-as ${rs_asn};"		>> ${dest_file}
+			echo "  router-id ${router_id};"	>> ${dest_file}
+			echo "  local-address ${ip};"		>> ${dest_file}
+			echo "  local-as ${asn};"		>> ${dest_file}
+			echo "  process inject-routes {"	>> ${dest_file}
+			echo "    run /bin/bash ${src_file};"	>> ${dest_file}
+			echo "    encoder text;"		>> ${dest_file}
+			echo "  }"				>> ${dest_file}
+			echo "}"				>> ${dest_file}
+		done
+	done
+}
+
+# Build the startup file with commands needed to setup the scenario:
+# - 'ip addr add' commands to configure the NIC ($eth_iface) with the
+#   IP addresses of the peers seen on the MRT files;
+# - commands to run ExaBGP instances, one for each peer.
+function build_startup_files() {
+	echo "Building startup file..."
+
+	startup_file=${var_dir}/startup.sh
+
+	[[ -e ${startup_file} ]] && rm ${startup_file}
+
+	echo "echo \"Configuring IP addresses...\"" >> ${startup_file}
+	echo "" >> ${startup_file}
+
+	list_ip_addrs "*" "${ip_ver}" | \
+	while read -r ip; do
+		if [[ ${ip} == *":"* ]]; then
+			if [[ "${ip_ver}" == *"6"* ]]; then
+				echo "ip -6 addr add ${ip} dev ${eth_iface}" >> ${startup_file}
+			fi
+		else
+			if [[ "${ip_ver}" == *"4"* ]]; then
+				echo "ip -4 addr add ${ip} dev ${eth_iface}" >> ${startup_file}
+			fi
+		fi
+	done
+
+	echo "sleep 2" >> $startup_file
+
+	echo "" >> ${startup_file}
+	echo "" >> ${startup_file}
+	echo "echo \"Starting ExaBGP processes...\"" >> ${startup_file}
+	echo "" >> ${startup_file}
+
+	exabgp_common_options="exabgp.daemon.user=root exabgp.daemon.daemonize=true"
+
+	find ${exabgp_dir}/* -type f -printf '%f\n' | \
+	while read -r filename; do
+		IFS='-' read -r -a fields <<< "$filename"
+
+		ip=${fields[1]}
+
+		exabgp_options="$exabgp_common_options exabgp.log.destination=exabgp.log.${filename} exabgp.tcp.bind=${ip}"
+		echo "nohup env $exabgp_options ${exabgp_bin} var/exabgp/${filename} &>/dev/null &" >> ${startup_file}
+	done
+
+	echo "" >> ${startup_file}
+	echo "" >> ${startup_file}
+	echo "echo \"ExaBGP processes started!\"" >> ${startup_file}
+	echo "" >> ${startup_file}
+}
+
+# Build the var/clients.yml file.
+# Ask to overwrite it if it already exists.
+# Only ASNs and IP addresses are used.
+function build_arouteserver_clients() {
+	if [ -n "${arouteserver_clients}" ]; then
+		echo "Using the existing clients.yml set in arouteserver_clients: ${arouteserver_clients}"
+		return
+	fi
+
+	echo "Building ARouteServer clients.yml file..."
+
+	if [ -e ${var_dir}/clients.yml ]; then
+		echo -n "The clients.yml file already exists: do you want to overwrite it? [yes/NO] "
+		read yes_no
+
+		if [ "${yes_no}" != "yes" ]; then
+			return
+		fi
+	fi
+
+	echo "# The general.yml file that is distributed with this tool" > ${var_dir}/clients.yml
+	echo "# allows to import AS-SETs and max-prefix limits from"     >> ${var_dir}/clients.yml
+	echo "# PeeringDB." 						 >> ${var_dir}/clients.yml
+	echo "# Snippets of client configurations are commented out"	 >> ${var_dir}/clients.yml
+	echo "# to ease any manual adjustement of those values."	 >> ${var_dir}/clients.yml
+	echo "clients:" >> ${var_dir}/clients.yml
+
+	list_asns | \
+	while read -r asn; do
+		echo "  - asn: ${asn}"		>> ${var_dir}/clients.yml
+		echo "    ip:"			>> ${var_dir}/clients.yml
+		list_ip_addrs "${asn}" "" | \
+		while read -r ip; do
+			echo "      - ${ip}"	>> ${var_dir}/clients.yml
+		done
+		echo "    #cfg:"		>> ${var_dir}/clients.yml
+		echo "    #  filtering:"	>> ${var_dir}/clients.yml
+		echo "    #    irrdb:"		>> ${var_dir}/clients.yml
+		echo "    #      as_sets:"	>> ${var_dir}/clients.yml
+		echo "    #        - AS-MACRO"	>> ${var_dir}/clients.yml
+		echo "    #    max_prefix:"	>> ${var_dir}/clients.yml
+		echo "    #      limit_ipv4: x"	>> ${var_dir}/clients.yml
+		echo "    #      limit_ipv6: y"	>> ${var_dir}/clients.yml
+	done
+}
+
+# Generate the route server configuration file on the basis of the
+# clients.yml file and general.yml file.
+function build_rs_config() {
+	for ver in ${ip_ver}
+	do
+		echo "Building route server IPv${ver} configuration..."
+
+		if [ -e ${bird_dir}/bird${ver}.conf ]; then
+			echo -n "The route server IPv${ver} configuration file already exists: do you want to overwrite it? [YES/no] "
+			read yes_no
+
+			if ! [ "${yes_no}" == "yes" -o -z "${yes_no}" ]; then
+				continue
+			fi
+		fi
+
+		mkdir -p ${bird_dir}
+
+		export PYTHONPATH="`dirname $arouteserver`"
+		if [[ "${arouteserver}" == *"scripts/arouteserver"* ]]; then
+			export PYTHONPATH="`dirname $PYTHONPATH`"
+		fi
+
+		[[ -z "${arouteserver_cfg}" ]] && cfg_arg="" || cfg_arg="--cfg ${arouteserver_cfg}"
+
+		if [ -z "${arouteserver_general}" ]; then
+			cat general.yml | sed -e "s/^  rs_as: [0-9]\+$/  rs_as: ${rs_asn}/" > ${var_dir}/general.yml
+			general_file="${var_dir}/general.yml"
+		else
+			general_file="${arouteserver_general}"
+		fi
+
+		[[ -z "${arouteserver_clients}" ]] && clients_file="${var_dir}/clients.yml" || clients_file="${arouteserver_clients}"
+
+		echo " - clients.yml: ${clients_file}"
+		echo " - general.yml: ${general_file}"
+
+		$arouteserver bird $cfg_arg \
+			--ip-ver ${ver} \
+			--general ${general_file} \
+			--clients ${clients_file} \
+			--output ${bird_dir}/bird${ver}.conf 2>&1 | \
+				tee ${var_dir}/bird${ver}.log
+
+		if [ $? -ne 0 ]; then
+			echo "ERROR: ARouteServer failed. See log for details."
+			exit 1
+		fi
+
+		echo "ARouteServer completed. Log written to ${var_dir}/bird${ver}.log"
+	done
+}
+
+function run_docker() {
+	echo -n "Configuring the '${docker_network_name}' Docker network... "
+
+	create_network=0
+
+	docker network inspect ${docker_network_name} &>/dev/null
+	if [ $? -eq 0 ]; then
+		# Network already exists.
+		echo -n "it already exists... "
+
+		# If the subnets are the same, keep the current network.
+		for ver in ${ip_ver}
+		do
+			if [ "${ver}" == "4" ]; then
+				docker_network_subnet="${docker_network_ipv4}"
+			elif [ "${ver}" == "6" ]; then
+				docker_network_subnet="${docker_network_ipv6}"
+			fi
+
+			docker network inspect ${docker_network_name} | grep "Subnet" | grep ${docker_network_subnet} &>/dev/null
+			if [ $? -ne 0 ]; then
+				echo -n "but subnets don't match, removing it... "
+
+				create_network=1
+				docker network rm ${docker_network_name} &>/dev/null
+
+				if [ $? -ne 0 ]; then
+					echo "ERROR: can't remove Docket network"
+					exit 1
+				fi
+
+				break
+			fi
+		done
+	else
+		create_network=1
+	fi
+
+	if [ $create_network -eq 1 ]; then
+		echo "creating it..."
+		docker_network_options=""
+		if [[ "${ip_ver}" == *"6"* ]]; then
+			docker_network_options="--ipv6 --subnet ${docker_network_ipv6}"
+		fi
+		if [[ "${ip_ver}" == *"4"* ]]; then
+			docker_network_options="${docker_network_options} --subnet ${docker_network_ipv4}"
+		fi
+
+		last_err="`docker network create $docker_network_options ${docker_network_name} 2>&1`"
+
+		if [ $? -ne 0 ]; then
+			echo "ERROR: can't create Docker network."
+			echo "${last_err}"
+			exit 1
+		fi
+	else
+		echo "it's already configured"
+	fi
+
+	echo "Starting the route server instance..."
+
+	ip_options=""
+	echo "# Docker startup file for the route server instance" > ${var_dir}/docker_rs.sh
+	if [[ "${ip_ver}" == *"6"* ]]; then
+		ip_options="--ip6 ${rs_ipv6}"
+		echo "bird6 -c /etc/bird/bird6.conf" >> ${var_dir}/docker_rs.sh
+	fi
+	if [[ "${ip_ver}" == *"4"* ]]; then
+		ip_options="${ip_options} --ip ${rs_ipv4}"
+		echo "bird -c /etc/bird/bird4.conf" >> ${var_dir}/docker_rs.sh
+	fi
+	echo "sleep 365d" >> ${var_dir}/docker_rs.sh
+
+	docker run \
+		-d \
+		--rm \
+		--network ${docker_network_name} \
+		${ip_options} \
+		--volume ${bird_dir}:/etc/bird \
+		--volume ${var_dir}:/root/var \
+		--name ${docker_inst_name_rs} \
+		${docker_bird_image} \
+		bash var/docker_rs.sh &>/dev/null
+
+	if [ $? -ne 0 ]; then
+		echo "ERROR: can't start route server Docker instance."
+		exit 1
+	fi
+
+	echo "Starting the 'clients' docker instance..."
+
+	echo "Run:"
+	echo "- 'docker exec -it ${docker_inst_name_clients} bash' to attach to the 'clients' instance"
+	echo "- 'docker exec -it ${docker_inst_name_rs} bash' to attach to the route server instance"
+	echo "- 'docker stop ${docker_inst_name_clients} ${docker_inst_name_rs}' to kill them"
+
+	echo ""
+	echo "PLEASE NOTE: it will take some time for clients to finish announcing their routes."
+	echo "You can run the following command to watch the progress:"
+	echo "  watch docker exec -it ${docker_inst_name_rs} birdcl show route count"
+
+	cat ${var_dir}/startup.sh > ${var_dir}/docker_clients.sh
+	echo "sleep 365d" >> ${var_dir}/docker_clients.sh
+
+	docker run \
+		-d \
+		--rm \
+		--network ${docker_network_name} \
+		--privileged=true \
+		--volume ${var_dir}:/root/var \
+		--name ${docker_inst_name_clients} \
+		${docker_exabgp_image} \
+		bash var/docker_clients.sh &>/dev/null
+
+	if [ $? -ne 0 ]; then
+		echo "ERROR: can't start 'clients' Docker instance."
+		exit 1
+	fi
+}
+
+if [ $cmd_parse -eq 1 ]; then
+	if [ "${cmd_parse_fmt}" == "mrt" ]; then
+		parse_mrt
+	else
+		parse_raw
+	fi
+fi
+
+if [ $cmd_build -eq 1 ]; then
+	process_files
+	build_startup_files
+	build_arouteserver_clients
+	build_rs_config
+fi
+
+if [ $cmd_docker -eq 1 ]; then
+	run_docker
+	exit 0
+fi
+
+if [ $cmd_build -eq 1 ]; then
+	echo "Configuration completed."
+	echo ""
+	echo "- The var/startup.sh file contains the commands that can be used"
+	echo "  to run the ExaBGP instances that will simulate the BGP announcements"
+	echo "  found within the MRT file."
+	echo "- The var/bird/bird.conf file contains the BIRD configuration for"
+	echo "  the route server."
+else
+	echo "Run '$0 build' to generate the clients ExaBGP configurations and the "
+	echo "route server configuration file."
+fi

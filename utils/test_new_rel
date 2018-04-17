@@ -9,11 +9,32 @@ if [ "`pwd`" != `echo ~` ]; then
 	exit
 fi
 ROOT="`pwd`/arouteserver"
-CURR_PACKAGE="`ls $ROOT/dist/ | tail -n 1`"
+CURR_PACKAGE="`ls -1 -t $ROOT/dist/ | head -n 1`"
+
+echo -n "Really run test_new_rel for ${CURR_PACKAGE}? [yes/NO] "
+read YES_NO
+
+if [ "$YES_NO" != "yes" ]; then
+	exit
+fi
 
 function run() {
 	VENV_NAME="$1"; shift
 	IS_UPGR="$1"; shift
+	if [ "$1" == "py3" ]; then
+		PY3=1
+		PIP="pip3"
+		PYTHON_ARG="--python /usr/bin/python3.4"
+		echo "Testing with Python 3.4"
+		echo echo
+	else
+		PY3=0
+		PIP="pip"
+		PYTHON_ARG=""
+		echo "Testing with Python 2"
+		echo
+		echo
+	fi
 
 	echo "Arguments: VENV_NAME: $VENV_NAME, IS_UPGR: $IS_UPGR"
 	echo
@@ -39,35 +60,40 @@ function run() {
 	mkdir -p $VENV_DIR
 
 	echo "Activating venv $VENV_DIR..."
-	virtualenv $VENV_DIR
+	virtualenv $PYTHON_ARG $VENV_DIR
 	source $VENV_DIR/bin/activate
 	echo
 	echo
 
 	if [ $IS_UPGR -eq 1 ]; then
 		echo -n "Previous version of arouteserver: "
-		pip freeze | grep arouteserver
+		$PIP freeze | grep arouteserver
 		echo
 		echo
 	fi
 
 	echo "Installing $CURR_PACKAGE..."
 	if [ $IS_UPGR -eq 1 ]; then
-		pip install --upgrade $ROOT/dist/$CURR_PACKAGE
+		$PIP install --upgrade $ROOT/dist/$CURR_PACKAGE
 	else
-		pip install $ROOT/dist/$CURR_PACKAGE
+		$PIP install $ROOT/dist/$CURR_PACKAGE
 	fi
 	echo
 	echo
 
 	echo -n "Installed version of arouteserver: "
-	pip freeze | grep arouteserver
+	$PIP freeze | grep arouteserver
 	echo
 	echo
 
 	if [ $IS_UPGR -eq 0 ]; then
 		echo "Testing setup..."
 		arouteserver setup --dest-dir $DEST_DIR
+		echo
+		echo
+
+		echo "Testing configure command..."
+		arouteserver configure --cfg $CFG_FILE --preset-answer daemon=bird asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32
 		echo
 		echo
 	fi
@@ -78,7 +104,7 @@ function run() {
 	echo
 
 	echo "Testing OpenBGPD..."
-	arouteserver openbgpd --cfg $CFG_FILE -o /dev/null --ignore-issues path_hiding
+	arouteserver openbgpd --cfg $CFG_FILE -o /dev/null --ignore-issues path_hiding extended_communities --target-version 6.3
 	echo
 	echo
 
@@ -108,7 +134,10 @@ function run() {
 	echo
 }
 
-run "ars_new_rel_test" 0
-run "ars_upgr_rel_test" 1
+run "ars_new_rel_test" 0 "py2"
+run "ars_upgr_rel_test" 1 "py2"
+
+run "ars_new_rel_test" 0 "py3"
+run "ars_upgr_rel_test" 1 "py3"
 
 echo "Done!"

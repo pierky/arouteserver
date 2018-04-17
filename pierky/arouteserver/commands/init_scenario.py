@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
 import os
 import re
 
-from base import ARouteServerCommand
-from ..ask import ask, ask_yes_no
+from .base import ARouteServerCommand
+from ..ask import Ask
 from ..config.program import program_config
 from ..errors import ARouteServerError
 from ..resources import get_live_test_skeleton_dir
@@ -44,7 +44,7 @@ class InitScenarioCommand(ARouteServerCommand):
               "implemented.")
         print("Examples: TagASSet, BGPCommunities, MaxPrefix, PathHiding")
         print("")
-        res, class_name = ask("Scenario class name:")
+        res, class_name = Ask().ask("Scenario class name:")
 
         if not res:
             print("")
@@ -66,21 +66,21 @@ class InitScenarioCommand(ARouteServerCommand):
 
         skeleton_dir = get_live_test_skeleton_dir()
         dest_dir = os.path.expanduser(self.args.dest_dir)
-        templates_dir = program_config.get("templates_dir")
+        templates_dir = program_config.get_dir("templates_dir")
 
         if os.path.exists(dest_dir):
             raise ARouteServerError(
                 "The directory {} already exists".format(dest_dir)
             )
 
-        res, yes_or_no = ask_yes_no(
+        res, yes_or_no = Ask().ask_yes_no(
             "The {} directory will be created: proceed?".format(dest_dir),
             default="yes"
         )
 
         print("")
 
-        if not res or yes_or_no != "yes":
+        if not res or yes_or_no.lower() != "yes":
             print("Aborted.")
             return False
 

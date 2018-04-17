@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,6 +28,12 @@ class ARouteServerError(Exception):
 class ConfigError(ARouteServerError):
     pass
 
+class ProgramConfigError(ARouteServerError):
+
+    def __init__(self, msg):
+        ARouteServerError.__init__(self, msg)
+        self._extra_info = "Please check the program's configuration."
+
 class MissingArgumentError(ARouteServerError):
 
     def __init__(self, arg):
@@ -46,6 +52,16 @@ class MissingFileError(ARouteServerError):
     def __str__(self):
         return "The file {} does not exist".format(self.path)
 
+class MissingGeneralConfigFileError(MissingFileError):
+
+    def __init__(self, *args, **kwargs):
+        MissingFileError.__init__(self, *args, **kwargs)
+        self._extra_info = (
+            "Please edit it manually or execute the 'arouteserver configure' "
+            "command to run a brief wizard that will generate it on the basis "
+            "of your input."
+        )
+
 class MissingDirError(ARouteServerError):
 
     def __init__(self, path):
@@ -58,13 +74,24 @@ class MissingDirError(ARouteServerError):
 class CachedObjectsError(ARouteServerError):
     pass
 
+class CachedObjectsExpiryTimeConfigurationError(ARouteServerError):
+
+    def __init__(self, *args, **kwargs):
+        ARouteServerError.__init__(self, args, kwargs)
+        self._extra_info = (
+            "Plase check the program's configuration file (arouteserver.yml)."
+        )
+
+class ExternalDataNoInfoError(ARouteServerError):
+    pass
+
 class IRRDBToolsError(ARouteServerError):
     pass
 
 class PeeringDBError(ARouteServerError):
     pass
 
-class PeeringDBNoInfoError(ARouteServerError):
+class PeeringDBNoInfoError(ExternalDataNoInfoError):
     pass
 
 class EuroIXError(ARouteServerError):
@@ -79,17 +106,14 @@ class EuroIXSchemaError(EuroIXError):
                             "the one recognized by this version of the "
                             "program, or that it contains errors.")
 
-class IXFDBError(ARouteServerError):
+class RPKIValidatorCacheError(ARouteServerError):
     pass
 
-class IXFDBSchemaError(IXFDBError):
+class ARINWhoisDBDumpError(ARouteServerError):
+    pass
 
-    def __init__(self, msg):
-        IXFDBError.__init__(self, msg)
-        self._extra_info = ("It's possible that the JSON schema used in the "
-                            "IX-F database is not aligned with "
-                            "the one recognized by this version of the "
-                            "program, or that it contains errors.")
+class LastVersionCheckingError(ARouteServerError):
+    pass
 
 class BuilderError(ARouteServerError):
     pass

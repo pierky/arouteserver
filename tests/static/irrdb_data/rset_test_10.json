@@ -1,0 +1,6 @@
+{ "prefix_list": [
+    { "prefix": "1.0.0.0\/16", "exact": false, "less-equal": 24 },
+    { "prefix": "2.0.0.0\/16", "exact": false, "less-equal": 22 },
+    { "prefix": "3.0.0.0\/16", "exact": true },
+    { "prefix": "4.0.0.0\/8", "exact": false, "less-equal": 24, "greater-equal": 16 }
+] }

@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,12 +13,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
 import re
 import time
 
-from kvm import KVMInstance
-from instances import Route, BGPSpeakerInstance, InstanceNotRunning
+from .kvm import KVMInstance
+from .instances import Route, BGPSpeakerInstance, InstanceNotRunning
 
 class OpenBGPDRoute(Route):
 
@@ -30,6 +29,9 @@ class OpenBGPDRoute(Route):
         for bgp_comm in communities.split(" "):
             if bgp_comm == "BLACKHOLE":
                 res.append("65535:666")
+                continue
+            if bgp_comm == "GRACEFUL_SHUTDOWN":
+                res.append("65535:0")
                 continue
             res.append(bgp_comm)
         return res
@@ -69,10 +71,11 @@ class OpenBGPDInstance(KVMInstance):
         self.run_cmd("shutdown -h -p now")
         return True
 
-    def reload_config(self):
-        """Reload OpenBGPD configuration.
+    def restart(self):
+        """Restart OpenBGPD.
 
-        Executes '/etc/rc.d/bgpd stop' and then '/etc/rc.d/bgpd start'.
+        Updates the configuration files, then executes '/etc/rc.d/bgpd stop'
+        and then '/etc/rc.d/bgpd -f start'.
         """
         if not self.is_running():
             raise InstanceNotRunning(self.name)
@@ -85,12 +88,29 @@ class OpenBGPDInstance(KVMInstance):
         self._mount_files()
 
         self.run_cmd("chmod 0600 /etc/bgpd.conf")
+        self.run_cmd("touch /etc/bgpd/placeholder")
         self.run_cmd("chmod 0600 /etc/bgpd/*")
 
         self.run_cmd("/etc/rc.d/bgpd stop")
         time.sleep(5)
-        self.run_cmd("bgpd -vdn")
-        self.run_cmd("/etc/rc.d/bgpd start")
+        self.run_cmd("bgpd -dn")
+        self.run_cmd("/etc/rc.d/bgpd -f start")
+        time.sleep(5)
+
+        return True
+
+    def reload_config(self):
+        """Reload OpenBGPD configuration.
+
+        Updates the configuration files, then executes '/etc/rc.d/bgpd reload'.
+        """
+        if not self.is_running():
+            raise InstanceNotRunning(self.name)
+
+        self._mount_files()
+
+        self.run_cmd("bgpd -dn")
+        self.run_cmd("/etc/rc.d/bgpd reload")
         time.sleep(5)
 
         return True
@@ -248,7 +268,7 @@ class OpenBGPDInstance(KVMInstance):
         res = []
 
         for route in self.routes["main"]:
-            if route.prefix != prefix:
+            if prefix and route.prefix.lower() != prefix.lower():
                 continue
             if only_best and not route.best:
                 continue
@@ -260,6 +280,11 @@ class OpenBGPDInstance(KVMInstance):
     def log_contains(self, s):
         return True
 
+    def log_contains_errors(self, allowed_errors=[], list_errors=False):
+        if list_errors:
+            return False, ""
+        return False
+
 class OpenBGPD60Instance(OpenBGPDInstance):
 
     VIRSH_DOMAINNAME = "arouteserver_openbgpd60"
@@ -267,3 +292,11 @@ class OpenBGPD60Instance(OpenBGPDInstance):
 class OpenBGPD61Instance(OpenBGPDInstance):
 
     VIRSH_DOMAINNAME = "arouteserver_openbgpd61"
+
+class OpenBGPD62Instance(OpenBGPDInstance):
+
+    VIRSH_DOMAINNAME = "arouteserver_openbgpd62"
+
+class OpenBGPD63Instance(OpenBGPDInstance):
+
+    VIRSH_DOMAINNAME = "arouteserver_openbgpd63"

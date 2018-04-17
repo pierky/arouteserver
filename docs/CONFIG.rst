@@ -6,20 +6,25 @@ Program configuration
 
 ARouteServer needs the following files to read its own configuration and to determine the policies to be implemented in the route server:
 
-- ``arouteserver.yml``: the main ARouteServer configuration file; it contains options and paths to other files (templates, cache directory, external tools...). By default, ARouteServer looks for this file in ``~/arouteserver`` and ``/etc/arouteserver``. This path can be changed using the ``--cfg`` command line argument.
-  See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/arouteserver.yml>`_.
+- ``arouteserver.yml``: the main ARouteServer configuration file; it contains options and paths to other files (templates, cache directory, external tools...). By default, ARouteServer looks for this file in ``~/arouteserver`` and ``/etc/arouteserver``. This path can be changed using the ``--cfg`` command line argument. See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/arouteserver.yml>`__.
+
+  The ``logging_config_file`` parameter here included can be used to :doc:`configure logging <LOGGING>`.
+
+  For details regarding the ``rtt_getter_path`` option please see :doc:`RTT_GETTER`.
 
 - ``general.yml``: this is the most important configuration file, where the route server's options and policies are configured.
   By default, it is located in the same directory of the main configuration file; its path can be set with the ``cfg_general`` option in ``arouteserver.yml``.
-  See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`_.
+  See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`__.
+
+  An automatically generated *reStructuredText* version of the file with all its options and comments can be found in the :doc:`GENERAL` page.
 
 - ``clients.yml``: the list of route server's clients and their options and policies.
   By default, it is located in the same directory of the main configuration file; its path can be set with the ``cfg_clients`` option in ``arouteserver.yml``.
-  See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/clients.yml>`_.
+  See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/clients.yml>`__.
 
 - ``bogons.yml``: the list of bogon prefixes automatically discarded by the route server.
   By default, it is located in the same directory of the main configuration file; its path can be set with the ``cfg_bogons`` option in ``arouteserver.yml``.
-  See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/bogons.yml>`_.
+  See its default content on `GitHub <https://github.com/pierky/arouteserver/blob/master/config.d/bogons.yml>`__.
 
 The ``arouteserver setup`` command can be used to setup the environment where ARouteServer is executed and to install the aforementioned files in the proper places.
 
@@ -28,18 +33,35 @@ Route server's configuration
 
 Route server's general configuration and policies are outlined in the ``general.yml`` file. 
 
-Configuration details and options can be found within the distributed `general <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`_ and `clients <https://github.com/pierky/arouteserver/blob/master/config.d/clients.yml>`_ configuration files on GitHub.
+Configuration details and options can be found within the distributed `general <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`__ and `clients <https://github.com/pierky/arouteserver/blob/master/config.d/clients.yml>`__ configuration files on GitHub or in the :doc:`GENERAL` page.
 
 Details about some particular topics are reported below.
 
 .. contents::
    :local:
 
-YAML files inclusion
-********************
+YAML files inclusion and environment variables expansion
+********************************************************
 
-YAML configuration files can contain a custom directive (``!include <filepath>``) that can be used to include other files.
-This can be useful, for example, when the same configuration is shared by two route servers that differ only in their router ID:
+ARouteServer's YAML configuration files can contain a custom directive (``!include <filepath>``) that can be used to include other files.
+Moreover, environment variables (``${VAR_NAME}``) are expanded when the configuration files are loaded.
+This can be useful, for example, when the same configuration is shared by two route servers that differ only in their router ID.
+
+Example with environment variables expansion:
+
+**general.yml**
+
+.. code:: yaml
+
+   cfg:
+     router_id: "${ROUTER_ID}"
+     rs_as: 999
+     passive: True
+     gtsm: True
+     filtering:
+       [...]
+
+Example with file inclusion:
 
 **general-rs1.yml**
 
@@ -121,7 +143,9 @@ One or more AS-SETs can be used to gather information about authorized origin AS
 
 - for each client, one or more AS-SETs can be configured in the ``cfg.filtering.irrdb`` section.
 
-To gather information from the IRRDBs, at first the script uses the AS-SETs provided in the client-level configuration; if no AS-SETs are provided there, it looks to the ASN configuration. If no AS-SETs are found in both the client and the ASN configuration, only the ASN's autnum object will be used.
+To gather information from the IRRDBs, at first the script uses the AS-SETs provided in the client-level configuration; if no AS-SETs are provided there, it looks to the ASN configuration.
+If no AS-SETs are found in both the client and the ASN configuration, if the ``cfg.filtering.irrdb.peering_db`` option is set to True the AS-SET from PeeringDB is used ("IRR Record" field).
+The ASN's autnum object will be used in any case.
 
 Example:
 
@@ -161,19 +185,75 @@ With this configuration, the following values will be used to run the bgpq3 prog
 - **AS-AS11NETS** will be used for 192.0.2.11 (it's configured at client-level for that client);
 - **AS-AS22MAIN** for the 192.0.2.22 client (it's inherited from the ``asns``-level configuration of AS22, client's AS);
 - **AS-AS33CUSTOMERS** for the 192.0.2.33 client (the ``asns``-level configuration is ignored because a more specific one is given at client-level);
-- **AS44** for the 192.0.2.44 client, because no AS-SETs are given at any level.
+- **AS44** for the 192.0.2.44 client, because no AS-SETs are given at any level. In this case, if the ``cfg.filtering.irrdb.peering_db`` was set to True, the AS-SET from PeeringDB would be used.
 
-RPKI-based filtering
-********************
+Optionally, the source that must be used to expand the AS macro can be prepended, followed by two colon characters: **RIPE::AS-FOO**, **RADB::AS64496:AS-FOO**.
 
-RPKI-based validation of routes can be configured using the general ``filtering.rpki`` section.
+Use RPKI ROAs as if they were route objects
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If the ``filtering.irrdb.use_rpki_roas_as_route_objects`` option is enabled, RPKI ROAs are used as if they were route objects to validate routes whose origin ASN is already authorized by a client's AS-SET but whose prefix is not. A lookup into the ROA table is made on the basis of the route origin ASN and, if a covering ROA is found, the route is validated. In this case, if the ``filtering.irrdb.tag_as_set`` general option is True the ``prefix_validated_via_rpki_roas`` informative community is added to the route.
+
+Please refer to `ROAs sources`_ in order to configure the source that should be used to gather RPKI ROAs.
+
+Use ARIN Whois database to accept routes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Similarly to the previous option, ``filtering.irrdb.use_arin_bulk_whois_data`` allows to support IRR-based filters with additional data. Records from the ARIN Whois database are used to accept those routes whose origin ASN is authorized by the client's AS-SET but whose prefix has not a registered route object. In this case, a lookup into the ARIN Whois database is made on the basis of the origin ASN and if a covering entry is found the route is accepted.
+
+The ARIN Whois database can be obtained by signing an `agreement with ARIN <https://www.arin.net/resources/request/bulkwhois.html>`__. It must be then converted into the appropriate JSON format that ARouteServer expects to find; the `arin-whois-bulk-parser <https://github.com/NLNOG/arin-whois-bulk-parser>`__ script can be used for this purpose.
+
+A parsed version of the database dump is offered by `NLNOG <https://nlnog.net/>`__ at the following URL: http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2
+
+Further details can be found in `this message <https://mailman.nanog.org/pipermail/nanog/2017-December/093525.html>`__ appeared on the NANOG mailing list.
+
+White lists
+~~~~~~~~~~~
+
+In addition to prefixes and ASNs gathered as said above, white lists can be configured at client level to manually enter prefixes and origin ASNs that will be treated as if they were included within clients' AS-SET.
+
+If the ``filtering.irrdb.tag_as_set`` general option is also set to True, routes that fail the basic IRR filters but that are accepted solely because they match a white list entry are tagged with the ``prefix_not_present_in_as_set`` and ``origin_not_present_in_as_set`` informational communities.
+
+Example:
+
+.. code:: yaml
+
+   clients:
+     - asn: 11
+       ip: "192.0.2.11"
+       cfg:
+         filtering:
+           irrdb:
+             as_sets:
+               - "AS-AS11NETS"
+             white_list_route:
+               - prefix: "203.0.113.0"
+                 length: 24
+                 asn: 65534
+
+This configuration allows to authorize routes for 203.0.113.0/24{24-32} with origin ASN 65534 received from the client.
+
+RPKI
+****
+
+ROAs sources
+~~~~~~~~~~~~
+
+A couple of methods can be used to acquire RPKI data (ROAs):
+
+- (BIRD and OpenBGPD) the builtin method based on `RIPE RPKI Validator cache <http://localcert.ripe.net:8088/>`__ export file: the URL of a local and trusted instance of RPKI Validator should be provided to ensure that a cryptographically validated datased is used. By default, the URL of the public instance is used.
+
+- (BIRD only) external tools from the `rtrlib <http://rpki.realmv6.org/>`_ suite: `rtrlib <https://github.com/rtrlib>`__ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`__. One or more trusted local validating caches should be used to get and validate RPKI data before pushing them to BIRD. An overview is provided on the `rtrlib GitHub wiki <https://github.com/rtrlib/rtrlib/wiki/Background>`__, where also an `usage guide <https://github.com/rtrlib/rtrlib/wiki/Usage-of-the-RTRlib>`__ can be found.
+
+The configuration of ROAs source can be done within the ``rpki_roas`` section of the ``general.yml`` file.
+
+Origin validation
+~~~~~~~~~~~~~~~~~
+
+RPKI-based validation of routes can be configured using the general ``filtering.rpki_bgp_origin_validation`` section.
 RFC8097 BGP extended communities are used to mark routes on the basis of their validity state.
-Depending on the ``reject_invalid`` configuration, INVALID routes can be rejected before entering the route server or accepted for further processing from external tools or functions provided within :ref:`.local files <site-specific-custom-config>`.
+Depending on the ``reject_invalid`` configuration, INVALID routes can be rejected before entering the route server or accepted for further processing by external tools or functions provided within :ref:`.local files <site-specific-custom-config>`.
 INVALID routes are not propagated to clients.
-
-- To acquire RPKI data and load them into BIRD, a couple of external tools from the `rtrlib <http://rpki.realmv6.org/>`_ suite are used: `rtrlib <https://github.com/rtrlib>`_ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`_. One or more trusted local validating caches should be used to get and validate RPKI data before pushing them to BIRD. An overview is provided on the `rtrlib GitHub wiki <https://github.com/rtrlib/rtrlib/wiki/Background>`_, where also an `usage guide <https://github.com/rtrlib/rtrlib/wiki/Usage-of-the-RTRlib>`_ can be found.
-
-- RPKI validation is not supported by OpenBGPD.
 
 BGP Communities
 ***************
@@ -386,9 +466,9 @@ Reject policy and invalid routes tracking
 
 Invalid routes, that is those routes that failed the validation process, can be simply discarded as they enter the route server (default behaviour) or, optionally, they can be kept for troubleshooting purposes, analysis or statistic reporting.
 
-The ``reject_policy`` configuration option can be set to ``tag`` in order to have invalid routes tagged with a user-configurable BGP Community (``reject_reason``) whose purpose is to keep track of the reason for which they are considered to be invalid. These routes are also set with a low local-pref value (``1``) and tagged with a control BGP Community that prevents them from being exported to clients.
+The ``reject_policy`` configuration option can be set to ``tag`` in order to have invalid routes tagged with a user-configurable BGP Community (``reject_reason``) whose purpose is to keep track of the reason for which they are considered to be invalid. These routes are also set with a low local-pref value (``1``) and tagged with a control BGP Community that prevents them from being exported to clients. If configured, the ``rejected_route_announced_by`` community is used to track the ASN of the client that announced the invalid route to the route server.
 
-The goal of this feature is to allow the deployment of route collectors that can be used to further process invalid routes announced by clients. These route collectors can be configured using :ref:`site-specific .local files <site-specific-custom-config>`.
+The goal of this feature is to allow the deployment of route collectors that can be used to further process invalid routes announced by clients. These route collectors can be configured using :ref:`site-specific .local files <site-specific-custom-config>`. The `InvalidRoutesReporter <https://github.com/pierky/invalidroutesreporter>`_ is an example of this kind of route collector.
 
 The reason that brought the server to reject the route is identified using a numeric value in the last part of the BGP Community; the list of reject reasons follow:
 
@@ -421,13 +501,11 @@ Caveats and limitations
 ***********************
 
 Not all features offered by ARouteServer are supported by both BIRD and OpenBGPD.
-The following list of limitations is based on the currently supported versions of BIRD (1.6.3) and OpenBGPD (OpenBSD 6.0 and 6.1).
+The following list of limitations is based on the currently supported versions of BIRD (1.6.3 and 1.6.4) and OpenBGPD (OpenBSD 6.0 up to 6.3).
 
 - OpenBGPD
 
   - Currently, **path hiding** mitigation is not implemented for OpenBGPD configurations. Only single-RIB configurations are generated.
-
-  - **RPKI** validation is not supported by OpenBGPD.
 
   - **ADD-PATH** is not supported by OpenBGPD.
 
@@ -438,6 +516,10 @@ The following list of limitations is based on the currently supported versions o
   - **Large communities** are not supported by OpenBGPD 6.0: features that are configured to be offered via large communities only are ignored and not included into the generated OpenBGPD configuration.
 
   - OpenBGPD does not offer a way to delete **extended communities** using wildcard (``rt xxx:*``): peer-ASN-specific extended communities (such as ``prepend_once_to_peer``, ``do_not_announce_to_peer``) are not scrubbed from routes that leave OpenBGPD route servers and so they are propagated to the route server clients.
+
+  - **Graceful shutdown** is supported only on OpenBGPD 6.2 or later.
+
+  - The Site of Origin Extended BGP communities in the range 65535:* are reserved for internal reasons.
 
 Depending on the features that are enabled in the ``general.yml`` and ``clients.yml`` files, compatibility issues may arise; in this case, ARouteServer logs one or more errors, which can be then acknowledged and ignored using the ``--ignore-issues`` command line option:
 

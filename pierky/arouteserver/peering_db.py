@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,20 +15,21 @@
 
 import logging
 import json
-import subprocess
-try:
-    # For Python 3.0 and later
-    from urllib.request import urlopen
-except ImportError:
-    # Fall back to Python 2's urllib2
-    from urllib2 import urlopen
-
+import re
+from six.moves.urllib.request import urlopen
+from six.moves.urllib.error import HTTPError
 
 from .cached_objects import CachedObject
-from .errors import PeeringDBError, PeeringDBNoInfoError
+from .config.validators import ValidatorASSet
+from .errors import PeeringDBError, PeeringDBNoInfoError, ConfigError
+from .irrdb import IRRDBInfo
 
 
 class PeeringDBInfo(CachedObject):
+
+    EXPIRY_TIME_TAG = "pdb_info"
+
+    MISSING_INFO_EXCEPTION = PeeringDBNoInfoError
 
     def _get_peeringdb_url(self):
         raise NotImplementedError()
@@ -37,6 +38,16 @@ class PeeringDBInfo(CachedObject):
     def _read_from_url(url):
         try:
             response = urlopen(url)
+        except HTTPError as e:
+            if e.code == 404:
+                return "{}"
+            else:
+                raise PeeringDBError(
+                    "HTTP error while retrieving info from PeeringDB: "
+                    "code: {}, reason: {} - {}".format(
+                        e.code, e.reason, str(e)
+                    )
+                )
         except Exception as e:
             raise PeeringDBError(
                 "Error while retrieving info from PeeringDB: {}".format(
@@ -60,7 +71,7 @@ class PeeringDBInfo(CachedObject):
 
     def _get_data(self):
         data = self._get_data_from_peeringdb()
-        if not "data" in data:
+        if "data" not in data:
             raise PeeringDBNoInfoError("Missing 'data'")
         if not isinstance(data["data"], list):
             raise PeeringDBNoInfoError("Unexpected format: 'data' is not a list")
@@ -71,19 +82,86 @@ class PeeringDBInfo(CachedObject):
 
 class PeeringDBNet(PeeringDBInfo):
 
+    EXPIRY_TIME_TAG = "pdb_info"
+
     PEERINGDB_URL = "https://www.peeringdb.com/api/net?asn={asn}"
 
     def __init__(self, asn, **kwargs):
         PeeringDBInfo.__init__(self, **kwargs)
         self.asn = asn
 
+    def load_data(self):
         logging.debug("Getting data from PeeringDB: net {}".format(self.asn))
 
-        self.load_data()
-    
+        PeeringDBInfo.load_data(self)
+
         self.info_prefixes4 = self.raw_data[0].get("info_prefixes4", None)
         self.info_prefixes6 = self.raw_data[0].get("info_prefixes6", None)
-        self.irr_as_set = self.raw_data[0].get("irr_as_set", None)
+        self.irr_as_sets = self.parse_as_sets(
+            self.raw_data[0].get("irr_as_set", None)
+        )
+
+    def parse_as_sets(self, raw_irr_as_sets):
+        res = []
+        if raw_irr_as_sets and raw_irr_as_sets.strip():
+            raw_irr_as_sets = re.split("[/,&\s]", raw_irr_as_sets)
+            for raw_irr_as_set in raw_irr_as_sets:
+                irr_as_set = self.parse_as_set(raw_irr_as_set)
+                if irr_as_set and irr_as_set not in res:
+                    res.append(irr_as_set)
+        return res
+
+    def parse_as_set(self, in_value):
+        v = in_value.strip()
+
+        if not v:
+            return None
+
+        guessed = False
+
+        # Removing "ipv4:" and "ipv6:".
+        pattern = re.compile("^(?:ipv4|ipv6):", flags=re.IGNORECASE)
+        v, number_of_subs_made = pattern.subn("", v)
+        if number_of_subs_made > 0:
+            v = v.strip()
+            guessed = True
+        if not v:
+            return None
+
+        # IRR record source
+        valid_sources_regex = IRRDBInfo.BGPQ3_DEFAULT_SOURCES.replace(",", "|")
+
+        # Converting stuff like AS-FOO@SOURCE in SOURCE::AS-FOO
+        pattern = re.compile(
+            "^([^@]+)@({sources})$".format(sources=valid_sources_regex),
+            flags=re.IGNORECASE
+        )
+        v, number_of_subs_made = pattern.subn("\\2::\\1", v)
+        if number_of_subs_made > 0:
+            guessed = True
+
+        # Converting "SOURCE:AS-FOO" format (single colon) to "SOURCE::AS-FOO"
+        # (only for known sources)
+        pattern = re.compile(
+            "^({sources}):([^:].+)$".format(sources=valid_sources_regex),
+            flags=re.IGNORECASE
+        )
+        v, number_of_subs_made = pattern.subn("\\1::\\2", v)
+        if number_of_subs_made > 0:
+            guessed = True
+
+        try:
+            v = ValidatorASSet().validate(v)
+        except ConfigError as e:
+            logging.debug("AS-SET from PeeringDB for AS{}: "
+                          "ignoring {}, {}".format(self.asn, v, str(e)))
+            return None
+
+        if guessed:
+            logging.info("AS-SET from PeeringDB for AS{}: "
+                         "guessed {} from {}".format(self.asn, v, in_value))
+
+        return v
 
     def _get_object_filename(self):
         return "peeringdb_net_{}.json".format(self.asn)
@@ -99,9 +177,10 @@ class PeeringDBNetIXLan(PeeringDBInfo):
         PeeringDBInfo.__init__(self, **kwargs)
         self.ixlanid = ixlanid
 
+    def load_data(self):
         logging.debug("Getting data from PeeringDB: Net IX LAN {}".format(self.ixlanid))
 
-        self.load_data()
+        PeeringDBInfo.load_data(self)
 
     def _get_object_filename(self):
         return "peeringdb_ixlanid_{}.json".format(self.ixlanid)
@@ -109,11 +188,41 @@ class PeeringDBNetIXLan(PeeringDBInfo):
     def _get_peeringdb_url(self):
         return self.PEERINGDB_URL.format(ixlanid=self.ixlanid)
 
+class PeeringDBIXList(PeeringDBInfo):
+
+    PEERINGDB_URL = "https://peeringdb.com/api/ix"
+
+    def __init__(self, **kwargs):
+        PeeringDBInfo.__init__(self, **kwargs)
+
+        self.ixp_list = []
+
+    def load_data(self):
+        logging.debug("Getting the list of IXs from PeeringDB")
+
+        PeeringDBInfo.load_data(self)
+
+        for ixp in self.raw_data:
+            self.ixp_list.append({
+                "city": ixp["city"],
+                "country": ixp["country"],
+                "full_name": ixp["name_long"],
+                "short_name": ixp["name"],
+                "peeringdb_handle": ixp["id"]
+            })
+
+    def _get_object_filename(self):
+        return "peeringdb_ixlist.json"
+
+    def _get_peeringdb_url(self):
+        return self.PEERINGDB_URL
 
 def clients_from_peeringdb(netixlanid, cache_dir):
     clients = []
 
-    netixlans = PeeringDBNetIXLan(netixlanid, cache_dir=cache_dir).raw_data
+    pdb_net_ixlan = PeeringDBNetIXLan(netixlanid, cache_dir=cache_dir)
+    pdb_net_ixlan.load_data()
+    netixlans = pdb_net_ixlan.raw_data
     for netixlan in netixlans:
         if netixlan["is_rs_peer"] is True:
             client = {
@@ -122,23 +231,18 @@ def clients_from_peeringdb(netixlanid, cache_dir):
             }
             for ipver in ("ipaddr4", "ipaddr6"):
                 if netixlan[ipver]:
-                    client["ip"].append(netixlan[ipver].encode("ascii", "ignore"))
+                    client["ip"].append(netixlan[ipver].encode("ascii", "ignore").decode("utf-8"))
             clients.append(client)
 
     asns = {}
 
     for client in clients:
         asn = client["asn"]
-        net = PeeringDBNet(asn)
+        net = PeeringDBNet(asn, cache_dir=cache_dir)
+        net.load_data()
 
-        irr_as_sets = net.irr_as_set
-        if not irr_as_sets:
+        if not net.irr_as_sets:
             continue
-
-        if "/" in irr_as_sets:
-            irr_as_sets = irr_as_sets.split("/")
-        else:
-            irr_as_sets = [irr_as_sets]
 
         key = "AS{}".format(asn)
         if key not in asns:
@@ -146,10 +250,10 @@ def clients_from_peeringdb(netixlanid, cache_dir):
                 "as_sets": []
             }
 
-        for irr_as_set in irr_as_sets:
+        for irr_as_set in net.irr_as_sets:
             irr_as_set = irr_as_set.strip()
             if irr_as_set not in asns[key]["as_sets"]:
-                asns[key]["as_sets"].append(irr_as_set.encode("ascii", "ignore"))
+                asns[key]["as_sets"].append(irr_as_set.encode("ascii", "ignore").decode("utf-8"))
 
     data = {
         "asns": asns,

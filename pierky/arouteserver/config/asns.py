@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from copy import deepcopy
 import logging
 
 from .base import ConfigParserBase
@@ -38,7 +37,7 @@ class ConfigParserASNS(ConfigParserBase):
             "as_sets": ValidatorListOf(ValidatorASSet,
                                        mandatory=False)
         }
-       
+
         for asn in self.cfg["asns"]:
             try:
                 if not asn.startswith("AS"):

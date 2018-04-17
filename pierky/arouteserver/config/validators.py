@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,11 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import ipaddr
-import yaml
-
+import re
 
 from ..errors import ConfigError
+from ..ipaddresses import IPAddress, IPNetwork
 
 
 class ConfigParserValidator(object):
@@ -81,7 +80,66 @@ class ValidatorText(ConfigParserValidator):
         return None
 
 class ValidatorASSet(ValidatorText):
-    pass
+
+    def _validate(self, v):
+        source_macro = re.match("^([A-Za-z]+)::(.+)$", v.strip())
+        if source_macro:
+            source = source_macro.group(1)
+            macro = source_macro.group(2)
+        else:
+            source = None
+            macro = v.strip()
+
+        try:
+            macro = self._parse_asset(macro)
+        except ConfigError as e:
+            msg = "Invalid AS-SET: {}".format(v)
+            if str(e):
+                msg += ", " + str(e)
+            raise ConfigError(msg)
+
+        if source:
+            return "{}::{}".format(source, macro)
+        return macro
+
+    def _parse_asset(self, v):
+        macro = v.strip()
+
+        # "Many objects in RPSL have a name.  An <object-name> is
+        # made up of letters, digits, the character underscore "_",
+        # and the character hyphen "-"; the first character of a
+        # name must be a letter, and the last character of a name
+        # must be a letter or a digit.
+        # An AS number x is represented as the string "ASx".  That
+        # is, the AS 226 is represented as AS226."
+        # https://datatracker.ietf.org/doc/html/rfc2622#section-2
+        #
+        # "A hierarchical set name is a sequence of set names and
+        # AS numbers separated by colons ":".
+        # At least one component of such a name must be an actual
+        # set name (i.e. start with one of the prefixes above)."
+        # https://datatracker.ietf.org/doc/html/rfc2622#section-5
+        if re.match("^AS[\d]+$", macro):
+            return macro
+
+        as_dash_found = False
+        parts = []
+        for part in macro.split(":"):
+            name = part.strip().upper()
+            if not re.match("^(?:AS[\d]+|AS-[A-Z0-9_\-]*[A-Z0-9])$", name):
+                raise ConfigError("invalid name {}".format(name))
+            if name.startswith("AS-"):
+                as_dash_found = True
+            parts.append(name)
+        macro = ":".join(parts)
+
+        if not as_dash_found:
+            raise ConfigError("no ""AS-"" found")
+
+        if not macro:
+            raise ConfigError()
+
+        return macro
 
 class ValidatorASN(ConfigParserValidator):
 
@@ -114,54 +172,12 @@ class ValidatorASNList(ConfigParserValidator):
             asns.append(ValidatorASN().validate(part))
         return asns
 
-class ValidatorROA(ConfigParserValidator):
-
-    def _validate(self, v):
-        for prop in v:
-            if prop not in ("prefix", "asn"):
-                raise ConfigError(
-                    "Unknown statement '{}' in ROA entry "
-                    "definition".format(prop)
-                )
-        for prop in ("prefix", "asn"):
-            if prop not in v:
-                raise ConfigError(
-                    "Missing '{}' in ROA entry".format(prop)
-                )
-        try:
-            asn = ValidatorASN().validate(v["asn"])
-        except ConfigError as e:
-            err_msg = "Invalid ASN in ROA entry"
-            if str(e):
-                err_msg += ": {}".format(str(e))
-            raise ConfigError(err_msg)
-
-        try:
-            prefix = ValidatorPrefixListEntry().validate(v["prefix"])
-        except ConfigError as e:
-            err_msg = "Invalid prefix in ROA entry"
-            if str(e):
-                err_msg += ": {}".format(str(e))
-            raise ConfigError(err_msg)
-
-        if prefix["ge"] and prefix["ge"] != prefix["length"]:
-            raise ConfigError(
-                "ROA prefix 'ge' must be equal to the "
-                "prefix length: {} != {} for prefix {}".format(
-                    prefix["ge"], prefix["length"], prefix["prefix"]
-                )
-            )
-        if not prefix["le"]:
-            prefix["exact"] = True
-
-        return {"asn": asn, "prefix": prefix}
-
 class ValidatorIPAddr(ConfigParserValidator):
 
     def _validate(self, v):
         try:
-            ip = ipaddr.IPAddress(v)
-            return str(ip)
+            ip = IPAddress(v)
+            return ip.ip
         except:
             raise ConfigError("Invalid IP address: {}".format(v))
 
@@ -169,8 +185,10 @@ class ValidatorIPv4Addr(ConfigParserValidator):
 
     def _validate(self, v):
         try:
-            ip = ipaddr.IPv4Address(v)
-            return str(ip)
+            ip = IPAddress(v)
+            if not ip.version == 4:
+                raise ValueError()
+            return ip.ip
         except:
             raise ConfigError("Invalid IPv4 address: {}".format(v))
 
@@ -178,8 +196,10 @@ class ValidatorIPv6Addr(ConfigParserValidator):
 
     def _validate(self, v):
         try:
-            ip = ipaddr.IPv6Address(v)
-            return str(ip)
+            ip = IPAddress(v)
+            if not ip.version == 6:
+                raise ValueError()
+            return ip.ip
         except:
             raise ConfigError("Invalid IPv6 address: {}".format(v))
 
@@ -219,7 +239,7 @@ class ValidatorPrefixListEntry(ConfigParserValidator):
                 )
 
         try:
-            ip_obj = ipaddr.IPAddress(v["prefix"])
+            ip_obj = IPNetwork(v["prefix"])
         except:
             raise ConfigError("Invalid prefix ID: {}".format(v["prefix"]))
 
@@ -237,7 +257,7 @@ class ValidatorPrefixListEntry(ConfigParserValidator):
         except:
             raise ConfigError("Invalid prefix length: {}".format(v["length"]))
 
-        v["prefix"] = str(ip_obj)
+        v["prefix"] = ip_obj.ip
         v["length"] = pref_len
         v["comment"] = str(v["comment"]) if "comment" in v else None
         v["max_length"] = ip_obj.max_prefixlen
@@ -300,6 +320,24 @@ class ValidatorPrefixListEntry(ConfigParserValidator):
 
         return v
 
+class ValidatorWhiteListRouteEntry(ConfigParserValidator):
+
+    def _validate(self, v):
+        # Bad trick here: remove 'asn' in order to have
+        # the rest of the dict validated as if it was a
+        # standard prefix-list entry.
+        # Then, add it back again.
+        asn = None
+        if "asn" in v:
+            v["asn"] = ValidatorASN(mandatory=False).validate(v["asn"])
+            asn = v["asn"]
+            del v["asn"]
+
+        ValidatorPrefixListEntry()._validate(v)
+
+        v["asn"] = asn
+
+        return v
 
 class ValidatorBool(ConfigParserValidator):
 
@@ -376,7 +414,7 @@ class ValidatorIPMinMaxLen(ConfigParserValidator):
                         min_max, self.ver, v[min_max]
                     )
                 )
-        
+
             if val > max_val:
                 raise ConfigError(
                     "Value of '{}' in the IPv{} min/max length out of "
@@ -433,7 +471,7 @@ class ValidatorCommunity(ConfigParserValidator):
             return v
 
     def _get_parts(self, val):
-        parts = map(str.strip, val.split(":"))
+        parts = list(map(str.strip, val.split(":")))
         if len(parts) != self.EXPECTED_PARTS_CNT:
             raise ConfigError()
 
@@ -569,3 +607,45 @@ class ValidatorCommunityExt(ValidatorCommunity):
                     v, " - {}".format(str(e)) if str(e) else ""
                 )
             )
+
+class ValidatorRTTThresholds(ConfigParserValidator):
+
+    def _validate(self, v):
+        if isinstance(v, str):
+            lst = v.split(",")
+        elif isinstance(v, list):
+            lst = v
+            pass
+        else:
+            raise ConfigError(
+                "Invalid type: {} - it must be a list of integers".format(
+                    type(v)
+                )
+            )
+
+        res = []
+        for x in lst:
+            try:
+                rtt = ValidatorUInt().validate(x)
+            except:
+                raise ConfigError(
+                    "RTT thresholds list items must be "
+                    "positive integers: {}".format(x)
+                )
+            if not res:
+                res.append(rtt)
+                continue
+            if rtt in res:
+                raise ConfigError(
+                    "Duplicate RTT value found: {}".format(rtt)
+                )
+            if rtt < res[-1]:
+                raise ConfigError(
+                    "RTT thresholds list items must be "
+                    "provided in ascending order: {} < {}".format(
+                        rtt, res[-1]
+                    )
+                )
+            res.append(rtt)
+
+        return res

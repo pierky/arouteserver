@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import six
 import unittest
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
@@ -135,6 +136,11 @@ class PathHidingScenario(LiveScenario):
         self.log_contains(self.rs, "route didn't pass control communities checks - NOT ANNOUNCING {} TO {{AS4}}".format(
             self.DATA["AS101_pref_ok1"]), {"AS4": self.AS4})
 
+    def test_900_reconfigure(self):
+        """{}: reconfigure"""
+        self.rs.reload_config()
+        self.test_020_sessions_up()
+
 class PathHidingScenarioBIRD(PathHidingScenario):
     __test__ = False
 
@@ -181,10 +187,15 @@ class PathHidingScenarioOpenBGPD60(PathHidingScenarioOpenBGPD):
 
     TARGET_VERSION = "6.0"
 
-class PathHidingScenarioOpenBGPD61(PathHidingScenarioOpenBGPD):
+class PathHidingScenarioOpenBGPD62(PathHidingScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.1"
+    TARGET_VERSION = "6.2"
+
+class PathHidingScenarioOpenBGPD63(PathHidingScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.3"
 
 class PathHidingScenario_MitigationOn(object):
 
@@ -203,7 +214,7 @@ class PathHidingScenario_MitigationOn(object):
     def test_041_AS3_and_AS4_no_prefix_via_AS1(self):
         """{}: AS3 and AS4 don't receive prefix via AS1"""
         for inst in (self.AS3, self.AS4):
-            with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                 self.receive_route(inst, self.DATA["AS101_pref_ok1"], self.rs,
                                    next_hop=self.AS1)
 
@@ -213,7 +224,7 @@ class PathHidingScenario_MitigationOff(object):
 
     def test_050_AS3_prefix_not_received_by_AS3(self):
         """{}: AS3 does not receive prefix at all"""
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS3, self.DATA["AS101_pref_ok1"])
 
     def test_051_AS4_receives_prefix_via_AS2_because_of_ADD_PATH(self):

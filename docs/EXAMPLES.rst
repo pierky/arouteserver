@@ -10,7 +10,7 @@ Configurations built using the default ``general.yml`` and ``clients.yml`` files
 
 https://github.com/pierky/arouteserver/blob/master/examples/default
 
-See the `textual representation of this configuration <_static/examples_default.html>`_.
+See the `textual representation of this configuration <_static/examples_default.html>`__.
 
 Feature-rich example
 --------------------
@@ -20,16 +20,20 @@ Configurations built using the files provided in the ``examples/rich`` directory
 - GTSM and ADD-PATH are enabled by default on the route server.
 - Next-hop filtering allows clients to set NEXT_HOP of any client in the same AS.
 - Local networks are filtered, and also transit-free ASNs, invalid paths and prefixes/origin ASNs which are not authorized by clients' AS-SETs.
-- RPKI-based route validation is enabled; INVALID routes are rejected.
+- Dataset used for prefix validation extended using ARIN Whois DB dump and RPKI ROAs.
+- RPKI-based Origin Validation is enabled; INVALID routes are rejected.
 - A max-prefix limit is enforced on the basis of PeeringDB information.
 - Blackhole filtering is implemented with a rewrite-next-hop policy and can be triggered with BGP communities BLACKHOLE, 65534:0 and 999:666:0.
-- Control communities allow selective announcement control and prepending.
+- Control communities allow selective announcement control and prepending, also on the basis of peers RTT.
+- Graceful BGP session shutdown is enabled.
 - Client timers are configured using the custom, site-specific .local file.
 - Informational custom BGP communities are used to tag routes from European or American clients.
 
+Please note: for the sake of readability of the configuration files built in this example the set of RPKI ROAs is artificially limited to just a bunch of them.
+
 https://github.com/pierky/arouteserver/blob/master/examples/rich
 
-See the `textual representation of this configuration <_static/examples_rich.html>`_.
+See the `textual representation of this configuration <_static/examples_rich.html>`__.
 
 BIRD hooks example
 ------------------
@@ -82,3 +86,80 @@ Clients from Euro-IX member list JSON file
 Some clients files automatically built from `Euro-IX member list JSON files <https://github.com/euro-ix/json-schemas>`_ are reported here.
 
 https://github.com/pierky/arouteserver/blob/master/examples/clients-from-euroix
+
+.. DO NOT EDIT: this file is automatically created by /utils/build_doc
+
+``configure`` command output
+----------------------------
+
+The ``configure`` command can be used to quickly generate policy definition files (*general.yml*) which are based on suggested settings and best practices.
+
+A list of BGP communities is also automatically built.
+
+.. code-block:: console
+
+   $ arouteserver configure --output examples/auto-config/README.rst
+   
+   BGP daemon
+   ==========
+   
+   Depending on the BGP daemon used for the route server some features may not be
+   available.
+   
+   Details here:
+   https://arouteserver.readthedocs.io/en/latest/CONFIG.html#caveats-and-
+   limitations
+   
+   Which BGP daemon will be used? [bird/openbgpd] bird
+   Router server's ASN
+   ===================
+   
+   What's the ASN of the route server? 64496
+   Route server's BGP router-id
+   ============================
+   
+   Please enter the route server BGP router-id: 192.0.2.1
+   List of local networks
+   ======================
+   
+   A list of local IPv4/IPv6 networks must be provided here: routes announced by
+   route server clients for these prefixes will be filtered out.
+   
+   Please enter a comma-separated list of local networks: 192.0.2.0/24,2001:db8::/32
+   
+   
+   Route server policy definition file generated successfully!
+   ===========================================================
+   
+   The content of the general configuration file will now be written to examples
+   /auto-config/bird-general.yml
+   
+   Some notes:
+   
+    - Accepted prefix lengths are 8-24 for IPv6 and 12-48 for IPv6.
+    - Routes with 'transit-free networks' ASNs in the middle of AS_PATH are
+   rejected.
+    - IRR-based filters are enabled; prefixes that are more specific of those
+   registered are accepted.
+    - PeeringDB is used to fetch AS-SETs for those clients that are not explicitly
+   configured.
+    - RPKI ROAs are used as if they were route objects to further enrich IRR data.
+    - ARIN Whois database dump is fetched from NLNOG to further enrich IRR data.
+    - PeeringDB is used to fetch networks prefix count.
+    - Routes tagged with the GRACEFUL_SHUTDOWN well-known community (65535:0) are
+   processed accordingly to draft-ietf-grow-bgp-gshut.
+   
+The textual description (HTML) generated on the basis of the *general.yml* files produced by this command is also reported here.
+
+https://github.com/pierky/arouteserver/blob/master/examples/auto-config
+
+bird-general.yml.html - See the `textual representation of this configuration <_static/examples_auto-config_bird-general.yml.html>`__.
+
+openbgpd62-general.yml.html - See the `textual representation of this configuration <_static/examples_auto-config_openbgpd62-general.yml.html>`__.
+
+IX-F Member Export files
+------------------------
+
+The files reported within this directory were generated using the ``ixf-member-export`` `command <https://arouteserver.readthedocs.io/en/latest/USAGE.html#ixf-member-export-command>`__.
+
+https://github.com/pierky/arouteserver/blob/master/examples/ixf-member-export

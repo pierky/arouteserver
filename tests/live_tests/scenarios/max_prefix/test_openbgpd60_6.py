@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,12 +16,11 @@
 import os
 import unittest
 
-from base import MaxPrefixScenarioOpenBGPD60
-from data6 import MaxPrefixScenario_Data6
+from .base import MaxPrefixScenarioOpenBGPD60
+from .data6 import MaxPrefixScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
 
-@unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
 class MaxPrefixScenario_OpenBGPDIPv6(MaxPrefixScenario_Data6,
                                      MaxPrefixScenarioOpenBGPD60):
 

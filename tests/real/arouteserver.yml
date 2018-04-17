@@ -1,0 +1,33 @@
+# Base directory where other files will be found.
+cfg_dir: "tests/real"
+
+# Logging configuration file, in Python fileConfig() format
+# (https://docs.python.org/2/library/logging.config.html
+#  #configuration-file-format)
+logging_config_file: "log.ini"
+
+# Route server's general configuration file.
+cfg_general: "general.yml"
+
+# Clients configuration file.
+#cfg_clients: "config.d/clients.yml"
+
+# Bogon prefixes configuration file.
+cfg_bogons: "bogons.yml"
+
+# Directory where Jinja2 templates are stored.
+templates_dir: "templates"
+
+# Main file used to render the configuration.
+#template_name: "main.j2"
+
+# Directory where cached data are stored.
+cache_dir: "var/cache"
+
+# Path to the 'bgpq3' external program.
+bgpq3_path: "/usr/local/bin/bgpq3"
+
+# Cache expiry time, in seconds.
+cache_expiry: 604800
+
+rtt_getter_path: "~/arouteserver/utils/fake_rtt_getter.sh"

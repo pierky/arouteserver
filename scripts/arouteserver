@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -78,9 +78,18 @@ except ARouteServerError as e:
     logging.error(msg, exc_info=e.please_open_issue)
     sys.exit(1)
 except Exception as e:
-    logging.error(
-        "An unexpected error occurred: {}\n"
-        "\n"
-        "{}".format(str(e), PLEASE_OPEN_ISSUE),
-        exc_info=True)
+    msg = "An unexpected error occurred: {}\n".format(str(e))
+    if isinstance(e, MemoryError):
+        msg += "\n"
+        msg += (
+            "The error seems to be related to a memory error or to lack "
+            "of resources. Please visit the following URL for details and "
+            "a possible solution: "
+            "https://arouteserver.readthedocs.io/en/latest/USAGE.html#"
+            "memoryerror\n"
+        )
+    msg += "\n"
+    msg += PLEASE_OPEN_ISSUE
+
+    logging.error(msg, exc_info=True)
     sys.exit(1)

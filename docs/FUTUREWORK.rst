@@ -4,11 +4,14 @@ Future work
 Short term
 ----------
 
-- Packaging: a command to upgrade the program
+- RTT-based communities: extend support to add NO_EXPORT / NO_ADVERTISE
+- Informative community with the measured RTT of the announcing peer
+- New feature: CLI option to build configs based on templates/groups only and avoid client specific settings
 
 Mid term
 --------
 
+- OpenBGPD: consider dropping the use of macros for ASN and prefix lists
 - New feature: group clients by AFI/ASN (OpenBGPD only)
 - Split configuration in multiple files
 - Doc: better documentation

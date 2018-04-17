@@ -1,0 +1,153 @@
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+  path_hiding: True
+  filtering:
+    next_hop:
+      policy: "same-as"
+    global_black_list_pref:
+      - prefix: "192.0.2.0"
+        length: 24
+        comment: "Local network"
+      - prefix: "2001:db8:1:1::"
+        length: 64
+        comment: "Local network"
+    reject_invalid_as_in_as_path: True
+    transit_free:
+      action: "reject"
+      asns: >
+        174, 209, 286, 701, 1239, 1299, 2828, 2914,
+        3257, 3320, 3356, 3549, 5511, 6453, 6461,
+        6762, 6830, 7018, 12956
+    irrdb:
+      enforce_origin_in_as_set: True
+      enforce_prefix_in_as_set: True
+      allow_longer_prefixes: False
+      tag_as_set: True
+      peering_db: True
+      use_rpki_roas_as_route_objects:
+        enabled: True
+        source: "ripe-rpki-validator-cache"
+      use_arin_bulk_whois_data:
+        enabled: True
+    rpki_bgp_origin_validation:
+      enabled: True
+    max_prefix:
+      action: "shutdown"
+      peering_db: True
+      general_limit_ipv4: 170000
+      general_limit_ipv6:  12000
+    reject_policy:
+      policy: "reject"
+  blackhole_filtering:
+    policy_ipv4: "rewrite-next-hop"
+    policy_ipv6: "rewrite-next-hop"
+    rewrite_next_hop_ipv4: "192.0.2.66"
+    rewrite_next_hop_ipv6: "2001:db8:1:1::66"
+    announce_to_client: True
+    add_noexport: True
+  graceful_shutdown:
+    enabled: True
+  rtt_thresholds: 5, 10, 15, 20, 30, 50, 100, 200, 500
+  communities:
+    blackholing:
+      std: "65534:0"
+      lrg: "rs_as:666:0"
+    origin_present_in_as_set:
+      std: "65530:1"
+      lrg: "rs_as:65530:1"
+    origin_not_present_in_as_set:
+      std: "65530:0"
+      lrg: "rs_as:65530:0"
+    do_not_announce_to_peer:
+      std: "0:peer_as"
+      ext: "rt:0:peer_as"
+      lrg: "rs_as:0:peer_as"
+    announce_to_peer:
+      std: "rs_as:peer_as"
+      ext: "rt:rs_as:peer_as"
+      lrg: "rs_as:rs_as:peer_as"
+    do_not_announce_to_any:
+      std: "0:rs_as"
+      ext: "rt:0:rs_as"
+      lrg: "rs_as:0:rs_as"
+    prepend_once_to_any:
+      std: "65501:rs_as"
+      ext: "rt:65501:rs_as"
+      lrg: "rs_as:65501:rs_as"
+    prepend_twice_to_any:
+      std: "65502:rs_as"
+      ext: "rt:65502:rs_as"
+      lrg: "rs_as:65502:rs_as"
+    prepend_thrice_to_any:
+      std: "65503:rs_as"
+      ext: "rt:65503:rs_as"
+      lrg: "rs_as:65503:rs_as"
+    prepend_once_to_peer:
+      std: "65504:peer_as"
+      ext: "rt:65504:peer_as"
+      lrg: "rs_as:65504:peer_as"
+    prepend_twice_to_peer:
+      std: "65505:peer_as"
+      ext: "rt:65505:peer_as"
+      lrg: "rs_as:65505:peer_as"
+    prepend_thrice_to_peer:
+      std: "65506:peer_as"
+      ext: "rt:65506:peer_as"
+      lrg: "rs_as:65506:peer_as"
+    add_noexport_to_any:
+      std: "65507:rs_as"
+      ext: "rt:65507:rs_as"
+      lrg: "rs_as:65507:rs_as"
+    add_noadvertise_to_any:
+      std: "65508:rs_as"
+      ext: "rt:65508:rs_as"
+      lrg: "rs_as:65508:rs_as"
+    add_noexport_to_peer:
+      std: "65509:peer_as"
+      ext: "rt:65509:peer_as"
+      lrg: "rs_as:65509:peer_as"
+    add_noadvertise_to_peer:
+      std: "65510:peer_as"
+      ext: "rt:65510:peer_as"
+      lrg: "rs_as:65510:peer_as"
+    do_not_announce_to_peers_with_rtt_lower_than:
+      std: "64511:dyn_val"
+      ext: "rt:64511:dyn_val"
+      lrg: "rs_as:64511:dyn_val"
+    do_not_announce_to_peers_with_rtt_higher_than:
+      std: "64512:dyn_val"
+      ext: "rt:64512:dyn_val"
+      lrg: "rs_as:64512:dyn_val"
+    announce_to_peers_with_rtt_lower_than:
+      std: "64513:dyn_val"
+      ext: "rt:64513:dyn_val"
+      lrg: "rs_as:64513:dyn_val"
+    announce_to_peers_with_rtt_higher_than:
+      std: "64514:dyn_val"
+      ext: "rt:64514:dyn_val"
+      lrg: "rs_as:64514:dyn_val"
+    prepend_once_to_peers_with_rtt_lower_than:
+      std: "64515:dyn_val"
+      ext: "rt:64515:dyn_val"
+      lrg: "rs_as:64515:dyn_val"
+    prepend_twice_to_peers_with_rtt_lower_than:
+      std: "64516:dyn_val"
+      ext: "rt:64516:dyn_val"
+      lrg: "rs_as:64516:dyn_val"
+    prepend_thrice_to_peers_with_rtt_lower_than:
+      std: "64517:dyn_val"
+      ext: "rt:64517:dyn_val"
+      lrg: "rs_as:64517:dyn_val"
+    prepend_once_to_peers_with_rtt_higher_than:
+      std: "64518:dyn_val"
+      ext: "rt:64518:dyn_val"
+      lrg: "rs_as:64518:dyn_val"
+    prepend_twice_to_peers_with_rtt_higher_than:
+      std: "64519:dyn_val"
+      ext: "rt:64519:dyn_val"
+      lrg: "rs_as:64519:dyn_val"
+    prepend_thrice_to_peers_with_rtt_higher_than:
+      std: "64520:dyn_val"
+      ext: "rt:64520:dyn_val"
+      lrg: "rs_as:64520:dyn_val"

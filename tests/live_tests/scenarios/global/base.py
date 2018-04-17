@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,10 +13,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import ipaddr
+import six
 import unittest
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
+from pierky.arouteserver.ipaddresses import IPNetwork
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
@@ -33,9 +34,9 @@ class BasicScenario(LiveScenario):
 
     AS_SET = {
         "AS-AS1": [1],
-        "AS-AS1_CUSTOMERS": [101],
+        "AS-AS1_CUSTOMERS": [101, 103, 104],
         "AS-AS2": [2],
-        "AS-AS2_CUSTOMERS": [101],
+        "AS-AS2_CUSTOMERS": [101, 103],
     }
     R_SET = {
         "AS-AS1": [
@@ -43,14 +44,23 @@ class BasicScenario(LiveScenario):
             "pref_len1"
         ],
         "AS-AS1_CUSTOMERS": [
-            "AS101_allowed_prefixes"
+            "AS101_allowed_prefixes",
+            "AS103_allowed_prefixes",
         ],
         "AS-AS2": [
             "AS2_allowed_prefixes"
         ],
         "AS-AS2_CUSTOMERS": [
-            "AS101_allowed_prefixes"
+            "AS101_allowed_prefixes",
+            "AS103_allowed_prefixes",
         ],
+    }
+    RTT = {
+        "AS1_1_IPAddress": 0.1,
+        "AS1_2_IPAddress": 5,
+        "AS2_1_IPAddress": 17.3,
+        "AS3_1_IPAddress": 123.8,
+        "AS4_1_IPAddress": 600
     }
 
     @classmethod
@@ -102,6 +112,16 @@ class BasicScenario(LiveScenario):
                 ],
             ),
             cls.CLIENT_INSTANCE_CLASS(
+                "AS4",
+                cls.DATA["AS4_1_IPAddress"],
+                [
+                    (
+                        cls.build_other_cfg("AS4.j2"),
+                        "/etc/bird/bird.conf"
+                    )
+                ],
+            ),
+            cls.CLIENT_INSTANCE_CLASS(
                 "AS101",
                 cls.DATA["AS101_IPAddress"],
                 [
@@ -119,6 +139,7 @@ class BasicScenario(LiveScenario):
         self.AS2 = self._get_instance_by_name("AS2")
         # AS3 is passive, rs client configured with passive: False
         self.AS3 = self._get_instance_by_name("AS3")
+        self.AS4 = self._get_instance_by_name("AS4")
         self.AS101 = self._get_instance_by_name("AS101")
         self.rs = self._get_instance_by_name("rs")
 
@@ -132,6 +153,7 @@ class BasicScenario(LiveScenario):
         self.session_is_up(self.rs, self.AS1_2)
         self.session_is_up(self.rs, self.AS2)
         self.session_is_up(self.rs, self.AS3)
+        self.session_is_up(self.rs, self.AS4)
         self.session_is_up(self.AS101, self.AS1_1)
         self.session_is_up(self.AS101, self.AS1_2)
         self.session_is_up(self.AS101, self.AS2)
@@ -173,13 +195,13 @@ class BasicScenario(LiveScenario):
                            std_comms=[], ext_comms=ext_comm_rpki_unknown, lrg_comms=[])
 
         # rs should not receive prefixes with the following criteria
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.rs, self.DATA["AS1_good1"], self.AS2)
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.rs, self.DATA["AS1_good2"], self.AS2)
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.rs, self.DATA["AS2_good1"], self.AS1_1)
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.rs, self.DATA["AS2_good2"], self.AS1_1)
 
         # AS_PATH should match the expectations
@@ -190,12 +212,54 @@ class BasicScenario(LiveScenario):
         self.receive_route(self.rs, self.DATA["AS1_good1"], self.AS1_1, as_path="1", next_hop=self.AS1_1)
         self.receive_route(self.rs, self.DATA["AS2_good1"], self.AS2, as_path="2", next_hop=self.AS2)
 
+    def test_030_good_prefixes_because_of_rpki_roas_as_route_objects_1(self):
+        """{}: good prefixes because of use_rpki_roas_as_route_objects: exact"""
+
+        prefix = self.DATA["AS101_roa_routeobj_1"]
+        self.receive_route(self.rs, prefix,
+                           self.AS1_1, as_path="1 101", next_hop=self.AS1_1)
+        self.receive_route(self.rs, prefix,
+                           self.AS2, as_path="2 101", next_hop=self.AS2)
+
+    def test_030_good_prefixes_because_of_rpki_roas_as_route_objects_2(self):
+        """{}: good prefixes because of use_rpki_roas_as_route_objects: covering"""
+
+        prefix = self.DATA["AS101_roa_routeobj_3"]
+        self.receive_route(self.rs, prefix,
+                           self.AS1_1, as_path="1 101", next_hop=self.AS1_1)
+        self.receive_route(self.rs, prefix,
+                           self.AS2, as_path="2 101", next_hop=self.AS2)
+
+    def test_030_good_prefixes_because_of_arin_db_1(self):
+        """{}: good prefixes because of use_arin_bulk_whois_data"""
+
+        prefix = self.DATA["AS104_arin_1"]
+        self.receive_route(self.rs, prefix,
+                           self.AS1_1, as_path="1 101 104",
+                           next_hop=self.AS1_1)
+
+        # AS101 peers with AS2 too but that route should be reject
+        # because only AS1 has AS104 in its AS-SET
+        self.receive_route(self.rs, prefix,
+                           self.AS2, as_path="2 101 104", next_hop=self.AS2,
+                           filtered=True, reject_reason=9)
+
+        self.receive_route(self.AS4, prefix, self.rs, as_path="1 101 104",
+                           next_hop=self.AS1_1)
+
     def test_030_good_prefixes_received_by_rs_nonclient_nexthop(self):
         """{}: good prefixes received by rs: non-client NEXT_HOP"""
 
         self.receive_route(self.rs, self.DATA["AS2_nonclient_nexthop1"],
                            as_path="2",
                            next_hop=self.DATA["AS2_nonclient_nexthop1_nh"])
+
+    def test_030_good_prefixes_because_of_irrdb_whitelist(self):
+        """{}: good prefixes received by rs: IRRdb white-list"""
+
+        self.receive_route(self.rs, self.DATA["AS1_whitel_1"], as_path="1 1011")
+        self.receive_route(self.rs, self.DATA["AS1_whitel_4"], as_path="1 1011")
+        self.receive_route(self.rs, self.DATA["AS1_whitel_5"], as_path="1 1000")
 
     def test_040_bad_prefixes_received_by_rs_bogon(self):
         """{}: bad prefixes received by rs: bogon"""
@@ -215,7 +279,7 @@ class BasicScenario(LiveScenario):
     def test_040_bad_prefixes_received_by_rs_prefix_len(self):
         """{}: bad prefixes received by rs: invalid prefix-len"""
 
-        ip_ver = ipaddr.IPNetwork(self.DATA["pref_len1"]).version
+        ip_ver = IPNetwork(self.DATA["pref_len1"]).version
 
         self.receive_route(self.rs, self.DATA["pref_len1"], self.AS1_1,
                            as_path="1", next_hop=self.AS1_1,
@@ -248,6 +312,14 @@ class BasicScenario(LiveScenario):
                            self.AS1_1, as_path="1 101 174",
                            next_hop=self.AS1_1, filtered=True, reject_reason=8)
         self.log_contains(self.rs, "AS_PATH [(path 1 101 174)] contains transit-free ASN - REJECTING " + self.DATA["AS101_transitfree_1"])
+
+    def test_040_bad_prefixes_received_by_rs_transitfree_as_path_transit_peer(self):
+        """{}: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer"""
+
+        self.receive_route(self.rs, self.DATA["AS3_transitfree_2"],
+                           self.AS3, as_path="3 174 33",
+                           next_hop=self.AS3, filtered=True, reject_reason=8)
+        self.log_contains(self.rs, "AS_PATH [(path 3 174 33)] contains transit-free ASN - REJECTING " + self.DATA["AS3_transitfree_2"])
 
     def test_040_bad_prefixes_received_by_rs_aspath_len(self):
         """{}: bad prefixes received by rs: AS_PATH len"""
@@ -323,11 +395,43 @@ class BasicScenario(LiveScenario):
         self.receive_route(self.rs, self.DATA["Default_route"],
                            other_inst=self.AS3,
                            filtered=True, reject_reason=(2, 10))
-        if ipaddr.IPNetwork(self.DATA["Default_route"]).version == 4:
+        if IPNetwork(self.DATA["Default_route"]).version == 4:
             msg = "prefix is bogon - REJECTING " + self.DATA["Default_route"]
         else:
             msg = "prefix is not in IPv6 Global Unicast space - REJECTING " + self.DATA["Default_route"]
         self.log_contains(self.rs, msg)
+
+    def test_040_bad_prefixes_even_if_irrdb_whitelist(self):
+        """{}: bad prefixes received by rs: IRRdb white-list"""
+
+        self.receive_route(self.rs, self.DATA["AS1_whitel_2"], as_path="1 1000",
+                           filtered=True, reject_reason=9)
+        self.log_contains(self.rs, "origin ASN [1000] not in allowed as-sets - REJECTING " + self.DATA["AS1_whitel_2"])
+
+        self.receive_route(self.rs, self.DATA["AS1_whitel_3"], as_path="1 1011",
+                           filtered=True, reject_reason=12)
+        self.log_contains(self.rs, "prefix not in client's r_set - REJECTING " + self.DATA["AS1_whitel_3"])
+
+        self.receive_route(self.rs, self.DATA["AS1_whitel_6"], as_path="1 1011",
+                           filtered=True, reject_reason=12)
+        self.log_contains(self.rs, "prefix not in client's r_set - REJECTING " + self.DATA["AS1_whitel_6"])
+
+    def test_040_bad_prefixes_rpki_roas_as_route_objects_failed(self):
+        """{}: bad prefixes received by rs: RPKI ROAs as route objects failed"""
+
+        # More specific than ROA
+        prefix = self.DATA["AS101_roa_routeobj_2"]
+        self.receive_route(self.rs, prefix, self.AS1_1, as_path="1 101",
+                           filtered=True, reject_reason=12)
+        self.receive_route(self.rs, prefix, self.AS2, as_path="2 101",
+                           filtered=True, reject_reason=12)
+
+        # ROA OK but origin ASN not authorized by AS-SET
+        prefix = self.DATA["AS101_roa_routeobj_4"]
+        self.receive_route(self.rs, prefix, self.AS1_1, as_path="1 101 105",
+                           filtered=True, reject_reason=9)
+        self.receive_route(self.rs, prefix, self.AS2, as_path="2 101 105",
+                           filtered=True, reject_reason=9)
 
     def test_041_bad_prefixes_not_received_by_clients(self):
         """{}: bad prefixes not received by clients"""
@@ -338,22 +442,22 @@ class BasicScenario(LiveScenario):
                        self.DATA["invalid_asn1"],
                        self.DATA["aspath_len1"],
                        self.DATA["AS2_nonclient_nexthop2"]):
-            for inst in (self.AS2, self.AS3):
-                with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+            for inst in (self.AS2, self.AS3, self.AS4):
+                with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                     self.receive_route(inst, prefix)
 
         # Among the clients, only AS3 is expected to not see the 
         # following prefixes because AS1 and AS2
         # receive them on their session with AS101
         for prefix in (self.DATA["AS101_no_rset"],
-                       self.DATA["AS102_no_asset"]):
-            with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+                       self.DATA["AS102_no_asset"],
+                       self.DATA["AS101_roa_routeobj_2"],
+                       self.DATA["AS101_roa_routeobj_4"]):
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                 self.receive_route(self.AS3, prefix)
 
     def test_045_rpki_valid_prefix(self):
         """{}: RPKI, valid prefix received by rs"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("RPKI not supported by OpenBGPD")
 
         self.receive_route(self.rs, self.DATA["AS101_roa_valid1"], self.AS1_1,
                            as_path="1 101")
@@ -362,48 +466,48 @@ class BasicScenario(LiveScenario):
 
     def test_045_rpki_invalid_prefix_asn(self):
         """{}: RPKI, invalid prefix (bad ASN) received by rs"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("RPKI not supported by OpenBGPD")
+
+        if isinstance(self.rs, BIRDInstance):
+            ext_comm_rpki_invalid = ["generic:0x43000000:0x2"]
+        else:
+            ext_comm_rpki_invalid = []
 
         self.receive_route(self.rs, self.DATA["AS101_roa_invalid1"], self.AS1_1,
                            as_path="1 101", filtered=True,
-                           ext_comms=["generic:0x43000000:0x2"])
+                           ext_comms=ext_comm_rpki_invalid)
         self.receive_route(self.rs, self.DATA["AS101_roa_invalid1"], self.AS2,
                            as_path="2 101", filtered=True,
-                           ext_comms=["generic:0x43000000:0x2"])
+                           ext_comms=ext_comm_rpki_invalid)
 
     def test_045_rpki_invalid_prefix_length(self):
         """{}: RPKI, invalid prefix (bad length) received by rs"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("RPKI not supported by OpenBGPD")
+
+        if isinstance(self.rs, BIRDInstance):
+            ext_comm_rpki_invalid = ["generic:0x43000000:0x2"]
+        else:
+            ext_comm_rpki_invalid = []
 
         self.receive_route(self.rs, self.DATA["AS101_roa_badlen"], self.AS1_1,
                            as_path="1 101", filtered=True,
-                           ext_comms=["generic:0x43000000:0x2"])
+                           ext_comms=ext_comm_rpki_invalid)
         self.receive_route(self.rs, self.DATA["AS101_roa_badlen"], self.AS2,
                            as_path="2 101", filtered=True,
-                           ext_comms=["generic:0x43000000:0x2"])
+                           ext_comms=ext_comm_rpki_invalid)
 
     def test_045_rpki_valid_prefix_propagated_to_clients(self):
         """{}: RPKI, valid prefix propagated to clients"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("RPKI not supported by OpenBGPD")
 
         self.receive_route(self.AS3, self.DATA["AS101_roa_valid1"], self.rs)
 
     def test_045_rpki_invalid_prefixes_not_propagated_to_clients(self):
         """{}: RPKI, invalid prefix (bad ASN) not propagated to clients"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("RPKI not supported by OpenBGPD")
 
         for pref_id in ("AS101_roa_invalid1", "AS101_roa_badlen"):
-            with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                 self.receive_route(self.AS3, self.DATA[pref_id])
 
     def test_045_blackhole_with_roa(self):
         """{}: RPKI, blackhole request for a covered prefix"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("RPKI not supported by OpenBGPD")
 
         self.receive_route(self.rs, self.DATA["AS101_roa_blackhole"], self.AS1_1, as_path="1 101",
                            std_comms=["65535:666"], lrg_comms=[])
@@ -412,8 +516,15 @@ class BasicScenario(LiveScenario):
         for inst in (self.AS1_1, self.AS2):
             self.log_contains(self.rs, "blackhole filtering request from {{inst}} - ACCEPTING {}".format(
                 self.DATA["AS101_roa_blackhole"]), {"inst": inst})
+
+        next_hop = self.DATA["blackhole_IP"]
+        if isinstance(self.rs, OpenBGPD60Instance) and ":" in self.DATA["AS101_roa_blackhole"]:
+            # OpenBGPD < 6.1 bug: https://github.com/pierky/arouteserver/issues/3
+            # fixed by https://github.com/openbsd/src/commit/f1385c8f4f9b9e193ff65d9f2039862d3e230a45
+            next_hop = "2001:db8:1:1::2"
+
         self.receive_route(self.AS3, self.DATA["AS101_roa_blackhole"], self.rs,
-                           next_hop=self.DATA["blackhole_IP"],
+                           next_hop=next_hop,
                            std_comms=["65535:666", "65535:65281"], lrg_comms=[])
 
     def test_050_prefixes_from_AS101_received_by_its_upstreams(self):
@@ -488,7 +599,7 @@ class BasicScenario(LiveScenario):
         """{}: blackhole filtering requests as seen by rs (std cust)"""
 
         self.receive_route(self.rs, self.DATA["AS2_blackhole2"], self.AS2, next_hop=self.AS2, as_path="2",
-                           std_comms=["65534:0"], lrg_comms=[])
+                           std_comms=["65534:0"], lrg_comms=[], ext_comms=[])
         self.log_contains(self.rs, "blackhole filtering request from {AS2_1} - ACCEPTING " + self.DATA["AS2_blackhole2"], {"AS2_1": self.AS2})
 
     def test_070_blackhole_filtering_as_seen_by_rs_lrg_cust(self):
@@ -507,7 +618,7 @@ class BasicScenario(LiveScenario):
             # fixed by https://github.com/openbsd/src/commit/f1385c8f4f9b9e193ff65d9f2039862d3e230a45
             raise unittest.SkipTest("Not working on OpenBGPD 6.0")
 
-        for inst in (self.AS1_1, self.AS3):
+        for inst in (self.AS1_1, self.AS3, self.AS4):
             self.receive_route(inst, self.DATA["AS2_blackhole1"], self.rs, next_hop=self.DATA["blackhole_IP"],
                                std_comms=["65535:666", "65535:65281"], lrg_comms=[])
 
@@ -518,7 +629,7 @@ class BasicScenario(LiveScenario):
             # fixed by https://github.com/openbsd/src/commit/f1385c8f4f9b9e193ff65d9f2039862d3e230a45
             raise unittest.SkipTest("Not working on OpenBGPD 6.0")
 
-        for inst in (self.AS1_1, self.AS3):
+        for inst in (self.AS1_1, self.AS3, self.AS4):
             self.receive_route(inst, self.DATA["AS2_blackhole2"], self.rs, next_hop=self.DATA["blackhole_IP"],
                                std_comms=["65535:666", "65535:65281"], lrg_comms=[])
 
@@ -527,7 +638,7 @@ class BasicScenario(LiveScenario):
         if isinstance(self.rs, OpenBGPD60Instance):
             raise unittest.SkipTest("Large comms not supported by OpenBGPD 6.0")
 
-        for inst in (self.AS1_1, self.AS3):
+        for inst in (self.AS1_1, self.AS3, self.AS4):
             self.receive_route(inst, self.DATA["AS2_blackhole3"], self.rs, next_hop=self.DATA["blackhole_IP"],
                                std_comms=["65535:666", "65535:65281"], lrg_comms=[])
 
@@ -537,24 +648,74 @@ class BasicScenario(LiveScenario):
             # Test valid only for BGP daemons that don't support large comms
             raise unittest.SkipTest("Large comms are supported here")
 
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS1_1, self.DATA["AS2_blackhole3"])
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS3, self.DATA["AS2_blackhole3"])
 
     def test_071_blackholed_prefixes_not_seen_by_not_enabled_clients(self):
         """{}: blackholed prefixes not seen by not enabled clients"""
 
         # AS1_2 not enabled to receive blackholed prefixes
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS1_2, self.DATA["AS2_blackhole1"])
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS1_2, self.DATA["AS2_blackhole2"])
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS1_2, self.DATA["AS2_blackhole3"])
         self.log_contains(self.rs, "client {{AS1_2}} not enabled to receive blackhole prefixes - NOT ANNOUNCING {pref} TO {{AS1_2}}".format(pref=self.DATA["AS2_blackhole1"]), {"AS1_2": self.AS1_2})
         self.log_contains(self.rs, "client {{AS1_2}} not enabled to receive blackhole prefixes - NOT ANNOUNCING {pref} TO {{AS1_2}}".format(pref=self.DATA["AS2_blackhole2"]), {"AS1_2": self.AS1_2})
         self.log_contains(self.rs, "client {{AS1_2}} not enabled to receive blackhole prefixes - NOT ANNOUNCING {pref} TO {{AS1_2}}".format(pref=self.DATA["AS2_blackhole3"]), {"AS1_2": self.AS1_2})
+
+    def test_075_gshut_enabled_client(self):
+        """{}: gshut by an enabled client"""
+
+        if isinstance(self.rs, OpenBGPD60Instance):
+            raise unittest.SkipTest("GRACEFUL_SHUTDOWN not supported by OpenBGPD 6.0")
+
+        prefix = self.DATA["AS103_gshut_1"]
+
+        # AS103's prefix as seen by its upstreams, AS1 and AS2
+        for inst in (self.AS1_1, self.AS1_2):
+            self.receive_route(inst, prefix, as_path="101 103")
+        self.receive_route(self.AS2, prefix, as_path="101 101 103")
+
+        # prefix as seen by the route server (AS1 performed gshut)
+        self.receive_route(self.rs, prefix, as_path="1 101 103",
+                           other_inst=self.AS1_1,
+                           local_pref=5, std_comms=["65535:0"])
+        self.receive_route(self.rs, prefix, as_path="2 101 101 103",
+                           other_inst=self.AS2,
+                           local_pref=100, std_comms=[])
+
+        # prefix as seen by other clients, via AS2 (longest path)
+        self.receive_route(self.AS4, prefix, as_path="2 101 101 103",
+                           next_hop=self.AS2, std_comms=[])
+
+    def test_075_gshut_not_enabled_client(self):
+        """{}: gshut by a not enabled client"""
+
+        if isinstance(self.rs, OpenBGPD60Instance):
+            raise unittest.SkipTest("GRACEFUL_SHUTDOWN not supported by OpenBGPD 6.0")
+
+        prefix = self.DATA["AS103_gshut_2"]
+
+        # AS103's prefix as seen by its upstreams, AS1 and AS2
+        for inst in (self.AS1_1, self.AS1_2):
+            self.receive_route(inst, prefix, as_path="101 101 103")
+        self.receive_route(self.AS2, prefix, as_path="101 103")
+
+        # prefix as seen by the route server (AS2 tried gshut but not enabled)
+        self.receive_route(self.rs, prefix, as_path="1 101 101 103",
+                           other_inst=self.AS1_1,
+                           local_pref=100, std_comms=[])
+        self.receive_route(self.rs, prefix, as_path="2 101 103",
+                           other_inst=self.AS2,
+                           local_pref=100, std_comms=[])
+
+        # prefix as seen by other clients, via AS2 (still best path)
+        self.receive_route(self.AS4, prefix, as_path="2 101 103",
+                           next_hop=self.AS2, std_comms=[])
 
     def test_080_control_communities_AS1_only(self):
         """{}: control communities, announce to AS1 only"""
@@ -566,48 +727,50 @@ class BasicScenario(LiveScenario):
                            as_path="3", next_hop=self.AS3,
                            std_comms=[], lrg_comms=[])
 
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
-            self.receive_route(self.AS2, self.DATA["AS3_cc_AS1only"])
+        for inst in (self.AS2, self.AS4):
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
+                self.receive_route(inst, self.DATA["AS3_cc_AS1only"])
         self.log_contains(self.rs, "route didn't pass control communities checks - NOT ANNOUNCING {} TO {{AS2}}".format(self.DATA["AS3_cc_AS1only"]), {"AS2": self.AS2})
 
     def test_080_control_communities_not_AS1(self):
         """{}: control communities, announce to all except AS1"""
 
-        self.receive_route(self.AS2, self.DATA["AS3_cc_not_AS1"], self.rs,
-                           as_path="3", next_hop=self.AS3,
-                           std_comms=[], lrg_comms=[])
+        for inst in (self.AS2, self.AS4):
+            self.receive_route(inst, self.DATA["AS3_cc_not_AS1"], self.rs,
+                               as_path="3", next_hop=self.AS3,
+                               std_comms=[], lrg_comms=[])
 
         for inst in (self.AS1_1, self.AS1_2):
-            with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                 self.receive_route(inst, self.DATA["AS3_cc_not_AS1"])
             self.log_contains(self.rs, "route didn't pass control communities checks - NOT ANNOUNCING {} TO {{other_inst}}".format(self.DATA["AS3_cc_not_AS1"]), {"other_inst": inst})
 
     def test_080_control_communities_none(self):
         """{}: control communities, don't announce to any"""
 
-        for inst in (self.AS1_1, self.AS1_2, self.AS2):
-            with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4):
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                 self.receive_route(inst, self.DATA["AS3_cc_none"])
             self.log_contains(self.rs, "route didn't pass control communities checks - NOT ANNOUNCING {} TO {{other_inst}}".format(self.DATA["AS3_cc_none"]), {"other_inst": inst})
 
     def test_081_control_communities_prepend1any(self):
         """{}: control communities, prepend once to any"""
 
-        for inst in (self.AS1_1, self.AS1_2, self.AS2):
+        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4):
             self.receive_route(inst, self.DATA["AS3_prepend1any"], self.rs, as_path="3 3",
                                next_hop=self.AS3, std_comms=[], lrg_comms=[])
 
     def test_081_control_communities_prepend2any(self):
         """{}: control communities, prepend twice to any"""
 
-        for inst in (self.AS1_1, self.AS1_2, self.AS2):
+        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4):
             self.receive_route(inst, self.DATA["AS3_prepend2any"], self.rs, as_path="3 3 3",
                                next_hop=self.AS3, std_comms=[], lrg_comms=[])
 
     def test_081_control_communities_prepend3any(self):
         """{}: control communities, prepend thrice to any"""
 
-        for inst in (self.AS1_1, self.AS1_2, self.AS2):
+        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4):
             self.receive_route(inst, self.DATA["AS3_prepend3any"], self.rs, as_path="3 3 3 3",
                                next_hop=self.AS3, std_comms=[], lrg_comms=[])
 
@@ -617,15 +780,16 @@ class BasicScenario(LiveScenario):
         for inst in (self.AS1_1, self.AS1_2):
             self.receive_route(inst, self.DATA["AS3_prepend1_AS1"], self.rs, as_path="3 3",
                                next_hop=self.AS3, std_comms=[], lrg_comms=[])
-        self.receive_route(self.AS2, self.DATA["AS3_prepend1_AS1"], self.rs, as_path="3",
-                           next_hop=self.AS3, std_comms=[], lrg_comms=[])
+        for inst in (self.AS2, self.AS4):
+            self.receive_route(inst, self.DATA["AS3_prepend1_AS1"], self.rs, as_path="3",
+                               next_hop=self.AS3, std_comms=[], lrg_comms=[])
 
     def test_082_control_communities_prepend2_AS2(self):
         """{}: control communities, prepend twice to AS2"""
 
         self.receive_route(self.AS2, self.DATA["AS3_prepend2_AS2"], self.rs, as_path="3 3 3",
                            next_hop=self.AS3, std_comms=[], lrg_comms=[])
-        for inst in (self.AS1_1, self.AS1_2):
+        for inst in (self.AS1_1, self.AS1_2, self.AS4):
             self.receive_route(inst, self.DATA["AS3_prepend2_AS2"], self.rs, as_path="3",
                                next_hop=self.AS3, std_comms=[], lrg_comms=[])
 
@@ -635,18 +799,19 @@ class BasicScenario(LiveScenario):
         for inst in (self.AS1_1, self.AS1_2):
             self.receive_route(inst, self.DATA["AS3_prep3AS1_1any"], self.rs, as_path="3 3 3 3",
                                next_hop=self.AS3, std_comms=[], lrg_comms=[])
-        self.receive_route(self.AS2, self.DATA["AS3_prep3AS1_1any"], self.rs, as_path="3 3",
-                           next_hop=self.AS3, std_comms=[], lrg_comms=[])
+        for inst in (self.AS2, self.AS4):
+            self.receive_route(inst, self.DATA["AS3_prep3AS1_1any"], self.rs, as_path="3 3",
+                               next_hop=self.AS3, std_comms=[], lrg_comms=[])
 
     def test_083_control_communities_AS3_noexport_to_any(self):
         """{}: control communities, NO_EXPORT to any"""
 
-        for inst in (self.AS1_1, self.AS1_2, self.AS2):
+        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4):
             self.receive_route(inst, self.DATA["AS3_noexport_any"], self.rs,
                                as_path="3", next_hop=self.AS3,
                                std_comms=["65535:65281"],
                                lrg_comms=[], ext_comms=[])
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS101, self.DATA["AS3_noexport_any"])
 
     def test_083_control_communities_AS3_noexport_to_AS1(self):
@@ -661,8 +826,145 @@ class BasicScenario(LiveScenario):
                            std_comms=[],
                            lrg_comms=[], ext_comms=[])
         self.receive_route(self.AS101, pref, as_path="2 3 3 3 3")
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS101, pref, as_path="1 3")
+
+    def test_083_control_communities_AS3_rfc1997_noexport(self):
+        """{}: control communities, RFC1997 NO_EXPORT"""
+
+        pref = self.DATA["AS3_rfc1997_noexp"]
+        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4):
+            self.receive_route(inst, pref, self.rs, as_path="3",
+                               next_hop=self.AS3, std_comms=["65535:65281"],
+                               lrg_comms=[], ext_comms=[])
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
+            self.receive_route(self.AS101, pref)
+
+    def _test_084_AS1_1_and_AS1_2_only(self, pref):
+        for inst in (self.AS1_1, self.AS1_2):
+            self.receive_route(inst, pref, self.rs, as_path="4",
+                               std_comms=[], lrg_comms=[], ext_comms=[])
+        for inst in (self.AS2, self.AS3):
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
+                self.receive_route(inst, pref)
+
+    def test_084_control_communities_rtt_AS4_only_peers_lt_15(self):
+        """{}: control communities, RTT, only peers <= 15 ms"""
+        pref = self.DATA["AS4_rtt_1"]
+        self.receive_route(self.rs, pref, self.AS4,
+                           std_comms=["0:999", "64532:15"])
+        self._test_084_AS1_1_and_AS1_2_only(pref)
+
+    def test_084_control_communities_rtt_AS4_only_peers_lt_5(self):
+        """{}: control communities, RTT, only peers <= 5 ms"""
+        pref = self.DATA["AS4_rtt_2"]
+        self.receive_route(self.rs, pref, self.AS4,
+                           std_comms=["0:999", "64532:5"])
+        self._test_084_AS1_1_and_AS1_2_only(pref)
+
+    def test_084_control_communities_rtt_AS4_not_peers_gt_15(self):
+        """{}: control communities, RTT, not peers > 15 ms"""
+        pref = self.DATA["AS4_rtt_3"]
+        self.receive_route(self.rs, pref, self.AS4,
+                           std_comms=["64531:15"])
+        self._test_084_AS1_1_and_AS1_2_only(pref)
+
+    def test_084_control_communities_rtt_AS4_not_peers_gt_5(self):
+        """{}: control communities, RTT, not peers > 5 ms"""
+        pref = self.DATA["AS4_rtt_4"]
+        self.receive_route(self.rs, pref, self.AS4,
+                           std_comms=["64531:5"])
+        self._test_084_AS1_1_and_AS1_2_only(pref)
+
+    def test_084_control_communities_rtt_AS4_not_peers_gt_5_but_AS3(self):
+        """{}: control communities, RTT, not peers > 5 ms + AS3"""
+        pref = self.DATA["AS4_rtt_5"]
+        self.receive_route(self.rs, pref, self.AS4,
+                           std_comms=["65501:3", "64531:5"])
+        for inst in (self.AS1_1, self.AS1_2, self.AS3):
+            self.receive_route(inst, pref, self.rs,
+                               std_comms=[], lrg_comms=[], ext_comms=[])
+        for inst in [self.AS2]:
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
+                self.receive_route(inst, pref)
+
+    def test_084_control_communities_rtt_AS4_not_peers_lt_5_gt_100(self):
+        """{}: control communities, RTT, not peers <= 5 and > 100 ms"""
+        pref = self.DATA["AS4_rtt_6"]
+        self.receive_route(self.rs, pref, self.AS4,
+                           std_comms=["64530:5", "64531:100"])
+        for inst in [self.AS2]:
+            self.receive_route(inst, pref, self.rs,
+                               std_comms=[], lrg_comms=[], ext_comms=[])
+        for inst in [self.AS1_1, self.AS1_2, self.AS3]:
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
+                self.receive_route(inst, pref)
+
+    def test_084_control_communities_rtt_AS4_blackhole_not_to_peers_gt_20(self):
+        """{}: control communities, RTT, blackhole, not peers > 20 ms"""
+        if isinstance(self.rs, OpenBGPD60Instance) and ":" in self.DATA["AS2_blackhole1"]:
+            # OpenBGPD < 6.1 bug: https://github.com/pierky/arouteserver/issues/3
+            # fixed by https://github.com/openbsd/src/commit/f1385c8f4f9b9e193ff65d9f2039862d3e230a45
+            expected_bh_next_hop=None
+        else:
+            expected_bh_next_hop = self.DATA["blackhole_IP"]
+
+        pref = self.DATA["AS4_rtt_7"]
+        self.receive_route(self.rs, pref, self.AS4,
+                           std_comms=["65535:666", "64531:20"])
+        for inst in [self.AS1_1, self.AS2]:
+            self.receive_route(inst, pref, self.rs,
+                               next_hop=expected_bh_next_hop,
+                               std_comms=["65535:666", "65535:65281"],
+                               lrg_comms=[], ext_comms=[])
+        for inst in [self.AS1_2, self.AS3]:
+            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
+                self.receive_route(inst, pref)
+
+    def test_085_control_communities_rtt_prep3x_gt_100_2x_gt_10(self):
+        """{}: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms"""
+        pref = self.DATA["AS4_rtt_8"]
+        self.receive_route(self.rs, pref, self.AS4,
+                           std_comms=["64539:100", "64538:10"])
+        for inst in [self.AS1_1, self.AS1_2]:
+            self.receive_route(inst, pref, self.rs, as_path="4",
+                               std_comms=[], lrg_comms=[], ext_comms=[])
+        self.receive_route(self.AS2, pref, self.rs, as_path="4 4 4",
+                            std_comms=[], lrg_comms=[], ext_comms=[])
+        self.receive_route(self.AS3, pref, self.rs, as_path="999 4 4 4 4",
+                            std_comms=[], lrg_comms=[], ext_comms=[])
+
+    def test_085_control_communities_rtt_prep3x_lt_5_2x_lt_20_1x_any(self):
+        """{}: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any"""
+        pref = self.DATA["AS4_rtt_9"]
+        self.receive_route(self.rs, pref, self.AS4,
+                           std_comms=["64536:5", "64535:20", "65521:65521"])
+        for inst in [self.AS1_1, self.AS1_2]:
+            self.receive_route(inst, pref, self.rs, as_path="4 4 4 4",
+                               std_comms=[], lrg_comms=[], ext_comms=[])
+        self.receive_route(self.AS2, pref, self.rs, as_path="4 4 4",
+                            std_comms=[], lrg_comms=[], ext_comms=[])
+        self.receive_route(self.AS3, pref, self.rs, as_path="999 4 4",
+                            std_comms=[], lrg_comms=[], ext_comms=[])
+
+    def test_085_control_communities_rtt_ext_comms_prep1x_gt_10_2x_gt_20(self):
+        """{}: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms"""
+        if isinstance(self.rs, BIRDInstance):
+            ext_comm_rpki_unknown = ["generic:0x43000000:0x1"]
+        else:
+            ext_comm_rpki_unknown = []
+        pref = self.DATA["AS4_rtt_10"]
+        self.receive_route(self.rs, pref, self.AS4,
+                           std_comms=[],
+                           ext_comms=ext_comm_rpki_unknown + ["rt:64537:10",
+                                                              "rt:64538:20"])
+        for inst in [self.AS1_1, self.AS1_2]:
+            self.receive_route(inst, pref, self.rs, as_path="4",
+                               std_comms=[], lrg_comms=[], ext_comms=[])
+        self.receive_route(self.AS2, pref, self.rs, as_path="4 4",
+                            std_comms=[], lrg_comms=[], ext_comms=[])
+        self.receive_route(self.AS3, pref, self.rs, as_path="999 4 4 4",
+                            std_comms=[], lrg_comms=[], ext_comms=[])
 
     def test_100_prefixes_received_by_clients_AS1_1(self):
         """{}: prefixes received by clients: AS1_1"""
@@ -707,7 +1009,10 @@ class BasicScenario(LiveScenario):
         # also verifies that these prefixes are received twice by AS3)
         for pref in ("AS101_good1", "AS101_bad_std_comm", "AS101_bad_lrg_comm",
                      "AS101_other_s_comm", "AS101_other_l_comm",
-                     "AS101_bad_good_comms"):
+                     "AS101_bad_good_comms", "AS104_arin_1"):
+            self.receive_route(self.AS3, self.DATA[pref], self.rs)
+
+        for pref in ("AS101_roa_routeobj_1", "AS101_roa_routeobj_3"):
             self.receive_route(self.AS3, self.DATA[pref], self.rs)
 
     def test_100_prefixes_received_by_clients_AS3_with_ADD_PATH(self):
@@ -750,18 +1055,23 @@ class BasicScenario(LiveScenario):
         self.receive_route(self.AS3, self.DATA["AS101_bad_good_comms"], self.rs, as_path="999 2 101", next_hop=self.AS2,
                            std_comms=["777:0"], lrg_comms=["777:0:0"])
 
+    def test_900_reconfigure(self):
+        """{}: reconfigure"""
+        self.rs.reload_config()
+        self.test_020_sessions_up()
+
 class BasicScenario_TagRejectPolicy(LiveScenario_TagRejectPolicy):
 
     def test_042_bad_prefixes_received_by_rs_bogon_wrong_tag(self):
         """{}: bad prefixes received by rs: bogon (wrong tag)"""
-        with self.assertRaisesRegexp(AssertionError, "real reasons 2, expected reason 1."):
+        with six.assertRaisesRegex(self, AssertionError, "real reasons 2, expected reason 1."):
             self.receive_route(self.rs, self.DATA["bogon1"], self.AS1_1,
                                as_path="1", next_hop=self.AS1_1,
                                filtered=True, reject_reason=1)
 
     def test_042_bad_prefixes_received_by_rs_global_blacklist_wrong_tag(self):
         """{}: bad prefixes received by rs: global blacklist (wrong tag)"""
-        with self.assertRaisesRegexp(AssertionError, "real reasons 3, expected reason 1."):
+        with six.assertRaisesRegex(self, AssertionError, "real reasons 3, expected reason 1."):
             self.receive_route(self.rs, self.DATA["local1"], self.AS1_1,
                                as_path="1", next_hop=self.AS1_1,
                                filtered=True, reject_reason=1)
@@ -779,7 +1089,6 @@ class BasicScenarioBIRD(BasicScenario):
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                        cfg_roas="roas{}.yml".format(cls.IP_VER),
                                         local_files=["footer{}".format(cls.IP_VER)]),
                     "/etc/bird/bird.conf"
                 ),
@@ -825,7 +1134,12 @@ class BasicScenarioOpenBGPD60(BasicScenarioOpenBGPD):
 
     TARGET_VERSION = "6.0"
 
-class BasicScenarioOpenBGPD61(BasicScenarioOpenBGPD):
+class BasicScenarioOpenBGPD62(BasicScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.1"
+    TARGET_VERSION = "6.2"
+
+class BasicScenarioOpenBGPD63(BasicScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.3"

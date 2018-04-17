@@ -40,6 +40,6 @@ else
 	if [ $? -eq 0 ]; then
 		ssh -o BatchMode=yes -o ConnectTimeout=5 -o ServerAliveInterval=10 -o StrictHostKeyChecking=no root@192.0.2.2 -i ~/.ssh/arouteserver "$@"
 	else
-		echo "Instance not running."
+		ssh -o BatchMode=yes -o ConnectTimeout=5 -o ServerAliveInterval=10 -o StrictHostKeyChecking=no root@$INSTANCE_NAME -i ~/.ssh/arouteserver "$@"
 	fi
 fi

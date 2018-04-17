@@ -3,7 +3,7 @@ define rs_as = {{ cfg.rs_as }};
 
 log "/var/log/bird.log" all;
 log syslog all;
-debug protocols all;
+debug protocols { states, routes, filters, interfaces, events };
 
 protocol device {};
 

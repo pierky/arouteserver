@@ -19,6 +19,8 @@ protocol static own_prefixes {
 	route {{ data.AS3_prep3AS1_1any }} reject;
 	route {{ data.AS3_noexport_any }} reject;
 	route {{ data.AS3_noexport_AS1 }} reject;
+	route {{ data.AS3_rfc1997_noexp }} reject;
+	route {{ data.AS3_transitfree_2 }} reject;
 	route {{ data.Default_route }} reject;
 }
 
@@ -34,30 +36,48 @@ filter to_rs {
 		bgp_community.add((0,999));
 	}
 	if net = {{ data.AS3_prepend1any }} then {
-		bgp_community.add((999,65501));
+		bgp_community.add((65521,65521));
 	}
 	if net = {{ data.AS3_prepend2any }} then {
-		bgp_community.add((999,65502));
+		bgp_community.add((65522,65522));
 	}
 	if net = {{ data.AS3_prepend3any }} then {
-		bgp_community.add((999,65503));
+		bgp_community.add((65523,65523));
 	}
 	if net = {{ data.AS3_prepend1_AS1 }} then {
-		bgp_community.add((65504,1));
+		bgp_community.add((65521,1));
 	}
 	if net = {{ data.AS3_prepend2_AS2 }} then {
-		bgp_community.add((65505,2));
+		bgp_community.add((65522,2));
 	}
 	if net = {{ data.AS3_prep3AS1_1any }} then {
-		bgp_community.add((65506,1));
-		bgp_community.add((999,65501));
+		bgp_community.add((65523,1));
+		bgp_community.add((65521,65521));
 	}
 	if net = {{ data.AS3_noexport_any }} then {
 		bgp_community.add((65507,999));
 	}
 	if net = {{ data.AS3_noexport_AS1 }} then {
 		bgp_community.add((65509,1));
-		bgp_community.add((65506,2));
+		bgp_community.add((65523,2));
+	}
+	if net = {{ data.AS3_rfc1997_noexp }} then {
+		bgp_community.add((65535, 65281));
+	}
+	if net = {{ data.AS3_transitfree_2 }} then {
+		bgp_path.delete(3);
+		bgp_path.prepend(33);
+		bgp_path.prepend(174);
+		bgp_path.prepend(3);
+	}
+	accept;
+}
+filter from_rs {
+	# Since AS3 is configured with ADD_PATH, this allows
+	# to have a more stable behaviour and to avoid having
+	# a diff in routes dumps.
+	if bgp_path ~ [= 999 1 * =] then {
+		bgp_local_pref = 101;
 	}
 	accept;
 }
@@ -66,7 +86,7 @@ protocol bgp the_rs {
 	neighbor {{ data.rs_IPAddress }} as 999;
 	passive on;
 	add paths rx;
-	import all;
+	import filter from_rs;
 	export filter to_rs;
 	connect delay time 1;
 	connect retry time 1;

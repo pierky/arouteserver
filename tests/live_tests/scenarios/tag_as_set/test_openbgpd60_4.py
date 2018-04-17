@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,13 +16,12 @@
 import os
 import unittest
 
-from base import TagASSetScenario_WithAS_SETs, TagASSetScenario_EmptyAS_SETs, \
-                 TagASSetScenarioOpenBGPD60
-from data4 import TagASSetScenario_Data4
+from .base import TagASSetScenario_WithAS_SETs, \
+                  TagASSetScenarioOpenBGPD60
+from .data4 import TagASSetScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
 
-@unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
 class TagASSetScenario_WithAS_SETs_OpenBGPDIPv4(TagASSetScenario_WithAS_SETs,
                                                 TagASSetScenario_Data4,
                                                 TagASSetScenarioOpenBGPD60):
@@ -33,15 +32,3 @@ class TagASSetScenario_WithAS_SETs_OpenBGPDIPv4(TagASSetScenario_WithAS_SETs,
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
 
     SHORT_DESCR = "Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv4"
-
-@unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
-class TagASSetScenario_EmptyAS_SETs_OpenBGPDIPv4(TagASSetScenario_EmptyAS_SETs,
-                                                 TagASSetScenario_Data4,
-                                                 TagASSetScenarioOpenBGPD60):
-    __test__ = True
-    SKIP_ON_TRAVIS = True
-
-    RS_INSTANCE_CLASS = OpenBGPD60Instance
-    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
-
-    SHORT_DESCR = "Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4"

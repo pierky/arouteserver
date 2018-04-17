@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import six
 import unittest
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
@@ -92,7 +93,7 @@ class BGPCommunitiesScenario(LiveScenario):
                            lrg_comms=[])
         self.receive_route(self.AS1, pref, self.rs,
                            std_comms=[], ext_comms=[], lrg_comms=[])
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS131073, pref)
         msg = ("route didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
@@ -114,7 +115,7 @@ class BGPCommunitiesScenario(LiveScenario):
         else:
             self.receive_route(self.AS1, pref, self.rs,
                                std_comms=[], ext_comms=[], lrg_comms=[])
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS131073, pref)
         msg = ("route didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
@@ -132,7 +133,7 @@ class BGPCommunitiesScenario(LiveScenario):
                            lrg_comms=["999:0:999", "999:999:1"])
         self.receive_route(self.AS1, pref, self.rs,
                            std_comms=[], ext_comms=[], lrg_comms=[])
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS131073, pref)
         msg = ("route didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
@@ -154,7 +155,7 @@ class BGPCommunitiesScenario(LiveScenario):
         else:
             self.receive_route(self.AS131073, pref, self.rs,
                             std_comms=[], ext_comms=[], lrg_comms=[])
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS1, pref)
         msg = ("route didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
@@ -179,7 +180,7 @@ class BGPCommunitiesScenario(LiveScenario):
         else:
             self.receive_route(self.AS131073, pref, self.rs,
                                std_comms=[], ext_comms=[], lrg_comms=[])
-        with self.assertRaisesRegexp(AssertionError, "Routes not found."):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS1, pref)
         msg = ("route didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
@@ -212,6 +213,11 @@ class BGPCommunitiesScenario(LiveScenario):
         for inst in (self.AS1, self.AS131073):
             self.receive_route(inst, self.DATA["AS2_bad_cust_comm1"], self.rs,
                                std_comms=[])
+
+    def test_900_reconfigure(self):
+        """{}: reconfigure"""
+        self.rs.reload_config()
+        self.test_020_sessions_up()
 
 class BGPCommunitiesScenarioBIRD(BGPCommunitiesScenario):
     __test__ = False
@@ -258,7 +264,13 @@ class BGPCommunitiesScenarioOpenBGPD60(BGPCommunitiesScenarioOpenBGPD):
 
     TARGET_VERSION = "6.0"
 
-class BGPCommunitiesScenarioOpenBGPD61(BGPCommunitiesScenarioOpenBGPD):
+class BGPCommunitiesScenarioOpenBGPD62(BGPCommunitiesScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.1"
+    TARGET_VERSION = "6.2"
+
+
+class BGPCommunitiesScenarioOpenBGPD63(BGPCommunitiesScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.3"

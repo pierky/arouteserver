@@ -31,6 +31,26 @@ It can be scheduled at regular intervals to re-build the configuration (for exam
         cp /etc/bird/bird4.new /etc/bird/bird4.conf && \
         birdcl configure
 
+.. _perform-graceful-shutdown:
+
+Route server graceful shutdown
+------------------------------
+
+Prior to a maintenance that requires the route server shutdown a graceful shutdown can be triggered by using the ``--perform-graceful-shutdown`` argument. This option allows to build a temporary configuration that includes an outbound policy which is applied to BGP sessions toward the clients and which adds the `GRACEFUL_SHUTDOWN <https://tools.ietf.org/html/draft-ietf-grow-bgp-gshut-11>`__ BGP community (65535:0) to all the routes that the route server announces to them.
+
+Please note that the configuration built when using this argument should be used only **temporarly** before starting the maintenance; it should be **replaced** with the **production configuration** before the route server is reloaded.
+
+.. _memoryerror:
+
+Resources and ``MemoryError`` error messages
+--------------------------------------------
+
+When building large configurations, for example those generated when huge AS-SETs need to be expanded, the program may crash with a ``MemoryError`` message or other memory related exceptions. In this case, raising *ulimits* for max locked memory (``-l``) and stack size (``-s``) has proven to be effective in solving the problem:
+
+.. code-block:: console
+
+  $ ulimit -l 2097152; ulimit -s 8192; arouteserver openbgpd ...
+
 Library
 -------
 
@@ -170,7 +190,7 @@ To get a list of all the available options, run the ``arouteserver clients-from-
 Integration with IXP-Manager
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Since the popular `IXP-Manager <https://github.com/inex/IXP-Manager>`_ allows to `export the list of members in Euro-IX JSON format <https://github.com/inex/IXP-Manager/wiki/Euro-IX-Member-Data-Export>`_, this ARouteServer's command can also be used to integrate the two tools:
+Since the popular `IXP-Manager <https://github.com/inex/IXP-Manager>`_ allows to `export the list of members in Euro-IX JSON format <https://github.com/inex/IXP-Manager/wiki/Euro-IX-Member-Data-Export>`_, the ``arouteserver clients-from-euroix`` command can also be used to integrate the two tools and to build ARouteServer's list of clients automatically:
 
 .. code:: bash
 
@@ -179,16 +199,17 @@ Since the popular `IXP-Manager <https://github.com/inex/IXP-Manager>`_ allows to
         set -e
 
         # Setup an API key on IXP-Manager and write it below.
-        # https://github.com/inex/IXP-Manager/wiki/Euro-IX-Member-Data-Export#setting-up-an-api-key
+        # http://docs.ixpmanager.org/features/api/#creating-an-api-key
         api_key="YOURAPIKEY"
 
-        # Adjust the URL and point it to your IXP-Manager application.
-        url="https://www.example.com/ixp/apiv1/member-list/list/key/$api_key"
+        # Adjust the URL below and point it to your IXP-Manager application.
+        url="http://www.example.com/api/v4/member-export/ixf/0.6?apikey=$api_key"
 
         # This is the IXP ID you want to export members from.
+        # It must match with the 'ixp_id' field.
         ixp_id=1
 
-        # Path to the clients file.
+        # Path of the output clients file that will be built.
         clients_file=~/ars/clients-from-ixpmanager.yml
 
         # Build the clients file using info from IXP-Manager.
@@ -205,6 +226,49 @@ Since the popular `IXP-Manager <https://github.com/inex/IXP-Manager>`_ allows to
         # Now test the new configuration and, finally,
         # push it to the route server.
         ...
+
+.. _ixf-member-export-command:
+
+IX-F Member Export JSON file from ``clients.yml``
+-------------------------------------------------
+
+The ``ixf-member-export`` command can be used to generate `IX-F Member Export JSON files <https://ml.ix-f.net/>`__ from the list of clients that are configured on the route server.
+Although the ``clients.yml`` file used by ARouteServer to build the route server configuration contains only those clients that are supposed to connect to the route server itself, it's a quite common practice to preconfigure passive BGP sessions for all the IXP members there. When that's true the clients file contains a comprehensive representation of all the IXP participants.
+
+Please note: the output file generated with this command contains only a subset of the attributes available in the IX-F JSON schema: ASN, IP addresses, max-prefix limits and AS macros. Only information that are hard-coded in the ``clients.yml`` file are exported: AS-SETs or max prefix limits that during the configuration building process are fetched from PeeringDB or other external data sources are not included in the output file.
+
+.. code-block:: console
+
+   $ arouteserver ixf-member-export --clients examples/rich/clients.yml "Test IXP"
+   {
+     "version": "0.6",
+     "timestamp": "2017-11-24T17:23:41Z",
+     "ixp_list": [
+       {
+         "ixp_id": 0,
+         "shortname": "Test IXP",
+         "vlan": [
+           {
+             "id": 0
+           }
+         ]
+       }
+     ],
+     "member_list": [
+       {
+         "asnum": 10745,
+         "connection_list": [
+           {
+             "ixp_id": 0,
+             "vlan_list": [
+               {
+                 "vlan_id": 0,
+                 "ipv4": {
+                   "address": "192.0.2.22"
+                 }
+               },
+   [...]
+
 
 Live tests, development and customization
 -----------------------------------------

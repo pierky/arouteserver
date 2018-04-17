@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,11 +17,10 @@ import argparse
 import sys
 import yaml
 
-from ..ask import ask, ask_int
+from ..ask import Ask
 from .base import ARouteServerCommand
 from ..config.program import program_config
-from ..ixf_db import IXFDB
-from ..peering_db import clients_from_peeringdb
+from ..peering_db import PeeringDBIXList, clients_from_peeringdb
 
 class ClientsFromPeeringDBCommand(ARouteServerCommand):
 
@@ -50,14 +49,18 @@ class ClientsFromPeeringDBCommand(ARouteServerCommand):
                  "will be used to show a list of IXPs.")
 
     def get_netixlanid(self):
-        sys.stdout.write("Loading IX-F database... ")
-        ixf_db = IXFDB()
+        sys.stdout.write("Loading list of IXs... ")
+        ix_list = PeeringDBIXList(
+            cache_dir=program_config.get_dir("cache_dir"),
+            cache_expiry=program_config.get("cache_expiry")
+        )
+        ix_list.load_data()
         sys.stdout.write("OK\n")
 
         print("")
         print("Select the IXP for which the clients list must be built")
-        answer_given, text = ask("Enter the text to search for "
-                                 "(IXP name, country, city):")
+        answer_given, text = Ask().ask("Enter the text to search for "
+                                       "(IXP name, country, city):")
         if not answer_given:
             return None
 
@@ -66,7 +69,7 @@ class ClientsFromPeeringDBCommand(ARouteServerCommand):
         print("{:>7}  {}".format("ID", "IXP description"))
 
         found = False
-        for ixp in ixf_db.ixp_list:
+        for ixp in ix_list.ixp_list:
             if text in ixp["city"].lower() or \
                 text in ixp["country"].lower() or \
                 text in ixp["full_name"].lower() or \
@@ -76,10 +79,10 @@ class ClientsFromPeeringDBCommand(ARouteServerCommand):
 
                 print("{:>7}  {}, {}, {} ({})".format(
                     ixp["peeringdb_handle"],
-                    ixp["country"].encode("ascii", "replace"),
-                    ixp["city"].encode("ascii", "replace"),
-                    ixp["full_name"].encode("ascii", "replace"),
-                    ixp["short_name"].encode("ascii", "replace")
+                    ixp["country"].encode("ascii", "replace").decode("utf-8"),
+                    ixp["city"].encode("ascii", "replace").decode("utf-8"),
+                    ixp["full_name"].encode("ascii", "replace").decode("utf-8"),
+                    ixp["short_name"].encode("ascii", "replace").decode("utf-8")
                 ))
 
         if not found:
@@ -87,8 +90,8 @@ class ClientsFromPeeringDBCommand(ARouteServerCommand):
             return False
 
         print("")
-        answer_given, id = ask_int("Enter the ID of the IXP you want to use "
-                                   "to build the clients list:")
+        answer_given, id = Ask().ask_int("Enter the ID of the IXP you want to use "
+                                         "to build the clients list:")
 
         if not answer_given:
             return None
@@ -102,12 +105,12 @@ class ClientsFromPeeringDBCommand(ARouteServerCommand):
         if not netixlanid:
             return False
 
-        print("Building clients list from "
-              "PeeringDB Net IX LAN ID {}...".format(netixlanid))
+        sys.stderr.write("Building clients list from "
+                         "PeeringDB Net IX LAN ID {}...\n".format(netixlanid))
 
         data = clients_from_peeringdb(
             netixlanid,
-            program_config.get("cache_dir")
+            program_config.get_dir("cache_dir")
         )
         yaml.safe_dump(data, self.args.output_file, default_flow_style=False)
 

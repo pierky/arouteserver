@@ -77,6 +77,40 @@ GENERAL="$GENERAL_RS2"
 build_cmd "bird" --ip-ver 4 | must_contain "router id 192.0.2.2"
 
 # ---------------------------------------------
+# RPKI ROAs as route objects invalid source
+reset
+TITLE="RPKI ROAs as route objects invalid source"
+SUB_TEST="$LINENO"
+GENERAL="tests/var/general.yml"
+cat << EOF > $GENERAL
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+  filtering:
+    irrdb:
+      use_rpki_roas_as_route_objects:
+        enabled: true
+        source: "rtrlib"
+EOF
+build_cmd "openbgpd" | must_contain "only the 'ripe-rpki-validator-cache' value"
+
+# ---------------------------------------------
+# RFC1997 'pass' policy and bgp comms collision
+reset
+TITLE="RFC1997 'pass' policy and BGP comms collision"
+SUB_TEST="$LINENO"
+GENERAL="tests/var/general.yml"
+cat << EOF > $GENERAL
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+  communities:
+    prepend_once_to_any:
+      ext: "ro:65535:65281"
+EOF
+build_cmd "openbgpd" | must_contain "A collision has been detected with the following community: prepend_once_to_any"
+
+# ---------------------------------------------
 # custom BGP communities
 reset
 TITLE="Custom BGP communities"
@@ -121,7 +155,7 @@ EOF
 EXP_ERR="ERROR Compatibility issue ID 'large_communities'. The community 'do_not_announce_to_peer'"
 
 SUB_TEST="$LINENO"
-build_cmd "openbgpd" | must_contain "$EXP_ERR"
+build_cmd "openbgpd" | must_not_contain "$EXP_ERR"
 
 SUB_TEST="$LINENO"
 build_cmd "openbgpd" --target-version 6.0 | must_contain "$EXP_ERR"
@@ -145,7 +179,7 @@ EOF
 EXP_ERR="Compatibility issue ID 'blackhole_filtering_rewrite_ipv6_nh'. On OpenBSD < 6.1"
 
 SUB_TEST="$LINENO"
-build_cmd "openbgpd" | must_contain "$EXP_ERR"
+build_cmd "openbgpd" | must_not_contain "$EXP_ERR"
 
 SUB_TEST="$LINENO"
 build_cmd "openbgpd" --target-version 6.0 | must_contain "$EXP_ERR"
@@ -155,25 +189,6 @@ build_cmd "openbgpd" --target-version 6.1 | must_not_contain "Compatibility issu
 
 SUB_TEST="$LINENO"
 build_cmd "openbgpd" --ignore-issues "blackhole_filtering_rewrite_ipv6_nh" | must_not_contain "'do_not_announce_to_peer'"
-
-# ---------------------------------------------
-TITLE="OpenBGPD peer_as communities with private ASNs"
-GENERAL="tests/var/general.yml"
-cat << EOF > $GENERAL
-cfg:
-  rs_as: 999
-  router_id: "192.0.2.2"
-  communities:
-    blackholing:
-      std: "999:65501"
-    do_not_announce_to_peer:
-      std: "999:peer_as"
-EOF
-
-EXP_ERR="OpenBGPD doesn't allow to delete BGP communities using ranges of values, but only using the wildcard"
-
-SUB_TEST="$LINENO"
-build_cmd "openbgpd" | must_contain "$EXP_ERR"
 
 # ---------------------------------------------
 reset
@@ -192,7 +207,7 @@ EOF
 EXP_ERR="'do_not_announce_to_peer' has been configured to be implemented using also the large community '999:0:peer_as';"
 
 SUB_TEST="$LINENO"
-build_cmd "openbgpd" | must_contain "$EXP_ERR"
+build_cmd "openbgpd" | must_not_contain "$EXP_ERR"
 
 SUB_TEST="$LINENO"
 build_cmd "openbgpd" --target-version 6.0 | must_contain "$EXP_ERR"

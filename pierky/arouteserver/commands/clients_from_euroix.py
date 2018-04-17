@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@ import yaml
 
 from .base import ARouteServerCommand
 from ..config.program import program_config
-from ..errors import EuroIXError, EuroIXSchemaError
 from ..euro_ix import EuroIXMemberList
 
 class ClientsFromEuroIXCommand(ARouteServerCommand):
@@ -29,7 +28,7 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
     COMMAND_HELP = ("Build a list of clients on the basis "
                     "of EURO-IX JSON file.")
     NEEDS_CONFIG = True
-    
+
     @classmethod
     def add_arguments(cls, parser):
         super(ClientsFromEuroIXCommand, cls).add_arguments(parser)
@@ -88,6 +87,15 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
                  "city, ...).",
             dest="guess_custom_bgp_communities")
 
+
+        parser.add_argument(
+            "--merge-from-peeringdb",
+            nargs="+",
+            choices=EuroIXMemberList.INFO_FROM_PEERINGDB,
+            help="Fetch missing information from PeeringDB if they are "
+                 "not included in the Euro-IX JSON member list file.",
+            dest="merge_from_peeringdb")
+
         parser.add_argument(
             "-o", "--output",
             type=argparse.FileType('w'),
@@ -96,13 +104,16 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
             dest="output_file")
 
     def run(self):
-        euro_ix = EuroIXMemberList(self.args.url or self.args.input_file)
+        euro_ix = EuroIXMemberList(self.args.url or self.args.input_file,
+                                   program_config.get_dir("cache_dir"),
+                                   program_config.get("cache_expiry"))
 
         if self.args.ixp_id:
             clients = euro_ix.get_clients(
                 self.args.ixp_id, vlan_id=self.args.vlan_id,
                 routeserver_only=self.args.routeserver_only,
-                guess_custom_bgp_communities=self.args.guess_custom_bgp_communities)
+                guess_custom_bgp_communities=self.args.guess_custom_bgp_communities,
+                merge_from_peeringdb=self.args.merge_from_peeringdb)
             res = {"clients": clients}
 
             comments = []

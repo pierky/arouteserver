@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,9 +16,13 @@
 import logging
 from logging.config import fileConfig, dictConfig
 import os
+from packaging import version
 
 from ..config.program import program_config
-from ..errors import MissingFileError, ARouteServerError
+from ..errors import MissingFileError, ARouteServerError, \
+                     LastVersionCheckingError
+from ..last_version import LastVersion
+from ..version import __version__
 
 class ARouteServerCommand(object):
 
@@ -70,8 +74,8 @@ class ARouteServerCommand(object):
         group.add_argument(
             "--logging-config-file",
             help="Logging configuration file, in Python fileConfig() format ("
-                "https://docs.python.org/2/library/logging.config.html"
-                "#configuration-file-format)",
+                 "https://docs.python.org/2/library/logging.config.html"
+                 "#configuration-file-format)",
             dest="logging_config_file")
 
         group.add_argument(
@@ -121,7 +125,7 @@ class ARouteServerCommand(object):
                 program_config.load(program_cfg_path)
                 program_cfg_found = True
                 break
-            except MissingFileError as e:
+            except MissingFileError:
                 pass
 
         if not program_cfg_found:
@@ -142,6 +146,65 @@ class ARouteServerCommand(object):
             log_ini_path = program_config.get("logging_config_file")
             if log_ini_path:
                 setup_logging(log_ini_path)
+
+        if program_config.get("check_new_release") and \
+            self.COMMAND_NAME != "check_update":
+            self.check_new_release()
+
+    def check_new_release(self, print_output=False):
+        checker = LastVersion(
+            cache_dir=program_config.get_dir("cache_dir"),
+            cache_expiry={"general": 604800}
+        )
+
+        try:
+            checker.load_data()
+        except LastVersionCheckingError as e:
+            if print_output:
+                print(str(e))
+            else:
+                logging.warning(str(e))
+            return
+
+        last_version = checker.last_version
+
+        if not last_version:
+            msg = "Can't understand the latest version: empty response"
+            if print_output:
+                print(msg)
+            else:
+                logging.warning(msg)
+            return
+
+        try:
+            version.parse(last_version)
+        except Exception as e:
+            msg = "Can't understand the latest version: {}".format(str(e))
+            if print_output:
+                print(msg)
+            else:
+                logging.warning(msg)
+
+        new_rel = version.parse(last_version) > version.parse(__version__)
+
+        url = "https://github.com/pierky/arouteserver/releases"
+
+        if print_output:
+            if new_rel:
+                print("A new release of ARouteServer is available")
+                print("Details at " + url)
+            else:
+                print("No new releases are available")
+            print("")
+            print("Current version: {}".format(__version__))
+            print("Latest version : {}".format(last_version))
+        else:
+            if new_rel:
+                logging.warning("A new release is available: {} "
+                                "(running version: {}) - "
+                                "Details at {}".format(
+                                    last_version, __version__, url
+                                ))
 
     def run(self):
         raise NotImplementedError()

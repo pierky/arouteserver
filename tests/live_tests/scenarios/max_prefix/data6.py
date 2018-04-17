@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -39,4 +39,13 @@ class MaxPrefixScenario_Data6(object):
         "AS3_pref3":        "2a03:0:3::/48",
         "AS3_pref4":        "2a03:0:4::/48",
         "AS3_pref5":        "2a03:0:5::/48",
+
+        "AS4_1_IPAddress":  "2001:db8:1:1::41",
+        "AS4_pref1":        "2a04:0:1::/48",
+        "AS4_pref2":        "2a04:0:2::/48",
+        "AS4_pref3":        "2a04:0:3::/48",
+        "AS4_pref4":        "2a04:0:4::/48",
+        "AS4_pref5":        "2a04:0:5::/48",
+        "AS4_pref6":        "2a04:0:6::/48",
+        "AS4_pref7":        "2a04:0:7::/48",
     }

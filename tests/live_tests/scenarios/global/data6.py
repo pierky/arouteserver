@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,14 +19,15 @@ class BasicScenario_Data6(object):
         "rs_IPAddress":             "2001:db8:1:1::2",
         "blackhole_IP":             "2001:db8:1:1::66",
 
-        "AS3_1_IPAddress":          "2001:db8:1:1::31",
         "AS1_1_IPAddress":          "2001:db8:1:1::11",
         "AS1_2_IPAddress":          "2001:db8:1:1::12",
         "AS2_1_IPAddress":          "2001:db8:1:1::21",
+        "AS3_1_IPAddress":          "2001:db8:1:1::31",
+        "AS4_1_IPAddress":          "2001:db8:1:1::41",
         "AS101_IPAddress":          "2001:db8:1:1::101",
         "RoutesCollector_IPAddress":"2001:db8:1:1::999",
 
-        "AS1_allowed_prefixes":     "2a01:0::/32",
+        "AS1_allowed_prefixes":     "2a01::/32",
         "AS1_good1":                "2a01:0:1::/48",
         "AS1_good2":                "2a01:0:2::/48",
         "AS1_good3":                "2a01:0:3::/48",
@@ -38,7 +39,14 @@ class BasicScenario_Data6(object):
         "invalid_asn1":             "2a99:1::/48",
         "aspath_len1":              "2a99:2::/48",
 
-        "AS2_allowed_prefixes":     "2a02:0::/32",
+        "AS1_whitel_1":             "2a11:1:1::/48",
+        "AS1_whitel_2":             "2a11:1:2::/48",
+        "AS1_whitel_3":             "2a11:2:1::/48",
+        "AS1_whitel_4":             "2a11:3::/32",
+        "AS1_whitel_5":             "2a11:4:1::/48",
+        "AS1_whitel_6":             "2a11:3:1::/48",
+
+        "AS2_allowed_prefixes":     "2a02::/32",
         "AS2_good1":                "2a02:0:1::/48",
         "AS2_good2":                "2a02:0:2::/48",
         "AS2_blackhole1":           "2a02:0:3::1/128",
@@ -58,11 +66,24 @@ class BasicScenario_Data6(object):
         "AS3_prepend3any":          "2a03:0:7::/48",
         "AS3_prepend1_AS1":         "2a03:0:8::/48",
         "AS3_prepend2_AS2":         "2a03:0:9::/48",
-        "AS3_prep3AS1_1any":        "2a03:0:A::/48",
-        "AS3_noexport_any":         "2a03:0:B::/48",
-        "AS3_noexport_AS1":         "2a03:0:C::/48",
+        "AS3_prep3AS1_1any":        "2a03:0:a::/48",
+        "AS3_noexport_any":         "2a03:0:b::/48",
+        "AS3_noexport_AS1":         "2a03:0:c::/48",
+        "AS3_rfc1997_noexp":        "2a03:0:d::/48",
+        "AS3_transitfree_2":        "2a03:0:e::/48",
 
-        "AS101_allowed_prefixes":   "3101:0::/32",
+        "AS4_rtt_1":                "2a04:0:1::/48",
+        "AS4_rtt_2":                "2a04:0:2::/48",
+        "AS4_rtt_3":                "2a04:0:3::/48",
+        "AS4_rtt_4":                "2a04:0:4::/48",
+        "AS4_rtt_5":                "2a04:0:5::/48",
+        "AS4_rtt_6":                "2a04:0:6::/48",
+        "AS4_rtt_7":                "2a04:0:7::1/128",
+        "AS4_rtt_8":                "2a04:0:8::/48",
+        "AS4_rtt_9":                "2a04:0:9::/48",
+        "AS4_rtt_10":               "2a04:0:a::/48",
+
+        "AS101_allowed_prefixes":   "3101::/32",
         "AS101_good1":              "3101:0:1::/48",
         "AS101_bad_std_comm":       "3101:0:2::/48",
         "AS101_bad_lrg_comm":       "3101:0:3::/48",
@@ -77,8 +98,19 @@ class BasicScenario_Data6(object):
         "AS101_roa_badlen":         "3101:0:8000::/48",
         "AS101_roa_blackhole":      "3101:0:8000::1/128",
 
+        "AS101_roa_routeobj_1":     "3101:2::/33",
+        "AS101_roa_routeobj_2":     "3101:2:4000::/34",
+        "AS101_roa_routeobj_3":     "3101:2:8000::/48",
+        "AS101_roa_routeobj_4":     "3101:3:1::/48",
+
         "AS102_no_asset":           "3102:0:1::/48",
         "AS101_no_ipv6_gl_uni":     "8000:1::/32",
+
+        "AS103_allowed_prefixes":   "3103::/32",
+        "AS103_gshut_1":            "3103:0:1::/48",
+        "AS103_gshut_2":            "3103:0:2::/48",
+
+        "AS104_arin_1":             "3104:0:1::/48",
 
         "Default_route":            "::/0",
     }

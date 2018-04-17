@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,10 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from base import PathHidingScenario_MitigationOn, \
+from .base import PathHidingScenario_MitigationOn, \
                  PathHidingScenario_MitigationOff, \
                  PathHidingScenarioBIRD
-from data6 import PathHidingScenario_Data6
+from .data6 import PathHidingScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 
 class PathHidingScenario_MitigationOn_BIRDIPv6(PathHidingScenario_Data6,

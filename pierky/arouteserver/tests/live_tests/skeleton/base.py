@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,11 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import six
+
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, \
                                                       BIRDInstanceIPv6
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance, \
-                                                          OpenBGPD61Instance
+                                                          OpenBGPD61Instance, \
+                                                          OpenBGPD62Instance
 
 # -----------------------------------------------------------------------
 # FULL DOCUMENTATION ON
@@ -220,6 +223,18 @@ class SkeletonScenario(LiveScenario):
                     )
                 ]
             )
+        if cls.RS_INSTANCE_CLASS is OpenBGPD62Instance:
+            return cls.RS_INSTANCE_CLASS(
+                "rs",
+                cls.DATA["rs_IPAddress"],
+                [
+                    (
+                        cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
+                                         target_version="6.2"),
+                        "/etc/bgpd.conf"
+                    )
+                ]
+            )
         if cls.RS_INSTANCE_CLASS is BIRDInstanceIPv4 or \
             cls.RS_INSTANCE_CLASS is BIRDInstanceIPv6:
             return cls.RS_INSTANCE_CLASS(
@@ -237,7 +252,7 @@ class SkeletonScenario(LiveScenario):
 
     def set_instance_variables(self):
         """Simply set local attributes for an easier usage later
-        
+
         The argument of ``self._get_instance_by_name()`` must be one of
         the instance names used in ``_setup_instances()``.
         """
@@ -268,7 +283,7 @@ class SkeletonScenario(LiveScenario):
                            other_inst=self.AS2, as_path="2",
                            filtered=True)
         # AS1 should not receive the bogon prefix from the route server
-        with self.assertRaisesRegexp(AssertionError, "Routes not found"):
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found"):
             self.receive_route(self.AS1, self.DATA["AS2_bogon1"])
 
     def test_030_custom_test(self):

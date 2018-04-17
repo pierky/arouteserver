@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -34,9 +34,10 @@ class BGPSpeakerInstance(object):
     Currently, the ``start``, ``stop``, ``is_running`` and
     ``run_cmd`` methods are implemented by the
     :class:`DockerInstance` and :class:`KVMInstance` derived classes,
-    while the ``reload_config``, ``get_bgp_session``, ``get_routes``
-    and ``log_contains`` methods by the [Docker|KVM]Instance-derived
-    :class:`BIRDInstance` class.
+    while the ``restart``, ``reload_config``, ``get_bgp_session``,
+    ``get_routes`` and ``log_contains`` methods by the
+    [Docker|KVM]Instance-derived :class:`BIRDInstance` and
+    :class:`OpenBGPDInstance` classes.
     """
 
     MESSAGE_LOGGING_SUPPORT = True
@@ -73,6 +74,9 @@ class BGPSpeakerInstance(object):
         raise NotImplementedError()
 
     def stop(self):
+        raise NotImplementedError()
+
+    def restart(self):
         raise NotImplementedError()
 
     def reload_config(self):
@@ -133,7 +137,7 @@ class BGPSpeakerInstance(object):
 
         Args:
             prefix (str): the IP prefix that returned routes
-                must match.
+                must match. If None, all the routes are returned.
 
             include_filtered (bool): include filtered routes / rejected
                 prefixes in the result.
@@ -155,6 +159,23 @@ class BGPSpeakerInstance(object):
 
         Returns:
             True or False if the message is found or not.
+        """
+        raise NotImplementedError()
+
+    def log_contains_errors(self, allowed_errors=[], list_errors=False):
+        """Returns True if the BGP speaker's log contains warning/errors.
+
+        Args:
+            allowed_errors (list): list of strings representing errors
+                that are allowed to be found within the BGP speaker's log.
+
+            list_errors (bool): when set to True, the functions returns
+                a touple (errors_found, list_of_errors).
+
+        Returns:
+            When ``list_errors`` is False: True of False if error messages
+            or warnings are found within the BGP speaker's logs.
+            When ``list_errors`` is True, a touple (bool, str).
         """
         raise NotImplementedError()
 
@@ -233,7 +254,7 @@ class Route(object):
         self.ext_comms = self._parse_ext_bgp_communities(kwargs.get("ext_comms", None))
         self.reject_reasons = []
 
-    def process_reject_cause(self, re_pattern):
+    def process_reject_cause(self, re_pattern, announced_by_pattern):
         # If a route is marked to be rejected using the 'reject_cause'
         # community it must be also set with LOCAL_PREF == 0.
         if self.localpref != 1:
@@ -245,6 +266,7 @@ class Route(object):
         # Iterating over the original list (from which the 'reject_cause'
         # community will be removed) and its copy (to keep consistent the
         # set of values over which iterate).
+        # Looking for reject reason community.
         for orig_list, dup_list in [(self.std_comms, list(self.std_comms)),
                                     (self.lrg_comms, list(self.lrg_comms)),
                                     (self.ext_comms, list(self.ext_comms))]:
@@ -263,24 +285,52 @@ class Route(object):
 
                 orig_list.remove(comm)
 
-        if reject_cause_zero_found:
+        if reject_cause_zero_found and announced_by_pattern:
             self.reject_reasons = reasons
             self.filtered = True
 
-    def __str__(self):
-        return str({
+            # Looking for rejected_route_announce_by community.
+            for orig_list, dup_list in [(self.std_comms, list(self.std_comms)),
+                                        (self.lrg_comms, list(self.lrg_comms)),
+                                        (self.ext_comms, list(self.ext_comms))]:
+                for comm in dup_list:
+                    match = announced_by_pattern.match(comm)
+
+                    if match:
+                        orig_list.remove(comm)
+                        return
+
+    def to_dict(self):
+        return {
             "prefix": self.prefix,
             "via": self.via,
             "as_path": self.as_path,
             "next_hop": self.next_hop,
             "localpref": self.localpref,
             "filtered": self.filtered,
-            "reject_reasons": ", ".join(map(str, self.reject_reasons)),
+            "reject_reasons": ", ".join(map(str, sorted(self.reject_reasons))),
             "best": self.best,
-            "std_comms": self.std_comms,
-            "lrg_comms": self.lrg_comms,
-            "ext_comms": self.ext_comms,
-        })
+            "std_comms": ", ".join(sorted(self.std_comms)),
+            "lrg_comms": ", ".join(sorted(self.lrg_comms)),
+            "ext_comms": ", ".join(sorted(self.ext_comms)),
+        }
+
+    def dump(self, f):
+        s = (
+            "{prefix}, AS_PATH: {as_path}, NEXT_HOP: {next_hop}, via {via}\n"
+            "  std comms: {std_comms}\n"
+            "  ext comms: {ext_comms}\n"
+            "  lrg comms: {lrg_comms}\n"
+            "  best: {best}, LOCAL_PREF: {localpref}\n"
+            "  filtered: {filtered} ({reject_reasons})\n".format(
+                **self.to_dict()
+            )
+        )
+        for line in s.split("\n"):
+            f.write(line.rstrip() + "\n")
+
+    def __str__(self):
+        return str(self.to_dict())
 
     def __repr__(self):
         return self.__str__()
