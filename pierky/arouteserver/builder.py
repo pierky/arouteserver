@@ -745,7 +745,7 @@ class GoBGPConfigBuilder(ConfigBuilder):
     def render_template(self, output_file=None):
 
         def ip_version(ip):
-            return ipaddr.IPAddress(ip).version
+            return IPNetwork(ip).version
 
         self.data = {}
         self.data["global"] = {}
@@ -778,15 +778,15 @@ class GoBGPConfigBuilder(ConfigBuilder):
         for ip_ver in ["4", "6"]:
             self.data["defined-sets"]["prefix-sets"].append(bogon_prefix_set[ip_ver])
 
-        for as_set, as_set_data in self.as_sets.iteritems():
+        for as_set_bundle_id, as_set_bundle in self.irrdb_info.iteritems():
             # generate prefix-sets
             prefix_set = {}
             for ip_ver in ["4", "6"]:
                 prefix_set[ip_ver] = {
-                    "prefix-set-name": "{0}-PREFIX-V{1}".format(as_set_data["id"], ip_ver),
+                    "prefix-set-name": "{0}-PREFIX-V{1}".format(as_set_bundle.name, ip_ver),
                     "prefix-list": [],
                 }
-            for p in as_set_data["prefixes"]:
+            for p in as_set_bundle.prefixes:
                 ip_ver = str(ip_version(p["prefix"]))
                 prefix_set[ip_ver]["prefix-list"].append({
                     "ip-prefix": str(p["prefix"]),
@@ -797,10 +797,10 @@ class GoBGPConfigBuilder(ConfigBuilder):
 
             # generate as-path-sets
             as_path_set = {
-                "as-path-set-name": "{0}-PATH".format(as_set_data["id"]),
+                "as-path-set-name": "{0}-PATH".format(as_set_bundle.name),
                 "as-path-list": [],
             }
-            for a in as_set_data["asns"]:
+            for a in as_set_bundle.asns:
                 as_path_set["as-path-list"].append("_{0}$".format(a))
             self.data["defined-sets"]["bgp-defined-sets"]["as-path-sets"].append(as_path_set)
 
@@ -842,7 +842,7 @@ class GoBGPConfigBuilder(ConfigBuilder):
             neighbor["apply-policy"] = {}
             neighbor["apply-policy"]["config"] = {}
             neighbor["apply-policy"]["config"] = {}
-            neighbor["apply-policy"]["config"]["in-policy-list"] = ["AS{0}-IN-V{1}".format(client["asn"], ip_ver)]
+            neighbor["apply-policy"]["config"]["in-policy-list"] = ["{0}-IN-V{1}".format(client["id"], ip_ver)]
             neighbor["apply-policy"]["config"]["default-in-policy"] = "reject-route"
             neighbor["apply-policy"]["config"]["import-policy-list"] = []
             neighbor["apply-policy"]["config"]["default-import-policy"] = "accept-route"
@@ -851,7 +851,7 @@ class GoBGPConfigBuilder(ConfigBuilder):
 
             # generate policy-definitions
             in_policy_definition = {
-                "name": "AS{0}-IN-V{1}".format(client["asn"], ip_ver),
+                "name": "{0}-IN-V{1}".format(client["id"], ip_ver),
                 "statements": [
                     {
                         "conditions": {"match-prefix-set": {
@@ -861,18 +861,22 @@ class GoBGPConfigBuilder(ConfigBuilder):
                     }
                 ]
             }
-            for as_set_id in client["cfg"]["filtering"]["irrdb"]["as_set_ids"]:
+            for as_set_bundle_id in client["cfg"]["filtering"]["irrdb"]["as_set_bundle_ids"]:
+                # resolve as_set_bundle name from id
+                as_set_bundle_name = self.irrdb_info[as_set_bundle_id].name
+
+                # AS path validation
                 in_policy_definition["statements"].append({
                     "conditions": {"bgp-conditions": {"match-as-path-set": {
-                        "as-path-set": "{0}-PATH".format(as_set_id),
+                        "as-path-set": "{0}-PATH".format(as_set_bundle_name),
                         "match-set-options": "invert",
                     }}},
                     "actions": {"route-disposition": "reject-route"},
                 })
-            for as_set_id in client["cfg"]["filtering"]["irrdb"]["as_set_ids"]:
+                # prefix validation
                 in_policy_definition["statements"].append({
                     "conditions": {"match-prefix-set": {
-                        "prefix-set": "{0}-PREFIX-V{1}".format(as_set_id, ip_ver),
+                        "prefix-set": "{0}-PREFIX-V{1}".format(as_set_bundle_name, ip_ver),
                     }},
                     "actions": {"route-disposition": "accept-route"},
                 })
