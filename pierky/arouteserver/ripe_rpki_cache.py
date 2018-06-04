@@ -16,8 +16,7 @@
 import json
 import logging
 
-from six.moves.urllib.request import urlopen
-from six.moves.urllib.error import HTTPError
+import requests
 
 from .cached_objects import CachedObject
 from .errors import RPKIValidatorCacheError
@@ -50,9 +49,12 @@ class RIPE_RPKI_ROAs(CachedObject):
 
     def _get_data(self):
         if self.url.lower().startswith(("http://", "https://")):
+            response = requests.get(self.url,
+                                    headers={'Accept': 'text/json'})
             try:
-                raw = urlopen(self.url)
-            except HTTPError as e:
+                response.raise_for_status()
+                raw = response.content
+            except requests.exceptions.HTTPError as e:
                 raise RPKIValidatorCacheError(
                     "HTTP error while retrieving ROAs from "
                     "RIPE RPKI Validator cache ({}): "
@@ -69,7 +71,7 @@ class RIPE_RPKI_ROAs(CachedObject):
                 )
         else:
             try:
-                raw = open(self.url, "rb")
+                raw = open(self.url, "rb").read()
             except Exception as e:
                 raise RPKIValidatorCacheError(
                     "Error while reading ROAs from file "
@@ -79,7 +81,7 @@ class RIPE_RPKI_ROAs(CachedObject):
                 )
 
         try:
-            roas = json.loads(raw.read().decode("utf-8"))
+            roas = json.loads(raw.decode("utf-8"))
         except Exception as e:
             raise RPKIValidatorCacheError(
                 "Error while parsing ROAs from "
