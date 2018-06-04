@@ -16,8 +16,7 @@
 import logging
 import json
 import re
-from six.moves.urllib.request import urlopen
-from six.moves.urllib.error import HTTPError
+import requests
 
 from .cached_objects import CachedObject
 from .config.validators import ValidatorASSet
@@ -36,9 +35,10 @@ class PeeringDBInfo(CachedObject):
 
     @staticmethod
     def _read_from_url(url):
+        response = requests.get(url)
         try:
-            response = urlopen(url)
-        except HTTPError as e:
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as e:
             if e.code == 404:
                 return "{}"
             else:
@@ -55,7 +55,7 @@ class PeeringDBInfo(CachedObject):
                 )
             )
 
-        return response.read().decode("utf-8")
+        return response.content.decode("utf-8")
 
     def _get_data_from_peeringdb(self):
         plain_text = self._read_from_url(self._get_peeringdb_url())

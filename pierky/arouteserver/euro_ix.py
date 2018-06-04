@@ -16,8 +16,8 @@
 import logging
 import json
 import re
+import requests
 import six
-from six.moves.urllib.request import urlopen
 
 from .peering_db import PeeringDBNet, PeeringDBNoInfoError
 from .errors import EuroIXError, EuroIXSchemaError
@@ -47,10 +47,11 @@ class EuroIXMemberList(object):
         if isinstance(input_object, dict):
             self.raw_data = input_object
         elif isinstance(input_object, six.string_types):
+            response = requests.get(input_object)
+            raw = response.content.decode("utf-8")
             try:
-                response = urlopen(input_object)
-                raw = response.read().decode("utf-8")
-            except Exception as e:
+                response.raise_for_status()
+            except requests.exceptions.HTTPError as e:
                 raise EuroIXError(
                     "Error while retrieving Euro-IX "
                     "JSON file from {}: {}".format(
