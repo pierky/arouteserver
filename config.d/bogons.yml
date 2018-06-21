@@ -21,6 +21,9 @@ bogons:
   - prefix: "192.0.2.0"
     length: 24
     comment: "RFC 5737 - TEST-NET-1"
+  - prefix: "192.88.99.0"
+    length: 24
+    comment: "RFC 3068 - 6to4 prefix"
   - prefix: "192.168.0.0"
     length: 16
     comment: "RFC 1918 - Private Use"
