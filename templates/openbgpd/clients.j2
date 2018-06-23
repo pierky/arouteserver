@@ -54,7 +54,9 @@ group "clients" {
 {%	endif %}
 		enforce neighbor-as no
 
+{% if "6.4"|target_version_ge %}
 		announce all
+{% endif %}
 		announce as-4byte yes
 {%	if client.ip|ipaddr_ver == 4 %}
 		announce IPv6 none
