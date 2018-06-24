@@ -32,7 +32,7 @@ class ARINWhoisDBDump(CachedObject):
     def __init__(self, *args, **kwargs):
         CachedObject.__init__(self, *args, **kwargs)
 
-        self.source = kwargs.get("arin_whois_db_source")
+        self.source = kwargs.get("source")
 
         self.whois_records = []
 

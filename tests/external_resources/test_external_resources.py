@@ -19,6 +19,7 @@ import tempfile
 import unittest
 
 from pierky.arouteserver.arin_db_dump import ARINWhoisDBDump
+from pierky.arouteserver.registro_br_db_dump import RegistroBRWhoisDBDump
 from pierky.arouteserver.config.general import ConfigParserGeneral
 from pierky.arouteserver.irrdb import ASSet, RSet
 from pierky.arouteserver.last_version import LastVersion
@@ -52,9 +53,17 @@ class TestExternalResources(unittest.TestCase):
         """External resources: ARIN Whois database dump"""
         cfg = ConfigParserGeneral()
         url = cfg.get_schema()["cfg"]["filtering"]["irrdb"]["use_arin_bulk_whois_data"]["source"].default
-        db_dump = ARINWhoisDBDump(arin_whois_db_source=url, **cache_cfg)
+        db_dump = ARINWhoisDBDump(source=url, **cache_cfg)
         db_dump.load_data()
         self.assertTrue(len(db_dump.whois_records) > 0)
+
+    def test_registrobr_db_dump(self):
+        """External resources: Registro.br Whois database dump"""
+        cfg = ConfigParserGeneral()
+        url = cfg.get_schema()["cfg"]["filtering"]["irrdb"]["use_registrobr_bulk_whois_data"]["source"].default
+        db_dump = RegistroBRWhoisDBDump(source=url, **cache_cfg)
+        db_dump.load_data()
+        self.assertTrue(len(db_dump.whois_records) > 5000)
 
     def test_ixf_db(self):
         """External resources: PeeringDB IX list"""

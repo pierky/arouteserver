@@ -405,6 +405,9 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
   - **prefix_validated_via_arin_whois_db_dump**
 
 
+  - **prefix_validated_via_registrobr_whois_db_dump**
+
+
   - **route_validated_via_white_list** (only for routes validated
     solely because of a client-level **white_list_route** entry)
 
@@ -544,6 +547,56 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
   .. code:: yaml
 
      source: "http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
+
+
+
+
+- ``use_registrobr_bulk_whois_data``:
+  Similarly to the **use_arin_bulk_whois_data** option,
+  this one allows to back IRR filters up by using "Registro.br"
+  data from the NIC.BR Whois database.
+  In this case, if **tag_as_set** is True, these routes
+  are tagged with the
+  **prefix_validated_via_registrobr_whois_db_dump** community.
+
+
+  The setting of the **allow_longer_prefixes** option will be
+  honored.
+
+
+- ``enabled``:
+  Set this to True to enable this feature.
+
+
+  Default: **False**
+
+  Example:
+
+  .. code:: yaml
+
+     enabled: False
+
+
+
+- ``source``:
+  The source of the data must be set here.
+
+
+  It can be an **http://**, **https://**, **ftp://** URL or a local
+  file path. The file must be in CSV format, with **|** as a
+  field separator, accordingly to the following schema:
+
+
+  ASxxx|Organization|OrgID|w.x.y.z/l|a:b:c:d::/l|...
+
+
+  Default: **URL of the dump published by Registro.br.**
+
+  Example:
+
+  .. code:: yaml
+
+     source: "ftp://ftp.registro.br/pub/numeracao/origin/nicbr-asn-blk-latest.txt"
 
 
 
@@ -1165,7 +1218,7 @@ matching.
 Prefix/origin AS present in client's AS-SET
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- ``prefix_present_in_as_set``, ``prefix_not_present_in_as_set``, ``origin_present_in_as_set``, ``origin_not_present_in_as_set``, ``prefix_validated_via_rpki_roas``, ``prefix_validated_via_arin_whois_db_dump`` and ``route_validated_via_white_list``:
+- ``prefix_present_in_as_set``, ``prefix_not_present_in_as_set``, ``origin_present_in_as_set``, ``origin_not_present_in_as_set``, ``prefix_validated_via_rpki_roas``, ``prefix_validated_via_arin_whois_db_dump``, ``prefix_validated_via_registrobr_whois_db_dump`` and ``route_validated_via_white_list``:
   Prefix/origin AS present in client's AS-SET.
 
 

@@ -79,6 +79,9 @@ class TestConfigureCmd(ARouteServerTestCase):
                     },
                     "use_arin_bulk_whois_data": {
                         "enabled": True
+                    },
+                    "use_registrobr_bulk_whois_data": {
+                        "enabled": True
                     }
                 },
                 "max_prefix": {

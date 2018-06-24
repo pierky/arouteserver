@@ -28,4 +28,8 @@ rpki_roas
 
 arin_whois_db_records
 ---------------------
-{{ arin_whois_records|parse_arin_whois_records|to_yaml }}
+{{ arin_whois_records|parse_generic_irr_whois_records|to_yaml }}
+
+registrobr_whois_db_records
+---------------------
+{{ registrobr_whois_records|parse_generic_irr_whois_records|to_yaml }}

@@ -118,6 +118,12 @@ cfg:
       peer_as: false
       std: null
       type: outbound
+    prefix_validated_via_registrobr_whois_db_dump:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: outbound
     prefix_validated_via_rpki_roas:
       ext: null
       lrg: null
@@ -232,6 +238,9 @@ cfg:
       use_arin_bulk_whois_data:
         enabled: false
         source: http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2
+      use_registrobr_bulk_whois_data:
+        enabled: false
+        source: ftp://ftp.registro.br/pub/numeracao/origin/nicbr-asn-blk-latest.txt
       use_rpki_roas_as_route_objects:
         enabled: false
     max_as_path_len: 32
@@ -859,5 +868,10 @@ rpki_roas
 
 
 arin_whois_db_records
+---------------------
+{}
+
+
+registrobr_whois_db_records
 ---------------------
 {}

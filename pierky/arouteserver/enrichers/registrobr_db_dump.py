@@ -14,12 +14,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from .irr_db_dump import GenericIRRWhoisDBDumpEnricher
-from ..arin_db_dump import ARINWhoisDBDump
+from ..registro_br_db_dump import RegistroBRWhoisDBDump
 
-class ARINWhoisDBDumpEnricher(GenericIRRWhoisDBDumpEnricher):
+class RegistroBRWhoisDBDumpEnricher(GenericIRRWhoisDBDumpEnricher):
 
-    DESCR = "ARIN"
-    DIR_NAME = "arin_db"
-    CONFIG_SECTION_NAME = "use_arin_bulk_whois_data"
-    PARSER_CLASS = ARINWhoisDBDump
-    BUILDER_TARGET_DICT_NAME = "arin_whois_records"
+    DESCR = "Registro.br"
+    DIR_NAME = "registrobr_db"
+    CONFIG_SECTION_NAME = "use_registrobr_bulk_whois_data"
+    PARSER_CLASS = RegistroBRWhoisDBDump
+    BUILDER_TARGET_DICT_NAME = "registrobr_whois_records"

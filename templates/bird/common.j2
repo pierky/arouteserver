@@ -418,3 +418,18 @@ function prefix_in_arin_whois_db() {
 	return false;
 }
 {% endif %}
+
+{% if cfg.filtering.irrdb.use_registrobr_bulk_whois_data.enabled %}
+# This function looks up the route's origin ASN in the Registro.br
+# Whois DB: if there is such an entry for the current route's
+# origin ASN to validate the announced prefix the function
+# returns True, otherwise False.
+function prefix_in_registrobr_whois_db() {
+	case bgp_path.last {
+{%		for origin_asn in registrobr_whois_records|sort %}
+		{{ origin_asn|replace("AS", "") }}: return net ~ RegistroBR_Whois_db_{{ origin_asn }};
+{%		endfor %}
+	}
+	return false;
+}
+{% endif %}

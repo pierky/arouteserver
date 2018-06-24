@@ -28,6 +28,9 @@ configured              enabled: False
                       use_arin_bulk_whois_data:
 configured              enabled: False
 configured              source: http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2
+                      use_registrobr_bulk_whois_data:
+configured              enabled: False
+configured              source: ftp://ftp.registro.br/pub/numeracao/origin/nicbr-asn-blk-latest.txt
                     rpki_bgp_origin_validation:
 configured            enabled: False
 configured            reject_invalid: True
