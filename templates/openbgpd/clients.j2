@@ -54,7 +54,7 @@ group "clients" {
 {%	endif %}
 		enforce neighbor-as no
 
-{% if "6.4"|target_version_ge %}
+{% if "6.3"|target_version_le %}
 		announce all
 {% endif %}
 		announce as-4byte yes
