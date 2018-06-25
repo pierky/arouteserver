@@ -132,7 +132,7 @@ bool validated;
 	}
 {%	endif %}
 
-{%	if cfg.filtering.irrdb.use_arin_bulk_whois_data.enabled %}
+{%	if cfg.filtering.irrdb.use_arin_bulk_whois_data.enabled and arin_whois_records %}
 	# Origin ASN is valid, prefix is not: check if an ARIN Whois record exists.
 	if origin_ok && prefix_in_arin_whois_db() then {
 {%		if cfg.filtering.irrdb.tag_as_set and
@@ -143,7 +143,7 @@ bool validated;
 	}
 {%	endif %}
 
-{%	if cfg.filtering.irrdb.use_registrobr_bulk_whois_data.enabled %}
+{%	if cfg.filtering.irrdb.use_registrobr_bulk_whois_data.enabled and registrobr_whois_records %}
 	# Origin ASN is valid, prefix is not: check if a NIC.BR Whois record exists.
 	if origin_ok && prefix_in_registrobr_whois_db() then {
 {%		if cfg.filtering.irrdb.tag_as_set and
