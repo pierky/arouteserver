@@ -3,6 +3,17 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New: introduce support for OpenBGPD/OpenBSD 6.4.
+
+  OpenBSD 6.4 is not released yet, this is just in preparation of it.
+
+- New: use NIC.BR Whois data from Registro.br to enrich the dataset used for route validation.
+
+  Details: `RIPE76, Practical Data Sources For BGP Routing Security <https://ripe76.ripe.net/presentations/43-RIPE76_IRR101_Job_Snijders.pdf>`_.
+
 v0.18.0
 -------
 
