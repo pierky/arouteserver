@@ -39,13 +39,13 @@ class PeeringDBInfo(CachedObject):
         try:
             response.raise_for_status()
         except requests.exceptions.HTTPError as e:
-            if e.code == 404:
+            if e.response.status_code == 404:
                 return "{}"
             else:
                 raise PeeringDBError(
                     "HTTP error while retrieving info from PeeringDB: "
-                    "code: {}, reason: {} - {}".format(
-                        e.code, e.reason, str(e)
+                    "{}".format(
+                        str(e)
                     )
                 )
         except Exception as e:

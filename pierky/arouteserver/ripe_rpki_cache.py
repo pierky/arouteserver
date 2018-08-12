@@ -58,8 +58,8 @@ class RIPE_RPKI_ROAs(CachedObject):
                 raise RPKIValidatorCacheError(
                     "HTTP error while retrieving ROAs from "
                     "RIPE RPKI Validator cache ({}): "
-                    "code: {}, reason: {} - {}".format(
-                        self.url, e.code, e.reason, str(e)
+                    "{}".format(
+                        self.url, str(e)
                     )
                 )
             except Exception as e:

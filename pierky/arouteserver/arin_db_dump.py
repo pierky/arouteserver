@@ -131,9 +131,8 @@ class ARINWhoisDBDump(CachedObject):
             except requests.exceptions.HTTPError as e:
                 raise ARINWhoisDBDumpError(
                     "HTTP error while retrieving ARIN Whois DB dump "
-                    "from {}: "
-                    "code: {}, reason: {} - {}".format(
-                        url, e.code, e.reason, str(e)
+                    "from {}: {}".format(
+                        url, str(e)
                     )
                 )
             except Exception as e:
