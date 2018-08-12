@@ -393,6 +393,13 @@ bogons:
   length: 24
   max_length: 32
   prefix: 192.0.2.0
+- comment: RFC 3068 - 6to4 prefix
+  exact: false
+  ge: null
+  le: null
+  length: 24
+  max_length: 32
+  prefix: 192.88.99.0
 - comment: RFC 1918 - Private Use
   exact: false
   ge: null

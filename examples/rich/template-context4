@@ -393,6 +393,13 @@ bogons:
   length: 24
   max_length: 32
   prefix: 192.0.2.0
+- comment: RFC 3068 - 6to4 prefix
+  exact: false
+  ge: null
+  le: null
+  length: 24
+  max_length: 32
+  prefix: 192.88.99.0
 - comment: RFC 1918 - Private Use
   exact: false
   ge: null
@@ -938,7 +945,7 @@ AS10745:
   le: 32
   length: 24
   max_length: 32
-  prefix: 192.136.136.0
+  prefix: 192.149.252.0
 - exact: false
   ge: 24
   le: 32
@@ -950,7 +957,7 @@ AS10745:
   le: 32
   length: 24
   max_length: 32
-  prefix: 192.149.252.0
+  prefix: 192.136.136.0
 
 
 registrobr_whois_db_records

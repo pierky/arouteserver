@@ -7,7 +7,7 @@ New release procedure
 
 - ./utils/update_fingerprints.py
 
-- nosetests -vs tests/
+- ./utils/update_tests
 
 - edit pierky/arouteserver/version.py
 
@@ -25,9 +25,21 @@ New release procedure
 
 - ~$ ./arouteserver/utils/test_new_rel
 
-- ~/.local/bin/twine upload dist/*
+dev releases (in 'dev' branch):
 
-- git push
+    - git tag vX.YY.0-alpha1 (2, 3, ...)
+
+    - git push origin dev --tags
+
+prod releases (in 'master' branch):
+
+    - git tag vX.YY.0
+
+    - git push origin master --tags
+
+# upload to PyPi done by CD tools in GitHub/Travis
+#- ~/.local/bin/twine upload dist/*
+#- git push
 
 - edit new release on GitHub
 """

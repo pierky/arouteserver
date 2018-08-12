@@ -3,16 +3,26 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
-next release
-------------
+v0.19.0
+-------
+
+This is the last release of ARouteServer for which OpenBGPD/OpenBSD 6.0 CI tests are ran. Starting with the next release, any new feature will not be tested against version 6.0 of OpenBGPD. Users are encouraged to move to newer releases.
+
+- New: use NIC.BR Whois data from Registro.br to enrich the dataset used for route validation.
+
+  Details: `RIPE76, Practical Data Sources For BGP Routing Security <https://ripe76.ripe.net/presentations/43-RIPE76_IRR101_Job_Snijders.pdf>`_.
+
+  Related: `issue #28 on GitHub <https://github.com/pierky/arouteserver/issues/28>`_.
 
 - New: introduce support for OpenBGPD/OpenBSD 6.4.
 
   OpenBSD 6.4 is not released yet, this is just in preparation of it.
 
-- New: use NIC.BR Whois data from Registro.br to enrich the dataset used for route validation.
+  Related: `issue #31 on GitHub <https://github.com/pierky/arouteserver/issues/31>`_.
 
-  Details: `RIPE76, Practical Data Sources For BGP Routing Security <https://ripe76.ripe.net/presentations/43-RIPE76_IRR101_Job_Snijders.pdf>`_.
+- Fix (minor): RIPE NCC RPKI Validator v3 expects ``Accept: text/json`` as HTTP header.
+
+  Related: `PR #29 on GitHub <https://github.com/pierky/arouteserver/issues/29>`_.
 
 v0.18.0
 -------
