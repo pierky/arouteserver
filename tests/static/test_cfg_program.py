@@ -69,7 +69,8 @@ class TestProgramConfig(unittest.TestCase):
                     "pdb_info": 86400,
                     "ripe_rpki_roas": 43200,
                     "irr_as_sets": 43200,
-                    "arin_whois_db_dump": 43200
+                    "arin_whois_db_dump": 43200,
+                    "registrobr_whois_db_dump": 43200
                 }
             )
         ]

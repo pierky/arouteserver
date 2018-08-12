@@ -28,6 +28,7 @@ from .config.bogons import ConfigParserBogons
 from .config.asns import ConfigParserASNS
 from .config.clients import ConfigParserClients
 from .enrichers.arin_db_dump import ARINWhoisDBDumpEnricher
+from .enrichers.registrobr_db_dump import RegistroBRWhoisDBDumpEnricher
 from .enrichers.irrdb import IRRDBConfigEnricher_ASNs, \
                              IRRDBConfigEnricher_Prefixes
 from .enrichers.pdb_as_set import PeeringDBConfigEnricher_ASSet
@@ -420,6 +421,7 @@ class ConfigBuilder(object):
 
         # { "<origin_asn>": ["a/b", "c/d"] }
         self.arin_whois_records = {}
+        self.registrobr_whois_records = {}
 
         # Validation
 
@@ -512,6 +514,9 @@ class ConfigBuilder(object):
         if irrdb_cfg["use_arin_bulk_whois_data"]["enabled"]:
             used_enricher_classes.append(ARINWhoisDBDumpEnricher)
 
+        if irrdb_cfg["use_registrobr_bulk_whois_data"]["enabled"]:
+            used_enricher_classes.append(RegistroBRWhoisDBDumpEnricher)
+
         for enricher_class in used_enricher_classes:
             enricher = enricher_class(self, threads=self.threads)
             try:
@@ -564,6 +569,7 @@ class ConfigBuilder(object):
         self.data["irrdb_info"] = self.irrdb_info
         self.data["rpki_roas"] = sorted_rpki_roas()
         self.data["arin_whois_records"] = self.arin_whois_records
+        self.data["registrobr_whois_records"] = self.registrobr_whois_records
         self.data["live_tests"] = self.live_tests
         self.data["rtt_based_functions_are_used"] = \
             self.cfg_general.rtt_based_functions_are_used
@@ -731,8 +737,8 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                        "footer"]
     LOCAL_FILES_BASE_DIR = "/etc/bgpd"
 
-    AVAILABLE_VERSION = ["6.0", "6.1", "6.2", "6.3"]
-    DEFAULT_VERSION = "6.2"
+    AVAILABLE_VERSION = ["6.0", "6.1", "6.2", "6.3", "6.4"]
+    DEFAULT_VERSION = "6.3"
 
     IGNORABLE_ISSUES = ["path_hiding", "transit_free_action",
                         "add_path", "max_prefix_action",
@@ -1049,7 +1055,7 @@ class TemplateContextDumper(ConfigBuilder):
                 lst.append(bundle.to_dict())
             return lst
 
-        def parse_arin_whois_records(records):
+        def parse_generic_irr_whois_records(records):
             res = {}
             for origin_asn in records:
                 res[origin_asn] = list(records[origin_asn].prefixes)
@@ -1057,4 +1063,4 @@ class TemplateContextDumper(ConfigBuilder):
 
         env.filters["to_yaml"] = to_yaml
         env.filters["parse_irrdb_info"] = parse_irrdb_info
-        env.filters["parse_arin_whois_records"] = parse_arin_whois_records
+        env.filters["parse_generic_irr_whois_records"] = parse_generic_irr_whois_records

@@ -180,19 +180,19 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 180 tests in 23.711s
+Ran 180 tests in 34.652s
 
 OK
 External resources: ARIN Whois database dump ... ok
 External resources: ASNs from AS-SET via bgpq3 ... ok
-External resources: IXF DB ... ok
+External resources: PeeringDB IX list ... ok
 External resources: last version via PyPI ... ok
 External resources: PeeringDB, max-prefix and AS-SET ... ok
 External resources: RIPE RPKI cache ... ok
 External resources: prefixes from AS-SET via bgpq3 ... ok
 
 ----------------------------------------------------------------------
-Ran 7 tests in 12.111s
+Ran 7 tests in 16.615s
 
 OK
 Live test, BIRD, hooks example, IPv4: setting instances up...
@@ -209,7 +209,7 @@ Live test, BIRD, hooks example, IPv6: dumping routes...
 Live test, BIRD, hooks example, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 9.971s
+Ran 4 tests in 10.999s
 
 OK
 Live test, BIRD, BGP communities, IPv4: setting instances up...
@@ -248,7 +248,7 @@ Live test, BIRD, BGP communities, IPv6: dumping routes...
 Live test, BIRD, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 40.483s
+Ran 26 tests in 43.889s
 
 OK
 Live test, BIRD, default config, IPv4: setting instances up...
@@ -265,7 +265,7 @@ Live test, BIRD, default config, IPv6: dumping routes...
 Live test, BIRD, default config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 10.155s
+Ran 4 tests in 11.349s
 
 OK
 Live test, BIRD, global scenario, IPv4: setting instances up...
@@ -274,6 +274,7 @@ Live test, BIRD, global scenario, IPv4: sessions are up ... ok
 Live test, BIRD, global scenario, IPv4: session configured via local include files ... ok
 Live test, BIRD, global scenario, IPv4: good prefixes because of use_arin_bulk_whois_data ... ok
 Live test, BIRD, global scenario, IPv4: good prefixes received by rs: IRRdb white-list ... ok
+Live test, BIRD, global scenario, IPv4: good prefixes because of use_registrobr_bulk_whois_data ... ok
 Live test, BIRD, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
 Live test, BIRD, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
 Live test, BIRD, global scenario, IPv4: good prefixes received by rs ... ok
@@ -357,6 +358,7 @@ Live test, BIRD, global scenario, IPv4, tag: sessions are up ... ok
 Live test, BIRD, global scenario, IPv4, tag: session configured via local include files ... ok
 Live test, BIRD, global scenario, IPv4, tag: good prefixes because of use_arin_bulk_whois_data ... ok
 Live test, BIRD, global scenario, IPv4, tag: good prefixes received by rs: IRRdb white-list ... ok
+Live test, BIRD, global scenario, IPv4, tag: good prefixes because of use_registrobr_bulk_whois_data ... ok
 Live test, BIRD, global scenario, IPv4, tag: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
 Live test, BIRD, global scenario, IPv4, tag: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
 Live test, BIRD, global scenario, IPv4, tag: good prefixes received by rs ... ok
@@ -442,6 +444,7 @@ Live test, BIRD, global scenario, IPv6: sessions are up ... ok
 Live test, BIRD, global scenario, IPv6: session configured via local include files ... ok
 Live test, BIRD, global scenario, IPv6: good prefixes because of use_arin_bulk_whois_data ... ok
 Live test, BIRD, global scenario, IPv6: good prefixes received by rs: IRRdb white-list ... ok
+Live test, BIRD, global scenario, IPv6: good prefixes because of use_registrobr_bulk_whois_data ... ok
 Live test, BIRD, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
 Live test, BIRD, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
 Live test, BIRD, global scenario, IPv6: good prefixes received by rs ... ok
@@ -525,6 +528,7 @@ Live test, BIRD, global scenario, IPv6, tag: sessions are up ... ok
 Live test, BIRD, global scenario, IPv6, tag: session configured via local include files ... ok
 Live test, BIRD, global scenario, IPv6, tag: good prefixes because of use_arin_bulk_whois_data ... ok
 Live test, BIRD, global scenario, IPv6, tag: good prefixes received by rs: IRRdb white-list ... ok
+Live test, BIRD, global scenario, IPv6, tag: good prefixes because of use_registrobr_bulk_whois_data ... ok
 Live test, BIRD, global scenario, IPv6, tag: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
 Live test, BIRD, global scenario, IPv6, tag: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
 Live test, BIRD, global scenario, IPv6, tag: good prefixes received by rs ... ok
@@ -606,7 +610,7 @@ Live test, BIRD, global scenario, IPv6, tag: dumping routes...
 Live test, BIRD, global scenario, IPv6, tag: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 320 tests in 182.831s
+Ran 324 tests in 1201.508s
 
 OK (SKIP=4)
 Live test, BIRD, gshut, IPv4: setting instances up...
@@ -629,7 +633,7 @@ Live test, BIRD, gshut, IPv6: dumping routes...
 Live test, BIRD, gshut, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 10 tests in 28.403s
+Ran 10 tests in 30.634s
 
 OK
 Live test, BIRD, max-prefix, IPv4: setting instances up...
@@ -660,7 +664,7 @@ Live test, BIRD, max-prefix, IPv6: dumping routes...
 Live test, BIRD, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 18 tests in 47.225s
+Ran 18 tests in 50.644s
 
 OK
 Live test, BIRD, path hiding, mitigation off, IPv4: setting instances up...
@@ -717,7 +721,7 @@ Live test, BIRD, path hiding, mitigation on, IPv6: dumping routes...
 Live test, BIRD, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 36 tests in 114.480s
+Ran 36 tests in 122.527s
 
 OK
 Live test, BIRD, examples, rich config, IPv4: setting instances up...
@@ -734,7 +738,7 @@ Live test, BIRD, examples, rich config, IPv6: dumping routes...
 Live test, BIRD, examples, rich config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 18.443s
+Ran 4 tests in 21.600s
 
 OK
 Live test, BIRD, RPKI INVALID tagging, IPv4: setting instances up...
@@ -775,7 +779,7 @@ Live test, BIRD, RPKI INVALID tagging, IPv6: dumping routes...
 Live test, BIRD, RPKI INVALID tagging, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 28 tests in 49.939s
+Ran 28 tests in 54.221s
 
 OK
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: setting instances up...
@@ -962,7 +966,7 @@ Live test, BIRD, tag prefix/origin in AS-SET, IPv6: dumping routes...
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 166 tests in 111.876s
+Ran 166 tests in 119.865s
 
 OK
 Live test, BIRD, 'tag' reject policy scenario, IPv4: setting instances up...
@@ -1019,7 +1023,7 @@ Live test, BIRD, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, BIRD, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 44 tests in 74.200s
+Ran 44 tests in 83.566s
 
 OK (SKIP=1)
 Live test, OpenBGPD 6.0, BGP communities, IPv4: setting instances up...
@@ -1058,7 +1062,7 @@ Live test, OpenBGPD 6.0, BGP communities, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 112.975s
+Ran 26 tests in 124.926s
 
 OK (SKIP=6)
 Live test, OpenBGPD 6.0, default config, IPv4: setting instances up...
@@ -1075,7 +1079,7 @@ Live test, OpenBGPD 6.0, default config, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, default config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 30.219s
+Ran 4 tests in 32.576s
 
 OK
 Live test, OpenBGPD 6.0, global scenario, IPv4: setting instances up...
@@ -1084,6 +1088,7 @@ Live test, OpenBGPD 6.0, global scenario, IPv4: sessions are up ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: session configured via local include files ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: good prefixes because of use_arin_bulk_whois_data ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: good prefixes received by rs: IRRdb white-list ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv4: good prefixes because of use_registrobr_bulk_whois_data ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv4: good prefixes received by rs ... ok
@@ -1169,6 +1174,7 @@ Live test, OpenBGPD 6.0, global scenario, IPv6: sessions are up ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: session configured via local include files ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: good prefixes because of use_arin_bulk_whois_data ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: good prefixes received by rs: IRRdb white-list ... ok
+Live test, OpenBGPD 6.0, global scenario, IPv6: good prefixes because of use_registrobr_bulk_whois_data ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
 Live test, OpenBGPD 6.0, global scenario, IPv6: good prefixes received by rs ... ok
@@ -1250,7 +1256,7 @@ Live test, OpenBGPD 6.0, global scenario, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, global scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 162 tests in 132.156s
+Ran 164 tests in 150.551s
 
 OK (SKIP=16)
 Live test, OpenBGPD 6.0, max-prefix, IPv4: setting instances up...
@@ -1273,7 +1279,7 @@ Live test, OpenBGPD 6.0, max-prefix, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 10 tests in 239.358s
+Ran 10 tests in 366.679s
 
 OK
 Live test, OpenBGPD 6.0, path hiding, mitigation off, IPv4: setting instances up...
@@ -1330,7 +1336,7 @@ Live test, OpenBGPD 6.0, path hiding, mitigation on, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 36 tests in 184.465s
+Ran 36 tests in 198.384s
 
 OK (SKIP=4)
 Live test, OpenBGPD 6.0, examples, rich config, IPv4: setting instances up...
@@ -1347,7 +1353,7 @@ Live test, OpenBGPD 6.0, examples, rich config, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, examples, rich config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 40.124s
+Ran 4 tests in 45.623s
 
 OK
 Live test, OpenBGPD 6.0, tag prefix/origin empty AS-SET, IPv4: setting instances up...
@@ -1534,7 +1540,7 @@ Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 166 tests in 181.271s
+Ran 166 tests in 193.067s
 
 OK
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv4: setting instances up...
@@ -1593,7 +1599,7 @@ Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 46 tests in 113.942s
+Ran 46 tests in 125.935s
 
 OK (SKIP=3)
 Live test, OpenBGPD 6.2, BGP communities, IPv4: setting instances up...
@@ -1632,7 +1638,7 @@ Live test, OpenBGPD 6.2, BGP communities, IPv6: dumping routes...
 Live test, OpenBGPD 6.2, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 119.868s
+Ran 26 tests in 135.378s
 
 OK
 Live test, OpenBGPD 6.2, global scenario, IPv4: setting instances up...
@@ -1641,6 +1647,7 @@ Live test, OpenBGPD 6.2, global scenario, IPv4: sessions are up ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: session configured via local include files ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: good prefixes because of use_arin_bulk_whois_data ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: good prefixes received by rs: IRRdb white-list ... ok
+Live test, OpenBGPD 6.2, global scenario, IPv4: good prefixes because of use_registrobr_bulk_whois_data ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv4: good prefixes received by rs ... ok
@@ -1726,6 +1733,7 @@ Live test, OpenBGPD 6.2, global scenario, IPv6: sessions are up ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: session configured via local include files ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: good prefixes because of use_arin_bulk_whois_data ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: good prefixes received by rs: IRRdb white-list ... ok
+Live test, OpenBGPD 6.2, global scenario, IPv6: good prefixes because of use_registrobr_bulk_whois_data ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
 Live test, OpenBGPD 6.2, global scenario, IPv6: good prefixes received by rs ... ok
@@ -1807,7 +1815,7 @@ Live test, OpenBGPD 6.2, global scenario, IPv6: dumping routes...
 Live test, OpenBGPD 6.2, global scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 162 tests in 133.070s
+Ran 164 tests in 149.885s
 
 OK (SKIP=4)
 Live test, OpenBGPD 6.2, gshut, IPv4: setting instances up...
@@ -1830,7 +1838,7 @@ Live test, OpenBGPD 6.2, gshut, IPv6: dumping routes...
 Live test, OpenBGPD 6.2, gshut, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 10 tests in 62.373s
+Ran 10 tests in 66.941s
 
 OK
 Live test, OpenBGPD 6.2, max-prefix, IPv4: setting instances up...
@@ -1853,7 +1861,7 @@ Live test, OpenBGPD 6.2, max-prefix, IPv6: dumping routes...
 Live test, OpenBGPD 6.2, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 10 tests in 239.338s
+Ran 10 tests in 368.090s
 
 OK
 Live test, OpenBGPD 6.2, path hiding, mitigation off, IPv4: setting instances up...
@@ -1910,7 +1918,7 @@ Live test, OpenBGPD 6.2, path hiding, mitigation on, IPv6: dumping routes...
 Live test, OpenBGPD 6.2, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 36 tests in 189.252s
+Ran 36 tests in 194.499s
 
 OK (SKIP=4)
 Live test, OpenBGPD 6.2, tag prefix/origin empty AS-SET, IPv4: setting instances up...
@@ -2097,7 +2105,7 @@ Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: dumping routes...
 Live test, OpenBGPD 6.2, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 166 tests in 180.007s
+Ran 166 tests in 189.931s
 
 OK
 Live test, OpenBGPD 6.3, BGP communities, IPv4: setting instances up...
@@ -2136,7 +2144,7 @@ Live test, OpenBGPD 6.3, BGP communities, IPv6: dumping routes...
 Live test, OpenBGPD 6.3, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 124.369s
+Ran 26 tests in 133.095s
 
 OK
 Live test, OpenBGPD 6.3, global scenario, IPv4: setting instances up...
@@ -2145,6 +2153,7 @@ Live test, OpenBGPD 6.3, global scenario, IPv4: sessions are up ... ok
 Live test, OpenBGPD 6.3, global scenario, IPv4: session configured via local include files ... ok
 Live test, OpenBGPD 6.3, global scenario, IPv4: good prefixes because of use_arin_bulk_whois_data ... ok
 Live test, OpenBGPD 6.3, global scenario, IPv4: good prefixes received by rs: IRRdb white-list ... ok
+Live test, OpenBGPD 6.3, global scenario, IPv4: good prefixes because of use_registrobr_bulk_whois_data ... ok
 Live test, OpenBGPD 6.3, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
 Live test, OpenBGPD 6.3, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
 Live test, OpenBGPD 6.3, global scenario, IPv4: good prefixes received by rs ... ok
@@ -2230,6 +2239,7 @@ Live test, OpenBGPD 6.3, global scenario, IPv6: sessions are up ... ok
 Live test, OpenBGPD 6.3, global scenario, IPv6: session configured via local include files ... ok
 Live test, OpenBGPD 6.3, global scenario, IPv6: good prefixes because of use_arin_bulk_whois_data ... ok
 Live test, OpenBGPD 6.3, global scenario, IPv6: good prefixes received by rs: IRRdb white-list ... ok
+Live test, OpenBGPD 6.3, global scenario, IPv6: good prefixes because of use_registrobr_bulk_whois_data ... ok
 Live test, OpenBGPD 6.3, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
 Live test, OpenBGPD 6.3, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
 Live test, OpenBGPD 6.3, global scenario, IPv6: good prefixes received by rs ... ok
@@ -2311,7 +2321,7 @@ Live test, OpenBGPD 6.3, global scenario, IPv6: dumping routes...
 Live test, OpenBGPD 6.3, global scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 162 tests in 190.364s
+Ran 164 tests in 160.036s
 
 OK (SKIP=4)
 Live test, OpenBGPD 6.3, gshut, IPv4: setting instances up...
@@ -2334,7 +2344,7 @@ Live test, OpenBGPD 6.3, gshut, IPv6: dumping routes...
 Live test, OpenBGPD 6.3, gshut, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 10 tests in 110.732s
+Ran 10 tests in 99.703s
 
 OK
 Live test, OpenBGPD 6.3, max-prefix, IPv4: setting instances up...
@@ -2357,7 +2367,7 @@ Live test, OpenBGPD 6.3, max-prefix, IPv6: dumping routes...
 Live test, OpenBGPD 6.3, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 10 tests in 372.708s
+Ran 10 tests in 348.476s
 
 OK
 Live test, OpenBGPD 6.3, path hiding, mitigation off, IPv4: setting instances up...
@@ -2414,7 +2424,7 @@ Live test, OpenBGPD 6.3, path hiding, mitigation on, IPv6: dumping routes...
 Live test, OpenBGPD 6.3, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 36 tests in 189.181s
+Ran 36 tests in 174.644s
 
 OK (SKIP=4)
 Live test, OpenBGPD 6.3, tag prefix/origin empty AS-SET, IPv4: setting instances up...
@@ -2601,6 +2611,6 @@ Live test, OpenBGPD 6.3, tag prefix/origin in AS-SET, IPv6: dumping routes...
 Live test, OpenBGPD 6.3, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 166 tests in 185.789s
+Ran 166 tests in 173.403s
 
 OK

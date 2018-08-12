@@ -302,8 +302,15 @@ class ConfigureCommand(ARouteServerCommand):
         irrdb["use_arin_bulk_whois_data"] = {
             "enabled": True
         }
+        irrdb["use_registrobr_bulk_whois_data"] = {
+            "enabled": True
+        }
         self.notes.append(
             "ARIN Whois database dump is fetched from NLNOG to further "
+            "enrich IRR data."
+        )
+        self.notes.append(
+            "NIC.BR Whois database dump is fetched from Registro.br to further "
             "enrich IRR data."
         )
 

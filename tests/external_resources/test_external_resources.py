@@ -52,7 +52,7 @@ class TestExternalResources(unittest.TestCase):
         """External resources: ARIN Whois database dump"""
         cfg = ConfigParserGeneral()
         url = cfg.get_schema()["cfg"]["filtering"]["irrdb"]["use_arin_bulk_whois_data"]["source"].default
-        db_dump = ARINWhoisDBDump(arin_whois_db_source=url, **cache_cfg)
+        db_dump = ARINWhoisDBDump(source=url, **cache_cfg)
         db_dump.load_data()
         self.assertTrue(len(db_dump.whois_records) > 0)
 

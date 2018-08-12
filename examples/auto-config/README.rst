@@ -56,6 +56,8 @@ A list of BGP communities is also automatically built.
    configured.
     - RPKI ROAs are used as if they were route objects to further enrich IRR data.
     - ARIN Whois database dump is fetched from NLNOG to further enrich IRR data.
+    - NIC.BR Whois database dump is fetched from Registro.br to further enrich IRR
+   data.
     - PeeringDB is used to fetch networks prefix count.
     - Routes tagged with the GRACEFUL_SHUTDOWN well-known community (65535:0) are
    processed accordingly to draft-ietf-grow-bgp-gshut.

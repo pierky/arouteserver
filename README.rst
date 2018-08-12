@@ -76,6 +76,7 @@ Features
 
     - RPKI **ROAs used as route objects**;
     - `Origin AS <https://mailman.nanog.org/pipermail/nanog/2017-December/093525.html>`_ from **ARIN Whois** database dump;
+    - `NIC.BR Whois data <https://ripe76.ripe.net/presentations/43-RIPE76_IRR101_Job_Snijders.pdf>`_ (slide n. 26) from Registro.br;
 
   - **RPKI**-based filtering (BGP Prefix Origin Validation).
 

@@ -30,11 +30,20 @@ define AS_SET_{{ as_set_bundle.name }}_prefixes = [
 
 {% endfor %}
 
-{% if cfg.filtering.irrdb.use_arin_bulk_whois_data.enabled %}
+{% if cfg.filtering.irrdb.use_arin_bulk_whois_data.enabled and arin_whois_records %}
 # ARIN Whois database records
 {%	for origin_asn in arin_whois_records|sort %}
 define ARIN_Whois_db_{{ origin_asn }} = [
 {{ write_prefix_list(arin_whois_records[origin_asn].prefixes, True) }}
+];
+{%	endfor %}
+{% endif %}
+
+{% if cfg.filtering.irrdb.use_registrobr_bulk_whois_data.enabled and registrobr_whois_records %}
+# Registro.br Whois database records
+{%	for origin_asn in registrobr_whois_records|sort %}
+define RegistroBR_Whois_db_{{ origin_asn }} = [
+{{ write_prefix_list(registrobr_whois_records[origin_asn].prefixes, True) }}
 ];
 {%	endfor %}
 {% endif %}

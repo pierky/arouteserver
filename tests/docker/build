@@ -25,8 +25,11 @@ ars_ver="`python -c 'from pierky.arouteserver.version import __version__; print(
 ars_package="${root}/dist/arouteserver-${ars_ver}.tar.gz"
 
 if [ ! -e "${ars_package}" ]; then
-	echo "ERROR: can't find $ars_package"
-	exit 1
+	ars_package="`ls -t ${root}/dist/arouteserver-*.tar.gz | head -n 1`"
+	if [ ! -e "${ars_package}" ]; then
+		echo "ERROR: can't find $ars_package"
+		exit 1
+	fi
 fi
 
 cd tests/docker

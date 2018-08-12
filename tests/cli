@@ -110,28 +110,28 @@ cfg:
 EOF
 build_cmd "openbgpd" | must_contain "A collision has been detected with the following community: prepend_once_to_any"
 
-# ---------------------------------------------
-# custom BGP communities
-reset
-TITLE="Custom BGP communities"
-SUB_TEST="$LINENO"
-GENERAL="tests/var/general.yml"
-cat << EOF > $GENERAL
-cfg:
-  rs_as: 999
-  router_id: "192.0.2.2"
-  custom_communities:
-    city_haarlem:
-      std: "65501:1"
-    city_amsterdam:
-      std: "65501:2"
-EOF
-CLIENTS="`mktemp`"
-run_cmd "clients-from-euroix" --url https://my.ams-ix.net/api/v1/members.json 2 --vlan-id 502 --guess-custom-bgp-communities city -o $CLIENTS
-cat $CLIENTS | must_contain "city_amsterdam"
-cat $CLIENTS | must_contain "city_haarlem"
-build_cmd "bird" --ip-ver 4 | must_contain "bgp_community.add((65501, 2));"
-rm $CLIENTS
+## ---------------------------------------------
+## custom BGP communities
+#reset
+#TITLE="Custom BGP communities"
+#SUB_TEST="$LINENO"
+#GENERAL="tests/var/general.yml"
+#cat << EOF > $GENERAL
+#cfg:
+#  rs_as: 999
+#  router_id: "192.0.2.2"
+#  custom_communities:
+#    city_haarlem:
+#      std: "65501:1"
+#    city_amsterdam:
+#      std: "65501:2"
+#EOF
+#CLIENTS="`mktemp`"
+#run_cmd "clients-from-euroix" --url https://my.ams-ix.net/api/v1/members.json 2 --vlan-id 502 --guess-custom-bgp-communities city -o $CLIENTS
+#cat $CLIENTS | must_contain "city_amsterdam"
+#cat $CLIENTS | must_contain "city_haarlem"
+#build_cmd "bird" --ip-ver 4 | must_contain "bgp_community.add((65501, 2));"
+#rm $CLIENTS
 
 # ---------------------------------------------
 reset

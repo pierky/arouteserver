@@ -70,12 +70,14 @@ class CachedObject(object):
         "pdb_info": 86400,
         "ripe_rpki_roas": 43200,
         "irr_as_sets": 43200,
-        "arin_whois_db_dump": 43200
+        "arin_whois_db_dump": 43200,
+        "registrobr_whois_db_dump": 43200
     }
 
     # Keep in sync with config.d/arouteserver.yml cache_expiry
     ALLOWED_EXPIRY_TIME_TAGS = ("general", "pdb_info", "ripe_rpki_roas",
-                                "irr_as_sets", "arin_whois_db_dump")
+                                "irr_as_sets", "arin_whois_db_dump",
+                                "registrobr_whois_db_dump")
     EXPIRY_TIME_TAG = "general"
 
     MISSING_INFO_EXCEPTION = ExternalDataNoInfoError

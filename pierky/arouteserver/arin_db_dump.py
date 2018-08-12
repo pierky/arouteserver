@@ -17,10 +17,8 @@ from bz2 import decompress
 import json
 import logging
 import os
+import requests
 from packaging import version
-
-from six.moves.urllib.request import urlopen
-from six.moves.urllib.error import HTTPError
 
 from .ipaddresses import IPNetwork
 from .cached_objects import CachedObject
@@ -34,7 +32,7 @@ class ARINWhoisDBDump(CachedObject):
     def __init__(self, *args, **kwargs):
         CachedObject.__init__(self, *args, **kwargs)
 
-        self.source = kwargs.get("arin_whois_db_source")
+        self.source = kwargs.get("source")
 
         self.whois_records = []
 
@@ -129,13 +127,12 @@ class ARINWhoisDBDump(CachedObject):
 
             url = self.source
             try:
-                response = urlopen(url).read()
-            except HTTPError as e:
+                response = requests.get(url).content
+            except requests.exceptions.HTTPError as e:
                 raise ARINWhoisDBDumpError(
                     "HTTP error while retrieving ARIN Whois DB dump "
-                    "from {}: "
-                    "code: {}, reason: {} - {}".format(
-                        url, e.code, e.reason, str(e)
+                    "from {}: {}".format(
+                        url, str(e)
                     )
                 )
             except Exception as e:

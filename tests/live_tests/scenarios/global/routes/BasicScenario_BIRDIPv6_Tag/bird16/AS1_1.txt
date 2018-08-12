@@ -383,6 +383,13 @@
   best: True, LOCAL_PREF: 100
   filtered: False ()
 
+3104:1:1::/48, AS_PATH: 101 104, NEXT_HOP: 2001:db8:1:1::101, via 2001:db8:1:1::101
+  std comms:
+  ext comms:
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
 8000:1::/32, AS_PATH: 101, NEXT_HOP: 2001:db8:1:1::101, via 2001:db8:1:1::101
   std comms:
   ext comms:

@@ -238,4 +238,5 @@ Built to group as many tests as possible in a single scenario.
                                          to AS2:
                                          [101 103]
   AS104_arin_1          104.0.1.0/24     [101 104]   Accepted from AS1 via ARIN Whois DB dump; rejected by others
+  AS104_nicbr_1         104.1.1.0/24     [101 104]   Accepted from AS1 via NIC.BR Whois DB dump; rejected by others
   ====================  ==============   =========== ==================================================================================

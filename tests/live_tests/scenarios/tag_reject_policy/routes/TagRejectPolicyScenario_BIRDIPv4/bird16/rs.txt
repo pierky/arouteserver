@@ -467,6 +467,27 @@
   best: False, LOCAL_PREF: 1
   filtered: False ()
 
+104.1.1.0/24, AS_PATH: 1 101 104, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+104.1.1.0/24, AS_PATH: 1 101 104, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:9
+  ext comms: rt:65520:1
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+104.1.1.0/24, AS_PATH: 2 101 104, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms: 65520:0, 65520:9
+  ext comms: rt:65520:2
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
 11.1.1.0/24, AS_PATH: 1 1011, NEXT_HOP: 192.0.2.11, via 192.0.2.11
   std comms:
   ext comms: generic:0x43000000:0x1

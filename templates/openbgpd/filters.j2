@@ -16,7 +16,7 @@
 # the route should be discarded.
 
 {% macro internal_communities_list(all=false) %}
-ext-community delete $INTCOMM_PREF_OK_ROA ext-community delete $INTCOMM_ROUTE_OK_WL ext-community delete $INTCOMM_PREF_OK_ARINDB ext-community delete $INTCOMM_ORIGIN_OK ext-community delete $INTCOMM_ORIGIN_KO ext-community delete $INTCOMM_PREFIX_OK ext-community delete $INTCOMM_PREFIX_KO ext-community delete $INTCOMM_IRR_REJECT ext-community delete $INTCOMM_RPKI_UNKNOWN ext-community delete $INTCOMM_RPKI_INVALID ext-community delete $INTCOMM_RPKI_VALID {% if all %} ext-community delete $INTCOMM_NO_EXPORT ext-community delete $INTCOMM_NO_ADVERTISE {% endif %}
+ext-community delete $INTCOMM_PREF_OK_ROA ext-community delete $INTCOMM_ROUTE_OK_WL ext-community delete $INTCOMM_PREF_OK_ARINDB ext-community delete $INTCOMM_PREF_OK_REGISTROBRDB ext-community delete $INTCOMM_ORIGIN_OK ext-community delete $INTCOMM_ORIGIN_KO ext-community delete $INTCOMM_PREFIX_OK ext-community delete $INTCOMM_PREFIX_KO ext-community delete $INTCOMM_IRR_REJECT ext-community delete $INTCOMM_RPKI_UNKNOWN ext-community delete $INTCOMM_RPKI_INVALID ext-community delete $INTCOMM_RPKI_VALID {% if all %} ext-community delete $INTCOMM_NO_EXPORT ext-community delete $INTCOMM_NO_ADVERTISE {% endif %}
 {% endmacro %}
 
 {% macro deny_inbound_route(tag_reject_policy, condition, cause_code) %}
@@ -160,6 +160,20 @@ match from group clients ext-community $INTCOMM_RPKI_VALID set ext-community $IN
 {%	for origin_asn in arin_whois_records|sort %}
 {%		for prefixes in arin_whois_records[origin_asn].prefixes|sort(attribute="prefix")|batch(50) %}
 match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {{ write_prefix_list(prefixes) }} } set ext-community $INTCOMM_PREF_OK_ARINDB
+{%		endfor %}
+{%	endfor %}
+{% endif %}
+
+{% if cfg.filtering.irrdb.use_registrobr_bulk_whois_data.enabled and
+	registrobr_whois_records %}
+# Add the $INTCOMM_PREF_OK_REGISTROBRDB ext community to routes whose
+# origin ASN has a NIC.BR Whois record for the announced prefix.
+# It will be used later during IRRDB validation in
+# case the origin ASN is authorized by a client's
+# AS-SET but the prefix is not.
+{%	for origin_asn in registrobr_whois_records|sort %}
+{%		for prefixes in registrobr_whois_records[origin_asn].prefixes|sort(attribute="prefix")|batch(50) %}
+match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {{ write_prefix_list(prefixes) }} } set ext-community $INTCOMM_PREF_OK_REGISTROBRDB
 {%		endfor %}
 {%	endfor %}
 {% endif %}
@@ -316,6 +330,19 @@ match from {{ client.ip }} ext-community $INTCOMM_ORIGIN_OK set community NO_ADV
 {%	set when = "match from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_PREF_OK_ARINDB" %}
 {%	if cfg.filtering.irrdb.tag_as_set %}
 {{		add_communities(when, cfg.communities.prefix_validated_via_arin_whois_db_dump) }}
+{%	endif %}
+{{ when }} set ext-community delete $INTCOMM_IRR_REJECT
+match from {{ client.ip }} set community delete NO_ADVERTISE
+{% endif %}
+
+{% if cfg.filtering.irrdb.use_registrobr_bulk_whois_data.enabled and registrobr_whois_records %}
+# routes tagged with $INTCOMM_PREF_OK_REGISTROBRDB community have the prefix validated by a NICBR Whois record; origin ASN previously validated ($INTCOMM_ORIGIN_OK)
+# NO_ADVERTISE here means $INTCOMM_ORIGIN_OK
+# (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)
+match from {{ client.ip }} ext-community $INTCOMM_ORIGIN_OK set community NO_ADVERTISE
+{%	set when = "match from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_PREF_OK_REGISTROBRDB" %}
+{%	if cfg.filtering.irrdb.tag_as_set %}
+{{		add_communities(when, cfg.communities.prefix_validated_via_registrobr_whois_db_dump) }}
 {%	endif %}
 {{ when }} set ext-community delete $INTCOMM_IRR_REJECT
 match from {{ client.ip }} set community delete NO_ADVERTISE

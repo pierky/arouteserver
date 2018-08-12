@@ -247,6 +247,23 @@ class BasicScenario(LiveScenario):
         self.receive_route(self.AS4, prefix, self.rs, as_path="1 101 104",
                            next_hop=self.AS1_1)
 
+    def test_030_good_prefixes_because_of_registrobr_db_1(self):
+        """{}: good prefixes because of use_registrobr_bulk_whois_data"""
+
+        prefix = self.DATA["AS104_nicbr_1"]
+        self.receive_route(self.rs, prefix,
+                           self.AS1_1, as_path="1 101 104",
+                           next_hop=self.AS1_1)
+
+        # AS101 peers with AS2 too but that route should be reject
+        # because only AS1 has AS104 in its AS-SET
+        self.receive_route(self.rs, prefix,
+                           self.AS2, as_path="2 101 104", next_hop=self.AS2,
+                           filtered=True, reject_reason=9)
+
+        self.receive_route(self.AS4, prefix, self.rs, as_path="1 101 104",
+                           next_hop=self.AS1_1)
+
     def test_030_good_prefixes_received_by_rs_nonclient_nexthop(self):
         """{}: good prefixes received by rs: non-client NEXT_HOP"""
 
@@ -1009,7 +1026,7 @@ class BasicScenario(LiveScenario):
         # also verifies that these prefixes are received twice by AS3)
         for pref in ("AS101_good1", "AS101_bad_std_comm", "AS101_bad_lrg_comm",
                      "AS101_other_s_comm", "AS101_other_l_comm",
-                     "AS101_bad_good_comms", "AS104_arin_1"):
+                     "AS101_bad_good_comms", "AS104_arin_1", "AS104_nicbr_1"):
             self.receive_route(self.AS3, self.DATA[pref], self.rs)
 
         for pref in ("AS101_roa_routeobj_1", "AS101_roa_routeobj_3"):

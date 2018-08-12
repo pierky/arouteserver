@@ -21,6 +21,7 @@ except ImportError:
 import os
 
 from pierky.arouteserver.arin_db_dump import ARINWhoisDBDump
+from pierky.arouteserver.registro_br_db_dump import RegistroBRWhoisDBDump
 from pierky.arouteserver.cached_objects import CachedObject
 from pierky.arouteserver.config.validators import ValidatorPrefixListEntry
 from pierky.arouteserver.enrichers.irrdb import IRRDBConfigEnricher_ASNs, \
@@ -215,6 +216,16 @@ class MockedEnv(object):
         ).start()
         mock_get_data.side_effect = get_data
 
+    def do_mock_registrobr_db_dump(mocked_env):
+
+        def get_data(self):
+            return mocked_env.load("registrobr_whois_db", "dump.txt")
+
+        mock_get_data = mock.patch.object(
+            RegistroBRWhoisDBDump, "_get_data", autospec=True
+        ).start()
+        mock_get_data.side_effect = get_data
+
     def __init__(mocked_env, base_inst=None, base_dir=None, default=True,
                  **kwargs):
         """
@@ -279,6 +290,13 @@ class MockedEnv(object):
 
           The content of the ARIN DB dump is read from the local
           <base_dir>/arin_whois_db/dump.json file.
+
+        - registrobr_db_dump:
+
+          Mock the RegistroBRWhoisDBDump._get_data() method.
+
+          The content of the Registro.br DB dump is read from the local
+          <base_dir>/registrobr_whois_db/dump.json file.
         """
         mocked_env.base_inst = base_inst
 
@@ -306,12 +324,15 @@ class MockedEnv(object):
 
         mocked_env.arin_db_dump = kwargs.get("arin_db_dump", default)
 
+        mocked_env.registrobr_db_dump = kwargs.get("registrobr_db_dump", default)
+
         mocked_env.base_dir = base_dir
 
         # Setup mocks
 
         if mocked_env.peering_db or mocked_env.ripe_rpki_cache or \
-            mocked_env.irr or mocked_env.irrdb or mocked_env.arin_db_dump:
+            mocked_env.irr or mocked_env.irrdb or mocked_env.arin_db_dump or \
+            mocked_env.registrobr_db_dump:
             mocked_env.bypass_cache = True
 
         if mocked_env.bypass_cache:
@@ -334,6 +355,9 @@ class MockedEnv(object):
 
         if mocked_env.arin_db_dump:
             mocked_env.do_mock_arin_db_dump()
+
+        if mocked_env.registrobr_db_dump:
+            mocked_env.do_mock_registrobr_db_dump()
 
         mocked_env.mocked_files = {}
 

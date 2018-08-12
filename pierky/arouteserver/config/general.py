@@ -44,6 +44,7 @@ class ConfigParserGeneral(ConfigParserBase):
         "prefix_not_present_in_as_set": { "type": "outbound" },
         "prefix_validated_via_rpki_roas": { "type": "outbound" },
         "prefix_validated_via_arin_whois_db_dump": { "type": "outbound" },
+        "prefix_validated_via_registrobr_whois_db_dump": { "type": "outbound" },
         "route_validated_via_white_list": { "type": "outbound" },
 
         "blackholing": { "type": "inbound" },
@@ -154,6 +155,14 @@ class ConfigParserGeneral(ConfigParserBase):
         a["source"] = ValidatorText(
             mandatory=True,
             default="http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
+        )
+
+        i["use_registrobr_bulk_whois_data"] = OrderedDict()
+        a = i["use_registrobr_bulk_whois_data"]
+        a["enabled"] = ValidatorBool(default=False)
+        a["source"] = ValidatorText(
+            mandatory=True,
+            default="ftp://ftp.registro.br/pub/numeracao/origin/nicbr-asn-blk-latest.txt"
         )
 
         f["rpki_bgp_origin_validation"] = OrderedDict()

@@ -112,6 +112,9 @@ class RPKIValidatorCacheError(ARouteServerError):
 class ARINWhoisDBDumpError(ARouteServerError):
     pass
 
+class RegistroBRWhoisDBDumpError(ARouteServerError):
+    pass
+
 class LastVersionCheckingError(ARouteServerError):
     pass
 
