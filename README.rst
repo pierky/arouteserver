@@ -144,6 +144,8 @@ Mentions / endorsements:
 Who is using ARouteServer?
 --------------------------
 
+- `BharatIX <https://www.bharatix.net/>`__, BIRD.
+
 - `IX-Denver <http://ix-denver.org/>`__, BIRD.
 
 - `PIT-IX <https://pit-ix.net/>`__, BIRD.
