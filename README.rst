@@ -141,6 +141,8 @@ Mentions / endorsements:
 
 - Job Snijders, LINX99, 20 November 2017: `slides <http://instituut.net/~job/LINX99_route_servers.pdf>`__
 
+- Anurag Bhatia, APNIC46, 12 September 2018: `video <https://www.youtube.com/watch?v=XfSNQbiR1cg&t=3140>`__, `slides <https://conference.apnic.net/46/assets/files/APNC402/Automate-your-IX-config.pdf>`__ (PDF)
+
 Who is using ARouteServer?
 --------------------------
 
