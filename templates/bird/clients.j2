@@ -28,7 +28,7 @@ function origin_as_is_in_{{ client.id }}_as_set() {
 {% if client.cfg.filtering.irrdb.as_set_bundle_ids %}
 {%	for as_set_bundle_id in client.cfg.filtering.irrdb.as_set_bundle_ids|sort %}
 {%		if irrdb_info[as_set_bundle_id].asns %}
-	if bgp_path.last ~ AS_SET_{{ irrdb_info[as_set_bundle_id].name }}_asns then
+	if bgp_path.last_nonaggregated ~ AS_SET_{{ irrdb_info[as_set_bundle_id].name }}_asns then
 		return true;
 {%		else %}
 	# AS-SET {{ irrdb_info[as_set_bundle_id].name }} referenced but empty.
@@ -159,7 +159,7 @@ bool validated;
 {%		for route in client.cfg.filtering.irrdb.white_list_route|sort(attribute="prefix") if route.prefix is current_ipver %}
 	if !validated && net ~ [ {{ write_prefix_list_entry(route) }} ] then {
 {%			if route.asn %}
-		if bgp_path.last = {{ route.asn }} then {
+		if bgp_path.last_nonaggregated = {{ route.asn }} then {
 {%				if cfg.filtering.irrdb.tag_as_set and cfg.communities.route_validated_via_white_list|community_is_set %}
 {{					add_communities(cfg.communities.route_validated_via_white_list) }}
 {%				endif %}
@@ -177,7 +177,7 @@ bool validated;
 
 {%	if client.cfg.filtering.irrdb.enforce_origin_in_as_set %}
 	if !validated && !origin_ok then {
-		{{ reject(client, 9, '"origin ASN [", bgp_path.last, "] not in allowed as-sets - REJECTING ", net', avoid_braces=True) }}
+		{{ reject(client, 9, '"origin ASN [", bgp_path.last_nonaggregated, "] not in allowed as-sets - REJECTING ", net', avoid_braces=True) }}
 	}
 {%	endif %}
 {%	if client.cfg.filtering.irrdb.enforce_prefix_in_as_set %}
