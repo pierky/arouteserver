@@ -410,7 +410,7 @@ function prefix_in_rpki_roas_as_route_objects() {
 # origin ASN to validate the announced prefix the function
 # returns True, otherwise False.
 function prefix_in_arin_whois_db() {
-	case bgp_path.last {
+	case bgp_path.last_nonaggregated {
 {%		for origin_asn in arin_whois_records|sort %}
 		{{ origin_asn|replace("AS", "") }}: return net ~ ARIN_Whois_db_{{ origin_asn }};
 {%		endfor %}
@@ -425,7 +425,7 @@ function prefix_in_arin_whois_db() {
 # origin ASN to validate the announced prefix the function
 # returns True, otherwise False.
 function prefix_in_registrobr_whois_db() {
-	case bgp_path.last {
+	case bgp_path.last_nonaggregated {
 {%		for origin_asn in registrobr_whois_records|sort %}
 		{{ origin_asn|replace("AS", "") }}: return net ~ RegistroBR_Whois_db_{{ origin_asn }};
 {%		endfor %}
