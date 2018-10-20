@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+v0.19.1
+-------
+
+- Fix (BIRD configuration only): change `bgp_path.last` with `bgp_path.last_nonaggregated`.
+
+  When a route is originated from the aggregation of two different routes using the AS_SET, `bgp_path.last` always returns 0, so the origin ASN validation against IRR always fails.
+
+  Related: `issue #34 on GitHub <https://github.com/pierky/arouteserver/issues/34>`_.
+
 v0.19.0
 -------
 
