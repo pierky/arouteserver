@@ -217,8 +217,8 @@ class MaxPrefixScenarioOpenBGPD62(MaxPrefixScenarioOpenBGPD):
 class MaxPrefixScenarioOpenBGPD63(MaxPrefixScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.3
-    "
+    TARGET_VERSION = "6.3"
+
 class MaxPrefixScenarioOpenBGPD64(MaxPrefixScenarioOpenBGPD):
     __test__ = False
 
