@@ -19,8 +19,7 @@ import unittest
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
-                                                          OpenBGPD60Instance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class BGPCommunitiesScenario(LiveScenario):
@@ -123,9 +122,6 @@ class BGPCommunitiesScenario(LiveScenario):
 
     def test_031_only_to_AS1_lrg(self):
         """{}: announce to AS1 only (lrg)"""
-        if isinstance(self.rs, OpenBGPD60Instance):
-            raise unittest.SkipTest("Large comms not supported by OpenBGPD 6.0")
-
         pref = self.DATA["AS2_only_to_AS1_l"]
         self.receive_route(self.rs, pref, self.AS2,
                            std_comms=[],
@@ -163,9 +159,6 @@ class BGPCommunitiesScenario(LiveScenario):
 
     def test_032_only_to_AS131073_lrg(self):
         """{}: announce to AS131073 only (lrg)"""
-        if isinstance(self.rs, OpenBGPD60Instance):
-            raise unittest.SkipTest("Large comms not supported by OpenBGPD 6.0")
-
         pref = self.DATA["AS2_only_to_AS131073_l"]
         self.receive_route(self.rs, pref, self.AS2,
                            std_comms=[],
@@ -200,8 +193,6 @@ class BGPCommunitiesScenario(LiveScenario):
 
     def test_040_custom_bgp_community_lrg(self):
         """{}: custom BGP community (lrg)"""
-        if isinstance(self.rs, OpenBGPD60Instance):
-            raise unittest.SkipTest("Large comms not supported by OpenBGPD 6.0")
         for inst in (self.AS2, self.AS131073):
             self.receive_route(inst, self.DATA["AS1_good1"], self.rs,
                                lrg_comms=["999:65501:65501"])
@@ -259,11 +250,6 @@ class BGPCommunitiesScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
             ]
         )
 
-class BGPCommunitiesScenarioOpenBGPD60(BGPCommunitiesScenarioOpenBGPD):
-    __test__ = False
-
-    TARGET_VERSION = "6.0"
-
 class BGPCommunitiesScenarioOpenBGPD62(BGPCommunitiesScenarioOpenBGPD):
     __test__ = False
 
@@ -274,3 +260,9 @@ class BGPCommunitiesScenarioOpenBGPD63(BGPCommunitiesScenarioOpenBGPD):
     __test__ = False
 
     TARGET_VERSION = "6.3"
+
+
+class BGPCommunitiesScenarioOpenBGPD64(BGPCommunitiesScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.4"

@@ -300,3 +300,7 @@ class OpenBGPD62Instance(OpenBGPDInstance):
 class OpenBGPD63Instance(OpenBGPDInstance):
 
     VIRSH_DOMAINNAME = "arouteserver_openbgpd63"
+
+class OpenBGPD64Instance(OpenBGPDInstance):
+
+    VIRSH_DOMAINNAME = "arouteserver_openbgpd64"

@@ -16,16 +16,19 @@
 import os
 import unittest
 
-from .base import DefaultConfigScenarioOpenBGPD
-from .data4 import DefaultConfigScenario_Data4
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
+from .base import TagASSetScenario_EmptyAS_SETs, \
+                  TagASSetScenarioOpenBGPD64
+from .data6 import TagASSetScenario_Data6
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD64Instance
 
-class DefaultConfigScenarioOpenBGPD_IPv4(DefaultConfigScenario_Data4,
-                                         DefaultConfigScenarioOpenBGPD):
+class TagASSetScenario_EmptyAS_SETs_OpenBGPDIPv6(TagASSetScenario_EmptyAS_SETs,
+                                                 TagASSetScenario_Data6,
+                                                 TagASSetScenarioOpenBGPD64):
     __test__ = True
     SKIP_ON_TRAVIS = True
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.0, default config, IPv4"
-    RS_INSTANCE_CLASS = OpenBGPD60Instance
-    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
+    RS_INSTANCE_CLASS = OpenBGPD64Instance
+    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
+
+    SHORT_DESCR = "Live test, OpenBGPD 6.4, tag prefix/origin empty AS-SET, IPv6"

@@ -4,7 +4,7 @@ set -e
 
 THESE_TESTS_ONLY="build load"
 THESE_IXP_IDS_ONLY="ams_ix bcix bix gr_ix inex lonap six sthix swissix"
-THESE_DAEMONS_ONLY="bird164 openbgpd63 openbgpd60"
+THESE_DAEMONS_ONLY="bird164 openbgpd64"
 JOIN_ONLY=0
 DESTROY_VULTR_SERVER_ON_EXIT=0
 DESTROY_VULTR_SERVER_ONLY=0
@@ -101,7 +101,7 @@ function join_result() {
 
 	echo "Joining ${1}..."
 
-	for ext in .build.bird164 .build.openbgpd60 .build.openbgpd63 .load.bird164 .load.openbgpd60 .load.openbgpd63; do
+	for ext in .build.bird164 .build.openbgpd64 .load.bird164 .load.openbgpd64; do
 		result_file="${1}${ext}"
 		if [ ! -e $LAST_RESULTS_DIR/$result_file ]; then
 			echo "ERROR: $result_file missing"
@@ -332,11 +332,11 @@ fi
 if [[ `echo "$THESE_TESTS_ONLY" | grep -P "\bload\b"` ]]; then
 	for daemon_id in $THESE_DAEMONS_ONLY; do
 		REMOTE_IP=""
-		if [ "$daemon_id" == "openbgpd60" ]; then
+		if [ "$daemon_id" == "openbgpd64" ]; then
 			if [ -z "$LOCAL_ONLY" ]; then
-				echo "Compressing OpenBGP 6.0 rs config files..."
+				echo "Compressing OpenBGP 6.4 rs config files..."
 				shopt -s nullglob
-				for f in $TESTS_DIR/var/configs/*_openbgpd_6.0.conf; do
+				for f in $TESTS_DIR/var/configs/*_openbgpd_6.4.conf; do
 					if [ ! -e $TESTS_DIR/var/configs/${f}.gz ]; then
 						echo "Compressing ${f}..."
 						gzip --force --best $f

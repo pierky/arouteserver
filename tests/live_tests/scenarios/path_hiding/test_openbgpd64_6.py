@@ -18,30 +18,30 @@ import unittest
 
 from .base import PathHidingScenario_MitigationOn, \
                  PathHidingScenario_MitigationOff, \
-                 PathHidingScenarioOpenBGPD60
-from .data4 import PathHidingScenario_Data4
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
+                 PathHidingScenarioOpenBGPD64
+from .data6 import PathHidingScenario_Data6
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD64Instance
 
-class PathHidingScenario_MitigationOn_OpenBGPDIPv4(PathHidingScenario_Data4,
+class PathHidingScenario_MitigationOn_OpenBGPDIPv6(PathHidingScenario_Data6,
                                                    PathHidingScenario_MitigationOn,
-                                                   PathHidingScenarioOpenBGPD60):
+                                                   PathHidingScenarioOpenBGPD64):
     __test__ = True
     SKIP_ON_TRAVIS = True
 
-    RS_INSTANCE_CLASS = OpenBGPD60Instance
-    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
+    RS_INSTANCE_CLASS = OpenBGPD64Instance
+    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.0, path hiding, mitigation on, IPv4"
+    SHORT_DESCR = "Live test, OpenBGPD 6.4, path hiding, mitigation on, IPv6"
 
-class PathHidingScenario_MitigationOff_OpenBGPDIPv4(PathHidingScenario_Data4,
+class PathHidingScenario_MitigationOff_OpenBGPDIPv6(PathHidingScenario_Data6,
                                                     PathHidingScenario_MitigationOff,
-                                                    PathHidingScenarioOpenBGPD60):
+                                                    PathHidingScenarioOpenBGPD64):
     __test__ = True
     SKIP_ON_TRAVIS = True
 
-    RS_INSTANCE_CLASS = OpenBGPD60Instance
-    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
+    RS_INSTANCE_CLASS = OpenBGPD64Instance
+    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.0, path hiding, mitigation off, IPv4"
+    SHORT_DESCR = "Live test, OpenBGPD 6.4, path hiding, mitigation off, IPv6"
 

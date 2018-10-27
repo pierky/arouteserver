@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function usage() {
-	echo "utils/test_config [bird4 | bird6 | openbgpd60 | openbgpd61 | openbgpd62 | openbgpd63] <config_file_path>"
+	echo "utils/test_config [bird4 | bird6 | openbgpd61 | openbgpd62 | openbgpd63 | openbgpd64 ] <config_file_path>"
 }
 
 if [ ! -e "setup.py" ]; then
@@ -36,7 +36,7 @@ elif [ "$1" == "bird6" ]; then
 		pierky/bird:1.6.3 \
 		bird6 -c /etc/bird/bird.conf -d
 
-elif [ "$1" == "openbgpd60" -o "$1" == "openbgpd61" -o "$1" == "openbgpd62" -o "$1" == "openbgpd63" ]; then
+elif [ "$1" == "openbgpd61" -o "$1" == "openbgpd62" -o "$1" == "openbgpd63" -o "$1" == "openbgpd64" ]; then
 	virsh \
 		start arouteserver_$1
 	echo ""
