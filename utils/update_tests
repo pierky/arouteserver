@@ -169,7 +169,7 @@ for bgpspeaker in $BGPSPEAKERS; do
 			fi
 		fi
 	done
-	if [ "${bgpspeaker}" == "openbgpd62" -o "${bgpspeaker}" == "openbgpd63" -o "${bgpspeaker}" == "openbgpd64" ]; then
+	if [ "${bgpspeaker}" == "openbgpd62" -o "${bgpspeaker}" == "openbgpd64" ]; then
 
 		if [ `virsh list --name --state-running | egrep -v "^$" | wc -l` -gt 0 ]; then
 			echo "Shutting down rs KVM instance..."
