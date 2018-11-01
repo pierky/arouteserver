@@ -987,12 +987,6 @@ arin_whois_db_records
 ---------------------
 AS10745:
 - exact: false
-  ge: 48
-  le: 128
-  length: 48
-  max_length: 128
-  prefix: '2001:500:4::'
-- exact: false
   ge: 24
   le: 32
   length: 24
@@ -1003,13 +997,19 @@ AS10745:
   le: 32
   length: 24
   max_length: 32
-  prefix: 192.149.252.0
+  prefix: 192.136.136.0
 - exact: false
   ge: 24
   le: 32
   length: 24
   max_length: 32
-  prefix: 192.136.136.0
+  prefix: 192.149.252.0
+- exact: false
+  ge: 48
+  le: 128
+  length: 48
+  max_length: 128
+  prefix: '2001:500:4::'
 
 
 registrobr_whois_db_records
