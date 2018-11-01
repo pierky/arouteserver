@@ -1,5 +1,6 @@
 {% from 'macros.j2' import write_prefix_list %}
 {% from 'macros.j2' import write_prefix_list_entry %}
+{% from 'macros.j2' import write_prefixset_list %}
 {% from 'macros.j2' import match_communities %}
 {% from 'macros.j2' import add_communities %}
 {% from 'macros.j2' import del_communities %}
@@ -36,18 +37,28 @@ match from {{ client.ip  }} set ext-community {{ int_comm_ko }}
 {%      if client.cfg.filtering.irrdb.as_set_bundle_ids %}
 # verifying if object is authorized by AS-SETs
 {%              for as_set_bundle_id in client.cfg.filtering.irrdb.as_set_bundle_ids|sort %}
-{%			if objects == "asns" %}
-{%				set matching_element = "source-as" %}
-{%			else %}
-{%				set matching_element = "prefix" %}
-{%			endif %}
 {%			set as_set_bundle = irrdb_info[as_set_bundle_id] %}
 {%			set as_set_data = as_set_bundle[objects] %}
 {%			if as_set_data %}
-{%				for subset in as_set_data|batch(50) %}
-{%					set condition = matching_element + " $AS_SET_" ~ as_set_bundle.name ~ "_" ~ objects ~ loop.index %}
+{%				if "6.4"|target_version_ge %}
+{%					if objects == "asns" %}
+{%						set matching_element = "source-as as-set" %}
+{%					else %}
+{%						set matching_element = "prefix-set" %}
+{%					endif %}
+{%					set condition = matching_element + " AS_SET_" ~ as_set_bundle.name ~ "_" ~ objects %}
+match from {{ client.ip }} {{ condition }} set { ext-community delete {{ int_comm_ko }} ext-community {{ int_comm_ok }} } # {{ as_set_bundle.name }}
+{%				else %}
+{%					if objects == "asns" %}
+{%						set matching_element = "source-as" %}
+{%					else %}
+{%						set matching_element = "prefix" %}
+{%					endif %}
+{%					for subset in as_set_data|batch(50) %}
+{%						set condition = matching_element + " $AS_SET_" ~ as_set_bundle.name ~ "_" ~ objects ~ loop.index %}
 match from {{ client.ip }} {{ condition }} set { ext-community delete {{ int_comm_ko }} ext-community {{ int_comm_ok }}	} # {{ as_set_bundle.name }}
-{%				endfor %}
+{%					endfor %}
+{%				endif %}
 {%			else %}
 # AS-SET {{ as_set_bundle.name }} referenced but empty.
 {%                      endif %}
@@ -65,21 +76,23 @@ match from {{ client.ip }} {{ condition }} set { ext-community delete {{ int_com
 {%	endif %}
 {% endmacro %}
 
-{% macro write_roas(action) %}
-{%	for roa in rpki_roas if roa.asn != 0 %}
-match from group clients source-as {{ roa.asn }} prefix {{ roa.prefix }}
-{%-		if roa.length != roa.max_len %}
- prefixlen {{ roa.length }} - {{ roa.max_len }}
-{%-		endif %}
- {{ action }}
-{%	endfor %}
-{% endmacro %}
-
 {% if cfg.filtering.global_black_list_pref %}
+{%	if "6.4"|target_version_ge %}
+prefix-set "global_black_list_pref" {
+{{		write_prefixset_list(cfg.filtering.global_black_list_pref) }}
+}
+{%	else %}
 global_black_list_pref="{ {{ write_prefix_list(cfg.filtering.global_black_list_pref) }} }"
+{%	endif %}
 {% endif %}
 
+{% if "6.4"|target_version_ge %}
+prefix-set "bogons" {
+{{	write_prefixset_list(bogons) }}
+}
+{% else %}
 bogons="{ {{ write_prefix_list(bogons) }} }"
+{% endif %}
 
 {{ "pre-filters"|include_local_file -}}
 
@@ -110,69 +123,62 @@ match from group clients community NO_EXPORT set { ext-community $INTCOMM_NO_EXP
 match from group clients community NO_ADVERTISE set { ext-community $INTCOMM_NO_ADVERTISE community delete NO_ADVERTISE }
 {% endif %}
 
-{% if cfg.filtering.rpki_bgp_origin_validation.enabled and
-	rpki_roas %}
-# RPKI-based Origin Validation
-# 1. Add $INTCOMM_RPKI_UNKNOWN ext community to all the routes.
-# 2. Add $INTCOMM_RPKI_INVALID ext community to all those routes
-#    whose prefix is covered by a ROA. Here, the aggregated address
-#    space made up by all the ROAs prefixes is used.
-# 3. Add $INTCOMM_RPKI_VALID ext community to and remove the
-#    $INTCOMM_RPKI_INVALID ext community from the routes whose
-#    prefix matches a ROA (both prefix and origin ASN).
-match from group clients set ext-community $INTCOMM_RPKI_UNKNOWN
-{%	for prefix in rpki_roas_covered_space %}
-match from group clients prefix {{ prefix }} or-longer set ext-community $INTCOMM_RPKI_INVALID
-{%	endfor %}
-{{	write_roas("set ext-community $INTCOMM_RPKI_VALID") }}
-match from group clients ext-community $INTCOMM_RPKI_VALID set { ext-community delete $INTCOMM_RPKI_UNKNOWN ext-community delete $INTCOMM_RPKI_INVALID }
-match from group clients ext-community $INTCOMM_RPKI_INVALID set ext-community delete $INTCOMM_RPKI_UNKNOWN
-{% endif %}
-
-{% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and
-	rpki_roas %}
-# RPKI ROAs used as route objects
-# Add the $INTCOMM_PREF_OK_ROA ext community to routes whose
-# origin ASN has a ROA for the announced prefix.
-# It will be used later during IRRDB validation in
-# case the origin ASN is authorized by a client's
-# AS-SET but the prefix is not.
-{%	if cfg.filtering.rpki_bgp_origin_validation.enabled %}
-# Since RPKI-based Origin Validation is already performed above,
-# use the $INTCOMM_RPKI_VALID ext community to identify valid
-# routes.
-match from group clients ext-community $INTCOMM_RPKI_VALID set ext-community $INTCOMM_PREF_OK_ROA
-{%	else %}
-{{		write_roas("set ext-community $INTCOMM_PREF_OK_ROA") }}
-{%	endif %}
-{% endif %}
+{% include "rpki.j2" %}
 
 {% if cfg.filtering.irrdb.use_arin_bulk_whois_data.enabled and
 	arin_whois_records %}
+# ARIN Whois records used for preifx validation
+# ---------------------------------------------
+
 # Add the $INTCOMM_PREF_OK_ARINDB ext community to routes whose
 # origin ASN has an ARIN Whois record for the announced prefix.
 # It will be used later during IRRDB validation in
 # case the origin ASN is authorized by a client's
 # AS-SET but the prefix is not.
-{%	for origin_asn in arin_whois_records|sort %}
-{%		for prefixes in arin_whois_records[origin_asn].prefixes|sort(attribute="prefix")|batch(50) %}
-match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {{ write_prefix_list(prefixes) }} } set ext-community $INTCOMM_PREF_OK_ARINDB
+{%	if "6.4"|target_version_ge %}
+origin-set "ARINDB" {
+{%		for origin_asn in arin_whois_records|sort %}
+{%			for prefix in arin_whois_records[origin_asn].prefixes|sort(attribute="prefix") %}
+{{ write_prefix_list_entry(prefix) }} source-as {{ origin_asn|replace("AS", "") }}
+{%        		endfor %}
 {%		endfor %}
-{%	endfor %}
+}
+match from group clients origin-set ARINDB set ext-community $INTCOMM_PREF_OK_ARINDB
+{%	else %}
+{%		for origin_asn in arin_whois_records|sort %}
+{%			for prefixes in arin_whois_records[origin_asn].prefixes|sort(attribute="prefix")|batch(50) %}
+match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {{ write_prefix_list(prefixes) }} } set ext-community $INTCOMM_PREF_OK_ARINDB
+{%			endfor %}
+{%		endfor %}
+{%	endif %}
 {% endif %}
 
 {% if cfg.filtering.irrdb.use_registrobr_bulk_whois_data.enabled and
 	registrobr_whois_records %}
+# NIC.BR Whois records used for preifx validation
+# -----------------------------------------------
+
 # Add the $INTCOMM_PREF_OK_REGISTROBRDB ext community to routes whose
 # origin ASN has a NIC.BR Whois record for the announced prefix.
 # It will be used later during IRRDB validation in
 # case the origin ASN is authorized by a client's
 # AS-SET but the prefix is not.
-{%	for origin_asn in registrobr_whois_records|sort %}
-{%		for prefixes in registrobr_whois_records[origin_asn].prefixes|sort(attribute="prefix")|batch(50) %}
+{%	if "6.4"|target_version_ge %}
+origin-set "REGISTROBRDB" {
+{%		for origin_asn in registrobr_whois_records|sort %}
+{%        		for prefix in registrobr_whois_records[origin_asn].prefixes|sort(attribute="prefix") %}
+{{ write_prefix_list_entry(prefix) }} source-as {{ origin_asn|replace("AS", "") }}
+{%        		endfor %}
+{%    		endfor %}
+}
+match from group clients origin-set REGISTROBRDB set ext-community $INTCOMM_PREF_OK_REGISTROBRDB
+{%	else %}
+{%		for origin_asn in registrobr_whois_records|sort %}
+{%			for prefixes in registrobr_whois_records[origin_asn].prefixes|sort(attribute="prefix")|batch(50) %}
 match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {{ write_prefix_list(prefixes) }} } set ext-community $INTCOMM_PREF_OK_REGISTROBRDB
+{%			endfor %}
 {%		endfor %}
-{%	endfor %}
+{%	endif %}
 {% endif %}
 
 {% if cfg.communities.rejected_route_announced_by|community_is_set %}
@@ -190,7 +196,11 @@ match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {
 
 {% if cfg.filtering.global_black_list_pref %}
 # Prefix: global blacklist
+{%	if "6.4"|target_version_ge %}
+{{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients prefix-set global_black_list_pref", 3) }}
+{%	else %}
 {{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients prefix $global_black_list_pref", 3) }}
+{%	endif %}
 {% endif %}
 
 # Prefix: only IPv6 Global Unicast space allowed
@@ -199,7 +209,11 @@ match from group clients prefix 2000::/3 or-longer set community delete NO_ADVER
 {{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients community NO_ADVERTISE", 10) }}
 
 # Prefix: bogon
+{% if "6.4"|target_version_ge %}
+{{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients prefix-set bogons", 2) }}
+{% else %}
 {{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients prefix $bogons", 2) }}
+{% endif %}
 
 {% for client in clients|sort(attribute="id") if client.ip is current_ipver %}
 
@@ -288,8 +302,15 @@ match from {{ client.ip }} set ext-community $INTCOMM_IRR_REJECT
 {% if client.cfg.filtering.black_list_pref %}
 # Prefix: client's blacklist
 {%	set pref_list_name = "client_" ~ client.id ~ "_black_list_pref_ipv" ~ client.ip|ipaddr_ver %}
+{%	if "6.4"|target_version_ge %}
+prefix_set "{{ pref_list_name }}" {
+{{ write_prefixset_list(client.cfg.filtering.black_list_pref, client.ip|ipaddr_ver) }}
+}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " prefix-set " ~ pref_list_name, 11) }}
+{%	else %}
 {{ pref_list_name }} = "{ {{ write_prefix_list(client.cfg.filtering.black_list_pref, client.ip|ipaddr_ver) }} }"
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " prefix $" ~ pref_list_name, 11) }}
+{%	endif %}
 {% endif %}
 
 {% if client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}
