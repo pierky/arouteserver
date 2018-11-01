@@ -211,7 +211,7 @@ class OpenBGPDInstance(KVMInstance):
                 route["localpref"] = int(match.group(1))
             elif line.startswith("Communities:"):
                 route["std_comms"] = line.split(": ")[1]
-            elif line.startswith("Ext. communities:"):
+            elif line.lower().startswith("ext. communities:"):
                 route["ext_comms"] = line.split(": ")[1]
             elif line.startswith("Large Communities:"):
                 route["lrg_comms"] = line.split(": ")[1]
