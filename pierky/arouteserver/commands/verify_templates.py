@@ -35,7 +35,7 @@ class VerifyTemplatesCommand(ARouteServerCommand):
                   "distributed with the current version of the program:\n")))
             print("")
             for err in errors:
-                print(" - " +
+                print(" - "
                       "\n   ".join(textwrap.wrap(err)))
             print("")
             print("\n".join(textwrap.wrap(
