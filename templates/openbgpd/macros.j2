@@ -90,6 +90,10 @@
 {{ write_community(left ~ " set", comm, "", None, dyn_val) -}}
 {% endmacro %}
 
+{% macro ins_communities(comm, dyn_val=None) %}
+{{ write_community("", comm, "", None, dyn_val) -}}
+{% endmacro %}
+
 {% macro del_communities(left, comm, replace_peer_as=False, replace_dyn_val=None) %}
 {% if replace_peer_as %}
 {%	set peer_as = "*" %}

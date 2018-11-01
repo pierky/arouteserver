@@ -3,6 +3,7 @@
 {% from 'macros.j2' import match_communities %}
 {% from 'macros.j2' import add_communities %}
 {% from 'macros.j2' import del_communities %}
+{% from 'macros.j2' import ins_communities %}
 {% from 'macros.j2' import write_prepending_comm %}
 {% from 'macros.j2' import remove_prepending_comms %}
 # ---------------------------------------------------------
@@ -24,7 +25,7 @@ ext-community delete $INTCOMM_PREF_OK_ROA ext-community delete $INTCOMM_ROUTE_OK
 {%	if tag_reject_policy %}
 {{		add_communities("match " ~ condition, cfg.communities.reject_cause, dyn_val=0) -}}
 {{		add_communities("match " ~ condition, cfg.communities.reject_cause, dyn_val=cause_code) -}}
-match quick {{ condition }} set { localpref 1 community delete NO_ADVERTISE {{ internal_communities_list(all=true) }} }
+{% if "6.4"|target_version_ge %}allow{% else %}match{% endif %} quick {{ condition }} set { localpref 1 community delete NO_ADVERTISE {{ internal_communities_list(all=true) }} {{ ins_communities(cfg.communities.reject_cause, dyn_val=0) }} {{ ins_communities(cfg.communities.reject_cause, dyn_val=cause_code) }} }
 {%	else %}
 deny quick {{ condition }}
 {%	endif %}
@@ -105,12 +106,10 @@ match from group clients set { {{ internal_communities_list(all=true) }} }
 # Internal communities used for RFC1997 well-known communities handling
 
 # Transform NO_EXPORT into $INTCOMM_NO_EXPORT
-match from group clients community NO_EXPORT set ext-community $INTCOMM_NO_EXPORT
-match from group clients community NO_EXPORT set community delete NO_EXPORT
+match from group clients community NO_EXPORT set { ext-community $INTCOMM_NO_EXPORT community delete NO_EXPORT }
 
 # Transform NO_ADVERTISE into $INTCOMM_NO_ADVERTISE
-match from group clients community NO_ADVERTISE set ext-community $INTCOMM_NO_ADVERTISE
-match from group clients community NO_ADVERTISE set community delete NO_ADVERTISE
+match from group clients community NO_ADVERTISE set { ext-community $INTCOMM_NO_ADVERTISE community delete NO_ADVERTISE }
 {% endif %}
 
 {% if cfg.filtering.rpki_bgp_origin_validation.enabled and
@@ -252,14 +251,8 @@ match from {{ client.ip }} nexthop {{ same_as_client.ip }} set community delete 
 # AS_PATH: invalid ASNs
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 0", 7) }}
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 23456", 7) }}
-{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 64496 - 64511", 7) }}
-{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 64512 - 65534", 7) }}
-{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 65535", 7) }}
-
-{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 65536 - 65551", 7) }}
-{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 65552 - 131071", 7) }}
-{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 4200000000 - 4294967294", 7) }}
-{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 4294967295", 7) }}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 64496 - 131071", 7) }}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 4200000000 - 4294967295", 7) }}
 {% endif %}
 
 {% set client_transit_free_asns = cfg.filtering.transit_free.asns|select("ne", client.asn) %}
