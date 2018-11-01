@@ -632,13 +632,6 @@ class BasicScenario(LiveScenario):
             self.receive_route(inst, self.DATA["AS2_blackhole3"], self.rs, next_hop=self.DATA["blackhole_IP"],
                                std_comms=["65535:666", "65535:65281"], lrg_comms=[])
 
-    def test_071_blackholed_prefixes_triggered_via_unsupported_lrg_comms(self):
-        """{}: blackholed prefixes triggered via unsupported lrg comms"""
-        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
-            self.receive_route(self.AS1_1, self.DATA["AS2_blackhole3"])
-        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
-            self.receive_route(self.AS3, self.DATA["AS2_blackhole3"])
-
     def test_071_blackholed_prefixes_not_seen_by_not_enabled_clients(self):
         """{}: blackholed prefixes not seen by not enabled clients"""
 
