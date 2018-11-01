@@ -303,7 +303,7 @@ match from {{ client.ip }} set ext-community $INTCOMM_IRR_REJECT
 # Prefix: client's blacklist
 {%	set pref_list_name = "client_" ~ client.id ~ "_black_list_pref_ipv" ~ client.ip|ipaddr_ver %}
 {%	if "6.4"|target_version_ge %}
-prefix_set "{{ pref_list_name }}" {
+prefix-set "{{ pref_list_name }}" {
 {{ write_prefixset_list(client.cfg.filtering.black_list_pref, client.ip|ipaddr_ver) }}
 }
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " prefix-set " ~ pref_list_name, 11) }}
