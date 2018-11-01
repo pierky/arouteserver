@@ -16,17 +16,17 @@
 import os
 import unittest
 
-from .base import MaxPrefixScenarioOpenBGPD60
+from .base import MaxPrefixScenarioOpenBGPD64
 from .data6 import MaxPrefixScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD64Instance
 
 class MaxPrefixScenario_OpenBGPDIPv6(MaxPrefixScenario_Data6,
-                                     MaxPrefixScenarioOpenBGPD60):
+                                     MaxPrefixScenarioOpenBGPD64):
 
     __test__ = True
     SKIP_ON_TRAVIS = True
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.0, max-prefix, IPv6"
-    RS_INSTANCE_CLASS = OpenBGPD60Instance
+    SHORT_DESCR = "Live test, OpenBGPD 6.4, max-prefix, IPv6"
+    RS_INSTANCE_CLASS = OpenBGPD64Instance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6

@@ -22,8 +22,8 @@ import time
 import unittest
 
 from pierky.arouteserver.tests.base import ARouteServerTestCase
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance, \
-                                                          OpenBGPD62Instance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD63Instance, \
+                                                          OpenBGPD64Instance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, \
                                                       BIRDInstanceIPv6
 
@@ -140,12 +140,10 @@ class TestRealConfigs(ARouteServerTestCase):
             else:
                 raise ValueError("Unknown ip_ver: {}".format(ip_ver))
         elif bgp_speaker == "openbgpd":
-            if target_ver == "6.0":
-                inst_class = OpenBGPD60Instance
-            elif target_ver == "6.2":
-                inst_class = OpenBGPD62Instance
-            elif target_ver == "6.3":
+            if target_ver == "6.3":
                 inst_class = OpenBGPD63Instance
+            elif target_ver == "6.4":
+                inst_class = OpenBGPD64Instance
             else:
                 raise ValueError("Unknown target_ver: {}".format(target_ver))
 
@@ -214,22 +212,6 @@ class TestRealConfigs_BIRD(TestRealConfigs):
             self.skipTest("Build only")
         self.load_config("bird", None, 6)
 
-class TestRealConfigs_OpenBGPD60(TestRealConfigs):
-    __test__ = False
-
-    REMOTE_IP_NEEDED = True
-
-    def test_openbgpd60_any_010_build(self):
-        """OpenBGPD 6.0, build"""
-        self.build_config("openbgpd", "6.0", None)
-
-    @unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
-    def test_openbgpd60_any_020_load(self):
-        """OpenBGPD 6.0, load"""
-        if "BUILD_ONLY" in os.environ:
-            self.skipTest("Build only")
-        self.load_config("openbgpd", "6.0", None)
-
 class TestRealConfigs_OpenBGPD63(TestRealConfigs):
     __test__ = False
 
@@ -245,3 +227,19 @@ class TestRealConfigs_OpenBGPD63(TestRealConfigs):
         if "BUILD_ONLY" in os.environ:
             self.skipTest("Build only")
         self.load_config("openbgpd", "6.3", None)
+
+class TestRealConfigs_OpenBGPD64(TestRealConfigs):
+    __test__ = False
+
+    REMOTE_IP_NEEDED = False
+
+    def test_openbgpd64_any_010_build(self):
+        """OpenBGPD 6.4, build"""
+        self.build_config("openbgpd", "6.4", None)
+
+    @unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
+    def test_openbgpd64_any_020_load(self):
+        """OpenBGPD 6.4, load"""
+        if "BUILD_ONLY" in os.environ:
+            self.skipTest("Build only")
+        self.load_config("openbgpd", "6.4", None)

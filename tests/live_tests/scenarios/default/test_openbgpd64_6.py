@@ -16,16 +16,16 @@
 import os
 import unittest
 
-from .base import TagRejectPolicyScenarioOpenBGPD60
-from .data6 import BasicScenario_Data6
+from .base import DefaultConfigScenarioOpenBGPD
+from .data6 import DefaultConfigScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD64Instance
 
-class TagRejectPolicyScenario_OpenBGPDIPv6(BasicScenario_Data6, TagRejectPolicyScenarioOpenBGPD60):
-
+class DefaultConfigScenarioOpenBGPD_IPv6(DefaultConfigScenario_Data6,
+                                         DefaultConfigScenarioOpenBGPD):
     __test__ = True
     SKIP_ON_TRAVIS = True
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.0, 'tag' reject policy scenario, IPv6"
-    RS_INSTANCE_CLASS = OpenBGPD60Instance
+    SHORT_DESCR = "Live test, OpenBGPD 6.4, default config, IPv6"
+    RS_INSTANCE_CLASS = OpenBGPD64Instance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6

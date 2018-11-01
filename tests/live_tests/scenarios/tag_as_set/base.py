@@ -16,7 +16,6 @@
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class TagASSetScenario(LiveScenario):
@@ -262,8 +261,6 @@ class TagASSetScenario_WithAS_SETs(object):
     }
 
     def _set_lrg_comms(self, lst):
-        if isinstance(self.rs, OpenBGPD60Instance):
-            return []
         return lst
 
     def test_030_AS2_prefix_ok_origin_ok(self):
@@ -519,8 +516,6 @@ class TagASSetScenario_EmptyAS_SETs(object):
     }
 
     def _set_lrg_comms(self, lst):
-        if isinstance(self.rs, OpenBGPD60Instance):
-            return []
         return lst
 
     def test_030_AS2_no_enforcement(self):
@@ -719,11 +714,6 @@ class TagASSetScenarioOpenBGPD(LiveScenario_TagRejectPolicy, TagASSetScenario):
             ]
         )
 
-class TagASSetScenarioOpenBGPD60(TagASSetScenarioOpenBGPD):
-    __test__ = False
-
-    TARGET_VERSION = "6.0"
-
 class TagASSetScenarioOpenBGPD62(TagASSetScenarioOpenBGPD):
     __test__ = False
 
@@ -733,3 +723,8 @@ class TagASSetScenarioOpenBGPD63(TagASSetScenarioOpenBGPD):
     __test__ = False
 
     TARGET_VERSION = "6.3"
+
+class TagASSetScenarioOpenBGPD64(TagASSetScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.4"
