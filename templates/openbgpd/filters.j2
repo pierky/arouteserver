@@ -1,5 +1,6 @@
 {% from 'macros.j2' import write_prefix_list %}
 {% from 'macros.j2' import write_prefix_list_entry %}
+{% from 'macros.j2' import write_prefixset_list %}
 {% from 'macros.j2' import match_communities %}
 {% from 'macros.j2' import add_communities %}
 {% from 'macros.j2' import del_communities %}
@@ -38,18 +39,28 @@ match from {{ client.ip  }} set ext-community {{ int_comm_ko }}
 {%      if client.cfg.filtering.irrdb.as_set_bundle_ids %}
 # verifying if object is authorized by AS-SETs
 {%              for as_set_bundle_id in client.cfg.filtering.irrdb.as_set_bundle_ids|sort %}
-{%			if objects == "asns" %}
-{%				set matching_element = "source-as" %}
-{%			else %}
-{%				set matching_element = "prefix" %}
-{%			endif %}
 {%			set as_set_bundle = irrdb_info[as_set_bundle_id] %}
 {%			set as_set_data = as_set_bundle[objects] %}
 {%			if as_set_data %}
-{%				for subset in as_set_data|batch(50) %}
-{%					set condition = matching_element + " $AS_SET_" ~ as_set_bundle.name ~ "_" ~ objects ~ loop.index %}
+{%				if "6.4"|target_version_ge %}
+{%					if objects == "asns" %}
+{%						set matching_element = "source-as as-set" %}
+{%					else %}
+{%						set matching_element = "prefix-set" %}
+{%					endif %}
+{%					set condition = matching_element + " AS_SET_" ~ as_set_bundle.name ~ "_" ~ objects %}
+match from {{ client.ip }} {{ condition }} set { ext-community delete {{ int_comm_ko }} ext-community {{ int_comm_ok }} } # {{ as_set_bundle.name }}
+{%				else %}
+{%					if objects == "asns" %}
+{%						set matching_element = "source-as" %}
+{%					else %}
+{%						set matching_element = "prefix" %}
+{%					endif %}
+{%					for subset in as_set_data|batch(50) %}
+{%						set condition = matching_element + " $AS_SET_" ~ as_set_bundle.name ~ "_" ~ objects ~ loop.index %}
 match from {{ client.ip }} {{ condition }} set { ext-community delete {{ int_comm_ko }} ext-community {{ int_comm_ok }}	} # {{ as_set_bundle.name }}
-{%				endfor %}
+{%					endfor %}
+{%				endif %}
 {%			else %}
 # AS-SET {{ as_set_bundle.name }} referenced but empty.
 {%                      endif %}
@@ -78,10 +89,22 @@ match from group clients source-as {{ roa.asn }} prefix {{ roa.prefix }}
 {% endmacro %}
 
 {% if cfg.filtering.global_black_list_pref %}
+{%	if "6.4"|target_version_ge %}
+prefix-set "global_black_list_pref" {
+{{		write_prefixset_list(cfg.filtering.global_black_list_pref) }}
+}
+{%	else %}
 global_black_list_pref="{ {{ write_prefix_list(cfg.filtering.global_black_list_pref) }} }"
+{%	endif %}
 {% endif %}
 
+{% if "6.4"|target_version_ge %}
+prefix-set "bogons" {
+{{	write_prefixset_list(bogons) }}
+}
+{% else %}
 bogons="{ {{ write_prefix_list(bogons) }} }"
+{% endif %}
 
 {{ "pre-filters"|include_local_file -}}
 
@@ -192,7 +215,11 @@ match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {
 
 {% if cfg.filtering.global_black_list_pref %}
 # Prefix: global blacklist
+{%	if "6.4"|target_version_ge %}
+{{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients prefix-set global_black_list_pref", 3) }}
+{%	else %}
 {{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients prefix $global_black_list_pref", 3) }}
+{%	endif %}
 {% endif %}
 
 # Prefix: only IPv6 Global Unicast space allowed
@@ -201,7 +228,11 @@ match from group clients prefix 2000::/3 or-longer set community delete NO_ADVER
 {{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients community NO_ADVERTISE", 10) }}
 
 # Prefix: bogon
+{% if "6.4"|target_version_ge %}
+{{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients prefix-set bogons", 2) }}
+{% else %}
 {{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients prefix $bogons", 2) }}
+{% endif %}
 
 {% for client in clients|sort(attribute="id") if client.ip is current_ipver %}
 
@@ -290,8 +321,15 @@ match from {{ client.ip }} set ext-community $INTCOMM_IRR_REJECT
 {% if client.cfg.filtering.black_list_pref %}
 # Prefix: client's blacklist
 {%	set pref_list_name = "client_" ~ client.id ~ "_black_list_pref_ipv" ~ client.ip|ipaddr_ver %}
+{%	if "6.4"|target_version_ge %}
+prefix_set "{{ pref_list_name }}" {
+{{ write_prefixset_list(client.cfg.filtering.black_list_pref, client.ip|ipaddr_ver) }}
+}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " prefix-set " ~ pref_list_name, 11) }}
+{%	else %}
 {{ pref_list_name }} = "{ {{ write_prefix_list(client.cfg.filtering.black_list_pref, client.ip|ipaddr_ver) }} }"
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " prefix $" ~ pref_list_name, 11) }}
+{%	endif %}
 {% endif %}
 
 {% if client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}

@@ -27,6 +27,12 @@
 {% endfor %}
 {% endmacro %}
 
+{% macro write_prefixset_list(prefix_list, ip_ver=None) %}
+{% for entry in prefix_list if not ip_ver or entry.prefix|ipaddr_ver == ip_ver %}
+{{	write_prefix_list_entry(entry) }}
+{% endfor %}
+{% endmacro %}
+
 {%- macro write_community(left, comm, right, peer_as=None, dyn_val=None, is_delete=False) -%}
 {%- if is_delete -%}
 {%-	set delete = "delete " -%}
