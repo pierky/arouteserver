@@ -25,7 +25,7 @@ ext-community delete $INTCOMM_PREF_OK_ROA ext-community delete $INTCOMM_ROUTE_OK
 {%	if tag_reject_policy %}
 {{		add_communities("match " ~ condition, cfg.communities.reject_cause, dyn_val=0) -}}
 {{		add_communities("match " ~ condition, cfg.communities.reject_cause, dyn_val=cause_code) -}}
-{% if "6.4"|target_version_ge %}allow{% else %}match{% endif %} quick {{ condition }} set { localpref 1 community delete NO_ADVERTISE {{ internal_communities_list(all=true) }} {{ ins_communities(cfg.communities.reject_cause, dyn_val=0) }} {{ ins_communities(cfg.communities.reject_cause, dyn_val=cause_code) }} }
+{% if "6.4"|target_version_ge %}allow{% else %}match{% endif %} quick {{ condition }} set { localpref 1 community delete NO_ADVERTISE {{ internal_communities_list(all=true) }} {{- ins_communities(cfg.communities.reject_cause, dyn_val=0) -}} {{- ins_communities(cfg.communities.reject_cause, dyn_val=cause_code) -}} }
 {%	else %}
 deny quick {{ condition }}
 {%	endif %}
