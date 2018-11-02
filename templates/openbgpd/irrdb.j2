@@ -14,9 +14,9 @@
 {%		if "6.4"|target_version_ge %}
 as-set "AS_SET_{{ as_set_bundle.name }}_asns" {
 {%			for asns in as_set_bundle.asns|sort|batch(8) %}
-{%				for asn in asns %}{{ asn }}{% if not loop.last %} {% endif %}{% endfor %}
+{{				"    " -}}
+{%                              for asn in asns %}{{ asn }}{% if not loop.last %}{{ " " }}{% else %}{{ "\n" }}{% endif %}{% endfor %}
 {%			endfor %}
-{{			"" }}
 }
 {%		else %}
 {%			for asns in as_set_bundle.asns|sort|batch(50) %}
