@@ -945,13 +945,13 @@ AS10745:
   le: 32
   length: 24
   max_length: 32
-  prefix: 199.43.0.0
+  prefix: 192.136.136.0
 - exact: false
   ge: 24
   le: 32
   length: 24
   max_length: 32
-  prefix: 192.136.136.0
+  prefix: 199.43.0.0
 - exact: false
   ge: 24
   le: 32
