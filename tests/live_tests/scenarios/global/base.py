@@ -20,8 +20,7 @@ from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.ipaddresses import IPNetwork
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
-                                                          OpenBGPD60Instance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class BasicScenario(LiveScenario):
@@ -535,10 +534,6 @@ class BasicScenario(LiveScenario):
                 self.DATA["AS101_roa_blackhole"]), {"inst": inst})
 
         next_hop = self.DATA["blackhole_IP"]
-        if isinstance(self.rs, OpenBGPD60Instance) and ":" in self.DATA["AS101_roa_blackhole"]:
-            # OpenBGPD < 6.1 bug: https://github.com/pierky/arouteserver/issues/3
-            # fixed by https://github.com/openbsd/src/commit/f1385c8f4f9b9e193ff65d9f2039862d3e230a45
-            next_hop = "2001:db8:1:1::2"
 
         self.receive_route(self.AS3, self.DATA["AS101_roa_blackhole"], self.rs,
                            next_hop=next_hop,
@@ -583,9 +578,6 @@ class BasicScenario(LiveScenario):
 
     def test_061_bad_communities_scrubbed_by_rs_lrg(self):
         """{}: bad communities scrubbed by rs (lrg)"""
-        if isinstance(self.rs, OpenBGPD60Instance):
-            raise unittest.SkipTest("Large comms not supported by OpenBGPD 6.0")
-
         self.receive_route(self.rs, self.DATA["AS101_bad_lrg_comm"], self.AS1_1, lrg_comms=[])
         self.receive_route(self.rs, self.DATA["AS101_bad_lrg_comm"], self.AS2, lrg_comms=[])
 
@@ -598,9 +590,6 @@ class BasicScenario(LiveScenario):
 
     def test_062_other_communities_not_scrubbed_by_rs_lrg(self):
         """{}: other communities not scrubbed by rs (lrg)"""
-        if isinstance(self.rs, OpenBGPD60Instance):
-            raise unittest.SkipTest("Large comms not supported by OpenBGPD 6.0")
-
         for inst in (self.AS1_1, self.AS2):
             self.receive_route(self.rs, self.DATA["AS101_other_l_comm"], inst, lrg_comms=["888:0:0"])
             self.receive_route(self.rs, self.DATA["AS101_bad_good_comms"], inst, lrg_comms=["777:0:0"])
@@ -621,54 +610,27 @@ class BasicScenario(LiveScenario):
 
     def test_070_blackhole_filtering_as_seen_by_rs_lrg_cust(self):
         """{}: blackhole filtering requests as seen by rs (lrg cust)"""
-        if isinstance(self.rs, OpenBGPD60Instance):
-            raise unittest.SkipTest("Large comms not supported by OpenBGPD 6.0")
-
         self.receive_route(self.rs, self.DATA["AS2_blackhole3"], self.AS2, next_hop=self.AS2, as_path="2",
                            std_comms=[], lrg_comms=["65534:0:0"])
         self.log_contains(self.rs, "blackhole filtering request from {AS2_1} - ACCEPTING " + self.DATA["AS2_blackhole3"], {"AS2_1": self.AS2})
 
     def test_071_blackholed_prefixes_as_seen_by_enabled_clients_BLACKHOLE(self):
         """{}: blackholed prefixes as seen by enabled clients (BLACKHOLE)"""
-        if isinstance(self.rs, OpenBGPD60Instance) and ":" in self.DATA["AS2_blackhole1"]:
-            # OpenBGPD < 6.1 bug: https://github.com/pierky/arouteserver/issues/3
-            # fixed by https://github.com/openbsd/src/commit/f1385c8f4f9b9e193ff65d9f2039862d3e230a45
-            raise unittest.SkipTest("Not working on OpenBGPD 6.0")
-
         for inst in (self.AS1_1, self.AS3, self.AS4):
             self.receive_route(inst, self.DATA["AS2_blackhole1"], self.rs, next_hop=self.DATA["blackhole_IP"],
                                std_comms=["65535:666", "65535:65281"], lrg_comms=[])
 
     def test_071_blackholed_prefixes_as_seen_by_enabled_clients_std_cust(self):
         """{}: blackholed prefixes as seen by enabled clients (std_cust)"""
-        if isinstance(self.rs, OpenBGPD60Instance) and ":" in self.DATA["AS2_blackhole1"]:
-            # OpenBGPD < 6.1 bug: https://github.com/pierky/arouteserver/issues/3
-            # fixed by https://github.com/openbsd/src/commit/f1385c8f4f9b9e193ff65d9f2039862d3e230a45
-            raise unittest.SkipTest("Not working on OpenBGPD 6.0")
-
         for inst in (self.AS1_1, self.AS3, self.AS4):
             self.receive_route(inst, self.DATA["AS2_blackhole2"], self.rs, next_hop=self.DATA["blackhole_IP"],
                                std_comms=["65535:666", "65535:65281"], lrg_comms=[])
 
     def test_071_blackholed_prefixes_as_seen_by_enabled_clients_lrg_cust(self):
         """{}: blackholed prefixes as seen by enabled clients (lrg_cust)"""
-        if isinstance(self.rs, OpenBGPD60Instance):
-            raise unittest.SkipTest("Large comms not supported by OpenBGPD 6.0")
-
         for inst in (self.AS1_1, self.AS3, self.AS4):
             self.receive_route(inst, self.DATA["AS2_blackhole3"], self.rs, next_hop=self.DATA["blackhole_IP"],
                                std_comms=["65535:666", "65535:65281"], lrg_comms=[])
-
-    def test_071_blackholed_prefixes_triggered_via_unsupported_lrg_comms(self):
-        """{}: blackholed prefixes triggered via unsupported lrg comms"""
-        if not isinstance(self.rs, OpenBGPD60Instance):
-            # Test valid only for BGP daemons that don't support large comms
-            raise unittest.SkipTest("Large comms are supported here")
-
-        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
-            self.receive_route(self.AS1_1, self.DATA["AS2_blackhole3"])
-        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
-            self.receive_route(self.AS3, self.DATA["AS2_blackhole3"])
 
     def test_071_blackholed_prefixes_not_seen_by_not_enabled_clients(self):
         """{}: blackholed prefixes not seen by not enabled clients"""
@@ -686,9 +648,6 @@ class BasicScenario(LiveScenario):
 
     def test_075_gshut_enabled_client(self):
         """{}: gshut by an enabled client"""
-
-        if isinstance(self.rs, OpenBGPD60Instance):
-            raise unittest.SkipTest("GRACEFUL_SHUTDOWN not supported by OpenBGPD 6.0")
 
         prefix = self.DATA["AS103_gshut_1"]
 
@@ -711,9 +670,6 @@ class BasicScenario(LiveScenario):
 
     def test_075_gshut_not_enabled_client(self):
         """{}: gshut by a not enabled client"""
-
-        if isinstance(self.rs, OpenBGPD60Instance):
-            raise unittest.SkipTest("GRACEFUL_SHUTDOWN not supported by OpenBGPD 6.0")
 
         prefix = self.DATA["AS103_gshut_2"]
 
@@ -919,12 +875,7 @@ class BasicScenario(LiveScenario):
 
     def test_084_control_communities_rtt_AS4_blackhole_not_to_peers_gt_20(self):
         """{}: control communities, RTT, blackhole, not peers > 20 ms"""
-        if isinstance(self.rs, OpenBGPD60Instance) and ":" in self.DATA["AS2_blackhole1"]:
-            # OpenBGPD < 6.1 bug: https://github.com/pierky/arouteserver/issues/3
-            # fixed by https://github.com/openbsd/src/commit/f1385c8f4f9b9e193ff65d9f2039862d3e230a45
-            expected_bh_next_hop=None
-        else:
-            expected_bh_next_hop = self.DATA["blackhole_IP"]
+        expected_bh_next_hop = self.DATA["blackhole_IP"]
 
         pref = self.DATA["AS4_rtt_7"]
         self.receive_route(self.rs, pref, self.AS4,
@@ -1146,11 +1097,6 @@ class BasicScenarioOpenBGPD(BasicScenario_TagRejectPolicy, BasicScenario):
             ]
         )
 
-class BasicScenarioOpenBGPD60(BasicScenarioOpenBGPD):
-    __test__ = False
-
-    TARGET_VERSION = "6.0"
-
 class BasicScenarioOpenBGPD62(BasicScenarioOpenBGPD):
     __test__ = False
 
@@ -1160,3 +1106,8 @@ class BasicScenarioOpenBGPD63(BasicScenarioOpenBGPD):
     __test__ = False
 
     TARGET_VERSION = "6.3"
+
+class BasicScenarioOpenBGPD64(BasicScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.4"

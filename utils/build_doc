@@ -83,7 +83,7 @@ function RenderExample() {
 		IP_VER="$1" ; shift
 		$CMD --ip-ver $IP_VER -o examples/$DST/bird$IP_VER.conf $@
 	elif [ "$COMMAND" == "openbgpd" ]; then
-		$CMD -o examples/$DST/openbgpd.conf --ignore-issues \* --target-version 6.3
+		$CMD -o examples/$DST/openbgpd.conf --ignore-issues \* --target-version 6.4
 	elif [ "$COMMAND" == "html" ]; then
 		$CMD -o examples/$DST/description.html
 		cp examples/$DST/description.html $DOCS_DIR/_static/examples_$DST.html
@@ -169,8 +169,8 @@ RenderConfigureExample "bird" $G \
 
 G="openbgpd62-general.yml"
 RenderConfigureExample "openbgpd" $G \
-	"daemon=openbgpd version=6.3 asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" &>/dev/null
-./scripts/arouteserver openbgpd $OPTS --target-version 6.3 --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
+	"daemon=openbgpd version=6.4 asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" &>/dev/null
+./scripts/arouteserver openbgpd $OPTS --target-version 6.4 --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
 
 echo "The textual description (HTML) generated on the basis of the *general.yml* files produced by this command is also reported here." >> $D
 

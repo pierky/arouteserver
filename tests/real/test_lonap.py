@@ -25,12 +25,6 @@ class TestRealConfigs_LONAP_BIRD(TestRealConfigs_LONAP,
                                  TestRealConfigs_BIRD):
     __test__ = True
 
-class TestRealConfigs_LONAP_OpenBGPD60(TestRealConfigs_LONAP,
-                                       TestRealConfigs_OpenBGPD60):
+class TestRealConfigs_LONAP_OpenBGPD64(TestRealConfigs_LONAP,
+                                       TestRealConfigs_OpenBGPD64):
     __test__ = True
-
-class TestRealConfigs_LONAP_OpenBGPD62(TestRealConfigs_LONAP,
-                                       TestRealConfigs_OpenBGPD62):
-    __test__ = True
-
-    SKIP_LOAD_NO_RESOURCES = True

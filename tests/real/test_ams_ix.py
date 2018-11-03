@@ -25,12 +25,6 @@ class TestRealConfigs_AMS_IX_BIRD(TestRealConfigs_AMS_IX,
                                   TestRealConfigs_BIRD):
     __test__ = True
 
-class TestRealConfigs_AMS_IX_OpenBGPD60(TestRealConfigs_AMS_IX,
-                                        TestRealConfigs_OpenBGPD60):
+class TestRealConfigs_AMS_IX_OpenBGPD64(TestRealConfigs_AMS_IX,
+                                        TestRealConfigs_OpenBGPD64):
     __test__ = True
-
-class TestRealConfigs_AMS_IX_OpenBGPD62(TestRealConfigs_AMS_IX,
-                                        TestRealConfigs_OpenBGPD62):
-    __test__ = True
-
-    SKIP_LOAD_NO_RESOURCES = True
