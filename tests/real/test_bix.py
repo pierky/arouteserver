@@ -26,15 +26,9 @@ class TestRealConfigs_BIX_IPv4_BIRD(TestRealConfigs_BIX_IPv4,
                                     TestRealConfigs_BIRD):
     __test__ = True
 
-class TestRealConfigs_BIX_IPv4_OpenBGPD60(TestRealConfigs_BIX_IPv4,
-                                          TestRealConfigs_OpenBGPD60):
+class TestRealConfigs_BIX_IPv4_OpenBGPD64(TestRealConfigs_BIX_IPv4,
+                                          TestRealConfigs_OpenBGPD64):
     __test__ = True
-
-class TestRealConfigs_BIX_IPv4_OpenBGPD62(TestRealConfigs_BIX_IPv4,
-                                          TestRealConfigs_OpenBGPD62):
-    __test__ = True
-
-    SKIP_LOAD_NO_RESOURCES = True
 
 
 class TestRealConfigs_BIX_IPv6(object):
@@ -47,12 +41,6 @@ class TestRealConfigs_BIX_IPv6_BIRD(TestRealConfigs_BIX_IPv6,
                                     TestRealConfigs_BIRD):
     __test__ = True
 
-class TestRealConfigs_BIX_IPv6_OpenBGPD60(TestRealConfigs_BIX_IPv6,
-                                          TestRealConfigs_OpenBGPD60):
+class TestRealConfigs_BIX_IPv6_OpenBGPD64(TestRealConfigs_BIX_IPv6,
+                                          TestRealConfigs_OpenBGPD64):
     __test__ = True
-
-class TestRealConfigs_BIX_IPv6_OpenBGPD62(TestRealConfigs_BIX_IPv6,
-                                          TestRealConfigs_OpenBGPD62):
-    __test__ = True
-
-    SKIP_LOAD_NO_RESOURCES = True

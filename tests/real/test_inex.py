@@ -25,10 +25,6 @@ class TestRealConfigs_INEX_BIRD(TestRealConfigs_INEX,
                                 TestRealConfigs_BIRD):
     __test__ = True
 
-class TestRealConfigs_INEX_OpenBGPD60(TestRealConfigs_INEX,
-                                      TestRealConfigs_OpenBGPD60):
-    __test__ = True
-
-class TestRealConfigs_INEX_OpenBGPD62(TestRealConfigs_INEX,
-                                      TestRealConfigs_OpenBGPD62):
+class TestRealConfigs_INEX_OpenBGPD64(TestRealConfigs_INEX,
+                                      TestRealConfigs_OpenBGPD64):
     __test__ = True

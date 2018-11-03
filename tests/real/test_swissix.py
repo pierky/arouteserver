@@ -25,12 +25,6 @@ class TestRealConfigs_SwissIX_BIRD(TestRealConfigs_SwissIX,
                                    TestRealConfigs_BIRD):
     __test__ = True
 
-class TestRealConfigs_SwissIX_OpenBGPD60(TestRealConfigs_SwissIX,
-                                         TestRealConfigs_OpenBGPD60):
+class TestRealConfigs_SwissIX_OpenBGPD64(TestRealConfigs_SwissIX,
+                                         TestRealConfigs_OpenBGPD64):
     __test__ = True
-
-class TestRealConfigs_SwissIX_OpenBGPD62(TestRealConfigs_SwissIX,
-                                         TestRealConfigs_OpenBGPD62):
-    __test__ = True
-
-    SKIP_LOAD_NO_RESOURCES = True
