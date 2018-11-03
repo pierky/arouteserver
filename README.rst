@@ -152,6 +152,8 @@ Who is using ARouteServer?
 
 - `IX-Denver <http://ix-denver.org/>`__, BIRD.
 
+- `MBIX <http://www.mbix.ca/>`__, BIRD.
+
 - `PIT-IX <https://pit-ix.net/>`__, BIRD.
 
 - `YYCIX <https://yycix.ca>`__, OpenBGPD.
