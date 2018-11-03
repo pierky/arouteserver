@@ -37,11 +37,6 @@ match from group clients ext-community $INTCOMM_RPKI_INVALID set ext-community d
 
 {% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and
 	rpki_roas %}
-{%	if "6.4"|target_version_ge %}
-origin-set "RPKI_ROA" {
-{{        write_roa_set(rpki_roas) }}
-}
-{%	endif %}
 
 # RPKI ROAs used as route objects.
 # Add the $INTCOMM_PREF_OK_ROA ext community to routes whose
@@ -55,6 +50,9 @@ origin-set "RPKI_ROA" {
 # use the origin validation state to identify valid routes.
 match from group clients ovs valid set ext-community $INTCOMM_PREF_OK_ROA
 {%		else %}
+origin-set "RPKI_ROA" {
+{{        write_roa_set(rpki_roas) }}
+}
 match from group clients origin-set RPKI_ROA set ext-community $INTCOMM_PREF_OK_ROA
 {%		endif %}
 {%	else %}
