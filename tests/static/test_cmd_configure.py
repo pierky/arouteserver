@@ -84,6 +84,10 @@ class TestConfigureCmd(ARouteServerTestCase):
                         "enabled": True
                     }
                 },
+                "rpki_bgp_origin_validation": {
+                    "enabled": True,
+                    "reject_invalid": True
+                },
                 "max_prefix": {
                     "action": "shutdown",
                     "peering_db": {
@@ -260,6 +264,23 @@ class TestConfigureCmd(ARouteServerTestCase):
         self.mock_answers([
             "openbgpd",
             "6.2",
+            "999",
+            "192.0.2.1",
+            "192.0.2.0/24,2001:db8::/32"
+        ])
+        dic = self.configure_and_build()
+
+        for comm_name in dic["cfg"]["communities"]:
+            self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
+            self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
+            self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
+
+    def test_openbgpd64_simple(self):
+        """Configure command: OpenBGPD 6.4, simple"""
+        self.expected_config["cfg"]["path_hiding"] = False
+        self.mock_answers([
+            "openbgpd",
+            "6.4",
             "999",
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"

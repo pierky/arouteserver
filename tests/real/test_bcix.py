@@ -26,12 +26,6 @@ class TestRealConfigs_BCIX_BIRD(TestRealConfigs_BCIX,
                                 TestRealConfigs_BIRD):
     __test__ = True
 
-class TestRealConfigs_BCIX_OpenBGPD60(TestRealConfigs_BCIX,
-                                      TestRealConfigs_OpenBGPD60):
+class TestRealConfigs_BCIX_OpenBGPD64(TestRealConfigs_BCIX,
+                                      TestRealConfigs_OpenBGPD64):
     __test__ = True
-
-class TestRealConfigs_BCIX_OpenBGPD62(TestRealConfigs_BCIX,
-                                      TestRealConfigs_OpenBGPD62):
-    __test__ = True
-
-    SKIP_LOAD_NO_RESOURCES = True

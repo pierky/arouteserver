@@ -3,6 +3,24 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+v0.20.0
+-------
+
+This is the last release of ARouteServer for which OpenBGPD/OpenBSD 6.1 and 6.2 CI tests are ran. From the next release, any new feature will not be tested against these versions of OpenBGPD. Users are encouraged to move to newer releases.
+
+- New: add support for OpenBGPD/OpenBSD 6.4 `enhancements <https://ripe77.ripe.net/presentations/143-openbsd-status.pdf>`_.
+
+  Use new sets for prefixes, ASNum, and origins (prefix + source-as), and also RPKI ROA sets.
+
+- Improvement: OpenBGPD, reduce the number of rules by combining some into the same rule.
+
+- Improvement: route server policies definition files built using the ``configure`` command now have RPKI BGP Origin Validation and "use-ROAs-as-route-objects" enabled by default.
+
+As announced with release 0.19.0, OpenBGPD/OpenBSD 6.0 is no longer tested.
+The implementation of new features may break compatibility of the configurations built for unsupported releases.
+
+Most of this release is based on the work made by `Claudio Jeker <https://github.com/cjeker>`_.
+
 v0.19.1
 -------
 

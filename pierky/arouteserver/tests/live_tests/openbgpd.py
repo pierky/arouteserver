@@ -93,6 +93,7 @@ class OpenBGPDInstance(KVMInstance):
 
         self.run_cmd("/etc/rc.d/bgpd stop")
         time.sleep(5)
+        self.run_cmd("ndp -c")
         self.run_cmd("bgpd -dn")
         self.run_cmd("/etc/rc.d/bgpd -f start")
         time.sleep(5)
@@ -111,6 +112,7 @@ class OpenBGPDInstance(KVMInstance):
 
         self.run_cmd("bgpd -dn")
         self.run_cmd("/etc/rc.d/bgpd reload")
+        self.run_cmd("ndp -c")
         time.sleep(5)
 
         return True
@@ -211,7 +213,7 @@ class OpenBGPDInstance(KVMInstance):
                 route["localpref"] = int(match.group(1))
             elif line.startswith("Communities:"):
                 route["std_comms"] = line.split(": ")[1]
-            elif line.startswith("Ext. communities:"):
+            elif line.lower().startswith("ext. communities:"):
                 route["ext_comms"] = line.split(": ")[1]
             elif line.startswith("Large Communities:"):
                 route["lrg_comms"] = line.split(": ")[1]
@@ -300,3 +302,7 @@ class OpenBGPD62Instance(OpenBGPDInstance):
 class OpenBGPD63Instance(OpenBGPDInstance):
 
     VIRSH_DOMAINNAME = "arouteserver_openbgpd63"
+
+class OpenBGPD64Instance(OpenBGPDInstance):
+
+    VIRSH_DOMAINNAME = "arouteserver_openbgpd64"

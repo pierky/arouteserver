@@ -636,7 +636,7 @@ RPKI BGP Origin Validation: ``rpki_bgp_origin_validation``
   INVALID routes are not announced to clients.
 
 
-  OpenBGPD: RFC8097 BGP communities tagging not yet implemented
+  OpenBGPD: RFC8097 BGP communities tagging available since 6.4.
 
 
   Can be overwritten on a client-by-client basis.

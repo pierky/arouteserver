@@ -99,7 +99,7 @@ class RichConfigExampleScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
             [
                 (
                     cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
-                                     target_version="6.0"),
+                                     target_version="6.3"),
                     "/etc/bgpd.conf"
                 )
             ]

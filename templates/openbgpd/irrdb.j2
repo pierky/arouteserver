@@ -1,4 +1,5 @@
 {% from 'macros.j2' import write_prefix_list %}
+{% from 'macros.j2' import write_prefixset_list %}
 # ---------------------------------------------------------
 # IRRDB
 
@@ -10,16 +11,31 @@
 {%	if as_set_bundle.asns|length == 0 %}
 # no origin ASNs found for {{ as_set_bundle.name }}
 {%	else %}
-{%		for asns in as_set_bundle.asns|sort|batch(50) %}
+{%		if "6.4"|target_version_ge %}
+as-set "AS_SET_{{ as_set_bundle.name }}_asns" {
+{%			for asns in as_set_bundle.asns|sort|batch(8) %}
+{{				"    " -}}
+{%                              for asn in asns %}{{ asn }}{% if not loop.last %}{{ " " }}{% else %}{{ "\n" }}{% endif %}{% endfor %}
+{%			endfor %}
+}
+{%		else %}
+{%			for asns in as_set_bundle.asns|sort|batch(50) %}
 AS_SET_{{ as_set_bundle.name }}_asns{{ loop.index }}="{ {% for asn in asns %}{{ asn }}{% if not loop.last %}, {% endif %}{% endfor %} }"
-{%		endfor %}
+{%			endfor %}
+{%		endif %}
 {%	endif %}
 {%	if as_set_bundle.prefixes|length == 0 %}
 # no prefixes found for {{ as_set_bundle.name }}
 {%	else %}
-{%              for prefixes in as_set_bundle.prefixes|batch(50) %}
+{%		if "6.4"|target_version_ge %}
+prefix-set "AS_SET_{{ as_set_bundle.name }}_prefixes" {
+{{			write_prefixset_list(as_set_bundle.prefixes) -}}
+}
+{%		else %}
+{%              	for prefixes in as_set_bundle.prefixes|batch(50) %}
 AS_SET_{{ as_set_bundle.name }}_prefixes{{ loop.index }}="{ {{ write_prefix_list(prefixes) }} }"
-{%		endfor %}
+{%			endfor %}
+{%		endif %}
 {%	endif %}
 
 {% endfor %}

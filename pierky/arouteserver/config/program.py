@@ -248,7 +248,7 @@ class ConfigParserProgram(object):
                 self.v("WARNING!")
                 self.v("")
                 self.v(
-                    "   " +
+                    "   "
                     "\n   ".join(textwrap.wrap(status_descr, width=60))
                 )
                 self.v("")
@@ -264,7 +264,7 @@ class ConfigParserProgram(object):
                     self.v("WARNING!")
                     self.v("")
                     self.v(
-                        "   " +
+                        "   "
                         "\n   ".join(textwrap.wrap(status_descr, width=60))
                     )
                     self.v("")

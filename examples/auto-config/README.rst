@@ -9,7 +9,7 @@ A list of BGP communities is also automatically built.
 
 .. code-block:: console
 
-   $ arouteserver configure --output examples/auto-config/README.rst
+   $ arouteserver configure --output examples/auto-config/bird-general.yml
    
    BGP daemon
    ==========
@@ -58,6 +58,7 @@ A list of BGP communities is also automatically built.
     - ARIN Whois database dump is fetched from NLNOG to further enrich IRR data.
     - NIC.BR Whois database dump is fetched from Registro.br to further enrich IRR
    data.
+    - RPKI BGP Origin Validation is enabled. INVALID routes are rejected.
     - PeeringDB is used to fetch networks prefix count.
     - Routes tagged with the GRACEFUL_SHUTDOWN well-known community (65535:0) are
    processed accordingly to draft-ietf-grow-bgp-gshut.

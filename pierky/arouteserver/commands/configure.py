@@ -145,7 +145,7 @@ class ConfigureCommand(ARouteServerCommand):
             self.add_answer("version", self.ask.ask,
                 "Which version?",
                 options=OpenBGPDConfigBuilder.AVAILABLE_VERSION,
-                default=OpenBGPDConfigBuilder.DEFAULT_VERSION
+                default=OpenBGPDConfigBuilder.AVAILABLE_VERSION[-1]
             )
 
         self.wr_text(
@@ -312,6 +312,14 @@ class ConfigureCommand(ARouteServerCommand):
         self.notes.append(
             "NIC.BR Whois database dump is fetched from Registro.br to further "
             "enrich IRR data."
+        )
+
+        filtering["rpki_bgp_origin_validation"] = OrderedDict()
+        filtering["rpki_bgp_origin_validation"]["enabled"] = True
+        filtering["rpki_bgp_origin_validation"]["reject_invalid"] = True
+        self.notes.append(
+            "RPKI BGP Origin Validation is enabled. INVALID routes are "
+            "rejected."
         )
 
         filtering["max_prefix"] = {

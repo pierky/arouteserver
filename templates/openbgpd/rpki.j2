@@ -1,0 +1,67 @@
+{% from 'macros.j2' import write_roa_set %}
+{% from 'macros.j2' import write_roas_action %}
+
+{% if cfg.filtering.rpki_bgp_origin_validation.enabled and
+	rpki_roas %}
+# ---------------------------------------------------------
+# RPKI-based Origin Validation
+{%	if "6.4"|target_version_ge %}
+roa-set {
+{{        write_roa_set(rpki_roas) }}
+}
+
+# Add $INTCOMM_RPKI_UNKNOWN, $INTCOMM_RPKI_INVALID and $INTCOMM_RPKI_VALID
+# ext community on the basis of ovs.
+match from group clients ovs not-found set ext-community $INTCOMM_RPKI_UNKNOWN
+match from group clients ovs valid set ext-community $INTCOMM_RPKI_VALID
+match from group clients ovs invalid set ext-community $INTCOMM_RPKI_INVALID
+
+{%	else %}
+# 1. Add $INTCOMM_RPKI_UNKNOWN ext community to all the routes.
+# 2. Add $INTCOMM_RPKI_INVALID ext community to all those routes
+#    whose prefix is covered by a ROA. Here, the aggregated address
+#    space made up by all the ROAs prefixes is used.
+# 3. Add $INTCOMM_RPKI_VALID ext community to and remove the
+#    $INTCOMM_RPKI_INVALID ext community from the routes whose
+#    prefix matches a ROA (both prefix and origin ASN).
+match from group clients set ext-community $INTCOMM_RPKI_UNKNOWN
+{%		for prefix in rpki_roas_covered_space %}
+match from group clients prefix {{ prefix }} or-longer set ext-community $INTCOMM_RPKI_INVALID
+{%		endfor %}
+{{	write_roas_action(rpki_roas, "set ext-community $INTCOMM_RPKI_VALID") }}
+match from group clients ext-community $INTCOMM_RPKI_VALID set { ext-community delete $INTCOMM_RPKI_UNKNOWN ext-community delete $INTCOMM_RPKI_INVALID }
+match from group clients ext-community $INTCOMM_RPKI_INVALID set ext-community delete $INTCOMM_RPKI_UNKNOWN
+{%	endif %}
+
+{% endif %}
+
+{% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and
+	rpki_roas %}
+
+# RPKI ROAs used as route objects.
+# Add the $INTCOMM_PREF_OK_ROA ext community to routes whose
+# origin ASN has a ROA for the announced prefix.
+# It will be used later during IRRDB validation in
+# case the origin ASN is authorized by a client's
+# AS-SET but the prefix is not.
+{%	if "6.4"|target_version_ge %}
+{%		if cfg.filtering.rpki_bgp_origin_validation.enabled %}
+# Since RPKI-based Origin Validation is already performed above,
+# use the origin validation state to identify valid routes.
+match from group clients ovs valid set ext-community $INTCOMM_PREF_OK_ROA
+{%		else %}
+origin-set "RPKI_ROA" {
+{{        write_roa_set(rpki_roas) }}
+}
+match from group clients origin-set RPKI_ROA set ext-community $INTCOMM_PREF_OK_ROA
+{%		endif %}
+{%	else %}
+{%		if cfg.filtering.rpki_bgp_origin_validation.enabled %}
+# Since RPKI-based Origin Validation is already performed above,
+# use the $INTCOMM_RPKI_VALID ext community to identify valid routes.
+match from group clients ext-community $INTCOMM_RPKI_VALID set ext-community $INTCOMM_PREF_OK_ROA
+{%		else %}
+{{			write_roas_action(rpki_roas, "set ext-community $INTCOMM_PREF_OK_ROA") }}
+{%		endif %}
+{%	endif %}
+{% endif %}

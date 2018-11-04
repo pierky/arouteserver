@@ -27,59 +27,68 @@
 {% endfor %}
 {% endmacro %}
 
-{% macro write_community(left, comm, right, peer_as=None, dyn_val=None, is_delete=False) %}
-{% if is_delete %}
-{%	set delete = "delete " %}
-{% else %}
-{%	set delete = "" %}
-{% endif %}
-{% if right %}
-{%	set right_val = " " ~ right %}
-{% else %}
-{%	set right_val = "" %}
-{% endif %}
-{% if comm|community_is_set %}
-{%      if comm.std %}
-{%              if "peer_as" in comm.std %}
-{%			if peer_as == "*" or peer_as <= 65535 %}
-{{ left }} community {{ delete }}{{ comm.std|replace("peer_as", peer_as) }}{{ right_val }}
-{%			else %}
-# Warning: must skip {{ comm.std }} because peer_as > 65535 ({{ peer_as }})
-{%			endif %}
-{%		elif "dyn_val" in comm.std %}
-{%			if dyn_val == "*" or dyn_val <= 65535 %}
-{{ left }} community {{ delete }}{{ comm.std|replace("dyn_val", dyn_val) }}{{ right_val }}
-{%			else %}
-# Warning: must skip {{ comm.std }} because dyn_val > 65535 ({{ dyn_val }})
-{%			endif %}
-{%		else %}
-{{ left }} community {{ delete }}{{ comm.std }}{{ right_val }}
-{%		endif %}
-{%	endif %}
-{%      if comm.ext %}
-{%              if "peer_as" in comm.ext %}
-{%			if peer_as == "*" %}
-# Warning: {{ comm.ext }} ext comm skipped: can't delete ext comms using wildcard
-{%			else %}
-{{ left }} ext-community {{ delete }}{{ comm.ext|convert_ext_comm|replace("peer_as", peer_as) }}{{ right_val }}
-{%			endif %}
-{%		else %}
-{%			if "dyn_val" in comm.ext and dyn_val == "*" %}
-# Warning: {{ comm.ext }} ext comm skipped: can't delete ext comms using wildcard
-{%			else %}
-{{ left }} ext-community {{ delete }}{{ comm.ext|convert_ext_comm|replace("dyn_val", dyn_val) }}{{ right_val }}
-{%			endif %}
-{%		endif %}
-{%	endif %}
-{%      if comm.lrg and "6.1"|target_version_ge %}
-{%              if "peer_as" in comm.lrg %}
-{{ left }} large-community {{ delete }}{{ comm.lrg|replace("peer_as", peer_as) }}{{ right_val }}
-{%		else %}
-{{ left }} large-community {{ delete }}{{ comm.lrg|replace("dyn_val", dyn_val) }}{{ right_val }}
-{%		endif %}
-{%	endif %}
-{% endif %}
+{% macro write_prefixset_list(prefix_list, ip_ver=None) %}
+{% for entry in prefix_list if not ip_ver or entry.prefix|ipaddr_ver == ip_ver %}
+{{	"    " ~ write_prefix_list_entry(entry) }}
+{% endfor %}
 {% endmacro %}
+
+{%- macro write_community(left, comm, right, peer_as=None, dyn_val=None, is_delete=False) -%}
+{%- if is_delete -%}
+{%-	set delete = "delete " -%}
+{%- else -%}
+{%-	set delete = "" -%}
+{%- endif -%}
+{%- if right -%}
+{%-	set right_val = " " ~ right -%}
+{%- else -%}
+{%-	set right_val = "" -%}
+{%- endif -%}
+{%- if comm|community_is_set -%}
+{%-      if comm.std -%}
+{%-             if "peer_as" in comm.std -%}
+{%-			if peer_as == "*" or peer_as <= 65535 -%}
+{{ left }} community {{ delete }}{{ comm.std|replace("peer_as", peer_as) }}{{ right_val }}
+{%-			else -%}
+# Warning: must skip {{ comm.std }} because peer_as > 65535 ({{ peer_as }})
+{%-			endif -%}
+{%-		elif "dyn_val" in comm.std -%}
+{%-			if dyn_val == "*" or dyn_val <= 65535 -%}
+{{ left }} community {{ delete }}{{ comm.std|replace("dyn_val", dyn_val) }}{{ right_val }}
+{%-			else -%}
+# Warning: must skip {{ comm.std }} because dyn_val > 65535 ({{ dyn_val }})
+{%-			endif -%}
+{%-		else -%}
+{{ left }} community {{ delete }}{{ comm.std }}{{ right_val }}
+{%-		endif -%}
+{%-		if left -%}{{ "\n" }}{%- endif -%}
+{%-	endif -%}
+{%-     if comm.ext -%}
+{%-             if "peer_as" in comm.ext -%}
+{%-			if peer_as == "*" -%}
+# Warning: {{ comm.ext }} ext comm skipped: can't delete ext comms using wildcard
+{%-			else -%}
+{{ left }} ext-community {{ delete }}{{ comm.ext|convert_ext_comm|replace("peer_as", peer_as) }}{{ right_val }}
+{%-			endif -%}
+{%-		else -%}
+{%-			if "dyn_val" in comm.ext and dyn_val == "*" -%}
+# Warning: {{ comm.ext }} ext comm skipped: can't delete ext comms using wildcard
+{%-			else -%}
+{{ left }} ext-community {{ delete }}{{ comm.ext|convert_ext_comm|replace("dyn_val", dyn_val) }}{{ right_val }}
+{%-			endif -%}
+{%-		endif -%}
+{%-		if left -%}{{ "\n" }}{%- endif -%}
+{%-	endif -%}
+{%-     if comm.lrg and "6.1"|target_version_ge -%}
+{%-             if "peer_as" in comm.lrg -%}
+{{ left }} large-community {{ delete }}{{ comm.lrg|replace("peer_as", peer_as) }}{{ right_val }}
+{%-		else -%}
+{{ left }} large-community {{ delete }}{{ comm.lrg|replace("dyn_val", dyn_val) }}{{ right_val }}
+{%-		endif -%}
+{%-		if left -%}{{ "\n" }}{%- endif -%}
+{%-	endif -%}
+{%- endif -%}
+{%- endmacro -%}
 
 
 {% macro match_communities(left, comm, right, peer_as=None, dyn_val=None) %}
@@ -89,6 +98,10 @@
 {% macro add_communities(left, comm, dyn_val=None) %}
 {{ write_community(left ~ " set", comm, "", None, dyn_val) -}}
 {% endmacro %}
+
+{%- macro ins_communities(comm, dyn_val=None) -%}
+{{- write_community("", comm, "", None, dyn_val) -}}
+{%- endmacro -%}
 
 {% macro del_communities(left, comm, replace_peer_as=False, replace_dyn_val=None) %}
 {% if replace_peer_as %}
@@ -134,4 +147,24 @@
 
 {% macro remove_prepending_comms(left, if_comm, comms, asn, rtt_thresholds, if_comm_dyn_val=None) %}
 {{ match_communities(left, if_comm, "set { " ~ list_prepending_comms(comms, asn, rtt_thresholds) ~ " }", peer_as=asn, dyn_val=if_comm_dyn_val) }}
+{% endmacro %}
+
+{% macro write_roas_action(rpki_roas, action) %}
+{%	for roa in rpki_roas if roa.asn != 0 %}
+match from group clients source-as {{ roa.asn }} prefix {{ roa.prefix }}
+{%-		if roa.length != roa.max_len %}
+ prefixlen {{ roa.length }} - {{ roa.max_len }}
+{%-		endif %}
+ {{ action }}
+{%	endfor %}
+{% endmacro %}
+
+{% macro write_roa_set(rpki_roas) %}
+{%    for roa in rpki_roas %}
+    {{ roa.prefix }}
+{%-        if roa.length != roa.max_len %}
+ maxlen {{ roa.max_len }}
+{%-        endif %}
+ source-as {{ roa.asn }}
+{%    endfor %}
 {% endmacro %}

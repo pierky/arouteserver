@@ -332,11 +332,11 @@ class TagRejectPolicyScenarioBIRD(LiveScenario_TagRejectPolicy, TagRejectPolicyS
             ],
         )
 
-class TagRejectPolicyScenarioOpenBGPD(LiveScenario_TagRejectPolicy, TagRejectPolicyScenario):
+class TagRejectPolicyScenarioOpenBGPD64(LiveScenario_TagRejectPolicy, TagRejectPolicyScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
-    TARGET_VERSION = None
+    TARGET_VERSION = "6.4"
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -361,20 +361,3 @@ class TagRejectPolicyScenarioOpenBGPD(LiveScenario_TagRejectPolicy, TagRejectPol
                 )
             ]
         )
-
-    def test_050_blackhole_via_large_comms(self):
-        """{}: blackhole req. using (unsupported) large comms"""
-
-        # This route is tagged with a large BGP community to signal that
-        # it should be treated as a blackhole request, but OpenBGPD 6.0
-        # does not support large BGP comms, so it treats this prefix as
-        # invalid because of prefix length.
-        self.receive_route(self.rc, self.DATA["AS2_blackhole3"],
-                self.rs, next_hop=self.AS2,
-                filtered=False, std_comms=["65520:0", "65520:13"],
-                ext_comms=["rt:65520:2"])
-
-class TagRejectPolicyScenarioOpenBGPD60(TagRejectPolicyScenarioOpenBGPD):
-    __test__ = False
-
-    TARGET_VERSION = "6.0"

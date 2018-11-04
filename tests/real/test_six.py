@@ -25,12 +25,6 @@ class TestRealConfigs_SIX_BIRD(TestRealConfigs_SIX,
                                TestRealConfigs_BIRD):
     __test__ = True
 
-class TestRealConfigs_SIX_OpenBGPD60(TestRealConfigs_SIX,
-                                     TestRealConfigs_OpenBGPD60):
+class TestRealConfigs_SIX_OpenBGPD64(TestRealConfigs_SIX,
+                                     TestRealConfigs_OpenBGPD64):
     __test__ = True
-
-class TestRealConfigs_SIX_OpenBGPD62(TestRealConfigs_SIX,
-                                     TestRealConfigs_OpenBGPD62):
-    __test__ = True
-
-    SKIP_LOAD_NO_RESOURCES = True
