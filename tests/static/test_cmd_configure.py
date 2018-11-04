@@ -84,6 +84,10 @@ class TestConfigureCmd(ARouteServerTestCase):
                         "enabled": True
                     }
                 },
+                "rpki_bgp_origin_validation": {
+                    "enabled": True,
+                    "reject_invalid": True
+                },
                 "max_prefix": {
                     "action": "shutdown",
                     "peering_db": {

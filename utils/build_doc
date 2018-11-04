@@ -158,7 +158,7 @@ A list of BGP communities is also automatically built.
 
 .. code-block:: console
 
-   $ arouteserver configure --output $D
+   $ arouteserver configure --output examples/auto-config/bird-general.yml
 EOF
 
 G="bird-general.yml"
@@ -167,7 +167,7 @@ RenderConfigureExample "bird" $G \
 		sed 's/^/   /' >> $D
 ./scripts/arouteserver bird $OPTS --ip-ver 4 --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
 
-G="openbgpd62-general.yml"
+G="openbgpd64-general.yml"
 RenderConfigureExample "openbgpd" $G \
 	"daemon=openbgpd version=6.4 asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" &>/dev/null
 ./scripts/arouteserver openbgpd $OPTS --target-version 6.4 --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null

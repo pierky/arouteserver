@@ -52,6 +52,9 @@ cfg:
         enabled: true
       use_registrobr_bulk_whois_data:
         enabled: true
+    rpki_bgp_origin_validation:
+      enabled: true
+      reject_invalid: true
     max_prefix:
       action: shutdown
       peering_db:

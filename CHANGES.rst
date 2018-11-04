@@ -14,6 +14,8 @@ This is the last release of ARouteServer for which OpenBGPD/OpenBSD 6.1 and 6.2 
 
 - Improvement: OpenBGPD, reduce the number of rules by combining some into the same rule.
 
+- Improvement: route server policies definition files built using the ``configure`` command now have RPKI BGP Origin Validation and "use-ROAs-as-route-objects" enabled by default.
+
 As announced with release 0.19.0, OpenBGPD/OpenBSD 6.0 is no longer tested.
 The implementation of new features may break compatibility of the configurations built for unsupported releases.
 
