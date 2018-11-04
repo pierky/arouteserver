@@ -156,6 +156,8 @@ Who is using ARouteServer?
 
 - `PIT-IX <https://pit-ix.net/>`__, BIRD.
 
+- `YXEIX <http://yxeix.ca/>`__, BIRD.
+
 - `YYCIX <https://yycix.ca>`__, OpenBGPD.
 
 Are you using it? Do you want to be listed here? `Drop me a message <https://pierky.com/#contactme>`__!
