@@ -143,6 +143,8 @@ Mentions / endorsements:
 
 - Anurag Bhatia, APNIC46, 12 September 2018: `video <https://www.youtube.com/watch?v=XfSNQbiR1cg&t=3140>`__, `slides <https://conference.apnic.net/46/assets/files/APNC402/Automate-your-IX-config.pdf>`__ (PDF)
 
+- Claudio Jeker, RIPE Labs, 28 November 2018: `OpenBGPD - Adding Diversity to the Route Server Landscape <https://labs.ripe.net/Members/claudio_jeker/openbgpd-adding-diversity-to-route-server-landscape>`__.
+
 Who is using ARouteServer?
 --------------------------
 
@@ -155,6 +157,8 @@ Who is using ARouteServer?
 - `MBIX <http://www.mbix.ca/>`__, BIRD.
 
 - `PIT-IX <https://pit-ix.net/>`__, BIRD.
+
+- `SwissIX <https://www.swissix.ch/>`__, OpenBGPD.
 
 - `YXEIX <http://yxeix.ca/>`__, BIRD.
 
