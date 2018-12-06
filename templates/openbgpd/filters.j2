@@ -285,7 +285,9 @@ match from {{ client.ip }} nexthop {{ same_as_client.ip }} set community delete 
 
 {% if client.cfg.filtering.reject_invalid_as_in_as_path %}
 # AS_PATH: invalid ASNs
+{%   if "6.3"|target_version_le %}
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 0", 7) }}
+{%   endif %}
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 23456", 7) }}
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 64496 - 131071", 7) }}
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 4200000000 - 4294967295", 7) }}
