@@ -249,12 +249,6 @@ match from group clients prefix 2000::/3 or-longer set community delete NO_ADVER
 {%	set client_uses_tag_reject_policy = True %}
 {% endif %}
 
-{% if client.ip|ipaddr_ver == 4 %}
-{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " inet6", 4) }}
-{% else %}
-{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " inet", 4) }}
-{% endif %}
-
 {% if client.cfg.attach_custom_communities %}
 # Attach custom BGP communities
 {%	for name in client.cfg.attach_custom_communities|sort %}
