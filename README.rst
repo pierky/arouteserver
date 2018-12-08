@@ -160,6 +160,8 @@ Who is using ARouteServer?
 
 - `SwissIX <https://www.swissix.ch/>`__, OpenBGPD.
 
+- `VANIX <https://vanix.ca/>`__.
+
 - `YXEIX <http://yxeix.ca/>`__, BIRD.
 
 - `YYCIX <https://yycix.ca>`__, OpenBGPD.
