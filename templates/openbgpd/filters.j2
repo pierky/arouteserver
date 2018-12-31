@@ -343,75 +343,107 @@ prefix-set "{{ pref_list_name }}" {
 
 {% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and rpki_roas %}
 # routes tagged with $INTCOMM_PREF_OK_ROA community have the prefix validated by a ROA; origin ASN previously validated ($INTCOMM_ORIGIN_OK)
+{%	if "6.4"|target_version_le %}
 # NO_ADVERTISE here means $INTCOMM_ORIGIN_OK
 # (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)
 match from {{ client.ip }} ext-community $INTCOMM_ORIGIN_OK set community NO_ADVERTISE
-{%	set when = "match from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_PREF_OK_ROA" %}
+{%		set when = "match from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_PREF_OK_ROA" %}
+{%	else %}
+{%		set when = "match from " ~ client.ip ~ " ext-community $INTCOMM_ORIGIN_OK ext-community $INTCOMM_PREF_OK_ROA" %}
+{%	endif %}
 {%	if cfg.filtering.irrdb.tag_as_set %}
 {{		add_communities(when, cfg.communities.prefix_validated_via_rpki_roas) }}
 {%	endif %}
 {{ when }} set ext-community delete $INTCOMM_IRR_REJECT
+{%	if "6.4"|target_version_le %}
 match from {{ client.ip }} set community delete NO_ADVERTISE
+{%	endif %}
 {% endif %}
 
 {% if cfg.filtering.irrdb.use_arin_bulk_whois_data.enabled and arin_whois_records %}
 # routes tagged with $INTCOMM_PREF_OK_ARINDB community have the prefix validated by an ARIN Whois record; origin ASN previously validated ($INTCOMM_ORIGIN_OK)
+{%	if "6.4"|target_version_le %}
 # NO_ADVERTISE here means $INTCOMM_ORIGIN_OK
 # (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)
 match from {{ client.ip }} ext-community $INTCOMM_ORIGIN_OK set community NO_ADVERTISE
-{%	set when = "match from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_PREF_OK_ARINDB" %}
+{%		set when = "match from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_PREF_OK_ARINDB" %}
+{%	else %}
+{%		set when = "match from " ~ client.ip ~ " ext-community $INTCOMM_ORIGIN_OK ext-community $INTCOMM_PREF_OK_ARINDB" %}
+{%	endif %}
 {%	if cfg.filtering.irrdb.tag_as_set %}
 {{		add_communities(when, cfg.communities.prefix_validated_via_arin_whois_db_dump) }}
 {%	endif %}
 {{ when }} set ext-community delete $INTCOMM_IRR_REJECT
+{%	if "6.4"|target_version_le %}
 match from {{ client.ip }} set community delete NO_ADVERTISE
+{%	endif %}
 {% endif %}
 
 {% if cfg.filtering.irrdb.use_registrobr_bulk_whois_data.enabled and registrobr_whois_records %}
 # routes tagged with $INTCOMM_PREF_OK_REGISTROBRDB community have the prefix validated by a NICBR Whois record; origin ASN previously validated ($INTCOMM_ORIGIN_OK)
+{%	if "6.4"|target_version_le %}
 # NO_ADVERTISE here means $INTCOMM_ORIGIN_OK
 # (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)
 match from {{ client.ip }} ext-community $INTCOMM_ORIGIN_OK set community NO_ADVERTISE
-{%	set when = "match from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_PREF_OK_REGISTROBRDB" %}
+{%		set when = "match from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_PREF_OK_REGISTROBRDB" %}
+{%	else %}
+{%		set when = "match from " ~ client.ip ~ " ext-community $INTCOMM_ORIGIN_OK ext-community $INTCOMM_PREF_OK_REGISTROBRDB" %}
+{%	endif %}
 {%	if cfg.filtering.irrdb.tag_as_set %}
 {{		add_communities(when, cfg.communities.prefix_validated_via_registrobr_whois_db_dump) }}
 {%	endif %}
 {{ when }} set ext-community delete $INTCOMM_IRR_REJECT
+{%	if "6.4"|target_version_le %}
 match from {{ client.ip }} set community delete NO_ADVERTISE
+{%	endif %}
 {% endif %}
 
 {% if client.cfg.filtering.irrdb.white_list_route %}
 # route authorized by a client's white list?
+{%	if "6.4"|target_version_le %}
 # NO_ADVERTISE here means $INTCOMM_IRR_REJECT
 # (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)
 match from {{ client.ip }} ext-community $INTCOMM_IRR_REJECT set community NO_ADVERTISE
-{%	set when = "match from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_ROUTE_OK_WL" %}
+{%		set when = "match from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_ROUTE_OK_WL" %}
+{%	else %}
+{%		set when = "match from " ~ client.ip ~ " ext-community $INTCOMM_IRR_REJECT ext-community $INTCOMM_ROUTE_OK_WL" %}
+{%	endif %}
 {%      if cfg.filtering.irrdb.tag_as_set %}
 {{              add_communities(when, cfg.communities.route_validated_via_white_list) }}
 {%	endif %}
 {{ when }} set ext-community delete $INTCOMM_IRR_REJECT
+{%	if "6.4"|target_version_le %}
 match from {{ client.ip }} set community delete NO_ADVERTISE
+{%	endif %}
 {% endif %}
 
 {% if client.cfg.filtering.irrdb.enforce_origin_in_as_set %}
 # enforcing: origin ASN
+{%	if "6.4"|target_version_le %}
 # NO_ADVERTISE here means $INTCOMM_IRR_REJECT
 # (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)
 match from {{ client.ip }} ext-community $INTCOMM_IRR_REJECT set community NO_ADVERTISE
 {{ deny_inbound_route(client.cfg.filtering.reject_policy.policy == "tag",
-		      "from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_ORIGIN_KO",
-		      9) }}
+		      "from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_ORIGIN_KO", 9) }}
 match from {{ client.ip }} set community delete NO_ADVERTISE
+{%	else %}
+{{ deny_inbound_route(client.cfg.filtering.reject_policy.policy == "tag",
+		      "from " ~ client.ip ~ " ext-community $INTCOMM_IRR_REJECT ext-community $INTCOMM_ORIGIN_KO", 9) }}
+{%	endif %}
 {% endif %}
 {% if client.cfg.filtering.irrdb.enforce_prefix_in_as_set %}
 # enforcing: prefix
+{%	if "6.4"|target_version_le %}
 # NO_ADVERTISE here means $INTCOMM_IRR_REJECT
 # (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)
 match from {{ client.ip }} ext-community $INTCOMM_IRR_REJECT set community NO_ADVERTISE
 {{ deny_inbound_route(client.cfg.filtering.reject_policy.policy == "tag",
-		      "from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_PREFIX_KO",
-		      12) }}
+		      "from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_PREFIX_KO", 12) }}
 match from {{ client.ip }} set community delete NO_ADVERTISE
+{%	else %}
+{{ deny_inbound_route(client.cfg.filtering.reject_policy.policy == "tag",
+		      "from " ~ client.ip ~ " ext-community $INTCOMM_IRR_REJECT ext-community $INTCOMM_PREFIX_KO", 12) }}
+{%	endif %}
 {% endif %}
 {% endif %}
 
