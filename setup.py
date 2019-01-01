@@ -11,6 +11,9 @@ New release procedure
 
 - edit pierky/arouteserver/version.py
 
+    - dev releases: vX.YY.Z-alpha1, vX.YY.Z-alpha2
+    - prod release: vX.YY.Z
+
 - edit CHANGES.rst
 
 - verify RST syntax is ok
@@ -27,13 +30,13 @@ New release procedure
 
 dev releases (in 'dev' branch):
 
-    - git tag vX.YY.0-alpha1 (2, 3, ...)
+    - git tag v$(python -c "from pierky.arouteserver.version import __version__; print(__version__)")
 
     - git push origin dev --tags
 
 prod releases (in 'master' branch):
 
-    - git tag vX.YY.0
+    - git tag v$(python -c "from pierky.arouteserver.version import __version__; print(__version__)")
 
     - git push origin master --tags
 
