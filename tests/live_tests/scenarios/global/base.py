@@ -1097,11 +1097,6 @@ class BasicScenarioOpenBGPD(BasicScenario_TagRejectPolicy, BasicScenario):
             ]
         )
 
-class BasicScenarioOpenBGPD62(BasicScenarioOpenBGPD):
-    __test__ = False
-
-    TARGET_VERSION = "6.2"
-
 class BasicScenarioOpenBGPD63(BasicScenarioOpenBGPD):
     __test__ = False
 

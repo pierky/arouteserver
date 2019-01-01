@@ -182,11 +182,6 @@ class PathHidingScenarioOpenBGPD(LiveScenario_TagRejectPolicy, PathHidingScenari
             ]
         )
 
-class PathHidingScenarioOpenBGPD62(PathHidingScenarioOpenBGPD):
-    __test__ = False
-
-    TARGET_VERSION = "6.2"
-
 class PathHidingScenarioOpenBGPD63(PathHidingScenarioOpenBGPD):
     __test__ = False
 

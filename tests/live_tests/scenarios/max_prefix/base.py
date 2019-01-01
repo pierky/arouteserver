@@ -209,11 +209,6 @@ class MaxPrefixScenarioOpenBGPD(LiveScenario_TagRejectPolicy, MaxPrefixScenario)
         for inst in (self.AS1, self.AS2, self.AS3, self.AS4):
             self.log_contains(inst, "the_rs: Received: Maximum number of prefixes reached")
 
-class MaxPrefixScenarioOpenBGPD62(MaxPrefixScenarioOpenBGPD):
-    __test__ = False
-
-    TARGET_VERSION = "6.2"
-
 class MaxPrefixScenarioOpenBGPD63(MaxPrefixScenarioOpenBGPD):
     __test__ = False
 

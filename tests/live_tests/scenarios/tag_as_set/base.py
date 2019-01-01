@@ -714,11 +714,6 @@ class TagASSetScenarioOpenBGPD(LiveScenario_TagRejectPolicy, TagASSetScenario):
             ]
         )
 
-class TagASSetScenarioOpenBGPD62(TagASSetScenarioOpenBGPD):
-    __test__ = False
-
-    TARGET_VERSION = "6.2"
-
 class TagASSetScenarioOpenBGPD63(TagASSetScenarioOpenBGPD):
     __test__ = False
 
