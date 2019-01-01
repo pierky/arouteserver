@@ -292,6 +292,23 @@ class TestConfigureCmd(ARouteServerTestCase):
             self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
             self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
 
+    def test_openbgpd65_simple(self):
+        """Configure command: OpenBGPD 6.5, simple"""
+        self.expected_config["cfg"]["path_hiding"] = False
+        self.mock_answers([
+            "openbgpd",
+            "6.5",
+            "999",
+            "192.0.2.1",
+            "192.0.2.0/24,2001:db8::/32"
+        ])
+        dic = self.configure_and_build()
+
+        for comm_name in dic["cfg"]["communities"]:
+            self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
+            self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
+            self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
+
     def test_32bit_asn(self):
         """Configure command: 32 bit route server ASN"""
         self.expected_config["cfg"]["rs_as"] = 999999
