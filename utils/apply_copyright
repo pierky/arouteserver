@@ -76,6 +76,8 @@ function do_subdirs() {
 	DIR="$1"
 	PATTERN="$2"
 
+	do_dir "$DIR" "$PATTERN"
+
 	for d in `find "$DIR" -type d`
 	do
 		do_dir "$d" "$PATTERN"
