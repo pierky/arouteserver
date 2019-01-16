@@ -48,13 +48,16 @@ default               restart_after: 15
 default               policy: reject
                   rpki_roas:
 default             source: ripe-rpki-validator-cache
-default             ripe_rpki_validator_url: http://localcert.ripe.net:8088/export.json
+default             ripe_rpki_validator_url:
+default               - https://rpki.gin.ntt.net/api/export.json
+default               - http://localcert.ripe.net:8088/export.json
 default             allowed_trust_anchors:
 default               - APNIC from AFRINIC RPKI Root
 default               - APNIC from ARIN RPKI Root
 default               - APNIC from IANA RPKI Root
 default               - APNIC from LACNIC RPKI Root
 default               - APNIC from RIPE RPKI Root
+default               - APNIC RPKI Root
 default               - AfriNIC RPKI Root
 default               - LACNIC RPKI Root
 default               - RIPE NCC RPKI Root

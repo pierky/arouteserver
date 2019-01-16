@@ -301,10 +301,13 @@ cfg:
     - APNIC from IANA RPKI Root
     - APNIC from LACNIC RPKI Root
     - APNIC from RIPE RPKI Root
+    - APNIC RPKI Root
     - AfriNIC RPKI Root
     - LACNIC RPKI Root
     - RIPE NCC RPKI Root
-    ripe_rpki_validator_url: http://localcert.ripe.net:8088/export.json
+    ripe_rpki_validator_url:
+    - https://rpki.gin.ntt.net/api/export.json
+    - http://localcert.ripe.net:8088/export.json
     source: ripe-rpki-validator-cache
   rs_as: 999
   rtt_thresholds:
@@ -805,6 +808,13 @@ irrdb_info
   id: 454ed823addc298946e5f2ad415842d8a0a89403cf8ad05e584f94caf52ef799ca506a90f5386c1335f271047089bc0612014069cbb3d9a7851d595a0374c5c3
   name: AS3333
   prefixes:
+  - comment: null
+    exact: true
+    ge: null
+    le: null
+    length: 32
+    max_length: 32
+    prefix: 85.195.64.1
   - comment: null
     exact: true
     ge: null

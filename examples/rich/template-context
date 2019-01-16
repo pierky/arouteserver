@@ -323,10 +323,12 @@ cfg:
     - APNIC from IANA RPKI Root
     - APNIC from LACNIC RPKI Root
     - APNIC from RIPE RPKI Root
+    - APNIC RPKI Root
     - AfriNIC RPKI Root
     - LACNIC RPKI Root
     - RIPE NCC RPKI Root
-    ripe_rpki_validator_url: examples/rich/ripe-rpki-cache.json
+    ripe_rpki_validator_url:
+    - examples/rich/ripe-rpki-cache.json
     source: ripe-rpki-validator-cache
   rs_as: 999
   rtt_thresholds:
@@ -830,6 +832,13 @@ irrdb_info
   name: AS3333
   prefixes:
   - comment: null
+    exact: true
+    ge: null
+    le: null
+    length: 32
+    max_length: 32
+    prefix: 85.195.64.1
+  - comment: null
     exact: false
     ge: null
     le: 32
@@ -991,25 +1000,25 @@ AS10745:
   le: 32
   length: 24
   max_length: 32
-  prefix: 192.136.136.0
-- exact: false
-  ge: 48
-  le: 128
-  length: 48
-  max_length: 128
-  prefix: '2001:500:4::'
-- exact: false
-  ge: 24
-  le: 32
-  length: 24
-  max_length: 32
   prefix: 192.149.252.0
 - exact: false
   ge: 24
   le: 32
   length: 24
   max_length: 32
+  prefix: 192.136.136.0
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
   prefix: 199.43.0.0
+- exact: false
+  ge: 48
+  le: 128
+  length: 48
+  max_length: 128
+  prefix: '2001:500:4::'
 
 
 registrobr_whois_db_records

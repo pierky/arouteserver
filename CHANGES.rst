@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+v0.21.0
+-------
+
+- Improvement: when ``ripe-rpki-validator-cache`` is set as the source of ROAs, multiple URLs can now be specified to fetch data from.
+
+  URLs will be tried in the same order as they are configured; if the attempt to download ROAs from the first URL fails, the second URL will be tried, an so on.
+
+  By default, the `NTT public instance <https://rpki.gin.ntt.net/>`_ of the RIPE RPKI Validator will be tried first, then the `RIPE NCC one <http://localcert.ripe.net:8088/>`_. The list of URLs can be set in the ``general.yml`` configuration file, ``roas.ripe_rpki_validator_url`` option.
+
 v0.20.0
 -------
 
@@ -24,9 +33,9 @@ Most of this release is based on the work made by `Claudio Jeker <https://github
 v0.19.1
 -------
 
-- Fix (BIRD configuration only): change `bgp_path.last` with `bgp_path.last_nonaggregated`.
+- Fix (BIRD configuration only): change ``bgp_path.last`` with ``bgp_path.last_nonaggregated``.
 
-  When a route is originated from the aggregation of two different routes using the AS_SET, `bgp_path.last` always returns 0, so the origin ASN validation against IRR always fails.
+  When a route is originated from the aggregation of two different routes using the AS_SET, ``bgp_path.last`` always returns 0, so the origin ASN validation against IRR always fails.
 
   Related: `issue #34 on GitHub <https://github.com/pierky/arouteserver/issues/34>`_.
 

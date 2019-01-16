@@ -200,9 +200,12 @@ class ConfigParserGeneral(ConfigParserBase):
             mandatory=True,
             default="ripe-rpki-validator-cache"
         )
-        r["ripe_rpki_validator_url"] = ValidatorText(
-            mandatory=True,
-            default="http://localcert.ripe.net:8088/export.json"
+        r["ripe_rpki_validator_url"] = ValidatorListOf(
+            ValidatorText, mandatory=True,
+            default=[
+                "https://rpki.gin.ntt.net/api/export.json",
+                "http://localcert.ripe.net:8088/export.json"
+            ]
         )
         r["allowed_trust_anchors"] = ValidatorListOf(
             ValidatorText, mandatory=True, default=[
@@ -211,6 +214,7 @@ class ConfigParserGeneral(ConfigParserBase):
                 "APNIC from IANA RPKI Root",
                 "APNIC from LACNIC RPKI Root",
                 "APNIC from RIPE RPKI Root",
+                "APNIC RPKI Root",
                 "AfriNIC RPKI Root",
                 "LACNIC RPKI Root",
                 "RIPE NCC RPKI Root"
