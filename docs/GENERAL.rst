@@ -874,7 +874,7 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
 
   - **ripe-rpki-validator-cache**: ROAs are fetched via
     HTTP from the RIPE RPKI Validator cache
-    (http://localcert.ripe.net:8088/export.json by default).
+    (https://rpki-validator.ripe.net/api/export.json by default).
 
 
   Please note that this method is far from guaranteeing
@@ -905,13 +905,13 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
   local file.
 
 
-  Default: **http://localcert.ripe.net:8088/export.json**
+  Default: **https://rpki-validator.ripe.net/api/export.json**
 
   Example:
 
   .. code:: yaml
 
-     ripe_rpki_validator_url: "http://localcert.ripe.net:8088/export.json"
+     ripe_rpki_validator_url: "https://rpki-validator.ripe.net/api/export.json"
 
 
 
@@ -922,7 +922,7 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
 
   Values must be taken among those published in the RIPE RPKI
   Validator Configured Trust Anchors page:
-  http://localcert.ripe.net:8088/trust-anchors
+  https://rpki-validator.ripe.net/trust-anchors
 
 
   Before enabling the 'ARIN RPKI Root', please consider the

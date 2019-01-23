@@ -470,7 +470,7 @@ cfg:
     #   The name of the table where send the ROAs to is 'RPKI'.
     # - 'ripe-rpki-validator-cache': ROAs are fetched via
     #   HTTP from the RIPE RPKI Validator cache
-    #   (http://localcert.ripe.net:8088/export.json by default).
+    #   (https://rpki-validator.ripe.net/api/export.json by default).
     #
     #   Please note that this method is far from guaranteeing
     #   that a cryptographically validated dataset is retrieved
@@ -489,15 +489,15 @@ cfg:
     # It can be an 'http://' or 'https://' URL or the path of a
     # local file.
     #
-    # Default: http://localcert.ripe.net:8088/export.json
-    ripe_rpki_validator_url: "http://localcert.ripe.net:8088/export.json"
+    # Default: https://rpki-validator.ripe.net/api/export.json
+    ripe_rpki_validator_url: "https://rpki-validator.ripe.net/api/export.json"
 
     # When using the 'ripe-rpki-validator-cache' source, only the
     # following Trust Anchors will be taken into account.
     #
     # Values must be taken among those published in the RIPE RPKI
     # Validator Configured Trust Anchors page:
-    # http://localcert.ripe.net:8088/trust-anchors
+    # https://rpki-validator.ripe.net/trust-anchors
     #
     # Before enabling the 'ARIN RPKI Root', please consider the
     # following URLs:
@@ -508,15 +508,11 @@ cfg:
     #
     # Default: APNIC, AfriNIC, LACNIC and RIPE NCC.
     allowed_trust_anchors:
-      - "APNIC from AFRINIC RPKI Root"
-      - "APNIC from ARIN RPKI Root"
-      - "APNIC from IANA RPKI Root"
-      - "APNIC from LACNIC RPKI Root"
-      - "APNIC from RIPE RPKI Root"
+      - "APNIC RPKI Root"
       - "AfriNIC RPKI Root"
       - "LACNIC RPKI Root"
       - "RIPE NCC RPKI Root"
-      #- "ARIN RPKI Root"
+      #- "ARIN"
 
   blackhole_filtering:
     # Destination-based blackholing policy: if a policy is given,
