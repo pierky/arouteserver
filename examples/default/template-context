@@ -296,18 +296,13 @@ cfg:
   router_id: 192.0.2.2
   rpki_roas:
     allowed_trust_anchors:
-    - APNIC from AFRINIC RPKI Root
-    - APNIC from ARIN RPKI Root
-    - APNIC from IANA RPKI Root
-    - APNIC from LACNIC RPKI Root
-    - APNIC from RIPE RPKI Root
     - APNIC RPKI Root
     - AfriNIC RPKI Root
     - LACNIC RPKI Root
     - RIPE NCC RPKI Root
     ripe_rpki_validator_url:
+    - https://rpki-validator.ripe.net/api/export.json
     - https://rpki.gin.ntt.net/api/export.json
-    - http://localcert.ripe.net:8088/export.json
     source: ripe-rpki-validator-cache
   rs_as: 999
   rtt_thresholds:

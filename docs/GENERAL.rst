@@ -915,7 +915,7 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
   local files.
 
 
-  Default: **NTT instance, RIPE NCC instance**
+  Default: **RIPE NCC instance, NTT instance**
 
 
 - ``allowed_trust_anchors``:
@@ -933,7 +933,7 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
   - NTT instance: https://rpki.gin.ntt.net/trust-anchors
 
 
-  - RIPE NCC instance: http://localcert.ripe.net:8088/trust-anchors
+  - RIPE NCC instance: https://rpki-validator.ripe.net/trust-anchors
 
 
   Before enabling any ARIN TA, please consider the

@@ -494,10 +494,10 @@ cfg:
     # They can be 'http://' or 'https://' URLs or paths of
     # local files.
     #
-    # Default: NTT instance, RIPE NCC instance
+    # Default: RIPE NCC instance, NTT instance
     ripe_rpki_validator_url:
+      - "https://rpki-validator.ripe.net/api/export.json"
       - "https://rpki.gin.ntt.net/api/export.json"
-      - "http://localcert.ripe.net:8088/export.json"
 
     # When using the 'ripe-rpki-validator-cache' source, only the
     # following Trust Anchors will be taken into account.
@@ -507,7 +507,7 @@ cfg:
     #
     # Configured Trust Anchors pages:
     # - NTT instance: https://rpki.gin.ntt.net/trust-anchors
-    # - RIPE NCC instance: http://localcert.ripe.net:8088/trust-anchors
+    # - RIPE NCC instance: https://rpki-validator.ripe.net/trust-anchors
     #
     # Before enabling any ARIN TA, please consider the
     # following URLs:
@@ -518,16 +518,10 @@ cfg:
     #
     # Default: APNIC, AfriNIC, LACNIC and RIPE NCC.
     allowed_trust_anchors:
-      - "APNIC from AFRINIC RPKI Root"
-      - "APNIC from ARIN RPKI Root"
-      - "APNIC from IANA RPKI Root"
-      - "APNIC from LACNIC RPKI Root"
-      - "APNIC from RIPE RPKI Root"
       - "APNIC RPKI Root"
       - "AfriNIC RPKI Root"
       - "LACNIC RPKI Root"
       - "RIPE NCC RPKI Root"
-      #- "ARIN RPKI Root"
       #- "ARIN"
 
   blackhole_filtering:

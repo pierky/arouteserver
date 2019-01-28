@@ -27,7 +27,7 @@ class RIPE_RPKI_ROAs(CachedObject):
 
     EXPIRY_TIME_TAG = "ripe_rpki_roas"
 
-    DEFAULT_URL = "http://localcert.ripe.net:8088/export.json"
+    DEFAULT_URL = "https://rpki-validator.ripe.net/api/export.json"
 
     def __init__(self, *args, **kwargs):
         CachedObject.__init__(self, *args, **kwargs)

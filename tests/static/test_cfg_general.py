@@ -22,7 +22,7 @@ import unittest
 
 import yaml
 
-from .cfg_base import TestConfigParserBase 
+from .cfg_base import TestConfigParserBase
 from pierky.arouteserver.config.general import ConfigParserGeneral
 from pierky.arouteserver.errors import ConfigError
 
@@ -53,7 +53,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
             self.cfg["rs_as"] = asn
             self._contains_err("Error parsing 'rs_as' at 'cfg' level - Invalid ASN: {}".format(str(asn)))
 
-        for asn in (1, 65535, 4294967295): 
+        for asn in (1, 65535, 4294967295):
             self.cfg["rs_as"] = asn
             self._contains_err()
 
@@ -232,7 +232,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.assertEqual(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["enabled"], False)
         self._test_bool_val(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "enabled")
         self._test_mandatory(self.cfg["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"], "enabled", has_default=True)
-        
+
     def test_use_rpki_roas_source(self):
         """{}: rpki_roas.source"""
         self.assertEqual(self.cfg["rpki_roas"]["source"], "ripe-rpki-validator-cache")
@@ -1119,15 +1119,10 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "rpki_roas": {
                 "source": "ripe-rpki-validator-cache",
                 "ripe_rpki_validator_url": [
-                    "https://rpki.gin.ntt.net/api/export.json",
-                    "http://localcert.ripe.net:8088/export.json"
+                    "https://rpki-validator.ripe.net/api/export.json",
+                    "https://rpki.gin.ntt.net/api/export.json"
                 ],
                 "allowed_trust_anchors": [
-                    "APNIC from AFRINIC RPKI Root",
-                    "APNIC from ARIN RPKI Root",
-                    "APNIC from IANA RPKI Root",
-                    "APNIC from LACNIC RPKI Root",
-                    "APNIC from RIPE RPKI Root",
                     "APNIC RPKI Root",
                     "AfriNIC RPKI Root",
                     "LACNIC RPKI Root",
@@ -1235,15 +1230,10 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "rpki_roas": {
                 "source": "ripe-rpki-validator-cache",
                 "ripe_rpki_validator_url": [
-                    "https://rpki.gin.ntt.net/api/export.json",
-                    "http://localcert.ripe.net:8088/export.json"
+                    "https://rpki-validator.ripe.net/api/export.json",
+                    "https://rpki.gin.ntt.net/api/export.json"
                 ],
                 "allowed_trust_anchors": [
-                    "APNIC from AFRINIC RPKI Root",
-                    "APNIC from ARIN RPKI Root",
-                    "APNIC from IANA RPKI Root",
-                    "APNIC from LACNIC RPKI Root",
-                    "APNIC from RIPE RPKI Root",
                     "APNIC RPKI Root",
                     "AfriNIC RPKI Root",
                     "LACNIC RPKI Root",
