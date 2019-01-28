@@ -872,15 +872,23 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
     The name of the table where send the ROAs to is **RPKI**.
 
 
-  - **ripe-rpki-validator-cache**: ROAs are fetched via
-    HTTP from the RIPE RPKI Validator cache
-    (http://localcert.ripe.net:8088/export.json by default).
+  - **ripe-rpki-validator-cache**: ROAs are loaded from a JSON
+    file in RIPE NCC RPKI Validator cache format.
+
+
+  Known compatible implementations at time of writing:
+
+
+  - RIPE NCC RPKI Validator: https://www.ripe.net
+
+
+  - Routinator: https://nlnetlabs.nl/projects/rpki/routinator/
 
 
   Please note that this method is far from guaranteeing
   that a cryptographically validated dataset is retrieved
   from a trusted cache, unless the URL of a local, trusted
-  instance of RPKI Validator is provided below in the
+  instance of a RPKI validator is provided below in the
   **ripe_rpki_validator_url** option.
 
 
@@ -899,20 +907,15 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
 
 
 - ``ripe_rpki_validator_url``:
-  RIPE RPKI Validator URL.
+  URLs of files in RIPE NCC RPKI Validator cache format.
   Meaningful only when **source** is **ripe-rpki-validator-cache**.
-  It can be an **http://** or **https://** URL or the path of a
-  local file.
+  Multiple URLs can be provided here; they will be tried in
+  the same order in which they are listed below.
+  They can be **http://** or **https://** URLs or paths of
+  local files.
 
 
-  Default: **http://localcert.ripe.net:8088/export.json**
-
-  Example:
-
-  .. code:: yaml
-
-     ripe_rpki_validator_url: "http://localcert.ripe.net:8088/export.json"
-
+  Default: **RIPE NCC instance, NTT instance**
 
 
 - ``allowed_trust_anchors``:
@@ -921,11 +924,19 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
 
 
   Values must be taken among those published in the RIPE RPKI
-  Validator Configured Trust Anchors page:
-  http://localcert.ripe.net:8088/trust-anchors
+  Validator cache file configured above.
 
 
-  Before enabling the 'ARIN RPKI Root', please consider the
+  Configured Trust Anchors pages:
+
+
+  - NTT instance: https://rpki.gin.ntt.net/trust-anchors
+
+
+  - RIPE NCC instance: https://rpki-validator.ripe.net/trust-anchors
+
+
+  Before enabling any ARIN TA, please consider the
   following URLs:
 
 

@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2018 Pier Carlo Chiodi
+# Copyright (C) 2017-2019 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -295,6 +295,16 @@ def build_rpki_roas(cfg):
             )
         cfg["rpki_roas"] = rpki_roas
 
+def convert_ripe_rpki_validator_url(cfg):
+    if "rpki_roas" not in cfg:
+        return
+    if not isinstance(cfg["rpki_roas"], dict):
+        return
+    if "ripe_rpki_validator_url" not in cfg["rpki_roas"]:
+        return
+    if not isinstance(cfg["rpki_roas"]["ripe_rpki_validator_url"], list):
+        cfg["rpki_roas"]["ripe_rpki_validator_url"] = [cfg["rpki_roas"]["ripe_rpki_validator_url"]]
+
 def convert_deprecated(cfg):
     if not cfg:
         return
@@ -312,3 +322,6 @@ def convert_deprecated(cfg):
 
     # Convert filtering.rpki (< v0.17.0) into the new format
     convert_filtering_rpki(cfg)
+
+    # Convert ripe_rpki_validator_url (<= v0.20.0) into a list
+    convert_ripe_rpki_validator_url(cfg)

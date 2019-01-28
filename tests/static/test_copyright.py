@@ -13,19 +13,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
+import datetime
 import unittest
 
-from .base import BGPCommunitiesScenarioOpenBGPD63
-from .data4 import BGPCommunitiesScenario_Data4
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD63Instance
+from pierky.arouteserver.config.program import ConfigParserProgram
+from pierky.arouteserver.version import COPYRIGHT_YEAR
 
-class BGPCommunitiesScenario_OpenBGPDIPv4(BGPCommunitiesScenario_Data4,
-                                          BGPCommunitiesScenarioOpenBGPD63):
-    __test__ = True
-    SKIP_ON_TRAVIS = True
+class TestCopyright(unittest.TestCase):
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.3, BGP communities, IPv4"
-    RS_INSTANCE_CLASS = OpenBGPD63Instance
-    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
+    def test_current_year(self):
+        """Copyright: is current year"""
+
+        self.assertEqual(COPYRIGHT_YEAR, datetime.datetime.now().year,
+                         msg="Consider to run ./utils/apply_copyright")

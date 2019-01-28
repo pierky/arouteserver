@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2018 Pier Carlo Chiodi
+# Copyright (C) 2017-2019 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -200,17 +200,16 @@ class ConfigParserGeneral(ConfigParserBase):
             mandatory=True,
             default="ripe-rpki-validator-cache"
         )
-        r["ripe_rpki_validator_url"] = ValidatorText(
-            mandatory=True,
-            default="http://localcert.ripe.net:8088/export.json"
+        r["ripe_rpki_validator_url"] = ValidatorListOf(
+            ValidatorText, mandatory=True,
+            default=[
+                "https://rpki-validator.ripe.net/api/export.json",
+                "https://rpki.gin.ntt.net/api/export.json"
+            ]
         )
         r["allowed_trust_anchors"] = ValidatorListOf(
             ValidatorText, mandatory=True, default=[
-                "APNIC from AFRINIC RPKI Root",
-                "APNIC from ARIN RPKI Root",
-                "APNIC from IANA RPKI Root",
-                "APNIC from LACNIC RPKI Root",
-                "APNIC from RIPE RPKI Root",
+                "APNIC RPKI Root",
                 "AfriNIC RPKI Root",
                 "LACNIC RPKI Root",
                 "RIPE NCC RPKI Root"

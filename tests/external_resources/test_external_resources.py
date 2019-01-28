@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2018 Pier Carlo Chiodi
+# Copyright (C) 2017-2019 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -70,14 +70,14 @@ class TestExternalResources(unittest.TestCase):
         self.assertTrue(int(ver.split(".")[0]) >= 0)
         self.assertTrue(int(ver.split(".")[1]) >= 17)
 
-    def test_ripe_rpki_cache(self):
-        """External resources: RIPE RPKI cache"""
+    def test_rpki_roas(self):
+        """External resources: RPKI ROAs"""
         cfg = ConfigParserGeneral()
-        url = cfg.get_schema()["cfg"]["rpki_roas"]["ripe_rpki_validator_url"].default
-        ripe_rpki_cache = RIPE_RPKI_ROAs(ripe_rpki_validator_url=url, **cache_cfg)
-        ripe_rpki_cache.load_data()
-        self.assertTrue(len(ripe_rpki_cache.roas) > 0)
-        self.assertTrue(any([r for r in ripe_rpki_cache.roas["roas"] if r["prefix"] == "193.0.0.0/21"]))
+        urls = cfg.get_schema()["cfg"]["rpki_roas"]["ripe_rpki_validator_url"].default
+        rpki_roas = RIPE_RPKI_ROAs(ripe_rpki_validator_url=urls, **cache_cfg)
+        rpki_roas.load_data()
+        self.assertTrue(len(rpki_roas.roas) > 0)
+        self.assertTrue(any([r for r in rpki_roas.roas["roas"] if r["prefix"] == "193.0.0.0/21"]))
 
     def test_asset(self):
         """External resources: ASNs from AS-SET via bgpq3"""
