@@ -471,6 +471,8 @@ cfg:
     # - 'ripe-rpki-validator-cache': ROAs are fetched via
     #   HTTP from the RIPE RPKI Validator cache
     #   (http://localcert.ripe.net:8088/export.json by default).
+    # - 'rtr': Utilizing the RTR protocol, requires 'rtr_server'
+    #   and 'rtr_port' to be specified.
     #
     #   Please note that this method is far from guaranteeing
     #   that a cryptographically validated dataset is retrieved
@@ -484,6 +486,13 @@ cfg:
     # Default: ripe-rpki-validator-cache
     source: "ripe-rpki-validator-cache"
 
+    # Using the RTR protocol
+    # 'rtr_server': Specify remote server for using the RTR protocol
+    # Default: 127.0.0.1 
+    #
+    # 'rtr_port': Specify remote listening port of the RTR server
+    # Default: 323
+    #
     # RIPE RPKI Validator URL.
     # Meaningful only when 'source' is 'ripe-rpki-validator-cache'.
     # It can be an 'http://' or 'https://' URL or the path of a
