@@ -10,7 +10,7 @@ v0.21.0
 
   URLs will be tried in the same order as they are configured; if the attempt to download ROAs from the first URL fails, the second URL will be tried, an so on.
 
-  By default, the `NTT public instance <https://rpki.gin.ntt.net/>`_ of the RIPE RPKI Validator will be tried first, then the `RIPE NCC one <http://localcert.ripe.net:8088/>`_. The list of URLs can be set in the ``general.yml`` configuration file, ``roas.ripe_rpki_validator_url`` option.
+  By default, the `RIPE NCC public instance <https://rpki-validator.ripe.net/>`_ of the RIPE RPKI Validator will be tried first, then the `NTT instance <https://rpki.gin.ntt.net/>`_. The list of URLs can be set in the ``general.yml`` configuration file, ``roas.ripe_rpki_validator_url`` option.
 
 v0.20.0
 -------
