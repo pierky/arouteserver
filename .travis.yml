@@ -35,9 +35,9 @@ jobs:
 
         # Set the expected fingerprint of the remote server.
         # ssh-keyscan a.b.c.d
-        - echo "$CICD_REMOTE_SERVER_IP ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIzW5p+CNXxFjgFYxA4rVC3IebCmkmoBi+m0kun2/vzi" >> ~/.ssh/known_hosts
-        - echo "$CICD_REMOTE_SERVER_IP ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCetq6U8neiqHm2Uv0r8on69BVW35o/1Myl9LPFhQfFoLM+WWfzWGj9u73VSsUqJJ+Zhq1/1qAa3wNekqo1jfa/zq86p8L7gr2JHBNa7SlYMLbZZn1hMs4WBB9o6SNNZu1gqd9jwM1rWGOYQyKZ80P8CK96M+LPmAvXFrNbVNAqMAxZSCac+xfwsEujbloWPB8JLS8z2obMrx+km9KiNbU44PB6FCYRpZ/1Z6mm9Enmgl+OQy0exaQVmZ4Q6P3ecXAlIcfC+B1Ik0Z0sKgvQHadb+n+GM7b+vEodzLujjXtERK71vG4GCEqodIaBai9fFtvTv+e2+TSVTVbO4Q/W1hT" >> ~/.ssh/known_hosts
-        - echo "$CICD_REMOTE_SERVER_IP ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBL9zipvmd0+/VpiV+YBQKmd6hk1MdF8DA9DkRyQrN2ltv2XBQK6ymUDRi7SGU41XeBmlk/Fw6+iuhcfcAhF9MHw=" >> ~/.ssh/known_hosts
+        - echo "$CICD_REMOTE_SERVER_IP ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF9ApdCmRCE1G6h/YMbnMsaxpg+ovlVnS8jZ2GiRQF4e" >> ~/.ssh/known_hosts
+        - echo "$CICD_REMOTE_SERVER_IP ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDFi06hDrKRQyXPJwJFLJlY4skcjjfEmg6pmP/ucjsxe6TktD4dWwIxLWEjQIWF84hvOGmtYpI25+yeSg2W8JXMzESwVjYPDDRqgyRlwRRHhzpTsNtZCrYou8A7hzQhwQJ0P4SiK5e1c1uvCEGr5WZBjhxPzptSaKwBl8MvZhFSQmBDpJCaYCpXcTOuZ31BNaqOL6u++5pI1E4TPUXTQHwx63Ib1n8UzOHzmkWQwCC5sxFVcTLkrdWEJkNRDOyxjdXi/P8zyF25L7jmPT1MHbiQCM4KeYORK2g+cAc1/0LSPe0JkRonYX+ts4C0PzT2HocCF5DCPHAKvbPgyZVHxzmr" >> ~/.ssh/known_hosts
+        - echo "$CICD_REMOTE_SERVER_IP ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBI3rUaUA1Dtj/9s1LFpJh+3gA/QHVCsJMkKrJ+0ys4pvMf9YyPwTCCaTYMsz6+pEQFzJuq6c5kjXnz6PUcADmGo=" >> ~/.ssh/known_hosts
 
         # Disable host validation for the IP address of the routeserver VM.
         - echo -e "Host 192.0.2.2\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile /dev/null\n" >> ~/.ssh/config
