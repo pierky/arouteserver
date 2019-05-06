@@ -58,23 +58,6 @@ class KVMInstance(BGPSpeakerInstance):
             self.remote_ip = self.remote_ip.strip()
         self.is_remote = self.remote_ip != "" and self.remote_ip
 
-    @classmethod
-    def _run(cls, cmd):
-        cls.debug("Executing '{}'".format(cmd))
-        try:
-            dev_null = open(os.devnull, "w")
-            stdout = subprocess.check_output(
-                cmd.split(), stderr=dev_null
-            ).decode("utf-8")
-            return stdout
-        except subprocess.CalledProcessError as e:
-            raise InstanceError(
-                "Error executing the following command:\n"
-                "\t{}\n"
-                "Output follows:\n\n"
-                "{}".format(cmd, e.output)
-            )
-
     def is_running(self):
         if self.is_remote:
             return True

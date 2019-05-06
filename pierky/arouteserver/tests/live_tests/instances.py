@@ -54,6 +54,13 @@ class BGPSpeakerInstance(object):
         self.ip = ip
         self.mount = mount
 
+        self.remote_execution_server_ip = None
+        self.remote_execution_server_key = None
+
+    def set_remote_execution(self, remote_server_ip, remote_server_ssh_key):
+        self.remote_execution_server_ip = remote_server_ip
+        self.remote_execution_server_key = remote_server_ssh_key
+
     def set_var_dir(self, var_dir):
         self.var_dir = var_dir
 
@@ -81,6 +88,29 @@ class BGPSpeakerInstance(object):
 
     def reload_config(self):
         raise NotImplementedError()
+
+    @classmethod
+    def _run(cls, cmd, detached=False, remote_execution=None):
+        try:
+            if detached:
+                dev_null = open(os.devnull, "w")
+                subprocess.Popen(
+                    cmd.split(),
+                    stdin=None,
+                    stdout=dev_null,
+                    stderr=dev_null
+                )
+                return None
+            else:
+                stdout = subprocess.check_output(cmd.split()).decode("utf-8")
+                return stdout
+        except subprocess.CalledProcessError as e:
+            raise InstanceError(
+                "Error executing the following command:\n"
+                "\t{}\n"
+                "Output follows:\n\n"
+                "{}".format(cmd, e.output)
+            )
 
     def run_cmd(self, args):
         raise NotImplementedError()

@@ -32,29 +32,6 @@ class DockerInstance(BGPSpeakerInstance):
         self.image = self.DOCKER_IMAGE
 
     @classmethod
-    def _run(cls, cmd, detached=False):
-        try:
-            if detached:
-                dev_null = open(os.devnull, "w")
-                subprocess.Popen(
-                    cmd.split(),
-                    stdin=None,
-                    stdout=dev_null,
-                    stderr=dev_null
-                )
-                return None
-            else:
-                stdout = subprocess.check_output(cmd.split()).decode("utf-8")
-                return stdout
-        except subprocess.CalledProcessError as e:
-            raise InstanceError(
-                "Error executing the following command:\n"
-                "\t{}\n"
-                "Output follows:\n\n"
-                "{}".format(cmd, e.output)
-            )
-
-    @classmethod
     def _instance_is_running(cls, name):
         cmd = '{docker} ps -f name={prefix}{name} --format="{{{{.ID}}}}"'.format(
             docker=cls.DOCKER_PATH,

@@ -367,6 +367,11 @@ class LiveScenario(ARouteServerTestCase):
                         raise InstanceError("An error occurred while reloading '{}' configuration.".format(instance.name))
                     continue
 
+                if cls.ON_TRAVIS_RUN_REMOTELY and "TRAVIS" in os.environ:
+                    instance.set_remote_execution(
+                        "127.0.0.1",
+                        "SSH_KEY"
+                    )
                 cls.debug("Starting instance '{}'...".format(instance.name))
                 instance.start()
         except Exception as e:
