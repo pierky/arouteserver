@@ -15,6 +15,7 @@
 
 
 import os
+import subprocess
 import sys
 
 class InstanceError(Exception):
@@ -55,10 +56,12 @@ class BGPSpeakerInstance(object):
         self.mount = mount
 
         self.remote_execution_server_ip = None
+        self.remote_execution_server_user = None
         self.remote_execution_server_key = None
 
-    def set_remote_execution(self, remote_server_ip, remote_server_ssh_key):
+    def set_remote_execution(self, remote_server_ip, remote_server_user, remote_server_ssh_key):
         self.remote_execution_server_ip = remote_server_ip
+        self.remote_execution_server_user = remote_server_user
         self.remote_execution_server_key = remote_server_ssh_key
 
     def set_var_dir(self, var_dir):
@@ -89,21 +92,64 @@ class BGPSpeakerInstance(object):
     def reload_config(self):
         raise NotImplementedError()
 
-    @classmethod
-    def _run(cls, cmd, detached=False, remote_execution=None):
+    def _run(self, cmd, detached=False):
+        """Executes the command on the host which runs the destination instance.
+
+        'cmd' is the full command that is supposed to be executed on the host
+        that runs the instance, that is the kvm host or the Docker host.
+
+        Examples of commands:
+        - 'docker run ...'
+        - 'docker exec -it ... birdcl show protocols'
+        - 'virsh start ...'
+        - 'ssh -o ... user@VM_ip_address bgpctl reload'
+
+        If 'detached' is True, the command is executed asynchronously and the
+        function is not blobked.
+
+        The execution of the command may happen on a remote host that is reached
+        via SSH: this is true when self.remote_execution_server_ip is set.
+        In this case, the execution of the command follows this pattern:
+        - local host establishes a SSH connection to the remote server
+          (self.remote_execution_server_ip);
+        - the command 'cmd' is executed on the remote server;
+        In this case, if 'detached' is set, the "outer" command (ssh to the remote
+        host) is performed synchronously, while the "inner" command ('cmd') is
+        performed with 'nohup ... &'.
+        """
+
         try:
-            if detached:
-                dev_null = open(os.devnull, "w")
-                subprocess.Popen(
-                    cmd.split(),
-                    stdin=None,
-                    stdout=dev_null,
-                    stderr=dev_null
-                )
-                return None
-            else:
-                stdout = subprocess.check_output(cmd.split()).decode("utf-8")
+            if self.remote_execution_server_ip:
+                if detached:
+                    cmd = "'nohup " + cmd + " &'"
+
+                final_cmd = (
+                    "ssh -o BatchMode=yes -o ConnectTimeout=5 "
+                    "-o StrictHostKeyChecking=yes "
+                    "-o ServerAliveInterval=10 {user}@{ip} -i {path_to_key} "
+                    "{cmd}").format(
+                        user=self.remote_execution_server_user,
+                        ip=self.remote_execution_server_ip,
+                        path_to_key=self.remote_execution_server_key,
+                        cmd=cmd
+                    )
+
+                stdout = subprocess.check_output(final_cmd.split()).decode("utf-8")
                 return stdout
+            else:
+                if detached:
+                    dev_null = open(os.devnull, "w")
+                    subprocess.Popen(
+                        cmd.split(),
+                        stdin=None,
+                        stdout=dev_null,
+                        stderr=dev_null
+                    )
+                    return None
+                else:
+                    stdout = subprocess.check_output(final_cmd.split()).decode("utf-8")
+                    return stdout
+
         except subprocess.CalledProcessError as e:
             raise InstanceError(
                 "Error executing the following command:\n"

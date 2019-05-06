@@ -52,7 +52,6 @@ class ARouteServerTestCase(unittest.TestCase):
     SHORT_DESCR = ""
     DEBUG = False
     SKIP_ON_TRAVIS = False
-    ON_TRAVIS_RUN_REMOTELY = False
 
     def _capture_log(self):
         self.logger_handler = None

@@ -145,6 +145,16 @@ class LiveScenario(ARouteServerTestCase):
     to be used directly by ``nose`` to run tests; only the specific IPv4/IPv6
     class (the one where the ``DATA`` dictionary is set) must have
     ``__test__`` == True.
+
+    When ``ON_TRAVIS_RUN_REMOTELY`` is set to True, the execution of this
+    scenario is performed remotely when triggered on the TravisCI platform.
+    In this case, all the commands needed to spin up the
+    :class:`BGPSpeakerInstance` instances and to interact with them are executed
+    on a remote host, that will be reached using the following parameters:
+
+    - IP address: from the ``CICD_REMOTE_SERVER_IP`` environment variable;
+    - username: from the ``CICD_REMOTE_SERVER_USER`` environment variable;
+    - SSH key: from the ``CICD_REMOTE_SERVER_SSH_KEY`` environment variable;
     """
 
     MODULE_PATH = None
@@ -172,6 +182,8 @@ class LiveScenario(ARouteServerTestCase):
     REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY = None
 
     ALLOWED_LOG_ERRORS = []
+
+    ON_TRAVIS_RUN_REMOTELY = False
 
     @classmethod
     def _get_module_dir(cls):
@@ -369,8 +381,9 @@ class LiveScenario(ARouteServerTestCase):
 
                 if cls.ON_TRAVIS_RUN_REMOTELY and "TRAVIS" in os.environ:
                     instance.set_remote_execution(
-                        "127.0.0.1",
-                        "SSH_KEY"
+                        os.environ["CICD_REMOTE_SERVER_IP"],
+                        os.environ["CICD_REMOTE_SERVER_USER"],
+                        os.environ["CICD_REMOTE_SERVER_SSH_KEY"]
                     )
                 cls.debug("Starting instance '{}'...".format(instance.name))
                 instance.start()

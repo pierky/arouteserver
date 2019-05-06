@@ -31,13 +31,12 @@ class DockerInstance(BGPSpeakerInstance):
         super(DockerInstance, self).__init__(*args, **kwargs)
         self.image = self.DOCKER_IMAGE
 
-    @classmethod
-    def _instance_is_running(cls, name):
+    def _instance_is_running(self, name):
         cmd = '{docker} ps -f name={prefix}{name} --format="{{{{.ID}}}}"'.format(
-            docker=cls.DOCKER_PATH,
-            prefix=cls.DOCKER_INSTANCE_PREFIX, name=name
+            docker=self.DOCKER_PATH,
+            prefix=self.DOCKER_INSTANCE_PREFIX, name=name
         )
-        res = cls._run(cmd)
+        res = self._run(cmd)
         if not res:
             return False
         else:
@@ -54,13 +53,12 @@ class DockerInstance(BGPSpeakerInstance):
         else:
             return len(res.strip()) > 0
 
-    @classmethod
-    def _setup_networking(cls):
+    def _setup_networking(self):
         network_details = None
         try:
-            network_details = cls._run("{} network inspect {}".format(
-                cls.DOCKER_PATH,
-                cls.DOCKER_NETWORK_NAME)
+            network_details = self._run("{} network inspect {}".format(
+                self.DOCKER_PATH,
+                self.DOCKER_NETWORK_NAME)
             )
         except:
             # network does not exist
@@ -68,9 +66,9 @@ class DockerInstance(BGPSpeakerInstance):
 
         if network_details is not None:
             try:
-                if cls.DOCKER_NETWORK_SUBNET_IPv4 not in network_details:
+                if self.DOCKER_NETWORK_SUBNET_IPv4 not in network_details:
                     raise InstanceError("IPv4")
-                if cls.DOCKER_NETWORK_SUBNET_IPv6 not in network_details:
+                if self.DOCKER_NETWORK_SUBNET_IPv6 not in network_details:
                     raise InstanceError("IPv6")
             except InstanceError as e:
                 raise InstanceError(
@@ -78,24 +76,24 @@ class DockerInstance(BGPSpeakerInstance):
                     "('{net}') already exists but is on a "
                     "wrong {v} subnet. Plase consider removing it "
                     "with '{docker} network rm {net}'.".format(
-                        net=cls.DOCKER_NETWORK_NAME,
+                        net=self.DOCKER_NETWORK_NAME,
                         v=str(e),
-                        docker=cls.DOCKER_PATH
+                        docker=self.DOCKER_PATH
                     )
                 )
             return
 
         try:
-            cls._run("{} network create --ipv6 --subnet={} --subnet={} {}".format(
-                cls.DOCKER_PATH,
-                cls.DOCKER_NETWORK_SUBNET_IPv4,
-                cls.DOCKER_NETWORK_SUBNET_IPv6,
-                cls.DOCKER_NETWORK_NAME
+            self._run("{} network create --ipv6 --subnet={} --subnet={} {}".format(
+                self.DOCKER_PATH,
+                self.DOCKER_NETWORK_SUBNET_IPv4,
+                self.DOCKER_NETWORK_SUBNET_IPv6,
+                self.DOCKER_NETWORK_NAME
             ))
         except Exception as e:
             raise InstanceError(
                 "Error while creating Docker network '{}': {}.".format(
-                    cls.DOCKER_NETWORK_NAME, str(e)
+                    self.DOCKER_NETWORK_NAME, str(e)
                 )
             )
 
