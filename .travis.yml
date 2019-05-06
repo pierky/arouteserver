@@ -7,7 +7,7 @@ script: tox
 env:
   global:
     # Variables used to run live-tests on a remote host.
-    - CICD_REMOTE_SERVER_IP=142.93.98.235
+    - CICD_REMOTE_SERVER_IP=46.101.175.25
     - CICD_REMOTE_SERVER_USER=ars_cicd
     - CICD_REMOTE_SERVER_SSH_KEY=~/.ssh/ars_cicd_travis
 
@@ -18,9 +18,13 @@ before_install:
   - eval "$(ssh-agent -s)"
   # Set the right permissions on the file containing the SSH key.
   - chmod 600 $CICD_REMOTE_SERVER_SSH_KEY
-  # Set the expected fingerprint of the remote server.
+  # Enforce the validation of the remote server key.
   - echo -e "Host $CICD_REMOTE_SERVER_IP\n\tStrictHostKeyChecking yes\n" >> ~/.ssh/config
-  - echo -e "$CICD_REMOTE_SERVER_IP ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBBSkmfUk/STbkDn8xbCcm+MROM8kcWCCiop1n2nfQT8r5KZlXCcUVj8SSMEtjn9+vfHXu2kiCnsZP1apvILLOGg=\n" >> ~/.ssh/known_hosts
+  # Set the expected fingerprint of the remote server.
+  # ssh-keyscan a.b.c.d
+  - echo "$CICD_REMOTE_SERVER_IP ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIzW5p+CNXxFjgFYxA4rVC3IebCmkmoBi+m0kun2/vzi" >> ~/.ssh/known_hosts
+  - echo "$CICD_REMOTE_SERVER_IP ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCetq6U8neiqHm2Uv0r8on69BVW35o/1Myl9LPFhQfFoLM+WWfzWGj9u73VSsUqJJ+Zhq1/1qAa3wNekqo1jfa/zq86p8L7gr2JHBNa7SlYMLbZZn1hMs4WBB9o6SNNZu1gqd9jwM1rWGOYQyKZ80P8CK96M+LPmAvXFrNbVNAqMAxZSCac+xfwsEujbloWPB8JLS8z2obMrx+km9KiNbU44PB6FCYRpZ/1Z6mm9Enmgl+OQy0exaQVmZ4Q6P3ecXAlIcfC+B1Ik0Z0sKgvQHadb+n+GM7b+vEodzLujjXtERK71vG4GCEqodIaBai9fFtvTv+e2+TSVTVbO4Q/W1hT" >> ~/.ssh/known_hosts
+  - echo "$CICD_REMOTE_SERVER_IP ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBL9zipvmd0+/VpiV+YBQKmd6hk1MdF8DA9DkRyQrN2ltv2XBQK6ymUDRi7SGU41XeBmlk/Fw6+iuhcfcAhF9MHw=" >> ~/.ssh/known_hosts
   # Add the private key to the SSH agent.
   - ssh-add $CICD_REMOTE_SERVER_SSH_KEY
   # Test the SSH connection.

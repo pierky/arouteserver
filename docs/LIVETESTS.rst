@@ -120,7 +120,12 @@ OpenBGPD live-tests environment
 Remote live-tests environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Install the TravisCI client tool (if not already):
+The following instructions are needed to setup the remote live-tests environment, which is used to run KVM-based tests from TravisCI.
+
+Basically, TravisCI will run the full test suite, but some tests will be performed on the remote server, where the KVM environment described in `OpenBGPD live-tests environment`_  will be available.
+The TravisCI platform will interact with the remote server via SSH, using a CI/CD bot user that will be provisioned on the remote system, and will fetch the results of the tests.
+
+Locally in the dev environment, install the TravisCI client tool (if not already):
 
 .. code:: bash
 
@@ -134,16 +139,19 @@ Create a SSH key for the CI/CD bot user and encrypt it using the TravisCI tool:
    ssh-keygen -t rsa -b 4096 -C 'ARouteServer CI/CD on TravisCI' -f ars_cicd_travis
    travis encrypt-file ars_cicd_travis --add
 
-On the remote target host, create the ``ars_cicd`` user:
+On the remote target host, create the ``ars_cicd`` user, make it part of the ``libvirtd`` group (needed to interact with virsh) and add the SSH key to it:
 
 .. code:: bash
 
-   sudo useradd --create-home ars_cicd
+   sudo useradd --create-home ars_cicd --shell /bin/bash
+   sudo adduser ars_cicd libvirtd
    sudo -i -u ars_cicd
    mkdir -p ~/.ssh && touch ~/.ssh/authorized_keys
    cat <<EOF >~/.ssh/authorized_keys
    <content of the PUB key>
    EOF
+
+Update the ``CICD_REMOTE_SERVER_IP`` environment variable in the .travis.yml file and also the fingerprint.
 
 How to run built-in live tests
 ------------------------------
