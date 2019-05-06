@@ -10,7 +10,7 @@ script: tox
 env:
   global:
     # Variables used to run live-tests on a remote host.
-    - CICD_REMOTE_SERVER_IP=46.101.175.25
+    - CICD_REMOTE_SERVER_IP=46.101.144.129
     - CICD_REMOTE_SERVER_USER=ars_cicd
     - CICD_REMOTE_SERVER_SSH_KEY=ars_cicd_travis
 
