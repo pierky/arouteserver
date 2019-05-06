@@ -8,9 +8,10 @@ services:
 script: tox
 
 env:
-  - CICD_REMOTE_SERVER_IP=142.93.98.235
-  - CICD_REMOTE_SERVER_USER=ars_cicd
-  - CICD_REMOTE_SERVER_SSH_KEY=~/.ssh/ars_cicd_travis
+  global:
+    - CICD_REMOTE_SERVER_IP=142.93.98.235
+    - CICD_REMOTE_SERVER_USER=ars_cicd
+    - CICD_REMOTE_SERVER_SSH_KEY=~/.ssh/ars_cicd_travis
 
 before_install:
   # Decrypt the SSH key
