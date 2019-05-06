@@ -192,21 +192,23 @@ class KVMInstance(BGPSpeakerInstance):
             # spin up a local SSH process that will use
             # self.remote_execution_server_* as jump-host to
             # run the command directly on the KVM VM.
-            cmd = (
-                "ssh "
-                "-o BatchMode=yes "
-                "-o ConnectTimeout=5 "
-                "-o ServerAliveInterval=10 "
-                "-J {remote_server_user}@{remote_server_ip} "
-                "{kvm_vm_user}@{kvm_vm_ip} "
-                "{cmd}"
-            ).format(
-                remote_server_user=self.remote_execution_server_user,
-                remote_server_ip=self.remote_execution_server_ip,
-                kvm_vm_user=self._get_ssh_user(),
-                kvm_vm_ip=self.ip,
-                cmd=" ".join(args) if isinstance(args, list) else args
-            )
+            cmd = [
+                "ssh",
+                "-o", "BatchMode=yes",
+                "-o", "ConnectTimeout=5",
+                "-o", "ServerAliveInterval=10",
+                "-o", "ProxyCommand ssh {remote_server_user}@{remote_server_ip} nc %h %p".format(
+                    remote_server_user=self.remote_execution_server_user,
+                    remote_server_ip=self.remote_execution_server_ip,
+                ),
+                "{kvm_vm_user}@{kvm_vm_ip}".format(
+                    kvm_vm_user=self._get_ssh_user(),
+                    kvm_vm_ip=self.ip,
+                ),
+                "{cmd}".format(
+                    cmd=" ".join(args) if isinstance(args, list) else args
+                )
+            ]
         else:
             cmd = (
                 "ssh "
