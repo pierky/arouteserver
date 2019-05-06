@@ -117,6 +117,47 @@ OpenBGPD live-tests environment
       echo "bgpd_flags=" >> /etc/rc.conf.local
       chmod 0555 /var/www/bin/bgpctl
 
+Remote live-tests environment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Install the TravisCI client tool (if not already):
+
+.. code:: bash
+
+   apt-get install ruby-full
+   gem install travis
+
+Create a SSH key for the CI/CD bot user and encrypt it using the TravisCI tool:
+
+.. code:: bash
+
+   ssh-keygen -t rsa -b 4096 -C 'ARouteServer CI/CD on TravisCI' -f ars_cicd_travis
+   travis encrypt-file ars_cicd_travis --add
+
+Update the .travis.yml file in order to have the SSH key ready and usable by the environment (please note, the ``encrypted_77965d5bdd4d_key`` value is provided by the TravisCI tool after running the above command):
+
+.. code:: bash
+
+   env:
+     - CICD_REMOTE_SERVER_IP=142.93.98.235
+     - CICD_REMOTE_SERVER_USER=ars_cicd
+     - CICD_REMOTE_SERVER_SSH_KEY=~/.ssh/ars_cicd_travis
+
+   before_install:
+     # Decrypt the SSH key
+     - openssl aes-256-cbc -K $encrypted_5ace84bcb2fb_key -iv $encrypted_5ace84bcb2fb_iv -in $CICD_REMOTE_SERVER_SSH_KEY.enc -out $CICD_REMOTE_SERVER_SSH_KEY -d
+     # Run the SSH agent
+     - eval "$(ssh-agent -s)"
+     # Set the right permissions on the file containing the SSH key
+     - chmod 600 $CICD_REMOTE_SERVER_SSH_KEY
+     # Set the expected fingerprint of the remote server
+     - echo -e "Host $CICD_REMOTE_SERVER_IP\n\tStrictHostKeyChecking yes\n" >> ~/.ssh/config
+     - echo -e "$CICD_REMOTE_SERVER_IP ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBBSkmfUk/STbkDn8xbCcm+MROM8kcWCCiop1n2nfQT8r5KZlXCcUVj8SSMEtjn9+vfHXu2kiCnsZP1apvILLOGg=\n" >> ~/.ssh/known_hosts
+     # Add the private key to the SSH agent
+     - ssh-add $CICD_REMOTE_SERVER_SSH_KEY
+     # Test the SSH connection
+     - ssh -i $CICD_REMOTE_SERVER_SSH_KEY $CICD_REMOTE_SERVER_USER@$CICD_REMOTE_SERVER_IP pwd
+
 How to run built-in live tests
 ------------------------------
 
