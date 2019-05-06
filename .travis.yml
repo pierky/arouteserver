@@ -15,7 +15,7 @@ env:
 
 before_install:
   # Decrypt the SSH key
-  - openssl aes-256-cbc -K $encrypted_5ace84bcb2fb_key -iv $encrypted_5ace84bcb2fb_iv -in $CICD_REMOTE_SERVER_SSH_KEY.enc -out $CICD_REMOTE_SERVER_SSH_KEY -d
+  - openssl aes-256-cbc -K $encrypted_5ace84bcb2fb_key -iv $encrypted_5ace84bcb2fb_iv -in $ars_cicd_travis.enc -out $CICD_REMOTE_SERVER_SSH_KEY -d
   # Run the SSH agent
   - eval "$(ssh-agent -s)"
   # Set the right permissions on the file containing the SSH key
