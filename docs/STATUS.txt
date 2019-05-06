@@ -27,6 +27,8 @@ Who is using ARouteServer?
 
 - `SwissIX <https://www.swissix.ch/>`__, OpenBGPD.
 
+- `Unmetered.Exchange <https://unmetered.exchange/>`__, BIRD.
+
 - `VANIX <https://vanix.ca/>`__.
 
 - `YXEIX <http://yxeix.ca/>`__, BIRD.

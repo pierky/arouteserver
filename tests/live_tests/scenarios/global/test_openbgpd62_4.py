@@ -13,5 +13,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-__version__ = "0.21.0" # pragma: no cover
-COPYRIGHT_YEAR = 2019 # pragma: no cover
+import os
+import unittest
+
+from .base import BasicScenarioOpenBGPD62
+from .data4 import BasicScenario_Data4
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD62Instance
+
+class BasicScenario_OpenBGPDIPv4(BasicScenario_Data4, BasicScenarioOpenBGPD62):
+
+    __test__ = True
+    SKIP_ON_TRAVIS = True
+
+    SHORT_DESCR = "Live test, OpenBGPD 6.2, global scenario, IPv4"
+    RS_INSTANCE_CLASS = OpenBGPD62Instance
+    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4

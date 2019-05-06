@@ -79,11 +79,11 @@ class RPKIROAsEnricher(BaseConfigEnricher):
         rpki_roas_cfg = self.builder.cfg_general["rpki_roas"]
         assert rpki_roas_cfg["source"] == "ripe-rpki-validator-cache", \
             "source is not ripe-rpki-validator-cache"
-        url = rpki_roas_cfg["ripe_rpki_validator_url"]
+        urls = rpki_roas_cfg["ripe_rpki_validator_url"]
 
         ripe_cache = RIPE_RPKI_ROAs(cache_dir=self.builder.cache_dir,
                                     cache_expiry=self.builder.cache_expiry,
-                                    ripe_rpki_validator_url=url)
+                                    ripe_rpki_validator_url=urls)
         ripe_cache.load_data()
         roas = ripe_cache.roas
 

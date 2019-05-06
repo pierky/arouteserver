@@ -249,8 +249,9 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
             if not client_irrdb["enforce_origin_in_as_set"] and \
                 not client_irrdb["enforce_prefix_in_as_set"] and \
                 not self.builder.cfg_general["filtering"]["irrdb"]["tag_as_set"]:
-                    # Client does not require AS-SETs info to be gathered.
-                    continue
+
+                # Client does not require AS-SETs info to be gathered.
+                continue
 
             if self.builder.ip_ver is not None:
                 ip = client["ip"]

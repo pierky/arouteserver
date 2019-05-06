@@ -193,7 +193,7 @@ Route <strong>validity state</strong> is signalled to route server clients using
 <ul>
 
 {%	if cfg.rpki_roas.source == "ripe-rpki-validator-cache" %}
-<li><p>RPKI ROAs are fetched from the RIPE RPKI Validator cache file at {{ cfg.rpki_roas.ripe_rpki_validator_url|urlize }}. The following Trust Anchors are used: {{ cfg.rpki_roas.allowed_trust_anchors|join(", ") }}</p></li>
+<li><p>RPKI ROAs are fetched from the RIPE RPKI Validator format cache files at {{ cfg.rpki_roas.ripe_rpki_validator_url|map("urlize")|join(", ") }}. The following Trust Anchors are used: {{ cfg.rpki_roas.allowed_trust_anchors|join(", ") }}</p></li>
 {%	else %}
 <li><p>RPKI ROAs are supplied using an external program.</p></li>
 {%	endif %}

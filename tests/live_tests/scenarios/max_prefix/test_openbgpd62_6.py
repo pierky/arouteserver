@@ -13,5 +13,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-__version__ = "0.21.0" # pragma: no cover
-COPYRIGHT_YEAR = 2019 # pragma: no cover
+import os
+import unittest
+
+from .base import MaxPrefixScenarioOpenBGPD62
+from .data6 import MaxPrefixScenario_Data6
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD62Instance
+
+class MaxPrefixScenario_OpenBGPDIPv6(MaxPrefixScenario_Data6,
+                                     MaxPrefixScenarioOpenBGPD62):
+
+    __test__ = True
+    SKIP_ON_TRAVIS = True
+
+    SHORT_DESCR = "Live test, OpenBGPD 6.2, max-prefix, IPv6"
+    RS_INSTANCE_CLASS = OpenBGPD62Instance
+    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
