@@ -132,7 +132,8 @@ class KVMInstance(BGPSpeakerInstance):
                     res = self.run_cmd("true")
                     running = True
                     break
-                except:
+                except Exception as e:
+                    self.debug("Not running yet - {}".format(str(e)))
                     pass
 
             if not running:
