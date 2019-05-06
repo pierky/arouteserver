@@ -51,7 +51,7 @@ jobs:
       install:
         - pip install -r requirements.txt
         - pip install -r requirements-dev.txt
-      script: nosetests -vs tests/live_tests/scenarios/default/test_openbgpd64_4.py
+      script: DEBUG=1 nosetests -vs tests/live_tests/scenarios/default/test_openbgpd64_4.py
     # - stage: test
     #   env: TOXENV=py34-syntax
     #   python: "3.4"
