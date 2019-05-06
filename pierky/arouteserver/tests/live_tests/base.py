@@ -154,7 +154,7 @@ class LiveScenario(ARouteServerTestCase):
 
     - IP address: from the ``CICD_REMOTE_SERVER_IP`` environment variable;
     - username: from the ``CICD_REMOTE_SERVER_USER`` environment variable;
-    - SSH key: from the ``CICD_REMOTE_SERVER_SSH_KEY`` environment variable;
+    - SSH key: from the SSH agent;
     """
 
     MODULE_PATH = None
@@ -373,18 +373,18 @@ class LiveScenario(ARouteServerTestCase):
             for instance in cls.INSTANCES:
                 instance.set_var_dir("{}/var".format(cls._get_module_dir()))
 
+                if cls.ON_TRAVIS_RUN_REMOTELY and "TRAVIS" in os.environ:
+                    instance.set_remote_execution(
+                        os.environ["CICD_REMOTE_SERVER_IP"],
+                        os.environ["CICD_REMOTE_SERVER_USER"]
+                    )
+
                 if cls._do_not_stop_instances() and instance.is_running():
                     cls.debug("Instance '{}' already running, reloading config".format(instance.name))
                     if not instance.reload_config():
                         raise InstanceError("An error occurred while reloading '{}' configuration.".format(instance.name))
                     continue
 
-                if cls.ON_TRAVIS_RUN_REMOTELY and "TRAVIS" in os.environ:
-                    instance.set_remote_execution(
-                        os.environ["CICD_REMOTE_SERVER_IP"],
-                        os.environ["CICD_REMOTE_SERVER_USER"],
-                        os.environ["CICD_REMOTE_SERVER_SSH_KEY"]
-                    )
                 cls.debug("Starting instance '{}'...".format(instance.name))
                 instance.start()
         except Exception as e:

@@ -16,6 +16,8 @@
 import os
 import subprocess
 import time
+import random
+import string
 
 from .instances import InstanceError, BGPSpeakerInstance, InstanceNotRunning
 
@@ -43,7 +45,7 @@ class DockerInstance(BGPSpeakerInstance):
             return True
 
     def _docker_image_exists(self):
-        cmd = '{docker} images {image} --format="{{{{.Repository}}}}'.format(
+        cmd = '{docker} images {image} --format="{{{{.Repository}}}}"'.format(
             docker=self.DOCKER_PATH,
             image=self.image
         )
@@ -103,6 +105,36 @@ class DockerInstance(BGPSpeakerInstance):
     def _get_start_cmd(self):
         raise NotImplementedError()
 
+    def get_mounts(self):
+
+        def random_string(str_len):
+            """Generate a random string with the combination of lowercase and uppercase letters """
+            letters = string.ascii_letters
+            return ''.join(random.choice(letters) for i in range(str_len))
+
+        # When the Docker host is remote, the local file must be uploaded
+        # before it can be mounted inside the container.
+        for mount in BGPSpeakerInstance.get_mounts(self):
+            if self.remote_execution_server_ip:
+                res = mount
+
+                remote_server_file = "/tmp/ars." + res["host_filename"] + "." + random_string(6)
+                cmd = (
+                    "scp "
+                    "{host_file} {remote_server_user}@{remote_server_ip}:{remote_file}".format(
+                        host_file=res["host"],
+                        remote_server_user=self.remote_execution_server_user,
+                        remote_server_ip=self.remote_execution_server_ip,
+                        remote_file=remote_server_file
+                    )
+                )
+                self._run_local(cmd)
+                res["var_path"] = remote_server_file
+
+                yield res
+            else:
+                yield mount
+
     def start(self):
         self._setup_networking()
 
@@ -117,11 +149,12 @@ class DockerInstance(BGPSpeakerInstance):
                     "'docker pull {image}'.".format(image=self.image)
                 )
 
-            cmd = ('{docker} run --rm '
+            cmd = ('{docker} run {detached_flag} --rm '
                    '--net={net_name} {ip_arg}={ip} '
                    '--name={prefix}{name} '
                    '{mounts} {image} {start_cmd}'.format(
                         docker=self.DOCKER_PATH,
+                        detached_flag="-d" if self.remote_execution_server_ip else "",
                         net_name=self.DOCKER_NETWORK_NAME,
                         ip_arg="--ip6" if ":" in self.ip else "--ip",
                         ip=self.ip,
@@ -139,7 +172,10 @@ class DockerInstance(BGPSpeakerInstance):
                     )
             )
 
-            self._run(cmd, detached=True)
+            self._run(
+                cmd,
+                detached=True if not self.remote_execution_server_ip else False
+            )
             time.sleep(3)
             if not self.is_running():
                 process = subprocess.Popen(
@@ -179,7 +215,7 @@ class DockerInstance(BGPSpeakerInstance):
         if not self.is_running():
             raise InstanceNotRunning(self.name)
 
-        cmd = '{docker} exec -it {prefix}{name} {args}'.format(
+        cmd = '{docker} exec -i {prefix}{name} {args}'.format(
             docker=self.DOCKER_PATH,
             prefix=self.DOCKER_INSTANCE_PREFIX,
             name=self.name,

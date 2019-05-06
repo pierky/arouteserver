@@ -24,7 +24,7 @@ from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD64Instance
 class DefaultConfigScenarioOpenBGPD_IPv6(DefaultConfigScenario_Data6,
                                          DefaultConfigScenarioOpenBGPD64):
     __test__ = True
-    SKIP_ON_TRAVIS = True
+    ON_TRAVIS_RUN_REMOTELY = True
 
     SHORT_DESCR = "Live test, OpenBGPD 6.4, default config, IPv6"
     RS_INSTANCE_CLASS = OpenBGPD64Instance

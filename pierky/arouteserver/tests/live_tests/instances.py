@@ -57,12 +57,10 @@ class BGPSpeakerInstance(object):
 
         self.remote_execution_server_ip = None
         self.remote_execution_server_user = None
-        self.remote_execution_server_key = None
 
-    def set_remote_execution(self, remote_server_ip, remote_server_user, remote_server_ssh_key):
+    def set_remote_execution(self, remote_server_ip, remote_server_user):
         self.remote_execution_server_ip = remote_server_ip
         self.remote_execution_server_user = remote_server_user
-        self.remote_execution_server_key = remote_server_ssh_key
 
     def set_var_dir(self, var_dir):
         self.var_dir = var_dir
@@ -75,6 +73,7 @@ class BGPSpeakerInstance(object):
             res["host_filename"] = os.path.split(mount[0])[1]
             res["var_path"] = "{}/{}".format(self.var_dir,
                                              res["host_filename"])
+
             yield res
 
     def is_running(self):
@@ -92,6 +91,57 @@ class BGPSpeakerInstance(object):
     def reload_config(self):
         raise NotImplementedError()
 
+    def _run_local(self, cmd, detached=False):
+        """Run the given command locally on the host where the CI tests are running"""
+
+        self.debug("Running '{}'".format(cmd))
+
+        try:
+            dev_null = open(os.devnull, "w")
+            if detached:
+                subprocess.Popen(
+                    cmd if isinstance(cmd, list) else cmd.split(),
+                    stdin=None,
+                    stdout=dev_null,
+                    stderr=dev_null
+                )
+                return None
+            else:
+                pipes = subprocess.Popen(
+                    cmd if isinstance(cmd, list) else cmd.split(),
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE
+                )
+                stdout, stderr = pipes.communicate()
+                if pipes.returncode != 0:
+                    raise InstanceError(
+                        "Error executing the following command:\n"
+                        "\t{}\n"
+                        "Exit code: {}\n\n"
+                        "Output follows:\n"
+                        "stdout:\n"
+                        "{}\n\n"
+                        "stderr:\n"
+                        "{}\n\n".format(
+                            " ".join(cmd) if isinstance(cmd, list) else cmd,
+                            pipes.returncode,
+                            stdout,
+                            stderr
+                        )
+                    )
+                return stdout.decode("utf-8")
+
+        except subprocess.CalledProcessError as e:
+            raise InstanceError(
+                "Error executing the following command:\n"
+                "\t{}\n"
+                "Output follows:\n\n"
+                "{}".format(
+                    " ".join(cmd) if isinstance(cmd, list) else cmd,
+                    e.output
+                )
+            )
+
     def _run(self, cmd, detached=False):
         """Executes the command on the host which runs the destination instance.
 
@@ -102,10 +152,9 @@ class BGPSpeakerInstance(object):
         - 'docker run ...'
         - 'docker exec -it ... birdcl show protocols'
         - 'virsh start ...'
-        - 'ssh -o ... user@VM_ip_address bgpctl reload'
 
         If 'detached' is True, the command is executed asynchronously and the
-        function is not blobked.
+        function is not blocked.
 
         The execution of the command may happen on a remote host that is reached
         via SSH: this is true when self.remote_execution_server_ip is set.
@@ -118,47 +167,31 @@ class BGPSpeakerInstance(object):
         performed with 'nohup ... &'.
         """
 
-        try:
-            if self.remote_execution_server_ip:
-                if detached:
-                    cmd = "'nohup " + cmd + " &'"
+        if self.remote_execution_server_ip:
+            if detached:
+                cmd = "'" + cmd + " &'"
 
-                final_cmd = (
-                    "ssh -o BatchMode=yes -o ConnectTimeout=5 "
-                    "-o StrictHostKeyChecking=yes "
-                    "-o ServerAliveInterval=10 {user}@{ip} -i {path_to_key} "
-                    "{cmd}").format(
-                        user=self.remote_execution_server_user,
-                        ip=self.remote_execution_server_ip,
-                        path_to_key=self.remote_execution_server_key,
-                        cmd=cmd
-                    )
+            final_cmd = (
+                "ssh "
+                "-o BatchMode=yes "
+                "-o ConnectTimeout=5 "
+                "-o ServerAliveInterval=10 {user}@{ip} "
+                "{cmd}").format(
+                    user=self.remote_execution_server_user,
+                    ip=self.remote_execution_server_ip,
+                    cmd=cmd
+                )
 
-                stdout = subprocess.check_output(final_cmd.split()).decode("utf-8")
-                return stdout
-            else:
-                if detached:
-                    dev_null = open(os.devnull, "w")
-                    subprocess.Popen(
-                        cmd.split(),
-                        stdin=None,
-                        stdout=dev_null,
-                        stderr=dev_null
-                    )
-                    return None
-                else:
-                    stdout = subprocess.check_output(final_cmd.split()).decode("utf-8")
-                    return stdout
-
-        except subprocess.CalledProcessError as e:
-            raise InstanceError(
-                "Error executing the following command:\n"
-                "\t{}\n"
-                "Output follows:\n\n"
-                "{}".format(cmd, e.output)
-            )
+            # 'detached=False' because here we're running a command on the
+            # remote server, but the process that we execute here is the
+            # SSH connection to it, so it must be synchronous even if the
+            # inner command is desired to be ran as detached.
+            return self._run_local(final_cmd, detached=False)
+        else:
+            return self._run_local(cmd, detached=detached)
 
     def run_cmd(self, args):
+        """Run the command inside the BGP speaker instance, the Docker/KVM guest."""
         raise NotImplementedError()
 
     def get_bgp_session(self, other_inst, force_update=False):

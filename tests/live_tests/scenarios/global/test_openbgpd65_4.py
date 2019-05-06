@@ -16,16 +16,16 @@
 import os
 import unittest
 
-from .base import RichConfigExampleScenarioOpenBGPD64
-from .data6 import RichConfigExampleScenario_Data6
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD64Instance
+from .base import BasicScenarioOpenBGPD65
+from .data4 import BasicScenario_Data4
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD65Instance
 
-class RichConfigExampleScenarioOpenBGPD_IPv6(RichConfigExampleScenario_Data6,
-                                             RichConfigExampleScenarioOpenBGPD64):
+class BasicScenario_OpenBGPDIPv4(BasicScenario_Data4, BasicScenarioOpenBGPD65):
+
     __test__ = True
     ON_TRAVIS_RUN_REMOTELY = True
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.4, examples, rich config, IPv6"
-    RS_INSTANCE_CLASS = OpenBGPD64Instance
-    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
+    SHORT_DESCR = "Live test, OpenBGPD 6.5, global scenario, IPv4"
+    RS_INSTANCE_CLASS = OpenBGPD65Instance
+    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4

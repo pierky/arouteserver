@@ -74,24 +74,45 @@ OpenBGPD live-tests environment
 
    - In order to run built-in live test scenarios, the VM must be reachable at 192.0.2.2/24 and 2001:db8:1:1::2/64.
 
-   On the following example, the virtual disk will be stored in ~/vms, the VM will be reachable by connecting to any IP address of the host via VNC, the installation disk image is expected to be found in the install60.iso file and the network name used is **br-2d2956ce4b64**:
+   On the following example, the virtual disk will be stored in ~/vms, the VM will be reachable by connecting to any IP address of the host via VNC, the installation disk image is expected to be found in the install65.iso file and the network name used is **br-2d2956ce4b64**:
 
    .. code:: bash
 
+      BRIDGE_ID="`ifconfig | egrep "^br-" | cut -d ' ' -f 1`"
+      echo "Using bridge ${BRIDGE_ID}"
       sudo virsh pool-define-as --name vms_pool --type dir --target ~/vms
       sudo virsh pool-start vms_pool
+      curl -LO https://cdn.openbsd.org/pub/OpenBSD/6.5/amd64/install65.iso
       sudo virt-install \
-        -n arouteserver_openbgpd60 \
+        -n arouteserver_openbgpd65 \
         -r 512 \
         --vcpus=1 \
         --os-variant=openbsd4 \
         --accelerate \
-        -v -c install60.iso \
-        -w bridge:br-2d2956ce4b64 \
+        -v -c install65.iso \
+        -w bridge:${BRIDGE_ID} \
         --graphics vnc,listen=0.0.0.0 \
-        --disk path=~/vms/arouteserver_openbgpd.qcow2,size=5,format=qcow2
+        --disk path=~/vms/arouteserver_openbgpd65.qcow2,size=5,format=qcow2
 
-   Finally, add the current user to the libvirtd group to allow management of the VM:
+   Once the installation is completed, start the OpenBSD VM and connect to it via SSH, using root and the password which has been set during the installation process, then complete the configuration...
+
+   .. code:: bash
+
+      virsh start arouteserver_openbgpd65
+      ssh root@192.0.2.2
+
+      cat << EOF >> .ssh/authorized_keys
+      <content of the SSH pub key here>
+      EOF
+
+      cat << EOF >> /etc/hostname.pcn0
+      inet6 alias 2001:db8:1:1::2 64
+      !route -n add -inet6 default 2001:db8:1:1::1
+      EOF
+
+      reboot
+
+   Finally, on the KVM server, add the current user to the ``libvirtd`` group to allow management of the VM:
 
    .. code:: bash
 
@@ -102,7 +123,7 @@ OpenBGPD live-tests environment
    .. code:: bash
 
       mkdir /root/.ssh
-      cat << EOF > .ssh/authorized_keys
+      cat << EOF >> .ssh/authorized_keys
       ssh-rsa [public_key_here] arouteserver
       EOF
 
@@ -137,21 +158,24 @@ Create a SSH key for the CI/CD bot user and encrypt it using the TravisCI tool:
 .. code:: bash
 
    ssh-keygen -t rsa -b 4096 -C 'ARouteServer CI/CD on TravisCI' -f ars_cicd_travis
-   travis encrypt-file ars_cicd_travis --add
+   travis encrypt-file ars_cicd_travis
 
-On the remote target host, create the ``ars_cicd`` user, make it part of the ``libvirtd`` group (needed to interact with virsh) and add the SSH key to it:
+Write down the ``openssl ...`` command suggested in the output of the ``travis`` command, it will be needed later to adjust the .travis.yml file.
+
+On the remote target host (where KVM VMs will be spun up), create the ``ars_cicd`` user, make it part of the ``libvirtd`` group (needed to interact with virsh) and ``docker`` group (to interact with Docker) and add the SSH key to it:
 
 .. code:: bash
 
    sudo useradd --create-home ars_cicd --shell /bin/bash
    sudo adduser ars_cicd libvirtd
+   sudo adduser ars_cicd docker
    sudo -i -u ars_cicd
    mkdir -p ~/.ssh && touch ~/.ssh/authorized_keys
    cat <<EOF >~/.ssh/authorized_keys
    <content of the PUB key>
    EOF
 
-Update the ``CICD_REMOTE_SERVER_IP`` environment variable in the .travis.yml file and also the fingerprint.
+Update the .travis.yml file setting the ``CICD_REMOTE_SERVER_IP`` environment variable, the fingerprints of the server and the ``openssl ...`` command seen before in the ``before_install`` section.
 
 How to run built-in live tests
 ------------------------------

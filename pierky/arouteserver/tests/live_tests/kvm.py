@@ -26,87 +26,84 @@ class KVMInstance(BGPSpeakerInstance):
     SSH_USERNAME = "root"
     SSH_KEY_PATH = "~/.ssh/arouteserver"
 
-    @classmethod
-    def _get_ssh_user(cls):
+    def _get_ssh_user(self):
         if "SSH_USERNAME" in os.environ:
             return os.environ["SSH_USERNAME"]
-        return cls.SSH_USERNAME
+        return self.SSH_USERNAME
 
-    @classmethod
-    def _get_ssh_key_path(cls):
+    def _get_ssh_key_path(self):
         if "SSH_KEY_PATH" in os.environ:
             path = os.environ["SSH_KEY_PATH"]
         else:
-            path = cls.SSH_KEY_PATH
+            path = self.SSH_KEY_PATH
         return os.path.expanduser(path)
 
-    @classmethod
-    def _get_virsh_domainname(cls):
+    def _get_virsh_domainname(self):
         if "VIRSH_DOMAINNAME" in os.environ:
             return os.environ["VIRSH_DOMAINNAME"]
-        return cls.VIRSH_DOMAINNAME
+        return self.VIRSH_DOMAINNAME
 
     def __init__(self, *args, **kwargs):
         super(KVMInstance, self).__init__(*args, **kwargs)
         self.domain_name = self._get_virsh_domainname()
 
-        # If set, the VM is always considered up and SSH connections
-        # are established toward this IP address.
-        self.remote_ip = kwargs.get("remote_ip", None)
-        if self.remote_ip:
-            self.remote_ip = self.remote_ip.strip()
-        self.is_remote = self.remote_ip != "" and self.remote_ip
-
     def is_running(self):
-        if self.is_remote:
-            return True
-
         res = self._run("virsh list --name --state-running")
         return self.domain_name in res
 
     def _check_env(self):
-        if not self.is_remote:
-            vms_list_raw = self._run("virsh list --name --all")
-            vms_list = vms_list_raw.split("\n")
-            found = False
-            for vm in vms_list:
-                if vm.strip() == self.domain_name:
-                    found = True
-                    break
-            if not found:
+        vms_list_raw = self._run("virsh list --name --all")
+        vms_list = vms_list_raw.split("\n")
+        found = False
+        for vm in vms_list:
+            if vm.strip() == self.domain_name:
+                found = True
+                break
+        if not found:
+            raise Exception(
+                "The virsh domain '{}' does not appear to "
+                "be in the list of configured domains: "
+                "'virsh list --all'. Please check that the KVM "
+                "virtual machine used by the live test framework "
+                "is configured correctly. To use a different "
+                "VM name, set the VIRSH_DOMAINNAME environment "
+                "variable before running the tests.".format(
+                    self.domain_name
+                )
+            )
+
+        if self.remote_execution_server_ip:
+            try:
+                self._run("true")
+            except Exception as e:
                 raise Exception(
-                    "The virsh domain '{}' does not appear to "
-                    "be in the list of configured domains: "
-                    "'virsh list --all'. Please check that the KVM "
-                    "virtual machine used by the live test framework "
-                    "is configured correctly. To use a different "
-                    "VM name, set the VIRSH_DOMAINNAME environment "
-                    "variable before running the tests.".format(
-                        self.domain_name
+                    "An error occurred while testing the SSH connection "
+                    "toward the remote server that will be used to run "
+                    "the current scenario ({}): {}".format(
+                        self.remote_execution_server_ip, str(e)
                     )
                 )
+                raise e
 
-        key_file = self._get_ssh_key_path()
-        if not os.path.exists(key_file) or not os.path.isfile(key_file):
-            raise Exception(
-                "The SSH key file needed to connect to the "
-                "virtual machine used by the live test framework "
-                "does not exist: {}. To use a different path, "
-                "set the SSH_USERNAME environment variable before "
-                "running the tests.".format(key_file)
-            )
+        if not self.remote_execution_server_ip:
+            key_file = self._get_ssh_key_path()
+            if not os.path.exists(key_file) or not os.path.isfile(key_file):
+                raise Exception(
+                    "The SSH key file needed to connect to the "
+                    "virtual machine used by the live test framework "
+                    "does not exist: {}. To use a different path, "
+                    "set the SSH_USERNAME environment variable before "
+                    "running the tests.".format(key_file)
+                )
 
     def start(self):
         need_to_start = True
 
-        if self.is_remote:
-            need_to_start = False
-        else:
-            if self.is_running():
-                if "REUSE_KVM_INSTANCES" in os.environ:
-                    need_to_start = False
-                else:
-                    raise InstanceError("Instance '{}' already running.".format(self.name))
+        if self.is_running():
+            if "REUSE_KVM_INSTANCES" in os.environ:
+                need_to_start = False
+            else:
+                raise InstanceError("Instance '{}' already running.".format(self.name))
 
         if need_to_start:
             self._check_env()
@@ -152,12 +149,10 @@ class KVMInstance(BGPSpeakerInstance):
         self.restart()
 
     def _graceful_shutdown(self):
+        """Perform graceful shutdown; must be implemented by children"""
         return False
 
     def stop(self):
-        if self.is_remote:
-            return
-
         if not self.is_running():
             return
 
@@ -171,7 +166,7 @@ class KVMInstance(BGPSpeakerInstance):
             if not self.is_running():
                 return
 
-        if self.is_running() and not self.is_remote:
+        if self.is_running():
             try:
                 self._run("virsh shutdown {}".format(self.domain_name))
                 for i in range(30 // 2):
@@ -181,7 +176,7 @@ class KVMInstance(BGPSpeakerInstance):
             except:
                 pass
 
-        if self.is_running() and not self.is_remote:
+        if self.is_running():
             try:
                 self._run("virsh destroy {}".format(self.domain_name))
             except:
@@ -191,21 +186,47 @@ class KVMInstance(BGPSpeakerInstance):
         if not self.is_running():
             raise InstanceNotRunning(self.name)
 
-        cmd = ("ssh -o BatchMode=yes -o ConnectTimeout=5 "
-               "-o StrictHostKeyChecking=no "
-               "-o ServerAliveInterval=10 {user}@{ip} -i {path_to_key} "
-               "{cmd}").format(
-            user=self._get_ssh_user(),
-            ip=self.remote_ip if self.is_remote else self.ip,
-            path_to_key=self._get_ssh_key_path(),
-            cmd=" ".join(args) if isinstance(args, list) else args
-        )
-        res = self._run(cmd)
+        if self.remote_execution_server_ip:
+            # Using the -J for the jump-host, in order to
+            # spin up a local SSH process that will use
+            # self.remote_execution_server_* as jump-host to
+            # run the command directly on the KVM VM.
+            cmd = (
+                "ssh "
+                "-o BatchMode=yes "
+                "-o ConnectTimeout=5 "
+                "-o ServerAliveInterval=10 "
+                "-J {remote_server_user}@{remote_server_ip} "
+                "{kvm_vm_user}@{kvm_vm_ip} "
+                "{cmd}"
+            ).format(
+                remote_server_user=self.remote_execution_server_user,
+                remote_server_ip=self.remote_execution_server_ip,
+                kvm_vm_user=self._get_ssh_user(),
+                kvm_vm_ip=self.ip,
+                cmd=" ".join(args) if isinstance(args, list) else args
+            )
+        else:
+            cmd = (
+                "ssh "
+                "-o BatchMode=yes "
+                "-o ConnectTimeout=5 "
+                "-o ServerAliveInterval=10 "
+                "{user}@{ip} -i {path_to_key} "
+                "{cmd}"
+            ).format(
+                user=self._get_ssh_user(),
+                ip=self.ip,
+                path_to_key=self._get_ssh_key_path(),
+                cmd=" ".join(args) if isinstance(args, list) else args
+            )
+
+        res = self._run_local(cmd)
         return res
 
     def _mount_files(self):
         for mount in self.get_mounts():
-            ip = self.remote_ip if self.is_remote else self.ip
+            ip = self.ip
             local_file = mount["host"]
             remote_file = mount["container"]
 
@@ -213,16 +234,40 @@ class KVMInstance(BGPSpeakerInstance):
             if gzipped:
                 remote_file += ".gz"
 
-            cmd = ("scp -i {path_to_key} "
-                   "-o StrictHostKeyChecking=no "
-                   "{host_file} {user}@{ip}:{container_file} ".format(
-                       host_file=local_file,
-                       user=self._get_ssh_user(),
-                       ip="[{}]".format(ip) if ":" in ip else ip,
-                       container_file=remote_file,
-                       path_to_key=self._get_ssh_key_path()
-                    ))
-            self._run(cmd)
+            if self.remote_execution_server_ip:
+                # Copy the file from the host where the CI suite is running to
+                # the remote server where the KVM is running using the jump-host.
+                cmd = [
+                    "scp",
+                    "-o", "BatchMode=yes",
+                    "-o", "ConnectTimeout=5",
+                    "-o", "ServerAliveInterval=10",
+                    "-o", "ProxyCommand ssh {remote_server_user}@{remote_server_ip} nc %h %p".format(
+                        remote_server_user=self.remote_execution_server_user,
+                        remote_server_ip=self.remote_execution_server_ip,
+                    ),
+                    "{host_file}".format(
+                        host_file=local_file
+                    ),
+                    "{kvm_vm_user}@{kvm_vm_ip}:{remote_file}".format(
+                        kvm_vm_user=self._get_ssh_user(),
+                        kvm_vm_ip="[{}]".format(self.ip) if ":" in self.ip else self.ip,
+                        remote_file=remote_file,
+                    )
+                ]
+            else:
+                cmd = (
+                    "scp -i {path_to_key} "
+                    "{host_file} {user}@{ip}:{remote_file} ".format(
+                        host_file=local_file,
+                        user=self.remote_execution_server_user,
+                        ip=self.remote_execution_server_ip,
+                        remote_file=remote_file,
+                        path_to_key=self.remote_execution_server_key
+                    )
+                )
+
+            self._run_local(cmd)
 
             if gzipped:
                 self.run_cmd("gunzip -f {}".format(remote_file))
