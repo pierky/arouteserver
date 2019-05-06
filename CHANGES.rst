@@ -15,7 +15,7 @@ next release
   Avoid checking AS0 in AS_PATH since 6.4.
   No needs to check routes of an address family different than the one used for the session.
 
-As announced with release 0.20.0, OpenBGPD/OpenBSD 6.2 is no longer tested.
+As announced with release 0.20.0, OpenBGPD/OpenBSD 6.2 is no longer tested. Also OpenBGPD/OpenBSD 6.3 tests have been decommissioned.
 The implementation of new features may break compatibility of the configurations built for unsupported releases.
 
 v0.21.0

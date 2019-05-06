@@ -462,7 +462,7 @@ class BasicScenario(LiveScenario):
                 with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                     self.receive_route(inst, prefix)
 
-        # Among the clients, only AS3 is expected to not see the 
+        # Among the clients, only AS3 is expected to not see the
         # following prefixes because AS1 and AS2
         # receive them on their session with AS101
         for prefix in (self.DATA["AS101_no_rset"],
@@ -572,7 +572,7 @@ class BasicScenario(LiveScenario):
 
     def test_061_bad_communities_scrubbed_by_rs_std(self):
         """{}: bad communities scrubbed by rs (std)"""
-        
+
         self.receive_route(self.rs, self.DATA["AS101_bad_std_comm"], self.AS1_1, std_comms=[])
         self.receive_route(self.rs, self.DATA["AS101_bad_std_comm"], self.AS2, std_comms=[])
 
@@ -1097,12 +1097,12 @@ class BasicScenarioOpenBGPD(BasicScenario_TagRejectPolicy, BasicScenario):
             ]
         )
 
-class BasicScenarioOpenBGPD63(BasicScenarioOpenBGPD):
-    __test__ = False
-
-    TARGET_VERSION = "6.3"
-
 class BasicScenarioOpenBGPD64(BasicScenarioOpenBGPD):
     __test__ = False
 
     TARGET_VERSION = "6.4"
+
+class BasicScenarioOpenBGPD65(BasicScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.5"

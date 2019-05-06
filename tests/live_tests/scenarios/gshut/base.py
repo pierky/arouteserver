@@ -126,7 +126,12 @@ class GShutScenarioOpenBGPD(GShutScenario):
             ]
         )
 
-class GShutScenarioOpenBGPD63(GShutScenarioOpenBGPD):
+class GShutScenarioOpenBGPD64(GShutScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.3"
+    TARGET_VERSION = "6.4"
+
+class GShutScenarioOpenBGPD65(GShutScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.5"

@@ -174,6 +174,7 @@ class DockerInstance(BGPSpeakerInstance):
                     stderr=subprocess.PIPE
                 )
                 stdout, stderr = process.communicate()
+                print("cmd:", cmd)
                 print("STDOUT:")
                 print(stdout)
                 print("STDERR:")

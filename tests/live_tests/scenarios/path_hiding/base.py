@@ -101,7 +101,7 @@ class PathHidingScenario(LiveScenario):
         self.AS3 = self._get_instance_by_name("AS3")
         self.AS4 = self._get_instance_by_name("AS4")
         self.AS101 = self._get_instance_by_name("AS101")
-        
+
     def test_010_setup(self):
         """{}: instances setup"""
         pass
@@ -182,15 +182,15 @@ class PathHidingScenarioOpenBGPD(LiveScenario_TagRejectPolicy, PathHidingScenari
             ]
         )
 
-class PathHidingScenarioOpenBGPD63(PathHidingScenarioOpenBGPD):
-    __test__ = False
-
-    TARGET_VERSION = "6.3"
-
 class PathHidingScenarioOpenBGPD64(PathHidingScenarioOpenBGPD):
     __test__ = False
 
     TARGET_VERSION = "6.4"
+
+class PathHidingScenarioOpenBGPD65(PathHidingScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.5"
 
 class PathHidingScenario_MitigationOn(object):
 

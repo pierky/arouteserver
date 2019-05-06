@@ -47,7 +47,7 @@ class DefaultConfigScenario(LiveScenario):
 
     def set_instance_variables(self):
         self.rs = self._get_instance_by_name("rs")
-        
+
     def test_010_setup(self):
         """{}: instances setup"""
         pass
@@ -76,6 +76,8 @@ class DefaultConfigScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
 
+    TARGET_VERSION = None
+
     @classmethod
     def _setup_rs_instance(cls):
         return cls.RS_INSTANCE_CLASS(
@@ -84,8 +86,20 @@ class DefaultConfigScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
             [
                 (
                     cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
-                                     target_version="6.3"),
+                                     target_version=cls.TARGET_VERSION),
                     "/etc/bgpd.conf"
                 )
             ]
         )
+
+class DefaultConfigScenarioOpenBGPD64(DefaultConfigScenarioOpenBGPD):
+
+    __test__ = False
+
+    TARGET_VERSION = "6.4"
+
+class DefaultConfigScenarioOpenBGPD65(DefaultConfigScenarioOpenBGPD):
+
+    __test__ = False
+
+    TARGET_VERSION = "6.5"

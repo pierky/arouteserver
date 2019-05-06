@@ -16,13 +16,13 @@
 import os
 import unittest
 
-from .base import DefaultConfigScenarioOpenBGPD
+from .base import DefaultConfigScenarioOpenBGPD64
 from .data4 import DefaultConfigScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD64Instance
 
 class DefaultConfigScenarioOpenBGPD_IPv4(DefaultConfigScenario_Data4,
-                                         DefaultConfigScenarioOpenBGPD):
+                                         DefaultConfigScenarioOpenBGPD64):
     __test__ = True
     SKIP_ON_TRAVIS = True
 

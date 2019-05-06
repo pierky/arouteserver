@@ -90,7 +90,7 @@ class TagASSetScenario(LiveScenario):
         self.AS4 = self._get_instance_by_name("AS4")
         self.AS5 = self._get_instance_by_name("AS5")
         self.AS6 = self._get_instance_by_name("AS6")
-        
+
     def test_010_setup(self):
         """{}: instances setup"""
         pass
@@ -714,12 +714,12 @@ class TagASSetScenarioOpenBGPD(LiveScenario_TagRejectPolicy, TagASSetScenario):
             ]
         )
 
-class TagASSetScenarioOpenBGPD63(TagASSetScenarioOpenBGPD):
-    __test__ = False
-
-    TARGET_VERSION = "6.3"
-
 class TagASSetScenarioOpenBGPD64(TagASSetScenarioOpenBGPD):
     __test__ = False
 
     TARGET_VERSION = "6.4"
+
+class TagASSetScenarioOpenBGPD65(TagASSetScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.5"
