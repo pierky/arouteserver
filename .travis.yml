@@ -2,37 +2,34 @@ language: python
 
 sudo: required
 
-services:
-  - docker
-
 script: tox
 
 env:
   global:
+    # Variables used to run live-tests on a remote host.
     - CICD_REMOTE_SERVER_IP=142.93.98.235
     - CICD_REMOTE_SERVER_USER=ars_cicd
     - CICD_REMOTE_SERVER_SSH_KEY=~/.ssh/ars_cicd_travis
 
 before_install:
-  # Decrypt the SSH key
-  - openssl aes-256-cbc -K $encrypted_5ace84bcb2fb_key -iv $encrypted_5ace84bcb2fb_iv -in $ars_cicd_travis.enc -out $CICD_REMOTE_SERVER_SSH_KEY -d
-  # Run the SSH agent
+  # Decrypt the SSH key.
+  - openssl aes-256-cbc -K $encrypted_5ace84bcb2fb_key -iv $encrypted_5ace84bcb2fb_iv -in ars_cicd_travis.enc -out $CICD_REMOTE_SERVER_SSH_KEY -d
+  # Run the SSH agent.
   - eval "$(ssh-agent -s)"
-  # Set the right permissions on the file containing the SSH key
+  # Set the right permissions on the file containing the SSH key.
   - chmod 600 $CICD_REMOTE_SERVER_SSH_KEY
-  # Set the expected fingerprint of the remote server
+  # Set the expected fingerprint of the remote server.
   - echo -e "Host $CICD_REMOTE_SERVER_IP\n\tStrictHostKeyChecking yes\n" >> ~/.ssh/config
   - echo -e "$CICD_REMOTE_SERVER_IP ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBBSkmfUk/STbkDn8xbCcm+MROM8kcWCCiop1n2nfQT8r5KZlXCcUVj8SSMEtjn9+vfHXu2kiCnsZP1apvILLOGg=\n" >> ~/.ssh/known_hosts
-  # Add the private key to the SSH agent
+  # Add the private key to the SSH agent.
   - ssh-add $CICD_REMOTE_SERVER_SSH_KEY
-  # Test the SSH connection
+  # Test the SSH connection.
   - ssh -i $CICD_REMOTE_SERVER_SSH_KEY $CICD_REMOTE_SERVER_USER@$CICD_REMOTE_SERVER_IP hostname
 
 jobs:
   include:
 
     - stage: test
-      python: "3.4"
       install:
         - pip install -r requirements-dev.txt
       script: nosetests -vs tests/live_tests/scenarios/default/test_openbgpd64_4.py
