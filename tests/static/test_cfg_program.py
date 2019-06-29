@@ -60,7 +60,7 @@ class TestProgramConfig(unittest.TestCase):
             ("bgpq3_path", "bgpq3"),
             ("bgpq3_host", "rr.ntt.net"),
             ("bgpq3_sources", ("RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,BBOI,"
-                               "BELL,JPIRR,LEVEL3,RADB,RGNET,SAVVIS,TC")),
+                               "BELL,JPIRR,LEVEL3,RADB,RGNET,TC")),
             ("rtt_getter_path", ""),
             ("threads", 4),
             ("cache_expiry",
