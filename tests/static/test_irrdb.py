@@ -141,6 +141,35 @@ class TestIRRDBInfo(TestIRRDBInfo_Base):
         self.assertEqual(self.obj.name, "ARIN__AS_TWO_RIPE__AS_ONE")
         self.assertEqual(self.obj.source, "RIPE")
 
+    def test_010_as_set_bundle9(self):
+        """IRRDB info: base, AS_SET names longer than 64 characters"""
+
+        #                         1         2         3         4         5
+        #                12345678901234567890123456789012345678901234567890
+        self.setup_obj(["RIPE::AS-A123456789B123456789C123456789D12345678"])
+        expected_name = "RIPE__AS_A123456789B123456789C123456789D12345678"
+        self.assertEqual(self.obj.name, expected_name)
+
+        #                         1         2         3         4         5
+        #                12345678901234567890123456789012345678901234567890
+        self.setup_obj(["RIPE::AS-A123456789B123456789C123456789D123456789"])
+        expected_part = "RIPE__AS_A123456789B123456789C123456789D12_"
+        self.assertEqual(self.obj.name[:len(expected_part)], expected_part)
+        self.assertEqual(self.obj.name[len(expected_part)-1], "_")
+        self.assertEqual(len("AS_SET_" + self.obj.name + "_prefixes"), 64)
+        tag_1 = self.obj.name[len(expected_part):]
+
+        #                         1         2         3         4         5
+        #                12345678901234567890123456789012345678901234567890
+        self.setup_obj(["RIPE::AS-A123456789B123456789C123456789D1234567890ZZZZ"])
+        expected_part = "RIPE__AS_A123456789B123456789C123456789D12_"
+        self.assertEqual(self.obj.name[:len(expected_part)], expected_part)
+        self.assertEqual(self.obj.name[len(expected_part)-1], "_")
+        self.assertEqual(len("AS_SET_" + self.obj.name + "_prefixes"), 64)
+        tag_2 = self.obj.name[len(expected_part):]
+
+        self.assertNotEqual(tag_1, tag_2)
+
     @mock.patch.object(FakeIRRDBObject, "_get_object_filename", return_value="test1_file")
     @mock.patch.object(FakeIRRDBObject, "_run_cmd", return_value="test1")
     def test_011_simple(self, _, run_cmd):
