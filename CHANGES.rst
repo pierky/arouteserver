@@ -3,6 +3,17 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+v0.21.1
+-------
+
+- Deprecation: SAVVIS IRR removed from the list of default sources used by bgpq3.
+
+- Fix (minor): truncate the max length of AS-SET names to 64 characters.
+
+  BIRD supports only names no longer than 64 characters.
+
+  Related: `issue #47 on GitHub <https://github.com/pierky/arouteserver/issues/47>`_.
+
 v0.21.0
 -------
 
@@ -206,7 +217,7 @@ v0.12.3
 - Improvement: always take the AS*n* macro into account when building IRRdb-based filters.
 
   Related: `issue #15 on GitHub <https://github.com/pierky/arouteserver/issues/15>`_.
-  
+
 v0.12.2
 -------
 
@@ -445,7 +456,7 @@ v0.1.0a6
 --------
 
 - New feature: RPKI-based filtering/tagging.
-  
+
 v0.1.0a5
 --------
 

@@ -88,12 +88,34 @@ class AS_SET_Bundle(object):
             )
         self.name = re.sub("[^a-zA-Z0-9_]", "_", self.name)
 
+        # The name will be used to generate config statements
+        # like AS_SET_<name>_asns and AS_SET_<name>_prefixes.
+        #
+        # In BIRD there is a limit of 64 characters for symbols:
+        #
+        #   #define SYM_MAX_LEN 64
+        #
+        # so every name that, once concatenated to the prefix
+        # and suffix above, will be longer than 64 characters
+        # is here truncated, and a "random" tag is attached
+        # to it in order to make it unique.
+        #
+        # 16 is the length of "AS_SET_" + "_prefixes", the longest
+        # combination of prefix and suffix.
+
+        if len(self.name) + 16 > 64:
+            TAG_LEN = 5
+            hash_str = hashlib.md5(self.name.encode("utf-8")).hexdigest()
+            tag = hash_str[:TAG_LEN]
+            max_name_len = 64 - 16 - TAG_LEN - 1
+            self.name = self.name[:max_name_len] + "_" + tag
+
 class IRRDBInfo(CachedObject, AS_SET_Bundle):
 
     BGPQ3_DEFAULT_HOST = "rr.ntt.net"
     BGPQ3_DEFAULT_SOURCES = ("RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,"
                              "BBOI,BELL,JPIRR,LEVEL3,RADB,RGNET,"
-                             "SAVVIS,TC")
+                             "TC")
     EXPIRY_TIME_TAG = "irr_as_sets"
 
     def __init__(self, object_names, *args, **kwargs):
