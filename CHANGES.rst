@@ -18,6 +18,17 @@ next release
 As announced with release 0.20.0, OpenBGPD/OpenBSD 6.2 is no longer tested. Also OpenBGPD/OpenBSD 6.3 tests have been decommissioned.
 The implementation of new features may break compatibility of the configurations built for unsupported releases.
 
+v0.21.1
+-------
+
+- Deprecation: SAVVIS IRR removed from the list of default sources used by bgpq3.
+
+- Fix (minor): truncate the max length of AS-SET names to 64 characters.
+
+  BIRD supports only names no longer than 64 characters.
+
+  Related: `issue #47 on GitHub <https://github.com/pierky/arouteserver/issues/47>`_.
+
 v0.21.0
 -------
 
