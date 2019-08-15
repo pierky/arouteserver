@@ -33,7 +33,7 @@ Setting up the environment to run live tests
 
      docker network create --ipv6 --subnet=192.0.2.0/24 --subnet=2001:db8:1:1::/64 arouteserver
 
-3. Route server client instances used in live tests are based on BIRD 1.6.4, as well as the BIRD-based version of the route server used in built-in live tests; the ``pierky/bird:1.6.4`` image is expected to be found on the local Docker repository. Also, for OpenBGPD Portable edition tests, ``pierky/openbgpd:6.5p0`` must be there.
+3. Route server client instances used in live tests are based on BIRD 1.6.7, as well as the BIRD-based version of the route server used in built-in live tests; the ``pierky/bird:1.6.7`` image is expected to be found on the local Docker repository. Also, for OpenBGPD Portable edition tests, ``pierky/openbgpd:6.5p1`` must be there.
    Build the Docker image (or pull it from `Dockerhub <https://hub.docker.com/r/pierky/bird/>`_):
 
    .. code:: bash
@@ -42,14 +42,14 @@ Setting up the environment to run live tests
       # from https://github.com/pierky/dockerfiles
       mkdir ~/dockerfiles
       cd ~/dockerfiles
-      curl -o Dockerfile.bird -L https://raw.githubusercontent.com/pierky/dockerfiles/master/bird/1.6.4/Dockerfile
-      docker build -t pierky/bird:1.6.4 -f Dockerfile.bird .
-      curl -o Dockerfile.openbgpd -L https://raw.githubusercontent.com/pierky/dockerfiles/master/openbgpd/6.5p0/Dockerfile
-      docker build -t pierky/openbgpd:6.5p0 -f Dockerfile.openbgpd .
+      curl -o Dockerfile.bird -L https://raw.githubusercontent.com/pierky/dockerfiles/master/bird/1.6.7/Dockerfile
+      docker build -t pierky/bird:1.6.7 -f Dockerfile.bird .
+      curl -o Dockerfile.openbgpd -L https://raw.githubusercontent.com/pierky/dockerfiles/master/openbgpd/6.5p1/Dockerfile
+      docker build -t pierky/openbgpd:6.5p1 -f Dockerfile.openbgpd .
 
       # or pull it from Dockerhub
-      docker pull pierky/bird:1.6.4
-      docker pull pierky/openbgpd:6.5p0
+      docker pull pierky/bird:1.6.7
+      docker pull pierky/openbgpd:6.5p1
 
 If there is no plan to run tests on the OpenBGPD-based version of the route server, no further settings are needed.
 To run tests on the OpenBGPD-based version too, the following steps must be done as well.

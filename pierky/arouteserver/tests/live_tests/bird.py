@@ -29,7 +29,7 @@ class BIRDInstance(DockerInstance):
 
     MESSAGE_LOGGING_SUPPORT = True
 
-    DOCKER_IMAGE = "pierky/bird:1.6.4"
+    DOCKER_IMAGE = "pierky/bird:1.6.7"
 
     def __init__(self, *args, **kwargs):
         DockerInstance.__init__(self, *args, **kwargs)

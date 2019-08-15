@@ -685,8 +685,8 @@ class BIRDConfigBuilder(ConfigBuilder):
              "scrub_communities_in", "scrub_communities_out",
              "apply_blackhole_filtering_policy"]
 
-    AVAILABLE_VERSION = ["1.6.3", "1.6.4"]
-    DEFAULT_VERSION = "1.6.4"
+    AVAILABLE_VERSION = ["1.6.3", "1.6.4", "1.6.6", "1.6.7"]
+    DEFAULT_VERSION = "1.6.7"
 
     def validate_bgpspeaker_specific_configuration(self):
         if self.ip_ver is None:

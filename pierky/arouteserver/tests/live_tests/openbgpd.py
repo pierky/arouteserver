@@ -387,4 +387,4 @@ class OpenBGPD64Instance(OpenBGPDClassicInstance):
 
 class OpenBGPD65PortableInstance(OpenBGPDPortableInstance):
 
-    DOCKER_IMAGE = "pierky/openbgpd:6.5p0"
+    DOCKER_IMAGE = "pierky/openbgpd:6.5p1"
