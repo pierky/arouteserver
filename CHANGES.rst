@@ -6,6 +6,10 @@ Change log
 next release
 ------------
 
+- New: `OpenBGPD Portable <https://github.com/openbgpd-portable/openbgpd-portable>` (release 6.5p1) also supported.
+
+  Release 6.5p1 of OpenBGPD Portable edition passed the integration testing suite.
+
 - New: add support for OpenBGPD/OpenBSD 6.5 enhancements.
 
   Support for matching multiple communities at the same time allows to create more readable configurations.
