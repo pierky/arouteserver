@@ -17,7 +17,7 @@ fi
 export PYTHONPATH="`pwd`"
 ROOT="`pwd`"
 
-TESTS_DIR="`pwd`/tests"
+TESTS_DIR="tests"
 LAST_RESULTS_DIR="$TESTS_DIR/last_results"
 
 ALL_BGPSPEAKERS="bird openbgpd65p openbgpd_previous openbgpd_latest"
@@ -83,10 +83,6 @@ if [ "$1" == "join_only" ]; then
 	join_last_results
 	exit
 fi
-
-for test_id in $1; do
-	egrep "^(cli|static|build_only|all|`tr ' ' '|' <<< $LIVE_TEST_IDS`)$" <<< "$test_id" &>/dev/null || { usage ; exit 1; }
-done
 
 if [ -n "$2" ]; then
 	for speaker in $2; do
@@ -169,7 +165,7 @@ for bgpspeaker in $BGPSPEAKERS; do
 			fi
 		fi
 	done
-	if [ "${bgpspeaker}" == "openbgpd_latest" ]; then
+	if [ "${bgpspeaker}" == "openbgpd_latest" -o "${bgpspeaker}" == "openbgpd_previous" ]; then
 		if [ `virsh list --name --state-running | egrep -v "^$" | wc -l` -gt 0 ]; then
 			echo "Shutting down rs KVM instance..."
 			./utils/run rs 'shutdown -p now'
