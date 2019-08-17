@@ -16,6 +16,7 @@ next release
   No needs to check routes of an address family different than the one used for the session.
 
 As announced with release 0.20.0, OpenBGPD/OpenBSD 6.2 is no longer tested. Also OpenBGPD/OpenBSD 6.3 tests have been decommissioned.
+Starting with this release, tests will be executed only against the 2 most recent releases of OpenBGPD/OpenBSD and against the last release of the supported major versions of BIRD.
 The implementation of new features may break compatibility of the configurations built for unsupported releases.
 
 v0.21.1

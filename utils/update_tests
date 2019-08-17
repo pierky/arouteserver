@@ -20,7 +20,7 @@ ROOT="`pwd`"
 TESTS_DIR="`pwd`/tests"
 LAST_RESULTS_DIR="$TESTS_DIR/last_results"
 
-ALL_BGPSPEAKERS="bird openbgpd63 openbgpd64 openbgpd65p"
+ALL_BGPSPEAKERS="bird openbgpd65p openbgpd_previous openbgpd_latest"
 BGPSPEAKERS="$ALL_BGPSPEAKERS"
 LIVE_TEST_IDS="`find $TESTS_DIR/live_tests/scenarios/* -maxdepth 0 -type d | cut -d '/' -f 4`"
 
@@ -169,7 +169,7 @@ for bgpspeaker in $BGPSPEAKERS; do
 			fi
 		fi
 	done
-	if [ "${bgpspeaker}" == "openbgpd64" ]; then
+	if [ "${bgpspeaker}" == "openbgpd_latest" ]; then
 		if [ `virsh list --name --state-running | egrep -v "^$" | wc -l` -gt 0 ]; then
 			echo "Shutting down rs KVM instance..."
 			./utils/run rs 'shutdown -p now'
