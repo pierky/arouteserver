@@ -1,0 +1,24 @@
+cfg_dir: "./"
+
+logging_config_file: "config.d/log.ini"
+
+cfg_general: "config.d/general.yml"
+
+cfg_clients: "config.d/clients.yml"
+
+cfg_bogons: "config.d/bogons.yml"
+
+templates_dir: "templates"
+
+
+cache_dir: "./var/cache"
+
+# Path to the 'bgpq3' external program.
+#bgpq3_path: "bgpq3"
+
+# Host running IRRD software used by bgpq3
+# (bgpq3 -h argument).
+# Use "host:port" to specify alternate port.
+#bgpq3_host: "rr.ntt.net"
+
+rtt_getter_path: utils/fake_rtt_getter.sh
