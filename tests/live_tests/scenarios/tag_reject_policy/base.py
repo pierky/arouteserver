@@ -361,3 +361,8 @@ class TagRejectPolicyScenarioOpenBGPD64(LiveScenario_TagRejectPolicy, TagRejectP
                 )
             ]
         )
+
+class TagRejectPolicyScenarioOpenBGPD65(TagRejectPolicyScenarioOpenBGPD64, TagRejectPolicyScenario):
+    __test__ = False
+
+    TARGET_VERSION = "6.5"

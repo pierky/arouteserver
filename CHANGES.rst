@@ -3,6 +3,26 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New: `OpenBGPD Portable <https://github.com/openbgpd-portable/openbgpd-portable>` (release 6.5p1) also supported.
+
+  Release 6.5p1 of OpenBGPD Portable edition passed the integration testing suite.
+
+- New: add support for OpenBGPD/OpenBSD 6.5 enhancements.
+
+  Support for matching multiple communities at the same time allows to create more readable configurations.
+
+- Improvement: OpenBGPD, some filters refinement.
+
+  Avoid checking AS0 in AS_PATH since 6.4.
+  No needs to check routes of an address family different than the one used for the session.
+
+As announced with release 0.20.0, OpenBGPD/OpenBSD 6.2 is no longer tested. Also OpenBGPD/OpenBSD 6.3 tests have been decommissioned.
+Starting with this release, tests will be executed only against the 2 most recent releases of OpenBGPD/OpenBSD and against the last release of the supported major versions of BIRD.
+The implementation of new features may break compatibility of the configurations built for unsupported releases.
+
 v0.21.1
 -------
 

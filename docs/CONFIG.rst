@@ -31,7 +31,7 @@ The ``arouteserver setup`` command can be used to setup the environment where AR
 Route server's configuration
 ----------------------------
 
-Route server's general configuration and policies are outlined in the ``general.yml`` file. 
+Route server's general configuration and policies are outlined in the ``general.yml`` file.
 
 Configuration details and options can be found within the distributed `general <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`__ and `clients <https://github.com/pierky/arouteserver/blob/master/config.d/clients.yml>`__ configuration files on GitHub or in the :doc:`GENERAL` page.
 
@@ -350,7 +350,7 @@ These files must be present on the host running the route server.
       	neighbor 192.0.2.99 as 65535;
       	rs client;
         secondary;
-      
+
       	import none;
       	export all;
       }
@@ -362,21 +362,21 @@ These files must be present on the host running the route server.
 
      $ arouteserver openbgpd --use-local-files header post-clients
      include "/etc/bgpd/header.local"
-     
+
      AS 999
      router-id 192.0.2.2
 
      [...]
 
      group "clients" {
-     
+
              neighbor 192.0.2.11 {
                      [...]
              }
      }
-     
+
      include "/etc/bgpd/post-clients.local"
-     
+
      [...]
 
   In the example above, the ``header`` and ``post-clients`` inclusion points are enabled and allow to insert two ``include`` statements into the generated configuration: one at the start of the file and one between clients declaration and filters.
@@ -389,24 +389,24 @@ These files must be present on the host running the route server.
      $ arouteserver openbgpd --use-local-files client footer --local-files-dir /etc/
      AS 999
      router-id 192.0.2.2
-     
+
      [...]
-     
+
      group "clients" {
-     
+
              neighbor 192.0.2.11 {
                      include "/etc/client.local"
                      [...]
              }
-     
+
              neighbor 192.0.2.22 {
                      include "/etc/client.local"
                      [...]
              }
      }
-     
+
      [...]
-     
+
      include "/etc/footer.local"
 
   The example above uses the ``client`` label, that is used to add an ``include`` statement into every neighbor configuration. Also, the base directory is set to ``/etc/``.
@@ -431,28 +431,28 @@ Example:
      $ arouteserver bird --ip-ver 4 --use-local-files header --use-hooks pre_receive_from_client
      router id 192.0.2.2;
      define rs_as = 999;
-     
+
      log "/var/log/bird.log" all;
      log syslog all;
      debug protocols all;
-     
+
      protocol device {};
-     
+
      table master sorted;
-     
+
      include "/etc/bird/header.local";
-     
+
      [...]
-     
+
      filter receive_from_AS3333_1 {
              if !(source = RTS_BGP ) then
                      reject "source != RTS_BGP - REJECTING ", net;
-     
+
              if !hook_pre_receive_from_client(3333, 192.0.2.11, "AS3333_1") then
                      reject "hook_pre_receive_from_client returned false - REJECTING ", net;
-     
+
              scrub_communities_in();
-     
+
      [...]
 
 Details about hook functions can be found in the :doc:`BIRD_HOOKS` page.
@@ -501,7 +501,7 @@ Caveats and limitations
 ***********************
 
 Not all features offered by ARouteServer are supported by both BIRD and OpenBGPD.
-The following list of limitations is based on the currently supported versions of BIRD (1.6.3 and 1.6.4) and OpenBGPD (OpenBSD 6.1 up to 6.4).
+The following list of limitations is based on the currently supported versions of BIRD and OpenBGPD.
 
 - OpenBGPD
 

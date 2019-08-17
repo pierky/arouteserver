@@ -1,9 +1,13 @@
 # File used in both the global and the tag_reject_policy scenarios
 
+# 'connect-retry' added to decrease the time that the route server
+# takes to establish the connection to the client AS3, which is
+# passive.
+connect-retry 5
+
 	neighbor 192.0.2.99 {
 		descr "Routes collector"
 		remote-as 65534
-		announce all
 		set nexthop no-modify
 		transparent-as yes
 		announce as-4byte yes
@@ -11,7 +15,6 @@
 	neighbor 2001:db8:1:1::999 {
 		descr "Routes collector"
 		remote-as 65534
-		announce all
 		set nexthop no-modify
 		transparent-as yes
 		announce as-4byte yes

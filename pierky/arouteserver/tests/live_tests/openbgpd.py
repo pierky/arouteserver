@@ -17,6 +17,7 @@ import re
 import time
 
 from .kvm import KVMInstance
+from .docker import DockerInstance
 from .instances import Route, BGPSpeakerInstance, InstanceNotRunning
 
 class OpenBGPDRoute(Route):
@@ -46,76 +47,23 @@ class OpenBGPDRoute(Route):
             res.append("{}:{}".format(parts[0], parts[1]))
         return res
 
-class OpenBGPDInstance(KVMInstance):
-    """This class implements OpenBGPD-specific methods.
+class OpenBGPDInstance(object):
+    """This class implements an interface to OpenBGPD client.
 
-    This class is derived from :class:`KVMInstance`, that implements
-    some kvm-specific methods to start/stop the instance and to run
-    commands on it.
+    Only methods needed to interact with the OpenBGPD bgpctl
+    client are implemented here. The methods which interact with
+    the underlying OS are offloaded to the other classes.
 
-    The VIRSH_DOMAINNAME attribute must be set by derived classes on the
-    basis of the specific version of OpenBSD they represent.
+    This class is supposed to be used in conjunction with
+    KVMInstance or DockerInstance since it uses some of
+    their methods and properties.
     """
 
     MESSAGE_LOGGING_SUPPORT = False
 
-    VIRSH_DOMAINNAME = None
-
-    def __init__(self, *args, **kwargs):
-        KVMInstance.__init__(self, *args, **kwargs)
-
+    def __init__(self):
         self.neighbors_status = None
         self.routes = {}
-
-    def _graceful_shutdown(self):
-        self.run_cmd("shutdown -h -p now")
-        return True
-
-    def restart(self):
-        """Restart OpenBGPD.
-
-        Updates the configuration files, then executes '/etc/rc.d/bgpd stop'
-        and then '/etc/rc.d/bgpd -f start'.
-        """
-        if not self.is_running():
-            raise InstanceNotRunning(self.name)
-
-        try:
-            self.run_cmd("mkdir /etc/bgpd")
-        except:
-            pass
-
-        self._mount_files()
-
-        self.run_cmd("chmod 0600 /etc/bgpd.conf")
-        self.run_cmd("touch /etc/bgpd/placeholder")
-        self.run_cmd("chmod 0600 /etc/bgpd/*")
-
-        self.run_cmd("/etc/rc.d/bgpd stop")
-        time.sleep(5)
-        self.run_cmd("ndp -c")
-        self.run_cmd("bgpd -dn")
-        self.run_cmd("/etc/rc.d/bgpd -f start")
-        time.sleep(5)
-
-        return True
-
-    def reload_config(self):
-        """Reload OpenBGPD configuration.
-
-        Updates the configuration files, then executes '/etc/rc.d/bgpd reload'.
-        """
-        if not self.is_running():
-            raise InstanceNotRunning(self.name)
-
-        self._mount_files()
-
-        self.run_cmd("bgpd -dn")
-        self.run_cmd("/etc/rc.d/bgpd reload")
-        self.run_cmd("ndp -c")
-        time.sleep(5)
-
-        return True
 
     def _get_neighbors_status(self, force_update=False):
         if force_update:
@@ -279,6 +227,7 @@ class OpenBGPDInstance(KVMInstance):
 
         return res
 
+
     def log_contains(self, s):
         return True
 
@@ -287,22 +236,159 @@ class OpenBGPDInstance(KVMInstance):
             return False, ""
         return False
 
-class OpenBGPD60Instance(OpenBGPDInstance):
+class OpenBGPDClassicInstance(OpenBGPDInstance, KVMInstance):
+    """This class implements OpenBGPD-specific methods.
+
+    This class is derived from :class:`KVMInstance`, that implements
+    some kvm-specific methods to start/stop the instance and to run
+    commands on it.
+
+    The VIRSH_DOMAINNAME attribute must be set by derived classes on the
+    basis of the specific version of OpenBSD they represent.
+    """
+
+    VIRSH_DOMAINNAME = None
+
+    def __init__(self, *args, **kwargs):
+        OpenBGPDInstance.__init__(self)
+        KVMInstance.__init__(self, *args, **kwargs)
+
+    def _graceful_shutdown(self):
+        self.run_cmd("shutdown -h -p now")
+        return True
+
+    def restart(self):
+        """Restart OpenBGPD.
+
+        Updates the configuration files, then executes '/etc/rc.d/bgpd stop'
+        and then '/etc/rc.d/bgpd -f start'.
+        """
+        if not self.is_running():
+            raise InstanceNotRunning(self.name)
+
+        try:
+            self.run_cmd("mkdir /etc/bgpd")
+        except:
+            pass
+
+        self._mount_files()
+
+        self.run_cmd("chmod 0600 /etc/bgpd.conf")
+        self.run_cmd("touch /etc/bgpd/placeholder")
+        self.run_cmd("chmod 0600 /etc/bgpd/*")
+
+        self.run_cmd("/etc/rc.d/bgpd stop")
+        time.sleep(5)
+        self.run_cmd("ndp -c")
+        self.run_cmd("bgpd -dn")
+        self.run_cmd("/etc/rc.d/bgpd -f start")
+        time.sleep(5)
+
+        return True
+
+    def reload_config(self):
+        """Reload OpenBGPD configuration.
+
+        Updates the configuration files, then executes '/etc/rc.d/bgpd reload'.
+        """
+        if not self.is_running():
+            raise InstanceNotRunning(self.name)
+
+        self._mount_files()
+
+        self.run_cmd("bgpd -dn")
+        self.run_cmd("/etc/rc.d/bgpd reload")
+        self.run_cmd("ndp -c")
+        time.sleep(5)
+
+        return True
+
+    def log_contains(self, s):
+        return True
+
+    def log_contains_errors(self, allowed_errors=[], list_errors=False):
+        if list_errors:
+            return False, ""
+        return False
+
+class OpenBGPDPortableInstance(OpenBGPDInstance, DockerInstance):
+    """This class implements OpenBGPD-specific methods for the Portable edition.
+
+    This class is derived from :class:`DockerInstance`, that implements
+    some docker-specific methods to start/stop the instance and to run
+    commands on it.
+
+    The VIRSH_DOMAINNAME attribute must be set by derived classes on the
+    basis of the specific version of OpenBSD they represent.
+    """
+
+    def __init__(self, *args, **kwargs):
+        OpenBGPDInstance.__init__(self)
+        DockerInstance.__init__(self, *args, **kwargs)
+
+    def restart(self):
+        """Restart OpenBGPD.
+
+        Updates the configuration file, then clear all the neighbors.
+        """
+
+        self.reload_config()
+
+        self._get_neighbors_status(force_update=True)
+        for neighbor in self.neighbors_status:
+            ip = neighbor["ip"]
+            self.run_cmd("bgpctl neighbor {} clear".format(ip))
+
+        time.sleep(5)
+
+        return True
+
+    def reload_config(self):
+        """Reload OpenBGPD configuration.
+
+        Executes 'bgpctl reload'.
+        """
+        if not self.is_running():
+            raise InstanceNotRunning(self.name)
+
+        try:
+            res = self.run_cmd("bgpctl reload")
+        except:
+            pass
+
+        if "request processed" in res:
+            time.sleep(5)
+            return True
+
+        return False
+
+    def _get_start_cmd(self):
+        return "bgpd -f /etc/bgpd.conf -d"
+
+class OpenBGPD60Instance(OpenBGPDClassicInstance):
 
     VIRSH_DOMAINNAME = "arouteserver_openbgpd60"
 
-class OpenBGPD61Instance(OpenBGPDInstance):
+class OpenBGPD61Instance(OpenBGPDClassicInstance):
 
     VIRSH_DOMAINNAME = "arouteserver_openbgpd61"
 
-class OpenBGPD62Instance(OpenBGPDInstance):
+class OpenBGPD62Instance(OpenBGPDClassicInstance):
 
     VIRSH_DOMAINNAME = "arouteserver_openbgpd62"
 
-class OpenBGPD63Instance(OpenBGPDInstance):
+class OpenBGPD63Instance(OpenBGPDClassicInstance):
 
     VIRSH_DOMAINNAME = "arouteserver_openbgpd63"
 
-class OpenBGPD64Instance(OpenBGPDInstance):
+class OpenBGPD64Instance(OpenBGPDClassicInstance):
 
     VIRSH_DOMAINNAME = "arouteserver_openbgpd64"
+
+class OpenBGPD65Instance(OpenBGPDClassicInstance):
+
+    VIRSH_DOMAINNAME = "arouteserver_openbgpd65"
+
+class OpenBGPD65PortableInstance(OpenBGPDPortableInstance):
+
+    DOCKER_IMAGE = "pierky/openbgpd:6.5p1"

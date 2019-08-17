@@ -7,12 +7,14 @@ fi
 
 export PYTHONPATH="`pwd`"
 
+mkdir -p var/cache &>/dev/null
+
 RES_FILE=`mktemp`
 echo 0 > $RES_FILE
 
 function reset() {
 	AROUTESERVER="./scripts/arouteserver"
-	CFG_FILE="var/build_doc.yml"
+	CFG_FILE="tests/var/arouteserver.yml"
 	GENERAL="config.d/general.yml"
 	CLIENTS="config.d/clients.yml"
 	BOGONS="config.d/bogons.yml"

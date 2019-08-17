@@ -685,8 +685,8 @@ class BIRDConfigBuilder(ConfigBuilder):
              "scrub_communities_in", "scrub_communities_out",
              "apply_blackhole_filtering_policy"]
 
-    AVAILABLE_VERSION = ["1.6.3", "1.6.4"]
-    DEFAULT_VERSION = "1.6.4"
+    AVAILABLE_VERSION = ["1.6.3", "1.6.4", "1.6.6", "1.6.7"]
+    DEFAULT_VERSION = "1.6.7"
 
     def validate_bgpspeaker_specific_configuration(self):
         if self.ip_ver is None:
@@ -737,8 +737,8 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                        "footer"]
     LOCAL_FILES_BASE_DIR = "/etc/bgpd"
 
-    AVAILABLE_VERSION = ["6.0", "6.1", "6.2", "6.3", "6.4"]
-    DEFAULT_VERSION = "6.3"
+    AVAILABLE_VERSION = ["6.0", "6.1", "6.2", "6.3", "6.4", "6.5"]
+    DEFAULT_VERSION = "6.4"
 
     IGNORABLE_ISSUES = ["path_hiding", "transit_free_action",
                         "add_path", "max_prefix_action",

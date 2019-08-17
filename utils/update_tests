@@ -17,12 +17,12 @@ fi
 export PYTHONPATH="`pwd`"
 ROOT="`pwd`"
 
-TESTS_DIR="`pwd`/tests"
+TESTS_DIR="tests"
 LAST_RESULTS_DIR="$TESTS_DIR/last_results"
 
-ALL_BGPSPEAKERS="bird openbgpd62 openbgpd63 openbgpd64"
+ALL_BGPSPEAKERS="bird openbgpd65p openbgpd_previous openbgpd_latest"
 BGPSPEAKERS="$ALL_BGPSPEAKERS"
-LIVE_TEST_IDS="`find $TESTS_DIR/live_tests/scenarios/* -maxdepth 0 -type d -printf '%f '`"
+LIVE_TEST_IDS="`find $TESTS_DIR/live_tests/scenarios/* -maxdepth 0 -type d | cut -d '/' -f 4`"
 
 function join_last_results() {
 	if [ ! -e $LAST_RESULTS_DIR/static.last ]; then
@@ -84,10 +84,6 @@ if [ "$1" == "join_only" ]; then
 	exit
 fi
 
-for test_id in $1; do
-	egrep "^(cli|static|build_only|all|`tr ' ' '|' <<< $LIVE_TEST_IDS`)$" <<< "$test_id" &>/dev/null || { usage ; exit 1; }
-done
-
 if [ -n "$2" ]; then
 	for speaker in $2; do
 		egrep "^(`tr ' ' '|' <<< $ALL_BGPSPEAKERS`)$" <<< "$speaker" &>/dev/null || { usage ; exit 1; }
@@ -119,7 +115,7 @@ echo "Checking code via tox..."
 tox -e py34-syntax,py27-flake8,py34-flake8 2>&1
 
 echo "Verifying no Docker instances are running..."
-if [ "`docker ps | wc -l`" != "1" ]; then
+if [ "`docker ps | grep -v "CONTAINER ID" | wc -l | awk '{print $1}'`" != "0" ]; then
 	echo "One or more Docker instances are already running"
 	exit
 fi
@@ -169,8 +165,7 @@ for bgpspeaker in $BGPSPEAKERS; do
 			fi
 		fi
 	done
-	if [ "${bgpspeaker}" == "openbgpd62" -o "${bgpspeaker}" == "openbgpd64" ]; then
-
+	if [ "${bgpspeaker}" == "openbgpd_latest" -o "${bgpspeaker}" == "openbgpd_previous" ]; then
 		if [ `virsh list --name --state-running | egrep -v "^$" | wc -l` -gt 0 ]; then
 			echo "Shutting down rs KVM instance..."
 			./utils/run rs 'shutdown -p now'

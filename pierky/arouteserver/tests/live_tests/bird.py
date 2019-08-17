@@ -29,7 +29,7 @@ class BIRDInstance(DockerInstance):
 
     MESSAGE_LOGGING_SUPPORT = True
 
-    DOCKER_IMAGE = "pierky/bird:1.6.4"
+    DOCKER_IMAGE = "pierky/bird:1.6.7"
 
     def __init__(self, *args, **kwargs):
         DockerInstance.__init__(self, *args, **kwargs)
@@ -198,7 +198,14 @@ class BIRDInstance(DockerInstance):
                     if "BGP.as_path:" in line:
                         route["as_path"] = line.split(": ")[1].strip()
                     if "BGP.next_hop:" in line:
-                        route["next_hop"] = line.split(": ")[1].strip()
+                        route["next_hop"] = ""
+                        next_hops = line.split(": ")[1].strip().split()
+                        for next_hop in next_hops:
+                            if next_hop.lower().startswith("fe80:"):
+                                continue
+                            if route["next_hop"]:
+                                route["next_hop"] += ", "
+                            route["next_hop"] += next_hop
                     if "BGP.community:" in line:
                         route["std_comms"] = line.split(": ")[1].strip()
                     if "BGP.large_community:" in line:

@@ -113,7 +113,16 @@ class TestProgramConfig(unittest.TestCase):
         """Program config: setup"""
         self.pr_cfg.setup(destination_directory=self.temp_dir)
         errors = self.pr_cfg.verify_templates()
-        self.assertEqual(len(errors), 0)
+        self.assertEqual(len(errors), 0,
+                         msg="The fingerprint of one or more template files "
+                             "is different than the one reported in the file "
+                             "templates/fingerprints.yml, probably because of "
+                             "changes made to the content of the templates.\n"
+                             "\n- {}\n\n"
+                             "Run ./utils/update_fingerprints.py to "
+                             "update the fingerprints.yml file.".format(
+                                 "\n- ".join(errors)
+                             ))
 
     def test_031_setup_and_setup_again(self):
         """Program config: setup, then setup again"""

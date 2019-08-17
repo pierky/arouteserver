@@ -872,6 +872,13 @@ irrdb_info
     exact: false
     ge: null
     le: 128
+    length: 42
+    max_length: 128
+    prefix: '2001:610:240::'
+  - comment: null
+    exact: false
+    ge: null
+    le: 128
     length: 48
     max_length: 128
     prefix: '2001:67c:2e8::'
@@ -991,6 +998,12 @@ arin_whois_db_records
 ---------------------
 AS10745:
 - exact: false
+  ge: 48
+  le: 128
+  length: 48
+  max_length: 128
+  prefix: '2001:500:4::'
+- exact: false
   ge: 24
   le: 32
   length: 24
@@ -1013,7 +1026,7 @@ AS10745:
   le: 128
   length: 48
   max_length: 128
-  prefix: '2001:500:4::'
+  prefix: '2001:500:110::'
 
 
 registrobr_whois_db_records

@@ -849,6 +849,13 @@ irrdb_info
     exact: true
     ge: null
     le: null
+    length: 42
+    max_length: 128
+    prefix: '2001:610:240::'
+  - comment: null
+    exact: true
+    ge: null
+    le: null
     length: 48
     max_length: 128
     prefix: '2001:67c:2e8::'
