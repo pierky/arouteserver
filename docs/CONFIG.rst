@@ -517,6 +517,8 @@ The following list of limitations is based on the currently supported versions o
 
   - The Site of Origin Extended BGP communities in the range 65535:* are reserved for internal reasons.
 
+A list of all the features and their support level among the BGP speakers is maintained on the :ref:`Supported BGP speakers and features` section of this documentation.
+
 Depending on the features that are enabled in the ``general.yml`` and ``clients.yml`` files, compatibility issues may arise; in this case, ARouteServer logs one or more errors, which can be then acknowledged and ignored using the ``--ignore-issues`` command line option:
 
 .. code-block:: console

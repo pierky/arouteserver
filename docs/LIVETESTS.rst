@@ -21,6 +21,8 @@ Example: in a configuration where blackhole filtering is enabled, an instance of
 Since (AFAIK) OpenBGPD can't be run on Travis CI platform, the full live tests results, including those run on OpenBGPD, can be found on `this file <https://github.com/pierky/arouteserver/blob/master/tests/last>`_.
 Starting with version 6.5, the Portable edition of OpenBGPD has been used to run some tests on TravisCI too.
 
+A summary of the integration testing results and the BGP speakers which are tested can be found on the :ref:`Integration testing coverage` section of this documentation.
+
 Setting up the environment to run live tests
 --------------------------------------------
 

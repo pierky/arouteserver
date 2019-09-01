@@ -44,7 +44,7 @@ How it works
 
    Currently, **BIRD** (1.6.x starting from 1.6.3) and **OpenBGPD** (OpenBSD 6.1 up to 6.5 and also OpenBGPD Portable 6.5p1) are supported, with almost feature parity between them.
 
-**Validation** and testing are performed using the built-in **live tests** framework: `Docker`_ instances are used to simulate several scenarios, and more custom scenarios can be built on the basis of the user's needs. More details on the `Live tests <https://arouteserver.readthedocs.io/en/latest/LIVETESTS.html>`_ section.
+**Validation** and testing are performed using the built-in **live tests** framework: `Docker`_ instances are used to simulate several scenarios and to validate the behaviour of the route server after configuring it with ARouteServer. More details on the `Live tests <https://arouteserver.readthedocs.io/en/latest/LIVETESTS.html>`_ section.
 
 .. _bgpq3: https://github.com/snar/bgpq3
 .. _PeeringDB: https://www.peeringdb.com/

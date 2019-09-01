@@ -262,6 +262,16 @@ cd $ROOT
 
 # ----------------------------------------------------
 
+title "Building the supported BGP speakers pages"
+
+cd $DOCS_DIR
+../utils/build_integration_tests_docs.py > SUPPORTED_SPEAKERS_CI.txt
+../utils/build_supported_speakers_table.py > SUPPORTED_SPEAKERS_FEATURES.txt
+
+cd $ROOT
+
+# ----------------------------------------------------
+
 title "Building HTML description for real tests configuration"
 TMP_CLIENTS_FILE="`mktemp`"
 cat > $TMP_CLIENTS_FILE << EOF
