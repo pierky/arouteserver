@@ -1126,7 +1126,11 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "APNIC RPKI Root",
                     "AfriNIC RPKI Root",
                     "LACNIC RPKI Root",
-                    "RIPE NCC RPKI Root"
+                    "RIPE NCC RPKI Root",
+                    "apnic",
+                    "afrinic",
+                    "lacnic",
+                    "ripe"
                 ]
             },
             "blackhole_filtering": {
@@ -1237,7 +1241,11 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "APNIC RPKI Root",
                     "AfriNIC RPKI Root",
                     "LACNIC RPKI Root",
-                    "RIPE NCC RPKI Root"
+                    "RIPE NCC RPKI Root",
+                    "apnic",
+                    "afrinic",
+                    "lacnic",
+                    "ripe"
                 ]
             },
             "blackhole_filtering": {
