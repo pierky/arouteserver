@@ -56,6 +56,10 @@ configured            - APNIC RPKI Root
 configured            - AfriNIC RPKI Root
 configured            - LACNIC RPKI Root
 configured            - RIPE NCC RPKI Root
+configured            - apnic
+configured            - afrinic
+configured            - lacnic
+configured            - ripe
                   blackhole_filtering:
 configured          announce_to_client: True
 default             policy_ipv4: None
