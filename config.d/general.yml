@@ -518,13 +518,11 @@ cfg:
     #
     # Default: APNIC, AfriNIC, LACNIC and RIPE NCC.
     allowed_trust_anchors:
-      # As seen in the RIPE export file:
       - "APNIC RPKI Root"
       - "AfriNIC RPKI Root"
       - "LACNIC RPKI Root"
       - "RIPE NCC RPKI Root"
       #- "ARIN"
-      # As seen in the NTT export file:
       - "apnic"
       - "afrinic"
       - "lacnic"
