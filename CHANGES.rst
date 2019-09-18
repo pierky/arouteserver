@@ -6,7 +6,9 @@ Change log
 v0.22.1
 -------
 
-- Fix: handle more formats for ROAs from RIPE and NTT export file.
+- Fix: handle more formats for ROAs exported from the public instances of RIPE and NTT validators.
+
+  A new way of representing ASNs (without the "AS" prefix) and new TA names which were not matched by the default values of ``rpki_roas.allowed_trust_anchors`` prevented ROAs from being imported and correctly processed when the default settings were used.
 
 v0.22.0
 -------

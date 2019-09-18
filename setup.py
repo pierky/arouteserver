@@ -30,11 +30,15 @@ New release procedure
 
 dev releases (in 'dev' branch):
 
+    - git commit -a -m "v$(python -c 'from pierky.arouteserver.version import __version__; print(__version__)')"
+
     - git tag v$(python -c "from pierky.arouteserver.version import __version__; print(__version__)")
 
     - git push origin dev --tags
 
 prod releases (in 'master' branch):
+
+    - git commit -a -m "v$(python -c 'from pierky.arouteserver.version import __version__; print(__version__)')"
 
     - git tag v$(python -c "from pierky.arouteserver.version import __version__; print(__version__)")
 
