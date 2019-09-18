@@ -523,6 +523,11 @@ cfg:
       - "LACNIC RPKI Root"
       - "RIPE NCC RPKI Root"
       #- "ARIN"
+      - "apnic"
+      - "afrinic"
+      - "lacnic"
+      - "ripe"
+      #- "arin"
 
   blackhole_filtering:
     # Destination-based blackholing policy: if a policy is given,
@@ -693,7 +698,7 @@ cfg:
     # Prefix/origin AS present in client's AS-SET.
     #
     # If 'tag_as_set' = True, prefixes that are (not) part of an
-    # AS-SET or whose origin ASN is (not) part of an AS-SET are 
+    # AS-SET or whose origin ASN is (not) part of an AS-SET are
     # tagged with the following BGP communities, provided that they
     # are set below.
     #
@@ -750,9 +755,9 @@ cfg:
       #std:
       #lrg:
       #ext:
- 
+
     # Control communities.
-    # 
+    #
     # Routes that are tagged with the following community are not
     # announced to any client, unless they are also tagged with the
     # 'announce_to_peer' communities: in this case, such routes are

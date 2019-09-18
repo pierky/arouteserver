@@ -300,6 +300,10 @@ cfg:
     - AfriNIC RPKI Root
     - LACNIC RPKI Root
     - RIPE NCC RPKI Root
+    - apnic
+    - afrinic
+    - lacnic
+    - ripe
     ripe_rpki_validator_url:
     - https://rpki-validator.ripe.net/api/export.json
     - https://rpki.gin.ntt.net/api/export.json
@@ -845,13 +849,6 @@ irrdb_info
     length: 22
     max_length: 32
     prefix: 193.0.20.0
-  - comment: null
-    exact: true
-    ge: null
-    le: null
-    length: 42
-    max_length: 128
-    prefix: '2001:610:240::'
   - comment: null
     exact: true
     ge: null

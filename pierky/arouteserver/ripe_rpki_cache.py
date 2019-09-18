@@ -102,12 +102,17 @@ class RIPE_RPKI_ROAs(CachedObject):
         for roa in roas["roas"]:
             try:
                 asn = roa.get("asn", None)
-                if not asn:
+                if asn is None:
                     raise ValueError("missing ASN")
-                if not asn.startswith("AS"):
-                    raise ValueError("invalid ASN: " + asn)
-                if not asn[2:].isdigit():
-                    raise ValueError("invalid ASN: " + asn)
+                if isinstance(asn, int):
+                    roa["asn"] = "AS{}".format(asn)
+                elif asn.isdigit():
+                    roa["asn"] = "AS{}".format(asn)
+                else:
+                    if not asn.startswith("AS"):
+                        raise ValueError("invalid ASN: " + asn)
+                    if not asn[2:].isdigit():
+                        raise ValueError("invalid ASN: " + asn)
 
                 if "ta" not in roa:
                     raise ValueError("missing trust anchor")
@@ -121,11 +126,13 @@ class RIPE_RPKI_ROAs(CachedObject):
                     raise ValueError("invalid prefix: " + prefix)
 
                 max_len = roa.get("maxLength", None)
-                if not max_len:
+                if max_len is None:
                     raise ValueError("missing maxLength")
                 if not isinstance(max_len, int):
                     if not max_len.isdigit():
                         raise ValueError("invalid maxLength: " + max_len)
+                    else:
+                        roa["maxLength"] = int(max_len)
 
             except ValueError as e:
                 logging.warning("Invalid ROA: {}, {}".format(

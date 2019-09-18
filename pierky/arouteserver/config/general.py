@@ -212,7 +212,11 @@ class ConfigParserGeneral(ConfigParserBase):
                 "APNIC RPKI Root",
                 "AfriNIC RPKI Root",
                 "LACNIC RPKI Root",
-                "RIPE NCC RPKI Root"
+                "RIPE NCC RPKI Root",
+                "apnic",
+                "afrinic",
+                "lacnic",
+                "ripe"
             ]
         )
 

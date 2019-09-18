@@ -322,6 +322,10 @@ cfg:
     - AfriNIC RPKI Root
     - LACNIC RPKI Root
     - RIPE NCC RPKI Root
+    - apnic
+    - afrinic
+    - lacnic
+    - ripe
     ripe_rpki_validator_url:
     - examples/rich/ripe-rpki-cache.json
     source: ripe-rpki-validator-cache
