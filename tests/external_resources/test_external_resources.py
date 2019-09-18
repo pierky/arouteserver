@@ -30,15 +30,16 @@ cache_cfg = {
     "cache_dir": None
 }
 
-def setUpModule():
-    global cache_dir
-    cache_dir = tempfile.mkdtemp(suffix="arouteserver_unittest")
-    cache_cfg["cache_dir"] = cache_dir
-
-def tearDownModule():
-    shutil.rmtree(cache_dir, ignore_errors=True)
 
 class TestExternalResources(unittest.TestCase):
+
+    def setUp(self):
+        global cache_dir
+        cache_dir = tempfile.mkdtemp(suffix="arouteserver_unittest")
+        cache_cfg["cache_dir"] = cache_dir
+
+    def tearDown(self):
+        shutil.rmtree(cache_dir, ignore_errors=True)
 
     def test_peeringdb(self):
         """External resources: PeeringDB, max-prefix and AS-SET"""
@@ -70,14 +71,41 @@ class TestExternalResources(unittest.TestCase):
         self.assertTrue(int(ver.split(".")[0]) >= 0)
         self.assertTrue(int(ver.split(".")[1]) >= 17)
 
-    def test_rpki_roas(self):
-        """External resources: RPKI ROAs"""
+    def _test_rpki_roas_per_provider(self, provider):
         cfg = ConfigParserGeneral()
         urls = cfg.get_schema()["cfg"]["rpki_roas"]["ripe_rpki_validator_url"].default
-        rpki_roas = RIPE_RPKI_ROAs(ripe_rpki_validator_url=urls, **cache_cfg)
+        for url in urls:
+            if provider in url:
+                rpki_roas = RIPE_RPKI_ROAs(ripe_rpki_validator_url=[url], **cache_cfg)
+                break
         rpki_roas.load_data()
         self.assertTrue(len(rpki_roas.roas) > 0)
         self.assertTrue(any([r for r in rpki_roas.roas["roas"] if r["prefix"] == "193.0.0.0/21"]))
+
+        allowed_per_ta = {}
+
+        allowed_tas = cfg.get_schema()["cfg"]["rpki_roas"]["allowed_trust_anchors"].default
+        for roa in rpki_roas.roas["roas"]:
+            ta = roa["ta"]
+            if ta not in allowed_per_ta:
+                allowed_per_ta[ta] = 0
+            if roa["ta"] in allowed_tas:
+                allowed_per_ta[ta] += 1
+
+        tas_with_allowed_roas = 0
+        for ta in allowed_per_ta:
+            if allowed_per_ta[ta] > 0:
+                tas_with_allowed_roas += 1
+
+        self.assertTrue(tas_with_allowed_roas >= 4)
+
+    def test_rpki_roas_ripe(self):
+        """External resources: RPKI ROAs, RIPE"""
+        self._test_rpki_roas_per_provider("ripe.net")
+
+    def test_rpki_roas_ntt(self):
+        """External resources: RPKI ROAs, NTT"""
+        self._test_rpki_roas_per_provider("ntt.net")
 
     def test_asset(self):
         """External resources: ASNs from AS-SET via bgpq3"""
