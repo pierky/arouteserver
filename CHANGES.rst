@@ -3,6 +3,13 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+v0.22.2
+-------
+
+- Fix: prevent environment variables with unknown escapes (like `\u`) from interrupting the execution.
+
+  Related: `issue #50 on GitHub <https://github.com/pierky/arouteserver/issues/50>`_.
+
 v0.22.1
 -------
 
