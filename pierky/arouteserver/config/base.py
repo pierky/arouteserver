@@ -77,8 +77,7 @@ class ConfigParserBase(object):
 
         def expand_env_vars(doc):
             res = doc
-            for v in os.environ:
-                res = re.sub("\$\{" + v + "\}", os.environ[v], res)
+            res = os.path.expandvars(res)
             res = re.sub("\$\{[A-Za-z0-9_]+\}", "", res)
             return res
 

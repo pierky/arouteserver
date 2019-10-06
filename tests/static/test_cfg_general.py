@@ -1411,3 +1411,20 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "  router_id: ${ROUTER_ID\n"
         )
         self._contains_err("Invalid IPv4 address: ${ROUTER_ID")
+
+    @mock.patch.dict(os.environ, {"ROUTER_ID": "192.0.2.1", "BAD_ESCAPE": r"\u"})
+    def test_env_vars_bad_escape(self):
+        """{}: environment variables: ok (bad escape)"""
+
+        self.cfg._load_from_yaml(
+            "cfg:\n"
+            "  rs_as: 999\n"
+            "  router_id: ${ROUTER_ID}\n"
+            "  filtering:\n"
+            "    global_black_list_pref: ${GLOBAL_BLACK_LIST_PREF}\n"
+        )
+        self.cfg.parse()
+        self._contains_err()
+
+        self.assertEqual(self.cfg["router_id"], "192.0.2.1")
+        self.assertEqual(self.cfg["filtering"]["global_black_list_pref"], None)
