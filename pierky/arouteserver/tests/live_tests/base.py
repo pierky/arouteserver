@@ -26,7 +26,8 @@ from pierky.arouteserver.tests.base import ARouteServerTestCase
 from pierky.arouteserver.tests.mocked_env import MockedEnv
 from pierky.arouteserver.tests.live_tests.instances import BGPSpeakerInstance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, \
-                                                      BIRDInstanceIPv6
+                                                      BIRDInstanceIPv6, \
+                                                      BIRD2Instance
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance, \
                                                           OpenBGPD61Instance, \
                                                           OpenBGPD62Instance, \
@@ -387,6 +388,8 @@ class LiveScenario(ARouteServerTestCase):
         if _class is BIRDInstanceIPv4 or \
             _class is BIRDInstanceIPv6:
             tag = "bird16"
+        elif _class is BIRD2Instance:
+            tag = "bird2"
         elif _class is OpenBGPD60Instance:
             tag = "openbgpd60"
         elif _class is OpenBGPD61Instance:

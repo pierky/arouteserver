@@ -8,5 +8,9 @@ debug protocols { states, routes, filters, interfaces, events };
 protocol device {};
 
 {% if cfg.path_hiding -%}
+{%   if "2.0.0"|target_version_le -%}
 table master sorted;
+{%   else -%}
+ipv{{ip_ver}} table master{{ip_ver}} sorted;
+{%   endif -%}
 {%- endif %}

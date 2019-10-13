@@ -15,7 +15,11 @@
 {% endif %}
 
 
+{% if "2.0.0"|target_version_le -%}
 {% include "rpki.j2" %}
+{% else %}
+{% include "rpki2.j2" %}
+{% endif %}
 
 
 {% include "irrdb.j2" %}
@@ -25,7 +29,7 @@
 
 
 {% include "clients.j2" %}
- 
+
 
 {{ "footer"|include_local_file -}}
 {% if ip_ver == 4 %}

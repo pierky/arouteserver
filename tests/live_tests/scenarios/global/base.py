@@ -1048,6 +1048,14 @@ class BasicScenarioBIRD(BasicScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+    TARGET_VERSION = None
+
+    @classmethod
+    def _get_local_file(cls):
+        return (
+            cls.use_static_file("bird_local_file.local{}".format(cls.IP_VER)),
+            "/etc/bird/footer{}.local".format(cls.IP_VER)
+        )
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -1057,14 +1065,24 @@ class BasicScenarioBIRD(BasicScenario):
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                        local_files=["footer{}".format(cls.IP_VER)]),
+                                     target_version=cls.TARGET_VERSION,
+                                     local_files=["footer{}".format(cls.IP_VER)]),
                     "/etc/bird/bird.conf"
                 ),
-                (
-                    cls.use_static_file("bird_local_file.local{}".format(cls.IP_VER)),
-                    "/etc/bird/footer{}.local".format(cls.IP_VER)
-                )
+                cls._get_local_file()
             ],
+        )
+
+class BasicScenarioBIRD2(BasicScenarioBIRD):
+    __test__ = False
+
+    TARGET_VERSION = "2.0.6"
+
+    @classmethod
+    def _get_local_file(cls):
+        return (
+            cls.use_static_file("bird2_local_file.local{}".format(cls.IP_VER)),
+            "/etc/bird/footer{}.local".format(cls.IP_VER)
         )
 
 class BasicScenarioOpenBGPD(BasicScenario_TagRejectPolicy, BasicScenario):

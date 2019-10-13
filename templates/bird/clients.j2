@@ -386,18 +386,24 @@ protocol bgp {{ client.id }} {
 	ttl security off;
 	{% endif -%}
 
+	{% if cfg.rfc1997_wellknown_communities.policy == "rfc1997" %}
+	interpret communities on;
+	{% else %}
+	interpret communities off;
+	{% endif %}
+
+	{% if "2.0.0"|target_version_ge %}
+	# ---------------------------------------
+	ipv{{ip_ver}} {
+	table master{{ip_ver}};
+	{% endif %}
+
 	{% if client.cfg.add_path %}
 	add paths tx;
 	{% endif %}
 
 	{% if cfg.path_hiding %}
 	secondary;
-	{% endif %}
-
-	{% if cfg.rfc1997_wellknown_communities.policy == "rfc1997" %}
-	interpret communities on;
-	{% else %}
-	interpret communities off;
 	{% endif %}
 
 	{% if client.cfg.filtering.max_prefix.action %}
@@ -413,6 +419,10 @@ protocol bgp {{ client.id }} {
 	{% 	endif %}
 	{% endif %}
 
+	{% if "2.0.0"|target_version_ge %}
+	import table on;
+	{% endif %}
+
 	import keep filtered on;
 
 	{{ "client"|include_local_file -}}
@@ -424,6 +434,11 @@ protocol bgp {{ client.id }} {
 
 	import filter receive_from_{{ client.id }};
 	export filter announce_to_{{ client.id }};
+
+	{% if "2.0.0"|target_version_ge %}
+	# ---------------------------------------
+	};
+	{% endif %}
 }
 
 {% endfor -%}

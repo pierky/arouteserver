@@ -1,0 +1,31 @@
+{% from 'macros.j2' import write_prefix_list %}
+# ---------------------------------------------------------
+# RPKI
+
+{% if cfg.filtering.rpki_bgp_origin_validation.enabled or
+    cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled %}
+roa{{ip_ver}} table RPKI;
+{%  if cfg.rpki_roas.source == "rtr" %}
+protocol rpki {
+        debug all;
+
+        roa{{ip_ver}} { table RPKI{{ip_ver}}; };
+
+        # FIXME TODO
+        remote "127.0.0.1" port 8282;
+
+        retry keep 5;
+        refresh keep 30;
+        expire 600;
+}
+{%  else %}
+protocol static {
+    roa{{ip_ver}} { table RPKI; };
+{%   for roa in rpki_roas %}
+    route {{ roa.prefix }} max {{ roa.max_len }} as {{ roa.asn }};
+{%   endfor %}
+}
+{%  endif %}
+{% else %}
+# RPKI not used.
+{% endif %}
