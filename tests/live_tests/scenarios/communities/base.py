@@ -215,6 +215,8 @@ class BGPCommunitiesScenarioBIRD(BGPCommunitiesScenario):
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
 
+    TARGET_VERSION = None
+
     @classmethod
     def _setup_rs_instance(cls):
         return cls.RS_INSTANCE_CLASS(
@@ -222,11 +224,17 @@ class BGPCommunitiesScenarioBIRD(BGPCommunitiesScenario):
             cls.DATA["rs_IPAddress"],
             [
                 (
-                    cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER),
+                    cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
+                                     target_version=cls.TARGET_VERSION),
                     "/etc/bird/bird.conf"
                 )
             ]
         )
+
+class BGPCommunitiesScenarioBIRD2(BGPCommunitiesScenarioBIRD):
+    __test__ = False
+
+    TARGET_VERSION = "2.0.6"
 
 class BGPCommunitiesScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
                                      BGPCommunitiesScenario):
