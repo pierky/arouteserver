@@ -310,7 +310,7 @@ class BIRDInstanceIPv6(BIRDInstance):
 
 class BIRD2Instance(BIRDInstance):
 
-    DOCKER_IMAGE = "pierky/bird:2.0.6"
+    DOCKER_IMAGE = "pierky/bird:2.0.7"
 
     def _get_start_cmd(self):
         return "bird -c /etc/bird/bird.conf -d"

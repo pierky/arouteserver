@@ -234,7 +234,7 @@ class BGPCommunitiesScenarioBIRD(BGPCommunitiesScenario):
 class BGPCommunitiesScenarioBIRD2(BGPCommunitiesScenarioBIRD):
     __test__ = False
 
-    TARGET_VERSION = "2.0.6"
+    TARGET_VERSION = "2.0.7"
 
 class BGPCommunitiesScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
                                      BGPCommunitiesScenario):

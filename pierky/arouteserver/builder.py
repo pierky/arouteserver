@@ -686,7 +686,7 @@ class BIRDConfigBuilder(ConfigBuilder):
              "apply_blackhole_filtering_policy"]
 
     AVAILABLE_VERSION = ["1.6.3", "1.6.4", "1.6.6", "1.6.7",
-                         "2.0.6"]
+                         "2.0.7"]
     DEFAULT_VERSION = "1.6.7"
 
     def validate_bgpspeaker_specific_configuration(self):
