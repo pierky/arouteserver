@@ -1,6 +1,6 @@
 # File used in both the global and the tag_reject_policy scenarios
 
-filter invalid_routes_only {
+filter invalid_routes_only_4 {
 	if ((65520, 0) ~ bgp_community) then
 		accept;
 	reject;
@@ -13,5 +13,5 @@ protocol bgp InvalidRoutesCollector {
 	secondary;
 
 	import none;
-	export filter invalid_routes_only;
+	export filter invalid_routes_only_4;
 }

@@ -24,7 +24,6 @@ class BasicScenario_BIRDIPv4(BasicScenario_Data4, BasicScenarioBIRD2):
     SHORT_DESCR = "Live test, BIRD v2, global scenario, IPv4"
     RS_INSTANCE_CLASS = BIRD2Instance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
-    IP_VER = 4
 
     ALLOWED_LOG_ERRORS = ["AS1_1: Invalid NEXT_HOP attribute in route 1.0.3.0/24"]
 

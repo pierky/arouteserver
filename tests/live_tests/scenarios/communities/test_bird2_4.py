@@ -24,4 +24,4 @@ class BGPCommunitiesScenario_BIRDIPv4(BGPCommunitiesScenario_Data4,
     SHORT_DESCR = "Live test, BIRD v2, BGP communities, IPv4"
     RS_INSTANCE_CLASS = BIRD2Instance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
-    IP_VER = 4
+

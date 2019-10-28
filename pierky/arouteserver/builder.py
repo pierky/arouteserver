@@ -562,6 +562,10 @@ class ConfigBuilder(object):
 
         self.data = {}
         self.data["ip_ver"] = self.ip_ver
+        if self.ip_ver is None:
+            self.data["list_ip_vers"] = [4, 6]
+        else:
+            self.data["list_ip_vers"] = [self.ip_ver]
         self.data["cfg"] = self.cfg_general
         self.data["bogons"] = self.cfg_bogons
         self.data["clients"] = self.cfg_clients
@@ -582,6 +586,10 @@ class ConfigBuilder(object):
             if self.ip_ver is None:
                 return True
             return IPNetwork(ip).version == self.ip_ver
+
+        def is_ipver(data, ip_ver):
+            prefix = data
+            return IPNetwork(prefix).version == ip_ver
 
         def include_local_file(local_file_id):
             if local_file_id not in self.LOCAL_FILES_IDS:
@@ -629,6 +637,7 @@ class ConfigBuilder(object):
             undefined=StrictUndefined
         )
         env.tests["current_ipver"] = current_ipver
+        env.tests["is_ipver"] = is_ipver
         env.filters["community_is_set"] = community_is_set
         env.filters["ipaddr_ver"] = ipaddr_ver
         env.filters["include_local_file"] = include_local_file
@@ -690,10 +699,11 @@ class BIRDConfigBuilder(ConfigBuilder):
     DEFAULT_VERSION = "1.6.7"
 
     def validate_bgpspeaker_specific_configuration(self):
-        if self.ip_ver is None:
+        if self.ip_ver is None and \
+           version.parse(self.target_version) < version.parse("2.0"):
             raise BuilderError(
                 "An explicit target IP version is needed "
-                "to build BIRD configuration. Use the "
+                "to build BIRD 1.x configuration. Use the "
                 "--ip-ver command line argument to supply one."
             )
 

@@ -11,6 +11,8 @@ protocol device {};
 {%   if "2.0.0"|target_version_le -%}
 table master sorted;
 {%   else -%}
-ipv{{ip_ver}} table master{{ip_ver}} sorted;
+{%     for this_ip_ver in list_ip_vers %}
+ipv{{ this_ip_ver }} table master{{ this_ip_ver }} sorted;
+{%     endfor %}
 {%   endif -%}
 {%- endif %}

@@ -95,6 +95,8 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+    TARGET_VERSION = None
+    IP_VER = None
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -104,7 +106,8 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                     cfg_general="general_bird.yml"),
+                                     cfg_general="general_bird.yml",
+                                     target_version=cls.TARGET_VERSION),
                     "/etc/bird/bird.conf"
                 )
             ]
@@ -173,6 +176,11 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
         """{}: reconfigure"""
         self.rs.reload_config()
         self.test_020_sessions_up()
+
+class MaxPrefixScenarioBIRD2(MaxPrefixScenarioBIRD):
+    __test__ = False
+
+    TARGET_VERSION = "2.0.7"
 
 class MaxPrefixScenarioOpenBGPD(LiveScenario_TagRejectPolicy, MaxPrefixScenario):
     __test__ = False

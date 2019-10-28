@@ -66,6 +66,12 @@ class RichConfigExampleScenarioBIRD(RichConfigExampleScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+    TARGET_VERSION = None
+    IP_VER = None
+
+    @classmethod
+    def _get_local_file(cls):
+        return "bird.client.local"
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -75,15 +81,25 @@ class RichConfigExampleScenarioBIRD(RichConfigExampleScenario):
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                     local_files=["client"]),
+                                     local_files=["client"],
+                                     target_version=cls.TARGET_VERSION),
                     "/etc/bird/bird.conf"
                 ),
                 (
-                    cls.use_static_file("bird.client.local"),
+                    cls.use_static_file(cls._get_local_file()),
                     "/etc/bird/client.local"
                 )
             ]
         )
+
+class RichConfigExampleScenarioBIRD2(RichConfigExampleScenarioBIRD):
+    __test__ = False
+
+    TARGET_VERSION = "2.0.7"
+
+    @classmethod
+    def _get_local_file(cls):
+        return "bird2.client.local"
 
 class RichConfigExampleScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
                                         RichConfigExampleScenario):

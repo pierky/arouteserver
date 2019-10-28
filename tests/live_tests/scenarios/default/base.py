@@ -57,6 +57,7 @@ class DefaultConfigScenarioBIRD(DefaultConfigScenario):
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
     TARGET_VERSION = None
+    IP_VER = None
 
     @classmethod
     def _setup_rs_instance(cls):

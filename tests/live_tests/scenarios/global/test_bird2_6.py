@@ -13,18 +13,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .base import BasicScenarioBIRD, BasicScenario_TagRejectPolicy
+from .base import BasicScenarioBIRD2, BasicScenario_TagRejectPolicy
 from .data6 import BasicScenario_Data6
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6, BIRD2Instance
 
-class BasicScenario_BIRDIPv6(BasicScenario_Data6, BasicScenarioBIRD):
+class BasicScenario_BIRDIPv6(BasicScenario_Data6, BasicScenarioBIRD2):
 
     __test__ = False
 
-    SHORT_DESCR = "Live test, BIRD, global scenario, IPv6"
-    RS_INSTANCE_CLASS = BIRDInstanceIPv6
+    SHORT_DESCR = "Live test, BIRD v2, global scenario, IPv6"
+    RS_INSTANCE_CLASS = BIRD2Instance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
-    IP_VER = 6
 
     ALLOWED_LOG_ERRORS = ["AS1_2: Invalid NEXT_HOP attribute in route 2a01:0:3::/48"]
 
@@ -37,4 +36,4 @@ class BasicScenario_BIRDIPv6_Tag(BasicScenario_TagRejectPolicy,
 
     __test__ = True
 
-    SHORT_DESCR = "Live test, BIRD, global scenario, IPv6, tag"
+    SHORT_DESCR = "Live test, BIRD v2, global scenario, IPv6, tag"

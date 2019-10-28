@@ -24,4 +24,3 @@ class DefaultConfigScenarioBIRD_IPv4(DefaultConfigScenario_Data4,
     SHORT_DESCR = "Live test, BIRD v2, default config, IPv4"
     RS_INSTANCE_CLASS = BIRD2Instance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
-    IP_VER = 4

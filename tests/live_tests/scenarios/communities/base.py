@@ -217,6 +217,8 @@ class BGPCommunitiesScenarioBIRD(BGPCommunitiesScenario):
 
     TARGET_VERSION = None
 
+    IP_VER = None
+
     @classmethod
     def _setup_rs_instance(cls):
         return cls.RS_INSTANCE_CLASS(
