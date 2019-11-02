@@ -80,8 +80,13 @@ function RenderExample() {
 	CMD="./scripts/arouteserver $COMMAND $OPTS --general $GENERAL --clients $CLIENTS --bogons $BOGONS"
 
 	if [ "$COMMAND" == "bird" ]; then
-		IP_VER="$1" ; shift
-		$CMD --ip-ver $IP_VER -o examples/$DST/bird$IP_VER.conf $@
+		BIRD_VER="$1" ; shift
+		if [ "$BIRD_VER" == "1" ]; then
+			IP_VER="$1" ; shift
+			$CMD --ip-ver $IP_VER -o examples/$DST/bird$IP_VER.conf $@
+		else
+			$CMD --target-version 2.0.7 -o examples/$DST/bird_v2.conf $@
+		fi
 	elif [ "$COMMAND" == "openbgpd" ]; then
 		$CMD -o examples/$DST/openbgpd.conf --ignore-issues \* --target-version 6.4
 	elif [ "$COMMAND" == "html" ]; then
@@ -179,19 +184,25 @@ echo "The textual description (HTML) generated on the basis of the *general.yml*
 # to used a very small subset of data for the sake of readability of the
 # example configs that are going to build.
 rm var/build_doc_cache/ripe-rpki-cache.json || true
+rm var/cache/ripe-rpki-cache.json || true
 
 title "Building example: default, BIRD, IPv4"
 G="config.d/general.yml"
 C="config.d/clients.yml"
-RenderExample "default" "bird" "$G" "$C" "config.d/bogons.yml" 4
-RenderExample "default" "template-context" "$G" "$C" "config.d/bogons.yml" 4
+RenderExample "default" "bird" "$G" "$C" "config.d/bogons.yml" 1 4
 
 title "Building example: default, BIRD, IPv6"
-RenderExample "default" "bird" "$G" "$C" "config.d/bogons.yml" 6
-RenderExample "default" "template-context" "$G" "$C" "config.d/bogons.yml" 6
+RenderExample "default" "bird" "$G" "$C" "config.d/bogons.yml" 1 6
+
+title "Building example: default, BIRD v2"
+RenderExample "default" "bird" "$G" "$C" "config.d/bogons.yml" 2
 
 title "Building example: default, OpenBGPD, IPv4 + IPv6"
 RenderExample "default" "openbgpd" "$G" "$C" "config.d/bogons.yml"
+
+title "Building example: default, Jinja2 template context"
+RenderExample "default" "template-context" "$G" "$C" "config.d/bogons.yml" 4
+RenderExample "default" "template-context" "$G" "$C" "config.d/bogons.yml" 6
 RenderExample "default" "template-context" "$G" "$C" "config.d/bogons.yml"
 
 title "Building example: default, HTML"
@@ -200,15 +211,20 @@ RenderExample "default" "html" "$G" "$C" "config.d/bogons.yml"
 title "Building example: rich, BIRD, IPv4"
 G="examples/rich/general.yml"
 C="examples/rich/clients.yml"
-RenderExample "rich" "bird" "$G" "$C" "config.d/bogons.yml" 4 --use-local-files client
-RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml" 4
+RenderExample "rich" "bird" "$G" "$C" "config.d/bogons.yml" 1 4 --use-local-files client
 
 title "Building example: rich, BIRD, IPv6"
-RenderExample "rich" "bird" "$G" "$C" "config.d/bogons.yml" 6
-RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml" 6
+RenderExample "rich" "bird" "$G" "$C" "config.d/bogons.yml" 1 6
+
+title "Building example: rich, BIRD v2"
+RenderExample "rich" "bird" "$G" "$C" "config.d/bogons.yml" 2
 
 title "Building example: rich, OpenBGPD, IPv4 + IPv6"
 RenderExample "rich" "openbgpd" "$G" "$C" "config.d/bogons.yml"
+
+title "Building example: rich, Jinja2 template context"
+RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml" 4
+RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml" 6
 RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml"
 
 title "Building example: rich, HTML"
@@ -218,8 +234,8 @@ title "Building example: BIRD hooks"
 G="examples/bird_hooks/general.yml"
 C="examples/bird_hooks/clients.yml"
 HOOKS="pre_receive_from_client post_receive_from_client pre_announce_to_client post_announce_to_client scrub_communities_in scrub_communities_out apply_blackhole_filtering_policy route_can_be_announced_to announce_rpki_invalid_to_client"
-RenderExample "bird_hooks" "bird" "$G" "$C" "config.d/bogons.yml" 4 --use-hooks $HOOKS --use-local-files header
-RenderExample "bird_hooks" "bird" "$G" "$C" "config.d/bogons.yml" 6 --use-hooks $HOOKS --use-local-files header
+RenderExample "bird_hooks" "bird" "$G" "$C" "config.d/bogons.yml" 1 4 --use-hooks $HOOKS --use-local-files header
+RenderExample "bird_hooks" "bird" "$G" "$C" "config.d/bogons.yml" 1 6 --use-hooks $HOOKS --use-local-files header
 
 title "Build clients from Euro-IX files? [yes/NO] "
 read YES_NO
