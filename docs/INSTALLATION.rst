@@ -98,7 +98,7 @@ External programs
 ARouteServer uses the following external programs:
 
 - (mandatory) `bgpq3 <https://github.com/snar/bgpq3>`_ is used to gather information from IRRDBs.
-  
+
   To install it:
 
   .. code:: bash
@@ -125,7 +125,7 @@ ARouteServer uses the following external programs:
 
   More details: https://wiki.debian.org/KVM
 
-- (optional) `rtrlib <https://github.com/rtrlib>`_ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`_; ARouteServer can use these tools to load RPKI data into BIRD. More details in :ref:`ROAs sources`.
+- (optional) `rtrlib <https://github.com/rtrlib>`_ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`_; ARouteServer can use these tools to load RPKI data into BIRD 1.6.x. More details in :ref:`ROAs sources`.
 
   To install them:
 
@@ -133,15 +133,15 @@ ARouteServer uses the following external programs:
 
     curl -o rtrlib.zip -L https://github.com/rtrlib/rtrlib/archive/v0.3.6.zip
     unzip rtrlib.zip
-    
+
     cd rtrlib-0.3.6 && \
         cmake -D CMAKE_BUILD_TYPE=Release . && \
         make && \
         make install
-    
+
     curl -o bird-rtrlib-cli.zip -L https://github.com/rtrlib/bird-rtrlib-cli/archive/v0.1.1.zip
     unzip bird-rtrlib-cli.zip
-    
+
     cd bird-rtrlib-cli-0.1.1 && \
         cmake . && \
         make

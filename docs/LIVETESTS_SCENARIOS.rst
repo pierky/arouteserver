@@ -3,6 +3,7 @@
 .. toctree::
    :maxdepth: 1
 
+   LIVETESTS_SCENARIOS_bird2_rpki_rtr_example
    LIVETESTS_SCENARIOS_communities
    LIVETESTS_SCENARIOS_default
    LIVETESTS_SCENARIOS_global

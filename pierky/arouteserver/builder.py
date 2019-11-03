@@ -592,6 +592,12 @@ class ConfigBuilder(object):
             return IPNetwork(prefix).version == ip_ver
 
         def include_local_file(local_file_id):
+            # The 'rpki_rtr_config' local_file_id is always allowed
+            # to be included, because it's referenced directly in
+            # the Jinja2 template for RPKI configuration.
+            if local_file_id == "rpki_rtr_config":
+                return self._include_local_file(local_file_id)
+
             if local_file_id not in self.LOCAL_FILES_IDS:
                 raise AssertionError(
                     "Local file ID '{}' is referenced in J2 "

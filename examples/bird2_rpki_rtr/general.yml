@@ -1,0 +1,12 @@
+cfg:
+  rs_as: 999
+
+  router_id: "192.0.2.2"
+
+  filtering:
+    rpki_bgp_origin_validation:
+      enabled: True
+      reject_invalid: True
+
+  rpki_roas:
+    source: "rtr"

@@ -196,7 +196,7 @@ class ConfigParserGeneral(ConfigParserBase):
         c["rpki_roas"] = OrderedDict()
         r = c["rpki_roas"]
         r["source"] = ValidatorOption("source",
-            ("ripe-rpki-validator-cache", "rtrlib"),
+            ("ripe-rpki-validator-cache", "rtr"),
             mandatory=True,
             default="ripe-rpki-validator-cache"
         )

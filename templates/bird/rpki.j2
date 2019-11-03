@@ -4,15 +4,32 @@
 
 {% if cfg.filtering.rpki_bgp_origin_validation.enabled or
 	cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled %}
-{%	if cfg.rpki_roas.source == "rtrlib" %}
+{%   if "2.0.0"|target_version_le -%}
+{%     if cfg.rpki_roas.source == "rtr" %}
 # ROAs can be loaded using an external tool: rtrllib
 # https://github.com/rtrlib/bird-rtrlib-cli
-{%	endif %}
+{%     endif %}
 roa table RPKI {
-{%	for roa in rpki_roas %}
+{%     for roa in rpki_roas %}
 	roa {{ roa.prefix }} max {{ roa.max_len }} as {{ roa.asn }};
-{%	endfor %}
+{%     endfor %}
 };
+{%   else -%}
+roa4 table RPKI4;
+roa6 table RPKI6;
+{%     if cfg.rpki_roas.source == "rtr" %}
+{{ "rpki_rtr_config"|include_local_file -}}
+{%     else %}
+{%       for this_ip_ver in list_ip_vers %}
+protocol static {
+    roa{{ this_ip_ver }} { table RPKI{{ this_ip_ver }}; };
+{%         for roa in rpki_roas|selectattr("prefix", "is_ipver", this_ip_ver) %}
+    route {{ roa.prefix }} max {{ roa.max_len }} as {{ roa.asn }};
+{%         endfor %}
+}
+{%       endfor %}
+{%     endif %}
+{%   endif -%}
 {% else %}
 # RPKI not used.
 {% endif %}

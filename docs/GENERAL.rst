@@ -867,9 +867,19 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
   Can be one of the following options:
 
 
-  - **rtrlib**: ROAs are loaded using the external program
-    rtrllib (https://github.com/rtrlib/bird-rtrlib-cli).
-    The name of the table where send the ROAs to is **RPKI**.
+  - **rtr**: ROAs are loaded from an external RTR source.
+    rtrllib (https://github.com/rtrlib/bird-rtrlib-cli) can be
+    used for BIRD 1.6.x; in BIRD v2 there is built-in support
+    for the RTR protocol.
+    The name of the table where send the ROAs to is **RPKI** for
+    BIRD 1.6.x and **RPKI4** and **RPKI6** for BIRD v2.
+    In BIRD v2, an external file **rpki_rtr_config.local** must be
+    found within the same directory where the main configuration
+    file is stored (/etc/bird usually) and must contain the BIRD 2
+    configuration for 'protocol rpki'. An example on how to
+    setup that file can be found in the examples/bird2_rpki_rtr
+    directory (please note, in order to use the RTR protocol BIRD
+    must be compiled with --enable-libssh).
 
 
   - **ripe-rpki-validator-cache**: ROAs are loaded from a JSON
@@ -885,7 +895,7 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
   - Routinator: https://nlnetlabs.nl/projects/rpki/routinator/
 
 
-  Please note that this method is far from guaranteeing
+  Please note that the second method is far from guaranteeing
   that a cryptographically validated dataset is retrieved
   from a trusted cache, unless the URL of a local, trusted
   instance of a RPKI validator is provided below in the

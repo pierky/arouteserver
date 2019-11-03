@@ -1,0 +1,22 @@
+protocol rpki MyValidator1 {
+       roa4 { table RPKI4; };
+       roa6 { table RPKI6; };
+
+       # IP and port of the validator.
+       remote 192.0.2.1;
+       port 3323;
+
+       # More config options.
+       #refresh [keep] <num>;
+       #retry [keep] <num>;
+       #expire [keep] <num>;
+
+       transport tcp;
+
+       # SSHv2 transport options.
+       #transport ssh {
+       #        bird private key "</path/to/id_rsa>";
+       #        remote public key "</path/to/known_host>";
+       #        user "<name>";
+       #};
+}

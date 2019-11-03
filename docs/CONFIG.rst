@@ -243,7 +243,13 @@ A couple of methods can be used to acquire RPKI data (ROAs):
 
 - (BIRD and OpenBGPD) the builtin method based on `RIPE RPKI Validator format <https://rpki-validator.ripe.net>`__ export files: the URL of a local and trusted instance of RPKI Validator should be provided to ensure that a cryptographically validated datased is used. By default, the URLs of some  public instances are used.
 
-- (BIRD only) external tools from the `rtrlib <http://rpki.realmv6.org/>`_ suite: `rtrlib <https://github.com/rtrlib>`__ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`__. One or more trusted local validating caches should be used to get and validate RPKI data before pushing them to BIRD. An overview is provided on the `rtrlib GitHub wiki <https://github.com/rtrlib/rtrlib/wiki/Background>`__, where also an `usage guide <https://github.com/rtrlib/rtrlib/wiki/Usage-of-the-RTRlib>`__ can be found.
+- (BIRD only) external resources can be used to pull ROAs from using the RTR protocol:
+
+  - BIRD 1.6.x: the `rtrlib <http://rpki.realmv6.org/>`_ suite: `rtrlib <https://github.com/rtrlib>`__ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`__.
+
+  - BIRD v2: the `built-in RTR protocol <https://bird.network.cz/?get_doc&v=20&f=bird-6.html#ss6.13>`_ implementation.
+
+  One or more trusted local validating caches should be used to get and validate ROAs before pushing them to BIRD. An overview is provided on the `rtrlib GitHub wiki <https://github.com/rtrlib/rtrlib/wiki/Background>`__, where also an `usage guide <https://github.com/rtrlib/rtrlib/wiki/Usage-of-the-RTRlib>`__ can be found. For BIRD v2, an example of how to configure the RTR protocol can be found in the ``examples/bird2_rpki_rtr`` directory (`also on GitHub <https://github.com/pierky/arouteserver/tree/master/examples/bird2_rpki_rtr>`_).
 
 The configuration of ROAs source can be done within the ``rpki_roas`` section of the ``general.yml`` file.
 
