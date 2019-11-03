@@ -301,7 +301,7 @@ clients:
     ip: 1.1.1.1
 EOF
 
-./scripts/arouteserver html --cfg tests/real/arouteserver.yml --clients $TMP_CLIENTS_FILE -o tests/real/general.html
+./scripts/arouteserver html --cfg tests/real/arouteserver.yml --logging-config-file config.d/log.ini --clients $TMP_CLIENTS_FILE -o tests/real/general.html
 cp tests/real/general.html $DOCS_DIR/_static/tests_real_general.html
 cp tests/real/last $DOCS_DIR/_static/tests_real_results.last
 rm $TMP_CLIENTS_FILE

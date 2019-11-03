@@ -878,13 +878,13 @@ AS10745:
   le: 128
   length: 48
   max_length: 128
-  prefix: '2001:500:110::'
+  prefix: '2001:500:4::'
 - exact: false
   ge: 48
   le: 128
   length: 48
   max_length: 128
-  prefix: '2001:500:4::'
+  prefix: '2001:500:110::'
 
 
 registrobr_whois_db_records
