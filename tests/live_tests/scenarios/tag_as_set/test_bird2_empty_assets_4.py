@@ -18,9 +18,9 @@ from .base import TagASSetScenario_EmptyAS_SETs, \
 from .data4 import TagASSetScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, BIRD2Instance
 
-class TagASSetScenario_EmptyAS_SETs_BIRDIPv4(TagASSetScenario_EmptyAS_SETs,
-                                             TagASSetScenario_Data4,
-                                             TagASSetScenarioBIRD2):
+class TagASSetScenario_EmptyAS_SETs_BIRD2IPv4(TagASSetScenario_EmptyAS_SETs,
+                                              TagASSetScenario_Data4,
+                                              TagASSetScenarioBIRD2):
     __test__ = True
 
     RS_INSTANCE_CLASS = BIRD2Instance

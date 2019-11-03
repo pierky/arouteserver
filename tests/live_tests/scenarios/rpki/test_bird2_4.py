@@ -16,7 +16,7 @@
 from .base import RPKIINVALIDScenario2
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, BIRD2Instance
 
-class RPKIINVALIDRoutesScenario_BIRDIPv4(RPKIINVALIDScenario2):
+class RPKIINVALIDRoutesScenario_BIRD2IPv4(RPKIINVALIDScenario2):
     __test__ = True
 
     SHORT_DESCR = "Live test, BIRD v2, RPKI INVALID tagging, IPv4"

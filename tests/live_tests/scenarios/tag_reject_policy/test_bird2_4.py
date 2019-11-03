@@ -17,7 +17,7 @@ from .base import TagRejectPolicyScenarioBIRD2
 from .data4 import BasicScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, BIRD2Instance
 
-class TagRejectPolicyScenario_BIRDIPv4(BasicScenario_Data4, TagRejectPolicyScenarioBIRD2):
+class TagRejectPolicyScenario_BIRD2IPv4(BasicScenario_Data4, TagRejectPolicyScenarioBIRD2):
 
     __test__ = True
 

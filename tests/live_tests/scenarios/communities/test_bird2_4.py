@@ -17,8 +17,8 @@ from .base import BGPCommunitiesScenarioBIRD2
 from .data4 import BGPCommunitiesScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, BIRD2Instance
 
-class BGPCommunitiesScenario_BIRDIPv4(BGPCommunitiesScenario_Data4,
-                                      BGPCommunitiesScenarioBIRD2):
+class BGPCommunitiesScenario_BIRD2IPv4(BGPCommunitiesScenario_Data4,
+                                       BGPCommunitiesScenarioBIRD2):
     __test__ = True
 
     SHORT_DESCR = "Live test, BIRD v2, BGP communities, IPv4"

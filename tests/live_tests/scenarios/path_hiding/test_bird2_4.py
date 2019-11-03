@@ -19,9 +19,9 @@ from .base import PathHidingScenario_MitigationOn, \
 from .data4 import PathHidingScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, BIRD2Instance
 
-class PathHidingScenario_MitigationOn_BIRDIPv4(PathHidingScenario_Data4,
-                                               PathHidingScenario_MitigationOn,
-                                               PathHidingScenarioBIRD2):
+class PathHidingScenario_MitigationOn_BIRD2IPv4(PathHidingScenario_Data4,
+                                                PathHidingScenario_MitigationOn,
+                                                PathHidingScenarioBIRD2):
     __test__ = True
 
     RS_INSTANCE_CLASS = BIRD2Instance
@@ -29,9 +29,9 @@ class PathHidingScenario_MitigationOn_BIRDIPv4(PathHidingScenario_Data4,
 
     SHORT_DESCR = "Live test, BIRD v2, path hiding, mitigation on, IPv4"
 
-class PathHidingScenario_MitigationOff_BIRDIPv4(PathHidingScenario_Data4,
-                                                PathHidingScenario_MitigationOff,
-                                                PathHidingScenarioBIRD2):
+class PathHidingScenario_MitigationOff_BIRD2IPv4(PathHidingScenario_Data4,
+                                                 PathHidingScenario_MitigationOff,
+                                                 PathHidingScenarioBIRD2):
     __test__ = True
 
     RS_INSTANCE_CLASS = BIRD2Instance

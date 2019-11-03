@@ -17,8 +17,8 @@ from .base import BGPCommunitiesScenarioBIRD2
 from .data6 import BGPCommunitiesScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6, BIRD2Instance
 
-class BGPCommunitiesScenario_BIRDIPv6(BGPCommunitiesScenario_Data6,
-                                      BGPCommunitiesScenarioBIRD2):
+class BGPCommunitiesScenario_BIRD2IPv6(BGPCommunitiesScenario_Data6,
+                                       BGPCommunitiesScenarioBIRD2):
     __test__ = True
 
     SHORT_DESCR = "Live test, BIRD v2, BGP communities, IPv6"

@@ -17,8 +17,8 @@ from .base import DefaultConfigScenarioBIRD2
 from .data6 import DefaultConfigScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6, BIRD2Instance
 
-class DefaultConfigScenarioBIRD_IPv6(DefaultConfigScenario_Data6,
-                                     DefaultConfigScenarioBIRD2):
+class DefaultConfigScenarioBIRD2_IPv6(DefaultConfigScenario_Data6,
+                                      DefaultConfigScenarioBIRD2):
     __test__ = True
 
     SHORT_DESCR = "Live test, BIRD v2, default config, IPv6"

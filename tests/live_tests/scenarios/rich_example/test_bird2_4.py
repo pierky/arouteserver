@@ -17,8 +17,8 @@ from .base import RichConfigExampleScenarioBIRD2
 from .data4 import RichConfigExampleScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, BIRD2Instance
 
-class RichConfigExampleScenario_BIRDIPv4(RichConfigExampleScenario_Data4,
-                                         RichConfigExampleScenarioBIRD2):
+class RichConfigExampleScenario_BIRD2IPv4(RichConfigExampleScenario_Data4,
+                                          RichConfigExampleScenarioBIRD2):
     __test__ = True
 
     SHORT_DESCR = "Live test, BIRD v2, examples, rich config, IPv4"

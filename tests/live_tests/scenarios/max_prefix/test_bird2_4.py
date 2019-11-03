@@ -17,8 +17,8 @@ from .base import MaxPrefixScenarioBIRD2
 from .data4 import MaxPrefixScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, BIRD2Instance
 
-class MaxPrefixScenario_BIRDIPv4(MaxPrefixScenario_Data4,
-                                 MaxPrefixScenarioBIRD2):
+class MaxPrefixScenario_BIRD2IPv4(MaxPrefixScenario_Data4,
+                                  MaxPrefixScenarioBIRD2):
     __test__ = True
 
     SHORT_DESCR = "Live test, BIRD v2, max-prefix, IPv4"

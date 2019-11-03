@@ -17,7 +17,7 @@ from .base import GShutScenarioBIRD2
 from .data6 import GShutScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6, BIRD2Instance
 
-class GShutScenario_BIRDIPv6(GShutScenario_Data6, GShutScenarioBIRD2):
+class GShutScenario_BIRD2IPv6(GShutScenario_Data6, GShutScenarioBIRD2):
 
     __test__ = True
 

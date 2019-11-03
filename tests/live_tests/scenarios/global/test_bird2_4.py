@@ -17,7 +17,7 @@ from .base import BasicScenarioBIRD2, BasicScenario_TagRejectPolicy
 from .data4 import BasicScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, BIRD2Instance
 
-class BasicScenario_BIRDIPv4(BasicScenario_Data4, BasicScenarioBIRD2):
+class BasicScenario_BIRD2IPv4(BasicScenario_Data4, BasicScenarioBIRD2):
 
     __test__ = False
 
@@ -27,12 +27,12 @@ class BasicScenario_BIRDIPv4(BasicScenario_Data4, BasicScenarioBIRD2):
 
     ALLOWED_LOG_ERRORS = ["AS1_1: Invalid NEXT_HOP attribute in route 1.0.3.0/24"]
 
-class BasicScenario_BIRDIPv4_Reject(BasicScenario_BIRDIPv4):
+class BasicScenario_BIRD2IPv4_Reject(BasicScenario_BIRD2IPv4):
 
     __test__ = True
 
-class BasicScenario_BIRDIPv4_Tag(BasicScenario_TagRejectPolicy,
-                                 BasicScenario_BIRDIPv4):
+class BasicScenario_BIRD2IPv4_Tag(BasicScenario_TagRejectPolicy,
+                                  BasicScenario_BIRD2IPv4):
 
     __test__ = True
 
