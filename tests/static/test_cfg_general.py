@@ -236,7 +236,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
     def test_use_rpki_roas_source(self):
         """{}: rpki_roas.source"""
         self.assertEqual(self.cfg["rpki_roas"]["source"], "ripe-rpki-validator-cache")
-        self._test_option(self.cfg["rpki_roas"], "source", ("ripe-rpki-validator-cache","rtrlib"))
+        self._test_option(self.cfg["rpki_roas"], "source", ("ripe-rpki-validator-cache","rtr"))
         self._test_mandatory(self.cfg["rpki_roas"], "source", has_default=True)
 
     def use_arin_whois_db_dump_enabled(self):
@@ -1310,6 +1310,28 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.assertEqual(self.cfg.cfg["cfg"]["rpki_roas"]["source"], "ripe-rpki-validator-cache")
         self.assertEqual(self.cfg.cfg["cfg"]["rpki_roas"]["ripe_rpki_validator_url"], ["Foo"])
 
+    def test_deprecated_rpki_roas_source_rtrlib(self):
+        """{}: deprecated syntax, RPKI ROAs source: rtrlib"""
+        cfg = {
+            "cfg": {
+                "rs_as": 999,
+                "router_id": "192.0.2.2",
+                "filtering": {
+                    "irrdb": {
+                        "use_rpki_roas_as_route_objects": {
+                            "enabled": True
+                        }
+                    },
+                },
+                "rpki_roas": {
+                    "source": "rtrlib"
+                }
+            }
+        }
+        self.load_config(yaml=yaml.dump(cfg))
+        self._contains_err()
+        self.assertEqual(self.cfg.cfg["cfg"]["rpki_roas"]["source"], "rtr")
+
     def test_deprecated_rpki_roas_source(self):
         """{}: deprecated syntax, RPKI ROAs source"""
         cfg = {
@@ -1330,17 +1352,17 @@ class TestConfigParserGeneral(TestConfigParserBase):
         }
         self.load_config(yaml=yaml.dump(cfg))
         self._contains_err()
-        self.assertEqual(self.cfg.cfg["cfg"]["rpki_roas"]["source"], "rtrlib")
+        self.assertEqual(self.cfg.cfg["cfg"]["rpki_roas"]["source"], "rtr")
 
         cfg["cfg"]["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["source"] = "ripe-rpki-validator-cache"
         self.load_config(yaml=yaml.dump(cfg))
-        self._contains_err("A deprecated syntax triggered an issue with the configuration of RPKI BGP Origin Validation (filtering.rpki) and ROAs-as-route-objects (filtering.irrdb.rpki_roas_as_route_objects). The former uses rtrlib as source for ROAs, while the latter is configured to use the RIPE RPKI Validator")
+        self._contains_err("A deprecated syntax triggered an issue with the configuration of RPKI BGP Origin Validation (filtering.rpki) and ROAs-as-route-objects (filtering.irrdb.rpki_roas_as_route_objects). The former uses RTR as source for ROAs, while the latter is configured to use the RIPE RPKI Validator")
 
         del cfg["cfg"]["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["source"]
         cfg["cfg"]["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]["enabled"] = False
         self.load_config(yaml=yaml.dump(cfg))
         self._contains_err()
-        self.assertEqual(self.cfg.cfg["cfg"]["rpki_roas"]["source"], "rtrlib")
+        self.assertEqual(self.cfg.cfg["cfg"]["rpki_roas"]["source"], "rtr")
 
         cfg["cfg"]["filtering"]["rpki"]["enabled"] = False
         self.load_config(yaml=yaml.dump(cfg))

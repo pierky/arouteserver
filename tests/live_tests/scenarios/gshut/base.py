@@ -90,6 +90,8 @@ class GShutScenarioBIRD(GShutScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+    TARGET_VERSION = None
+    IP_VER = None
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -99,11 +101,17 @@ class GShutScenarioBIRD(GShutScenario):
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                     perform_graceful_shutdown=True),
+                                     perform_graceful_shutdown=True,
+                                     target_version=cls.TARGET_VERSION),
                     "/etc/bird/bird.conf"
                 )
             ]
         )
+
+class GShutScenarioBIRD2(GShutScenarioBIRD):
+    __test__ = False
+
+    TARGET_VERSION = "2.0.7"
 
 class GShutScenarioOpenBGPD(GShutScenario):
     __test__ = False

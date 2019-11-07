@@ -42,15 +42,23 @@ function origin_as_is_in_{{ client.id }}_as_set() {
 function prefix_is_in_{{ client.id }}_as_set() {
 {% if client.cfg.filtering.irrdb.as_set_bundle_ids %}
 {%	for as_set_bundle_id in client.cfg.filtering.irrdb.as_set_bundle_ids|sort %}
-{%		if irrdb_info[as_set_bundle_id].prefixes %}
-	if net ~ AS_SET_{{ irrdb_info[as_set_bundle_id].name }}_prefixes then
-		return true;
-{%		else %}
+{%    set this_ip_ver = client.ip|ipaddr_ver %}
+{%    set prefixes = irrdb_info[as_set_bundle_id].prefixes|selectattr("prefix", "is_ipver", this_ip_ver)|list %}
+{%    if prefixes %}
+{%      if "2.0"|target_version_ge %}
+    if net.type = NET_IP{{ this_ip_ver }} then
+        if net ~ AS_SET_{{ irrdb_info[as_set_bundle_id].name }}_prefixes_{{ this_ip_ver }} then
+            return true;
+{%      else %}
+    if net ~ AS_SET_{{ irrdb_info[as_set_bundle_id].name }}_prefixes_{{ this_ip_ver }} then
+        return true;
+{%      endif %}
+{%    else %}
 	# AS-SET {{ irrdb_info[as_set_bundle_id].name }} referenced but empty.
-{%		endif %}
+{%    endif %}
 {%	endfor %}
 {% endif %}
-	return false;
+    return false;
 }
 
 function next_hop_is_valid_for_{{ client.id }}()
@@ -59,12 +67,12 @@ function next_hop_is_valid_for_{{ client.id }}()
 {% if client.cfg.filtering.next_hop.policy == "strict" %}
 	if bgp_next_hop = {{ client.ip }} then return true;
 {% elif client.cfg.filtering.next_hop.policy == "authorized_addresses" %}
-{%	for addr in client.cfg.filtering.next_hop.authorized_addresses_list|sort if addr is current_ipver %}
+{%	for addr in client.cfg.filtering.next_hop.authorized_addresses_list|sort if addr|ipaddr_ver == client.ip|ipaddr_ver %}
 	if bgp_next_hop = {{ addr }} then return true;
 {%	endfor %}
 {% else %}
 {%	for asn, same_as_clients in clients|groupby("asn") if asn == client.asn %}
-{%		for same_as_client in same_as_clients|sort(attribute="ip") if same_as_client.ip is current_ipver %}
+{%		for same_as_client in same_as_clients|sort(attribute="ip") if same_as_client.ip|ipaddr_ver == client.ip|ipaddr_ver %}
 	if bgp_next_hop = {{ same_as_client.ip }} then return true;	# {{ same_as_client.id }}
 {%		endfor %}
 {%	endfor %}
@@ -77,7 +85,7 @@ function prefix_is_in_{{ client.id }}_blacklist()
 prefix set {{ client.id }}_blacklist;
 {
 	{{ client.id }}_blacklist = [
-{{ write_prefix_list(client.cfg.filtering.black_list_pref) }}
+{{ write_prefix_list(client.cfg.filtering.black_list_pref|selectattr("prefix", "is_ipver", client.ip|ipaddr_ver)) }}
 	];
 	return net ~ {{ client.id }}_blacklist;
 }
@@ -156,7 +164,7 @@ bool validated;
 
 {%	if client.cfg.filtering.irrdb.white_list_route %}
 	# Client's white list
-{%		for route in client.cfg.filtering.irrdb.white_list_route|sort(attribute="prefix") if route.prefix is current_ipver %}
+{%		for route in client.cfg.filtering.irrdb.white_list_route|selectattr("prefix", "is_ipver", client.ip|ipaddr_ver)|sort(attribute="prefix") if route.prefix|ipaddr_ver == client.ip|ipaddr_ver %}
 	if !validated && net ~ [ {{ write_prefix_list_entry(route) }} ] then {
 {%			if route.asn %}
 		if bgp_path.last_nonaggregated = {{ route.asn }} then {
@@ -191,6 +199,11 @@ bool validated;
 filter receive_from_{{ client.id }} {
 	if !(source = RTS_BGP ) then
 		{{ reject(client, 65535, '"source != RTS_BGP - REJECTING ", net') }}
+
+	{% if "2.0"|target_version_ge %}
+	if !(net.type = NET_IP{{ client.ip|ipaddr_ver }}) then
+		{{ reject(client, 65535, '"AFI not enabled for this peer - REJECTING ", net') }}
+	{% endif %}
 
 	{% if "pre_receive_from_client"|hook_is_set %}
 	if !hook_pre_receive_from_client({{ client.asn }}, {{ client.ip }}, "{{ client.id }}") then
@@ -236,7 +249,7 @@ filter receive_from_{{ client.id }} {
 	{%	endif %}
 	{% endif %}
 
-	{% if ip_ver == 6 %}
+	{% if client.ip|ipaddr_ver == 6 %}
 	# Prefix: only IPv6 Global Unicast space allowed
 	if !(net ~ [2000::/3+]) then
 		{{ reject(client, 10, '"prefix is not in IPv6 Global Unicast space - REJECTING ", net') }}
@@ -275,7 +288,7 @@ filter receive_from_{{ client.id }} {
 		{% endif %}
 
 		# Prefix: length
-		{% if ip_ver == 4 %}
+		{% if client.ip|ipaddr_ver == 4 %}
 		{% set min_pref_len = client.cfg.filtering.ipv4_pref_len.min %}
 		{% set max_pref_len = client.cfg.filtering.ipv4_pref_len.max %}
 		{% else %}
@@ -386,6 +399,18 @@ protocol bgp {{ client.id }} {
 	ttl security off;
 	{% endif -%}
 
+	{% if cfg.rfc1997_wellknown_communities.policy == "rfc1997" %}
+	interpret communities on;
+	{% else %}
+	interpret communities off;
+	{% endif %}
+
+	{% if "2.0.0"|target_version_ge %}
+	# ---------------------------------------
+	ipv{{ client.ip|ipaddr_ver }} {
+	table master{{ client.ip|ipaddr_ver }};
+	{% endif %}
+
 	{% if client.cfg.add_path %}
 	add paths tx;
 	{% endif %}
@@ -394,16 +419,10 @@ protocol bgp {{ client.id }} {
 	secondary;
 	{% endif %}
 
-	{% if cfg.rfc1997_wellknown_communities.policy == "rfc1997" %}
-	interpret communities on;
-	{% else %}
-	interpret communities off;
-	{% endif %}
-
 	{% if client.cfg.filtering.max_prefix.action %}
-	{%	if ip_ver == 4 and client.cfg.filtering.max_prefix.limit_ipv4 %}
+	{%	if client.ip|ipaddr_ver == 4 and client.cfg.filtering.max_prefix.limit_ipv4 %}
 	{%		set max_pref_limit = client.cfg.filtering.max_prefix.limit_ipv4 %}
-	{% 	elif ip_ver == 6 and client.cfg.filtering.max_prefix.limit_ipv6 %}
+	{% 	elif client.ip|ipaddr_ver == 6 and client.cfg.filtering.max_prefix.limit_ipv6 %}
 	{%      	set max_pref_limit = client.cfg.filtering.max_prefix.limit_ipv6 %}
 	{% 	else %}
 	{%		set max_pref_limit = 0 %}
@@ -413,17 +432,26 @@ protocol bgp {{ client.id }} {
 	{% 	endif %}
 	{% endif %}
 
+	{% if "2.0.0"|target_version_ge %}
+	import table on;
+	{% endif %}
+
 	import keep filtered on;
 
+	import filter receive_from_{{ client.id }};
+	export filter announce_to_{{ client.id }};
+
+	{% if "2.0.0"|target_version_ge %}
+	# ---------------------------------------
+	};
+	{% endif %}
+
 	{{ "client"|include_local_file -}}
-	{% if ip_ver == 4 %}
+	{% if client.ip|ipaddr_ver == 4 %}
 	{{ "client4"|include_local_file -}}
 	{% else %}
 	{{ "client6"|include_local_file -}}
 	{% endif %}
-
-	import filter receive_from_{{ client.id }};
-	export filter announce_to_{{ client.id }};
 }
 
 {% endfor -%}

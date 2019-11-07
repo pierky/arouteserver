@@ -2,6 +2,14 @@
 # -*- coding: utf-8 -*-
 from collections import OrderedDict
 
+BGP_SPEAKER_HEADER_ROWS = [
+    ["**BIRD**", "**BIRD v2**", "**OpenBGPD**", "**OpenBGPD**"],
+    ["",         "",            "",             "**Portable**"]
+]
+BGP_SPEAKER_IDS = [
+    "bird",      "bird2",       "openbgpd",     "openbgpd_portable"
+]
+
 features = OrderedDict()
 notes = {
     "1": ("For max-prefix filtering, only the shutdown and "
@@ -36,6 +44,7 @@ def put_table_line(lengths, char="="):
 
 add_feature("Path hiding mitigation (RFC7947, 2.3.1)", {
     "bird": True,
+    "bird2": True,
     "openbgpd": False,
     "openbgpd_portable": False,
 })
@@ -44,41 +53,49 @@ add_feature("Path hiding mitigation (RFC7947, 2.3.1)", {
 add_feature("Basic filters:")
 add_feature("NEXT_HOP enforcement - strict (RFC7948, 4.8)", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
 add_feature("NEXT_HOP enforcement - same AS (RFC7948, 4.8)", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
 add_feature("Min and max IPv4/IPv6 prefix length", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
 add_feature("Max AS_PATH length", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
 add_feature("Reject invalid AS_PATHs (private/invalid ASNs)", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
 add_feature("Reject AS_PATHs containing transit-free ASNs", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
 add_feature("Reject bogons", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
 add_feature("Max-prefix limit", {
     "bird": True,
+    "bird2": True,
     "openbgpd": {
         "value": True,
         "note": 1
@@ -93,26 +110,31 @@ add_feature("Max-prefix limit", {
 add_feature("Prefixes and origin ASNs validation:")
 add_feature("IRR-based filters (RFC7948, 4.6.2)", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
 add_feature("RPKI ROAs used as route objects", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
 add_feature("Origin AS from ARIN Whois database dump", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
 add_feature("NIC.BR Whois data (slide n. 26) from Registro.br", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
 add_feature("RPKI-based filtering (BGP Prefix Origin Validation)", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
@@ -121,16 +143,19 @@ add_feature("RPKI-based filtering (BGP Prefix Origin Validation)", {
 add_feature("Blackhole filtering support:")
 add_feature("Optional NEXT_HOP rewriting", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
 add_feature("Signalling via BLACKHOLE and custom communities)", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
 add_feature("Client-by-client control over propagation", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
@@ -139,11 +164,13 @@ add_feature("Client-by-client control over propagation", {
 add_feature("Graceful shutdown support:")
 add_feature("GRACEFUL_SHUTDOWN BGP Community", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
 add_feature("Graceful shutdown of the route server itself", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
@@ -152,11 +179,13 @@ add_feature("Graceful shutdown of the route server itself", {
 add_feature("Control and informative communities:")
 add_feature("Prefix/origin ASN in IRRDBs data", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
 add_feature("Do (not) announce to any / peer / on RTT basis", {
     "bird": True,
+    "bird2": True,
     "openbgpd": {
         "value": True,
         "note": 2
@@ -168,6 +197,7 @@ add_feature("Do (not) announce to any / peer / on RTT basis", {
 })
 add_feature("Prepend to any / peer / on RTT basis", {
     "bird": True,
+    "bird2": True,
     "openbgpd": {
         "value": True,
         "note": 2
@@ -179,6 +209,7 @@ add_feature("Prepend to any / peer / on RTT basis", {
 })
 add_feature("Add NO_EXPORT / NO_ADVERTISE to any / peer", {
     "bird": True,
+    "bird2": True,
     "openbgpd": {
         "value": True,
         "note": 2
@@ -190,6 +221,7 @@ add_feature("Add NO_EXPORT / NO_ADVERTISE to any / peer", {
 })
 add_feature("Custom informational BGP communities", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
@@ -198,21 +230,25 @@ add_feature("Custom informational BGP communities", {
 add_feature("Optional session features on a client-by-client basis:")
 add_feature("Prepend route server ASN (RFC7947, 2.2.2.1)", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
 add_feature("Active sessions", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
 add_feature("GTSM (Generalized TTL Security Mechanism)", {
     "bird": True,
+    "bird2": True,
     "openbgpd": True,
     "openbgpd_portable": True,
 })
 add_feature("ADD_PATH capability (RFC7911)", {
     "bird": True,
+    "bird2": True,
     "openbgpd": None,
     "openbgpd_portable": None,
 })
@@ -220,8 +256,8 @@ add_feature("ADD_PATH capability (RFC7911)", {
 
 
 rows = [
-    ["**Feature**", "**BIRD**", "**OpenBGPD**", "**OpenBGPD**"],
-    ["",            "",         "",             "**Portable**"]
+    ["**Feature**"] + BGP_SPEAKER_HEADER_ROWS[0],
+    [""] + BGP_SPEAKER_HEADER_ROWS[1]
 ]
 for title, data in features.items():
     if not data:
@@ -229,7 +265,7 @@ for title, data in features.items():
         continue
 
     cols = [title]
-    for speaker in ("bird", "openbgpd", "openbgpd_portable"):
+    for speaker in BGP_SPEAKER_IDS:
         if isinstance(data[speaker], dict):
             value = data[speaker]["value"]
             note = data[speaker]["note"]
@@ -257,7 +293,7 @@ for title, data in features.items():
 
     rows.append(cols)
 
-max_lenghts = [0, 0, 0, 0]
+max_lenghts = [0, 0, 0, 0, 0]
 for row in rows:
     for idx, field in enumerate(row):
         if len(field) > max_lenghts[idx]:

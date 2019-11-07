@@ -21,3 +21,7 @@ Some lists of clients built starting from Euro-IX JSON files exported by some IX
 ## `auto-config` - general.yml files generated using the `configure` command
 
 `general.yml` configurations files generated with the `configure` command.
+
+## `bird2_rpki_rtr` - BIRD v2 RTR protocol configuration
+
+An example on how to use BIRD v2 built-in RTR protocol support.
