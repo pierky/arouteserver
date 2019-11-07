@@ -307,6 +307,16 @@ class OpenBGPDCommand(ConfigRenderingCommand):
     def _get_template_sub_dir(self):
         return "openbgpd"
 
+class JunosDCommand(ConfigRenderingCommand):
+
+    COMMAND_NAME = "junos"
+    COMMAND_HELP = "Junos route server configuration for Juniper devices."
+
+    BUILDER_CLASS = OpenBGPDConfigBuilder
+
+    def _get_template_sub_dir(self):
+        return "junos"
+
 class HTMLCommand(TemplateRenderingCommands):
 
     COMMAND_NAME = "html"

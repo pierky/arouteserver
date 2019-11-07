@@ -138,7 +138,7 @@ class ConfigureCommand(ARouteServerCommand):
         )
         self.add_answer("daemon", self.ask.ask,
             "Which BGP daemon will be used?",
-            options=["bird", "openbgpd"]
+            options=["bird", "openbgpd", "junos"]
         )
 
         if self.answers["daemon"] == "openbgpd":

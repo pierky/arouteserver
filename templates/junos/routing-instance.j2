@@ -1,0 +1,23 @@
+{% for client in clients %}
+routing-instances {
+    CLIENT1_{{ client.id }} {
+        instance-type no-forwarding;
+        routing-options {
+            router-id {{ cfg.router_id }};
+            instance-import [ IPv4-ONLY IMPORT-{{ client.id }}-RIB IMPORT-ALL-RIBS ];
+        }
+        protocols {
+            bgp {
+                peer-as {{ client.asn }};
+                group CLIENT-{{ client.id }} {
+                    export EXPORT-ASPATH-PADDING-{{ client.id }}
+                    neighbor {{ client.ip }} {
+                        authentication-key Sup3rS3cr3t-{{ client.asn }};
+                        forwarding-context master;
+                    }
+                }
+            }
+        }
+    }
+}
+{% endfor %}
