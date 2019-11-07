@@ -12,23 +12,23 @@ jobs:
 
     # All the "standard" tests, run on push/PR.
     - stage: test
-      env: TOXENV=py34-syntax
-      python: "3.4"
+      env: TOXENV=py36-syntax
+      python: "3.6"
       install:
         - pip install tox
-    - env: TOXENV=py34-flake8
-      python: "3.4"
+    - env: TOXENV=py36-flake8
+      python: "3.6"
       install:
         - pip install tox
-    - env: TOXENV=py34
-      python: "3.4"
+    - env: TOXENV=py36
+      python: "3.6"
       install:
         - pip install tox
         - docker pull pierky/bird:1.6.7
         - docker pull pierky/bird:2.0.7
         - docker pull pierky/openbgpd:6.5p1
-    - env: TOXENV=py27-coverage
-      python: "2.7"
+    - env: TOXENV=py36-coverage
+      python: "3.6"
       install:
         - pip install tox
         - pip install coveralls
@@ -37,8 +37,8 @@ jobs:
 
     # External resources tests, run on push/PR and via cron job.
     - stage: test external resources
-      env: TOXENV=py34-extres
-      python: "3.4"
+      env: TOXENV=py36-extres
+      python: "3.6"
       install:
         - pip install tox
       before_script:
