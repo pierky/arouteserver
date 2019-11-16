@@ -152,6 +152,8 @@ Who is using ARouteServer?
 
 - `CATNIX <http://www.catnix.net/en/>`__, BIRD.
 
+- `DO-IX <https://www.do-ix.net/>`__, BIRD.
+
 - `IX-Denver <http://ix-denver.org/>`__, BIRD.
 
 - `MBIX <http://www.mbix.ca/>`__, BIRD.
