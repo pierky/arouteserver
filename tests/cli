@@ -193,7 +193,7 @@ SUB_TEST="$LINENO"
 build_cmd "openbgpd" --ignore-issues "blackhole_filtering_rewrite_ipv6_nh" | must_not_contain "'do_not_announce_to_peer'"
 
 SUB_TEST="$LINENO"
-build_cmd "junos" --target-version 6.1 | must_not_contain "invalid choice"
+build_cmd "junos" | must_not_contain "invalid choice"
 
 # ---------------------------------------------
 reset
