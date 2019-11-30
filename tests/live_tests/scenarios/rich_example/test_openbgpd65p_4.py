@@ -16,13 +16,13 @@
 import os
 import unittest
 
-from .base import RichConfigExampleScenarioOpenBGPD65
+from .base import RichConfigExampleScenarioOpenBGPDLatest
 from .data4 import RichConfigExampleScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD65PortableInstance
 
 class RichConfigExampleScenarioOpenBGPD_IPv4(RichConfigExampleScenario_Data4,
-                                             RichConfigExampleScenarioOpenBGPD65):
+                                             RichConfigExampleScenarioOpenBGPDLatest):
     __test__ = True
 
     SHORT_DESCR = "Live test, OpenBGPD 6.5p, examples, rich config, IPv4"

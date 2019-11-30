@@ -16,16 +16,18 @@
 import os
 import unittest
 
-from .base import GShutScenarioOpenBGPD65
+from .base import GShutScenarioOpenBGPDLatest
 from .data4 import GShutScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD65Instance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDLatestInstance
 
-class GShutScenario_OpenBGPDIPv4(GShutScenario_Data4, GShutScenarioOpenBGPD65):
+class GShutScenario_OpenBGPDIPv4(GShutScenario_Data4, GShutScenarioOpenBGPDLatest):
 
     __test__ = True
     SKIP_ON_TRAVIS = True
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.5, gshut, IPv4"
-    RS_INSTANCE_CLASS = OpenBGPD65Instance
+    SHORT_DESCR = "Live test, OpenBGPD {}, gshut, IPv4".format(
+        GShutScenarioOpenBGPDLatest.TARGET_VERSION
+    )
+    RS_INSTANCE_CLASS = OpenBGPDLatestInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4

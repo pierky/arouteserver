@@ -123,14 +123,14 @@ class RichConfigExampleScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
             ]
         )
 
-class RichConfigExampleScenarioOpenBGPD64(RichConfigExampleScenarioOpenBGPD):
-
-    __test__ = False
-
-    TARGET_VERSION = "6.4"
-
-class RichConfigExampleScenarioOpenBGPD65(RichConfigExampleScenarioOpenBGPD):
+class RichConfigExampleScenarioOpenBGPDPrevious(RichConfigExampleScenarioOpenBGPD):
 
     __test__ = False
 
     TARGET_VERSION = "6.5"
+
+class RichConfigExampleScenarioOpenBGPDLatest(RichConfigExampleScenarioOpenBGPD):
+
+    __test__ = False
+
+    TARGET_VERSION = "6.6"

@@ -16,13 +16,13 @@
 import os
 import unittest
 
-from .base import DefaultConfigScenarioOpenBGPD65
+from .base import DefaultConfigScenarioOpenBGPDLatest
 from .data4 import DefaultConfigScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD65PortableInstance
 
 class DefaultConfigScenarioOpenBGPD_IPv4(DefaultConfigScenario_Data4,
-                                         DefaultConfigScenarioOpenBGPD65):
+                                         DefaultConfigScenarioOpenBGPDLatest):
     __test__ = True
 
     SHORT_DESCR = "Live test, OpenBGPD 6.5p, default config, IPv4"

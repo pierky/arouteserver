@@ -16,12 +16,12 @@
 import os
 import unittest
 
-from .base import TagRejectPolicyScenarioOpenBGPD65
+from .base import TagRejectPolicyScenarioOpenBGPDLatest
 from .data4 import BasicScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD65PortableInstance
 
-class TagRejectPolicyScenario_OpenBGPDIPv4(BasicScenario_Data4, TagRejectPolicyScenarioOpenBGPD65):
+class TagRejectPolicyScenario_OpenBGPDIPv4(BasicScenario_Data4, TagRejectPolicyScenarioOpenBGPDLatest):
 
     __test__ = True
 

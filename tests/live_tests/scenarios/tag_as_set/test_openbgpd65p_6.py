@@ -17,14 +17,14 @@ import os
 import unittest
 
 from .base import TagASSetScenario_WithAS_SETs, \
-                  TagASSetScenarioOpenBGPD65
+                  TagASSetScenarioOpenBGPDLatest
 from .data6 import TagASSetScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD65PortableInstance
 
 class TagASSetScenario_WithAS_SETs_OpenBGPDIPv6(TagASSetScenario_WithAS_SETs,
                                                 TagASSetScenario_Data6,
-                                                TagASSetScenarioOpenBGPD65):
+                                                TagASSetScenarioOpenBGPDLatest):
     __test__ = True
 
     RS_INSTANCE_CLASS = OpenBGPD65PortableInstance

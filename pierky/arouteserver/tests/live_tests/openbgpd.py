@@ -389,6 +389,13 @@ class OpenBGPD65Instance(OpenBGPDClassicInstance):
 
     VIRSH_DOMAINNAME = "arouteserver_openbgpd65"
 
+class OpenBGPD66Instance(OpenBGPDClassicInstance):
+
+    VIRSH_DOMAINNAME = "arouteserver_openbgpd66"
+
+OpenBGPDPreviousInstance = OpenBGPD65Instance
+OpenBGPDLatestInstance = OpenBGPD66Instance
+
 class OpenBGPD65PortableInstance(OpenBGPDPortableInstance):
 
     DOCKER_IMAGE = "pierky/openbgpd:6.5p1"

@@ -261,13 +261,13 @@ class BGPCommunitiesScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
         )
 
 
-class BGPCommunitiesScenarioOpenBGPD64(BGPCommunitiesScenarioOpenBGPD):
-    __test__ = False
-
-    TARGET_VERSION = "6.4"
-
-
-class BGPCommunitiesScenarioOpenBGPD65(BGPCommunitiesScenarioOpenBGPD):
+class BGPCommunitiesScenarioOpenBGPDPrevious(BGPCommunitiesScenarioOpenBGPD):
     __test__ = False
 
     TARGET_VERSION = "6.5"
+
+
+class BGPCommunitiesScenarioOpenBGPDLatest(BGPCommunitiesScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.6"

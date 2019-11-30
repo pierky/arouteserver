@@ -34,6 +34,7 @@ from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance, \
                                                           OpenBGPD63Instance, \
                                                           OpenBGPD64Instance, \
                                                           OpenBGPD65Instance, \
+                                                          OpenBGPD66Instance, \
                                                           OpenBGPD65PortableInstance
 
 
@@ -402,6 +403,8 @@ class LiveScenario(ARouteServerTestCase):
             tag = "openbgpd64"
         elif _class is OpenBGPD65Instance:
             tag = "openbgpd65"
+        elif _class is OpenBGPD66Instance:
+            tag = "openbgpd66"
         elif _class is OpenBGPD65PortableInstance:
             tag = "openbgpd65p"
         else:

@@ -16,13 +16,13 @@
 import os
 import unittest
 
-from .base import MaxPrefixScenarioOpenBGPD65
+from .base import MaxPrefixScenarioOpenBGPDLatest
 from .data6 import MaxPrefixScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD65PortableInstance
 
 class MaxPrefixScenario_OpenBGPDIPv6(MaxPrefixScenario_Data6,
-                                     MaxPrefixScenarioOpenBGPD65):
+                                     MaxPrefixScenarioOpenBGPDLatest):
 
     __test__ = True
 

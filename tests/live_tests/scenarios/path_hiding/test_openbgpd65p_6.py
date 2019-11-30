@@ -18,14 +18,14 @@ import unittest
 
 from .base import PathHidingScenario_MitigationOn, \
                  PathHidingScenario_MitigationOff, \
-                 PathHidingScenarioOpenBGPD65
+                 PathHidingScenarioOpenBGPDLatest
 from .data6 import PathHidingScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD65PortableInstance
 
 class PathHidingScenario_MitigationOn_OpenBGPDIPv6(PathHidingScenario_Data6,
                                                    PathHidingScenario_MitigationOn,
-                                                   PathHidingScenarioOpenBGPD65):
+                                                   PathHidingScenarioOpenBGPDLatest):
     __test__ = True
 
     RS_INSTANCE_CLASS = OpenBGPD65PortableInstance
@@ -35,7 +35,7 @@ class PathHidingScenario_MitigationOn_OpenBGPDIPv6(PathHidingScenario_Data6,
 
 class PathHidingScenario_MitigationOff_OpenBGPDIPv6(PathHidingScenario_Data6,
                                                     PathHidingScenario_MitigationOff,
-                                                    PathHidingScenarioOpenBGPD65):
+                                                    PathHidingScenarioOpenBGPDLatest):
     __test__ = True
 
     RS_INSTANCE_CLASS = OpenBGPD65PortableInstance

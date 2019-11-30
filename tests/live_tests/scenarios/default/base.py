@@ -101,14 +101,14 @@ class DefaultConfigScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
             ]
         )
 
-class DefaultConfigScenarioOpenBGPD64(DefaultConfigScenarioOpenBGPD):
-
-    __test__ = False
-
-    TARGET_VERSION = "6.4"
-
-class DefaultConfigScenarioOpenBGPD65(DefaultConfigScenarioOpenBGPD):
+class DefaultConfigScenarioOpenBGPDPrevious(DefaultConfigScenarioOpenBGPD):
 
     __test__ = False
 
     TARGET_VERSION = "6.5"
+
+class DefaultConfigScenarioOpenBGPDLatest(DefaultConfigScenarioOpenBGPD):
+
+    __test__ = False
+
+    TARGET_VERSION = "6.6"

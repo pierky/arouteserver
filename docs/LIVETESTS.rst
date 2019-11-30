@@ -87,15 +87,15 @@ OpenBGPD live-tests environment
       sudo virsh pool-define-as --name vms_pool --type dir --target ~/vms
       sudo virsh pool-start vms_pool
       sudo virt-install \
-        -n arouteserver_openbgpd60 \
+        -n arouteserver_openbgpd66 \
         -r 512 \
         --vcpus=1 \
-        --os-variant=openbsd4 \
+        --os-variant=openbsd4.2 \
         --accelerate \
-        -v -c install60.iso \
+        -v -c install66.iso \
         -w bridge:br-2d2956ce4b64 \
         --graphics vnc,listen=0.0.0.0 \
-        --disk path=~/vms/arouteserver_openbgpd.qcow2,size=5,format=qcow2
+        --disk path=~/vms/arouteserver_openbgpd66.qcow2,size=5,format=qcow2
 
    Finally, add the current user to the libvirtd group to allow management of the VM:
 

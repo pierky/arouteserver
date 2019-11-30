@@ -364,11 +364,11 @@ class TagRejectPolicyScenarioBIRD2(TagRejectPolicyScenarioBIRD):
     def _get_local_file_name(cls):
         return "bird2_local_file"
 
-class TagRejectPolicyScenarioOpenBGPD64(LiveScenario_TagRejectPolicy, TagRejectPolicyScenario):
+class TagRejectPolicyScenarioOpenBGPDPrevious(LiveScenario_TagRejectPolicy, TagRejectPolicyScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
-    TARGET_VERSION = "6.4"
+    TARGET_VERSION = "6.5"
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -394,7 +394,7 @@ class TagRejectPolicyScenarioOpenBGPD64(LiveScenario_TagRejectPolicy, TagRejectP
             ]
         )
 
-class TagRejectPolicyScenarioOpenBGPD65(TagRejectPolicyScenarioOpenBGPD64, TagRejectPolicyScenario):
+class TagRejectPolicyScenarioOpenBGPDLatest(TagRejectPolicyScenarioOpenBGPDPrevious, TagRejectPolicyScenario):
     __test__ = False
 
-    TARGET_VERSION = "6.5"
+    TARGET_VERSION = "6.6"

@@ -16,12 +16,12 @@
 import os
 import unittest
 
-from .base import GShutScenarioOpenBGPD65
+from .base import GShutScenarioOpenBGPDLatest
 from .data4 import GShutScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD65PortableInstance
 
-class GShutScenario_OpenBGPDIPv4(GShutScenario_Data4, GShutScenarioOpenBGPD65):
+class GShutScenario_OpenBGPDIPv4(GShutScenario_Data4, GShutScenarioOpenBGPDLatest):
 
     __test__ = True
 
