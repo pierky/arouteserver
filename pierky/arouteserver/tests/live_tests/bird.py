@@ -31,6 +31,8 @@ class BIRDInstance(DockerInstance):
 
     DOCKER_IMAGE = "pierky/bird:1.6.7"
 
+    TAG = "bird16"
+
     def __init__(self, *args, **kwargs):
         DockerInstance.__init__(self, *args, **kwargs)
 
@@ -311,6 +313,8 @@ class BIRDInstanceIPv6(BIRDInstance):
 class BIRD2Instance(BIRDInstance):
 
     DOCKER_IMAGE = "pierky/bird:2.0.7"
+
+    TAG = "bird2"
 
     def _get_start_cmd(self):
         return "bird -c /etc/bird/bird.conf -d"

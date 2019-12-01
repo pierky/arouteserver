@@ -19,7 +19,9 @@ import unittest
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
+                                                          OpenBGPDPreviousInstance, \
+                                                          OpenBGPDLatestInstance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class PathHidingScenario(LiveScenario):
@@ -193,12 +195,12 @@ class PathHidingScenarioOpenBGPD(LiveScenario_TagRejectPolicy, PathHidingScenari
 class PathHidingScenarioOpenBGPDPrevious(PathHidingScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.5"
+    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
 
 class PathHidingScenarioOpenBGPDLatest(PathHidingScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.6"
+    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION
 
 class PathHidingScenario_MitigationOn(object):
 

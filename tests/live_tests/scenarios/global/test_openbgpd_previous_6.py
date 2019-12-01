@@ -27,7 +27,7 @@ class BasicScenario_OpenBGPDIPv6(BasicScenario_Data6, BasicScenarioOpenBGPDPrevi
     SKIP_ON_TRAVIS = True
 
     SHORT_DESCR = "Live test, OpenBGPD {}, global scenario, IPv6".format(
-        BasicScenarioOpenBGPDPrevious.TARGET_VERSION
+        OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
     )
     RS_INSTANCE_CLASS = OpenBGPDPreviousInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6

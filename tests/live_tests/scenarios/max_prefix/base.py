@@ -20,6 +20,8 @@ from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPreviousInstance, \
+                                                          OpenBGPDLatestInstance
 
 class MaxPrefixScenario(LiveScenario):
     __test__ = False
@@ -220,9 +222,9 @@ class MaxPrefixScenarioOpenBGPD(LiveScenario_TagRejectPolicy, MaxPrefixScenario)
 class MaxPrefixScenarioOpenBGPDPrevious(MaxPrefixScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.5"
+    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
 
 class MaxPrefixScenarioOpenBGPDLatest(MaxPrefixScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.6"
+    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION

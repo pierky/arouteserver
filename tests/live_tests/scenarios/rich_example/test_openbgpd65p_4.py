@@ -19,12 +19,14 @@ import unittest
 from .base import RichConfigExampleScenarioOpenBGPDLatest
 from .data4 import RichConfigExampleScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD65PortableInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPortableLatestInstance
 
 class RichConfigExampleScenarioOpenBGPD_IPv4(RichConfigExampleScenario_Data4,
                                              RichConfigExampleScenarioOpenBGPDLatest):
     __test__ = True
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.5p, examples, rich config, IPv4"
-    RS_INSTANCE_CLASS = OpenBGPD65PortableInstance
+    SHORT_DESCR = "Live test, OpenBGPD {}, examples, rich config, IPv4".format(
+        OpenBGPDPortableLatestInstance.BGP_SPEAKER_VERSION
+    )
+    RS_INSTANCE_CLASS = OpenBGPDPortableLatestInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4

@@ -32,5 +32,5 @@ class TagASSetScenario_WithAS_SETs_OpenBGPDIPv4(TagASSetScenario_WithAS_SETs,
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
 
     SHORT_DESCR = "Live test, OpenBGPD {}, tag prefix/origin in AS-SET, IPv4".format(
-        TagASSetScenarioOpenBGPDPrevious.TARGET_VERSION
+        OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
     )

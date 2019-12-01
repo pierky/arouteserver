@@ -19,12 +19,14 @@ import unittest
 from .base import TagRejectPolicyScenarioOpenBGPDLatest
 from .data6 import BasicScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD65PortableInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPortableLatestInstance
 
 class TagRejectPolicyScenario_OpenBGPDIPv4(BasicScenario_Data6, TagRejectPolicyScenarioOpenBGPDLatest):
 
     __test__ = True
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.5p, 'tag' reject policy scenario, IPv6"
-    RS_INSTANCE_CLASS = OpenBGPD65PortableInstance
+    SHORT_DESCR = "Live test, OpenBGPD {}, 'tag' reject policy scenario, IPv6".format(
+        OpenBGPDPortableLatestInstance.BGP_SPEAKER_VERSION
+    )
+    RS_INSTANCE_CLASS = OpenBGPDPortableLatestInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6

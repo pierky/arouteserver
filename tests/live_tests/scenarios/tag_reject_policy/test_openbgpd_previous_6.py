@@ -27,7 +27,7 @@ class TagRejectPolicyScenario_OpenBGPDIPv6(BasicScenario_Data6, TagRejectPolicyS
     SKIP_ON_TRAVIS = True
 
     SHORT_DESCR = "Live test, OpenBGPD {}, 'tag' reject policy scenario, IPv6".format(
-        TagRejectPolicyScenarioOpenBGPDPrevious.TARGET_VERSION
+        OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
     )
     RS_INSTANCE_CLASS = OpenBGPDPreviousInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6

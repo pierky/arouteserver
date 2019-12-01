@@ -19,12 +19,14 @@ import unittest
 from .base import BGPCommunitiesScenarioOpenBGPDLatest
 from .data6 import BGPCommunitiesScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD65PortableInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPortableLatestInstance
 
 class BGPCommunitiesScenario_OpenBGPDIPv6(BGPCommunitiesScenario_Data6,
                                           BGPCommunitiesScenarioOpenBGPDLatest):
     __test__ = True
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.5p, BGP communities, IPv6"
-    RS_INSTANCE_CLASS = OpenBGPD65PortableInstance
+    SHORT_DESCR = "Live test, OpenBGPD {}, BGP communities, IPv6".format(
+        OpenBGPDPortableLatestInstance.BGP_SPEAKER_VERSION
+    )
+    RS_INSTANCE_CLASS = OpenBGPDPortableLatestInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6

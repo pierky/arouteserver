@@ -17,6 +17,9 @@ import six
 
 from pierky.arouteserver.builder import BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
+                                                          OpenBGPDPreviousInstance, \
+                                                          OpenBGPDLatestInstance
 
 class RPKIINVALIDScenario(LiveScenario):
     __test__ = False

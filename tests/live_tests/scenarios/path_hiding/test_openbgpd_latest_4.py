@@ -33,7 +33,7 @@ class PathHidingScenario_MitigationOn_OpenBGPDIPv4(PathHidingScenario_Data4,
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
 
     SHORT_DESCR = "Live test, OpenBGPD {}, path hiding, mitigation on, IPv4".format(
-        PathHidingScenarioOpenBGPDLatest.TARGET_VERSION
+        OpenBGPDLatestInstance.BGP_SPEAKER_VERSION
     )
 
 class PathHidingScenario_MitigationOff_OpenBGPDIPv4(PathHidingScenario_Data4,
@@ -46,6 +46,6 @@ class PathHidingScenario_MitigationOff_OpenBGPDIPv4(PathHidingScenario_Data4,
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
 
     SHORT_DESCR = "Live test, OpenBGPD {}, path hiding, mitigation off, IPv4".format(
-        PathHidingScenarioOpenBGPDLatest.TARGET_VERSION
+        OpenBGPDLatestInstance.BGP_SPEAKER_VERSION
     )
 

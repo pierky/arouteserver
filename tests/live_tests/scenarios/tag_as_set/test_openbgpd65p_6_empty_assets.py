@@ -20,14 +20,16 @@ from .base import TagASSetScenario_EmptyAS_SETs, \
                   TagASSetScenarioOpenBGPDLatest
 from .data6 import TagASSetScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD65PortableInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPortableLatestInstance
 
 class TagASSetScenario_EmptyAS_SETs_OpenBGPDIPv6(TagASSetScenario_EmptyAS_SETs,
                                                  TagASSetScenario_Data6,
                                                  TagASSetScenarioOpenBGPDLatest):
     __test__ = True
 
-    RS_INSTANCE_CLASS = OpenBGPD65PortableInstance
+    RS_INSTANCE_CLASS = OpenBGPDPortableLatestInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.5p, tag prefix/origin empty AS-SET, IPv6"
+    SHORT_DESCR = "Live test, OpenBGPD {}, tag prefix/origin empty AS-SET, IPv6".format(
+        OpenBGPDPortableLatestInstance.BGP_SPEAKER_VERSION
+    )

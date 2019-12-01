@@ -27,7 +27,7 @@ class BGPCommunitiesScenario_OpenBGPDIPv4(BGPCommunitiesScenario_Data4,
     SKIP_ON_TRAVIS = True
 
     SHORT_DESCR = "Live test, OpenBGPD {}, BGP communities, IPv4".format(
-        BGPCommunitiesScenarioOpenBGPDLatest.TARGET_VERSION
+        OpenBGPDLatestInstance.BGP_SPEAKER_VERSION
     )
     RS_INSTANCE_CLASS = OpenBGPDLatestInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4

@@ -27,7 +27,7 @@ class DefaultConfigScenarioOpenBGPD_IPv4(DefaultConfigScenario_Data4,
     SKIP_ON_TRAVIS = True
 
     SHORT_DESCR = "Live test, OpenBGPD {}, default config, IPv4".format(
-        DefaultConfigScenarioOpenBGPDPrevious.TARGET_VERSION
+        OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
     )
     RS_INSTANCE_CLASS = OpenBGPDPreviousInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4

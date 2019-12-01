@@ -19,13 +19,15 @@ import unittest
 from .base import MaxPrefixScenarioOpenBGPDLatest
 from .data4 import MaxPrefixScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD65PortableInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPortableLatestInstance
 
 class MaxPrefixScenario_OpenBGPDIPv4(MaxPrefixScenario_Data4,
                                      MaxPrefixScenarioOpenBGPDLatest):
 
     __test__ = True
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.5p, max-prefix, IPv4"
-    RS_INSTANCE_CLASS = OpenBGPD65PortableInstance
+    SHORT_DESCR = "Live test, OpenBGPD {}, max-prefix, IPv4".format(
+        OpenBGPDPortableLatestInstance.BGP_SPEAKER_VERSION
+    )
+    RS_INSTANCE_CLASS = OpenBGPDPortableLatestInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4

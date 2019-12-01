@@ -27,7 +27,7 @@ class GShutScenario_OpenBGPDIPv6(GShutScenario_Data6, GShutScenarioOpenBGPDLates
     SKIP_ON_TRAVIS = True
 
     SHORT_DESCR = "Live test, OpenBGPD {}, gshut, IPv6".format(
-        GShutScenarioOpenBGPDLatest.TARGET_VERSION
+        OpenBGPDLatestInstance.BGP_SPEAKER_VERSION
     )
     RS_INSTANCE_CLASS = OpenBGPDLatestInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6

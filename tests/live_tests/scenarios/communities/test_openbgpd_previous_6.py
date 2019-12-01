@@ -27,7 +27,7 @@ class BGPCommunitiesScenario_OpenBGPDIPv6(BGPCommunitiesScenario_Data6,
     SKIP_ON_TRAVIS = True
 
     SHORT_DESCR = "Live test, OpenBGPD {}, BGP communities, IPv6".format(
-        BGPCommunitiesScenarioOpenBGPDPrevious.TARGET_VERSION
+        OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
     )
     RS_INSTANCE_CLASS = OpenBGPDPreviousInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6

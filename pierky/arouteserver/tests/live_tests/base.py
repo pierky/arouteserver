@@ -386,29 +386,10 @@ class LiveScenario(ARouteServerTestCase):
         else:
             _class = instance_or_class
 
-        if _class is BIRDInstanceIPv4 or \
-            _class is BIRDInstanceIPv6:
-            tag = "bird16"
-        elif _class is BIRD2Instance:
-            tag = "bird2"
-        elif _class is OpenBGPD60Instance:
-            tag = "openbgpd60"
-        elif _class is OpenBGPD61Instance:
-            tag = "openbgpd61"
-        elif _class is OpenBGPD62Instance:
-            tag = "openbgpd62"
-        elif _class is OpenBGPD63Instance:
-            tag = "openbgpd63"
-        elif _class is OpenBGPD64Instance:
-            tag = "openbgpd64"
-        elif _class is OpenBGPD65Instance:
-            tag = "openbgpd65"
-        elif _class is OpenBGPD66Instance:
-            tag = "openbgpd66"
-        elif _class is OpenBGPD65PortableInstance:
-            tag = "openbgpd65p"
-        else:
-            msg = "Unknown instance type: "
+        try:
+            tag = _class.TAG
+        except:
+            msg = "'TAG' missing for instance of type "
             if isinstance(instance_or_class, BGPSpeakerInstance):
                 msg += instance_or_class.name
             else:

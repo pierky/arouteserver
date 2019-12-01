@@ -17,6 +17,9 @@ from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
+                                                          OpenBGPDPreviousInstance, \
+                                                          OpenBGPDLatestInstance
 
 class RichConfigExampleScenario(LiveScenario):
     __test__ = False
@@ -127,10 +130,10 @@ class RichConfigExampleScenarioOpenBGPDPrevious(RichConfigExampleScenarioOpenBGP
 
     __test__ = False
 
-    TARGET_VERSION = "6.5"
+    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
 
 class RichConfigExampleScenarioOpenBGPDLatest(RichConfigExampleScenarioOpenBGPD):
 
     __test__ = False
 
-    TARGET_VERSION = "6.6"
+    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION

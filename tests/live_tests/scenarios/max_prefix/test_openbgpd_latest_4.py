@@ -29,7 +29,7 @@ class MaxPrefixScenario_OpenBGPDIPv4(MaxPrefixScenario_Data4,
     SKIP_ON_TRAVIS = True
 
     SHORT_DESCR = "Live test, OpenBGPD {}, max-prefix, IPv4".format(
-        MaxPrefixScenarioOpenBGPDLatest.TARGET_VERSION
+        OpenBGPDLatestInstance.BGP_SPEAKER_VERSION
     )
     RS_INSTANCE_CLASS = OpenBGPDLatestInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4

@@ -21,25 +21,29 @@ from .base import PathHidingScenario_MitigationOn, \
                  PathHidingScenarioOpenBGPDLatest
 from .data6 import PathHidingScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD65PortableInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPortableLatestInstance
 
 class PathHidingScenario_MitigationOn_OpenBGPDIPv6(PathHidingScenario_Data6,
                                                    PathHidingScenario_MitigationOn,
                                                    PathHidingScenarioOpenBGPDLatest):
     __test__ = True
 
-    RS_INSTANCE_CLASS = OpenBGPD65PortableInstance
+    RS_INSTANCE_CLASS = OpenBGPDPortableLatestInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.5p, path hiding, mitigation on, IPv6"
+    SHORT_DESCR = "Live test, OpenBGPD {}, path hiding, mitigation on, IPv6".format(
+        OpenBGPDPortableLatestInstance.BGP_SPEAKER_VERSION
+    )
 
 class PathHidingScenario_MitigationOff_OpenBGPDIPv6(PathHidingScenario_Data6,
                                                     PathHidingScenario_MitigationOff,
                                                     PathHidingScenarioOpenBGPDLatest):
     __test__ = True
 
-    RS_INSTANCE_CLASS = OpenBGPD65PortableInstance
+    RS_INSTANCE_CLASS = OpenBGPDPortableLatestInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.5p, path hiding, mitigation off, IPv6"
+    SHORT_DESCR = "Live test, OpenBGPD {}, path hiding, mitigation off, IPv6".format(
+        OpenBGPDPortableLatestInstance.BGP_SPEAKER_VERSION
+    )
 
