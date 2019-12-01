@@ -25,17 +25,6 @@ from pierky.arouteserver.ipaddresses import IPAddress, IPNetwork
 from pierky.arouteserver.tests.base import ARouteServerTestCase
 from pierky.arouteserver.tests.mocked_env import MockedEnv
 from pierky.arouteserver.tests.live_tests.instances import BGPSpeakerInstance
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, \
-                                                      BIRDInstanceIPv6, \
-                                                      BIRD2Instance
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance, \
-                                                          OpenBGPD61Instance, \
-                                                          OpenBGPD62Instance, \
-                                                          OpenBGPD63Instance, \
-                                                          OpenBGPD64Instance, \
-                                                          OpenBGPD65Instance, \
-                                                          OpenBGPD66Instance, \
-                                                          OpenBGPD65PortableInstance
 
 
 class LiveScenario(ARouteServerTestCase):
