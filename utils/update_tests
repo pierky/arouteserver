@@ -20,7 +20,7 @@ ROOT="`pwd`"
 TESTS_DIR="tests"
 LAST_RESULTS_DIR="$TESTS_DIR/last_results"
 
-ALL_BGPSPEAKERS="bird1 bird2 openbgpd_p openbgpd_previous openbgpd_latest"
+ALL_BGPSPEAKERS="bird1 bird2 openbgpd_portable openbgpd_previous openbgpd_latest"
 BGPSPEAKERS="$ALL_BGPSPEAKERS"
 LIVE_TEST_IDS="`find $TESTS_DIR/live_tests/scenarios/* -maxdepth 0 -type d | cut -d '/' -f 4`"
 
