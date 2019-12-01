@@ -42,9 +42,57 @@ class OpenBGPDRoute(Route):
             return []
 
         res = []
-        for bgp_comm in communities.split(", "):
-            parts = bgp_comm.split(" ")
-            res.append("{}:{}".format(parts[0], parts[1]))
+
+        # If ', ' is found in the value of 'communities', it
+        # means we're processing a pre 6.6 output format.
+        if ", " in communities:
+            for bgp_comm in communities.split(", "):
+                parts = bgp_comm.split(" ")
+                res.append("{}:{}".format(parts[0], parts[1]))
+
+            return res
+
+        # If ', ' is not found, it's either a post 6.6 format
+        # where different communities are separated just by a
+        # space, or it's just one single community:
+        # soo 65535:65281
+        # rt 64537:10
+        # rt 64537:10 rt 64538:20
+
+        next_field_should_be = "rt_soo"
+        rt_soo = ""
+        comm = ""
+
+        for part in communities.split(" "):
+            if next_field_should_be == "rt_soo":
+                if part not in ("rt", "soo"):
+                    raise ValueError(
+                        "Error while processing the extended communities "
+                        "string '{}': expected 'rt' or 'soo', but '{}' "
+                        "found.".format(communities, part)
+                    )
+                rt_soo = part
+                next_field_should_be = "comm"
+            elif next_field_should_be == "comm":
+                if ":" not in part:
+                    raise ValueError(
+                        "Error while processing the extended communities "
+                        "string '{}': ':' not found in the community '{}' "
+                        "part.".format(communities, part)
+                    )
+                comm = part
+
+                res.append("{}:{}".format(rt_soo, comm))
+
+                next_field_should_be = "rt_soo"
+
+        if next_field_should_be != "rt_soo":
+            raise ValueError(
+                "Error while processing the extended communities "
+                "string '{}': one part of the string remained "
+                "unprocessed.".format(communities)
+            )
+
         return res
 
 class OpenBGPDInstance(object):
