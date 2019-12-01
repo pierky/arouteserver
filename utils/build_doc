@@ -88,7 +88,7 @@ function RenderExample() {
 			$CMD --target-version 2.0.7 -o examples/$DST/bird_v2.conf $@
 		fi
 	elif [ "$COMMAND" == "openbgpd" ]; then
-		$CMD -o examples/$DST/openbgpd.conf --ignore-issues \* --target-version 6.4
+		$CMD -o examples/$DST/openbgpd.conf --ignore-issues \* --target-version 6.5
 	elif [ "$COMMAND" == "html" ]; then
 		$CMD -o examples/$DST/description.html
 		cp examples/$DST/description.html $DOCS_DIR/_static/examples_$DST.html
@@ -174,8 +174,8 @@ RenderConfigureExample "bird" $G \
 
 G="openbgpd64-general.yml"
 RenderConfigureExample "openbgpd" $G \
-	"daemon=openbgpd version=6.4 asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" &>/dev/null
-./scripts/arouteserver openbgpd $OPTS --target-version 6.4 --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
+	"daemon=openbgpd version=6.5 asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" &>/dev/null
+./scripts/arouteserver openbgpd $OPTS --target-version 6.5 --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
 
 echo "The textual description (HTML) generated on the basis of the *general.yml* files produced by this command is also reported here." >> $D
 
@@ -301,7 +301,7 @@ clients:
     ip: 1.1.1.1
 EOF
 
-./scripts/arouteserver html --cfg tests/real/arouteserver.yml --logging-config-file config.d/log.ini --clients $TMP_CLIENTS_FILE -o tests/real/general.html
+./scripts/arouteserver html --cfg $CFG_FILE --logging-config-file config.d/log.ini --clients $TMP_CLIENTS_FILE --general tests/real/general.yml -o tests/real/general.html
 cp tests/real/general.html $DOCS_DIR/_static/tests_real_general.html
 cp tests/real/last $DOCS_DIR/_static/tests_real_results.last
 rm $TMP_CLIENTS_FILE
