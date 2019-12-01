@@ -24,9 +24,9 @@ jobs:
       python: "3.6"
       install:
         - pip install tox
-        - docker pull pierky/bird:1.6.7
+        - docker pull pierky/bird:1.6.8
         - docker pull pierky/bird:2.0.7
-        - docker pull pierky/openbgpd:6.5p1
+        - docker pull pierky/openbgpd:6.6p0
     - env: TOXENV=py36-coverage
       python: "3.6"
       install:
