@@ -1,0 +1,187 @@
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: setting instances up...
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: instances setup ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: sessions are up ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 prefix ko origin ko ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 prefix ko origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok origin ko ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 route filtered (origin ko) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 prefix ko origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 prefix ok origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 route filtered (prefix ko, origin ko) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 route filtered (prefix ko, origin ko) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 route filtered (prefix ko) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 prefix ok origin ko ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 prefix ok origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (exact) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 route white list, reject (more spec) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (more spec) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 route white list, reject (origin KO) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (origin any) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS6 ARIN Whois DB: ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: reconfigure ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: log contains errors ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: dumping rs config...
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: dumping routes...
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: stopping instances...
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: setting instances up...
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: instances setup ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: sessions are up ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 prefix ko origin ko ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 prefix ko origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok origin ko ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 route filtered (origin ko) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 prefix ko origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 prefix ok origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 route filtered (prefix ko, origin ko) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (prefix ko, origin ko) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (prefix ko) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ko ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (exact) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 route white list, reject (more spec) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (more spec) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 route white list, reject (origin KO) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (origin any) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS6 ARIN Whois DB: ok ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: reconfigure ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: log contains errors ... ok
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: dumping rs config...
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: dumping routes...
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: stopping instances...
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: setting instances up...
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: instances setup ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: sessions are up ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 no enforcement, prefix and origin not in AS-SET ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 origin enforcement ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 prefix enforcement ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (exact) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (more spec) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (more spec) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (origin KO) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (origin any) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS6 prefix ok, origin ok, ROA + ARIN: rejected ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforced (rejected) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: reconfigure ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: log contains errors ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: dumping rs config...
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: dumping routes...
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: stopping instances...
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: setting instances up...
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: instances setup ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: sessions are up ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 no enforcement, prefix and origin not in AS-SET ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 origin enforcement ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 prefix enforcement ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (exact) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (more spec) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (more spec) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (origin KO) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (origin any) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ko, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ok, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: ko ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS6 prefix ok, origin ok, ROA + ARIN: rejected ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforced (rejected) ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: reconfigure ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: log contains errors ... ok
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: dumping rs config...
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: dumping routes...
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: stopping instances...
+
+----------------------------------------------------------------------
+Ran 166 tests in 146.724s
+
+OK

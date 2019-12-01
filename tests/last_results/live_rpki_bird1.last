@@ -1,0 +1,41 @@
+Live test, BIRD, RPKI INVALID tagging, IPv4: setting instances up...
+Live test, BIRD, RPKI INVALID tagging, IPv4: instances setup ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv4: sessions are up ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS2 invalid prefix, bad ASN ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS2 invalid prefix, bad length ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS2 unknown prefix ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS2 valid prefix, exact match ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS2 valid prefix, sub prefix ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS3 invalid prefix, bad ASN ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS3 invalid prefix, bad length ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS3 unknown prefix ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS3 valid prefix, exact match ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS3 valid prefix, sub prefix ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv4: reconfigure ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv4: log contains errors ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv4: dumping rs config...
+Live test, BIRD, RPKI INVALID tagging, IPv4: dumping routes...
+Live test, BIRD, RPKI INVALID tagging, IPv4: stopping instances...
+Live test, BIRD, RPKI INVALID tagging, IPv6: setting instances up...
+Live test, BIRD, RPKI INVALID tagging, IPv6: instances setup ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv6: sessions are up ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS2 invalid prefix, bad ASN ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS2 invalid prefix, bad length ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS2 unknown prefix ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS2 valid prefix, exact match ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS2 valid prefix, sub prefix ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS3 invalid prefix, bad ASN ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS3 invalid prefix, bad length ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS3 unknown prefix ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS3 valid prefix, exact match ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS3 valid prefix, sub prefix ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv6: reconfigure ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv6: log contains errors ... ok
+Live test, BIRD, RPKI INVALID tagging, IPv6: dumping rs config...
+Live test, BIRD, RPKI INVALID tagging, IPv6: dumping routes...
+Live test, BIRD, RPKI INVALID tagging, IPv6: stopping instances...
+
+----------------------------------------------------------------------
+Ran 28 tests in 69.274s
+
+OK

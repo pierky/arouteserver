@@ -327,7 +327,7 @@ class OpenBGPDClassicInstance(OpenBGPDInstance, KVMInstance):
 
         self.run_cmd("/etc/rc.d/bgpd stop")
         time.sleep(5)
-        self.run_cmd("ndp -c")
+        self.run_cmd("ndp -c | true")
         self.run_cmd("bgpd -dn")
         self.run_cmd("/etc/rc.d/bgpd -f start")
         time.sleep(5)
@@ -346,7 +346,7 @@ class OpenBGPDClassicInstance(OpenBGPDInstance, KVMInstance):
 
         self.run_cmd("bgpd -dn")
         self.run_cmd("/etc/rc.d/bgpd reload")
-        self.run_cmd("ndp -c")
+        self.run_cmd("ndp -c | true")
         time.sleep(5)
 
         return True

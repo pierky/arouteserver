@@ -1,0 +1,195 @@
+ASNs config parser: invalid AS ... ok
+ASNs config parser: invalid AS-SET ... ok
+ASNs config parser: valid AS-SET ... ok
+ASNs config parser: valid configuration ... ok
+Bogons config parser: invalid IPv4 prefix ID ... ok
+Bogons config parser: invalid IPv6 prefix ID ... ok
+Bogons config parser: invalid IPv4 prefix len ... ok
+Bogons config parser: invalid IPv6 prefix len ... ok
+Bogons config parser: missing statement ... ok
+Bogons config parser: unknown statement ... ok
+Bogons config parser: valid configuration ... ok
+Clients config parser: AS number ... ok
+Clients config parser: inherit from general cfg - blackhole filtering ... ok
+Clients config parser: custom BGP communities ... ok
+Clients config parser: duplicate IP addresses ... ok
+Clients config parser: global only option ... ok
+Clients config parser: inherit from general cfg ... ok
+Clients config parser: IP address ... ok
+Clients config parser: clients with multiple IP addresses ... ok
+Clients config parser: next_hop.policy authorized_addresses, empty list ... ok
+Clients config parser: next_hop.policy authorized_addresses, invalid list ... ok
+Clients config parser: next_hop.policy authorized_addresses, invalid IP addr ... ok
+Clients config parser: next_hop.policy authorized_addresses, ok ... ok
+Clients config parser: next_hop.policy and next_hop_policy ... ok
+Clients config parser: next_hop.policy != authorized_addresses, list given ... ok
+Clients config parser: unknown statement ... ok
+Clients config parser: valid configuration ... ok
+General config parser: add_path ... ok
+General config parser: allow_longer_prefixes ... ok
+General config parser: blackhole_filtering, announce_to_client ... ok
+General config parser: blackhole_filtering, rewrite_next_hop, ipv4 ... ok
+General config parser: blackhole_filtering, rewrite_next_hop, ipv6 ... ok
+General config parser: blackhole_filtering, policy_ipv4 ... ok
+General config parser: blackhole_filtering, policy_ipv6 ... ok
+General config parser: extended BGP communities ... ok
+General config parser: large BGP communities ... ok
+General config parser: standard BGP communities ... ok
+General config parser: custom communities: invalid ... ok
+General config parser: custom communities: reserved name ... ok
+General config parser: custom communities: valid ... ok
+General config parser: minimal config ... ok
+General config parser: deprecated syntax, RPKI ROAs cache - multiple URLs ... ok
+General config parser: deprecated syntax, RPKI ROAs source ... ok
+General config parser: deprecated syntax, RPKI ROAs source: rtrlib ... ok
+General config parser: deprecated syntax, RPKI Origin Validation ... ok
+General config parser: distributed config ... ok
+General config parser: duplicate communities ... ok
+General config parser: dyn_val macro usage in communities ... ok
+General config parser: enforce_origin_in_as_set ... ok
+General config parser: enforce_prefix_in_as_set ... ok
+General config parser: environment variables: ok (bad escape) ... ok
+General config parser: environment variables: corrupted ... ok
+General config parser: environment variables: ok ... ok
+General config parser: environment variables: ok ... ok
+General config parser: global_black_list_pref ... ok
+General config parser: graceful shutdown ... ok
+General config parser: gtsm ... ok
+General config parser: ipv4_pref_len ... ok
+General config parser: ipv6_pref_len ... ok
+General config parser: communities that need dyn_val macro ... ok
+General config parser: communities that need peer_as macro ... ok
+General config parser: max_as_path_len ... ok
+General config parser: max_prefix action ... ok
+General config parser: max_prefix general_limit_ipv4 ... ok
+General config parser: max_prefix general_limit_ipv6 ... ok
+General config parser: max_prefix PeeringDB ... ok
+General config parser: max_prefix PeeringDB (pre v0.13.0 format) ... ok
+General config parser: next_hop.policy ... ok
+General config parser: next_hop_policy (pre v0.6.0 format) ... ok
+General config parser: overlapping communities, inbound/custom ... ok
+General config parser: overlapping communities, inbound/inbound ... ok
+General config parser: overlapping communities, inbound/inbound (dyn_val) ... ok
+General config parser: overlapping communities, internal ... ok
+General config parser: overlapping communities, outbound/inbound ... ok
+General config parser: overlapping communities, outbound/inbound (dyn_val) ... ok
+General config parser: passive ... ok
+General config parser: path_hiding ... ok
+General config parser: peer_as macro usage in communities ... ok
+General config parser: prepend_rs_as ... ok
+General config parser: reject_cause can be set only with 'tag' reject_policy ... ok
+General config parser: reject_invalid_as_in_as_path ... ok
+General config parser: reject_policy ... ok
+General config parser: rejected_route_announced_by can be set only with 'tag' reject_policy ... ok
+General config parser: RFC1997 well-known communities ... ok
+General config parser: router_id ... ok
+General config parser: rpki_bgp_origin_validation, enabled ... ok
+General config parser: rpki_bgp_origin_validation, reject_invalid ... ok
+General config parser: rs_as ... ok
+General config parser: RTT-based communities without RTT thresholds ... ok
+General config parser: RTT thresholds, empty ... ok
+General config parser: RTT thresholds as list of int ... ok
+General config parser: RTT thresholds, invalid values ... ok
+General config parser: RTT thresholds, out of order ... ok
+General config parser: RTT thresholds as comma separated string ... ok
+General config parser: tag_as_set ... ok
+General config parser: transit free, action ... ok
+General config parser: transit free, ASNs list ... ok
+General config parser: unknown statement ... ok
+General config parser: use_rpki_roas_as_route_objects.enabled ... ok
+General config parser: rpki_roas.source ... ok
+General config parser: valid configuration ... ok
+YAML !include: general config, 1 !include statement ... ok
+YAML !include: general config, 2 !include statements ... ok
+YAML !include: general config, 3 !include statements, 2 levels ... ok
+Prefix list parser: bad 'le' and 'ge' ... ok
+Prefix list parser: bad prefix list entries ... ok
+Prefix list parser: valid prefix list entries ... ok
+Program config: load distributed configuration file ... ok
+Program config: load from temporary directory ... ok
+Program config: setup ... ok
+Program config: setup, then setup again ... ok
+Program config: setup, then change a template file ... ok
+Program config: setup, change a template file then fix it ... ok
+Program config: setup, then remove templates ... ok
+Program config: setup, remove templates then fix it ... ok
+Clients from Euro-IX: IXP-Manager workaround ... ok
+Clients from Euro-IX: official basic example ... ok
+Clients from Euro-IX: official more complex example ... ok
+Clients from Euro-IX: --routeserver-only filter ... ok
+Configure command: 32 bit route server ASN ... ok
+Configure command: BIRD, simple ... ok
+Configure command: OpenBGPD 6.0, simple ... ok
+Configure command: OpenBGPD 6.1, simple ... ok
+Configure command: OpenBGPD 6.2, simple ... ok
+Configure command: OpenBGPD 6.4, simple ... ok
+Configure command: OpenBGPD 6.5, simple ... ok
+IX-F Member Export from clients command: simple ... ok
+IX-F Member Export from clients command: with description ... ok
+IX-F Member Export from clients command: with AS-SET ... ok
+IX-F Member Export from clients command: with 2 AS-SETs ... ok
+IX-F Member Export from clients command: AS-SET from asns ... ok
+IX-F Member Export from clients command: more than one IP ... ok
+IX-F Member Export from clients command: ams-ix.yml ... ok
+IX-F Member Export from clients command: bcix.yml ... ok
+IX-F Member Export from clients command: gr_ix.yml ... ok
+IX-F Member Export from clients command: inex.yml ... ok
+IX-F Member Export from clients command: lonap.yml ... ok
+IX-F Member Export from clients command: six.yml ... ok
+IX-F Member Export from clients command: sthix.yml ... ok
+IX-F Member Export from clients command: swissix.yml ... ok
+Show config command: distributed config ... ok
+Show config command: empty config ... ok
+Copyright: is current year ... ok
+IRRDB enricher: autnum + 2 AS-SETs ... ok
+IRRDB enricher: autnum + AS-SET ... ok
+IRRDB enricher: autnum + AS-SET + ASN white list ... ok
+IRRDB enricher: autnum + AS-SET + prefix white list ... ok
+IRRDB enricher: autnum + AS-SET + prefix/ASN white list ... ok
+IRRDB enricher: autnum + AS-SET + prefix/ASN white list + empty AS-SET ... ok
+IRRDB enricher: autnum only ... ok
+IRRDB enricher: IPv4 white list for IPv6 configs ... ok
+IRRDB enricher: empty autnum + empty AS-SET ... ok
+Max-prefix from PeeringDB: increment ... ok
+IRRDB info: base, AS_SET bundle info (1) ... ok
+IRRDB info: base, AS_SET bundle info (3) ... ok
+IRRDB info: base, AS_SET bundle info (4) ... ok
+IRRDB info: base, AS_SET bundle info (5 with RIPE::) ... ok
+IRRDB info: base, AS_SET bundle info (5 with RIPE:: and ARIN::) ... ok
+IRRDB info: base, AS_SET bundle info (5 with ARIN:: and RIPE::) ... ok
+IRRDB info: base, AS_SET bundle info (2 with RIPE:: and ARIN::) ... ok
+IRRDB info: base, AS_SET names longer than 64 characters ... ok
+IRRDB info: base, simple ... ok
+IRRDB info: base, no external data available ... ok
+IRRDB info: base, cache expired ... ok
+IRRDB info: base, corrupted cache file ... ok
+IRRDB info: ASNs, simple ... ok
+IRRDB info: ASNs, from cache ... ok
+IRRDB info: ASNs, cache expired ... ok
+IRRDB info: RSets, simple ... ok
+IRRDB info: RSets, from cache ... ok
+IRRDB info: RSets, cache expired ... ok
+PeeringDB network: get data ... ok
+PeeringDB network: missing data ... ok
+PeeringDB: AS-SETs parsing ... ok
+RPKI ROAs: RIPE Validator TAs ... ok
+RPKI ROAs: NTT TAs ... ok
+RPKI ROAs: different formats ... ok
+RTT getter parser: 0 ... ok
+RTT getter parser: 0.1 ... ok
+RTT getter parser: 1 ... ok
+RTT getter parser: 123.456 ... ok
+RTT getter parser: 123.456.789 ... ok
+RTT getter parser: 123,456 ... ok
+RTT getter parser: 1.0 ... ok
+RTT getter parser: None ... ok
+RTT getter parser: None\n1 ... ok
+RTT getter parser: blanks only ... ok
+RTT getter parser: empty ... ok
+RTT getter parser: new line only ... ok
+RTT getter parser: none ... ok
+
+----------------------------------------------------------------------
+Ran 190 tests in 95.173s
+
+OK
