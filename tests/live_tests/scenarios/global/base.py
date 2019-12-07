@@ -20,7 +20,9 @@ from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.ipaddresses import IPNetwork
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
+                                                          OpenBGPDPreviousInstance, \
+                                                          OpenBGPDLatestInstance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class BasicScenario(LiveScenario):
@@ -1048,24 +1050,56 @@ class BasicScenarioBIRD(BasicScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+    TARGET_VERSION = None
+    IP_VER = None
+
+    @classmethod
+    def _get_local_file_name(cls):
+        return "bird_local_file"
+
+    @classmethod
+    def _get_local_file(cls):
+        local_filename = cls._get_local_file_name()
+
+        res = []
+        for ip_ver in (4, 6):
+            if ip_ver == cls.IP_VER or cls.IP_VER is None:
+                res.append(
+                    (
+                        cls.use_static_file("{}.local{}".format(local_filename, ip_ver)),
+                        "/etc/bird/footer{}.local".format(ip_ver)
+                    )
+                )
+        return res
 
     @classmethod
     def _setup_rs_instance(cls):
+        if cls.IP_VER is None:
+            ip_vers = [4, 6]
+        else:
+            ip_vers = [cls.IP_VER]
+
         return cls.RS_INSTANCE_CLASS(
             "rs",
             cls.DATA["rs_IPAddress"],
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                        local_files=["footer{}".format(cls.IP_VER)]),
+                                     target_version=cls.TARGET_VERSION,
+                                     local_files=["footer{}".format(ip_ver) for ip_ver in ip_vers]),
                     "/etc/bird/bird.conf"
-                ),
-                (
-                    cls.use_static_file("bird_local_file.local{}".format(cls.IP_VER)),
-                    "/etc/bird/footer{}.local".format(cls.IP_VER)
                 )
-            ],
+            ] + cls._get_local_file(),
         )
+
+class BasicScenarioBIRD2(BasicScenarioBIRD):
+    __test__ = False
+
+    TARGET_VERSION = "2.0.7"
+
+    @classmethod
+    def _get_local_file_name(cls):
+        return "bird2_local_file"
 
 class BasicScenarioOpenBGPD(BasicScenario_TagRejectPolicy, BasicScenario):
     __test__ = False
@@ -1097,12 +1131,12 @@ class BasicScenarioOpenBGPD(BasicScenario_TagRejectPolicy, BasicScenario):
             ]
         )
 
-class BasicScenarioOpenBGPD64(BasicScenarioOpenBGPD):
+class BasicScenarioOpenBGPDPrevious(BasicScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.4"
+    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
 
-class BasicScenarioOpenBGPD65(BasicScenarioOpenBGPD):
+class BasicScenarioOpenBGPDLatest(BasicScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.5"
+    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION

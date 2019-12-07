@@ -17,6 +17,8 @@ from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPreviousInstance, \
+                                                          OpenBGPDLatestInstance
 
 class DefaultConfigScenario(LiveScenario):
     __test__ = False
@@ -56,6 +58,8 @@ class DefaultConfigScenarioBIRD(DefaultConfigScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+    TARGET_VERSION = None
+    IP_VER = None
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -64,11 +68,18 @@ class DefaultConfigScenarioBIRD(DefaultConfigScenario):
             cls.DATA["rs_IPAddress"],
             [
                 (
-                    cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER),
+                    cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
+                                     target_version=cls.TARGET_VERSION),
                     "/etc/bird/bird.conf"
                 )
             ]
         )
+
+class DefaultConfigScenarioBIRD2(DefaultConfigScenarioBIRD):
+
+    __test__ = False
+
+    TARGET_VERSION = "2.0.7"
 
 class DefaultConfigScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
                                     DefaultConfigScenario):
@@ -92,14 +103,14 @@ class DefaultConfigScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
             ]
         )
 
-class DefaultConfigScenarioOpenBGPD64(DefaultConfigScenarioOpenBGPD):
+class DefaultConfigScenarioOpenBGPDPrevious(DefaultConfigScenarioOpenBGPD):
 
     __test__ = False
 
-    TARGET_VERSION = "6.4"
+    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
 
-class DefaultConfigScenarioOpenBGPD65(DefaultConfigScenarioOpenBGPD):
+class DefaultConfigScenarioOpenBGPDLatest(DefaultConfigScenarioOpenBGPD):
 
     __test__ = False
 
-    TARGET_VERSION = "6.5"
+    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION

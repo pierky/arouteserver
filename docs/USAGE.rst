@@ -17,6 +17,12 @@ To build the configuration for OpenBGPD, the ``bird`` sub-command must be replac
 
 The ``--target-version`` argument can be used to set the version of the target BGP daemon for which the configuration is generated: this allows to enable features that are supported only by more recent versions of BGP speakers and that, otherwise, would produce an error.
 
+To build configuration for BIRD v2, ``--target-version`` must be used and set to 2.0.7 or higher; in that case, since BIRD v2 is able to process dual-stack configurations using a single process, the ``--ip-ver`` argument can be omitted, so that a single file that contains both IPv4 and IPv6 and configurations will be generated:
+
+  .. code:: bash
+
+    arouteserver bird --target-version 2.0.7 -o /etc/bird/bird.conf
+
 The script exits with ``0`` if everything is fine or with an exit code different than zero if something wrong occurs.
 
 It can be scheduled at regular intervals to re-build the configuration (for example to add new clients or to update IRRDB information), test it and finally to deploy it in production:
@@ -84,14 +90,14 @@ If the IX LAN ID argument is not given, the script uses the `IX-F database <http
 
    $ arouteserver clients-from-peeringdb
    Loading IX-F database... OK
-   
+
    Select the IXP for which the clients list must be built
    Enter the text to search for (IXP name, country, city): LINX
         ID  IXP description
         18  GB, London, London Internet Exchange LON1 (LINX LON1)
        777  US, Ashburn, LINX NoVA (LINX NoVA)
        321  GB, London, London Internet Exchange LON2 (LINX LON2)
-   
+
    Enter the ID of the IXP you want to use to build the clients list: 18
 
 Create clients.yml file from Euro-IX member list JSON file

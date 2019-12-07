@@ -29,7 +29,9 @@ class BIRDInstance(DockerInstance):
 
     MESSAGE_LOGGING_SUPPORT = True
 
-    DOCKER_IMAGE = "pierky/bird:1.6.7"
+    DOCKER_IMAGE = "pierky/bird:1.6.8"
+
+    TAG = "bird16"
 
     def __init__(self, *args, **kwargs):
         DockerInstance.__init__(self, *args, **kwargs)
@@ -64,6 +66,15 @@ class BIRDInstance(DockerInstance):
         """
         if not self.is_running():
             raise InstanceNotRunning(self.name)
+
+        # In BIRD v2, after trying to reload the configuration
+        # with 'birdcl configure', I got a weird error:
+        #    Reading configuration from /etc/bird/bird.conf
+        #    /etc/bird/footer4.local:21:1 Unknown character
+        # This trick fixes it.
+        self.run_cmd("touch /etc/bird/bird.conf")
+        self.run_cmd("touch /etc/bird/footer4.local")
+        self.run_cmd("touch /etc/bird/footer6.local")
 
         res = self._birdcl("configure")
 
@@ -152,20 +163,34 @@ class BIRDInstance(DockerInstance):
 
         self._get_protocols_status()
 
-        # ' via 192.0.2.11 on eth0 [AS1_1 09:57:45] * (100) [AS101i]'
-        #       ----------          -----
-        route_beginning_re = (
-            "[ ]+via "
-            "(?P<via>[0-9\.\:a-f]+)"
-            "[^\[]+"
-            "\[(?P<via_name>[^\s]+)"
-        )
+        is_bird2 = "BIRD 2." in self._birdcl("show status")
 
-        # '101.2.128.0/24     via 192.0.2.11 on eth0 [AS1_1 09:57:45] * (100) [AS101i]'
-        #  --------------         ----------          -----
-        prefix_beginning_re = "^(?P<prefix>[0-9\.\:a-f]+/[0-9]+){}".format(
-            route_beginning_re
-        )
+        if is_bird2:
+            # unicast [AS1_1 15:53:50.281] * (100) [AS1i]
+            route_beginning_re = (
+                "[ ]+unicast "
+                "\[(?P<via_name>[^\s]+)"
+            )
+
+            # 3.0.11.0/24          unicast [AS3_1 15:53:45.706] * (100) [AS3i]
+            prefix_beginning_re = "^(?P<prefix>[0-9\.\:a-f]+/[0-9]+){}".format(
+                route_beginning_re
+            )
+        else:
+            # ' via 192.0.2.11 on eth0 [AS1_1 09:57:45] * (100) [AS101i]'
+            #       ----------          -----
+            route_beginning_re = (
+                "[ ]+via "
+                "(?P<via>[0-9\.\:a-f]+)"
+                "[^\[]+"
+                "\[(?P<via_name>[^\s]+)"
+            )
+
+            # '101.2.128.0/24     via 192.0.2.11 on eth0 [AS1_1 09:57:45] * (100) [AS101i]'
+            #  --------------         ----------          -----
+            prefix_beginning_re = "^(?P<prefix>[0-9\.\:a-f]+/[0-9]+){}".format(
+                route_beginning_re
+            )
 
         route_beginning_patt = re.compile(route_beginning_re)
         prefix_beginning_patt = re.compile(prefix_beginning_re)
@@ -284,3 +309,15 @@ class BIRDInstanceIPv6(BIRDInstance):
 
     def _birdcl(self, cmd):
         return self.run_cmd("birdcl6 {}".format(cmd))
+
+class BIRD2Instance(BIRDInstance):
+
+    DOCKER_IMAGE = "pierky/bird:2.0.7"
+
+    TAG = "bird2"
+
+    def _get_start_cmd(self):
+        return "bird -c /etc/bird/bird.conf -d"
+
+    def _birdcl(self, cmd):
+        return self.run_cmd("birdcl {}".format(cmd))

@@ -17,6 +17,9 @@ import six
 
 from pierky.arouteserver.builder import BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
+                                                          OpenBGPDPreviousInstance, \
+                                                          OpenBGPDLatestInstance
 
 class RPKIINVALIDScenario(LiveScenario):
     __test__ = False
@@ -25,8 +28,29 @@ class RPKIINVALIDScenario(LiveScenario):
     RS_INSTANCE_CLASS = None
     CLIENT_INSTANCE_CLASS = None
     IP_VER = None
+    TARGET_VERSION = None
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+
+    @classmethod
+    def _get_local_files(cls):
+        return [
+            "header",
+            "header{}".format(cls.IP_VER)
+        ]
+
+    @classmethod
+    def _get_local_file_names(cls):
+        return [
+            (
+                cls.use_static_file("bird_header.local"),
+                "/etc/bird/header.local"
+            ),
+            (
+                cls.use_static_file("bird_header{}.local".format(cls.IP_VER)),
+                "/etc/bird/header{}.local".format(cls.IP_VER)
+            )
+        ]
 
     @classmethod
     def _setup_instances(cls):
@@ -37,25 +61,15 @@ class RPKIINVALIDScenario(LiveScenario):
                 [
                     (
                         cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                         local_files=[
-                                             "header",
-                                             "header{}".format(cls.IP_VER)
-                                         ],
+                                         target_version=cls.TARGET_VERSION,
+                                         local_files=cls._get_local_files(),
                                          hooks=[
                                              "announce_rpki_invalid_to_client",
                                              "post_announce_to_client"
                                          ]),
                         "/etc/bird/bird.conf"
-                    ),
-                    (
-                        cls.use_static_file("bird_header.local"),
-                        "/etc/bird/header.local"
-                    ),
-                    (
-                        cls.use_static_file("bird_header{}.local".format(cls.IP_VER)),
-                        "/etc/bird/header{}.local".format(cls.IP_VER)
                     )
-                ]
+                ] + cls._get_local_file_names()
             ),
             cls.CLIENT_INSTANCE_CLASS(
                 "AS1",
@@ -211,3 +225,23 @@ class RPKIINVALIDScenario(LiveScenario):
         """{}: reconfigure"""
         self.rs.reload_config()
         self.test_020_sessions_up()
+
+class RPKIINVALIDScenario2(RPKIINVALIDScenario):
+    __test__ = False
+
+    TARGET_VERSION = "2.0.7"
+
+    @classmethod
+    def _get_local_files(cls):
+        return [
+            "header"
+        ]
+
+    @classmethod
+    def _get_local_file_names(cls):
+        return [
+            (
+                cls.use_static_file("bird2_header.local"),
+                "/etc/bird/header.local"
+            )
+        ]

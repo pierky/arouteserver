@@ -1,0 +1,20 @@
+# File used in both the global and the tag_reject_policy scenarios
+
+filter invalid_routes_only_6 {
+    if ((65520, 0) ~ bgp_community) then
+        accept;
+    reject;
+}
+protocol bgp InvalidRoutesCollector6 {
+    local as 999;
+    neighbor 2001:db8:1:1::999 as 65534;
+    rs client;
+    ipv6 {
+        table master6;
+        add paths tx;
+        secondary;
+
+        import none;
+        export filter invalid_routes_only_6;
+    };
+}

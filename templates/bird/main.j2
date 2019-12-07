@@ -8,9 +8,10 @@
 
 
 {{ "header"|include_local_file -}}
-{% if ip_ver == 4 %}
+{% if 4 in list_ip_vers %}
 {{ "header4"|include_local_file -}}
-{% else %}
+{% endif %}
+{% if 6 in list_ip_vers %}
 {{ "header6"|include_local_file -}}
 {% endif %}
 
@@ -25,11 +26,12 @@
 
 
 {% include "clients.j2" %}
- 
+
 
 {{ "footer"|include_local_file -}}
-{% if ip_ver == 4 %}
+{% if 4 in list_ip_vers %}
 {{ "footer4"|include_local_file -}}
-{% else %}
+{% endif %}
+{% if 6 in list_ip_vers %}
 {{ "footer6"|include_local_file -}}
 {% endif %}

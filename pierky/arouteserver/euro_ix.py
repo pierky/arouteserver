@@ -24,7 +24,7 @@ from .errors import EuroIXError, EuroIXSchemaError
 
 class EuroIXMemberList(object):
 
-    TESTED_EUROIX_SCHEMA_VERSIONS = ("0.4", "0.5", "0.6")
+    TESTED_EUROIX_SCHEMA_VERSIONS = ("0.4", "0.5", "0.6", "0.7")
 
     CUSTOM_COMMUNITIES = ["switch_id", "switch_name", "colocation", "city",
                           "country", "member_type"]

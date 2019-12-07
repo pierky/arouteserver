@@ -1,0 +1,714 @@
+0.0.0.0/0, AS_PATH: 3, NEXT_HOP: 192.0.2.31, via 192.0.2.31
+  std comms: 65520:0, 65520:2
+  ext comms: rt:65520:3
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+1.0.1.0/24, AS_PATH: 1, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms:
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+1.0.1.0/24, AS_PATH: 1, NEXT_HOP: 192.0.2.12, via 192.0.2.12
+  std comms:
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: False, LOCAL_PREF: 100
+  filtered: False ()
+
+1.0.2.0/24, AS_PATH: 1, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms:
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+1.0.2.0/24, AS_PATH: 1, NEXT_HOP: 192.0.2.12, via 192.0.2.12
+  std comms:
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: False, LOCAL_PREF: 100
+  filtered: False ()
+
+1.0.3.0/24, AS_PATH: 1, NEXT_HOP: 192.0.2.11, via 192.0.2.12
+  std comms:
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+10.0.0.0/24, AS_PATH: 1, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:2
+  ext comms: rt:65520:1
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+101.0.1.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.0.1.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms:
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+101.0.1.0/24, AS_PATH: 2 101, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms:
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: False, LOCAL_PREF: 100
+  filtered: False ()
+
+101.0.128.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.0.128.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:14
+  ext comms: generic:0x43000000:0x2, rt:65520:1
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+101.0.128.0/24, AS_PATH: 2 101, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms: 65520:0, 65520:14
+  ext comms: generic:0x43000000:0x2, rt:65520:2
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.0.128.1/32, AS_PATH: 1 101, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5, 65535:666
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.0.128.1/32, AS_PATH: 1 101, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65535:666
+  ext comms:
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+101.0.128.1/32, AS_PATH: 2 101, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms: 65535:666
+  ext comms:
+  lrg comms:
+  best: False, LOCAL_PREF: 100
+  filtered: False ()
+
+101.0.2.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.0.2.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms:
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+101.0.2.0/24, AS_PATH: 2 101, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms:
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: False, LOCAL_PREF: 100
+  filtered: False ()
+
+101.0.3.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.0.3.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms:
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+101.0.3.0/24, AS_PATH: 2 101, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms:
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: False, LOCAL_PREF: 100
+  filtered: False ()
+
+101.0.4.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5, 888:0
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.0.4.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 888:0
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+101.0.4.0/24, AS_PATH: 2 101, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms: 888:0
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: False, LOCAL_PREF: 100
+  filtered: False ()
+
+101.0.5.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5
+  ext comms: rt:65520:1
+  lrg comms: 888:0:0
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.0.5.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms:
+  ext comms: generic:0x43000000:0x1
+  lrg comms: 888:0:0
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+101.0.5.0/24, AS_PATH: 2 101, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms:
+  ext comms: generic:0x43000000:0x1
+  lrg comms: 888:0:0
+  best: False, LOCAL_PREF: 100
+  filtered: False ()
+
+101.0.6.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5, 777:0
+  ext comms: rt:65520:1
+  lrg comms: 777:0:0
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.0.6.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 777:0
+  ext comms: generic:0x43000000:0x1
+  lrg comms: 777:0:0
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+101.0.6.0/24, AS_PATH: 2 101, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms: 777:0
+  ext comms: generic:0x43000000:0x1
+  lrg comms: 777:0:0
+  best: False, LOCAL_PREF: 100
+  filtered: False ()
+
+101.0.7.0/24, AS_PATH: 1 101 174, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.0.7.0/24, AS_PATH: 1 101 174, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:8
+  ext comms: rt:65520:1
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+101.0.7.0/24, AS_PATH: 2 101 174, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms: 65520:0, 65520:8
+  ext comms: rt:65520:2
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.0.8.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.0.8.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms:
+  ext comms: generic:0x43000000:0x0
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+101.0.8.0/24, AS_PATH: 2 101, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms:
+  ext comms: generic:0x43000000:0x0
+  lrg comms:
+  best: False, LOCAL_PREF: 100
+  filtered: False ()
+
+101.0.9.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.0.9.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:14
+  ext comms: generic:0x43000000:0x2, rt:65520:1
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+101.0.9.0/24, AS_PATH: 2 101, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms: 65520:0, 65520:14
+  ext comms: generic:0x43000000:0x2, rt:65520:2
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.1.0.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.1.0.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:12
+  ext comms: rt:65520:1
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+101.1.0.0/24, AS_PATH: 2 101, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms: 65520:0, 65520:12
+  ext comms: rt:65520:2
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.2.0.0/17, AS_PATH: 1 101, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.2.0.0/17, AS_PATH: 1 101, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms:
+  ext comms: generic:0x43000000:0x0
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+101.2.0.0/17, AS_PATH: 2 101, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms:
+  ext comms: generic:0x43000000:0x0
+  lrg comms:
+  best: False, LOCAL_PREF: 100
+  filtered: False ()
+
+101.2.1.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.2.1.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:12
+  ext comms: rt:65520:1
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+101.2.1.0/24, AS_PATH: 2 101, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms: 65520:0, 65520:12
+  ext comms: rt:65520:2
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.2.128.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.2.128.0/24, AS_PATH: 1 101, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms:
+  ext comms: generic:0x43000000:0x0
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+101.2.128.0/24, AS_PATH: 2 101, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms:
+  ext comms: generic:0x43000000:0x0
+  lrg comms:
+  best: False, LOCAL_PREF: 100
+  filtered: False ()
+
+101.3.0.0/24, AS_PATH: 1 101 105, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+101.3.0.0/24, AS_PATH: 1 101 105, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:9
+  ext comms: rt:65520:1
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+101.3.0.0/24, AS_PATH: 2 101 105, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms: 65520:0, 65520:9
+  ext comms: rt:65520:2
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+102.0.1.0/24, AS_PATH: 1 101 102, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+102.0.1.0/24, AS_PATH: 1 101 102, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:9
+  ext comms: rt:65520:1
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+102.0.1.0/24, AS_PATH: 2 101 102, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms: 65520:0, 65520:9
+  ext comms: rt:65520:2
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+103.0.1.0/24, AS_PATH: 1 101 103, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5, 65535:0
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+103.0.1.0/24, AS_PATH: 1 101 103, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:9, 65535:0
+  ext comms: rt:65520:1
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+103.0.1.0/24, AS_PATH: 2 101 101 103, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms: 65520:0, 65520:9
+  ext comms: rt:65520:2
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+103.0.2.0/24, AS_PATH: 1 101 101 103, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+103.0.2.0/24, AS_PATH: 1 101 101 103, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:9
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+103.0.2.0/24, AS_PATH: 2 101 103, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms: 65520:0, 65520:9, 65535:0
+  ext comms: rt:65520:2
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+104.0.1.0/24, AS_PATH: 1 101 104, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+104.0.1.0/24, AS_PATH: 1 101 104, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:9
+  ext comms: rt:65520:1
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+104.0.1.0/24, AS_PATH: 2 101 104, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms: 65520:0, 65520:9
+  ext comms: rt:65520:2
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+104.1.1.0/24, AS_PATH: 1 101 104, NEXT_HOP: 192.0.2.101, via 192.0.2.12
+  std comms: 65520:0, 65520:5
+  ext comms: rt:65520:1
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+104.1.1.0/24, AS_PATH: 1 101 104, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:9
+  ext comms: rt:65520:1
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+104.1.1.0/24, AS_PATH: 2 101 104, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms: 65520:0, 65520:9
+  ext comms: rt:65520:2
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: False ()
+
+11.1.1.0/24, AS_PATH: 1 1011, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms:
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+11.1.2.0/24, AS_PATH: 1 1000, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:9
+  ext comms: rt:65520:1
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+11.2.1.0/24, AS_PATH: 1 1011, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:12
+  ext comms: rt:65520:1
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+11.3.0.0/16, AS_PATH: 1 1011, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms:
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+11.3.1.0/24, AS_PATH: 1 1011, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:12
+  ext comms: rt:65520:1
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+11.4.1.0/24, AS_PATH: 1 1000, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms:
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+128.0.0.0/10, AS_PATH: 1 2 2 2 2 2 2 1, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:1
+  ext comms: rt:65520:1
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+128.0.0.0/7, AS_PATH: 1, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:13
+  ext comms: generic:0x43000000:0x1, rt:65520:1
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+128.0.0.0/8, AS_PATH: 2 1, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:6
+  ext comms: rt:65520:1
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+128.0.0.0/9, AS_PATH: 1 65536 1, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:7
+  ext comms: rt:65520:1
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+192.0.2.0/24, AS_PATH: 1, NEXT_HOP: 192.0.2.11, via 192.0.2.11
+  std comms: 65520:0, 65520:3
+  ext comms: rt:65520:1
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+2.0.1.0/24, AS_PATH: 2, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms:
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+2.0.2.0/24, AS_PATH: 2, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms:
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+2.0.3.1/32, AS_PATH: 2, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms: 65535:666
+  ext comms:
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+2.0.3.2/32, AS_PATH: 2, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms: 65534:0
+  ext comms:
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+2.0.3.3/32, AS_PATH: 2, NEXT_HOP: 192.0.2.21, via 192.0.2.21
+  std comms:
+  ext comms:
+  lrg comms: 65534:0:0
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+2.0.4.0/24, AS_PATH: 2, NEXT_HOP: 192.0.2.22, via 192.0.2.21
+  std comms:
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+2.0.5.0/24, AS_PATH: 2, NEXT_HOP: 192.0.2.23, via 192.0.2.21
+  std comms: 65520:0, 65520:5
+  ext comms: rt:65520:2
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+3.0.1.0/24, AS_PATH: 3, NEXT_HOP: 192.0.2.31, via 192.0.2.31
+  std comms: 65520:0, 65520:11
+  ext comms: rt:65520:3
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+3.0.10.0/24, AS_PATH: 3, NEXT_HOP: 192.0.2.31, via 192.0.2.31
+  std comms: 65521:65521, 65523:1
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+3.0.11.0/24, AS_PATH: 3, NEXT_HOP: 192.0.2.31, via 192.0.2.31
+  std comms: 65507:999
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+3.0.12.0/24, AS_PATH: 3, NEXT_HOP: 192.0.2.31, via 192.0.2.31
+  std comms: 65509:1, 65523:2
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+3.0.13.0/24, AS_PATH: 3, NEXT_HOP: 192.0.2.31, via 192.0.2.31
+  std comms: 65535:65281
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+3.0.14.0/24, AS_PATH: 3 174 33, NEXT_HOP: 192.0.2.31, via 192.0.2.31
+  std comms: 65520:0, 65520:8
+  ext comms: rt:65520:3
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
+3.0.2.0/24, AS_PATH: 3, NEXT_HOP: 192.0.2.31, via 192.0.2.31
+  std comms: 0:999, 65501:1
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+3.0.3.0/24, AS_PATH: 3, NEXT_HOP: 192.0.2.31, via 192.0.2.31
+  std comms: 0:1
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+3.0.4.0/24, AS_PATH: 3, NEXT_HOP: 192.0.2.31, via 192.0.2.31
+  std comms: 0:999
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+3.0.5.0/24, AS_PATH: 3, NEXT_HOP: 192.0.2.31, via 192.0.2.31
+  std comms: 65521:65521
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+3.0.6.0/24, AS_PATH: 3, NEXT_HOP: 192.0.2.31, via 192.0.2.31
+  std comms: 65522:65522
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+3.0.7.0/24, AS_PATH: 3, NEXT_HOP: 192.0.2.31, via 192.0.2.31
+  std comms: 65523:65523
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+3.0.8.0/24, AS_PATH: 3, NEXT_HOP: 192.0.2.31, via 192.0.2.31
+  std comms: 65521:1
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+3.0.9.0/24, AS_PATH: 3, NEXT_HOP: 192.0.2.31, via 192.0.2.31
+  std comms: 65522:2
+  ext comms: generic:0x43000000:0x1
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+

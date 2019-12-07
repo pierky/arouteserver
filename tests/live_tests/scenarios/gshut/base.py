@@ -20,6 +20,8 @@ from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPreviousInstance, \
+                                                          OpenBGPDLatestInstance
 
 class GShutScenario(LiveScenario):
     __test__ = False
@@ -90,6 +92,8 @@ class GShutScenarioBIRD(GShutScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+    TARGET_VERSION = None
+    IP_VER = None
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -99,11 +103,17 @@ class GShutScenarioBIRD(GShutScenario):
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                     perform_graceful_shutdown=True),
+                                     perform_graceful_shutdown=True,
+                                     target_version=cls.TARGET_VERSION),
                     "/etc/bird/bird.conf"
                 )
             ]
         )
+
+class GShutScenarioBIRD2(GShutScenarioBIRD):
+    __test__ = False
+
+    TARGET_VERSION = "2.0.7"
 
 class GShutScenarioOpenBGPD(GShutScenario):
     __test__ = False
@@ -126,12 +136,12 @@ class GShutScenarioOpenBGPD(GShutScenario):
             ]
         )
 
-class GShutScenarioOpenBGPD64(GShutScenarioOpenBGPD):
+class GShutScenarioOpenBGPDPrevious(GShutScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.4"
+    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
 
-class GShutScenarioOpenBGPD65(GShutScenarioOpenBGPD):
+class GShutScenarioOpenBGPDLatest(GShutScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.5"
+    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION

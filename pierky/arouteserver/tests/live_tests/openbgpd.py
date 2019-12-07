@@ -42,9 +42,57 @@ class OpenBGPDRoute(Route):
             return []
 
         res = []
-        for bgp_comm in communities.split(", "):
-            parts = bgp_comm.split(" ")
-            res.append("{}:{}".format(parts[0], parts[1]))
+
+        # If ', ' is found in the value of 'communities', it
+        # means we're processing a pre 6.6 output format.
+        if ", " in communities:
+            for bgp_comm in communities.split(", "):
+                parts = bgp_comm.split(" ")
+                res.append("{}:{}".format(parts[0], parts[1]))
+
+            return res
+
+        # If ', ' is not found, it's either a post 6.6 format
+        # where different communities are separated just by a
+        # space, or it's just one single community:
+        # soo 65535:65281
+        # rt 64537:10
+        # rt 64537:10 rt 64538:20
+
+        next_field_should_be = "rt_soo"
+        rt_soo = ""
+        comm = ""
+
+        for part in communities.split(" "):
+            if next_field_should_be == "rt_soo":
+                if part not in ("rt", "soo"):
+                    raise ValueError(
+                        "Error while processing the extended communities "
+                        "string '{}': expected 'rt' or 'soo', but '{}' "
+                        "found.".format(communities, part)
+                    )
+                rt_soo = part
+                next_field_should_be = "comm"
+            elif next_field_should_be == "comm":
+                if ":" not in part:
+                    raise ValueError(
+                        "Error while processing the extended communities "
+                        "string '{}': ':' not found in the community '{}' "
+                        "part.".format(communities, part)
+                    )
+                comm = part
+
+                res.append("{}:{}".format(rt_soo, comm))
+
+                next_field_should_be = "rt_soo"
+
+        if next_field_should_be != "rt_soo":
+            raise ValueError(
+                "Error while processing the extended communities "
+                "string '{}': one part of the string remained "
+                "unprocessed.".format(communities)
+            )
+
         return res
 
 class OpenBGPDInstance(object):
@@ -279,7 +327,7 @@ class OpenBGPDClassicInstance(OpenBGPDInstance, KVMInstance):
 
         self.run_cmd("/etc/rc.d/bgpd stop")
         time.sleep(5)
-        self.run_cmd("ndp -c")
+        self.run_cmd("ndp -c | true")
         self.run_cmd("bgpd -dn")
         self.run_cmd("/etc/rc.d/bgpd -f start")
         time.sleep(5)
@@ -298,7 +346,7 @@ class OpenBGPDClassicInstance(OpenBGPDInstance, KVMInstance):
 
         self.run_cmd("bgpd -dn")
         self.run_cmd("/etc/rc.d/bgpd reload")
-        self.run_cmd("ndp -c")
+        self.run_cmd("ndp -c | true")
         time.sleep(5)
 
         return True
@@ -369,26 +417,67 @@ class OpenBGPD60Instance(OpenBGPDClassicInstance):
 
     VIRSH_DOMAINNAME = "arouteserver_openbgpd60"
 
+    TAG = "openbgpd60"
+
 class OpenBGPD61Instance(OpenBGPDClassicInstance):
 
     VIRSH_DOMAINNAME = "arouteserver_openbgpd61"
+
+    TAG = "openbgpd61"
 
 class OpenBGPD62Instance(OpenBGPDClassicInstance):
 
     VIRSH_DOMAINNAME = "arouteserver_openbgpd62"
 
+    TAG = "openbgpd62"
+
 class OpenBGPD63Instance(OpenBGPDClassicInstance):
 
     VIRSH_DOMAINNAME = "arouteserver_openbgpd63"
+
+    TAG = "openbgpd63"
 
 class OpenBGPD64Instance(OpenBGPDClassicInstance):
 
     VIRSH_DOMAINNAME = "arouteserver_openbgpd64"
 
+    TAG = "openbgpd64"
+
 class OpenBGPD65Instance(OpenBGPDClassicInstance):
 
     VIRSH_DOMAINNAME = "arouteserver_openbgpd65"
 
+    TAG = "openbgpd65"
+
+    BGP_SPEAKER_VERSION = "6.5"
+    TARGET_VERSION = "6.5"
+
+class OpenBGPD66Instance(OpenBGPDClassicInstance):
+
+    VIRSH_DOMAINNAME = "arouteserver_openbgpd66"
+
+    TAG = "openbgpd66"
+
+    BGP_SPEAKER_VERSION = "6.6"
+    TARGET_VERSION = "6.6"
+
+OpenBGPDPreviousInstance = OpenBGPD65Instance
+OpenBGPDLatestInstance = OpenBGPD66Instance
+
 class OpenBGPD65PortableInstance(OpenBGPDPortableInstance):
 
     DOCKER_IMAGE = "pierky/openbgpd:6.5p1"
+
+    TAG = "openbgpd65p"
+
+class OpenBGPD66PortableInstance(OpenBGPDPortableInstance):
+
+    DOCKER_IMAGE = "pierky/openbgpd:6.6p0"
+
+    TAG = "openbgpd66p"
+
+    BGP_SPEAKER_VERSION = "6.6p0"
+    # TARGET_VERSION not set here because it's assumed to be
+    # the same of the OpenBGPD Latest one.
+
+OpenBGPDPortableLatestInstance = OpenBGPD66PortableInstance

@@ -42,8 +42,8 @@ A list of BGP communities is also automatically built.
    Route server policy definition file generated successfully!
    ===========================================================
    
-   The content of the general configuration file will now be written to examples
-   /auto-config/bird-general.yml
+   The content of the general configuration file will now be written to
+   examples/auto-config/bird-general.yml
    
    Some notes:
    

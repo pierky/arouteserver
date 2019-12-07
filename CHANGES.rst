@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next-release
+------------
+
+- New: add support for BIRD v2.
+
+  **Please note**: BIRD v2 support is in early stages. Before moving any production platform to instances of BIRD v2 configured with this tool, please review the configurations carefully and run some simulations.
+
+- New: OpenBGPD/OpenBSD 6.6, OpenBGPD Portable 6.6p0 and BIRD 1.6.8 added to the integration testing suite.
+
 v0.22.2
 -------
 

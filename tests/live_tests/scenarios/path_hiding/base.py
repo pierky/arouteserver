@@ -19,7 +19,9 @@ import unittest
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
+                                                          OpenBGPDPreviousInstance, \
+                                                          OpenBGPDLatestInstance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class PathHidingScenario(LiveScenario):
@@ -145,6 +147,8 @@ class PathHidingScenarioBIRD(PathHidingScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+    TARGET_VERSION = None
+    IP_VER = None
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -154,11 +158,17 @@ class PathHidingScenarioBIRD(PathHidingScenario):
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                     cfg_general=cls.CFG_GENERAL),
+                                     cfg_general=cls.CFG_GENERAL,
+                                     target_version=cls.TARGET_VERSION),
                     "/etc/bird/bird.conf"
                 )
             ]
         )
+
+class PathHidingScenarioBIRD2(PathHidingScenarioBIRD):
+    __test__ = False
+
+    TARGET_VERSION = "2.0.7"
 
 class PathHidingScenarioOpenBGPD(LiveScenario_TagRejectPolicy, PathHidingScenario):
     __test__ = False
@@ -182,15 +192,15 @@ class PathHidingScenarioOpenBGPD(LiveScenario_TagRejectPolicy, PathHidingScenari
             ]
         )
 
-class PathHidingScenarioOpenBGPD64(PathHidingScenarioOpenBGPD):
+class PathHidingScenarioOpenBGPDPrevious(PathHidingScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.4"
+    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
 
-class PathHidingScenarioOpenBGPD65(PathHidingScenarioOpenBGPD):
+class PathHidingScenarioOpenBGPDLatest(PathHidingScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.5"
+    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION
 
 class PathHidingScenario_MitigationOn(object):
 

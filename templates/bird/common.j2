@@ -9,13 +9,24 @@
 # This function returns True if 'net' is a bogon prefix
 # or falls within a bogon prefix.
 function prefix_is_bogon()
-prefix set bogons;
+{% for this_ip_ver in list_ip_vers %}
+prefix set bogons_{{ this_ip_ver }};
+{% endfor %}
 {
-	bogons = [
-{{ write_prefix_list(bogons) }}
+{% for this_ip_ver in list_ip_vers %}
+	bogons_{{ this_ip_ver }} = [
+{{ write_prefix_list(bogons|selectattr("prefix", "is_ipver", this_ip_ver)) }}
 	];
+{% endfor %}
 
-	if net ~ bogons then return true;
+{% for this_ip_ver in list_ip_vers %}
+{%   if "2.0"|target_version_ge %}
+	if net.type = NET_IP{{ this_ip_ver }} then
+		if net ~ bogons_{{ this_ip_ver }} then return true;
+{%   else %}
+	if net ~ bogons_{{ this_ip_ver }} then return true;
+{%   endif %}
+{% endfor %}
 	return false;
 }
 
@@ -23,17 +34,31 @@ prefix set bogons;
 # prefix contained in the global blacklist (for example,
 # local networks)
 function prefix_is_in_global_blacklist()
-prefix set global_blacklist;
+{% for this_ip_ver in list_ip_vers %}
+{%   set prefixes = cfg.filtering.global_black_list_pref|selectattr("prefix", "is_ipver", this_ip_ver )|list %}
+{%   if prefixes|length > 0 %}
+prefix set global_blacklist_{{ this_ip_ver }};
+{%   endif %}
+{% endfor %}
 {
-{% if cfg.filtering.global_black_list_pref %}
-	global_blacklist = [
-{{ write_prefix_list(cfg.filtering.global_black_list_pref) }}
+{% for this_ip_ver in list_ip_vers %}
+{%   set prefixes = cfg.filtering.global_black_list_pref|selectattr("prefix", "is_ipver", this_ip_ver )|list %}
+{%   if prefixes|length > 0 %}
+	global_blacklist_{{ this_ip_ver }} = [
+{{ write_prefix_list(prefixes) }}
 	];
 
-	if net ~ global_blacklist then return true;
-{% else %}
-	# No prefixes configured under the cfg.filtering.global_black_list_pref section.
-{% endif %}
+{%     if "2.0"|target_version_ge %}
+	if net.type = NET_IP{{ this_ip_ver }} then
+		if net ~ global_blacklist_{{ this_ip_ver }} then return true;
+{%     else %}
+	if net ~ global_blacklist_{{ this_ip_ver }} then return true;
+{%     endif %}
+
+{%   else %}
+	# No IPv{{ this_ip_ver }} prefixes configured under the cfg.filtering.global_black_list_pref section.
+{%   endif %}
+{% endfor %}
 	return false;
 }
 
@@ -47,7 +72,7 @@ function prefix_len_is_valid (int pref_len_min; int pref_len_max) {
 
 # This function returns True if the AS_PATH contains one or
 # more private/reserved ASN.
-function as_path_contains_invalid_asn() 
+function as_path_contains_invalid_asn()
 int set invalid_asns;
 {
 	# http://www.iana.org/assignments/as-numbers/as-numbers.xhtml
@@ -135,54 +160,56 @@ function scrub_communities_out() {
 # This function verifies if the route is tagged with one of
 # the blackhole filtering communities.
 function is_blackhole_filtering_request() {
-{% if ( ip_ver == 4 and cfg.blackhole_filtering.policy_ipv4 ) or
-	( ip_ver == 6 and cfg.blackhole_filtering.policy_ipv6 ) %}
+{%	for this_ip_ver in list_ip_vers %}
+{%		if "2.0"|target_version_ge %}
+	if net.type = NET_IP{{ this_ip_ver }} then {
+{%		endif %}
+{%		if cfg.blackhole_filtering["policy_ipv" ~ this_ip_ver] %}
 	if (65535, 666) ~ bgp_community then
 		return true;
 {{ match_communities(cfg.communities.blackholing, "return true;") }}
-{% endif %}
+{%		endif %}
+{%		if "2.0"|target_version_ge %}
+	}
+{%		endif %}
+{%	endfor %}
 	return false;
 }
 
 # This function must be applied to outgoing routes.
 # It applies the blackhole filtering policy to the current route.
 function apply_blackhole_filtering_policy() {
-{% if ip_ver == 4 and cfg.blackhole_filtering.policy_ipv4 == "propagate-unchanged" %}
+{% for this_ip_ver in list_ip_vers %}
+{%		if "2.0"|target_version_ge %}
+	if net.type = NET_IP{{ this_ip_ver }} then {
+{%		endif %}
+
+{% if cfg.blackhole_filtering["policy_ipv" ~ this_ip_ver] == "propagate-unchanged" %}
 	# Configured policy: propagate-unchanged
 	bgp_community.add((65535, 666));
 {%	if cfg.blackhole_filtering.add_noexport %}
 	# NO_EXPORT
 	bgp_community.add((65535, 65281));
 {%	endif %}
-{% elif ip_ver == 4 and cfg.blackhole_filtering.policy_ipv4 == "rewrite-next-hop" %}
+{% elif cfg.blackhole_filtering["policy_ipv" ~ this_ip_ver] == "rewrite-next-hop" %}
 	# Configured policy: rewrite-next-hop
 	bgp_community.add((65535, 666));
-	bgp_next_hop = {{ cfg.blackhole_filtering.rewrite_next_hop_ipv4 }};
-{%	if cfg.blackhole_filtering.add_noexport %}
-	# NO_EXPORT
-	bgp_community.add((65535, 65281));
-{%	endif %}
-{% elif ip_ver == 6 and cfg.blackhole_filtering.policy_ipv6 == "propagate-unchanged" %}
-	# Configured policy: propagate-unchanged
-	bgp_community.add((65535, 666));
-{%	if cfg.blackhole_filtering.add_noexport %}
-	# NO_EXPORT
-	bgp_community.add((65535, 65281));
-{%	endif %}
-{% elif ip_ver == 6 and cfg.blackhole_filtering.policy_ipv6 == "rewrite-next-hop" %}
-	# Configured policy: rewrite-next-hop
-	bgp_community.add((65535, 666));
-	bgp_next_hop = {{ cfg.blackhole_filtering.rewrite_next_hop_ipv6 }};
+	bgp_next_hop = {{ cfg.blackhole_filtering["rewrite_next_hop_ipv" ~ this_ip_ver] }};
 {%	if cfg.blackhole_filtering.add_noexport %}
 	# NO_EXPORT
 	bgp_community.add((65535, 65281));
 {%	endif %}
 {% else %}
-	reject "blackhole filtering requested but no policy given - REJECTING ", net;
+	reject "blackhole filtering requested but no IPv{{ this_ip_ver }} policy given - REJECTING ", net;
 {% endif %}
+
+{%		if "2.0"|target_version_ge %}
+	}
+{%		endif %}
 {% if "apply_blackhole_filtering_policy"|hook_is_set %}
-	hook_apply_blackhole_filtering_policy({{ ip_ver }});
+	hook_apply_blackhole_filtering_policy({{ this_ip_ver }});
 {% endif %}
+{% endfor %}
 }
 
 # This function verifies if the current route can be announced to
@@ -307,11 +334,27 @@ function add_rpki_community(string comm_name) {
 # This functions performs RPKI validation of the current
 # route and adds the informative communities.
 function perform_rpki_validation () {
+{% if "2.0.0"|target_version_le %}
 	case roa_check(RPKI) {
 		ROA_VALID: add_rpki_community("valid");
 		ROA_UNKNOWN: add_rpki_community("unknown");
 		ROA_INVALID: add_rpki_community("invalid");
 	}
+{% else %}
+	if net.type = NET_IP4 then {
+		case roa_check(RPKI4) {
+			ROA_VALID: add_rpki_community("valid");
+			ROA_UNKNOWN: add_rpki_community("unknown");
+			ROA_INVALID: add_rpki_community("invalid");
+		}
+	} else {
+		case roa_check(RPKI6) {
+			ROA_VALID: add_rpki_community("valid");
+			ROA_UNKNOWN: add_rpki_community("unknown");
+			ROA_INVALID: add_rpki_community("invalid");
+		}
+	}
+{% endif %}
 }
 
 # This function returns True if the route is INVALID.
@@ -397,9 +440,21 @@ function perform_graceful_shutdown() {
 # This function verifies if there is such a ROA for the
 # current route's origin ASN to validate the announced prefix.
 function prefix_in_rpki_roas_as_route_objects() {
+{% if "2.0.0"|target_version_le %}
 	case roa_check(RPKI) {
 		ROA_VALID: return true;
 	}
+{% else %}
+	if net.type = NET_IP4 then {
+		case roa_check(RPKI4) {
+			ROA_VALID: return true;
+		}
+	} else {
+		case roa_check(RPKI6) {
+			ROA_VALID: return true;
+		}
+	}
+{% endif %}
 	return false;
 }
 {% endif %}
@@ -410,11 +465,22 @@ function prefix_in_rpki_roas_as_route_objects() {
 # origin ASN to validate the announced prefix the function
 # returns True, otherwise False.
 function prefix_in_arin_whois_db() {
+{%	for this_ip_ver in list_ip_vers %}
+{%		if "2.0"|target_version_ge %}
+	if net.type = NET_IP{{ this_ip_ver }} then {
+{%		endif %}
 	case bgp_path.last_nonaggregated {
 {%		for origin_asn in arin_whois_records|sort %}
-		{{ origin_asn|replace("AS", "") }}: return net ~ ARIN_Whois_db_{{ origin_asn }};
+{%			set prefixes = arin_whois_records[origin_asn].prefixes|selectattr("prefix", "is_ipver", this_ip_ver)|list %}
+{%			if prefixes|length > 0 %}
+		{{ origin_asn|replace("AS", "") }}: return net ~ ARIN_Whois_db_{{ origin_asn }}_{{ this_ip_ver }};
+{%			endif %}
 {%		endfor %}
 	}
+{%		if "2.0"|target_version_ge %}
+	}
+{%		endif %}
+{%	endfor %}
 	return false;
 }
 {% endif %}
@@ -425,11 +491,22 @@ function prefix_in_arin_whois_db() {
 # origin ASN to validate the announced prefix the function
 # returns True, otherwise False.
 function prefix_in_registrobr_whois_db() {
+{%	for this_ip_ver in list_ip_vers %}
+{%		if "2.0"|target_version_ge %}
+	if net.type = NET_IP{{ this_ip_ver }} then {
+{%		endif %}
 	case bgp_path.last_nonaggregated {
 {%		for origin_asn in registrobr_whois_records|sort %}
-		{{ origin_asn|replace("AS", "") }}: return net ~ RegistroBR_Whois_db_{{ origin_asn }};
+{%			set prefixes = registrobr_whois_records[origin_asn].prefixes|selectattr("prefix", "is_ipver", this_ip_ver)|list %}
+{%			if prefixes|length > 0 %}
+		{{ origin_asn|replace("AS", "") }}: return net ~ RegistroBR_Whois_db_{{ origin_asn }}_{{ this_ip_ver }};
+{%			endif %}
 {%		endfor %}
 	}
+{%		if "2.0"|target_version_ge %}
+	}
+{%		endif %}
+{%	endfor %}
 	return false;
 }
 {% endif %}

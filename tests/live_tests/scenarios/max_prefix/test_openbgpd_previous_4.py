@@ -16,18 +16,20 @@
 import os
 import unittest
 
-from .base import MaxPrefixScenarioOpenBGPD64
+from .base import MaxPrefixScenarioOpenBGPDPrevious
 from .data4 import MaxPrefixScenario_Data4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD64Instance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPreviousInstance
 
 @unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
 class MaxPrefixScenario_OpenBGPDIPv4(MaxPrefixScenario_Data4,
-                                     MaxPrefixScenarioOpenBGPD64):
+                                     MaxPrefixScenarioOpenBGPDPrevious):
 
     __test__ = True
     SKIP_ON_TRAVIS = True
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.4, max-prefix, IPv4"
-    RS_INSTANCE_CLASS = OpenBGPD64Instance
+    SHORT_DESCR = "Live test, OpenBGPD {}, max-prefix, IPv4".format(
+        OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
+    )
+    RS_INSTANCE_CLASS = OpenBGPDPreviousInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4

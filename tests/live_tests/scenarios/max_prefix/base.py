@@ -20,6 +20,8 @@ from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPreviousInstance, \
+                                                          OpenBGPDLatestInstance
 
 class MaxPrefixScenario(LiveScenario):
     __test__ = False
@@ -95,6 +97,8 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+    TARGET_VERSION = None
+    IP_VER = None
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -104,7 +108,8 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                     cfg_general="general_bird.yml"),
+                                     cfg_general="general_bird.yml",
+                                     target_version=cls.TARGET_VERSION),
                     "/etc/bird/bird.conf"
                 )
             ]
@@ -174,6 +179,11 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
         self.rs.reload_config()
         self.test_020_sessions_up()
 
+class MaxPrefixScenarioBIRD2(MaxPrefixScenarioBIRD):
+    __test__ = False
+
+    TARGET_VERSION = "2.0.7"
+
 class MaxPrefixScenarioOpenBGPD(LiveScenario_TagRejectPolicy, MaxPrefixScenario):
     __test__ = False
 
@@ -209,12 +219,12 @@ class MaxPrefixScenarioOpenBGPD(LiveScenario_TagRejectPolicy, MaxPrefixScenario)
         for inst in (self.AS1, self.AS2, self.AS3, self.AS4):
             self.log_contains(inst, "the_rs: Received: Maximum number of prefixes reached")
 
-class MaxPrefixScenarioOpenBGPD64(MaxPrefixScenarioOpenBGPD):
+class MaxPrefixScenarioOpenBGPDPrevious(MaxPrefixScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.4"
+    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
 
-class MaxPrefixScenarioOpenBGPD65(MaxPrefixScenarioOpenBGPD):
+class MaxPrefixScenarioOpenBGPDLatest(MaxPrefixScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.5"
+    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION

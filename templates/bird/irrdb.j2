@@ -20,30 +20,47 @@ define AS_SET_{{ as_set_bundle.name }}_asns = [
 ];
 {% endif %}
 
-{% if as_set_bundle.prefixes|length == 0 %}
-# no prefixes found for {{ as_set_bundle.name }}
-{% else %}
-define AS_SET_{{ as_set_bundle.name }}_prefixes = [
-{{ write_prefix_list(as_set_bundle.prefixes, True) }}
+{% for this_ip_ver in list_ip_vers %}
+{%   set this_ip_ver_prefixes = as_set_bundle.prefixes|selectattr("prefix", "is_ipver", this_ip_ver)|list %}
+{%   if this_ip_ver_prefixes|length == 0 %}
+# no IPv{{ this_ip_ver }} prefixes found for {{ as_set_bundle.name }}
+{%   else %}
+define AS_SET_{{ as_set_bundle.name }}_prefixes_{{ this_ip_ver }} = [
+{{ write_prefix_list(this_ip_ver_prefixes, True) }}
 ];
-{% endif %}
+{%   endif %}
+{% endfor %}
 
 {% endfor %}
 
 {% if cfg.filtering.irrdb.use_arin_bulk_whois_data.enabled and arin_whois_records %}
 # ARIN Whois database records
 {%	for origin_asn in arin_whois_records|sort %}
-define ARIN_Whois_db_{{ origin_asn }} = [
-{{ write_prefix_list(arin_whois_records[origin_asn].prefixes, True) }}
+{%    for this_ip_ver in list_ip_vers %}
+{%      set this_ip_ver_prefixes = arin_whois_records[origin_asn].prefixes|selectattr("prefix", "is_ipver", this_ip_ver)|list %}
+{%      if this_ip_ver_prefixes|length == 0 %}
+# no IPv{{ this_ip_ver }} prefixes found in the ARIN Whois database for AS{{ origin_asn }}
+{%      else %}
+define ARIN_Whois_db_{{ origin_asn }}_{{ this_ip_ver }} = [
+{{ write_prefix_list(this_ip_ver_prefixes, True) }}
 ];
+{%      endif %}
+{%    endfor %}
 {%	endfor %}
 {% endif %}
 
 {% if cfg.filtering.irrdb.use_registrobr_bulk_whois_data.enabled and registrobr_whois_records %}
 # Registro.br Whois database records
 {%	for origin_asn in registrobr_whois_records|sort %}
-define RegistroBR_Whois_db_{{ origin_asn }} = [
-{{ write_prefix_list(registrobr_whois_records[origin_asn].prefixes, True) }}
+{%    for this_ip_ver in list_ip_vers %}
+{%      set this_ip_ver_prefixes = registrobr_whois_records[origin_asn].prefixes|selectattr("prefix", "is_ipver", this_ip_ver)|list %}
+{%      if this_ip_ver_prefixes|length == 0 %}
+# no IPv{{ this_ip_ver }} prefixes found in the Registro.br Whois database for AS{{ origin_asn }}
+{%      else %}
+define RegistroBR_Whois_db_{{ origin_asn }}_{{ this_ip_ver }} = [
+{{ write_prefix_list(this_ip_ver_prefixes, True) }}
 ];
+{%      endif %}
+{%    endfor %}
 {%	endfor %}
 {% endif %}

@@ -17,18 +17,20 @@ import os
 import unittest
 
 from .base import TagASSetScenario_WithAS_SETs, \
-                  TagASSetScenarioOpenBGPD64
+                  TagASSetScenarioOpenBGPDPrevious
 from .data6 import TagASSetScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD64Instance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPreviousInstance
 
 class TagASSetScenario_WithAS_SETs_OpenBGPDIPv6(TagASSetScenario_WithAS_SETs,
                                                 TagASSetScenario_Data6,
-                                                TagASSetScenarioOpenBGPD64):
+                                                TagASSetScenarioOpenBGPDPrevious):
     __test__ = True
     SKIP_ON_TRAVIS = True
 
-    RS_INSTANCE_CLASS = OpenBGPD64Instance
+    RS_INSTANCE_CLASS = OpenBGPDPreviousInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.4, tag prefix/origin in AS-SET, IPv6"
+    SHORT_DESCR = "Live test, OpenBGPD {}, tag prefix/origin in AS-SET, IPv6".format(
+        OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
+    )
