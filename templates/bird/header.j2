@@ -7,6 +7,11 @@ debug protocols { states, routes, filters, interfaces, events };
 
 protocol device {};
 
+timeformat base         iso long;
+timeformat log          iso long;
+timeformat protocol     iso long;
+timeformat route        iso long;
+
 {% if cfg.path_hiding -%}
 {%   if "2.0.0"|target_version_le -%}
 table master sorted;
