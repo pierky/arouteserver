@@ -5,12 +5,12 @@ log "/var/log/bird.log" all;
 log syslog all;
 debug protocols { states, routes, filters, interfaces, events };
 
-protocol device {};
-
 timeformat base         iso long;
 timeformat log          iso long;
 timeformat protocol     iso long;
 timeformat route        iso long;
+
+protocol device {};
 
 {% if cfg.path_hiding -%}
 {%   if "2.0.0"|target_version_le -%}
