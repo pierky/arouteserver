@@ -35,7 +35,7 @@ class IRRDB(object):
     Each record represents a "bundle" of one or more objects and the
     data resulting from their expansion (prefixes and/or ASNs).
     A bundle is made up by one or more aut-num/as-set objects that are
-    passed to bgpq3 to retrieve prefixes and/or ASNs; bgpq3's ability
+    passed to bgpq4 to retrieve prefixes and/or ASNs; bgpq4's ability
     to aggregate prefixes is used to merge the content of each object
     into a single dataset.
     """
@@ -360,9 +360,9 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
     def _config_thread(self, thread):
         thread.ip_ver = self.builder.ip_ver
         thread.irrdbtools_cfg = {
-            "bgpq3_path": self.builder.bgpq3_path,
-            "bgpq3_host": self.builder.bgpq3_host,
-            "bgpq3_sources": self.builder.bgpq3_sources,
+            "bgpq4_path": self.builder.bgpq4_path,
+            "bgpq4_host": self.builder.bgpq4_host,
+            "bgpq4_sources": self.builder.bgpq4_sources,
             "cache_dir": self.builder.cache_dir,
             "cache_expiry": self.builder.cache_expiry,
         }

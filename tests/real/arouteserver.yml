@@ -24,8 +24,8 @@ templates_dir: "templates"
 # Directory where cached data are stored.
 cache_dir: "var/cache"
 
-# Path to the 'bgpq3' external program.
-bgpq3_path: "/usr/local/bin/bgpq3"
+# Path to the 'bgpq4' external program.
+bgpq4_path: "/usr/local/bin/bgpq4"
 
 # Cache expiry time, in seconds.
 cache_expiry: 604800

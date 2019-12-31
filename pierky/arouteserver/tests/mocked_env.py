@@ -258,11 +258,11 @@ class MockedEnv(object):
 
           Mock ASSet and RSet _run_cmd() methods.
 
-          Raw data as returned by bgpq3 are read from the local files
+          Raw data as returned by bgpq4 are read from the local files
           <base_dir>/irrdb_data/asset_<name>.json and
           <base_dir>/irrdb_data/rset_<name>_ipv[4|6].json
           Sets of unique ASNs and prefixes are built and returned in the
-          bgpq3 format.
+          bgpq4 format.
 
           Implies bypass_cache.
 

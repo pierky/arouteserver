@@ -108,15 +108,15 @@ class TestExternalResources(unittest.TestCase):
         self._test_rpki_roas_per_provider("ntt.net")
 
     def test_asset(self):
-        """External resources: ASNs from AS-SET via bgpq3"""
-        asset = ASSet(["AS-RIPENCC"], bgpq3_path="bgpq3", **cache_cfg)
+        """External resources: ASNs from AS-SET via bgpq4"""
+        asset = ASSet(["AS-RIPENCC"], bgpq4_path="bgpq4", **cache_cfg)
         asset.load_data()
         self.assertTrue(len(asset.asns) > 0)
         self.assertTrue(3333 in asset.asns)
 
     def test_rset(self):
-        """External resources: prefixes from AS-SET via bgpq3"""
-        rset = RSet(["AS-RIPENCC"], 4, False, bgpq3_path="bgpq3", **cache_cfg)
+        """External resources: prefixes from AS-SET via bgpq4"""
+        rset = RSet(["AS-RIPENCC"], 4, False, bgpq4_path="bgpq4", **cache_cfg)
         rset.load_data()
         self.assertTrue(len(rset.prefixes) > 0)
         self.assertTrue(any([p for p in rset.prefixes if p["prefix"] == "193.0.0.0"]))

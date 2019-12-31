@@ -57,9 +57,9 @@ class ConfigParserProgram(object):
         "cache_dir": "cache",
         "cache_expiry": CachedObject.DEFAULT_EXPIRY,
 
-        "bgpq3_path": "bgpq3",
-        "bgpq3_host": IRRDBInfo.BGPQ3_DEFAULT_HOST,
-        "bgpq3_sources": IRRDBInfo.BGPQ3_DEFAULT_SOURCES,
+        "bgpq4_path": "bgpq4",
+        "bgpq4_host": IRRDBInfo.BGPQ4_DEFAULT_HOST,
+        "bgpq4_sources": IRRDBInfo.BGPQ4_DEFAULT_SOURCES,
 
         "rtt_getter_path": "",
 

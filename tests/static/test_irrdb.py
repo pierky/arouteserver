@@ -74,7 +74,7 @@ class TestIRRDBInfo(TestIRRDBInfo_Base):
             object_names,
             cache_dir=self.temp_dir,
             cache_expiry=cache_expiry,
-            bgpq3_path="false"
+            bgpq4_path="false"
         )
 
     def test_010_as_set_bundle1(self):
@@ -271,7 +271,7 @@ class TestIRRDBInfo_ASSet(TestIRRDBInfo_Base):
             object_names,
             cache_dir=self.temp_dir,
             cache_expiry=cache_expiry,
-            bgpq3_path="false"
+            bgpq4_path="false"
         )
 
     @mock.patch.object(ASSet, "_run_cmd", return_value=load("asset_test_10.json"))
@@ -324,7 +324,7 @@ class TestIRRDBInfo_RSet(TestIRRDBInfo_Base):
             allow_longer_prefixes,
             cache_dir=self.temp_dir,
             cache_expiry=cache_expiry,
-            bgpq3_path="false"
+            bgpq4_path="false"
         )
 
     @mock.patch.object(RSet, "_run_cmd", return_value=load("rset_test_10.json"))

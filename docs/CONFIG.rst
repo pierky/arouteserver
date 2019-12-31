@@ -135,7 +135,7 @@ In this scenario, the route server's configuration will look like this:
 IRRDBs-based filtering
 **********************
 
-The ``filtering.irrdb`` section of the configuration files allows to use IRRDBs information to filter or to tag routes entering the route server. Information are acquired using the external program `bgpq3 <https://github.com/snar/bgpq3>`_: installations details on :doc:`INSTALLATION` page.
+The ``filtering.irrdb`` section of the configuration files allows to use IRRDBs information to filter or to tag routes entering the route server. Information are acquired using the external program `bgpq4 <https://github.com/bgp/bgpq4>`_: installations details on :doc:`INSTALLATION` page.
 
 One or more AS-SETs can be used to gather information about authorized origin ASNs and prefixes that a client can announce to the route server. AS-SETs can be set in the ``clients.yml`` file on a two levels basis:
 
@@ -180,7 +180,7 @@ Example:
      - asn: 44
        ip: "192.0.2.44"
 
-With this configuration, the following values will be used to run the bgpq3 program:
+With this configuration, the following values will be used to run the bgpq4 program:
 
 - **AS-AS11NETS** will be used for 192.0.2.11 (it's configured at client-level for that client);
 - **AS-AS22MAIN** for the 192.0.2.22 client (it's inherited from the ``asns``-level configuration of AS22, client's AS);

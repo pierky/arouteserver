@@ -15,7 +15,7 @@ Some components used by ARouteServer need Python dev header files and static lib
    # CentOS
    yum -y install gcc python-devel
 
-Please note that ARouteServer also needs `bgpq3 <https://github.com/snar/bgpq3>`_ to build IRR-based filters: details on its installation can be found within the :ref:`External programs` section.
+Please note that ARouteServer also needs `bgpq4 <https://github.com/bgp/bgpq4>`_ to build IRR-based filters: details on its installation can be found within the :ref:`External programs` section.
 
 Install using ``pip`` (suggested)
 ---------------------------------
@@ -97,19 +97,20 @@ External programs
 
 ARouteServer uses the following external programs:
 
-- (mandatory) `bgpq3 <https://github.com/snar/bgpq3>`_ is used to gather information from IRRDBs.
+- (mandatory) `bgpq4 <https://github.com/bgp/bgpq4>`_ is used to gather information from IRRDBs.
 
   To install it:
 
   .. code:: bash
 
-    mkdir /path/to/bgpq3/directory
-    cd /path/to/bgpq3/directory
-    git clone https://github.com/snar/bgpq3.git ./
-    # make and gcc packages required
+    mkdir /path/to/bgpq4/directory
+    cd /path/to/bgpq4/directory
+    git clone https://github.com/bgp/bgpq4.git ./
+    # NOTE: automake, autoconf, make and gcc packages required
+    ./bootstrap
     ./configure
     make
-    make install
+    sudo make install
 
 - (optional) `Docker <https://www.docker.com/>`_ is used to perform :doc:`live validation <LIVETESTS>` of configurations.
 

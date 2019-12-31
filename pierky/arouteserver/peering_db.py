@@ -129,7 +129,7 @@ class PeeringDBNet(PeeringDBInfo):
             return None
 
         # IRR record source
-        valid_sources_regex = IRRDBInfo.BGPQ3_DEFAULT_SOURCES.replace(",", "|")
+        valid_sources_regex = IRRDBInfo.BGPQ4_DEFAULT_SOURCES.replace(",", "|")
 
         # Converting stuff like AS-FOO@SOURCE in SOURCE::AS-FOO
         pattern = re.compile(

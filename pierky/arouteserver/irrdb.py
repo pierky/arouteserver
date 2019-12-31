@@ -112,8 +112,8 @@ class AS_SET_Bundle(object):
 
 class IRRDBInfo(CachedObject, AS_SET_Bundle):
 
-    BGPQ3_DEFAULT_HOST = "rr.ntt.net"
-    BGPQ3_DEFAULT_SOURCES = ("RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,"
+    BGPQ4_DEFAULT_HOST = "rr.ntt.net"
+    BGPQ4_DEFAULT_SOURCES = ("RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,"
                              "BBOI,BELL,JPIRR,LEVEL3,RADB,RGNET,"
                              "TC")
     EXPIRY_TIME_TAG = "irr_as_sets"
@@ -122,19 +122,19 @@ class IRRDBInfo(CachedObject, AS_SET_Bundle):
         assert isinstance(object_names, list)
 
         CachedObject.__init__(self, *args, **kwargs)
-        self.bgpq3_path = kwargs.get("bgpq3_path")
-        self.bgpq3_host = kwargs.get("bgpq3_host", self.BGPQ3_DEFAULT_HOST)
-        self.bgpq3_sources = kwargs.get("bgpq3_sources",
-                                        self.BGPQ3_DEFAULT_SOURCES)
+        self.bgpq4_path = kwargs.get("bgpq4_path")
+        self.bgpq4_host = kwargs.get("bgpq4_host", self.BGPQ4_DEFAULT_HOST)
+        self.bgpq4_sources = kwargs.get("bgpq4_sources",
+                                        self.BGPQ4_DEFAULT_SOURCES)
 
         AS_SET_Bundle.__init__(self, object_names)
 
-    def _get_bgpq3_sources(self):
+    def _get_bgpq4_sources(self):
         if self.source:
-            return "{},{}".format(self.source, self.bgpq3_sources)
-        return self.bgpq3_sources
+            return "{},{}".format(self.source, self.bgpq4_sources)
+        return self.bgpq4_sources
 
-    def _get_bgpq3_names(self):
+    def _get_bgpq4_names(self):
         res = []
         for name in self.object_names:
             source_macro = name.split("::")
@@ -151,13 +151,13 @@ class IRRDBInfo(CachedObject, AS_SET_Bundle):
         out, err = proc.communicate()
 
         if proc.returncode != 0:
-            err_msg = "bgpq3 exit code is {}".format(proc.returncode)
+            err_msg = "bgpq4 exit code is {}".format(proc.returncode)
             if err is not None and err.strip():
                 err_msg += ", stderr: {}".format(err)
             raise ValueError(err_msg)
 
         if err is not None and err.strip():
-            logging.warning("bgpq3 succeeded but an error was "
+            logging.warning("bgpq4 succeeded but an error was "
                             "printed when executing '{}': {}".format(
                                 " ".join(cmd), err.strip()
                             ))
@@ -179,19 +179,18 @@ class ASSet(IRRDBInfo):
         return "{}-as_set.json".format(self.name)
 
     def _get_data(self):
-        object_names = self._get_bgpq3_names()
+        object_names = self._get_bgpq4_names()
 
         # If the list of objects to expand is made up by
-        # an 'ASxxx' element only, avoid to run bgpq3 and
+        # an 'ASxxx' element only, avoid to run bgpq4 and
         # return only that ASN.
         if len(object_names) == 1 and \
             re.match("^AS[0-9]+$", object_names[0]):
             return [int(object_names[0][2:])]
 
-        cmd = [self.bgpq3_path]
-        cmd += ["-h", self.bgpq3_host]
-        cmd += ["-S", self._get_bgpq3_sources()]
-        cmd += ["-3"]
+        cmd = [self.bgpq4_path]
+        cmd += ["-h", self.bgpq4_host]
+        cmd += ["-S", self._get_bgpq4_sources()]
         cmd += ["-j"]
         cmd += ["-f", "1"]
         cmd += ["-l", "asn_list"]
@@ -211,7 +210,7 @@ class ASSet(IRRDBInfo):
             data = json.loads(out.decode("utf-8"))
         except Exception as e:
             raise IRRDBToolsError(
-                "Error while parsing bgpq3 output "
+                "Error while parsing bgpq4 output "
                 "for the following command: '{}': {}".format(
                     " ".join(cmd), str(e)
                 )
@@ -244,9 +243,9 @@ class RSet(IRRDBInfo):
         )
 
     def _get_data(self):
-        cmd = [self.bgpq3_path]
-        cmd += ["-h", self.bgpq3_host]
-        cmd += ["-S", self._get_bgpq3_sources()]
+        cmd = [self.bgpq4_path]
+        cmd += ["-h", self.bgpq4_host]
+        cmd += ["-S", self._get_bgpq4_sources()]
         cmd += ["-3"]
         cmd += ["-4"] if self.ip_ver == 4 else ["-6"]
         cmd += ["-A"]
@@ -255,7 +254,7 @@ class RSet(IRRDBInfo):
         if self.allow_longer_prefixes:
             cmd += ["-R"]
             cmd += ["32"] if self.ip_ver == 4 else ["128"]
-        cmd += self._get_bgpq3_names()
+        cmd += self._get_bgpq4_names()
 
         try:
             out = self._run_cmd(cmd)
@@ -271,7 +270,7 @@ class RSet(IRRDBInfo):
             data = json.loads(out.decode("utf-8"))
         except Exception as e:
             raise IRRDBToolsError(
-                "Error while parsing bgpq3 output "
+                "Error while parsing bgpq4 output "
                 "for the following command: '{}': {}".format(
                     " ".join(cmd), str(e)
                 )

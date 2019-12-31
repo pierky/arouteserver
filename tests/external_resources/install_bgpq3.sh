@@ -1,8 +1,9 @@
 #!/bin/sh
 set -ex
-wget https://github.com/snar/bgpq3/archive/master.zip
+wget https://github.com/bgp/bgpq4/archive/master.zip
 unzip master.zip
-cd bgpq3-master
+cd bgpq4-master
+./bootstrap
 ./configure
 make
 sudo make install

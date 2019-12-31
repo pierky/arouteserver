@@ -122,8 +122,8 @@ class ConfigBuilder(object):
 
     def __init__(self, template_dir=None, template_name=None,
                  cache_dir=None, cache_expiry=CachedObject.DEFAULT_EXPIRY,
-                 bgpq3_path="bgpq3", bgpq3_host=IRRDBInfo.BGPQ3_DEFAULT_HOST,
-                 bgpq3_sources=IRRDBInfo.BGPQ3_DEFAULT_SOURCES,
+                 bgpq4_path="bgpq4", bgpq4_host=IRRDBInfo.BGPQ4_DEFAULT_HOST,
+                 bgpq4_sources=IRRDBInfo.BGPQ4_DEFAULT_SOURCES,
                  rtt_getter_path=None, threads=4,
                  ip_ver=None, perform_graceful_shutdown=False,
                  ignore_errors=[], live_tests=False,
@@ -283,28 +283,28 @@ class ConfigBuilder(object):
 
                 - *--local-files-dir* CLI argument.
 
-            bgpq3_path (str): path to the 'bgpq3' external program; this will
+            bgpq4_path (str): path to the 'bgpq4' external program; this will
                 be used to expand AS macros and to obtain the list of
                 authorized origin ASNs and prefixes from IRRDBs.
 
                 Same of:
 
-                - *bgpq3_path* program's configuration file option.
+                - *bgpq4_path* program's configuration file option.
 
-            bgpq3_host (str): the host that will be queried by bgpq3; this
+            bgpq4_host (str): the host that will be queried by bgpq4; this
                 will be used to set the *-h* argument of the program.
 
                 Same of:
 
-                - *bgpq3_host* program's configuration file option.
+                - *bgpq4_host* program's configuration file option.
 
-            bgpq3_sources (str): a comma separated list of sources that will
-                be used by the bgpq3 program; this will be used to set the
-                *-S* argument of bgpq3.
+            bgpq4_sources (str): a comma separated list of sources that will
+                be used by the bgpq4 program; this will be used to set the
+                *-S* argument of bgpq4.
 
                 Same of:
 
-                - *bgpq3_sources* program's configuration file option.
+                - *bgpq4_sources* program's configuration file option.
 
             rtt_getter_path (str): path to the program that is executed to
                 determine the RTT of a peer.
@@ -316,7 +316,7 @@ class ConfigBuilder(object):
                 - *rtt_getter_path* program's configuration file option.
 
             threads (int): number of concurrent threads used to gather
-                additional data from external sources (bgpq3, PeeringDB, ...)
+                additional data from external sources (bgpq4, PeeringDB, ...)
 
                 Same of:
 
@@ -349,9 +349,9 @@ class ConfigBuilder(object):
 
         self.cache_expiry = normalize_expiry_time(cache_expiry)
 
-        self.bgpq3_path = bgpq3_path
-        self.bgpq3_host = bgpq3_host
-        self.bgpq3_sources = bgpq3_sources
+        self.bgpq4_path = bgpq4_path
+        self.bgpq4_host = bgpq4_host
+        self.bgpq4_sources = bgpq4_sources
 
         self.rtt_getter_path = rtt_getter_path
 

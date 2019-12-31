@@ -13,12 +13,12 @@ templates_dir: "templates"
 
 cache_dir: "./var/cache"
 
-# Path to the 'bgpq3' external program.
-#bgpq3_path: "bgpq3"
+# Path to the 'bgpq4' external program.
+#bgpq4_path: "bgpq4"
 
-# Host running IRRD software used by bgpq3
-# (bgpq3 -h argument).
+# Host running IRRD software used by bgpq4
+# (bgpq4 -h argument).
 # Use "host:port" to specify alternate port.
-#bgpq3_host: "rr.ntt.net"
+#bgpq4_host: "rr.ntt.net"
 
 rtt_getter_path: utils/fake_rtt_getter.sh
