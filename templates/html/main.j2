@@ -90,6 +90,28 @@ List of "transit-free" networks' ASNs:
 </p>
 </li>
 {% endif %}
+
+{% if cfg.filtering.never_via_route_servers.peering_db or cfg.filtering.never_via_route_servers.asns %}
+<li><p>
+Routes with an AS_PATH containing one or more <strong>"never via route-servers" networks</strong>' ASNs are <strong>rejected</strong>.
+</p>
+<p>
+{% if cfg.filtering.never_via_route_servers.peering_db %}
+List of "never via route-servers" networks' ASNs is generated from PeeringDB.
+{% else %}
+List of "never via route-servers" networks' ASNs:
+{% endif %}
+{% if cfg.filtering.never_via_route_servers.asns and cfg.filtering.never_via_route_servers.peering_db %}
+Also, the following ASNs are always included:
+{% endif %}
+{% if cfg.filtering.never_via_route_servers.asns %}
+{%  for asn in cfg.filtering.never_via_route_servers.asns %}
+<a href="https://stat.ripe.net/AS{{ asn }}">{{ asn }}</a>{% if not loop.last %}, {% endif %}
+{%  endfor %}
+{% endif %}
+</p>
+</li>
+{% endif %}
 </ul>
 
 

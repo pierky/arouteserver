@@ -20,6 +20,8 @@ Reject invalid AS_PATHs (private/invalid ASNs)             Yes      Yes         
 ---------------------------------------------------------- -------- ----------- ------------ ------------ 
 Reject AS_PATHs containing transit-free ASNs               Yes      Yes         Yes          Yes          
 ---------------------------------------------------------- -------- ----------- ------------ ------------ 
+Reject 'never via route-servers' ASNs                      Yes      Yes         Yes          Yes          
+---------------------------------------------------------- -------- ----------- ------------ ------------ 
 Reject bogons                                              Yes      Yes         Yes          Yes          
 ---------------------------------------------------------- -------- ----------- ------------ ------------ 
 Max-prefix limit                                           Yes      Yes         Yes :sup:`1` Yes :sup:`1` 

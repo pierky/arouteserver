@@ -6,6 +6,12 @@ Change log
 next release
 ------------
 
+- New feature: *never via route-servers* ASNs filtering.
+
+  To drop routes containing an ASN which is classified as "never via route-servers" on PeeringDB (`info_never_via_route_servers` `attribute <https://github.com/peeringdb/peeringdb/issues/394>`_).
+
+  **Please note**: this feature is enabled by default.
+
 - Improvement: add `alice-lg/birdwatcher <https://github.com/alice-lg/birdwatcher>`_ support to BIRD configs.
 
   Changes the default BIRD time format to support `alice-lg/birdwatcher <https://github.com/alice-lg/birdwatcher>`_ out of the box.

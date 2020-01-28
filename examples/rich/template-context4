@@ -276,6 +276,11 @@ cfg:
           absolute: 100
           relative: 15
       restart_after: 30
+    never_via_route_servers:
+      asns:
+      - 2914
+      - 3491
+      peering_db: true
     next_hop:
       policy: same-as
     reject_invalid_as_in_as_path: true
@@ -687,7 +692,7 @@ clients:
       max_prefix:
         action: restart
         limit_ipv4: 150
-        limit_ipv6: 126
+        limit_ipv6: 138
         peering_db:
           enabled: true
           increment:
@@ -829,13 +834,6 @@ irrdb_info
   name: AS3333
   prefixes:
   - comment: null
-    exact: true
-    ge: null
-    le: null
-    length: 32
-    max_length: 32
-    prefix: 85.195.64.1
-  - comment: null
     exact: false
     ge: null
     le: 32
@@ -959,15 +957,26 @@ AS10745:
   le: 32
   length: 24
   max_length: 32
-  prefix: 199.43.0.0
+  prefix: 192.149.252.0
 - exact: false
   ge: 24
   le: 32
   length: 24
   max_length: 32
-  prefix: 192.149.252.0
+  prefix: 199.43.0.0
 
 
 registrobr_whois_db_records
----------------------
+---------------------------
 {}
+
+
+never_via_route_servers_asns
+----------------------------
+- 2914
+- 3491
+- 6830
+- 6908
+- 11164
+- 58768
+- 393573

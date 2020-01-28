@@ -52,7 +52,7 @@ Features
   - minimum and maximum IPv4/IPv6 **prefix length**;
   - maximum **AS_PATH length**;
   - reject **invalid AS_PATHs** (containing `private/invalid ASNs <http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html>`_);
-  - reject AS_PATHs containing **transit-free** ASNs;
+  - reject AS_PATHs containing **transit-free** or **never via route-servers** ASNs (using `PeeringDB info_never_via_route_servers attribute <https://github.com/peeringdb/peeringdb/issues/394>`_);
   - reject **bogons**;
   - **max-prefix limit** based on global or client-specific values or on **PeeringDB** data.
 

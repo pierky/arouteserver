@@ -293,6 +293,11 @@ match from {{ client.ip }} nexthop {{ same_as_client.ip }} set community delete 
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS { " ~ client_transit_free_asns|sort|join(", ") ~ " }", 8) }}
 {% endif %}
 
+{% if never_via_route_servers_asns %}
+# AS_PATH: never via route-servers ASNs
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS { " ~ never_via_route_servers_asns|sort|join(", ") ~ " }", 15) }}
+{% endif %}
+
 {% if client.cfg.filtering.irrdb.white_list_route %}
 # client's white list
 # Add the $INTCOMM_ROUTE_OK_WL ext community to routes which

@@ -188,6 +188,33 @@ class PeeringDBNetIXLan(PeeringDBInfo):
     def _get_peeringdb_url(self):
         return self.PEERINGDB_URL.format(ixlanid=self.ixlanid)
 
+class PeeringDBNetNeverViaRouteServers(PeeringDBInfo):
+
+    PEERINGDB_URL = "https://www.peeringdb.com/api/net?info_never_via_route_servers=1"
+
+    EXPIRY_TIME_TAG = "pdb_info"
+
+    def __init__(self, **kwargs):
+        PeeringDBInfo.__init__(self, **kwargs)
+
+        self.networks = []
+
+    def load_data(self):
+        logging.debug("Getting 'never via route-servers' networks from PeeringDB")
+
+        PeeringDBInfo.load_data(self)
+
+        for network in self.raw_data:
+            self.networks.append({
+                "asn": network["asn"]
+            })
+
+    def _get_object_filename(self):
+        return "peeringdb_neverviarouteservers.json"
+
+    def _get_peeringdb_url(self):
+        return self.PEERINGDB_URL.format()
+
 class PeeringDBIXList(PeeringDBInfo):
 
     PEERINGDB_URL = "https://peeringdb.com/api/ix"

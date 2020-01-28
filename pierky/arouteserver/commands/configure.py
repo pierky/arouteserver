@@ -272,8 +272,12 @@ class ConfigureCommand(ARouteServerCommand):
                      3257, 3320, 3356, 3549, 5511, 6453, 6461,
                      6762, 6830, 7018, 12956]
         }
+        filtering["never_via_route_servers"] = {
+            "peering_db": True
+        }
         self.notes.append(
-            "Routes with 'transit-free networks' ASNs in the middle of "
+            "Routes with 'transit-free networks' or "
+            "'never via route-server' (PeeringDB) ASNs in the middle of "
             "AS_PATH are rejected."
         )
 

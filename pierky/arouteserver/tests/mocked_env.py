@@ -29,7 +29,8 @@ from pierky.arouteserver.enrichers.irrdb import IRRDBConfigEnricher_ASNs, \
 from pierky.arouteserver.enrichers.rtt import RTTGetterConfigEnricher
 from pierky.arouteserver.ipaddresses import IPNetwork
 from pierky.arouteserver.irrdb import ASSet, RSet
-from pierky.arouteserver.peering_db import PeeringDBInfo, PeeringDBNet
+from pierky.arouteserver.peering_db import PeeringDBInfo, PeeringDBNet, \
+                                           PeeringDBNetNeverViaRouteServers
 from pierky.arouteserver.ripe_rpki_cache import RIPE_RPKI_ROAs
 
 
@@ -184,6 +185,9 @@ class MockedEnv(object):
         def get_url_net(self):
             return "net_{}.json".format(self.asn)
 
+        def get_url_never_via_route_servers(self):
+            return "never_via_route_servers.json"
+
         mock_get_data_from_peeringdb = mock.patch.object(
             PeeringDBInfo, "_get_data_from_peeringdb", autospec=True
         ).start()
@@ -193,6 +197,11 @@ class MockedEnv(object):
             PeeringDBNet, "_get_peeringdb_url", autospec=True
         ).start()
         mock_get_url_net.side_effect = get_url_net
+
+        mock_get_url_net = mock.patch.object(
+            PeeringDBNetNeverViaRouteServers, "_get_peeringdb_url", autospec=True
+        ).start()
+        mock_get_url_net.side_effect = get_url_never_via_route_servers
 
     def do_mock_ripe_rpki_cache(mocked_env):
 

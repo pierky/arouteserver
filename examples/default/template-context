@@ -254,6 +254,9 @@ cfg:
           absolute: 100
           relative: 15
       restart_after: 15
+    never_via_route_servers:
+      asns: null
+      peering_db: true
     next_hop:
       policy: strict
     reject_invalid_as_in_as_path: true
@@ -811,13 +814,6 @@ irrdb_info
     exact: true
     ge: null
     le: null
-    length: 32
-    max_length: 32
-    prefix: 85.195.64.1
-  - comment: null
-    exact: true
-    ge: null
-    le: null
     length: 21
     max_length: 32
     prefix: 193.0.0.0
@@ -919,5 +915,16 @@ arin_whois_db_records
 
 
 registrobr_whois_db_records
----------------------
+---------------------------
 {}
+
+
+never_via_route_servers_asns
+----------------------------
+- 6830
+- 6908
+- 11164
+- 2914
+- 3491
+- 58768
+- 393573

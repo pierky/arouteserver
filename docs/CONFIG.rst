@@ -497,6 +497,7 @@ The reason that brought the server to reject the route is identified using a num
      12 Prefix not in IRRDB AS-SETs
      13 Invalid prefix length
      14 RPKI INVALID route
+     15 Never via route-servers ASN in AS_PATH
 
   65535 Unknown
   ===== =========================================================

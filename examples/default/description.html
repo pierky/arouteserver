@@ -60,6 +60,14 @@
 
 <li><p>Routes whose AS_PATH contains <a href="http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html"><strong>private or invalid ASNs</strong></a> are rejected.</p></li>
 
+
+<li><p>
+Routes with an AS_PATH containing one or more <strong>"never via route-servers" networks</strong>' ASNs are <strong>rejected</strong>.
+</p>
+<p>
+List of "never via route-servers" networks' ASNs is generated from PeeringDB.
+</p>
+</li>
 </ul>
 
 

@@ -33,6 +33,7 @@ from .enrichers.irrdb import IRRDBConfigEnricher_ASNs, \
                              IRRDBConfigEnricher_Prefixes
 from .enrichers.pdb_as_set import PeeringDBConfigEnricher_ASSet
 from .enrichers.pdb_max_prefix import PeeringDBConfigEnricher_MaxPrefix
+from .enrichers.pdb_never_via_route_servers import NeverViaRouteServersEnricher
 from .enrichers.rpki_roas import RPKIROAsEnricher
 from .enrichers.rtt import RTTGetterConfigEnricher
 from .errors import MissingDirError, MissingFileError, BuilderError, \
@@ -419,6 +420,9 @@ class ConfigBuilder(object):
         # { "<len>": [{"prefix": "<ip>/<len>", "max_len": x, "asn": "AS<n>"}]
         self.rpki_roas = {}
 
+        # [<asn (int)>]
+        self.never_via_route_servers_asns = []
+
         # { "<origin_asn>": ["a/b", "c/d"] }
         self.arin_whois_records = {}
         self.registrobr_whois_records = {}
@@ -517,6 +521,12 @@ class ConfigBuilder(object):
         if irrdb_cfg["use_registrobr_bulk_whois_data"]["enabled"]:
             used_enricher_classes.append(RegistroBRWhoisDBDumpEnricher)
 
+        self.never_via_route_servers_asns = list(
+            set(filtering["never_via_route_servers"]["asns"] or [])
+        )
+        if filtering["never_via_route_servers"]["peering_db"]:
+            used_enricher_classes.append(NeverViaRouteServersEnricher)
+
         for enricher_class in used_enricher_classes:
             enricher = enricher_class(self, threads=self.threads)
             try:
@@ -574,6 +584,7 @@ class ConfigBuilder(object):
         self.data["rpki_roas"] = sorted_rpki_roas()
         self.data["arin_whois_records"] = self.arin_whois_records
         self.data["registrobr_whois_records"] = self.registrobr_whois_records
+        self.data["never_via_route_servers_asns"] = self.never_via_route_servers_asns
         self.data["live_tests"] = self.live_tests
         self.data["rtt_based_functions_are_used"] = \
             self.cfg_general.rtt_based_functions_are_used

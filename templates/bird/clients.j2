@@ -249,6 +249,12 @@ filter receive_from_{{ client.id }} {
 	{%	endif %}
 	{% endif %}
 
+	{% if never_via_route_servers_asns %}
+	# AS_PATH: never via route-servers ASNs
+	if bgp_path ~ [{{ never_via_route_servers_asns|sort|join(", ")}}] then
+	{{ reject(client, 15, '"AS_PATH [", bgp_path ,"] contains never via route-servers ASN - REJECTING ", net') }}
+	{% endif %}
+
 	{% if client.ip|ipaddr_ver == 6 %}
 	# Prefix: only IPv6 Global Unicast space allowed
 	if !(net ~ [2000::/3+]) then

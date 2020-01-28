@@ -135,6 +135,13 @@ class ConfigParserGeneral(ConfigParserBase):
         f["transit_free"]["asns"] = ValidatorASNList(
             mandatory=False
         )
+        f["never_via_route_servers"] = OrderedDict()
+        f["never_via_route_servers"]["peering_db"] = ValidatorBool(
+            default=True
+        )
+        f["never_via_route_servers"]["asns"] = ValidatorASNList(
+            mandatory=False
+        )
 
         f["irrdb"] = OrderedDict()
         i = f["irrdb"]

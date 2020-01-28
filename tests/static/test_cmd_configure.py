@@ -68,6 +68,9 @@ class TestConfigureCmd(ARouteServerTestCase):
                         6762, 6830, 7018, 12956
                     ]
                 },
+                "never_via_route_servers": {
+                    "peering_db": True
+                },
                 "irrdb": {
                     "enforce_origin_in_as_set": True,
                     "enforce_prefix_in_as_set": True,

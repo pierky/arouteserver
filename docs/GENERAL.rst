@@ -317,6 +317,44 @@ in the left-most position.
 
 
 
+'Never via route-servers' networks: ``never_via_route_servers``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Similarly to what happens with the **transit_free** config
+knob, any route with one of these ASNs in the AS_PATH
+will be rejected.
+If the **peering_db** option below within this section is
+set to True, ARouteServer acquires the list of ASNs from
+PeeringDB (based on the **info_never_via_route_servers**
+attribute).
+If **peering_db** is False and **asns** is not set or empty,
+the feature will be implicitly disabled.
+
+- ``peering_db``:
+  When set to True, the list of networks is automatically
+  retrieved from PeeringDB.
+
+
+  Default: **True**
+
+  Example:
+
+  .. code:: yaml
+
+     peering_db: True
+
+
+
+- ``asns``:
+  Comma separated list of ASNs which will be used to filter
+  incoming routes. When **peering_db** is True, the ASNs
+  listed here are added to those retrieved from PeeringDB.
+
+
+  Default: **none**
+
+
+
 IRRDB filters: ``irrdb``
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
