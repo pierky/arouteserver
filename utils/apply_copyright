@@ -1,5 +1,5 @@
 #!/bin/bash
-LEN=`wc -l COPYRIGHT | cut -d " " -f 1`
+LEN=`wc -l COPYRIGHT | awk '{print $1}'`
 FIRST_LINE="`head -n 1 COPYRIGHT`"
 
 function apply_to_file() {
@@ -16,7 +16,7 @@ function update_file() {
 	head -n 1 "$F" | grep "$FIRST_LINE" &>/dev/null
 
 	if [ $? -ne 0 ]; then
-		DIFF_LINES_NUM=`head -n $LEN "$F" | diff COPYRIGHT - | egrep "^<" | wc -l`
+		DIFF_LINES_NUM=`head -n $LEN "$F" | diff COPYRIGHT - | egrep "^<" | wc -l | awk '{print $1}'`
 
 		if [ "$DIFF_LINES_NUM" == "1" ]; then
 			head -n 1 COPYRIGHT > "$F.copyright"
