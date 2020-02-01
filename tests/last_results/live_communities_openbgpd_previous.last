@@ -34,6 +34,6 @@ Live test, OpenBGPD 6.5, BGP communities, IPv6: dumping routes...
 Live test, OpenBGPD 6.5, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 199.931s
+Ran 26 tests in 186.877s
 
 OK

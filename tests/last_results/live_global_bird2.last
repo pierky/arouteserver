@@ -18,6 +18,8 @@ Live test, BIRD v2, global scenario, IPv4: bad prefixes received by rs: global b
 Live test, BIRD v2, global scenario, IPv4: bad prefixes received by rs: invalid ASN in AS-PATH ... ok
 Live test, BIRD v2, global scenario, IPv4: bad prefixes received by rs: invalid NEXT_HOP ... ok
 Live test, BIRD v2, global scenario, IPv4: bad prefixes received by rs: left-most ASN ... ok
+Live test, BIRD v2, global scenario, IPv4: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) ... ok
+Live test, BIRD v2, global scenario, IPv4: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) ... ok
 Live test, BIRD v2, global scenario, IPv4: bad prefixes received by rs: origin not in AS-SET ... ok
 Live test, BIRD v2, global scenario, IPv4: bad prefixes received by rs: prefix not in AS-SET ... ok
 Live test, BIRD v2, global scenario, IPv4: bad prefixes received by rs: invalid prefix-len ... ok
@@ -101,6 +103,8 @@ Live test, BIRD v2, global scenario, IPv4, tag: bad prefixes received by rs: glo
 Live test, BIRD v2, global scenario, IPv4, tag: bad prefixes received by rs: invalid ASN in AS-PATH ... ok
 Live test, BIRD v2, global scenario, IPv4, tag: bad prefixes received by rs: invalid NEXT_HOP ... ok
 Live test, BIRD v2, global scenario, IPv4, tag: bad prefixes received by rs: left-most ASN ... ok
+Live test, BIRD v2, global scenario, IPv4, tag: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) ... ok
+Live test, BIRD v2, global scenario, IPv4, tag: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) ... ok
 Live test, BIRD v2, global scenario, IPv4, tag: bad prefixes received by rs: origin not in AS-SET ... ok
 Live test, BIRD v2, global scenario, IPv4, tag: bad prefixes received by rs: prefix not in AS-SET ... ok
 Live test, BIRD v2, global scenario, IPv4, tag: bad prefixes received by rs: invalid prefix-len ... ok
@@ -186,6 +190,8 @@ Live test, BIRD v2, global scenario, IPv6: bad prefixes received by rs: global b
 Live test, BIRD v2, global scenario, IPv6: bad prefixes received by rs: invalid ASN in AS-PATH ... ok
 Live test, BIRD v2, global scenario, IPv6: bad prefixes received by rs: invalid NEXT_HOP ... ok
 Live test, BIRD v2, global scenario, IPv6: bad prefixes received by rs: left-most ASN ... ok
+Live test, BIRD v2, global scenario, IPv6: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) ... ok
+Live test, BIRD v2, global scenario, IPv6: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) ... ok
 Live test, BIRD v2, global scenario, IPv6: bad prefixes received by rs: origin not in AS-SET ... ok
 Live test, BIRD v2, global scenario, IPv6: bad prefixes received by rs: prefix not in AS-SET ... ok
 Live test, BIRD v2, global scenario, IPv6: bad prefixes received by rs: invalid prefix-len ... ok
@@ -269,6 +275,8 @@ Live test, BIRD v2, global scenario, IPv6, tag: bad prefixes received by rs: glo
 Live test, BIRD v2, global scenario, IPv6, tag: bad prefixes received by rs: invalid ASN in AS-PATH ... ok
 Live test, BIRD v2, global scenario, IPv6, tag: bad prefixes received by rs: invalid NEXT_HOP ... ok
 Live test, BIRD v2, global scenario, IPv6, tag: bad prefixes received by rs: left-most ASN ... ok
+Live test, BIRD v2, global scenario, IPv6, tag: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) ... ok
+Live test, BIRD v2, global scenario, IPv6, tag: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) ... ok
 Live test, BIRD v2, global scenario, IPv6, tag: bad prefixes received by rs: origin not in AS-SET ... ok
 Live test, BIRD v2, global scenario, IPv6, tag: bad prefixes received by rs: prefix not in AS-SET ... ok
 Live test, BIRD v2, global scenario, IPv6, tag: bad prefixes received by rs: invalid prefix-len ... ok
@@ -336,6 +344,6 @@ Live test, BIRD v2, global scenario, IPv6, tag: dumping routes...
 Live test, BIRD v2, global scenario, IPv6, tag: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 320 tests in 267.330s
+Ran 328 tests in 239.216s
 
 OK

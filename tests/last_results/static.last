@@ -65,6 +65,8 @@ General config parser: max_prefix general_limit_ipv4 ... ok
 General config parser: max_prefix general_limit_ipv6 ... ok
 General config parser: max_prefix PeeringDB ... ok
 General config parser: max_prefix PeeringDB (pre v0.13.0 format) ... ok
+General config parser: never via route-servers, asns ... ok
+General config parser: never via route-servers, peering_db ... ok
 General config parser: next_hop.policy ... ok
 General config parser: next_hop_policy (pre v0.6.0 format) ... ok
 General config parser: overlapping communities, inbound/custom ... ok
@@ -190,6 +192,6 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 190 tests in 95.173s
+Ran 192 tests in 39.055s
 
 OK
