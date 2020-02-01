@@ -60,10 +60,6 @@ jobs:
     - <<: *installation-stage
       env: DISTRO=ubuntu-rolling PYVER=3
 
-    # Ubuntu, Trusty
-    - <<: *installation-stage
-      env: DISTRO=ubuntu-trusty PYVER=3
-
     # Debian, stable
     - <<: *installation-stage
       env: DISTRO=debian-stable PYVER=3
