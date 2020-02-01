@@ -154,6 +154,10 @@ Who is using ARouteServer?
 
 - `DO-IX <https://www.do-ix.net/>`__, BIRD.
 
+- `FCIX <https://fcix.net/>`__, BIRD.
+
+- `GAVLIX <https://gavlix.se/>`__.
+
 - `IX-Denver <http://ix-denver.org/>`__, BIRD.
 
 - `MBIX <http://www.mbix.ca/>`__, BIRD.
