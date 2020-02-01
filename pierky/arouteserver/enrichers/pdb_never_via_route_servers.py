@@ -28,14 +28,14 @@ class NeverViaRouteServersEnricher(BaseConfigEnricher):
         try:
             peeringdb_data = PeeringDBNetNeverViaRouteServers(
                cache_dir=self.builder.cache_dir,
-                cache_expiry=self.builder.cache_expiry,
+               cache_expiry=self.builder.cache_expiry,
             )
             peeringdb_data.load_data()
         except PeeringDBNoInfoError:
             # No data found on PeeringDB.
-            logging.warnig("No networks found on PeeringDB "
-                           "with 'info_never_via_route_servers' "
-                           "attribute set.")
+            logging.warning("No networks found on PeeringDB "
+                            "with 'info_never_via_route_servers' "
+                            "attribute set.")
             return
         except PeeringDBError as e:
             logging.error(
