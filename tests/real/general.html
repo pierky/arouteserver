@@ -673,6 +673,98 @@ The NO_EXPORT well-known community is also added.
   </tbody>
 </table>
 
+
+
+<h2>Reject reasons</h2>
+
+<ul>
+<li><p>The following values are used to identify the reason for which
+routes are rejected. This is mostly used for troubleshooting,
+internal reporting purposes or in the route server log files.</p></li>
+
+</ul>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Reason</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td align=right>0</td>
+    <td>Generic code: the route must be treated as rejected</td>
+  </tr>
+  <tr>
+    <td align=right>1</td>
+    <td>Invalid AS_PATH length</td>
+  </tr>
+  <tr>
+    <td align=right>2</td>
+    <td>Prefix is bogon</td>
+  </tr>
+  <tr>
+    <td align=right>3</td>
+    <td>Prefix is in global blacklist</td>
+  </tr>
+  <tr>
+    <td align=right>4</td>
+    <td>Invalid AFI</td>
+  </tr>
+  <tr>
+    <td align=right>5</td>
+    <td>Invalid NEXT_HOP</td>
+  </tr>
+  <tr>
+    <td align=right>6</td>
+    <td>Invalid left-most ASN</td>
+  </tr>
+  <tr>
+    <td align=right>7</td>
+    <td>Invalid ASN in AS_PATH</td>
+  </tr>
+  <tr>
+    <td align=right>8</td>
+    <td>Transit-free ASN in AS_PATH</td>
+  </tr>
+  <tr>
+    <td align=right>9</td>
+    <td>Origin ASN not in IRRDB AS-SETs</td>
+  </tr>
+  <tr>
+    <td align=right>10</td>
+    <td>IPv6 prefix not in global unicast space</td>
+  </tr>
+  <tr>
+    <td align=right>11</td>
+    <td>Prefix is in client blacklist</td>
+  </tr>
+  <tr>
+    <td align=right>12</td>
+    <td>Prefix not in IRRDB AS-SETs</td>
+  </tr>
+  <tr>
+    <td align=right>13</td>
+    <td>Invalid prefix length</td>
+  </tr>
+  <tr>
+    <td align=right>14</td>
+    <td>RPKI INVALID route</td>
+  </tr>
+  <tr>
+    <td align=right>15</td>
+    <td>Never via route-servers ASN in AS_PATH</td>
+  </tr>
+  <tr>
+    <td align=right>65535</td>
+    <td>Unknown</td>
+  </tr>
+  </tbody>
+</table>
+
+
+
 * For RTT-based communities, the following values can be used for <em>X</em>: 
 5, 10, 15, 20, 30, 50, 100, 200, 500
 

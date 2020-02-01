@@ -478,29 +478,7 @@ The goal of this feature is to allow the deployment of route collectors that can
 
 The reason that brought the server to reject the route is identified using a numeric value in the last part of the BGP Community; the list of reject reasons follow:
 
-  ===== =========================================================
-     ID Reason
-  ===== =========================================================
-      0 Special meaning: the route must be treated as rejected. *
-
-      1 Invalid AS_PATH length
-      2 Prefix is bogon
-      3 Prefix is in global blacklist
-      4 Invalid AFI
-      5 Invalid NEXT_HOP
-      6 Invalid left-most ASN
-      7 Invalid ASN in AS_PATH
-      8 Transit-free ASN in AS_PATH
-      9 Origin ASN not in IRRDB AS-SETs
-     10 IPv6 prefix not in global unicast space
-     11 Prefix is in client blacklist
-     12 Prefix not in IRRDB AS-SETs
-     13 Invalid prefix length
-     14 RPKI INVALID route
-     15 Never via route-servers ASN in AS_PATH
-
-  65535 Unknown
-  ===== =========================================================
+.. include:: REJECT_REASON_COMMUNITIES.txt
 
 \* This is not really a reject reason code, it only means that the route must be treated as rejected and must not be propagated to clients.
 

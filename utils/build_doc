@@ -62,6 +62,29 @@ if [ -n "$1" ]; then
 fi
 
 # ----------------------------------------------------
+D=docs/REJECT_REASON_COMMUNITIES.txt
+cat << EOF > $D
+.. DO NOT EDIT: this file is automatically created by ../utils/build_doc
+
+  ===== =========================================================
+     ID Reason
+  ===== =========================================================
+      0 Special meaning: the route must be treated as rejected. *
+
+EOF
+cat << EOF | python >> $D
+from pierky.arouteserver.builder import ConfigBuilder
+for reason, description in ConfigBuilder.REJECT_REASONS.items():
+    print("{0:>7} {1}".format(reason, description))
+
+EOF
+cat << EOF >> $D
+
+  65535 Unknown
+  ===== =========================================================
+EOF
+
+# ----------------------------------------------------
 
 title "Rendering GENERAL.rst from config.d/general.yml"
 ./utils/make_general.py

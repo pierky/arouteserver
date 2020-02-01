@@ -12,9 +12,15 @@ next release
 
   **Please note**: this feature is enabled by default.
 
+  Related: `issue #55 on GitHub <https://github.com/pierky/arouteserver/issues/55>`_.
+
 - Improvement: add `alice-lg/birdwatcher <https://github.com/alice-lg/birdwatcher>`_ support to BIRD configs.
 
   Changes the default BIRD time format to support `alice-lg/birdwatcher <https://github.com/alice-lg/birdwatcher>`_ out of the box.
+
+- Improvement: include a table with the reject codes in the HTML output.
+
+  Related: `issue #54 on GitHub <https://github.com/pierky/arouteserver/issues/54>`_.
 
 v0.23.0
 -------
