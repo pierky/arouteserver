@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright (C) 2017-2018 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -84,7 +84,7 @@ class CfgStatement(object):
 
         self.statement_value = match.group(3)
 
-        if self.name == "asns":
+        if self.name == "asns" and self.statement_value == ">":
             self.statement_value += "\n"
             self.statement_value += self.get_next_line() + "\n"
             self.statement_value += self.get_next_line() + "\n"
@@ -279,6 +279,10 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
             CfgStatement("reject_invalid_as_in_as_path", t="Invalid ASNs in AS_PATH", pre_comment=True),
             CfgStatement("transit_free", t="Transit-free networks", post_comment=True, sub=[
                 CfgStatement("action", pre_comment=True),
+                CfgStatement("asns", pre_comment=True)
+            ]),
+            CfgStatement("never_via_route_servers", t="'Never via route-servers' networks", post_comment=True, sub=[
+                CfgStatement("peering_db", pre_comment=True),
                 CfgStatement("asns", pre_comment=True)
             ]),
             CfgStatement("irrdb", t="IRRDB filters", post_comment=True, sub=[

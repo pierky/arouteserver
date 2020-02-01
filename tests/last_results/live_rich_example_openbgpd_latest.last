@@ -12,6 +12,6 @@ Live test, OpenBGPD 6.6, examples, rich config, IPv6: dumping routes...
 Live test, OpenBGPD 6.6, examples, rich config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 60.943s
+Ran 4 tests in 55.948s
 
 OK

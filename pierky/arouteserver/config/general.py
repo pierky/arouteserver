@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2019 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -133,6 +133,13 @@ class ConfigParserGeneral(ConfigParserBase):
             "action", ("reject", "warning"), mandatory=False, default="reject"
         )
         f["transit_free"]["asns"] = ValidatorASNList(
+            mandatory=False
+        )
+        f["never_via_route_servers"] = OrderedDict()
+        f["never_via_route_servers"]["peering_db"] = ValidatorBool(
+            default=True
+        )
+        f["never_via_route_servers"]["asns"] = ValidatorASNList(
             mandatory=False
         )
 

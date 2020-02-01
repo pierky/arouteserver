@@ -17,6 +17,9 @@ default             reject_invalid_as_in_as_path: True
                     transit_free:
 default               action: None
 default               asns: None
+                    never_via_route_servers:
+default               peering_db: True
+default               asns: None
                     irrdb:
 default               enforce_origin_in_as_set: True
 default               enforce_prefix_in_as_set: True

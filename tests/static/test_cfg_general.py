@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2019 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -1004,6 +1004,16 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._test_option(self.cfg["filtering"]["transit_free"], "action", ("reject", "warning"))
         self._test_optional(self.cfg["filtering"]["transit_free"], "action")
 
+    def test_never_via_route_servers_peering_db(self):
+        """{}: never via route-servers, peering_db"""
+        self.assertEqual(self.cfg["filtering"]["never_via_route_servers"]["peering_db"], True)
+        self._test_bool_val(self.cfg["filtering"]["never_via_route_servers"], "peering_db")
+
+    def test_never_via_route_servers_asns(self):
+        """{}: never via route-servers, asns"""
+        self.assertEqual(self.cfg["filtering"]["never_via_route_servers"]["asns"], None)
+        self._test_optional(self.cfg["filtering"]["never_via_route_servers"], "asns")
+
     def test_transit_free_asns(self):
         """{}: transit free, ASNs list"""
         self.assertEqual(self.cfg["filtering"]["transit_free"]["asns"], [174, 209, 286, 701, 1239, 1299, 2828, 2914, 3257, 3320, 3356, 3549, 5511, 6453, 6461, 6762, 6830, 7018, 12956])
@@ -1077,6 +1087,10 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 },
                 "transit_free": {
                     "action": None,
+                    "asns": None
+                },
+                "never_via_route_servers": {
+                    "peering_db": True,
                     "asns": None
                 },
                 "irrdb": {
@@ -1193,6 +1207,10 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 "transit_free": {
                     "action": None,
                     "asns": [174, 209, 286, 701, 1239, 1299, 2828, 2914, 3257, 3320, 3356, 3549, 5511, 6453, 6461, 6762, 6830, 7018, 12956]
+                },
+                "never_via_route_servers": {
+                    "peering_db": True,
+                    "asns": None
                 },
                 "irrdb": {
                     "tag_as_set": True,

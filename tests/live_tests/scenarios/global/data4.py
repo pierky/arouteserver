@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2019 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -92,6 +92,8 @@ class BasicScenario_Data4(object):
         "AS101_bad_good_comms":     "101.0.6.0/24",
         "AS101_no_rset":            "101.1.0.0/24",
         "AS101_transitfree_1":      "101.0.7.0/24",
+        "AS101_neverviars_1":       "101.0.10.0/24",
+        "AS101_neverviars_2":       "101.0.11.0/24",
         "AS101_roa_routeobj_1":     "101.2.0.0/17",
         "AS101_roa_routeobj_2":     "101.2.1.0/24",
         "AS101_roa_routeobj_3":     "101.2.128.0/24",

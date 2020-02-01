@@ -90,6 +90,28 @@ List of "transit-free" networks' ASNs:
 </p>
 </li>
 {% endif %}
+
+{% if cfg.filtering.never_via_route_servers.peering_db or cfg.filtering.never_via_route_servers.asns %}
+<li><p>
+Routes with an AS_PATH containing one or more <strong>"never via route-servers" networks</strong>' ASNs are <strong>rejected</strong>.
+</p>
+<p>
+{% if cfg.filtering.never_via_route_servers.peering_db %}
+List of "never via route-servers" networks' ASNs is generated from PeeringDB.
+{% else %}
+List of "never via route-servers" networks' ASNs:
+{% endif %}
+{% if cfg.filtering.never_via_route_servers.asns and cfg.filtering.never_via_route_servers.peering_db %}
+Also, the following ASNs are always included:
+{% endif %}
+{% if cfg.filtering.never_via_route_servers.asns %}
+{%  for asn in cfg.filtering.never_via_route_servers.asns %}
+<a href="https://stat.ripe.net/AS{{ asn }}">{{ asn }}</a>{% if not loop.last %}, {% endif %}
+{%  endfor %}
+{% endif %}
+</p>
+</li>
+{% endif %}
 </ul>
 
 
@@ -374,6 +396,57 @@ The NO_EXPORT well-known community is also added.
 
   </tbody>
 </table>
+
+
+
+<h2>Reject reasons</h2>
+
+<ul>
+<li><p>The following values are used to identify the reason for which
+routes are rejected. This is mostly used for troubleshooting,
+internal reporting purposes or in the route server log files.</p></li>
+
+{% if cfg.communities.reject_cause|community_is_set %}
+<li><p>Routes which are rejected are tagged with the BGP community
+that represents the reason for which it were discarded.</p></li>
+{% endif %}
+</ul>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Reason</th>
+      {% if cfg.communities.reject_cause|community_is_set %}
+      <th>Standard</th>
+      <th>Extended</th>
+      <th>Large</th>
+      {% endif %}
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td align=right>0</td>
+    <td>Generic code: the route must be treated as rejected</td>
+  </tr>
+  {% for ID in reject_reasons %}
+  <tr>
+    <td align=right>{{ ID }}</td>
+    {% if cfg.communities.reject_cause|community_is_set %}
+    {{ write_communities_table_row(cfg.communities.reject_cause, reject_reasons[ID], dyn_val=ID) }}
+    {% else %}
+    <td>{{ reject_reasons[ID] }}</td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+  <tr>
+    <td align=right>65535</td>
+    <td>Unknown</td>
+  </tr>
+  </tbody>
+</table>
+
+
 
 {% if rtt_based_functions_are_used %}
 * For RTT-based communities, the following values can be used for <em>X</em>: 

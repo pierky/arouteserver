@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2019 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,7 +22,8 @@ from pierky.arouteserver.arin_db_dump import ARINWhoisDBDump
 from pierky.arouteserver.config.general import ConfigParserGeneral
 from pierky.arouteserver.irrdb import ASSet, RSet
 from pierky.arouteserver.last_version import LastVersion
-from pierky.arouteserver.peering_db import PeeringDBNet, PeeringDBIXList
+from pierky.arouteserver.peering_db import PeeringDBNet, PeeringDBIXList, \
+                                           PeeringDBNetNeverViaRouteServers
 from pierky.arouteserver.ripe_rpki_cache import RIPE_RPKI_ROAs
 
 cache_dir = None
@@ -48,6 +49,13 @@ class TestExternalResources(unittest.TestCase):
         self.assertTrue(net.info_prefixes4 > 0)
         self.assertTrue(net.info_prefixes6 > 0)
         self.assertEqual(net.irr_as_sets, ["AS-RIPENCC"])
+
+    def test_peeringdb_never_via_route_servers(self):
+        """External resources: PeeringDB, never via route-servers"""
+        net = PeeringDBNetNeverViaRouteServers()
+        net.load_data()
+        self.assertTrue(len(net.networks) > 0)
+        self.assertTrue({"asn": 2914} in net.networks)
 
     def test_arin_db_dump(self):
         """External resources: ARIN Whois database dump"""

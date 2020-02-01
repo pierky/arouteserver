@@ -39,6 +39,8 @@ cfg:
       - 6830
       - 7018
       - 12956
+    never_via_route_servers:
+      peering_db: true
     irrdb:
       enforce_origin_in_as_set: true
       enforce_prefix_in_as_set: true

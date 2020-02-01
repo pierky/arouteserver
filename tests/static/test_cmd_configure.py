@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2019 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -67,6 +67,9 @@ class TestConfigureCmd(ARouteServerTestCase):
                         3257, 3320, 3356, 3549, 5511, 6453, 6461,
                         6762, 6830, 7018, 12956
                     ]
+                },
+                "never_via_route_servers": {
+                    "peering_db": True
                 },
                 "irrdb": {
                     "enforce_origin_in_as_set": True,

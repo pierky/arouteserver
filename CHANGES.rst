@@ -3,6 +3,25 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New feature: *never via route-servers* ASNs filtering.
+
+  To drop routes containing an ASN which is classified as "never via route-servers" on PeeringDB (`info_never_via_route_servers` `attribute <https://github.com/peeringdb/peeringdb/issues/394>`_).
+
+  **Please note**: this feature is enabled by default.
+
+  Related: `issue #55 on GitHub <https://github.com/pierky/arouteserver/issues/55>`_.
+
+- Improvement: add `alice-lg/birdwatcher <https://github.com/alice-lg/birdwatcher>`_ support to BIRD configs.
+
+  Changes the default BIRD time format to support `alice-lg/birdwatcher <https://github.com/alice-lg/birdwatcher>`_ out of the box.
+
+- Improvement: include a table with the reject codes in the HTML output.
+
+  Related: `issue #54 on GitHub <https://github.com/pierky/arouteserver/issues/54>`_.
+
 v0.23.0
 -------
 

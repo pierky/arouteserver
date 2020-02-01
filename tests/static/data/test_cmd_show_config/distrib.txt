@@ -17,6 +17,9 @@ configured          reject_invalid_as_in_as_path: True
                     transit_free:
 default               action: None
 configured            asns: 174, 209, 286, 701, 1239, 1299, 2828, 2914, 3257, 3320, 3356, 3549, 5511, 6453, 6461, 6762, 6830, 7018, 12956
+                    never_via_route_servers:
+configured            peering_db: True
+default               asns: None
                     irrdb:
 configured            enforce_origin_in_as_set: True
 configured            enforce_prefix_in_as_set: True

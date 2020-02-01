@@ -87,6 +87,12 @@ add_feature("Reject AS_PATHs containing transit-free ASNs", {
     "openbgpd": True,
     "openbgpd_portable": True,
 })
+add_feature("Reject 'never via route-servers' ASNs", {
+    "bird": True,
+    "bird2": True,
+    "openbgpd": True,
+    "openbgpd_portable": True,
+})
 add_feature("Reject bogons", {
     "bird": True,
     "bird2": True,

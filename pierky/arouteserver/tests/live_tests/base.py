@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2019 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -593,7 +593,7 @@ class LiveScenario(ARouteServerTestCase):
             else:
                 reject_reasons = list(reject_reason)
             for code in reject_reasons:
-                assert code in range(1,15), "invalid reject_reason"
+                assert code in range(1,16), "invalid reject_reason"
 
         include_filtered = filtered if filtered is not None else False
         best_only = only_best if only_best is not None else False

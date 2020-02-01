@@ -56,7 +56,7 @@ Built to group as many tests as possible in a single scenario.
     Originated prefixes:
 
     ===========    ===========     ==============  ===========================================
-    Prefix ID      Prefix          Feature         Expected result    
+    Prefix ID      Prefix          Feature         Expected result
     ===========    ===========     ==============  ===========================================
     AS1_good1      1.0.1.0/24
     AS1_good2      1.0.2.0/24
@@ -69,7 +69,7 @@ Built to group as many tests as possible in a single scenario.
 
   - AS-AS2 (AS2, 2.0.0.0/16)
   - AS-AS2_CUSTOMERS (AS101, AS103, 101.0.0.0/16, 103.0.0.0/16)
-  
+
   Not enabled to perform graceful BGP session shutdown.
 
   clients:
@@ -217,6 +217,8 @@ Built to group as many tests as possible in a single scenario.
   AS101_other_l_comm    101.0.5.0/24                 add 888:0:0, NOT scrubbed by rs
   AS101_bad_good_comms  101.0.6.0/24                 add 65530:1,999:65530:1,777:0,777:0:0, 65530 are scrubbed by rs, 777:** are kept
   AS101_transitfree_1   101.0.7.0/24     [101 174]   fail as_path_contains_transit_free_asn
+  AS101_neverviars_1    101.0.10.0/24    [101 666]   fail never via route-servers ASNs (PeeringDB)
+  AS101_neverviars_2    101.0.11.0/24    [101 777]   fail never via route-servers ASNs ('asns' list)
   AS101_roa_valid1      101.0.8.0/24                 roa check ok (roa n. 1), tagged with 64512:1 / 999:64512:1
   AS101_roa_invalid1    101.0.9.0/24                 roa check fail (roa n. 2, bad origin ASN), rejected
   AS101_roa_badlen      101.0.128.0/24               roa check fail (roa n. 3, bad length), rejected

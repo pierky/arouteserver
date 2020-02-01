@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2019 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -338,6 +338,22 @@ class BasicScenario(LiveScenario):
                            self.AS3, as_path="3 174 33",
                            next_hop=self.AS3, filtered=True, reject_reason=8)
         self.log_contains(self.rs, "AS_PATH [(path 3 174 33)] contains transit-free ASN - REJECTING " + self.DATA["AS3_transitfree_2"])
+
+    def test_040_bad_prefixes_received_by_rs_never_via_rs_peeringdb(self):
+        """{}: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB)"""
+
+        self.receive_route(self.rs, self.DATA["AS101_neverviars_1"],
+                           self.AS1_1, as_path="1 101 666",
+                           next_hop=self.AS1_1, filtered=True, reject_reason=15)
+        self.log_contains(self.rs, "AS_PATH [(path 1 101 666)] contains never via route-servers ASN - REJECTING " + self.DATA["AS101_neverviars_1"])
+
+    def test_040_bad_prefixes_received_by_rs_never_via_rs_asn(self):
+        """{}: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list)"""
+
+        self.receive_route(self.rs, self.DATA["AS101_neverviars_2"],
+                           self.AS1_1, as_path="1 101 777",
+                           next_hop=self.AS1_1, filtered=True, reject_reason=15)
+        self.log_contains(self.rs, "AS_PATH [(path 1 101 777)] contains never via route-servers ASN - REJECTING " + self.DATA["AS101_neverviars_2"])
 
     def test_040_bad_prefixes_received_by_rs_aspath_len(self):
         """{}: bad prefixes received by rs: AS_PATH len"""

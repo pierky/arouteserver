@@ -18,6 +18,8 @@ Live test, OpenBGPD 6.5, global scenario, IPv4: bad prefixes received by rs: glo
 Live test, OpenBGPD 6.5, global scenario, IPv4: bad prefixes received by rs: invalid ASN in AS-PATH ... ok
 Live test, OpenBGPD 6.5, global scenario, IPv4: bad prefixes received by rs: invalid NEXT_HOP ... ok
 Live test, OpenBGPD 6.5, global scenario, IPv4: bad prefixes received by rs: left-most ASN ... ok
+Live test, OpenBGPD 6.5, global scenario, IPv4: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) ... ok
+Live test, OpenBGPD 6.5, global scenario, IPv4: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) ... ok
 Live test, OpenBGPD 6.5, global scenario, IPv4: bad prefixes received by rs: origin not in AS-SET ... ok
 Live test, OpenBGPD 6.5, global scenario, IPv4: bad prefixes received by rs: prefix not in AS-SET ... ok
 Live test, OpenBGPD 6.5, global scenario, IPv4: bad prefixes received by rs: invalid prefix-len ... ok
@@ -103,6 +105,8 @@ Live test, OpenBGPD 6.5, global scenario, IPv6: bad prefixes received by rs: glo
 Live test, OpenBGPD 6.5, global scenario, IPv6: bad prefixes received by rs: invalid ASN in AS-PATH ... ok
 Live test, OpenBGPD 6.5, global scenario, IPv6: bad prefixes received by rs: invalid NEXT_HOP ... ok
 Live test, OpenBGPD 6.5, global scenario, IPv6: bad prefixes received by rs: left-most ASN ... ok
+Live test, OpenBGPD 6.5, global scenario, IPv6: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) ... ok
+Live test, OpenBGPD 6.5, global scenario, IPv6: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) ... ok
 Live test, OpenBGPD 6.5, global scenario, IPv6: bad prefixes received by rs: origin not in AS-SET ... ok
 Live test, OpenBGPD 6.5, global scenario, IPv6: bad prefixes received by rs: prefix not in AS-SET ... ok
 Live test, OpenBGPD 6.5, global scenario, IPv6: bad prefixes received by rs: invalid prefix-len ... ok
@@ -170,6 +174,6 @@ Live test, OpenBGPD 6.5, global scenario, IPv6: dumping routes...
 Live test, OpenBGPD 6.5, global scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 162 tests in 189.759s
+Ran 166 tests in 176.004s
 
 OK (SKIP=2)

@@ -3,11 +3,12 @@ External resources: ASNs from AS-SET via bgpq3 ... ok
 External resources: PeeringDB IX list ... ok
 External resources: last version via PyPI ... ok
 External resources: PeeringDB, max-prefix and AS-SET ... ok
+External resources: PeeringDB, never via route-servers ... ok
 External resources: RPKI ROAs, NTT ... ok
 External resources: RPKI ROAs, RIPE ... ok
 External resources: prefixes from AS-SET via bgpq3 ... ok
 
 ----------------------------------------------------------------------
-Ran 8 tests in 55.417s
+Ran 9 tests in 43.265s
 
 OK

@@ -19,6 +19,9 @@ cfg:
                 transit_free:
                   action: "reject"
                   asns: 174, 3
+                never_via_route_servers:
+                  peering_db: True
+                  asns: 777
                 irrdb:
                         tag_as_set: False
                         allow_longer_prefixes: True

@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2019 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ from .enrichers.irrdb import IRRDBConfigEnricher_ASNs, \
                              IRRDBConfigEnricher_Prefixes
 from .enrichers.pdb_as_set import PeeringDBConfigEnricher_ASSet
 from .enrichers.pdb_max_prefix import PeeringDBConfigEnricher_MaxPrefix
+from .enrichers.pdb_never_via_route_servers import NeverViaRouteServersEnricher
 from .enrichers.rpki_roas import RPKIROAsEnricher
 from .enrichers.rtt import RTTGetterConfigEnricher
 from .errors import MissingDirError, MissingFileError, BuilderError, \
@@ -56,6 +57,24 @@ class ConfigBuilder(object):
     DEFAULT_VERSION = None
 
     IGNORABLE_ISSUES = []
+
+    REJECT_REASONS = {
+        "1": "Invalid AS_PATH length",
+        "2": "Prefix is bogon",
+        "3": "Prefix is in global blacklist",
+        "4": "Invalid AFI",
+        "5": "Invalid NEXT_HOP",
+        "6": "Invalid left-most ASN",
+        "7": "Invalid ASN in AS_PATH",
+        "8": "Transit-free ASN in AS_PATH",
+        "9": "Origin ASN not in IRRDB AS-SETs",
+        "10": "IPv6 prefix not in global unicast space",
+        "11": "Prefix is in client blacklist",
+        "12": "Prefix not in IRRDB AS-SETs",
+        "13": "Invalid prefix length",
+        "14": "RPKI INVALID route",
+        "15": "Never via route-servers ASN in AS_PATH",
+    }
 
     def validate_bgpspeaker_specific_configuration(self):
         """Check compatibility between config and target BGP speaker
@@ -419,6 +438,9 @@ class ConfigBuilder(object):
         # { "<len>": [{"prefix": "<ip>/<len>", "max_len": x, "asn": "AS<n>"}]
         self.rpki_roas = {}
 
+        # [<asn (int)>]
+        self.never_via_route_servers_asns = []
+
         # { "<origin_asn>": ["a/b", "c/d"] }
         self.arin_whois_records = {}
         self.registrobr_whois_records = {}
@@ -517,6 +539,12 @@ class ConfigBuilder(object):
         if irrdb_cfg["use_registrobr_bulk_whois_data"]["enabled"]:
             used_enricher_classes.append(RegistroBRWhoisDBDumpEnricher)
 
+        self.never_via_route_servers_asns = list(
+            set(filtering["never_via_route_servers"]["asns"] or [])
+        )
+        if filtering["never_via_route_servers"]["peering_db"]:
+            used_enricher_classes.append(NeverViaRouteServersEnricher)
+
         for enricher_class in used_enricher_classes:
             enricher = enricher_class(self, threads=self.threads)
             try:
@@ -574,10 +602,12 @@ class ConfigBuilder(object):
         self.data["rpki_roas"] = sorted_rpki_roas()
         self.data["arin_whois_records"] = self.arin_whois_records
         self.data["registrobr_whois_records"] = self.registrobr_whois_records
+        self.data["never_via_route_servers_asns"] = self.never_via_route_servers_asns
         self.data["live_tests"] = self.live_tests
         self.data["rtt_based_functions_are_used"] = \
             self.cfg_general.rtt_based_functions_are_used
         self.data["perform_graceful_shutdown"] = self.perform_graceful_shutdown
+        self.data["reject_reasons"] = self.REJECT_REASONS
 
         def ipaddr_ver(ip):
             return IPNetwork(ip).version
