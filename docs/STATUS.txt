@@ -33,6 +33,8 @@ Who is using ARouteServer?
 
 - `PIT-IX <https://pit-ix.net/>`__, BIRD.
 
+- `QCIX <http://www.qcix.net/>`__, BIRD.
+
 - `SwissIX <https://www.swissix.ch/>`__, OpenBGPD.
 
 - `Unmetered.Exchange <https://unmetered.exchange/>`__, BIRD.
