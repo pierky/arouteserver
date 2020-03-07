@@ -127,6 +127,8 @@ class IRRDBInfo(CachedObject, AS_SET_Bundle):
         self.bgpq3_sources = kwargs.get("bgpq3_sources",
                                         self.BGPQ3_DEFAULT_SOURCES)
 
+        self.bgpq = "bgpq4" if "bgpq4" in self.bgpq3_path else "bgpq3"
+
         AS_SET_Bundle.__init__(self, object_names)
 
     def _get_bgpq3_sources(self):
@@ -151,14 +153,15 @@ class IRRDBInfo(CachedObject, AS_SET_Bundle):
         out, err = proc.communicate()
 
         if proc.returncode != 0:
-            err_msg = "bgpq3 exit code is {}".format(proc.returncode)
+            err_msg = "{} exit code is {}".format(self.bgpq, proc.returncode)
             if err is not None and err.strip():
                 err_msg += ", stderr: {}".format(err)
             raise ValueError(err_msg)
 
         if err is not None and err.strip():
-            logging.warning("bgpq3 succeeded but an error was "
+            logging.warning("{} succeeded but an error was "
                             "printed when executing '{}': {}".format(
+                                self.bgpq,
                                 " ".join(cmd), err.strip()
                             ))
 
@@ -211,8 +214,9 @@ class ASSet(IRRDBInfo):
             data = json.loads(out.decode("utf-8"))
         except Exception as e:
             raise IRRDBToolsError(
-                "Error while parsing bgpq3 output "
+                "Error while parsing {} output "
                 "for the following command: '{}': {}".format(
+                    self.bgpq,
                     " ".join(cmd), str(e)
                 )
             )
@@ -271,8 +275,9 @@ class RSet(IRRDBInfo):
             data = json.loads(out.decode("utf-8"))
         except Exception as e:
             raise IRRDBToolsError(
-                "Error while parsing bgpq3 output "
+                "Error while parsing {} output "
                 "for the following command: '{}': {}".format(
+                    self.bgpq,
                     " ".join(cmd), str(e)
                 )
             )

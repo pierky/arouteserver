@@ -43,6 +43,7 @@ jobs:
         - pip install tox
       before_script:
         - ./tests/external_resources/install_bgpq3.sh
+        - ./tests/external_resources/install_bgpq4.sh
     # Installation tests on Ubuntu, Debian, CentOS, run on push/PR with tags.
 
     # CentOS, latest
