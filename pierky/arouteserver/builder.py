@@ -302,7 +302,7 @@ class ConfigBuilder(object):
 
                 - *--local-files-dir* CLI argument.
 
-            bgpq3_path (str): path to the 'bgpq3' external program; this will
+            bgpq3_path (str): path to the 'bgpq3' or 'bgpq4' external program; this will
                 be used to expand AS macros and to obtain the list of
                 authorized origin ASNs and prefixes from IRRDBs.
 
@@ -310,7 +310,7 @@ class ConfigBuilder(object):
 
                 - *bgpq3_path* program's configuration file option.
 
-            bgpq3_host (str): the host that will be queried by bgpq3; this
+            bgpq3_host (str): the host that will be queried by bgpq3/bgpq4; this
                 will be used to set the *-h* argument of the program.
 
                 Same of:
@@ -318,8 +318,8 @@ class ConfigBuilder(object):
                 - *bgpq3_host* program's configuration file option.
 
             bgpq3_sources (str): a comma separated list of sources that will
-                be used by the bgpq3 program; this will be used to set the
-                *-S* argument of bgpq3.
+                be used by the bgpq3/bgpq4 program; this will be used to set the
+                *-S* argument of the program.
 
                 Same of:
 
@@ -335,7 +335,7 @@ class ConfigBuilder(object):
                 - *rtt_getter_path* program's configuration file option.
 
             threads (int): number of concurrent threads used to gather
-                additional data from external sources (bgpq3, PeeringDB, ...)
+                additional data from external sources (bgpq3/bgpq4, PeeringDB, ...)
 
                 Same of:
 

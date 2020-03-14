@@ -1,14 +1,17 @@
 External resources: ARIN Whois database dump ... ok
 External resources: ASNs from AS-SET via bgpq3 ... ok
+External resources: ASNs from AS-SET via bgpq4 ... ok
 External resources: PeeringDB IX list ... ok
 External resources: last version via PyPI ... ok
 External resources: PeeringDB, max-prefix and AS-SET ... ok
 External resources: PeeringDB, never via route-servers ... ok
+External resources: route servers excluded from clients-from-euroix ... ok
 External resources: RPKI ROAs, NTT ... ok
 External resources: RPKI ROAs, RIPE ... ok
 External resources: prefixes from AS-SET via bgpq3 ... ok
+External resources: prefixes from AS-SET via bgpq4 ... ok
 
 ----------------------------------------------------------------------
-Ran 9 tests in 43.265s
+Ran 12 tests in 46.359s
 
 OK

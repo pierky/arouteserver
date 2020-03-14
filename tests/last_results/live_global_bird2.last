@@ -344,6 +344,6 @@ Live test, BIRD v2, global scenario, IPv6, tag: dumping routes...
 Live test, BIRD v2, global scenario, IPv6, tag: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 328 tests in 239.216s
+Ran 328 tests in 259.840s
 
 OK

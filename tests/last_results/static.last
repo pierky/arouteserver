@@ -119,6 +119,9 @@ Clients from Euro-IX: IXP-Manager workaround ... ok
 Clients from Euro-IX: official basic example ... ok
 Clients from Euro-IX: official more complex example ... ok
 Clients from Euro-IX: --routeserver-only filter ... ok
+Clients from Euro-IX: route server classification, 0.6 ... ok
+Clients from Euro-IX: route server classification, 0.7 ... ok
+Clients from Euro-IX: route server classification, 1.0 ... ok
 Configure command: 32 bit route server ASN ... ok
 Configure command: BIRD, simple ... ok
 Configure command: OpenBGPD 6.0, simple ... ok
@@ -192,6 +195,6 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 192 tests in 39.055s
+Ran 195 tests in 40.249s
 
 OK

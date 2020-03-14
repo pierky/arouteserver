@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+new release
+-----------
+
+- New: add support for `bgpq4 <https://github.com/bgp/bgpq4>`_.
+
+  At least version 0.0.5 is required.
+
+  Related: `PR #53 on GitHub <https://github.com/pierky/arouteserver/pull/53>`_.
+
 v0.24.0
 -------
 

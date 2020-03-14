@@ -1,0 +1,252 @@
+# Data fetched from tests/static/euroix_data/skip_routeserver_10.json at 2020-03-14T11:32:11.068048 UTC
+# IXP ID: 1
+# VLAN ID: 1
+clients:
+- asn: 42
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+  description: Packet Clearing House AS42
+  ip: 206.83.43.9
+- asn: 42
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+  description: Packet Clearing House AS42
+  ip: 2001:504:9b::9
+- asn: 3856
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+  description: Packet Clearing House
+  ip: 206.83.43.10
+- asn: 3856
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+  description: Packet Clearing House
+  ip: 2001:504:9b::10
+- asn: 10242
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - as-usinternet
+  description: US Internet
+  ip: 206.83.43.7
+- asn: 10242
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - as-usinternet
+  description: US Internet
+  ip: 2001:504:9b::7
+- asn: 11708
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-KCFIBER
+  description: KCFiber
+  ip: 206.83.43.20
+- asn: 11708
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-KCFIBER
+  description: KCFiber
+  ip: 2001:504:9b::20
+- asn: 14371
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PBC
+  description: Paul Bunyan Communications
+  ip: 206.83.43.13
+- asn: 14371
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PBC
+  description: Paul Bunyan Communications
+  ip: 2001:504:9b::13
+- asn: 22534
+  description: CS-TECH-INC
+  ip: 206.83.43.24
+- asn: 22534
+  description: CS-TECH-INC
+  ip: 2001:504:9b::24
+- asn: 26156
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VERUS-3
+  description: Verus Corporation, Inc.
+  ip: 206.83.43.15
+- asn: 26156
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-VERUS-3
+  description: Verus Corporation, Inc.
+  ip: 2001:504:9b::15
+- asn: 26725
+  description: Liberty Communications
+  ip: 206.83.43.23
+- asn: 26725
+  description: Liberty Communications
+  ip: 2001:504:9b::23
+- asn: 32097
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WHOLESALE-INTERNET
+  description: Wholesale Internet, Inc.
+  ip: 206.83.43.21
+- asn: 32097
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WHOLESALE-INTERNET
+  description: Wholesale Internet, Inc.
+  ip: 2001:504:9b::21
+- asn: 32621
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TCVTRANSIT
+  description: Minnesota VoIP
+  ip: 206.83.43.5
+- asn: 32621
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-TCVTRANSIT
+  description: Minnesota VoIP
+  ip: 2001:504:9b::5
+- asn: 36040
+  description: Google LLC AS36040
+  ip: 206.83.43.19
+- asn: 36040
+  description: Google LLC AS36040
+  ip: 2001:504:9b::19
+- asn: 47096
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-47096DOWNSTREAM
+  description: Compudyne, Inc.
+  ip: 206.83.43.17
+- asn: 47096
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-47096DOWNSTREAM
+  description: Compudyne, Inc.
+  ip: 2001:504:9b::17
+- asn: 53597
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-HOYOS-NETWORK
+  description: Hoyos Consulting LLC
+  ip: 206.83.43.22
+- asn: 53597
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-HOYOS-NETWORK
+  description: Hoyos Consulting LLC
+  ip: 2001:504:9b::22
+- asn: 54374
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WMTA-CUST
+  description: Wm Tel
+  ip: 206.83.43.18
+- asn: 54374
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-WMTA-CUST
+  description: Wm Tel
+  ip: 2001:504:9b::18
+- asn: 55009
+  description: Router12 Networks
+  ip: 206.83.43.6
+- asn: 55009
+  description: Router12 Networks
+  ip: 2001:504:9b::6
+- asn: 62886
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-OMNITEL
+  description: OMNITEL
+  ip: 206.83.43.11
+- asn: 62886
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-OMNITEL
+  description: OMNITEL
+  ip: 2001:504:9b::11
+- asn: 394330
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS394330:AS-ALL
+  description: LTDBROADBAND
+  ip: 206.83.43.14
+- asn: 394330
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS394330:AS-ALL
+  description: LTDBROADBAND
+  ip: 2001:504:9b::14
+- asn: 397326
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SFN-CUST
+  description: South Front Networks
+  ip: 206.83.43.3
+- asn: 397326
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SFN-CUST
+  description: South Front Networks
+  ip: 2001:504:9b::3

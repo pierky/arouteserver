@@ -52,6 +52,8 @@ class TestClientsFromEuroIX(unittest.TestCase):
 
         self.assertEqual(res, expected_result)
 
+        return res
+
     def test_official_basic_example(self):
         """Clients from Euro-IX: official basic example"""
         self._run("official_basic_example", ixp_id=42)
@@ -85,3 +87,74 @@ class TestClientsFromEuroIX(unittest.TestCase):
         """Clients from Euro-IX: IXP-Manager workaround"""
         self._result_match_file("ixpmanager_workaround", ixp_id=1)
 
+    # List of export files:
+    # http https://api.ixpdb.net/v1/provider/list | jq '.[].apis.ixfexport'
+    #
+    # Set name of local file (no extension)
+    # LOCAL_FILE=tests/static/euroix_data/skip_routeserver_06
+    #
+    # Download a JSON file:
+    # http http://www.trex.fi/memberlist.json > $LOCAL_FILE.json
+    #
+    # Create the clients.yml file:
+    # ./scripts/arouteserver clients-from-euroix --cfg var/arouteserver.yml -i $LOCAL_FILE.json -o $LOCAL_FILE.yml --vlan-id 4 46
+
+    def test_skip_routeserver_06(self):
+        """Clients from Euro-IX: route server classification, 0.6"""
+        clients = self._result_match_file("skip_routeserver_06", ixp_id=46, vlan_id=4)["clients"]
+
+        # Be sure the route server IPs are not taken into account.
+        for rs_ip in (
+            "195.140.192.1",
+            "2001:7f8:1d:4::1"
+        ):
+            assert rs_ip not in [client["ip"] for client in clients]
+
+        # Just to be sure the conversion worked, check some other IPs
+        # which are expected to be imported as client.
+        for member_ip in (
+            "195.140.192.38",
+            "2001:7f8:1d:4::8653:1"
+        ):
+            assert member_ip in [client["ip"] for client in clients]
+
+    def test_skip_routeserver_07(self):
+        """Clients from Euro-IX: route server classification, 0.7"""
+        clients = self._result_match_file("skip_routeserver_07", ixp_id=1, vlan_id=1)["clients"]
+
+        # Be sure the route server IPs are not taken into account.
+        for rs_ip in (
+            "206.53.201.2",
+            "2001:504:60::2",
+            "206.53.201.3",
+            "2001:504:60::3"
+        ):
+            assert rs_ip not in [client["ip"] for client in clients]
+
+        # Just to be sure the conversion worked, check some other IPs
+        # which are expected to be imported as client.
+        for member_ip in (
+            "206.53.201.22",
+            "206.53.201.21",
+            "2001:504:60::672f"
+        ):
+            assert member_ip in [client["ip"] for client in clients]
+
+    def test_skip_routeserver_10(self):
+        """Clients from Euro-IX: route server classification, 1.0"""
+        clients = self._result_match_file("skip_routeserver_10", ixp_id=1, vlan_id=1)["clients"]
+
+        # Be sure the route server IPs are not taken into account.
+        for rs_ip in (
+            "206.83.43.1",
+            "2001:504:9b::1"
+        ):
+            assert rs_ip not in [client["ip"] for client in clients]
+
+        # Just to be sure the conversion worked, check some other IPs
+        # which are expected to be imported as client.
+        for member_ip in (
+            "206.83.43.9",
+            "2001:504:9b::9"
+        ):
+            assert member_ip in [client["ip"] for client in clients]

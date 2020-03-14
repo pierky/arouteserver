@@ -1,0 +1,242 @@
+# Data fetched from tests/static/euroix_data/skip_routeserver_07.json at 2020-03-14T11:20:24.571925 UTC
+# IXP ID: 1
+# VLAN ID: 1
+clients:
+- asn: 42
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+  description: Packet Clearing House AS42
+  ip: 206.53.201.22
+- asn: 42
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+  description: Packet Clearing House AS42
+  ip: 2001:504:60::2a
+- asn: 112
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS112
+  description: DNS-OARC-112
+  ip: 206.53.201.21
+- asn: 112
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS112
+  description: DNS-OARC-112
+  ip: 2001:504:60::70
+- asn: 210
+  description: Utah Education Network
+  ip: 206.53.201.14
+- asn: 210
+  description: Utah Education Network
+  ip: 2001:504:60::d2
+- asn: 3856
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+  description: Packet Clearing House
+  ip: 206.53.201.23
+- asn: 3856
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+  description: Packet Clearing House
+  ip: 2001:504:60::f10
+- asn: 4181
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - ARIN::AS-TDS-TRANSIT
+  description: TDS Telecom
+  ip: 206.53.201.30
+- asn: 4181
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - ARIN::AS-TDS-TRANSIT
+  description: TDS Telecom
+  ip: 2001:504:60::1055
+- asn: 6315
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-XMISSION
+  description: XMission
+  ip: 206.53.201.29
+- asn: 6315
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-XMISSION
+  description: XMission
+  ip: 2001:504:60::18ab
+- asn: 11071
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IWNET
+  description: InfoWest, Inc
+  ip: 206.53.201.10
+- asn: 11071
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-IWNET
+  description: InfoWest, Inc
+  ip: 2001:504:60::2b3f
+- asn: 20018
+  description: Moapa Valley Telephone
+  ip: 206.53.201.26
+- asn: 20018
+  description: Moapa Valley Telephone
+  ip: 2001:504:60::4e32
+- asn: 22591
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS22591
+  description: Mozy
+  ip: 206.53.201.11
+- asn: 25152
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - RIPE::RS-KROOT RIPE::RS-KROOT-V6
+  description: RIPE NCC K-Root Operations
+  ip: 206.53.201.19
+- asn: 25152
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - RIPE::RS-KROOT RIPE::RS-KROOT-V6
+  description: RIPE NCC K-Root Operations
+  ip: 2001:504:60::6240
+- asn: 25840
+  description: Cascade Access
+  ip: 206.53.201.27
+- asn: 25840
+  description: Cascade Access
+  ip: 2001:504:60::64f0
+- asn: 26253
+  description: South Central Communications
+  ip: 206.53.201.12
+- asn: 26253
+  description: South Central Communications
+  ip: 2001:504:60::668d
+- asn: 26415
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GTLD
+  description: VeriSign Global Registry Services
+  ip: 206.53.201.20
+- asn: 26415
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-GTLD
+  description: VeriSign Global Registry Services
+  ip: 2001:504:60::672f
+- asn: 27448
+  description: Kayenta Technologies
+  ip: 206.53.201.17
+- asn: 29933
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-29933-TRANSIT
+  description: Veracity Networks
+  ip: 206.53.201.18
+- asn: 29933
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-29933-TRANSIT
+  description: Veracity Networks
+  ip: 2001:504:60::74ed
+- asn: 32490
+  description: TKS Internet Service
+  ip: 206.53.201.24
+- asn: 32890
+  description: Beehive Broadband
+  ip: 206.53.201.33
+- asn: 32890
+  description: Beehive Broadband
+  ip: 2001:504:60::807a
+- asn: 36040
+  description: Google LLC AS36040
+  ip: 206.53.201.31
+- asn: 36040
+  description: Google LLC AS36040
+  ip: 2001:504:60::3b41
+- asn: 36143
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AWINET
+  description: AWI Networks
+  ip: 206.53.201.15
+- asn: 36143
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-AWINET
+  description: AWI Networks
+  ip: 2001:504:60::8d2f
+- asn: 46309
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS46309:AS-ALL
+  description: Tonaquint Data Center
+  ip: 206.53.201.16
+- asn: 46309
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS46309:AS-ALL
+  description: Tonaquint Data Center
+  ip: 2001:504:60::b4e5
+- asn: 53407
+  description: UTOPIA
+  ip: 206.53.201.28
+- asn: 53407
+  description: UTOPIA
+  ip: 2001:504:60::d09f
+- asn: 393299
+  description: Go Fiber
+  ip: 206.53.201.13
+- asn: 393299
+  description: Go Fiber
+  ip: 2001:504:60::6:53

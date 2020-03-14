@@ -1,0 +1,515 @@
+{
+   "ixp_list" : [
+      {
+         "billing_contact_hours" : "8/5",
+         "billing_email" : "billing@trex.fi",
+         "billing_phone" : "+358 29 123 8803",
+         "country" : "FI",
+         "emergency_contact_hours" : "24/7",
+         "emergency_email" : "noc@trex.fi",
+         "emergency_phone" : "+358 45 670 2048",
+         "ixf_id" : 46,
+         "ixp_id" : 46,
+         "name" : "TREX Regional Exchanges Oy",
+         "shortname" : "TREX",
+         "support_contact_hours" : "8/5",
+         "support_email" : "staff-2020@trex.fi",
+         "support_phone" : "+358 44 975 6548",
+         "switch" : [
+            {
+               "city" : "Tampere",
+               "colo" : "MMD Networks",
+               "country" : "FI",
+               "id" : 3,
+               "name" : "trex-sw-hal3",
+               "pdb_facility_id" : 2333
+            }
+         ],
+         "url" : "http://www.trex.fi",
+         "vlan" : [
+            {
+               "id" : 2,
+               "ipv4" : {
+                  "mask_length" : 24,
+                  "prefix" : "195.140.193.0"
+               },
+               "name" : "IPv4 Multicast Peering"
+            },
+            {
+               "id" : 3,
+               "ipv6" : {
+                  "mask_length" : 64,
+                  "prefix" : "2001:7f8:1d:3::"
+               },
+               "name" : "IPv6 Multicast Peering"
+            },
+            {
+               "id" : 4,
+               "ipv4" : {
+                  "mask_length" : 24,
+                  "prefix" : "195.140.192.0"
+               },
+               "ipv6" : {
+                  "mask_length" : 64,
+                  "prefix" : "2001:7f8:1d:4::"
+               },
+               "name" : "Unicast Peering"
+            }
+         ]
+      }
+   ],
+   "member_list" : [
+      {
+         "asnum" : 29432,
+         "connection_list" : [
+            {
+               "ixp_id" : 46,
+               "vlan_list" : [
+                  {
+                     "ipv4" : {
+                        "address" : "195.140.192.9",
+                        "as_macro" : "AS29432:AS-PEERING"
+                     },
+                     "ipv6" : {
+                        "address" : "2001:7f8:1d:4::72f8:1",
+                        "as_macro" : "AS29432:AS-PEERING"
+                     },
+                     "vlan_id" : 4
+                  }
+               ]
+            }
+         ],
+         "member_type" : "ixp",
+         "name" : "TREX Services",
+         "url" : "http://www.trex.fi/peering.html"
+      },
+      {
+         "asnum" : 197032,
+         "connection_list" : [
+            {
+               "ixp_id" : 46,
+               "vlan_list" : [
+                  {
+                     "ipv4" : {
+                        "address" : "195.140.192.1",
+                        "as_macro" : "AS197032:AS-ALL",
+                        "max_prefix" : 5000
+                     },
+                     "ipv6" : {
+                        "address" : "2001:7f8:1d:4::1",
+                        "as_macro" : "AS197032:AS-ALL",
+                        "max_prefix" : 5000
+                     },
+                     "vlan_id" : 4
+                  }
+               ]
+            }
+         ],
+         "member_type" : "routeserver",
+         "name" : "Route Servers",
+         "url" : "http://www.trex.fi/service/mlpa.html"
+      },
+      {
+         "asnum" : 719,
+         "connection_list" : [
+            {
+               "ixp_id" : 46,
+               "vlan_list" : [
+                  {
+                     "ipv4" : {
+                        "address" : "195.140.192.18",
+                        "as_macro" : "AS-KOLUMBUS",
+                        "max_prefix" : 900
+                     },
+                     "ipv6" : {
+                        "address" : "2001:7f8:1d:4::2cf:1",
+                        "as_macro" : "AS-KOLUMBUS",
+                        "max_prefix" : 900
+                     },
+                     "vlan_id" : 4
+                  }
+               ]
+            }
+         ],
+         "member_type" : "peering",
+         "name" : "Elisa",
+         "url" : "http://www.elisaip.net/"
+      },
+      {
+         "asnum" : 6667,
+         "connection_list" : [
+            {
+               "ixp_id" : 46,
+               "vlan_list" : [
+                  {
+                     "ipv4" : {
+                        "address" : "195.140.192.13",
+                        "as_macro" : "AS-EUNETIP",
+                        "max_prefix" : 1500
+                     },
+                     "ipv6" : {
+                        "address" : "2001:7f8:1d:4::1a0b:1",
+                        "as_macro" : "AS-EUNETIP",
+                        "max_prefix" : 1500
+                     },
+                     "vlan_id" : 4
+                  }
+               ]
+            }
+         ],
+         "member_type" : "peering",
+         "name" : "Elisa/Saunalahti",
+         "url" : "http://www.elisaip.net/"
+      },
+      {
+         "asnum" : 29243,
+         "connection_list" : [
+            {
+               "ixp_id" : 46,
+               "vlan_list" : [
+                  {
+                     "ipv4" : {
+                        "address" : "195.140.192.11",
+                        "as_macro" : "AS-MMD"
+                     },
+                     "ipv6" : {
+                        "address" : "2001:7f8:1d:4::723b:1",
+                        "as_macro" : "AS-MMD"
+                     },
+                     "vlan_id" : 4
+                  }
+               ]
+            }
+         ],
+         "member_type" : "peering",
+         "name" : "MMD Networks",
+         "url" : "https://www.mmd.net"
+      },
+      {
+         "asnum" : 1741,
+         "connection_list" : [
+            {
+               "ixp_id" : 46,
+               "vlan_list" : [
+                  {
+                     "ipv4" : {
+                        "address" : "195.140.192.17",
+                        "as_macro" : "AS-FUNET"
+                     },
+                     "ipv6" : {
+                        "address" : "2001:7f8:1d:4::6cd:1",
+                        "as_macro" : "AS-FUNET"
+                     },
+                     "vlan_id" : 4
+                  }
+               ]
+            }
+         ],
+         "member_type" : "peering",
+         "name" : "CSC Oy / Funet"
+      },
+      {
+         "asnum" : 51164,
+         "connection_list" : [
+            {
+               "ixp_id" : 46,
+               "vlan_list" : [
+                  {
+                     "ipv4" : {
+                        "address" : "195.140.192.20",
+                        "as_macro" : "AS-CYBERCOM"
+                     },
+                     "ipv6" : {
+                        "address" : "2001:7f8:1d:4::c7dc:1",
+                        "as_macro" : "AS-CYBERCOM"
+                     },
+                     "vlan_id" : 4
+                  }
+               ]
+            }
+         ],
+         "member_type" : "peering",
+         "name" : "Cybercom"
+      },
+      {
+         "asnum" : 47605,
+         "connection_list" : [
+            {
+               "ixp_id" : 46,
+               "vlan_list" : [
+                  {
+                     "ipv4" : {
+                        "address" : "195.140.192.22",
+                        "as_macro" : "AS-set-FNE",
+                        "max_prefix" : 300
+                     },
+                     "ipv6" : {
+                        "address" : "2001:7f8:1d:4::b9f5:1",
+                        "as_macro" : "AS-set-FNE",
+                        "max_prefix" : 300
+                     },
+                     "vlan_id" : 4
+                  }
+               ]
+            }
+         ],
+         "member_type" : "peering",
+         "name" : "FNE Finland"
+      },
+      {
+         "asnum" : 35382,
+         "connection_list" : [
+            {
+               "ixp_id" : 46,
+               "vlan_list" : [
+                  {
+                     "ipv4" : {
+                        "address" : "195.140.192.23",
+                        "as_macro" : "AS35382"
+                     },
+                     "ipv6" : {
+                        "address" : "2001:7f8:1d:4::8a36:1",
+                        "as_macro" : "AS35382"
+                     },
+                     "vlan_id" : 4
+                  }
+               ]
+            }
+         ],
+         "member_type" : "peering",
+         "name" : "Capnova",
+         "url" : "http://www.capnova.fi/"
+      },
+      {
+         "asnum" : 42909,
+         "connection_list" : [
+            {
+               "ixp_id" : 46,
+               "vlan_list" : [
+                  {
+                     "ipv4" : {
+                        "address" : "195.140.192.24",
+                        "as_macro" : "AS42909"
+                     },
+                     "ipv6" : {
+                        "address" : "2001:7f8:1d:4::a79d:1",
+                        "as_macro" : "AS42909"
+                     },
+                     "vlan_id" : 4
+                  }
+               ]
+            }
+         ],
+         "member_type" : "probono",
+         "name" : "CommunityDNS",
+         "url" : "http://www.cdns.net/"
+      },
+      {
+         "asnum" : 39242,
+         "connection_list" : [
+            {
+               "ixp_id" : 46,
+               "vlan_list" : [
+                  {
+                     "ipv4" : {
+                        "address" : "195.140.192.26",
+                        "as_macro" : "AS39242:AS-CUSTOMERS"
+                     },
+                     "ipv6" : {
+                        "address" : "2001:7f8:1d:4::994a:1",
+                        "as_macro" : "AS39242:AS-CUSTOMERS"
+                     },
+                     "vlan_id" : 4
+                  }
+               ]
+            }
+         ],
+         "member_type" : "peering",
+         "name" : "Seclan",
+         "url" : "http://www.seclan.com/"
+      },
+      {
+         "asnum" : 58003,
+         "connection_list" : [
+            {
+               "ixp_id" : 46,
+               "vlan_list" : [
+                  {
+                     "ipv4" : {
+                        "address" : "195.140.192.30",
+                        "as_macro" : "AS58003:AS-ALL"
+                     },
+                     "ipv6" : {
+                        "address" : "2001:7f8:1d:4::e293:1",
+                        "as_macro" : "AS58003:AS-ALL"
+                     },
+                     "vlan_id" : 4
+                  }
+               ]
+            }
+         ],
+         "member_type" : "peering",
+         "name" : "Planeetta Internet",
+         "url" : "http://www.planeetta.net/"
+      },
+      {
+         "asnum" : 16302,
+         "connection_list" : [
+            {
+               "ixp_id" : 46,
+               "vlan_list" : [
+                  {
+                     "ipv4" : {
+                        "address" : "195.140.192.31",
+                        "as_macro" : "AS-SUOMICOM",
+                        "max_prefix" : 100
+                     },
+                     "ipv6" : {
+                        "address" : "2001:7f8:1d:4::3fae:1",
+                        "as_macro" : "AS-SUOMICOM",
+                        "max_prefix" : 100
+                     },
+                     "vlan_id" : 4
+                  }
+               ]
+            }
+         ],
+         "member_type" : "peering",
+         "name" : "SuomiCom ISP",
+         "url" : "http://www.suomicom.fi/"
+      },
+      {
+         "asnum" : 112,
+         "connection_list" : [
+            {
+               "ixp_id" : 46,
+               "vlan_list" : [
+                  {
+                     "ipv4" : {
+                        "address" : "195.140.192.112",
+                        "as_macro" : "AS112"
+                     },
+                     "ipv6" : {
+                        "address" : "2001:7f8:1d:4::70:1",
+                        "as_macro" : "AS112"
+                     },
+                     "vlan_id" : 4
+                  }
+               ]
+            }
+         ],
+         "member_type" : "probono",
+         "name" : "AS112.net",
+         "url" : "http://www.trex.fi/service/as112.html"
+      },
+      {
+         "asnum" : 42,
+         "connection_list" : [
+            {
+               "ixp_id" : 46,
+               "vlan_list" : [
+                  {
+                     "ipv4" : {
+                        "address" : "195.140.192.28",
+                        "as_macro" : "AS-PCH",
+                        "max_prefix" : 500
+                     },
+                     "ipv6" : {
+                        "address" : "2001:7f8:1d:4::2a:1",
+                        "as_macro" : "AS-PCH",
+                        "max_prefix" : 500
+                     },
+                     "vlan_id" : 4
+                  }
+               ]
+            }
+         ],
+         "member_type" : "probono",
+         "name" : "PCH Production",
+         "url" : "http://www.pch.net/"
+      },
+      {
+         "asnum" : 3856,
+         "connection_list" : [
+            {
+               "ixp_id" : 46,
+               "vlan_list" : [
+                  {
+                     "ipv4" : {
+                        "address" : "195.140.192.29",
+                        "as_macro" : "AS-PCH"
+                     },
+                     "ipv6" : {
+                        "address" : "2001:7f8:1d:4::f10:1",
+                        "as_macro" : "AS-PCH"
+                     },
+                     "vlan_id" : 4
+                  }
+               ]
+            }
+         ],
+         "member_type" : "probono",
+         "name" : "PCH Research",
+         "url" : "http://www.pch.net/"
+      },
+      {
+         "asnum" : 20904,
+         "connection_list" : [
+            {
+               "ixp_id" : 46,
+               "vlan_list" : [
+                  {
+                     "ipv4" : {
+                        "address" : "195.140.192.34",
+                        "as_macro" : "AS-NETPLAZA"
+                     },
+                     "ipv6" : {
+                        "address" : "2001:7f8:1d:4::51a8:1",
+                        "as_macro" : "AS-NETPLAZA"
+                     },
+                     "vlan_id" : 4
+                  }
+               ]
+            }
+         ],
+         "member_type" : "peering",
+         "name" : "Netplaza",
+         "url" : "http://www.netplaza.fi/"
+      },
+      {
+         "asnum" : 34387,
+         "connection_list" : [
+            {
+               "ixp_id" : 46,
+               "vlan_list" : [
+                  {
+                     "ipv4" : {
+                        "address" : "195.140.192.38",
+                        "as_macro" : "AS34387"
+                     },
+                     "ipv6" : {
+                        "address" : "2001:7f8:1d:4::8653:1",
+                        "as_macro" : "AS34387"
+                     },
+                     "vlan_id" : 4
+                  }
+               ]
+            }
+         ],
+         "member_type" : "other",
+         "name" : "Netcrew ry"
+      },
+      {
+         "asnum" : 20144,
+         "connection_list" : [
+            {
+               "ixp_id" : 46
+            }
+         ],
+         "member_type" : "probono",
+         "name" : "ICANN L-Root"
+      }
+   ],
+   "timestamp" : "2020-02-05T11:51:32Z",
+   "version" : "0.6"
+}

@@ -12,6 +12,6 @@ Live test, OpenBGPD 6.5, default config, IPv6: dumping routes...
 Live test, OpenBGPD 6.5, default config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 40.935s
+Ran 4 tests in 42.505s
 
 OK
