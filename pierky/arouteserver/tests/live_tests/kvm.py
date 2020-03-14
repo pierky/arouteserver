@@ -72,7 +72,12 @@ class KVMInstance(BGPSpeakerInstance):
                 "Error executing the following command:\n"
                 "\t{}\n"
                 "Output follows:\n\n"
-                "{}".format(cmd, e.output)
+                "stdout:\n{}\n\n"
+                "----\n"
+                "stderr:\n{}\n\n"
+                "----\n"
+                "exit code: {}".format(cmd, e.output,
+                                       e.stderr, e.returncode)
             )
 
     def is_running(self):
