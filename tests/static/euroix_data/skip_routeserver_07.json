@@ -1,0 +1,994 @@
+{
+    "version": "0.7",
+    "timestamp": "2020-03-14T11:15:41Z",
+    "ixp_list": [
+        {
+            "shortname": "tdc-ops-sw1",
+            "name": "SUPRnet",
+            "country": "US",
+            "url": "https:\/\/www.suprnet.net",
+            "peeringdb_id": 363,
+            "ixf_id": 424,
+            "ixp_id": 1,
+            "support_email": "peering@suprnet.net",
+            "support_phone": "+555 1 555 1234",
+            "support_contact_hours": "24x7",
+            "emergency_email": "peering@suprnet.net",
+            "emergency_phone": "+555 1 555 1234",
+            "emergency_contact_hours": "24x7",
+            "billing_contact_hours": "24x7",
+            "billing_email": "peering@suprnet.net",
+            "billing_phone": "peering@suprnet.net",
+            "peering_policy_list": [
+                "open",
+                "selective",
+                "mandatory",
+                "closed"
+            ],
+            "vlan": [
+                {
+                    "id": 1,
+                    "name": "Peering LAN",
+                    "ipv4": {
+                        "prefix": "206.53.201.0",
+                        "mask_length": 24
+                    },
+                    "ipv6": {
+                        "prefix": "2001:504:60::",
+                        "mask_length": 64
+                    }
+                }
+            ],
+            "switch": [
+                {
+                    "id": 1,
+                    "name": "tdcSUPRnetNexus",
+                    "colo": "Tonaquint Datacenter",
+                    "city": "St. George",
+                    "country": "US",
+                    "pdb_facility_id": 1001,
+                    "manufacturer": "Cisco Systems",
+                    "model": "n3500"
+                }
+            ]
+        }
+    ],
+    "member_list": [
+        {
+            "asnum": 42,
+            "member_since": "2019-05-23T00:00:00Z",
+            "url": "http:\/\/www.pch.net\/",
+            "name": "Packet Clearing House AS42",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 1000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.22",
+                                "as_macro": "AS-PCH",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "00:3a:7d:68:5a:61"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::2a",
+                                "as_macro": "AS-PCH",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "00:3a:7d:68:5a:61"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 112,
+            "member_since": "2019-05-23T00:00:00Z",
+            "url": "https:\/\/www.as112.net\/",
+            "name": "DNS-OARC-112",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 1000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.21",
+                                "as_macro": "AS112",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "3e:b0:4a:ed:93:20"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::70",
+                                "as_macro": "AS112",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "3e:b0:4a:ed:93:20"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 210,
+            "member_since": "2019-05-23T00:00:00Z",
+            "url": "http:\/\/www.uen.org",
+            "name": "Utah Education Network",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.14",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "b0:26:80:52:1c:68"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::d2",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "b0:26:80:52:1c:68"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 3856,
+            "member_since": "2019-05-23T00:00:00Z",
+            "url": "http:\/\/pch.net",
+            "name": "Packet Clearing House",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 1000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.23",
+                                "as_macro": "AS-PCH",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "00:0c:29:9c:a9:5a"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::f10",
+                                "as_macro": "AS-PCH",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "00:0c:29:9c:a9:5a"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 4181,
+            "member_since": "2019-05-29T00:00:00Z",
+            "url": "http:\/\/www.tdstelecom.com",
+            "name": "TDS Telecom",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.30",
+                                "as_macro": "ARIN::AS-TDS-TRANSIT",
+                                "routeserver": false,
+                                "mac_addresses": [
+                                    "00:8a:96:b0:10:21"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::1055",
+                                "as_macro": "ARIN::AS-TDS-TRANSIT",
+                                "routeserver": false,
+                                "mac_addresses": [
+                                    "00:8a:96:b0:10:21"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 6315,
+            "member_since": "2019-05-29T00:00:00Z",
+            "url": "http:\/\/xmission.com\/",
+            "name": "XMission",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.29",
+                                "as_macro": "AS-XMISSION",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "00:22:83:32:bf:f0"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::18ab",
+                                "as_macro": "AS-XMISSION",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "00:22:83:32:bf:f0"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 11071,
+            "member_since": "2019-05-22T00:00:00Z",
+            "url": "https:\/\/www.infowest.com",
+            "name": "InfoWest, Inc",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.10",
+                                "as_macro": "AS-IWNET",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "50:87:89:60:57:f9"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::2b3f",
+                                "as_macro": "AS-IWNET",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "50:87:89:60:57:f9"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 20018,
+            "member_since": "2019-05-22T00:00:00Z",
+            "url": "http:\/\/www.mvtel.com",
+            "name": "Moapa Valley Telephone",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 1000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.26",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "b0:26:80:4d:55:79"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::4e32",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "b0:26:80:4d:55:79"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 22591,
+            "member_since": "2019-05-22T00:00:00Z",
+            "url": "https:\/\/www.mozy.com",
+            "name": "Mozy",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.11",
+                                "as_macro": "AS22591",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "c0:67:af:4b:13:00"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 25152,
+            "member_since": "2019-05-23T00:00:00Z",
+            "url": "http:\/\/k.root-servers.org",
+            "name": "RIPE NCC K-Root Operations",
+            "peering_policy": "selective",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 1000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.19",
+                                "as_macro": "RIPE::RS-KROOT RIPE::RS-KROOT-V6",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "f4:8e:38:bf:b0:42"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::6240",
+                                "as_macro": "RIPE::RS-KROOT RIPE::RS-KROOT-V6",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "f4:8e:38:bf:b0:42"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 25840,
+            "member_since": "2019-05-23T00:00:00Z",
+            "url": "http:\/\/www.cascadeaccess.com",
+            "name": "Cascade Access",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 1000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.27",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "08:96:ad:66:f5:14"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::64f0",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "08:96:ad:66:f5:14"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 26253,
+            "member_since": "2019-05-22T00:00:00Z",
+            "url": "http:\/\/www.scinternet.net",
+            "name": "South Central Communications",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.12",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "d4:6a:35:91:54:08"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::668d",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "d4:6a:35:91:54:08"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 26415,
+            "member_since": "2019-05-23T00:00:00Z",
+            "url": "http:\/\/www.verisign.com\/rirs",
+            "name": "VeriSign Global Registry Services",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 1000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.20",
+                                "as_macro": "AS-GTLD",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "0a:00:05:29:b1:a8"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::672f",
+                                "as_macro": "AS-GTLD",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "0a:00:05:29:b1:a8"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 27448,
+            "member_since": "2019-05-23T00:00:00Z",
+            "url": "http:\/\/www.kayenta.net\/",
+            "name": "Kayenta Technologies",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 1000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.17",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "f4:cf:e2:05:3e:82"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 29933,
+            "member_since": "2019-05-23T00:00:00Z",
+            "url": "http:\/\/www.veracitynetworks.com",
+            "name": "Veracity Networks",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.18",
+                                "as_macro": "AS-29933-TRANSIT",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "74:8e:f8:a8:48:01"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::74ed",
+                                "as_macro": "AS-29933-TRANSIT",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "74:8e:f8:a8:48:01"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 32490,
+            "member_since": "2019-05-23T00:00:00Z",
+            "url": "Http:\/\/www.hi-speed.us",
+            "name": "TKS Internet Service",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.24",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "6c:6c:d3:42:fc:bf"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 32890,
+            "member_since": "2019-09-01T00:00:00Z",
+            "url": "https:\/\/beehive.net",
+            "name": "Beehive Broadband",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 1000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.33",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "f4:db:e6:8c:f8:c9"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::807a",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "f4:db:e6:8c:f8:c9"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 36040,
+            "member_since": "2019-11-01T00:00:00Z",
+            "url": "https:\/\/www.google.com",
+            "name": "Google LLC AS36040",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        },
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        },
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.31",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "00:72:78:01:77:26"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::3b41",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "00:72:78:01:77:26"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 36143,
+            "member_since": "2019-05-23T00:00:00Z",
+            "url": "http:\/\/awinetworks.com",
+            "name": "AWI Networks",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.15",
+                                "as_macro": "AS-AWINET",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "88:43:e1:89:1c:10"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::8d2f",
+                                "as_macro": "AS-AWINET",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "88:43:e1:89:1c:10"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 46309,
+            "member_since": "2019-05-23T00:00:00Z",
+            "url": "http:\/\/tonaquintdc.com",
+            "name": "Tonaquint Data Center",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 1000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.16",
+                                "as_macro": "AS46309:AS-ALL",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "60:9c:9f:5c:6a:cc"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::b4e5",
+                                "as_macro": "AS46309:AS-ALL",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "60:9c:9f:5c:6a:cc"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 53407,
+            "member_since": "2019-05-23T00:00:00Z",
+            "url": "http:\/\/www.utopianet.org",
+            "name": "UTOPIA",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.28",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "00:23:3e:73:3c:df"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::d09f",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "00:23:3e:73:3c:df"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 393299,
+            "member_since": "2019-05-23T00:00:00Z",
+            "url": "https:\/\/gofiber.tech",
+            "name": "Go Fiber",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 1000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.13",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "00:1f:ca:b3:75:40"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::6:53",
+                                "routeserver": true,
+                                "mac_addresses": [
+                                    "00:1f:ca:b3:75:40"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 394914,
+            "member_since": "2019-05-22T00:00:00Z",
+            "url": "https:\/\/www.suprnet.net",
+            "name": "SUPRnet Route Servers",
+            "peering_policy": "mandatory",
+            "member_type": "ixp",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 1000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.2",
+                                "routeserver": false,
+                                "mac_addresses": [
+                                    "86:4d:84:31:a3:16"
+                                ],
+                                "service_type": [
+                                    "ixrouteserver"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::2",
+                                "routeserver": false,
+                                "mac_addresses": [
+                                    "86:4d:84:31:a3:16"
+                                ],
+                                "service_type": [
+                                    "ixrouteserver"
+                                ]
+                            }
+                        },
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.53.201.3",
+                                "routeserver": false,
+                                "mac_addresses": [
+                                    "00:50:56:97:c7:37"
+                                ],
+                                "service_type": [
+                                    "ixrouteserver"
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:60::3",
+                                "routeserver": false,
+                                "mac_addresses": [
+                                    "00:50:56:97:c7:37"
+                                ],
+                                "service_type": [
+                                    "ixrouteserver"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

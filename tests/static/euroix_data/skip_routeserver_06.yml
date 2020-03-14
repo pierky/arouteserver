@@ -1,0 +1,296 @@
+# Data fetched from tests/static/euroix_data/skip_routeserver_06.json at 2020-03-14T11:49:32.952581 UTC
+# IXP ID: 46
+# VLAN ID: 4
+clients:
+- asn: 29432
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS29432:AS-PEERING
+  description: TREX Services
+  ip: 195.140.192.9
+- asn: 29432
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS29432:AS-PEERING
+  description: TREX Services
+  ip: 2001:7f8:1d:4::72f8:1
+- asn: 719
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-KOLUMBUS
+      max_prefix:
+        limit_ipv4: 900
+  description: Elisa
+  ip: 195.140.192.18
+- asn: 719
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-KOLUMBUS
+      max_prefix:
+        limit_ipv6: 900
+  description: Elisa
+  ip: 2001:7f8:1d:4::2cf:1
+- asn: 6667
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EUNETIP
+      max_prefix:
+        limit_ipv4: 1500
+  description: Elisa/Saunalahti
+  ip: 195.140.192.13
+- asn: 6667
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-EUNETIP
+      max_prefix:
+        limit_ipv6: 1500
+  description: Elisa/Saunalahti
+  ip: 2001:7f8:1d:4::1a0b:1
+- asn: 29243
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MMD
+  description: MMD Networks
+  ip: 195.140.192.11
+- asn: 29243
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-MMD
+  description: MMD Networks
+  ip: 2001:7f8:1d:4::723b:1
+- asn: 1741
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FUNET
+  description: CSC Oy / Funet
+  ip: 195.140.192.17
+- asn: 1741
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-FUNET
+  description: CSC Oy / Funet
+  ip: 2001:7f8:1d:4::6cd:1
+- asn: 51164
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CYBERCOM
+  description: Cybercom
+  ip: 195.140.192.20
+- asn: 51164
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-CYBERCOM
+  description: Cybercom
+  ip: 2001:7f8:1d:4::c7dc:1
+- asn: 47605
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-set-FNE
+      max_prefix:
+        limit_ipv4: 300
+  description: FNE Finland
+  ip: 195.140.192.22
+- asn: 47605
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-set-FNE
+      max_prefix:
+        limit_ipv6: 300
+  description: FNE Finland
+  ip: 2001:7f8:1d:4::b9f5:1
+- asn: 35382
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS35382
+  description: Capnova
+  ip: 195.140.192.23
+- asn: 35382
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS35382
+  description: Capnova
+  ip: 2001:7f8:1d:4::8a36:1
+- asn: 42909
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS42909
+  description: CommunityDNS
+  ip: 195.140.192.24
+- asn: 42909
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS42909
+  description: CommunityDNS
+  ip: 2001:7f8:1d:4::a79d:1
+- asn: 39242
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS39242:AS-CUSTOMERS
+  description: Seclan
+  ip: 195.140.192.26
+- asn: 39242
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS39242:AS-CUSTOMERS
+  description: Seclan
+  ip: 2001:7f8:1d:4::994a:1
+- asn: 58003
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS58003:AS-ALL
+  description: Planeetta Internet
+  ip: 195.140.192.30
+- asn: 58003
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS58003:AS-ALL
+  description: Planeetta Internet
+  ip: 2001:7f8:1d:4::e293:1
+- asn: 16302
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SUOMICOM
+      max_prefix:
+        limit_ipv4: 100
+  description: SuomiCom ISP
+  ip: 195.140.192.31
+- asn: 16302
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-SUOMICOM
+      max_prefix:
+        limit_ipv6: 100
+  description: SuomiCom ISP
+  ip: 2001:7f8:1d:4::3fae:1
+- asn: 112
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS112
+  description: AS112.net
+  ip: 195.140.192.112
+- asn: 112
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS112
+  description: AS112.net
+  ip: 2001:7f8:1d:4::70:1
+- asn: 42
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+      max_prefix:
+        limit_ipv4: 500
+  description: PCH Production
+  ip: 195.140.192.28
+- asn: 42
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+      max_prefix:
+        limit_ipv6: 500
+  description: PCH Production
+  ip: 2001:7f8:1d:4::2a:1
+- asn: 3856
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+  description: PCH Research
+  ip: 195.140.192.29
+- asn: 3856
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-PCH
+  description: PCH Research
+  ip: 2001:7f8:1d:4::f10:1
+- asn: 20904
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NETPLAZA
+  description: Netplaza
+  ip: 195.140.192.34
+- asn: 20904
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS-NETPLAZA
+  description: Netplaza
+  ip: 2001:7f8:1d:4::51a8:1
+- asn: 34387
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS34387
+  description: Netcrew ry
+  ip: 195.140.192.38
+- asn: 34387
+  cfg:
+    filtering:
+      irrdb:
+        as_sets:
+        - AS34387
+  description: Netcrew ry
+  ip: 2001:7f8:1d:4::8653:1

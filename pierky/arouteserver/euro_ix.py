@@ -18,13 +18,14 @@ import json
 import re
 import requests
 import six
+from packaging import version
 
 from .peering_db import PeeringDBNet, PeeringDBNoInfoError
 from .errors import EuroIXError, EuroIXSchemaError
 
 class EuroIXMemberList(object):
 
-    TESTED_EUROIX_SCHEMA_VERSIONS = ("0.4", "0.5", "0.6", "0.7")
+    TESTED_EUROIX_SCHEMA_VERSIONS = ("0.4", "0.5", "0.6", "0.7", "1.0")
 
     CUSTOM_COMMUNITIES = ["switch_id", "switch_name", "colocation", "city",
                           "country", "member_type"]
@@ -59,7 +60,7 @@ class EuroIXMemberList(object):
                     )
                 )
         else:
-            raw = input_object.read().decode("utf-8")
+            raw = input_object.read()
 
         if not self.raw_data:
             try:
@@ -279,8 +280,77 @@ class EuroIXMemberList(object):
                                 max_prefix
                             )
 
+        def _is_a_routeserver(member, vlan_ip_info=None):
+            """Determine if the member or if the specific connection is a route server.
+
+            Return True if member/connection is a route server, otherwise False.
+
+            Different versions of the schema define a route server in different ways:
+
+            - until version 0.6, the classification was done at "member" level;
+
+              https://github.com/euro-ix/json-schemas/blob/master/versions/ixp-member-list-0.6.schema.json#L221
+
+            - starting with 0.7, a more granular approach has been used, and the
+              definition was moved to the connection level, "due to the way some IXs
+              use the same ASNs for many different things"
+
+              https://github.com/euro-ix/json-schemas/issues/24#issuecomment-361654981
+
+              > `routeserver` was removed becauce all peering IPs of a member
+              > (ASN) is not necessarily for the purposes of a route server.
+              > Some IXs, for example, use the same ASN for route collectors,
+              > route servers and other IX related services. Whether a peering
+              > IP is a route server or not can now be ascertained via the
+              > `service_type` attribute containing `ixrouteserver`.
+
+              https://github.com/euro-ix/json-schemas/commit/6fe3bb04fbc9ba78e529bbce97cff3a23031d89c
+
+            - in version 1.0 follows the same approach of version 0.7, but using a
+              different attribute, `services`.
+
+            That's why this function takes both `member` and `vlan_ip_info` into account.
+
+            It's called from two other functions:
+            - first time by process_member, at member level only, in order to catch
+              route servers on versions <= 0.6.
+            - second time, it's called by process_connection, to perform the check
+              at connection level (VLAN IP info), to catch route servers on versions
+              >= 0.7.
+            """
+
+            schema_version = self._get_item("version", self.raw_data, str)
+
+            # Until version 0.6, route servers were identified using a
+            # specific `member_type`.
+            if version.parse(schema_version) <= version.parse("0.6"):
+                if self._get_item("member_type", member, str, True) == "routeserver":
+                    return True
+                return False
+
+            # In version 0.7, "routeserver" was removed from the valid
+            # values of `member_type`, and `service_type` was introduced, but at connection
+            # level this time (VLAN IP info).
+            if version.parse(schema_version) <= version.parse("0.7"):
+                if vlan_ip_info:
+                    service_type = self._get_item("service_type", vlan_ip_info, list, True)
+                    if service_type and "ixrouteserver" in service_type:
+                        return True
+                return False
+
+            # In the latest version (1.0 ATOW), the classification is still done
+            # at connection level, but using a different attribute, `services`.
+            if vlan_ip_info:
+                services = self._get_item("services", vlan_ip_info, list, True) or []
+                for service in services:
+                    if isinstance(service, dict):
+                        if service.get("type", None) == "ixrouteserver":
+                            return True
+
+            return False
+
         def process_member(member):
-            if self._get_item("member_type", member, str, True) == "routeserver":
+            if _is_a_routeserver(member):
                 # Member is a route server itself.
                 return
 
@@ -358,6 +428,10 @@ class EuroIXMemberList(object):
                     address = self._get_item("address", ip_info, str, True)
 
                     if not address:
+                        continue
+
+                    if _is_a_routeserver(member, ip_info):
+                        # The connection of this member represents a route server itself.
                         continue
 
                     if routeserver_only:

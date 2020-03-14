@@ -1,0 +1,787 @@
+{
+    "version": "1.0",
+    "timestamp": "2020-03-14T11:31:50Z",
+    "ixp_list": [
+        {
+            "shortname": "QCIX Main",
+            "name": "Quad Cities Internet Exchange",
+            "country": "US",
+            "url": "http:\/\/www.qcix.net\/",
+            "peeringdb_id": 2741,
+            "ixf_id": 853,
+            "ixp_id": 1,
+            "support_email": "noc@qcix.net",
+            "support_phone": "6122040000",
+            "support_contact_hours": "24x7",
+            "emergency_email": "noc@qcix.net",
+            "emergency_phone": "6122040000",
+            "emergency_contact_hours": "24x7",
+            "billing_contact_hours": "24x7",
+            "billing_email": "noc@qcix.net",
+            "billing_phone": "noc@qcix.net",
+            "peering_policy_list": [
+                "open",
+                "selective",
+                "mandatory",
+                "closed"
+            ],
+            "vlan": [
+                {
+                    "id": 1,
+                    "name": "QCIX Main",
+                    "ipv4": {
+                        "prefix": "206.83.43.0",
+                        "mask_length": 24
+                    }
+                }
+            ],
+            "switch": [
+                {
+                    "id": 1,
+                    "name": "QCIX-Waterloo-SW01",
+                    "colo": "SFN IA-Waterloo",
+                    "city": "Davenport",
+                    "country": "USA",
+                    "pdb_facility_id": 7706,
+                    "manufacturer": "Arista",
+                    "model": "DCS-7050S-52",
+                    "software": "EOS 4.9.8.1"
+                },
+                {
+                    "id": 2,
+                    "name": "Davenport QCIX Switch",
+                    "colo": "SFN IA-Davenport",
+                    "city": "Davenport",
+                    "country": "USA",
+                    "pdb_facility_id": 7705,
+                    "manufacturer": "Arista",
+                    "model": "DCS-7050S-52",
+                    "software": "EOS 4.9.8.1"
+                }
+            ]
+        }
+    ],
+    "member_list": [
+        {
+            "asnum": 42,
+            "member_since": "2020-01-11T00:00:00Z",
+            "url": "http:\/\/www.pch.net\/",
+            "name": "Packet Clearing House AS42",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 2,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.83.43.9",
+                                "as_macro": "AS-PCH",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            },
+                            "ipv6": {
+                                "address": "2001:504:9b::9",
+                                "as_macro": "AS-PCH",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 3856,
+            "member_since": "2020-03-12T00:00:00Z",
+            "url": "http:\/\/pch.net",
+            "name": "Packet Clearing House",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 2,
+                            "if_speed": 1000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.83.43.10",
+                                "as_macro": "AS-PCH",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            },
+                            "ipv6": {
+                                "address": "2001:504:9b::10",
+                                "as_macro": "AS-PCH",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 10242,
+            "member_since": "2020-02-03T00:00:00Z",
+            "url": "http:\/\/www.usinternet.com",
+            "name": "US Internet",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 2,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.83.43.7",
+                                "as_macro": "as-usinternet",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            },
+                            "ipv6": {
+                                "address": "2001:504:9b::7",
+                                "as_macro": "as-usinternet",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 11708,
+            "member_since": "2020-02-21T00:00:00Z",
+            "url": "http:\/\/www.kcfiber.com",
+            "name": "KCFiber",
+            "peering_policy": "selective",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.83.43.20",
+                                "as_macro": "AS-KCFIBER",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            },
+                            "ipv6": {
+                                "address": "2001:504:9b::20",
+                                "as_macro": "AS-KCFIBER",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 14371,
+            "member_since": "2020-01-11T00:00:00Z",
+            "url": "http:\/\/www.paulbunyan.net",
+            "name": "Paul Bunyan Communications",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.83.43.13",
+                                "as_macro": "AS-PBC",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            },
+                            "ipv6": {
+                                "address": "2001:504:9b::13",
+                                "as_macro": "AS-PBC",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 22534,
+            "member_since": "2020-02-21T00:00:00Z",
+            "url": "http:\/\/www.cstech.com",
+            "name": "CS-TECH-INC",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 2,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.83.43.24",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            },
+                            "ipv6": {
+                                "address": "2001:504:9b::24",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 26156,
+            "member_since": "2020-01-14T00:00:00Z",
+            "url": "http:\/\/www.veruscorp.com",
+            "name": "Verus Corporation, Inc.",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.83.43.15",
+                                "as_macro": "AS-VERUS-3",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            },
+                            "ipv6": {
+                                "address": "2001:504:9b::15",
+                                "as_macro": "AS-VERUS-3",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 26725,
+            "member_since": "2020-02-21T00:00:00Z",
+            "url": "https:\/\/lcom.net",
+            "name": "Liberty Communications",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 2,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.83.43.23",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            },
+                            "ipv6": {
+                                "address": "2001:504:9b::23",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 32097,
+            "member_since": "2020-02-21T00:00:00Z",
+            "url": "http:\/\/wholesaleinternet.net",
+            "name": "Wholesale Internet, Inc.",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.83.43.21",
+                                "as_macro": "AS-WHOLESALE-INTERNET",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            },
+                            "ipv6": {
+                                "address": "2001:504:9b::21",
+                                "as_macro": "AS-WHOLESALE-INTERNET",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 32621,
+            "member_since": "2019-12-26T00:00:00Z",
+            "url": "http:\/\/www.mnvoip.com",
+            "name": "Minnesota VoIP",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.83.43.5",
+                                "as_macro": "AS-TCVTRANSIT",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            },
+                            "ipv6": {
+                                "address": "2001:504:9b::5",
+                                "as_macro": "AS-TCVTRANSIT",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 36040,
+            "member_since": "2020-01-31T00:00:00Z",
+            "url": "https:\/\/www.google.com",
+            "name": "Google LLC AS36040",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 2,
+                            "if_speed": 10000
+                        },
+                        {
+                            "switch_id": 2,
+                            "if_speed": 10000
+                        },
+                        {
+                            "switch_id": 2,
+                            "if_speed": 10000
+                        },
+                        {
+                            "switch_id": 2,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.83.43.19",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            },
+                            "ipv6": {
+                                "address": "2001:504:9b::19",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 47096,
+            "member_since": "2020-01-15T00:00:00Z",
+            "url": "https:\/\/www.compudyne.com\/",
+            "name": "Compudyne, Inc.",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.83.43.17",
+                                "as_macro": "AS-47096DOWNSTREAM",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            },
+                            "ipv6": {
+                                "address": "2001:504:9b::17",
+                                "as_macro": "AS-47096DOWNSTREAM",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 53597,
+            "member_since": "2020-02-21T00:00:00Z",
+            "url": "http:\/\/www.hoyosconsulting.com",
+            "name": "Hoyos Consulting LLC",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.83.43.22",
+                                "as_macro": "AS-HOYOS-NETWORK",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            },
+                            "ipv6": {
+                                "address": "2001:504:9b::22",
+                                "as_macro": "AS-HOYOS-NETWORK",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 54374,
+            "member_since": "2020-01-13T00:00:00Z",
+            "url": "http:\/\/wmtel.net",
+            "name": "Wm Tel",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.83.43.18",
+                                "as_macro": "AS-WMTA-CUST",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            },
+                            "ipv6": {
+                                "address": "2001:504:9b::18",
+                                "as_macro": "AS-WMTA-CUST",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 55009,
+            "member_since": "2019-12-26T00:00:00Z",
+            "url": "http:\/\/www.router12.net",
+            "name": "Router12 Networks",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.83.43.6",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            },
+                            "ipv6": {
+                                "address": "2001:504:9b::6",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 62886,
+            "member_since": "2020-01-11T00:00:00Z",
+            "url": "http:\/\/www.omnitel.biz\/",
+            "name": "OMNITEL",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.83.43.11",
+                                "as_macro": "AS-OMNITEL",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            },
+                            "ipv6": {
+                                "address": "2001:504:9b::11",
+                                "as_macro": "AS-OMNITEL",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 394330,
+            "member_since": "2020-01-11T00:00:00Z",
+            "url": "http:\/\/www.ltdbroadband.net",
+            "name": "LTDBROADBAND",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.83.43.14",
+                                "as_macro": "AS394330:AS-ALL",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            },
+                            "ipv6": {
+                                "address": "2001:504:9b::14",
+                                "as_macro": "AS394330:AS-ALL",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 397326,
+            "member_since": "2019-12-31T00:00:00Z",
+            "url": null,
+            "name": "South Front Networks",
+            "peering_policy": "open",
+            "member_type": "peering",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 2,
+                            "if_speed": 10000
+                        },
+                        {
+                            "switch_id": 2,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.83.43.3",
+                                "as_macro": "AS-SFN-CUST",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            },
+                            "ipv6": {
+                                "address": "2001:504:9b::3",
+                                "as_macro": "AS-SFN-CUST",
+                                "routeserver": true,
+                                "mac_addresses": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "asnum": 397806,
+            "member_since": "2019-08-07T00:00:00Z",
+            "url": "http:\/\/www.qcix.net\/",
+            "name": "Quad Cities Internet Exchange",
+            "peering_policy": "open",
+            "member_type": "ixp",
+            "connection_list": [
+                {
+                    "ixp_id": 1,
+                    "state": "active",
+                    "if_list": [
+                        {
+                            "switch_id": 1,
+                            "if_speed": 10000
+                        }
+                    ],
+                    "vlan_list": [
+                        {
+                            "vlan_id": 1,
+                            "ipv4": {
+                                "address": "206.83.43.1",
+                                "routeserver": false,
+                                "mac_addresses": [],
+                                "services": [
+                                    {
+                                        "type": "ixrouteserver",
+                                        "daemon": "Bird v1"
+                                    }
+                                ]
+                            },
+                            "ipv6": {
+                                "address": "2001:504:9b::1",
+                                "routeserver": false,
+                                "mac_addresses": [],
+                                "services": [
+                                    {
+                                        "type": "ixrouteserver",
+                                        "daemon": "Bird v1"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
