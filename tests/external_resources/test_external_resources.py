@@ -25,6 +25,7 @@ from pierky.arouteserver.last_version import LastVersion
 from pierky.arouteserver.peering_db import PeeringDBNet, PeeringDBIXList, \
                                            PeeringDBNetNeverViaRouteServers
 from pierky.arouteserver.ripe_rpki_cache import RIPE_RPKI_ROAs
+from pierky.arouteserver.euro_ix import EuroIXMemberList
 
 cache_dir = None
 cache_cfg = {
@@ -142,3 +143,33 @@ class TestExternalResources(unittest.TestCase):
         rset.load_data()
         self.assertTrue(len(rset.prefixes) > 0)
         self.assertTrue(any([p for p in rset.prefixes if p["prefix"] == "193.0.0.0"]))
+
+    def test_routeservers_excluded_from_clients(self):
+        """External resources: route servers excluded from clients-from-euroix"""
+
+        # The idea behind this check is to be sure that the most recent version of
+        # the Euro-IX Member list JSON file will be always processed correctly, and
+        # that the route server IPs will always be excluded from the output of the
+        # clients-from-euroix command.
+        #
+        # Here, the INEX members list is retrieve from their member-export endpoint.
+        # INEX is behind IXPManager, and hopefully they will always export their
+        # member list using the most recent version of the Euro-IX Member JSON format.
+        # Doing this, hopefully this test will catch any major issue that could affect
+        # the integration with IXPManager and the processing of the latest version of
+        # the Euro-IX schema.
+        euro_ix = EuroIXMemberList("https://www.inex.ie/ixp/api/v4/member-export/ixf", None, None)
+        clients = euro_ix.get_clients(ixp_id=1, vlan_id=2)
+        client_ips = [client["ip"] for client in clients]
+
+        for rs_ip in (
+            "185.6.36.8",
+            "2001:7f8:18::8",
+        ):
+            self.assertTrue(rs_ip not in client_ips)
+
+        for member_ip in (
+            "185.6.36.60",
+            "2001:7f8:18::60",
+        ):
+            self.assertTrue(member_ip in client_ips)
