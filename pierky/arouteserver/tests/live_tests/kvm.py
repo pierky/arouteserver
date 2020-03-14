@@ -216,6 +216,7 @@ class KVMInstance(BGPSpeakerInstance):
 
         cmd = ("ssh -o BatchMode=yes -o ConnectTimeout=5 "
                "-o StrictHostKeyChecking=no "
+               "-o UserKnownHostsFile=/dev/null "
                "-o ServerAliveInterval=10 {user}@{ip} -i {path_to_key} "
                "{cmd}").format(
             user=self._get_ssh_user(),
