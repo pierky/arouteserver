@@ -999,11 +999,11 @@ AS10745:
   max_length: 32
   prefix: 192.149.252.0
 - exact: false
-  ge: 48
-  le: 128
-  length: 48
-  max_length: 128
-  prefix: '2001:500:4::'
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
+  prefix: 199.43.0.0
 - exact: false
   ge: 48
   le: 128
@@ -1011,17 +1011,17 @@ AS10745:
   max_length: 128
   prefix: '2001:500:110::'
 - exact: false
-  ge: 24
-  le: 32
-  length: 24
-  max_length: 32
-  prefix: 192.136.136.0
+  ge: 48
+  le: 128
+  length: 48
+  max_length: 128
+  prefix: '2001:500:4::'
 - exact: false
   ge: 24
   le: 32
   length: 24
   max_length: 32
-  prefix: 199.43.0.0
+  prefix: 192.136.136.0
 
 
 registrobr_whois_db_records
@@ -1033,9 +1033,31 @@ never_via_route_servers_asns
 ----------------------------
 - 2914
 - 3491
+- 1299
+- 12322
+- 13030
+- 3320
+- 174
 - 6830
 - 6908
 - 11164
+- 8943
+- 8455
+- 36459
+- 7155
+- 263328
+- 46450
+- 52973
+- 265914
+- 138023
 - 54295
+- 209395
+- 138953
 - 58768
+- 328572
 - 393573
+- 393684
+- 269156
+- 207353
+- 209699
+- 270544
