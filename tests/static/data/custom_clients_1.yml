@@ -1,0 +1,12 @@
+clients:
+  - ip: 192.0.2.1
+    password: bgp_secret
+  - ip: 192.0.2.2
+    cfg:
+      filtering:
+        irrdb:
+          as_sets:
+            - AS-TWO
+  - ip: 192.0.2.3
+    add_if_missing: True
+    asn: 3333

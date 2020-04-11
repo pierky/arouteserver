@@ -119,6 +119,16 @@ class ConfigParserBase(object):
                 logging.error(str(e))
             raise ConfigError()
 
+    def load_from_dict(self, input_dict):
+        self.cfg = input_dict
+
+        try:
+            self.parse()
+        except ARouteServerError as e:
+            if str(e):
+                logging.error(str(e))
+            raise ConfigError()
+
     @staticmethod
     def validate(schema, cfg, path=""):
         errors = False

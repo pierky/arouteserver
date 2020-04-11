@@ -20,7 +20,9 @@ import yaml
 
 from .base import ARouteServerCommand
 from ..config.program import program_config
+from ..config.clients import merge_clients
 from ..euro_ix import EuroIXMemberList
+from ..errors import ARouteServerError
 
 class ClientsFromEuroIXCommand(ARouteServerCommand):
 
@@ -97,6 +99,26 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
             dest="merge_from_peeringdb")
 
         parser.add_argument(
+            "--merge-from-custom-file",
+            help="Merge a custom set of client settings from "
+                 "FILE into the clients generated from the "
+                 "Euro-IX JSON file. Can be used to override "
+                 "or enrich the clients which are automatically "
+                 "built by this tool with some custom local "
+                 "settings. For more info on how it works and "
+                 "the syntax of the custom file, run this command "
+                 "again with --help-merge-from-custom-file.",
+            metavar="FILE",
+            type=argparse.FileType('r'),
+            dest="merge_from_custom_file")
+
+        parser.add_argument(
+            "--help-merge-from-custom-file",
+            help="Prints additional info on how to use the "
+                 "--merge-from-custom-file option.",
+            action="store_true")
+
+        parser.add_argument(
             "-o", "--output",
             type=argparse.FileType('w'),
             help="Output file. Default: stdout.",
@@ -104,6 +126,48 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
             dest="output_file")
 
     def run(self):
+        if self.args.help_merge_from_custom_file:
+            print(
+                "\n"
+                "When --merge-from-custom-file is used, a local "
+                "YAML file is used to enrich the clients.yml file "
+                "built using this command.\n"
+                "This option can be used to handle local exceptions, "
+                "to override settings or to add clients which are "
+                "not included in the Euro-IX JSON used to built the "
+                "original file.\n"
+                "The format of the custom file must be the same of "
+                "the regular clients.yml file; the 'ip' attribute "
+                "of a client included inside the custom file is used "
+                "to match the client on the original clients.yml "
+                "build by this command. The content of the custom "
+                "file is then merged into the definition of the "
+                "original client.\n"
+                "\n"
+                "If a client is configured in the local custom file "
+                "but is missing from the set of clients generated "
+                "using the Euro-IX JSON file, then the local one is "
+                "ignored, unless the 'add_if_missing' attribute is "
+                "set to 'True': in that case, the custom client is "
+                "added to the resulting clients.yml file.\n"
+                "\n"
+                "Example of a local custom file:\n"
+                "\n"
+                "clients:\n"
+                "  - ip: 192.0.2.1\n"
+                "    password: ""bgp_secret""\n"
+                "  - ip: 192.0.2.2\n"
+                "    cfg:\n"
+                "      filtering:\n"
+                "        irrdb:\n"
+                "          as_sets:\n"
+                "            - AS-TWO\n"
+                "  - ip: 192.0.2.3\n"
+                "    add_if_missing: True\n"
+                "    asn: 3333\n"
+            )
+            return True
+
         euro_ix = EuroIXMemberList(self.args.url or self.args.input_file,
                                    program_config.get_dir("cache_dir"),
                                    program_config.get("cache_expiry"))
@@ -115,6 +179,16 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
                 guess_custom_bgp_communities=self.args.guess_custom_bgp_communities,
                 merge_from_peeringdb=self.args.merge_from_peeringdb)
             res = {"clients": clients}
+
+            if self.args.merge_from_custom_file:
+                try:
+                    merge_clients(res, self.args.merge_from_custom_file)
+                except ARouteServerError as e:
+                    raise ARouteServerError(
+                        "An error occurred while processing the custom "
+                        "clients file provided via "
+                        "--merge-from-custom-file: {}".format(e)
+                    )
 
             comments = []
             comments.append("# Data fetched from {} at {} UTC".format(
