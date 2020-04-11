@@ -13,5 +13,5 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-__version__ = "0.24.1" # pragma: no cover
+__version__ = "0.25.0-alpha1" # pragma: no cover
 COPYRIGHT_YEAR = 2020 # pragma: no cover
