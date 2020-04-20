@@ -121,7 +121,7 @@ Most of this release is based on the work made by `Claudio Jeker <https://github
 v0.19.1
 -------
 
-- Fix (BIRD configuration only): change ``bgp_path.last`` with ``bgp_path.last_nonaggregated``.
+- Fix (BIRD configuration only): change ``bgp_path.last`` with ``bgp_path.last``.
 
   When a route is originated from the aggregation of two different routes using the AS_SET, ``bgp_path.last`` always returns 0, so the origin ASN validation against IRR always fails.
 

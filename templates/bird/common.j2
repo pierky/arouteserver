@@ -469,7 +469,7 @@ function prefix_in_arin_whois_db() {
 {%		if "2.0"|target_version_ge %}
 	if net.type = NET_IP{{ this_ip_ver }} then {
 {%		endif %}
-	case bgp_path.last_nonaggregated {
+	case bgp_path.last {
 {%		for origin_asn in arin_whois_records|sort %}
 {%			set prefixes = arin_whois_records[origin_asn].prefixes|selectattr("prefix", "is_ipver", this_ip_ver)|list %}
 {%			if prefixes|length > 0 %}
@@ -495,7 +495,7 @@ function prefix_in_registrobr_whois_db() {
 {%		if "2.0"|target_version_ge %}
 	if net.type = NET_IP{{ this_ip_ver }} then {
 {%		endif %}
-	case bgp_path.last_nonaggregated {
+	case bgp_path.last {
 {%		for origin_asn in registrobr_whois_records|sort %}
 {%			set prefixes = registrobr_whois_records[origin_asn].prefixes|selectattr("prefix", "is_ipver", this_ip_ver)|list %}
 {%			if prefixes|length > 0 %}
