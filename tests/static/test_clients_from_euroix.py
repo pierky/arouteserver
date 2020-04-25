@@ -181,9 +181,17 @@ class TestClientsFromEuroIX(unittest.TestCase):
         client = [client for client in clients["clients"] if client["ip"] == ip][0]
         assert client.get("password", None) is None
 
+        ip = "2001:7f8:1::a500:2906:2"
+        client = [client for client in clients["clients"] if client["ip"] == ip][0]
+        assert client["cfg"]["filtering"]["irrdb"]["as_sets"] == ["AS-NFLX-V6"]
+
         ip = "195.69.147.250"
         client = [client for client in clients["clients"] if client["ip"] == ip][0]
         assert client["cfg"]["filtering"]["irrdb"]["as_sets"] == ["AS-NFLX-V4"]
+
+        ip = "2001:7f8:1::a500:2906:1"
+        client = [client for client in clients["clients"] if client["ip"] == ip][0]
+        assert client.get("password", None) is None
 
         merge_clients(clients, open("tests/static/data/custom_clients_2.yml", "r"))
 
@@ -193,11 +201,39 @@ class TestClientsFromEuroIX(unittest.TestCase):
         client = [client for client in clients["clients"] if client["ip"] == ip][0]
         assert client["password"] == "bgp_secret"
 
+        # In custom_clients_2.yml, the client is reported with
+        # an "exploded" IPv6 address, with zeroes, so a different
+        # representation of the IP found in the Euro-IX JSON file.
+        # This test aims to verify that during the merge IP addresses
+        # are matched correctly, regardless of their textual
+        # representation.
+        ip = "2001:7f8:1::a500:2906:2"
+        client = [client for client in clients["clients"] if client["ip"] == ip][0]
+        assert client["password"] == "bgp_secret_3"
+
         ip = "195.69.147.250"
         client = [client for client in clients["clients"] if client["ip"] == ip][0]
         assert client["cfg"]["filtering"]["irrdb"]["as_sets"] == ["AS-TWO"]
 
+        # In custom_clients_2.yml, the client is reported with
+        # an uppercase IPv6 address, while the one that comes
+        # from the Euro-IX JSON file is lower-case.
+        # This test aims to verify that during the merge IP addresses
+        # are matched correctly, regardless of their textual
+        # representation.
+        ip = "2001:7f8:1::a500:2906:1"
+        client = [client for client in clients["clients"] if client["ip"] == ip][0]
+        assert client["password"] == "bgp_secret_2"
+
         assert "192.0.2.3" in [client["ip"] for client in clients["clients"]]
+
+        # Client that is added via the custom YML file.
+        # The IP on that file is represented using the exploded
+        # form. This verifies that the client is added correctly
+        # using the normalised representation.
+        ip = "2001:7f8:1::a500:2906:3"
+        client = [client for client in clients["clients"] if client["ip"] == ip][0]
+        assert client["asn"] == 4444
 
     def test_merge_clients_3(self):
         """Clients from Euro-IX: merge local custom clients, broken custom file 1"""
@@ -224,3 +260,20 @@ class TestClientsFromEuroIX(unittest.TestCase):
             "check the logs for more details."
         ):
             merge_clients(clients, open("tests/static/data/custom_clients_4.yml", "r"))
+
+    def test_merge_clients_5(self):
+        """Clients from Euro-IX: merge local custom clients, broken custom file 3"""
+        self._run("official_more_complex_example", ixp_id=42, vlan_id=0)
+        clients = {"clients": self.clients}
+
+        with six.assertRaisesRegex(
+            self,
+            Exception,
+            "Error while processing the client n. 1 from "
+            "the set of clients to be merged: "
+            "client 2001:7f8:1::a500:2906:2 already exists in the "
+            "original list of clients, but it's also reported in "
+            "the set of clients to be merged with the 'add_if_missing' "
+            "attribute set."
+        ):
+            merge_clients(clients, open("tests/static/data/custom_clients_5.yml", "r"))

@@ -276,11 +276,31 @@ def merge_clients(original, custom_file):
                     "address of the original client to be updated."
                 )
 
-            ip = ValidatorIPAddr().validate(client["ip"])
+
+            # The value of the 'ip' key of the dictionary that will
+            # be used below to find the corresponding client and
+            # to update it is overriden here with the normalised
+            # representation of that IP.
+            # This is done in order to avoid mismatching of IPs
+            # represented in different ways (lower/upper case,
+            # exploded vs compact form), and also to avoid
+            # changing the way the IP was represented in
+            # the original client definition.
+            client["ip"] = ValidatorIPAddr().validate(client["ip"])
 
             for original_client in original["clients"]:
-                if original_client["ip"] != ip:
+                if original_client["ip"] != client["ip"]:
                     continue
+
+                if "add_if_missing" in client:
+                    raise ConfigError(
+                        "client {ip} already exists in the original "
+                        "list of clients, but it's also reported in "
+                        "the set of clients to be merged with the "
+                        "'add_if_missing' attribute set.".format(
+                            ip=client["ip"]
+                        )
+                    )
 
                 # A client having the same IP is present in the
                 # list of original clients. It's the one to update
