@@ -878,6 +878,7 @@ class LiveScenario_TagRejectPolicy(object):
 
     REJECT_CAUSE_COMMUNITY = "^65520:(\d+)$"
     REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY = "^rt:65520:(\d+)$"
+    REJECT_POLICY = "tag"
 
     @classmethod
     def _get_cfg_general(cls, orig_file="general.yml"):
@@ -888,7 +889,7 @@ class LiveScenario_TagRejectPolicy(object):
         with open(orig_path, "r") as f:
             cfg = yaml.safe_load(f.read())
 
-        cfg["cfg"]["filtering"]["reject_policy"] = {"policy": "tag"}
+        cfg["cfg"]["filtering"]["reject_policy"] = {"policy": cls.REJECT_POLICY}
         if "communities" not in cfg["cfg"]:
             cfg["cfg"]["communities"] = {}
         cfg["cfg"]["communities"]["reject_cause"] = {"std": "65520:dyn_val"}
@@ -898,3 +899,8 @@ class LiveScenario_TagRejectPolicy(object):
             yaml.safe_dump(cfg, f, default_flow_style=False)
 
         return dest_rel_path
+
+class LiveScenario_TagAndRejectRejectPolicy(LiveScenario_TagRejectPolicy):
+    """Same as LiveScenario_TagRejectPolicy, but with 'tag_and_reject' reject policy."""
+
+    REJECT_POLICY = "tag_and_reject"

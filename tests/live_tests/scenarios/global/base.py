@@ -19,7 +19,8 @@ import unittest
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.ipaddresses import IPNetwork
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
-                                                      LiveScenario_TagRejectPolicy
+                                                      LiveScenario_TagRejectPolicy, \
+                                                      LiveScenario_TagAndRejectRejectPolicy
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
                                                           OpenBGPDPreviousInstance, \
                                                           OpenBGPDLatestInstance
@@ -1061,6 +1062,10 @@ class BasicScenario_TagRejectPolicy(LiveScenario_TagRejectPolicy):
             self.receive_route(self.rs, self.DATA["local1"], self.AS1_1,
                                as_path="1", next_hop=self.AS1_1,
                                filtered=True, reject_reason=1)
+
+class BasicScenario_TagAndRejectRejectPolicy(LiveScenario_TagAndRejectRejectPolicy,
+                                             BasicScenario_TagRejectPolicy):
+    pass
 
 class BasicScenarioBIRD(BasicScenario):
     __test__ = False

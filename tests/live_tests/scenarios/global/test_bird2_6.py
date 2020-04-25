@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .base import BasicScenarioBIRD2, BasicScenario_TagRejectPolicy
+from .base import BasicScenarioBIRD2, BasicScenario_TagRejectPolicy, BasicScenario_TagAndRejectRejectPolicy
 from .data6 import BasicScenario_Data6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6, BIRD2Instance
 
@@ -37,3 +37,10 @@ class BasicScenario_BIRD2IPv6_Tag(BasicScenario_TagRejectPolicy,
     __test__ = True
 
     SHORT_DESCR = "Live test, BIRD v2, global scenario, IPv6, tag"
+
+class BasicScenario_BIRD2IPv6_TagAndReject(BasicScenario_TagAndRejectRejectPolicy,
+                                           BasicScenario_BIRD2IPv6):
+
+    __test__ = True
+
+    SHORT_DESCR = "Live test, BIRD v2, global scenario, IPv6, tag&reject"
