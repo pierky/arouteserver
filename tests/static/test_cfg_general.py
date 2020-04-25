@@ -274,7 +274,10 @@ class TestConfigParserGeneral(TestConfigParserBase):
 
         del self.cfg["communities"]["reject_cause"]["std"]
         self.cfg["filtering"]["reject_policy"]["policy"] = "tag"
-        self._contains_err("The 'reject_cause' community must be configured when 'reject_policy.policy' is 'tag'.")
+        self._contains_err("The 'reject_cause' community must be configured when 'reject_policy.policy' is 'tag' or 'tag_and_reject'.")
+
+        self.cfg["filtering"]["reject_policy"]["policy"] = "tag_and_reject"
+        self._contains_err("The 'reject_cause' community must be configured when 'reject_policy.policy' is 'tag' or 'tag_and_reject'.")
 
         self._test_option(self.cfg["filtering"]["reject_policy"], "policy", ())
 
@@ -499,7 +502,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
     def test_reject_cause_community_with_no_reject_policy(self):
         """{}: reject_cause can be set only with 'tag' reject_policy"""
         self.cfg["communities"]["reject_cause"]["std"] = "0:dyn_val"
-        self._contains_err("The 'reject_cause' community can be set only if 'reject_policy.policy' is 'tag'.")
+        self._contains_err("The 'reject_cause' community can be set only if 'reject_policy.policy' is 'tag' or 'tag_and_reject'.")
 
         self.cfg["filtering"]["reject_policy"]["policy"] = "tag"
         self._contains_err()
