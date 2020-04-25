@@ -386,7 +386,7 @@ class ConfigParserGeneral(ConfigParserBase):
                             unique_communities.append(comm[fmt])
 
         # The 'reject_cause' and 'rejected_route_announced_by' communities
-        # can be set only if 'reject_policy' is 'tag'.
+        # can be set only if 'reject_policy' is 'tag' or 'tag_and_reject'.
         if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] not in  ["tag", "tag_and_reject"]:
             for comm in ("reject_cause", "rejected_route_announced_by"):
                 reject_comm_is_set = False
@@ -398,7 +398,7 @@ class ConfigParserGeneral(ConfigParserBase):
                     errors = True
                     logging.error(
                         "The '{}' community can be set only if "
-                        "'reject_policy.policy' is 'tag'.".format(comm))
+                        "'reject_policy.policy' is 'tag' or 'tag_and_reject'.".format(comm))
 
         # The 'reject_cause' comm is mandatory when 'reject_policy' is 'tag' or 'tag_and_reject'.
         if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] in ["tag", "tag_and_reject"]:
