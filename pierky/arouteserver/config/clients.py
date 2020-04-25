@@ -112,7 +112,7 @@ class ConfigParserClients(ConfigParserBase):
                     },
                     "reject_policy": {
                         "policy": ValidatorOption("reject_policy",
-                                                  ("reject", "tag"),
+                                                  ("reject", "tag", "tag_and_reject"),
                                                   mandatory=False)
                     },
                 },

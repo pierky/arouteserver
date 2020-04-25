@@ -224,6 +224,24 @@ SUB_TEST="$LINENO"
 build_cmd "openbgpd" --ignore-issues "large_communities" | must_not_contain "'do_not_announce_to_peer'"
 
 # ---------------------------------------------
+reset
+TITLE="OpenBGPD tag_and_reject reject policy"
+GENERAL="tests/var/general.yml"
+cat << EOF > $GENERAL
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+  filtering:
+    reject_policy:
+      policy: tag_and_reject
+EOF
+
+EXP_ERR="ERROR For OpenBGP, 'reject_policy' can't be set to 'tag_and_reject'."
+
+SUB_TEST="$LINENO"
+build_cmd "openbgpd" | must_not_contain "$EXP_ERR"
+
+# ---------------------------------------------
 # clients-from-euroix
 reset
 TITLE="clients-from-euroix"

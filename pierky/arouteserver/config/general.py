@@ -197,7 +197,7 @@ class ConfigParserGeneral(ConfigParserBase):
 
         f["reject_policy"] = OrderedDict()
         f["reject_policy"]["policy"] = ValidatorOption(
-            "policy", ("reject", "tag"), default="reject"
+            "policy", ("reject", "tag", "tag_and_reject"), default="reject"
         )
 
         c["rpki_roas"] = OrderedDict()
@@ -386,8 +386,8 @@ class ConfigParserGeneral(ConfigParserBase):
                             unique_communities.append(comm[fmt])
 
         # The 'reject_cause' and 'rejected_route_announced_by' communities
-        # can be set only if 'reject_policy' is 'tag'.
-        if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] != "tag":
+        # can be set only if 'reject_policy' is 'tag' or 'tag_and_reject'.
+        if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] not in  ["tag", "tag_and_reject"]:
             for comm in ("reject_cause", "rejected_route_announced_by"):
                 reject_comm_is_set = False
                 for fmt in ("std", "ext", "lrg"):
@@ -398,10 +398,10 @@ class ConfigParserGeneral(ConfigParserBase):
                     errors = True
                     logging.error(
                         "The '{}' community can be set only if "
-                        "'reject_policy.policy' is 'tag'.".format(comm))
+                        "'reject_policy.policy' is 'tag' or 'tag_and_reject'.".format(comm))
 
-        # The 'reject_cause' comm is mandatory when 'reject_policy' is 'tag'.
-        if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] == "tag":
+        # The 'reject_cause' comm is mandatory when 'reject_policy' is 'tag' or 'tag_and_reject'.
+        if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] in ["tag", "tag_and_reject"]:
             reject_comm_is_set = False
             for fmt in ("std", "ext", "lrg"):
                 if self.cfg["cfg"]["communities"]["reject_cause"][fmt]:
@@ -411,7 +411,7 @@ class ConfigParserGeneral(ConfigParserBase):
                 errors = True
                 logging.error(
                     "The 'reject_cause' community must be configured when "
-                    "'reject_policy.policy' is 'tag'.")
+                    "'reject_policy.policy' is 'tag' or 'tag_and_reject'.")
 
         # Overlapping communities?
         try:

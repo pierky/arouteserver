@@ -14,6 +14,8 @@
 {% macro reject(client, cause, err_msg, avoid_braces=False) %}
 {% if client.cfg.filtering.reject_policy.policy == "reject" %}
 reject {{ err_msg }};
+{% elif client.cfg.filtering.reject_policy.policy == "tag_and_reject" %}
+{%	if not avoid_braces %}{{ "{ " }}{% endif %}tag_and_reject({{ cause}}, {{ client.asn }}); reject {{ err_msg }};{% if not avoid_braces %}{{ " }" }}{% endif %}
 {% else %}
 {%	if not avoid_braces %}{{ "{ " }}{% endif %}tag_and_reject({{ cause}}, {{ client.asn }}); print {{ err_msg }}; accept;{% if not avoid_braces %}{{ " }" }}{% endif %}
 {% endif %}

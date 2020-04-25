@@ -482,6 +482,8 @@ The reason that brought the server to reject the route is identified using a num
 
 \* This is not really a reject reason code, it only means that the route must be treated as rejected and must not be propagated to clients.
 
+On BIRD, it's also possible to configure the ``reject_policy`` using the ``tag_and_reject`` value: doing this, the ``reject_reason`` and optionally the ``rejected_route_announced_by`` BGP communities are still attached to the invalid routes, but then they are rejected by BIRD. Since the BIRD-specific ``import keep filtered on`` configuration statement is used, those routes remain available within the BIRD daemon and can be seen using BIRD-specific commands like ``show route filtered all``.
+
 Caveats and limitations
 ***********************
 
