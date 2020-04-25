@@ -116,6 +116,11 @@ Program config: setup, change a template file then fix it ... ok
 Program config: setup, then remove templates ... ok
 Program config: setup, remove templates then fix it ... ok
 Clients from Euro-IX: IXP-Manager workaround ... ok
+Clients from Euro-IX: merge local custom clients, add missing client ... ok
+Clients from Euro-IX: merge local custom clients, add/change settings ... ok
+Clients from Euro-IX: merge local custom clients, broken custom file 1 ... ok
+Clients from Euro-IX: merge local custom clients, broken custom file 2 ... ok
+Clients from Euro-IX: merge local custom clients, broken custom file 3 ... ok
 Clients from Euro-IX: official basic example ... ok
 Clients from Euro-IX: official more complex example ... ok
 Clients from Euro-IX: --routeserver-only filter ... ok
@@ -195,6 +200,6 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 195 tests in 40.249s
+Ran 200 tests in 99.544s
 
 OK
