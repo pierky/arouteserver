@@ -1,0 +1,19 @@
+clients:
+  - ip: 195.69.146.250
+    password: bgp_secret
+  - ip: 195.69.147.250
+    cfg:
+      filtering:
+        irrdb:
+          as_sets:
+            - AS-TWO
+  - ip: 192.0.2.3
+    add_if_missing: True
+    asn: 3333
+  - ip: 2001:7f8:1::A500:2906:1
+    password: bgp_secret_2
+  - ip: 2001:07f8:0001::A500:2906:0002
+    password: bgp_secret_3
+  - ip: 2001:07f8:0001:0000:0000:a500:2906:0003
+    add_if_missing: True
+    asn: 4444

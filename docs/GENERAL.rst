@@ -874,6 +874,11 @@ Reject policy: ``reject_policy``
   If it is set to **tag**, they are tagged as described above
   (and not propagated anyway to other clients). In this case,
   the **reject_cause** BGP community must be also set.
+  If it is set to **tag_and_reject**, they are tagged as in **tag**
+  but also discarded as in **reject** mode.
+
+
+  OpenBGPD: only **reject** and **tag** modes are allowed.
 
 
   Can be overwritten on a client-by-client basis.
@@ -1562,8 +1567,8 @@ Reject cause
 
 - ``reject_cause``:
   This BGP community is used when the **reject_policy** option is
-  set to **tag**. It is used to track the code of the reason that
-  led the route to be considered as invalid.
+  set to **tag** or **tag_and_reject**. It is used to track the code
+  of the reason that led the route to be considered as invalid.
 
 
   The following community is scrubbed from inbound routes.
@@ -1579,9 +1584,9 @@ Reject cause
 
 - ``rejected_route_announced_by``:
   This BGP community is used when the **reject_policy** option is
-  set to **tag**. If configured, it is used to track the ASN
-  of the peer that announced the invalid route to the route
-  server.
+  set to **tag** or **tag_and_reject**. If configured, it is used
+  to track the ASN of the peer that announced the invalid route
+  to the route server.
 
 
   The following community is scrubbed from inbound routes.

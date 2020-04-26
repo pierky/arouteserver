@@ -5,8 +5,8 @@ Total test cases per BGP speaker
 
 =============== ========= ============ ============ ===========  
 **BGP speaker** **Total** **Passed ✔** **Failed ✖** **Skipped** 
-BIRD            618       617          0            1           
-BIRD v2         617       616          0            1           
+BIRD            780       779          0            1           
+BIRD v2         779       778          0            1           
 OpenBGPD 6.5    428       419          0            9           
 OpenBGPD 6.6    428       419          0            9           
 OpenBGPD 6.6p0  428       419          0            9           
@@ -359,6 +359,94 @@ reconfigure                                                                     
 session configured via local include files                                      ✔        ✔                                                                
 =============================================================================== ======== =========== ================ ================ ================== 
 
+global scenario, IPv4, tag&reject
++++++++++++++++++++++++++++++++++
+
+=============================================================================== ======== =========== ================ ================ ================== 
+**Test**                                                                        **BIRD** **BIRD v2** **OpenBGPD 6.5** **OpenBGPD 6.6** **OpenBGPD 6.6p0** 
+RPKI, blackhole request for a covered prefix                                    ✔        ✔                                                                
+RPKI, invalid prefix (bad ASN) not propagated to clients                        ✔        ✔                                                                
+RPKI, invalid prefix (bad ASN) received by rs                                   ✔        ✔                                                                
+RPKI, invalid prefix (bad length) received by rs                                ✔        ✔                                                                
+RPKI, valid prefix propagated to clients                                        ✔        ✔                                                                
+RPKI, valid prefix received by rs                                               ✔        ✔                                                                
+bad communities as seen by AS101 upstreams                                      ✔        ✔                                                                
+bad communities scrubbed by rs (lrg)                                            ✔        ✔                                                                
+bad communities scrubbed by rs (std)                                            ✔        ✔                                                                
+bad prefixes not received by clients                                            ✔        ✔                                                                
+bad prefixes received by rs: AS_PATH len                                        ✔        ✔                                                                
+bad prefixes received by rs: IRRdb white-list                                   ✔        ✔                                                                
+bad prefixes received by rs: RPKI ROAs as route objects failed                  ✔        ✔                                                                
+bad prefixes received by rs: bogon                                              ✔        ✔                                                                
+bad prefixes received by rs: bogon (wrong tag)                                  ✔        ✔                                                                
+bad prefixes received by rs: client blacklist                                   ✔        ✔                                                                
+bad prefixes received by rs: default route                                      ✔        ✔                                                                
+bad prefixes received by rs: global blacklist                                   ✔        ✔                                                                
+bad prefixes received by rs: global blacklist (wrong tag)                       ✔        ✔                                                                
+bad prefixes received by rs: invalid ASN in AS-PATH                             ✔        ✔                                                                
+bad prefixes received by rs: invalid NEXT_HOP                                   ✔        ✔                                                                
+bad prefixes received by rs: invalid prefix-len                                 ✔        ✔                                                                
+bad prefixes received by rs: left-most ASN                                      ✔        ✔                                                                
+bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) ✔        ✔                                                                
+bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) ✔        ✔                                                                
+bad prefixes received by rs: not IPv6 global unicast space                      ✔        ✔                                                                
+bad prefixes received by rs: origin not in AS-SET                               ✔        ✔                                                                
+bad prefixes received by rs: prefix not in AS-SET                               ✔        ✔                                                                
+bad prefixes received by rs: transit-free ASN in AS-PATH                        ✔        ✔                                                                
+bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer    ✔        ✔                                                                
+bad prefixes received by rs: unknown NEXT_HOP                                   ✔        ✔                                                                
+blackhole filtering requests as seen by rs (BLACKHOLE)                          ✔        ✔                                                                
+blackhole filtering requests as seen by rs (lrg cust)                           ✔        ✔                                                                
+blackhole filtering requests as seen by rs (std cust)                           ✔        ✔                                                                
+blackholed prefixes as seen by enabled clients (BLACKHOLE)                      ✔        ✔                                                                
+blackholed prefixes as seen by enabled clients (lrg_cust)                       ✔        ✔                                                                
+blackholed prefixes as seen by enabled clients (std_cust)                       ✔        ✔                                                                
+blackholed prefixes not seen by not enabled clients                             ✔        ✔                                                                
+control communities, NO_EXPORT to AS1                                           ✔        ✔                                                                
+control communities, NO_EXPORT to any                                           ✔        ✔                                                                
+control communities, RFC1997 NO_EXPORT                                          ✔        ✔                                                                
+control communities, RTT, blackhole, not peers > 20 ms                          ✔        ✔                                                                
+control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms             ✔        ✔                                                                
+control communities, RTT, not peers <= 5 and > 100 ms                           ✔        ✔                                                                
+control communities, RTT, not peers > 15 ms                                     ✔        ✔                                                                
+control communities, RTT, not peers > 5 ms                                      ✔        ✔                                                                
+control communities, RTT, not peers > 5 ms + AS3                                ✔        ✔                                                                
+control communities, RTT, only peers <= 15 ms                                   ✔        ✔                                                                
+control communities, RTT, only peers <= 5 ms                                    ✔        ✔                                                                
+control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any               ✔        ✔                                                                
+control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms                       ✔        ✔                                                                
+control communities, announce to AS1 only                                       ✔        ✔                                                                
+control communities, announce to all except AS1                                 ✔        ✔                                                                
+control communities, don't announce to any                                      ✔        ✔                                                                
+control communities, prepend once to AS1                                        ✔        ✔                                                                
+control communities, prepend once to any                                        ✔        ✔                                                                
+control communities, prepend thrice to AS1, once to others                      ✔        ✔                                                                
+control communities, prepend thrice to any                                      ✔        ✔                                                                
+control communities, prepend twice to AS2                                       ✔        ✔                                                                
+control communities, prepend twice to any                                       ✔        ✔                                                                
+good prefixes because of use_arin_bulk_whois_data                               ✔        ✔                                                                
+good prefixes because of use_registrobr_bulk_whois_data                         ✔        ✔                                                                
+good prefixes because of use_rpki_roas_as_route_objects: covering               ✔        ✔                                                                
+good prefixes because of use_rpki_roas_as_route_objects: exact                  ✔        ✔                                                                
+good prefixes received by rs                                                    ✔        ✔                                                                
+good prefixes received by rs: IRRdb white-list                                  ✔        ✔                                                                
+good prefixes received by rs: non-client NEXT_HOP                               ✔        ✔                                                                
+gshut by a not enabled client                                                   ✔        ✔                                                                
+gshut by an enabled client                                                      ✔        ✔                                                                
+log contains errors                                                             ✔        ✔                                                                
+other communities not scrubbed by rs (lrg)                                      ✔        ✔                                                                
+other communities not scrubbed by rs (std)                                      ✔        ✔                                                                
+prefixes from AS101 received by its upstreams                                   ✔        ✔                                                                
+prefixes from AS101 received by rs                                              ✔        ✔                                                                
+prefixes received by clients: AS1_1                                             ✔        ✔                                                                
+prefixes received by clients: AS1_2                                             ✔        ✔                                                                
+prefixes received by clients: AS2                                               ✔        ✔                                                                
+prefixes received by clients: AS3                                               ✔        ✔                                                                
+prefixes received by clients: AS3 (with ADD-PATH)                               ✔        ✔                                                                
+reconfigure                                                                     ✔        ✔                                                                
+session configured via local include files                                      ✔        ✔                                                                
+=============================================================================== ======== =========== ================ ================ ================== 
+
 global scenario, IPv6
 +++++++++++++++++++++
 
@@ -449,6 +537,94 @@ session configured via local include files                                      
 
 global scenario, IPv6, tag
 ++++++++++++++++++++++++++
+
+=============================================================================== ======== =========== ================ ================ ================== 
+**Test**                                                                        **BIRD** **BIRD v2** **OpenBGPD 6.5** **OpenBGPD 6.6** **OpenBGPD 6.6p0** 
+RPKI, blackhole request for a covered prefix                                    ✔        ✔                                                                
+RPKI, invalid prefix (bad ASN) not propagated to clients                        ✔        ✔                                                                
+RPKI, invalid prefix (bad ASN) received by rs                                   ✔        ✔                                                                
+RPKI, invalid prefix (bad length) received by rs                                ✔        ✔                                                                
+RPKI, valid prefix propagated to clients                                        ✔        ✔                                                                
+RPKI, valid prefix received by rs                                               ✔        ✔                                                                
+bad communities as seen by AS101 upstreams                                      ✔        ✔                                                                
+bad communities scrubbed by rs (lrg)                                            ✔        ✔                                                                
+bad communities scrubbed by rs (std)                                            ✔        ✔                                                                
+bad prefixes not received by clients                                            ✔        ✔                                                                
+bad prefixes received by rs: AS_PATH len                                        ✔        ✔                                                                
+bad prefixes received by rs: IRRdb white-list                                   ✔        ✔                                                                
+bad prefixes received by rs: RPKI ROAs as route objects failed                  ✔        ✔                                                                
+bad prefixes received by rs: bogon                                              ✔        ✔                                                                
+bad prefixes received by rs: bogon (wrong tag)                                  ✔        ✔                                                                
+bad prefixes received by rs: client blacklist                                   ✔        ✔                                                                
+bad prefixes received by rs: default route                                      ✔        ✔                                                                
+bad prefixes received by rs: global blacklist                                   ✔        ✔                                                                
+bad prefixes received by rs: global blacklist (wrong tag)                       ✔        ✔                                                                
+bad prefixes received by rs: invalid ASN in AS-PATH                             ✔        ✔                                                                
+bad prefixes received by rs: invalid NEXT_HOP                                   ✔        ✔                                                                
+bad prefixes received by rs: invalid prefix-len                                 ✔        ✔                                                                
+bad prefixes received by rs: left-most ASN                                      ✔        ✔                                                                
+bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) ✔        ✔                                                                
+bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) ✔        ✔                                                                
+bad prefixes received by rs: not IPv6 global unicast space                      ✔        ✔                                                                
+bad prefixes received by rs: origin not in AS-SET                               ✔        ✔                                                                
+bad prefixes received by rs: prefix not in AS-SET                               ✔        ✔                                                                
+bad prefixes received by rs: transit-free ASN in AS-PATH                        ✔        ✔                                                                
+bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer    ✔        ✔                                                                
+bad prefixes received by rs: unknown NEXT_HOP                                   ✔        ✔                                                                
+blackhole filtering requests as seen by rs (BLACKHOLE)                          ✔        ✔                                                                
+blackhole filtering requests as seen by rs (lrg cust)                           ✔        ✔                                                                
+blackhole filtering requests as seen by rs (std cust)                           ✔        ✔                                                                
+blackholed prefixes as seen by enabled clients (BLACKHOLE)                      ✔        ✔                                                                
+blackholed prefixes as seen by enabled clients (lrg_cust)                       ✔        ✔                                                                
+blackholed prefixes as seen by enabled clients (std_cust)                       ✔        ✔                                                                
+blackholed prefixes not seen by not enabled clients                             ✔        ✔                                                                
+control communities, NO_EXPORT to AS1                                           ✔        ✔                                                                
+control communities, NO_EXPORT to any                                           ✔        ✔                                                                
+control communities, RFC1997 NO_EXPORT                                          ✔        ✔                                                                
+control communities, RTT, blackhole, not peers > 20 ms                          ✔        ✔                                                                
+control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms             ✔        ✔                                                                
+control communities, RTT, not peers <= 5 and > 100 ms                           ✔        ✔                                                                
+control communities, RTT, not peers > 15 ms                                     ✔        ✔                                                                
+control communities, RTT, not peers > 5 ms                                      ✔        ✔                                                                
+control communities, RTT, not peers > 5 ms + AS3                                ✔        ✔                                                                
+control communities, RTT, only peers <= 15 ms                                   ✔        ✔                                                                
+control communities, RTT, only peers <= 5 ms                                    ✔        ✔                                                                
+control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any               ✔        ✔                                                                
+control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms                       ✔        ✔                                                                
+control communities, announce to AS1 only                                       ✔        ✔                                                                
+control communities, announce to all except AS1                                 ✔        ✔                                                                
+control communities, don't announce to any                                      ✔        ✔                                                                
+control communities, prepend once to AS1                                        ✔        ✔                                                                
+control communities, prepend once to any                                        ✔        ✔                                                                
+control communities, prepend thrice to AS1, once to others                      ✔        ✔                                                                
+control communities, prepend thrice to any                                      ✔        ✔                                                                
+control communities, prepend twice to AS2                                       ✔        ✔                                                                
+control communities, prepend twice to any                                       ✔        ✔                                                                
+good prefixes because of use_arin_bulk_whois_data                               ✔        ✔                                                                
+good prefixes because of use_registrobr_bulk_whois_data                         ✔        ✔                                                                
+good prefixes because of use_rpki_roas_as_route_objects: covering               ✔        ✔                                                                
+good prefixes because of use_rpki_roas_as_route_objects: exact                  ✔        ✔                                                                
+good prefixes received by rs                                                    ✔        ✔                                                                
+good prefixes received by rs: IRRdb white-list                                  ✔        ✔                                                                
+good prefixes received by rs: non-client NEXT_HOP                               ✔        ✔                                                                
+gshut by a not enabled client                                                   ✔        ✔                                                                
+gshut by an enabled client                                                      ✔        ✔                                                                
+log contains errors                                                             ✔        ✔                                                                
+other communities not scrubbed by rs (lrg)                                      ✔        ✔                                                                
+other communities not scrubbed by rs (std)                                      ✔        ✔                                                                
+prefixes from AS101 received by its upstreams                                   ✔        ✔                                                                
+prefixes from AS101 received by rs                                              ✔        ✔                                                                
+prefixes received by clients: AS1_1                                             ✔        ✔                                                                
+prefixes received by clients: AS1_2                                             ✔        ✔                                                                
+prefixes received by clients: AS2                                               ✔        ✔                                                                
+prefixes received by clients: AS3                                               ✔        ✔                                                                
+prefixes received by clients: AS3 (with ADD-PATH)                               ✔        ✔                                                                
+reconfigure                                                                     ✔        ✔                                                                
+session configured via local include files                                      ✔        ✔                                                                
+=============================================================================== ======== =========== ================ ================ ================== 
+
+global scenario, IPv6, tag&reject
++++++++++++++++++++++++++++++++++
 
 =============================================================================== ======== =========== ================ ================ ================== 
 **Test**                                                                        **BIRD** **BIRD v2** **OpenBGPD 6.5** **OpenBGPD 6.6** **OpenBGPD 6.6p0** 

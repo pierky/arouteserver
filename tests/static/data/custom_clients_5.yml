@@ -1,0 +1,4 @@
+clients:
+  - ip: 2001:07f8:0001:0000:0000:a500:2906:0002
+    add_if_missing: True
+    asn: 4444

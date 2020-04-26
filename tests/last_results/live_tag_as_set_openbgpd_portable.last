@@ -182,6 +182,6 @@ Live test, OpenBGPD 6.6p0, tag prefix/origin in AS-SET, IPv6: dumping routes...
 Live test, OpenBGPD 6.6p0, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 166 tests in 162.705s
+Ran 166 tests in 164.873s
 
 OK

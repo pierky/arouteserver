@@ -826,6 +826,14 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             ):
                 res = False
 
+        reject_policy = self.cfg_general["filtering"]["reject_policy"]["policy"]
+        if reject_policy == "tag_and_reject":
+            res = False
+            logging.error(
+                "For OpenBGP, 'reject_policy' can't be set to "
+                "'tag_and_reject'."
+            )
+
         add_path_clients = []
         max_prefix_action_clients = []
         for client in self.cfg_clients.cfg["clients"]:

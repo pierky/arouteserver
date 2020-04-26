@@ -66,6 +66,9 @@ D=docs/REJECT_REASON_COMMUNITIES.txt
 cat << EOF > $D
 .. DO NOT EDIT: this file is automatically created by ../utils/build_doc
 
+Reject reasons
+~~~~~~~~~~~~~~
+
   ===== =========================================================
      ID Reason
   ===== =========================================================

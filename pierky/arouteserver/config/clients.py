@@ -15,6 +15,7 @@
 
 from copy import deepcopy
 import logging
+import yaml
 
 from .base import ConfigParserBase, convert_deprecated
 from .validators import *
@@ -111,7 +112,7 @@ class ConfigParserClients(ConfigParserBase):
                     },
                     "reject_policy": {
                         "policy": ValidatorOption("reject_policy",
-                                                  ("reject", "tag"),
+                                                  ("reject", "tag", "tag_and_reject"),
                                                   mandatory=False)
                     },
                 },
@@ -237,3 +238,96 @@ class ConfigParserClients(ConfigParserBase):
 
         if errors:
             raise ConfigError()
+
+
+def merge_clients(original, custom_file):
+    try:
+        new = yaml.safe_load(custom_file)
+    except Exception as e:
+        raise ConfigError(
+            "Error while loading the YAML file: {e}".format(e)
+        )
+
+    if not new:
+        raise ConfigError("The YAML file is empty")
+
+    if "clients" not in new:
+        raise ConfigError(
+            "The top level 'clients' key is missing from the "
+            "the set of clients to be merged."
+        )
+
+    if not isinstance(new["clients"], list):
+        raise ConfigError(
+            "The top level 'clients' key must represent a list "
+            "of clients."
+        )
+
+    for client_id, client in enumerate(new["clients"]):
+        try:
+            if "ip" not in client:
+                raise ConfigError(
+                    "'ip' not found"
+                )
+
+            if not isinstance(client["ip"], str):
+                raise ConfigError(
+                    "'ip' must be a string representing the IP "
+                    "address of the original client to be updated."
+                )
+
+
+            # The value of the 'ip' key of the dictionary that will
+            # be used below to find the corresponding client and
+            # to update it is overriden here with the normalised
+            # representation of that IP.
+            # This is done in order to avoid mismatching of IPs
+            # represented in different ways (lower/upper case,
+            # exploded vs compact form), and also to avoid
+            # changing the way the IP was represented in
+            # the original client definition.
+            client["ip"] = ValidatorIPAddr().validate(client["ip"])
+
+            for original_client in original["clients"]:
+                if original_client["ip"] != client["ip"]:
+                    continue
+
+                if "add_if_missing" in client:
+                    raise ConfigError(
+                        "client {ip} already exists in the original "
+                        "list of clients, but it's also reported in "
+                        "the set of clients to be merged with the "
+                        "'add_if_missing' attribute set.".format(
+                            ip=client["ip"]
+                        )
+                    )
+
+                # A client having the same IP is present in the
+                # list of original clients. It's the one to update
+                # with the settings from the custom one.
+                original_client.update(client)
+                break
+            else:
+                # No clients to update were found.
+                # If the custom one has the 'add_if_missing' key
+                # set to True, the custom one can be added to the
+                # list of clients.
+                if client.pop("add_if_missing", False):
+                    original["clients"].append(client)
+
+        except ConfigError as e:
+            raise ConfigError(
+                "Error while processing the client n. {n} from "
+                "the set of clients to be merged: {e}".format(
+                    n=client_id + 1,
+                    e=e
+                )
+            )
+    try:
+        new_res_after_merge = deepcopy(original)
+        ConfigParserClients().load_from_dict(new_res_after_merge)
+    except ARouteServerError:
+        raise ConfigError(
+            "Validation of the final clients file failed: "
+            "check the logs for more details."
+        )

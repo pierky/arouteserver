@@ -3,6 +3,20 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New feature: ``tag_and_reject`` reject policy for BIRD.
+
+  Invalid routes can be tagged with informational BGP communities and then discarded by BIRD.
+  With this option, alice-lg reject reasons are supported nicely, whilst keeping ``show routes all filtered`` working to keep birdwatcher happy.
+
+  Related: `PR #57 on GitHub <https://github.com/pierky/arouteserver/pull/57>`_.
+
+- Improvement: ``clients-from-euroix`` command, option ``--merge-from-custom-file`` to customise the list of clients generated from an Euro-IX JSON file.
+
+  More details on how to use this option can be found running ``arouteserver clients-from-euroix --help-merge-from-custom-file``.
+
 v0.24.1
 -------
 

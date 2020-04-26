@@ -170,6 +170,93 @@ Live test, BIRD, global scenario, IPv4, tag: log contains errors ... ok
 Live test, BIRD, global scenario, IPv4, tag: dumping rs config...
 Live test, BIRD, global scenario, IPv4, tag: dumping routes...
 Live test, BIRD, global scenario, IPv4, tag: stopping instances...
+Live test, BIRD, global scenario, IPv4, tag&reject: setting instances up...
+Live test, BIRD, global scenario, IPv4, tag&reject: instances setup ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: sessions are up ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: session configured via local include files ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: good prefixes because of use_arin_bulk_whois_data ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: good prefixes received by rs: IRRdb white-list ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: good prefixes because of use_registrobr_bulk_whois_data ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: good prefixes received by rs ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: good prefixes received by rs: non-client NEXT_HOP ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: IRRdb white-list ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: AS_PATH len ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: bogon ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: client blacklist ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: global blacklist ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: invalid ASN in AS-PATH ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: invalid NEXT_HOP ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: left-most ASN ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: origin not in AS-SET ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: prefix not in AS-SET ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: invalid prefix-len ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: unknown NEXT_HOP ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: RPKI ROAs as route objects failed ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: default route ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes not received by clients ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: bogon (wrong tag) ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: global blacklist (wrong tag) ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: RPKI, blackhole request for a covered prefix ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: RPKI, invalid prefix (bad ASN) received by rs ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: RPKI, invalid prefix (bad length) received by rs ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: RPKI, invalid prefix (bad ASN) not propagated to clients ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: RPKI, valid prefix received by rs ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: RPKI, valid prefix propagated to clients ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: prefixes from AS101 received by its upstreams ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: prefixes from AS101 received by rs ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad communities as seen by AS101 upstreams ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad communities scrubbed by rs (lrg) ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad communities scrubbed by rs (std) ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: other communities not scrubbed by rs (lrg) ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: other communities not scrubbed by rs (std) ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: blackhole filtering requests as seen by rs (BLACKHOLE) ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: blackhole filtering requests as seen by rs (lrg cust) ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: blackhole filtering requests as seen by rs (std cust) ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: blackholed prefixes as seen by enabled clients (BLACKHOLE) ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: blackholed prefixes as seen by enabled clients (lrg_cust) ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: blackholed prefixes as seen by enabled clients (std_cust) ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: blackholed prefixes not seen by not enabled clients ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: gshut by an enabled client ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: gshut by a not enabled client ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, announce to AS1 only ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, don't announce to any ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, announce to all except AS1 ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, prepend once to any ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, prepend twice to any ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, prepend thrice to any ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, prepend once to AS1 ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, prepend twice to AS2 ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, prepend thrice to AS1, once to others ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, NO_EXPORT to AS1 ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, NO_EXPORT to any ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, RFC1997 NO_EXPORT ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, RTT, blackhole, not peers > 20 ms ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, RTT, not peers > 15 ms ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, RTT, not peers > 5 ms ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, RTT, not peers > 5 ms + AS3 ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, RTT, not peers <= 5 and > 100 ms ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, RTT, only peers <= 15 ms ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, RTT, only peers <= 5 ms ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: prefixes received by clients: AS1_1 ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: prefixes received by clients: AS1_2 ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: prefixes received by clients: AS2 ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: prefixes received by clients: AS3 ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: prefixes received by clients: AS3 (with ADD-PATH) ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: reconfigure ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: log contains errors ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: dumping rs config...
+Live test, BIRD, global scenario, IPv4, tag&reject: dumping routes...
+Live test, BIRD, global scenario, IPv4, tag&reject: stopping instances...
 Live test, BIRD, global scenario, IPv6: setting instances up...
 Live test, BIRD, global scenario, IPv6: instances setup ... ok
 Live test, BIRD, global scenario, IPv6: sessions are up ... ok
@@ -342,8 +429,95 @@ Live test, BIRD, global scenario, IPv6, tag: log contains errors ... ok
 Live test, BIRD, global scenario, IPv6, tag: dumping rs config...
 Live test, BIRD, global scenario, IPv6, tag: dumping routes...
 Live test, BIRD, global scenario, IPv6, tag: stopping instances...
+Live test, BIRD, global scenario, IPv6, tag&reject: setting instances up...
+Live test, BIRD, global scenario, IPv6, tag&reject: instances setup ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: sessions are up ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: session configured via local include files ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: good prefixes because of use_arin_bulk_whois_data ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: good prefixes received by rs: IRRdb white-list ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: good prefixes because of use_registrobr_bulk_whois_data ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: good prefixes received by rs ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: good prefixes received by rs: non-client NEXT_HOP ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: IRRdb white-list ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: AS_PATH len ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: bogon ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: client blacklist ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: global blacklist ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: invalid ASN in AS-PATH ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: invalid NEXT_HOP ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: left-most ASN ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: origin not in AS-SET ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: prefix not in AS-SET ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: invalid prefix-len ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: unknown NEXT_HOP ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: RPKI ROAs as route objects failed ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: default route ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes not received by clients ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: bogon (wrong tag) ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: global blacklist (wrong tag) ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: RPKI, blackhole request for a covered prefix ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: RPKI, invalid prefix (bad ASN) received by rs ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: RPKI, invalid prefix (bad length) received by rs ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: RPKI, invalid prefix (bad ASN) not propagated to clients ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: RPKI, valid prefix received by rs ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: RPKI, valid prefix propagated to clients ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: prefixes from AS101 received by its upstreams ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: prefixes from AS101 received by rs ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad communities as seen by AS101 upstreams ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad communities scrubbed by rs (lrg) ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad communities scrubbed by rs (std) ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: other communities not scrubbed by rs (lrg) ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: other communities not scrubbed by rs (std) ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: blackhole filtering requests as seen by rs (BLACKHOLE) ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: blackhole filtering requests as seen by rs (lrg cust) ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: blackhole filtering requests as seen by rs (std cust) ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: blackholed prefixes as seen by enabled clients (BLACKHOLE) ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: blackholed prefixes as seen by enabled clients (lrg_cust) ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: blackholed prefixes as seen by enabled clients (std_cust) ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: blackholed prefixes not seen by not enabled clients ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: gshut by an enabled client ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: gshut by a not enabled client ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, announce to AS1 only ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, don't announce to any ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, announce to all except AS1 ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, prepend once to any ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, prepend twice to any ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, prepend thrice to any ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, prepend once to AS1 ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, prepend twice to AS2 ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, prepend thrice to AS1, once to others ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, NO_EXPORT to AS1 ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, NO_EXPORT to any ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, RFC1997 NO_EXPORT ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, RTT, blackhole, not peers > 20 ms ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, RTT, not peers > 15 ms ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, RTT, not peers > 5 ms ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, RTT, not peers > 5 ms + AS3 ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, RTT, not peers <= 5 and > 100 ms ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, RTT, only peers <= 15 ms ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, RTT, only peers <= 5 ms ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: prefixes received by clients: AS1_1 ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: prefixes received by clients: AS1_2 ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: prefixes received by clients: AS2 ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: prefixes received by clients: AS3 ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: prefixes received by clients: AS3 (with ADD-PATH) ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: reconfigure ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: log contains errors ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: dumping rs config...
+Live test, BIRD, global scenario, IPv6, tag&reject: dumping routes...
+Live test, BIRD, global scenario, IPv6, tag&reject: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 328 tests in 257.676s
+Ran 494 tests in 393.658s
 
 OK
