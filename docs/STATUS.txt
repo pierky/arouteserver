@@ -29,6 +29,8 @@ Who is using ARouteServer?
 
 - `MBIX <http://www.mbix.ca/>`__, BIRD.
 
+- `MIX <https://www.mix-it.net/>`__, BIRD.
+
 - `Netnod <https://www.netnod.se/>`__, BIRD and GoBGP\ :sup:`1`\.
 
 - `PIT-IX <https://pit-ix.net/>`__, BIRD.
