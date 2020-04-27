@@ -27,7 +27,7 @@ reject {{ err_msg }};
 
 # AS-SET for {{ client.id }}
 function origin_as_is_in_{{ client.id }}_as_set() {
-{% if client.cfg.filtering.irrdb.as_set_bundle_ids %}
+{% if 'as_set_bundle_ids' in client.cfg.filtering.irrdb.keys() and client.cfg.filtering.irrdb.as_set_bundle_ids %}
 {%	for as_set_bundle_id in client.cfg.filtering.irrdb.as_set_bundle_ids|sort %}
 {%		if irrdb_info[as_set_bundle_id].asns %}
 	if bgp_path.last_nonaggregated ~ AS_SET_{{ irrdb_info[as_set_bundle_id].name }}_asns then
@@ -42,7 +42,7 @@ function origin_as_is_in_{{ client.id }}_as_set() {
 
 # R-SET for {{ client.id }}
 function prefix_is_in_{{ client.id }}_as_set() {
-{% if client.cfg.filtering.irrdb.as_set_bundle_ids %}
+{% if 'as_set_bundle_ids' in client.cfg.filtering.irrdb.keys() and client.cfg.filtering.irrdb.as_set_bundle_ids %}
 {%	for as_set_bundle_id in client.cfg.filtering.irrdb.as_set_bundle_ids|sort %}
 {%    set this_ip_ver = client.ip|ipaddr_ver %}
 {%    set prefixes = irrdb_info[as_set_bundle_id].prefixes|selectattr("prefix", "is_ipver", this_ip_ver)|list %}

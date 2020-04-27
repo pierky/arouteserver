@@ -4,7 +4,7 @@
 # IRRDB
 
 {{ "pre-irrdb"|include_local_file -}}
-
+{% if irrdb_info %}
 {% for as_set_bundle_id in irrdb_info|sort %}
 {%	set as_set_bundle = irrdb_info[as_set_bundle_id] %}
 # {{ as_set_bundle.descr }}, used by {{ as_set_bundle.used_by|sort|join(", ") }}
@@ -39,6 +39,7 @@ AS_SET_{{ as_set_bundle.name }}_prefixes{{ loop.index }}="{ {{ write_prefix_list
 {%	endif %}
 
 {% endfor %}
+{% endif %}
 
 {{ "post-irrdb"|include_local_file -}}
 

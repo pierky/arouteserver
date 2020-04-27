@@ -34,7 +34,7 @@ deny quick {{ condition }}
 # IRRDB filters for {{ client.id }}, AS{{ client.asn }}: {{ objects }}
 # add {{int_comm_ko}} to any; it will be removed later if at least one AS-SET authorizes this object
 match from {{ client.ip  }} set ext-community {{ int_comm_ko }}
-{%      if client.cfg.filtering.irrdb.as_set_bundle_ids %}
+{%      if 'as_set_bundle_ids' in client.cfg.filtering.irrdb.keys() and client.cfg.filtering.irrdb.as_set_bundle_ids %}
 # verifying if object is authorized by AS-SETs
 {%              for as_set_bundle_id in client.cfg.filtering.irrdb.as_set_bundle_ids|sort %}
 {%			set as_set_bundle = irrdb_info[as_set_bundle_id] %}
