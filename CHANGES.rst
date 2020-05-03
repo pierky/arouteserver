@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+v0.25.1
+-------
+
+- Fix: BIRD, use ``bgp_path.last``  since it's consistent with `RFC 6907 7.1.9-11 <https://tools.ietf.org/html/rfc6907#section-7.1.9>` (RPKI BOV of routes whose AS_PATH ends with an AS_SET).
+
+  More info: https://www.mail-archive.com/bird-users@network.cz/msg05152.html
+
+  Related: `PR #56 on GitHub <https://github.com/pierky/arouteserver/pull/56>`_.
+
 v0.25.0
 -------
 
