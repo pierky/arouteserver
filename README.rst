@@ -181,6 +181,8 @@ Who is using ARouteServer?
 
 - `YYCIX <https://yycix.ca>`__, OpenBGPD.
 
+- `YEGIX <https://yegix.ca>`__, OpenBGPD.
+
 Are you using it? Do you want to be listed here? `Drop me a message <https://pierky.com/#contactme>`__!
 
 \ :sup:`1`\: GoBGP configurations are generated using a fork of the project which is still WIP and that hopefully will be merged upstream in the future.
