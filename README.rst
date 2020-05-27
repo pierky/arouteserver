@@ -177,11 +177,11 @@ Who is using ARouteServer?
 
 - `VANIX <https://vanix.ca/>`__.
 
+- `YEGIX <https://yegix.ca>`__, OpenBGPD.
+
 - `YXEIX <http://yxeix.ca/>`__, BIRD.
 
 - `YYCIX <https://yycix.ca>`__, OpenBGPD.
-
-- `YEGIX <https://yegix.ca>`__, OpenBGPD.
 
 Are you using it? Do you want to be listed here? `Drop me a message <https://pierky.com/#contactme>`__!
 
