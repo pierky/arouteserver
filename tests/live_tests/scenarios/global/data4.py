@@ -25,6 +25,7 @@ class BasicScenario_Data4(object):
         "AS3_1_IPAddress":          "192.0.2.31",
         "AS4_1_IPAddress":          "192.0.2.41",
         "AS101_IPAddress":          "192.0.2.101",
+        "AS222_IPAddress":          "192.0.2.222",
         "RoutesCollector_IPAddress":"192.0.2.99",
 
         "AS1_allowed_prefixes":     "1.0.0.0/8",
@@ -58,9 +59,9 @@ class BasicScenario_Data4(object):
         "AS2_nonclient_nexthop2_nh":"192.0.2.23",
 
         "AS3_blacklist1":           "3.0.1.0/24",
-	"AS3_cc_AS1only":           "3.0.2.0/24",
-	"AS3_cc_not_AS1":           "3.0.3.0/24",
-	"AS3_cc_none":              "3.0.4.0/24",
+        "AS3_cc_AS1only":           "3.0.2.0/24",
+        "AS3_cc_not_AS1":           "3.0.3.0/24",
+        "AS3_cc_none":              "3.0.4.0/24",
         "AS3_prepend1any":          "3.0.5.0/24",
         "AS3_prepend2any":          "3.0.6.0/24",
         "AS3_prepend3any":          "3.0.7.0/24",
@@ -112,6 +113,11 @@ class BasicScenario_Data4(object):
 
         "AS104_arin_1":             "104.0.1.0/24",
         "AS104_nicbr_1":            "104.1.1.0/24",
+
+        "AS222_allowed_prefixes":   "222.0.0.0/8",
+        "AS222_aggregate1":         "222.1.1.0/24",
+        "AS222_aggregate2":         "222.2.2.0/24",
+        "AS222_aggregate3":         "222.3.3.0/24",
 
         "Default_route":            "0.0.0.0/0",
     }

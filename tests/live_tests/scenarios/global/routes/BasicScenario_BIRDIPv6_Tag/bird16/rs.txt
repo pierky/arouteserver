@@ -817,6 +817,27 @@
   best: False, LOCAL_PREF: 1
   filtered: True (9)
 
+3222:1:1::/48, AS_PATH: 222 333, NEXT_HOP: 2001:db8:1:1::222, via 2001:db8:1:1::222
+  std comms:
+  ext comms: generic:0x43000000:0x2
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: True (14)
+
+3222:2:2::/48, AS_PATH: 222 333, NEXT_HOP: 2001:db8:1:1::222, via 2001:db8:1:1::222
+  std comms:
+  ext comms:
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: True (9)
+
+3222:3:3::/48, AS_PATH: 222 333, NEXT_HOP: 2001:db8:1:1::222, via 2001:db8:1:1::222
+  std comms: 65520:0, 65520:9
+  ext comms: rt:65520:222
+  lrg comms:
+  best: True, LOCAL_PREF: 1
+  filtered: False ()
+
 8000:1::/32, AS_PATH: 1 101, NEXT_HOP: 2001:db8:1:1::101, via 2001:db8:1:1::12
   std comms:
   ext comms:

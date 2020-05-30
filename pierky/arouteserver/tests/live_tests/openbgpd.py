@@ -186,7 +186,16 @@ class OpenBGPDInstance(object):
                 continue
 
             if last_line_new_route:
-                asns = line.split(" ")
+                raw_as_path = line
+                if "{" in raw_as_path:
+                    # Stripping as_set in strings like this:
+                    #   222 333 { 333 333 }
+                    as_path = raw_as_path[0:raw_as_path.index("{")].strip()
+                    as_set = raw_as_path[raw_as_path.index("{") + 1:-1].strip()
+                else:
+                    as_path = raw_as_path
+                    as_set = None
+                asns = as_path.split(" ")
                 for asn in asns:
                     if not asn.isdigit():
                         raise Exception(
@@ -194,7 +203,8 @@ class OpenBGPDInstance(object):
                                 route["prefix"], line
                             )
                         )
-                route["as_path"] = line
+                route["as_path"] = as_path
+                route["as_set"] = as_set
                 last_line_new_route = False
                 continue
 

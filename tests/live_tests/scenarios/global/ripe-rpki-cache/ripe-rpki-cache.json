@@ -11,6 +11,9 @@
   {"prefix": "3101:0:8000::/33", "maxLength": 34, "asn": "AS101", "ta": "test"},
   {"prefix": "3101:2::/33", "maxLength": 33, "asn": "AS101", "ta": "test"},
   {"prefix": "3101:2:8000::/33", "maxLength": 48, "asn": "AS101", "ta": "test"},
-  {"prefix": "3101:3::/32", "maxLength": 48, "asn": "AS105", "ta": "test"}
+  {"prefix": "3101:3::/32", "maxLength": 48, "asn": "AS105", "ta": "test"},
+
+  {"prefix": "222.1.1.0/24", "maxLength": 24, "asn": "AS333", "ta": "test"},
+  {"prefix": "3222:0:1::/48", "maxLength": 48, "asn": "AS333", "ta": "test"}
 ]}
 

@@ -641,7 +641,7 @@ class LiveScenario(ARouteServerTestCase):
                         "{{inst}} receives {{prefix}} from {via}, AS_PATH {as_path}, NEXT_HOP {next_hop} "
                         "but it is {filtered_status} while it is expected to be {filtered_exp}.".format(
                             via=route.via,
-                            as_path=route.as_path,
+                            as_path=route.as_path if not route.as_set else route.as_path + " (AS_SET {})".format(route.as_set),
                             next_hop=route.next_hop,
                             filtered_status="filtered" if route.filtered else "not filtered",
                             filtered_exp="filtered" if filtered else "not filtered"
