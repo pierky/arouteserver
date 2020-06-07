@@ -1,179 +1,185 @@
-Live test, OpenBGPD 6.6, global scenario, IPv4: setting instances up...
-Live test, OpenBGPD 6.6, global scenario, IPv4: instances setup ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: sessions are up ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: session configured via local include files ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: good prefixes because of use_arin_bulk_whois_data ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: good prefixes received by rs: IRRdb white-list ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: good prefixes because of use_registrobr_bulk_whois_data ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: good prefixes received by rs ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: good prefixes received by rs: non-client NEXT_HOP ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: not IPv6 global unicast space ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: IRRdb white-list ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: AS_PATH len ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: bogon ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: client blacklist ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: global blacklist ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: invalid ASN in AS-PATH ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: invalid NEXT_HOP ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: left-most ASN ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: origin not in AS-SET ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: prefix not in AS-SET ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: invalid prefix-len ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: unknown NEXT_HOP ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: RPKI ROAs as route objects failed ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: default route ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes not received by clients ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: bogon (wrong tag) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad prefixes received by rs: global blacklist (wrong tag) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: RPKI, blackhole request for a covered prefix ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: RPKI, invalid prefix (bad ASN) received by rs ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: RPKI, invalid prefix (bad length) received by rs ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: RPKI, invalid prefix (bad ASN) not propagated to clients ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: RPKI, valid prefix received by rs ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: RPKI, valid prefix propagated to clients ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: prefixes from AS101 received by its upstreams ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: prefixes from AS101 received by rs ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad communities as seen by AS101 upstreams ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad communities scrubbed by rs (lrg) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: bad communities scrubbed by rs (std) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: other communities not scrubbed by rs (lrg) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: other communities not scrubbed by rs (std) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: blackhole filtering requests as seen by rs (BLACKHOLE) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: blackhole filtering requests as seen by rs (lrg cust) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: blackhole filtering requests as seen by rs (std cust) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: blackholed prefixes as seen by enabled clients (BLACKHOLE) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: blackholed prefixes as seen by enabled clients (lrg_cust) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: blackholed prefixes as seen by enabled clients (std_cust) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: blackholed prefixes not seen by not enabled clients ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: gshut by an enabled client ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: gshut by a not enabled client ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, announce to AS1 only ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, don't announce to any ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, announce to all except AS1 ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, prepend once to any ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, prepend twice to any ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, prepend thrice to any ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, prepend once to AS1 ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, prepend twice to AS2 ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, prepend thrice to AS1, once to others ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, NO_EXPORT to AS1 ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, NO_EXPORT to any ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, RFC1997 NO_EXPORT ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, RTT, blackhole, not peers > 20 ms ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, RTT, not peers > 15 ms ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, RTT, not peers > 5 ms ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, RTT, not peers > 5 ms + AS3 ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, RTT, not peers <= 5 and > 100 ms ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, RTT, only peers <= 15 ms ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, RTT, only peers <= 5 ms ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: prefixes received by clients: AS1_1 ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: prefixes received by clients: AS1_2 ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: prefixes received by clients: AS2 ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: prefixes received by clients: AS3 ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: prefixes received by clients: AS3 (with ADD-PATH) ... SKIP: ADD-PATH not supported by OpenBGPD
-Live test, OpenBGPD 6.6, global scenario, IPv4: reconfigure ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: log contains errors ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv4: dumping rs config...
-Live test, OpenBGPD 6.6, global scenario, IPv4: dumping routes...
-Live test, OpenBGPD 6.6, global scenario, IPv4: stopping instances...
-Live test, OpenBGPD 6.6, global scenario, IPv6: setting instances up...
-Live test, OpenBGPD 6.6, global scenario, IPv6: instances setup ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: sessions are up ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: session configured via local include files ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: good prefixes because of use_arin_bulk_whois_data ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: good prefixes received by rs: IRRdb white-list ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: good prefixes because of use_registrobr_bulk_whois_data ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: good prefixes received by rs ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: good prefixes received by rs: non-client NEXT_HOP ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: not IPv6 global unicast space ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: IRRdb white-list ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: AS_PATH len ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: bogon ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: client blacklist ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: global blacklist ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: invalid ASN in AS-PATH ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: invalid NEXT_HOP ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: left-most ASN ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: origin not in AS-SET ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: prefix not in AS-SET ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: invalid prefix-len ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: unknown NEXT_HOP ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: RPKI ROAs as route objects failed ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: default route ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes not received by clients ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: bogon (wrong tag) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad prefixes received by rs: global blacklist (wrong tag) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: RPKI, blackhole request for a covered prefix ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: RPKI, invalid prefix (bad ASN) received by rs ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: RPKI, invalid prefix (bad length) received by rs ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: RPKI, invalid prefix (bad ASN) not propagated to clients ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: RPKI, valid prefix received by rs ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: RPKI, valid prefix propagated to clients ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: prefixes from AS101 received by its upstreams ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: prefixes from AS101 received by rs ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad communities as seen by AS101 upstreams ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad communities scrubbed by rs (lrg) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: bad communities scrubbed by rs (std) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: other communities not scrubbed by rs (lrg) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: other communities not scrubbed by rs (std) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: blackhole filtering requests as seen by rs (BLACKHOLE) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: blackhole filtering requests as seen by rs (lrg cust) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: blackhole filtering requests as seen by rs (std cust) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: blackholed prefixes as seen by enabled clients (BLACKHOLE) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: blackholed prefixes as seen by enabled clients (lrg_cust) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: blackholed prefixes as seen by enabled clients (std_cust) ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: blackholed prefixes not seen by not enabled clients ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: gshut by an enabled client ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: gshut by a not enabled client ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, announce to AS1 only ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, don't announce to any ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, announce to all except AS1 ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, prepend once to any ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, prepend twice to any ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, prepend thrice to any ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, prepend once to AS1 ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, prepend twice to AS2 ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, prepend thrice to AS1, once to others ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, NO_EXPORT to AS1 ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, NO_EXPORT to any ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, RFC1997 NO_EXPORT ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, RTT, blackhole, not peers > 20 ms ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, RTT, not peers > 15 ms ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, RTT, not peers > 5 ms ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, RTT, not peers > 5 ms + AS3 ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, RTT, not peers <= 5 and > 100 ms ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, RTT, only peers <= 15 ms ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, RTT, only peers <= 5 ms ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: prefixes received by clients: AS1_1 ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: prefixes received by clients: AS1_2 ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: prefixes received by clients: AS2 ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: prefixes received by clients: AS3 ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: prefixes received by clients: AS3 (with ADD-PATH) ... SKIP: ADD-PATH not supported by OpenBGPD
-Live test, OpenBGPD 6.6, global scenario, IPv6: reconfigure ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: log contains errors ... ok
-Live test, OpenBGPD 6.6, global scenario, IPv6: dumping rs config...
-Live test, OpenBGPD 6.6, global scenario, IPv6: dumping routes...
-Live test, OpenBGPD 6.6, global scenario, IPv6: stopping instances...
+Live test, OpenBGPD 6.7, global scenario, IPv4: setting instances up...
+Live test, OpenBGPD 6.7, global scenario, IPv4: instances setup ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: sessions are up ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: session configured via local include files ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: good prefixes because of use_arin_bulk_whois_data ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: good prefixes received by rs: IRRdb white-list ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: good prefixes because of use_registrobr_bulk_whois_data ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: good prefixes received by rs ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: good prefixes received by rs: non-client NEXT_HOP ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: IRRdb white-list ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: IRR check for AS_SET origin, BIRD ... SKIP: BIRD specific
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: AS_PATH len ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: bogon ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: client blacklist ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: global blacklist ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: invalid ASN in AS-PATH ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: invalid NEXT_HOP ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: left-most ASN ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: origin not in AS-SET ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: prefix not in AS-SET ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: invalid prefix-len ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: unknown NEXT_HOP ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: RPKI ROAs as route objects failed ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: default route ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes not received by clients ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: bogon (wrong tag) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad prefixes received by rs: global blacklist (wrong tag) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: RPKI, blackhole request for a covered prefix ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: RPKI, invalid prefix (bad ASN) received by rs ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: RPKI, invalid prefix (bad length) received by rs ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: RPKI, invalid prefix (bad ASN) not propagated to clients ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: RPKI, valid prefix received by rs ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: RPKI, valid prefix propagated to clients ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: prefixes from AS101 received by its upstreams ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: prefixes from AS101 received by rs ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad communities as seen by AS101 upstreams ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad communities scrubbed by rs (lrg) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: bad communities scrubbed by rs (std) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: other communities not scrubbed by rs (lrg) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: other communities not scrubbed by rs (std) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: blackhole filtering requests as seen by rs (BLACKHOLE) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: blackhole filtering requests as seen by rs (lrg cust) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: blackhole filtering requests as seen by rs (std cust) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: blackholed prefixes as seen by enabled clients (BLACKHOLE) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: blackholed prefixes as seen by enabled clients (lrg_cust) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: blackholed prefixes as seen by enabled clients (std_cust) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: blackholed prefixes not seen by not enabled clients ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: gshut by an enabled client ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: gshut by a not enabled client ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, announce to AS1 only ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, don't announce to any ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, announce to all except AS1 ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, prepend once to any ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, prepend twice to any ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, prepend thrice to any ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, prepend once to AS1 ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, prepend twice to AS2 ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, prepend thrice to AS1, once to others ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, NO_EXPORT to AS1 ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, NO_EXPORT to any ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, RFC1997 NO_EXPORT ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, RTT, blackhole, not peers > 20 ms ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, RTT, not peers > 15 ms ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, RTT, not peers > 5 ms ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, RTT, not peers > 5 ms + AS3 ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, RTT, not peers <= 5 and > 100 ms ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, RTT, only peers <= 15 ms ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, RTT, only peers <= 5 ms ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: prefixes received by clients: AS1_1 ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: prefixes received by clients: AS1_2 ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: prefixes received by clients: AS2 ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: prefixes received by clients: AS3 ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: prefixes received by clients: AS3 (with ADD-PATH) ... SKIP: ADD-PATH not supported by OpenBGPD
+Live test, OpenBGPD 6.7, global scenario, IPv4: reconfigure ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: log contains errors ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv4: dumping rs config...
+Live test, OpenBGPD 6.7, global scenario, IPv4: dumping routes...
+Live test, OpenBGPD 6.7, global scenario, IPv4: stopping instances...
+Live test, OpenBGPD 6.7, global scenario, IPv6: setting instances up...
+Live test, OpenBGPD 6.7, global scenario, IPv6: instances setup ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: sessions are up ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: session configured via local include files ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: good prefixes because of use_arin_bulk_whois_data ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: good prefixes received by rs: IRRdb white-list ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: good prefixes because of use_registrobr_bulk_whois_data ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: good prefixes received by rs ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: good prefixes received by rs: non-client NEXT_HOP ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: IRRdb white-list ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: IRR check for AS_SET origin, BIRD ... SKIP: BIRD specific
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: AS_PATH len ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: bogon ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: client blacklist ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: global blacklist ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: invalid ASN in AS-PATH ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: invalid NEXT_HOP ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: left-most ASN ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: origin not in AS-SET ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: prefix not in AS-SET ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: invalid prefix-len ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: unknown NEXT_HOP ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: RPKI ROAs as route objects failed ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: default route ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes not received by clients ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: bogon (wrong tag) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad prefixes received by rs: global blacklist (wrong tag) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: RPKI, blackhole request for a covered prefix ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: RPKI, invalid prefix (bad ASN) received by rs ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: RPKI, invalid prefix (bad length) received by rs ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: RPKI, invalid prefix (bad ASN) not propagated to clients ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: RPKI, valid prefix received by rs ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: RPKI, valid prefix propagated to clients ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: prefixes from AS101 received by its upstreams ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: prefixes from AS101 received by rs ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad communities as seen by AS101 upstreams ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad communities scrubbed by rs (lrg) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: bad communities scrubbed by rs (std) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: other communities not scrubbed by rs (lrg) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: other communities not scrubbed by rs (std) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: blackhole filtering requests as seen by rs (BLACKHOLE) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: blackhole filtering requests as seen by rs (lrg cust) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: blackhole filtering requests as seen by rs (std cust) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: blackholed prefixes as seen by enabled clients (BLACKHOLE) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: blackholed prefixes as seen by enabled clients (lrg_cust) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: blackholed prefixes as seen by enabled clients (std_cust) ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: blackholed prefixes not seen by not enabled clients ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: gshut by an enabled client ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: gshut by a not enabled client ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, announce to AS1 only ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, don't announce to any ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, announce to all except AS1 ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, prepend once to any ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, prepend twice to any ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, prepend thrice to any ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, prepend once to AS1 ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, prepend twice to AS2 ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, prepend thrice to AS1, once to others ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, NO_EXPORT to AS1 ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, NO_EXPORT to any ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, RFC1997 NO_EXPORT ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, RTT, blackhole, not peers > 20 ms ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, RTT, not peers > 15 ms ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, RTT, not peers > 5 ms ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, RTT, not peers > 5 ms + AS3 ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, RTT, not peers <= 5 and > 100 ms ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, RTT, only peers <= 15 ms ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, RTT, only peers <= 5 ms ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: prefixes received by clients: AS1_1 ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: prefixes received by clients: AS1_2 ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: prefixes received by clients: AS2 ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: prefixes received by clients: AS3 ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: prefixes received by clients: AS3 (with ADD-PATH) ... SKIP: ADD-PATH not supported by OpenBGPD
+Live test, OpenBGPD 6.7, global scenario, IPv6: reconfigure ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: log contains errors ... ok
+Live test, OpenBGPD 6.7, global scenario, IPv6: dumping rs config...
+Live test, OpenBGPD 6.7, global scenario, IPv6: dumping routes...
+Live test, OpenBGPD 6.7, global scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 166 tests in 200.028s
+Ran 172 tests in 203.120s
 
-OK (SKIP=2)
+OK (SKIP=4)
