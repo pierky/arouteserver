@@ -183,6 +183,34 @@ Built to group as many tests as possible in a single scenario.
                              rt:64538:20                                                    AS2 1x, AS3 2x
     ==========  ============ ================= ============================================ ========================
 
+- **AS222**:
+
+  AS-SETs:
+
+  - AS-AS222 (AS333, 222.0.0.0/8)
+  - white list routes: exact 222.1.1.0/24 w/o origin AS
+
+  Used for tests about RFC 6907 7.1.9 and BCP172/RFC 6472.
+
+  clients:
+
+  - AS222_1 (192.0.2.222)
+
+    Originated prefixes:
+
+    =================   ============  =====================  ====================================
+    Prefix ID           Prefix        AS_PATH                Expected result
+    =================   ============  =====================  ====================================
+    AS222_aggregate1    222.1.1.0/24  222, 333, {333 333}    rejected because RPKI INVALID (this
+                                                             route passes IRR filters because of
+                                                             a client-level white_list_route
+    AS222_aggregate2    222.2.2.0/24  222, 333, {333 333}    BIRD: rejected because IRR origin
+                                                             invalid
+    AS222_aggregate3    222.3.3.0/24  222, 333, {444 555}    OpenBGPD: accepted because IRR
+                                                             origin validation is done on the
+                                                             last non-aggregated ASN
+    =================   ============  =====================  ====================================
+
 - **AS101**:
 
   clients:
@@ -242,3 +270,4 @@ Built to group as many tests as possible in a single scenario.
   AS104_arin_1          104.0.1.0/24     [101 104]   Accepted from AS1 via ARIN Whois DB dump; rejected by others
   AS104_nicbr_1         104.1.1.0/24     [101 104]   Accepted from AS1 via NIC.BR Whois DB dump; rejected by others
   ====================  ==============   =========== ==================================================================================
+

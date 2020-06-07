@@ -134,6 +134,7 @@ Configure command: OpenBGPD 6.1, simple ... ok
 Configure command: OpenBGPD 6.2, simple ... ok
 Configure command: OpenBGPD 6.4, simple ... ok
 Configure command: OpenBGPD 6.5, simple ... ok
+Configure command: OpenBGPD 6.7, simple ... ok
 IX-F Member Export from clients command: simple ... ok
 IX-F Member Export from clients command: with description ... ok
 IX-F Member Export from clients command: with AS-SET ... ok
@@ -200,6 +201,6 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 200 tests in 99.544s
+Ran 201 tests in 40.921s
 
 OK

@@ -993,11 +993,11 @@ arin_whois_db_records
 ---------------------
 AS10745:
 - exact: false
-  ge: 24
-  le: 32
-  length: 24
-  max_length: 32
-  prefix: 199.43.0.0
+  ge: 48
+  le: 128
+  length: 48
+  max_length: 128
+  prefix: '2001:500:4::'
 - exact: false
   ge: 24
   le: 32
@@ -1009,13 +1009,13 @@ AS10745:
   le: 128
   length: 48
   max_length: 128
-  prefix: '2001:500:4::'
-- exact: false
-  ge: 48
-  le: 128
-  length: 48
-  max_length: 128
   prefix: '2001:500:110::'
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
+  prefix: 199.43.0.0
 - exact: false
   ge: 24
   le: 32
@@ -1038,6 +1038,7 @@ never_via_route_servers_asns
 - 12322
 - 13030
 - 3320
+- 1273
 - 174
 - 6830
 - 19151
@@ -1045,18 +1046,22 @@ never_via_route_servers_asns
 - 8075
 - 6908
 - 11164
+- 17451
 - 34108
 - 8943
 - 37271
 - 8455
+- 57866
 - 36459
 - 7155
 - 263328
 - 46450
 - 52973
+- 27947
 - 265914
 - 134041
 - 138023
+- 263258
 - 54295
 - 209395
 - 138953
@@ -1068,7 +1073,15 @@ never_via_route_servers_asns
 - 207353
 - 209699
 - 270544
+- 328582
 - 267373
 - 267442
 - 269535
 - 48265
+- 39967
+- 213252
+- 213190
+- 60412
+- 207484
+- 268091
+- 270781
