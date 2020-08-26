@@ -11,6 +11,9 @@ Live test, BIRD, global scenario, IPv4: good prefixes received by rs ... ok
 Live test, BIRD, global scenario, IPv4: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: not IPv6 global unicast space ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: IRRdb white-list ... ok
+Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 ... ok
+Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: IRR check for AS_SET origin, BIRD ... ok
+Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD ... SKIP: OpenBGPD specific
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: AS_PATH len ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: bogon ... ok
 Live test, BIRD, global scenario, IPv4: bad prefixes received by rs: client blacklist ... ok
@@ -96,6 +99,9 @@ Live test, BIRD, global scenario, IPv4, tag: good prefixes received by rs ... ok
 Live test, BIRD, global scenario, IPv4, tag: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: not IPv6 global unicast space ... ok
 Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: IRRdb white-list ... ok
+Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 ... ok
+Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: IRR check for AS_SET origin, BIRD ... ok
+Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD ... SKIP: OpenBGPD specific
 Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: AS_PATH len ... ok
 Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: bogon ... ok
 Live test, BIRD, global scenario, IPv4, tag: bad prefixes received by rs: client blacklist ... ok
@@ -183,6 +189,9 @@ Live test, BIRD, global scenario, IPv4, tag&reject: good prefixes received by rs
 Live test, BIRD, global scenario, IPv4, tag&reject: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: not IPv6 global unicast space ... ok
 Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: IRRdb white-list ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: IRR check for AS_SET origin, BIRD ... ok
+Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD ... SKIP: OpenBGPD specific
 Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: AS_PATH len ... ok
 Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: bogon ... ok
 Live test, BIRD, global scenario, IPv4, tag&reject: bad prefixes received by rs: client blacklist ... ok
@@ -270,6 +279,9 @@ Live test, BIRD, global scenario, IPv6: good prefixes received by rs ... ok
 Live test, BIRD, global scenario, IPv6: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: not IPv6 global unicast space ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: IRRdb white-list ... ok
+Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 ... ok
+Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: IRR check for AS_SET origin, BIRD ... ok
+Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD ... SKIP: OpenBGPD specific
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: AS_PATH len ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: bogon ... ok
 Live test, BIRD, global scenario, IPv6: bad prefixes received by rs: client blacklist ... ok
@@ -355,6 +367,9 @@ Live test, BIRD, global scenario, IPv6, tag: good prefixes received by rs ... ok
 Live test, BIRD, global scenario, IPv6, tag: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: not IPv6 global unicast space ... ok
 Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: IRRdb white-list ... ok
+Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 ... ok
+Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: IRR check for AS_SET origin, BIRD ... ok
+Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD ... SKIP: OpenBGPD specific
 Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: AS_PATH len ... ok
 Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: bogon ... ok
 Live test, BIRD, global scenario, IPv6, tag: bad prefixes received by rs: client blacklist ... ok
@@ -442,6 +457,9 @@ Live test, BIRD, global scenario, IPv6, tag&reject: good prefixes received by rs
 Live test, BIRD, global scenario, IPv6, tag&reject: good prefixes received by rs: non-client NEXT_HOP ... ok
 Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: not IPv6 global unicast space ... ok
 Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: IRRdb white-list ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: IRR check for AS_SET origin, BIRD ... ok
+Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD ... SKIP: OpenBGPD specific
 Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: AS_PATH len ... ok
 Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: bogon ... ok
 Live test, BIRD, global scenario, IPv6, tag&reject: bad prefixes received by rs: client blacklist ... ok
@@ -518,6 +536,6 @@ Live test, BIRD, global scenario, IPv6, tag&reject: dumping routes...
 Live test, BIRD, global scenario, IPv6, tag&reject: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 494 tests in 393.658s
+Ran 512 tests in 414.026s
 
-OK
+OK (SKIP=6)

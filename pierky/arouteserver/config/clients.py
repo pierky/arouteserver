@@ -245,7 +245,7 @@ def merge_clients(original, custom_file):
         new = yaml.safe_load(custom_file)
     except Exception as e:
         raise ConfigError(
-            "Error while loading the YAML file: {e}".format(e)
+            "Error while loading the YAML file: {e}".format(e=e)
         )
 
     if not new:

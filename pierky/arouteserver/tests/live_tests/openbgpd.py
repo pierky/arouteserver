@@ -186,7 +186,16 @@ class OpenBGPDInstance(object):
                 continue
 
             if last_line_new_route:
-                asns = line.split(" ")
+                raw_as_path = line
+                if "{" in raw_as_path:
+                    # Stripping as_set in strings like this:
+                    #   222 333 { 333 333 }
+                    as_path = raw_as_path[0:raw_as_path.index("{")].strip()
+                    as_set = raw_as_path[raw_as_path.index("{") + 1:-1].strip()
+                else:
+                    as_path = raw_as_path
+                    as_set = None
+                asns = as_path.split(" ")
                 for asn in asns:
                     if not asn.isdigit():
                         raise Exception(
@@ -194,7 +203,8 @@ class OpenBGPDInstance(object):
                                 route["prefix"], line
                             )
                         )
-                route["as_path"] = line
+                route["as_path"] = as_path
+                route["as_set"] = as_set
                 last_line_new_route = False
                 continue
 
@@ -461,8 +471,17 @@ class OpenBGPD66Instance(OpenBGPDClassicInstance):
     BGP_SPEAKER_VERSION = "6.6"
     TARGET_VERSION = "6.6"
 
-OpenBGPDPreviousInstance = OpenBGPD65Instance
-OpenBGPDLatestInstance = OpenBGPD66Instance
+class OpenBGPD67Instance(OpenBGPDClassicInstance):
+
+    VIRSH_DOMAINNAME = "arouteserver_openbgpd67"
+
+    TAG = "openbgpd67"
+
+    BGP_SPEAKER_VERSION = "6.7"
+    TARGET_VERSION = "6.7"
+
+OpenBGPDPreviousInstance = OpenBGPD66Instance
+OpenBGPDLatestInstance = OpenBGPD67Instance
 
 class OpenBGPD65PortableInstance(OpenBGPDPortableInstance):
 
@@ -480,4 +499,15 @@ class OpenBGPD66PortableInstance(OpenBGPDPortableInstance):
     # TARGET_VERSION not set here because it's assumed to be
     # the same of the OpenBGPD Latest one.
 
-OpenBGPDPortableLatestInstance = OpenBGPD66PortableInstance
+
+class OpenBGPD67PortableInstance(OpenBGPDPortableInstance):
+
+    DOCKER_IMAGE = "pierky/openbgpd:6.7p0"
+
+    TAG = "openbgpd67p"
+
+    BGP_SPEAKER_VERSION = "6.7p0"
+    # TARGET_VERSION not set here because it's assumed to be
+    # the same of the OpenBGPD Latest one.
+
+OpenBGPDPortableLatestInstance = OpenBGPD67PortableInstance

@@ -490,6 +490,13 @@ Caveats and limitations
 Not all features offered by ARouteServer are supported by both BIRD and OpenBGPD.
 The following list of limitations is based on the currently supported versions of BIRD and OpenBGPD.
 
+- IRR filtering of routes whose AS_PATH ends with an AS_SET
+
+  - BIRD: routes are rejected by the IRR filters.
+  - OpenBGPD: if the last non-aggregated AS in the AS_PATH is included in the list of ASNs generated from the IRR records, the routes pass the IRR filters.
+
+    More details on `GitHub PR56 <https://github.com/pierky/arouteserver/pull/56>`_ (commit `a65934a <https://github.com/pierky/arouteserver/commit/a65934ad0ca636d7d381f705508f128b0ac17e5e>`_).
+
 - OpenBGPD
 
   - Currently, **path hiding** mitigation is not implemented for OpenBGPD configurations. Only single-RIB configurations are generated.
@@ -499,8 +506,6 @@ The following list of limitations is based on the currently supported versions o
   - For max-prefix filtering, only the ``shutdown`` and the ``restart`` actions are supported by OpenBGPD. Restart is configured with a 15 minutes timer.
 
   - OpenBGPD does not offer a way to delete **extended communities** using wildcard (``rt xxx:*``): peer-ASN-specific extended communities (such as ``prepend_once_to_peer``, ``do_not_announce_to_peer``) are not scrubbed from routes that leave OpenBGPD route servers and so they are propagated to the route server clients.
-
-  - **Graceful shutdown** is supported only on OpenBGPD 6.2 or later.
 
   - The Site of Origin Extended BGP communities in the range 65535:* are reserved for internal reasons.
 

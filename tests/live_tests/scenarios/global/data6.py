@@ -25,6 +25,7 @@ class BasicScenario_Data6(object):
         "AS3_1_IPAddress":          "2001:db8:1:1::31",
         "AS4_1_IPAddress":          "2001:db8:1:1::41",
         "AS101_IPAddress":          "2001:db8:1:1::101",
+        "AS222_IPAddress":          "2001:db8:1:1::222",
         "RoutesCollector_IPAddress":"2001:db8:1:1::999",
 
         "AS1_allowed_prefixes":     "2a01::/32",
@@ -59,8 +60,8 @@ class BasicScenario_Data6(object):
 
         "AS3_blacklist1":           "2a03:0:1::/48",
         "AS3_cc_AS1only":           "2a03:0:2::/48",
-	"AS3_cc_not_AS1":           "2a03:0:3::/48",
-	"AS3_cc_none":              "2a03:0:4::/48",
+        "AS3_cc_not_AS1":           "2a03:0:3::/48",
+        "AS3_cc_none":              "2a03:0:4::/48",
         "AS3_prepend1any":          "2a03:0:5::/48",
         "AS3_prepend2any":          "2a03:0:6::/48",
         "AS3_prepend3any":          "2a03:0:7::/48",
@@ -114,6 +115,11 @@ class BasicScenario_Data6(object):
 
         "AS104_arin_1":             "3104:0:1::/48",
         "AS104_nicbr_1":            "3104:1:1::/48",
+
+        "AS222_allowed_prefixes":   "3222::/32",
+        "AS222_aggregate1":         "3222:0:1::/48",
+        "AS222_aggregate2":         "3222:0:2::/48",
+        "AS222_aggregate3":         "3222:0:3::/48",
 
         "Default_route":            "::/0",
     }

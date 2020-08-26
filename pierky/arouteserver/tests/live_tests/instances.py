@@ -243,6 +243,7 @@ class Route(object):
         self.prefix = prefix
         self.via = kwargs.get("via", None)
         self.as_path = kwargs.get("as_path", None)
+        self.as_set = kwargs.get("as_set", None)
         self.next_hop = kwargs.get("next_hop", None)
         self.localpref = kwargs.get("localpref", None)
         if self.localpref:

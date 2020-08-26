@@ -544,3 +544,66 @@
   best: True, LOCAL_PREF: 100
   filtered: False ()
 
+3222:0:1::/48, AS_PATH: 1 222 333, NEXT_HOP: 2001:db8:1:1::11, via 2001:db8:1:1::11
+  std comms:
+  ext comms:
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+3222:0:1::/48, AS_PATH: 1 222 333, NEXT_HOP: 2001:db8:1:1::12, via 2001:db8:1:1::12
+  std comms:
+  ext comms:
+  lrg comms:
+  best: False, LOCAL_PREF: 100
+  filtered: False ()
+
+3222:0:1::/48, AS_PATH: 2 222 333, NEXT_HOP: 2001:db8:1:1::21, via 2001:db8:1:1::21
+  std comms:
+  ext comms:
+  lrg comms:
+  best: False, LOCAL_PREF: 100
+  filtered: False ()
+
+3222:0:2::/48, AS_PATH: 1 222 333, NEXT_HOP: 2001:db8:1:1::11, via 2001:db8:1:1::11
+  std comms:
+  ext comms:
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+3222:0:2::/48, AS_PATH: 1 222 333, NEXT_HOP: 2001:db8:1:1::12, via 2001:db8:1:1::12
+  std comms:
+  ext comms:
+  lrg comms:
+  best: False, LOCAL_PREF: 100
+  filtered: False ()
+
+3222:0:2::/48, AS_PATH: 2 222 333, NEXT_HOP: 2001:db8:1:1::21, via 2001:db8:1:1::21
+  std comms:
+  ext comms:
+  lrg comms:
+  best: False, LOCAL_PREF: 100
+  filtered: False ()
+
+3222:0:3::/48, AS_PATH: 1 222 333, NEXT_HOP: 2001:db8:1:1::11, via 2001:db8:1:1::11
+  std comms:
+  ext comms:
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+3222:0:3::/48, AS_PATH: 1 222 333, NEXT_HOP: 2001:db8:1:1::12, via 2001:db8:1:1::12
+  std comms:
+  ext comms:
+  lrg comms:
+  best: False, LOCAL_PREF: 100
+  filtered: False ()
+
+3222:0:3::/48, AS_PATH: 2 222 333, NEXT_HOP: 2001:db8:1:1::21, via 2001:db8:1:1::21
+  std comms:
+  ext comms:
+  lrg comms:
+  best: False, LOCAL_PREF: 100
+  filtered: False ()
+

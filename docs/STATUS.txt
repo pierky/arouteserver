@@ -43,6 +43,8 @@ Who is using ARouteServer?
 
 - `VANIX <https://vanix.ca/>`__.
 
+- `YEGIX <https://yegix.ca>`__, OpenBGPD.
+
 - `YXEIX <http://yxeix.ca/>`__, BIRD.
 
 - `YYCIX <https://yycix.ca>`__, OpenBGPD.

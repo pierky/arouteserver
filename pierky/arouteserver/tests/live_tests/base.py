@@ -481,7 +481,7 @@ class LiveScenario(ARouteServerTestCase):
 
     def receive_route(self, inst, prefix, other_inst=None, as_path=None,
                       next_hop=None, std_comms=None, lrg_comms=None,
-                      ext_comms=None, local_pref=None,
+                      ext_comms=None, local_pref=None, as_set=None,
                       filtered=None, only_best=None, reject_reason=None):
         """Test if the BGP speaker receives the expected route(s).
 
@@ -510,6 +510,9 @@ class LiveScenario(ARouteServerTestCase):
 
             local_pref (int): if given, only routes with local-pref equal
                 to this value are considered.
+
+            as_set (str): if given, only routes with this AS_SET are
+                considered.
 
             filtered (bool): if given, only routes that have been (not)
                 filtered are considered.
@@ -630,12 +633,15 @@ class LiveScenario(ARouteServerTestCase):
                 if local_pref is not None and route.localpref != local_pref:
                     errors.append("{{inst}} receives {{prefix}} with local-pref {local_pref} and not with {{local_pref}}.".format(local_pref=route.localpref))
                     err = True
+                if as_set is not None and route.as_set != as_set:
+                    errors.append("{{inst}} receives {{prefix}} with AS_SET {as_set} and not with {{as_set}}.".format(as_set=route.as_set))
+                    err = True
                 if filtered is not None and route.filtered != filtered:
                     errors.append(
                         "{{inst}} receives {{prefix}} from {via}, AS_PATH {as_path}, NEXT_HOP {next_hop} "
                         "but it is {filtered_status} while it is expected to be {filtered_exp}.".format(
                             via=route.via,
-                            as_path=route.as_path,
+                            as_path=route.as_path if not route.as_set else route.as_path + " (AS_SET {})".format(route.as_set),
                             next_hop=route.next_hop,
                             filtered_status="filtered" if route.filtered else "not filtered",
                             filtered_exp="filtered" if filtered else "not filtered"
@@ -687,6 +693,8 @@ class LiveScenario(ARouteServerTestCase):
                 criteria.append("with ext comms {}".format(ext_comms))
             if local_pref:
                 criteria.append("with local-pref {}".format(local_pref))
+            if as_set:
+                criteria.append("with as_set {}".format(as_set))
             if filtered is True:
                 criteria.append("filtered")
             if reject_reasons:
@@ -718,6 +726,7 @@ class LiveScenario(ARouteServerTestCase):
                     lrg_comms=lrg_comms,
                     ext_comms=ext_comms,
                     local_pref=local_pref,
+                    as_set=as_set,
                 ) for err_msg in errors
             ])
             failure += self._instance_log_contains_errors_warning(inst)
