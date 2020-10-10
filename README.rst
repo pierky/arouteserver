@@ -187,13 +187,6 @@ Are you using it? Do you want to be listed here? `Drop me a message <https://pie
 
 \ :sup:`1`\: GoBGP configurations are generated using a fork of the project which is still WIP and that hopefully will be merged upstream in the future.
 
-Status
-------
-
-**Beta testing**, looking for testers and reviewers.
-
-Anyone who wants to share his/her point of view, to review the output configurations or to test them is **more than welcome**!
-
 Bug? Issues? Support requests?
 ------------------------------
 
