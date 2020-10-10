@@ -77,8 +77,9 @@ class TestExternalResources(unittest.TestCase):
         last_ver = LastVersion(**cache_cfg)
         last_ver.load_data()
         ver = last_ver.last_version
-        self.assertTrue(int(ver.split(".")[0]) >= 0)
-        self.assertTrue(int(ver.split(".")[1]) >= 17)
+        self.assertTrue(int(ver.split(".")[0]) >= 1)
+        self.assertTrue(int(ver.split(".")[1]) >= 0)
+        self.assertTrue(int(ver.split(".")[2]) >= 0)
 
     def _test_rpki_roas_per_provider(self, provider):
         cfg = ConfigParserGeneral()
