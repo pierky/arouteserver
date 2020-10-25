@@ -390,7 +390,7 @@ cfg:
       # - general limit set in 'general_limit_ipv[4|6]', if given.
       #
       # In the end, if no limit is found for a given AF or if
-      # it is 0, no max-prefix limit is configured fot the
+      # it is 0, no max-prefix limit is configured for the
       # specific client.
 
       # If 'action' is not given, no max-prefix enforcement
@@ -412,6 +412,17 @@ cfg:
       # OpenBGPD only: for the 'restart' action, sessions will be
       # restarted after 'restart_after' minutes.
       #restart_after: 15
+
+      # BIRD only: when set to True, routes received by the route
+      # server and rejected by the filters are also counted
+      # towards the limit; when set to False, only routes that
+      # are accepted are taken into account.
+      # In OpenBGPD, the only available behaviour is to have the
+      # rejected routes counted towards the limit.
+      #
+      # Can be overwritten on a client-by-client basis.
+      #
+      #count_rejected_routes: True
 
       peering_db:
         # Used to set client's max-pref limit if 'limit_ipv[4|6]'

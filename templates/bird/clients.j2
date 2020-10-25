@@ -436,7 +436,11 @@ protocol bgp {{ client.id }} {
 	{%		set max_pref_limit = 0 %}
 	{% 	endif %}
 	{% 	if max_pref_limit > 0 %}
+	{% 	  if client.cfg.filtering.max_prefix.count_rejected_routes %}
+	receive limit {{ max_pref_limit }} action {{ write_max_pref_action(client.cfg.filtering.max_prefix.action) }}
+	{% 	  else %}
 	import limit {{ max_pref_limit }} action {{ write_max_pref_action(client.cfg.filtering.max_prefix.action) }}
+	{% 	  endif %}
 	{% 	endif %}
 	{% endif %}
 

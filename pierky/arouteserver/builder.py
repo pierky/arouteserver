@@ -789,6 +789,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
 
     IGNORABLE_ISSUES = ["path_hiding", "transit_free_action",
                         "add_path", "max_prefix_action",
+                        "max_prefix_count_rejected_routes",
                         "blackhole_filtering_rewrite_ipv6_nh",
                         "large_communities", "extended_communities",
                         "graceful_shutdown", "internal_communities",
@@ -836,6 +837,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
 
         add_path_clients = []
         max_prefix_action_clients = []
+        max_prefix_count_rejected_routes_clients = []
         for client in self.cfg_clients.cfg["clients"]:
             if client["cfg"]["add_path"]:
                 add_path_clients.append(client["ip"])
@@ -844,6 +846,10 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             if max_prefix_action:
                 if max_prefix_action not in ("shutdown", "restart"):
                     max_prefix_action_clients.append(client["ip"])
+
+            max_prefix_count_rejected_routes = client["cfg"]["filtering"]["max_prefix"]["count_rejected_routes"]
+            if not max_prefix_count_rejected_routes:
+                max_prefix_count_rejected_routes_clients.append(client["ip"])
 
         if add_path_clients:
             clients = add_path_clients
@@ -866,6 +872,21 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                 "Invalid max-prefix 'action' for the following "
                 "clients: {}{}; only 'shutdown' and 'restart' "
                 "are supported by OpenBGPD.".format(
+                    ", ".join(clients[:3]),
+                    "" if cnt <= 3 else " and {} more".format(cnt - 3)
+                )
+            ):
+                res = False
+
+        if max_prefix_count_rejected_routes_clients:
+            clients = max_prefix_count_rejected_routes_clients
+            cnt = len(clients)
+            if not self.process_bgpspeaker_specific_compatibility_issue(
+                "max_prefix_count_rejected_routes",
+                "Invalid max-prefix 'count_rejected_routes' option for "
+                "the following clients: {}{}; in OpenBGPD, the "
+                "only available behaviour is to have the "
+                "rejected routes counted towards the limit.".format(
                     ", ".join(clients[:3]),
                     "" if cnt <= 3 else " and {} more".format(cnt - 3)
                 )

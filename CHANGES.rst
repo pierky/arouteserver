@@ -3,6 +3,14 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+v1.0.1
+------
+
+- Fix: BIRD, change default behaviour to count rejected routes towards the max-prefix limit threshold.
+
+  So far, routes received by the route server and rejected as a result of ingress filtering were not counted towards the max-prefix limit threshold; **this release changes the default behaviour** in a way that they are now taken into account.
+  In case the previous implementation of the max-prefix limit is the desired one, it can be restored by setting the new configuration statement that has been introduced with this release, ``count_rejected_routes``. More details in the `general.yml file <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`_.
+
 v1.0.0
 ------
 
