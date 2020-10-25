@@ -48,4 +48,16 @@ class MaxPrefixScenario_Data6(object):
         "AS4_pref5":        "2a04:0:5::/48",
         "AS4_pref6":        "2a04:0:6::/48",
         "AS4_pref7":        "2a04:0:7::/48",
+
+        "AS5_1_IPAddress":  "2001:db8:1:1::51",
+        "AS5_pref1":        "2a05:0:1::/48",
+        "AS5_pref2":        "2a05:0:2::/48",
+        "AS5_pref3":        "2001:db8:53::/48",
+        "AS5_pref4":        "2001:db8:54::/48",
+
+        "AS6_1_IPAddress":  "2001:db8:1:1::61",
+        "AS6_pref1":        "2a06:0:1::/48",
+        "AS6_pref2":        "2a06:0:2::/48",
+        "AS6_pref3":        "2001:db8:63::/48",
+        "AS6_pref4":        "2001:db8:64::/48",
     }

@@ -242,6 +242,24 @@ SUB_TEST="$LINENO"
 build_cmd "openbgpd" | must_not_contain "$EXP_ERR"
 
 # ---------------------------------------------
+reset
+TITLE="OpenBGPD max_prefix_count_rejected_routes"
+GENERAL="tests/var/general.yml"
+cat << EOF > $GENERAL
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+  filtering:
+    max_prefix:
+      count_rejected_routes: False
+EOF
+
+EXP_ERR="the only available behaviour is to have the rejected routes counted towards the limit"
+
+SUB_TEST="$LINENO"
+build_cmd "openbgpd" | must_contain "$EXP_ERR"
+
+# ---------------------------------------------
 # clients-from-euroix
 reset
 TITLE="clients-from-euroix"

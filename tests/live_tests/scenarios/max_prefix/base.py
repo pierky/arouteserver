@@ -101,6 +101,39 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
     IP_VER = None
 
     @classmethod
+    def _setup_instances(cls):
+        super(MaxPrefixScenarioBIRD, cls)._setup_instances()
+
+        cls.INSTANCES.extend([
+            cls.CLIENT_INSTANCE_CLASS(
+                "AS5",
+                cls.DATA["AS5_1_IPAddress"],
+                [
+                    (
+                        cls.build_other_cfg("AS5.j2"),
+                        "/etc/bird/bird.conf"
+                    )
+                ],
+            ),
+
+            cls.CLIENT_INSTANCE_CLASS(
+                "AS6",
+                cls.DATA["AS6_1_IPAddress"],
+                [
+                    (
+                        cls.build_other_cfg("AS6.j2"),
+                        "/etc/bird/bird.conf"
+                    )
+                ],
+            )
+        ])
+
+    def set_instance_variables(self):
+        super(MaxPrefixScenarioBIRD, self).set_instance_variables()
+        self.AS5 = self._get_instance_by_name("AS5")
+        self.AS6 = self._get_instance_by_name("AS6")
+
+    @classmethod
     def _setup_rs_instance(cls):
         return cls.RS_INSTANCE_CLASS(
             "rs",
@@ -109,6 +142,7 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
                                      cfg_general="general_bird.yml",
+                                     cfg_clients="clients_bird.yml",
                                      target_version=cls.TARGET_VERSION),
                     "/etc/bird/bird.conf"
                 )
@@ -120,10 +154,21 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
         self.session_is_up(self.rs, self.AS1)
         self.session_is_up(self.rs, self.AS2)
         self.session_is_up(self.rs, self.AS3)
+        self.session_is_up(self.rs, self.AS4)
 
-    def test_030_blocked_sessions(self):
-        """{}: log is populated"""
-        log_tpl = "Protocol {{inst}} hits route import limit ({limit}), action: block"
+        self.session_is_up(self.rs, self.AS6)
+
+    def test_020_sessions_up(self):
+        """{}: AS5 session is down (max-prefix hit, action == shutdown)"""
+        with six.assertRaisesRegex(
+            self,
+            AssertionError, "is not up"
+        ):
+            self.session_is_up(self.rs, self.AS5)
+
+    def test_030_blocked_sessions_1(self):
+        """{}: log is populated: receive limit, routes blocked"""
+        log_tpl = "Protocol {{inst}} hits route receive limit ({limit}), action: block"
 
         log = log_tpl.format(limit=4)
         self.log_contains(self.rs, log, {"inst": self.AS1})
@@ -136,6 +181,21 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
 
         log = log_tpl.format(limit=6)
         self.log_contains(self.rs, log, {"inst": self.AS4})
+
+    def test_030_blocked_sessions_2(self):
+        """{}: log is populated: receive limit, session shutdown (AS5)"""
+        log_tpl = "Protocol {{inst}} hits route receive limit ({limit}), action: disable"
+        log = log_tpl.format(limit=3)
+        self.log_contains(self.rs, log, {"inst": self.AS5})
+
+    def test_030_blocked_sessions_3(self):
+        """{}: log is populated: import limit, no warning in the log file (AS6)"""
+
+        log = "Protocol {{inst}} hits route import limit"
+        # Please note: opposite=True, it fails if the msg is found in the logs:
+        # AS6 announces 2 valid routes + 2 invalid routes, so it doesn't hit
+        # the limit because invalid routes are not taken into account.
+        self.log_contains(self.rs, log, {"inst": self.AS6}, opposite=True)
 
     def _get_routes_from(self, asn, include_filtered=False):
         routes = []
@@ -152,27 +212,38 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
 
     def test_030_count_received_prefixes_AS1(self):
         """{}: number of prefixes received by rs from AS1"""
+        asn = 1
 
-        self.assertEqual(len(self._get_routes_from(1)), 4)
-        self.assertEqual(len(self._get_routes_from(1, include_filtered=True)), 5)
+        self.assertEqual(len(self._get_routes_from(asn)), 4)
+        self.assertEqual(len(self._get_routes_from(asn, include_filtered=True)), 4)
 
     def test_031_count_received_prefixes_AS2(self):
         """{}: number of prefixes received by rs from AS2"""
+        asn = 2
 
-        self.assertEqual(len(self._get_routes_from(2)), 3)
-        self.assertEqual(len(self._get_routes_from(2, include_filtered=True)), 5)
+        self.assertEqual(len(self._get_routes_from(asn)), 3)
+        self.assertEqual(len(self._get_routes_from(asn, include_filtered=True)), 3)
 
     def test_032_count_received_prefixes_AS3(self):
         """{}: number of prefixes received by rs from AS3"""
+        asn = 3
 
-        self.assertEqual(len(self._get_routes_from(3)), 2)
-        self.assertEqual(len(self._get_routes_from(3, include_filtered=True)), 5)
+        self.assertEqual(len(self._get_routes_from(asn)), 2)
+        self.assertEqual(len(self._get_routes_from(asn, include_filtered=True)), 2)
 
     def test_032_count_received_prefixes_AS4(self):
         """{}: number of prefixes received by rs from AS4"""
+        asn = 4
 
-        self.assertEqual(len(self._get_routes_from(4)), 6)
-        self.assertEqual(len(self._get_routes_from(4, include_filtered=True)), 7)
+        self.assertEqual(len(self._get_routes_from(asn)), 6)
+        self.assertEqual(len(self._get_routes_from(asn, include_filtered=True)), 6)
+
+    def test_032_count_received_prefixes_AS6(self):
+        """{}: number of prefixes received by rs from AS6"""
+        asn = 6
+
+        self.assertEqual(len(self._get_routes_from(asn)), 2)
+        self.assertEqual(len(self._get_routes_from(asn, include_filtered=True)), 4)
 
     def test_900_reconfigure(self):
         """{}: reconfigure"""

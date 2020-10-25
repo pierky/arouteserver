@@ -1127,6 +1127,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 "max_prefix": {
                     "action": None,
                     "restart_after": 15,
+                    "count_rejected_routes": True,
                     "peering_db": {
                         "enabled": True,
                         "increment": {
@@ -1246,6 +1247,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 "max_prefix": {
                     "action": None,
                     "restart_after": 15,
+                    "count_rejected_routes": True,
                     "peering_db": {
                         "enabled": True,
                         "increment": {

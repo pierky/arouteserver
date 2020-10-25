@@ -47,6 +47,7 @@ default               general_limit_ipv4: 170000
 default               general_limit_ipv6: 12000
 default               action: None
 default               restart_after: 15
+default               count_rejected_routes: True
                     reject_policy:
 default               policy: reject
                   rpki_roas:

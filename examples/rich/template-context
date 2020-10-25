@@ -268,6 +268,7 @@ cfg:
     max_as_path_len: 32
     max_prefix:
       action: restart
+      count_rejected_routes: true
       general_limit_ipv4: 170000
       general_limit_ipv6: 12000
       peering_db:
@@ -691,6 +692,7 @@ clients:
       max_as_path_len: 32
       max_prefix:
         action: restart
+        count_rejected_routes: true
         limit_ipv4: 150
         limit_ipv6: 138
         peering_db:
@@ -742,6 +744,7 @@ clients:
       max_as_path_len: 32
       max_prefix:
         action: restart
+        count_rejected_routes: true
         limit_ipv4: 121
         limit_ipv6: 13915
         peering_db:
@@ -793,6 +796,7 @@ clients:
       max_as_path_len: 32
       max_prefix:
         action: restart
+        count_rejected_routes: true
         limit_ipv4: 121
         limit_ipv6: 13915
         peering_db:
@@ -993,24 +997,6 @@ arin_whois_db_records
 ---------------------
 AS10745:
 - exact: false
-  ge: 48
-  le: 128
-  length: 48
-  max_length: 128
-  prefix: '2001:500:4::'
-- exact: false
-  ge: 24
-  le: 32
-  length: 24
-  max_length: 32
-  prefix: 199.43.0.0
-- exact: false
-  ge: 24
-  le: 32
-  length: 24
-  max_length: 32
-  prefix: 192.136.136.0
-- exact: false
   ge: 24
   le: 32
   length: 24
@@ -1022,6 +1008,24 @@ AS10745:
   length: 48
   max_length: 128
   prefix: '2001:500:110::'
+- exact: false
+  ge: 48
+  le: 128
+  length: 48
+  max_length: 128
+  prefix: '2001:500:4::'
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
+  prefix: 192.136.136.0
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
+  prefix: 199.43.0.0
 
 
 registrobr_whois_db_records
@@ -1073,6 +1077,7 @@ never_via_route_servers_asns
 - 265914
 - 134041
 - 138023
+- 132996
 - 263258
 - 7195
 - 54295
@@ -1114,3 +1119,4 @@ never_via_route_servers_asns
 - 265336
 - 139689
 - 269367
+- 36165
