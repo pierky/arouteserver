@@ -260,6 +260,21 @@ SUB_TEST="$LINENO"
 build_cmd "openbgpd" | must_contain "$EXP_ERR"
 
 # ---------------------------------------------
+reset
+TITLE="BIRD 2.0.7 max_prefix_count_rejected_routes"
+GENERAL="tests/var/general.yml"
+cat << EOF > $GENERAL
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+EOF
+
+EXP_ERR="the only available behaviour is to have the rejected routes counted towards the limit"
+
+SUB_TEST="$LINENO"
+build_cmd "bird" --target-version 2.0.7 | must_contain "BIRD 2.0.7 is affected by an issue that prevents that statement from working"
+
+# ---------------------------------------------
 # clients-from-euroix
 reset
 TITLE="clients-from-euroix"

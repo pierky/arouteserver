@@ -6,10 +6,16 @@ Change log
 v1.0.1
 ------
 
-- Fix: BIRD, change default behaviour to count rejected routes towards the max-prefix limit threshold.
+- Fix (BIRD only): change default behaviour to count rejected routes towards the max-prefix limit threshold.
 
   So far, routes received by the route server and rejected as a result of ingress filtering were not counted towards the max-prefix limit threshold; **this release changes the default behaviour** in a way that they are now taken into account.
-  In case the previous implementation of the max-prefix limit is the desired one, it can be restored by setting the new configuration statement that has been introduced with this release, ``count_rejected_routes``. More details in the `general.yml file <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`_.
+
+  Example: a peer is configured with max-prefix limit 10 and action 'shutdown'. It announces 15 routes, 5 of which are rejected due to inbound filters.
+  BIRD route servers configured using previous releases will not perform any action on that peer, while a configuration generated with this release will lead to the shutdown of the BGP session with that peer.
+
+  In case the previous implementation of the max-prefix limit is the desired one, it can be restored by setting the new configuration statement that has been introduced with this release, ``count_rejected_routes``, to ``False``. More details in the `general.yml file <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`_.
+
+  **BIRD 2.0.7 users, please note**: if you are using ARouteServer to configure route servers which are based on BIRD 2.0.7, you'll get an error message at configuration build time. This is due to the fact that in BIRD 2.0.7 there is `a bug <https://www.mail-archive.com/bird-users@network.cz/msg05597.html>`_ that affects configurations generated using the statement that implements the new default behaviour for max-prefix limit handling. The error message will show you the options to unblock the config generation, but in any case it will not be possible to implement this new way of handling the max-prefix limit.
 
 v1.0.0
 ------

@@ -16,7 +16,8 @@ AS1:
 - n. of announced routes: 5 (all valid)
 - expectations:
 
-  - BIRD: only 4 routes received
+  - BIRD 1.6.x: only 4 routes received
+  - BIRD 2.0.7: 4 valid imported, 5 received
   - OpenBGPD: session down
 
 AS2 (client with peering_db.increment set to 0/0):
@@ -28,7 +29,8 @@ AS2 (client with peering_db.increment set to 0/0):
 - n. of announced routes: 5 (all valid)
 - expectations:
 
-  - BIRD: only 3 routes received
+  - BIRD 1.6.x: only 3 routes received
+  - BIRD 2.0.7: 3 imported, 5 received
   - OpenBGPD: session down
 
 AS3:
@@ -39,7 +41,8 @@ AS3:
 - n. of announced routes: 5 (all valid)
 - expectations:
 
-  - BIRD: only 2 routes received
+  - BIRD 1.6.x: only 2 routes received
+  - BIRD 2.0.7: 2 imported, 5 received
   - OpenBGPD: session down
 
 AS4:
@@ -51,7 +54,8 @@ AS4:
 - n. of announced routes: 7 (all valid)
 - expectations:
 
-  - BIRD: only 6 routes received
+  - BIRD 1.6.x: only 6 routes received
+  - BIRD 2.0.7: 6 imported, 7 received
   - OpenBGPD: session down
 
 AS5 (only for BIRD):
@@ -62,7 +66,8 @@ AS5 (only for BIRD):
 - n. of announced routes: 4 (2 valid, 2 bogons)
 - expectations:
 
-  - BIRD: session down
+  - BIRD 1.6.x: session down
+  - BIRD 2.0.7: session up, all routes received
 
 AS6 (only for BIRD):
 - specific limit: 3
@@ -72,4 +77,5 @@ AS6 (only for BIRD):
 - n. of announced routes: 4 (2 valid, 2 bogons)
 - expectations:
 
-  - BIRD: all 4 routes received
+  - BIRD 1.6.x: all 4 routes received
+  - BIRD 2.0.7: all 4 routes received

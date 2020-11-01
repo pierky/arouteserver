@@ -1,6 +1,3 @@
 cfg:
   rs_as: 999
   router_id: "192.0.2.2"
-  filtering:
-    max_prefix:
-      count_rejected_routes: False
