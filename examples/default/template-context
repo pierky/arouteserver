@@ -246,6 +246,7 @@ cfg:
     max_as_path_len: 32
     max_prefix:
       action: null
+      count_rejected_routes: true
       general_limit_ipv4: 170000
       general_limit_ipv6: 12000
       peering_db:
@@ -667,6 +668,7 @@ clients:
       max_as_path_len: 32
       max_prefix:
         action: null
+        count_rejected_routes: true
         limit_ipv4: null
         limit_ipv6: null
         peering_db:
@@ -716,6 +718,7 @@ clients:
       max_as_path_len: 32
       max_prefix:
         action: null
+        count_rejected_routes: true
         limit_ipv4: null
         limit_ipv6: null
         peering_db:
@@ -765,6 +768,7 @@ clients:
       max_as_path_len: 32
       max_prefix:
         action: null
+        count_rejected_routes: true
         limit_ipv4: null
         limit_ipv6: null
         peering_db:
@@ -951,6 +955,7 @@ never_via_route_servers_asns
 - 263328
 - 46450
 - 63290
+- 27839
 - 134022
 - 3754
 - 264212
@@ -960,9 +965,13 @@ never_via_route_servers_asns
 - 265630
 - 27947
 - 34209
+- 263856
 - 265914
+- 135848
 - 134041
 - 138023
+- 132996
+- 13786
 - 263258
 - 7195
 - 54295
@@ -971,7 +980,6 @@ never_via_route_servers_asns
 - 58768
 - 1955
 - 328572
-- 52042
 - 393573
 - 393684
 - 269156
@@ -1004,3 +1012,6 @@ never_via_route_servers_asns
 - 265336
 - 139689
 - 269367
+- 36165
+- 213202
+- 141120

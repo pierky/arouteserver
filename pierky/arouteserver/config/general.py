@@ -194,6 +194,7 @@ class ConfigParserGeneral(ConfigParserBase):
             default="shutdown"
         )
         m["restart_after"] = ValidatorUInt(default=15, mandatory=True)
+        m["count_rejected_routes"] = ValidatorBool(default=True)
 
         f["reject_policy"] = OrderedDict()
         f["reject_policy"]["policy"] = ValidatorOption(

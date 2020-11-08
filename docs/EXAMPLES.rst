@@ -111,14 +111,18 @@ A list of BGP communities is also automatically built.
    limitations
    
    Which BGP daemon will be used? [bird/openbgpd] bird
+   Which version? [1.6.3/1.6.4/1.6.6/1.6.7/1.6.8/2.0.7] 1.6.8
+   
    Router server's ASN
    ===================
    
    What's the ASN of the route server? 64496
+   
    Route server's BGP router-id
    ============================
    
    Please enter the route server BGP router-id: 192.0.2.1
+   
    List of local networks
    ======================
    
@@ -126,6 +130,7 @@ A list of BGP communities is also automatically built.
    route server clients for these prefixes will be filtered out.
    
    Please enter a comma-separated list of local networks: 192.0.2.0/24,2001:db8::/32
+   
    
    
    Route server policy definition file generated successfully!

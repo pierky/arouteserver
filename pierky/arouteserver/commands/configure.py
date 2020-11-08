@@ -24,7 +24,7 @@ import yaml
 from .base import ARouteServerCommand
 
 from ..ask import Ask
-from ..builder import OpenBGPDConfigBuilder
+from ..builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from ..config.program import program_config
 from ..errors import ARouteServerError
 from ..ipaddresses import IPNetwork
@@ -146,6 +146,12 @@ class ConfigureCommand(ARouteServerCommand):
                 "Which version?",
                 options=OpenBGPDConfigBuilder.AVAILABLE_VERSION,
                 default=OpenBGPDConfigBuilder.AVAILABLE_VERSION[-1]
+            )
+        else:
+            self.add_answer("version", self.ask.ask,
+                "Which version?",
+                options=BIRDConfigBuilder.AVAILABLE_VERSION,
+                default=BIRDConfigBuilder.DEFAULT_VERSION
             )
 
         self.wr_text(
@@ -335,6 +341,15 @@ class ConfigureCommand(ARouteServerCommand):
         self.notes.append(
             "PeeringDB is used to fetch networks prefix count."
         )
+
+        if (
+            self.answers["daemon"] == "bird" and \
+            version.parse(self.answers["version"]) >= version.parse("2.0")
+        ):
+            filtering["max_prefix"]["count_rejected_routes"] = False
+            self.notes.append(
+                "Rejected routes are not counted towards max-prefix limit."
+            )
 
         cfg["graceful_shutdown"] = {"enabled": False}
         if self.answers["daemon"] == "bird":

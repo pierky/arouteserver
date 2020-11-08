@@ -712,7 +712,7 @@ basis of the following criteria, in priority order:
 
 
 In the end, if no limit is found for a given AF or if
-it is 0, no max-prefix limit is configured fot the
+it is 0, no max-prefix limit is configured for the
 specific client.
 
 - ``action``:
@@ -760,6 +760,27 @@ specific client.
   .. code:: yaml
 
      restart_after: 15
+
+
+
+- ``count_rejected_routes``:
+  BIRD only: when set to True, routes received by the route
+  server and rejected by the filters are also counted
+  towards the limit; when set to False, only routes that
+  are accepted are taken into account.
+  In OpenBGPD, the only available behaviour is to have the
+  rejected routes counted towards the limit.
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+
+  Example:
+
+  .. code:: yaml
+
+     count_rejected_routes: True
 
 
 
