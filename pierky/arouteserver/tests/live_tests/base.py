@@ -732,14 +732,15 @@ class LiveScenario(ARouteServerTestCase):
             failure += self._instance_log_contains_errors_warning(inst)
             self.fail(failure)
 
-    def log_contains(self, inst, msg, instances={}):
+    def log_contains(self, inst, msg, instances={}, opposite=False):
         """Test if the BGP speaker's log contains the expected message.
 
         This only works for BGP speaker instances that support message
         logging: currently only BIRD.
 
         If no log entries are found, the ``TestCase.fail()`` method is
-        called and the test fails.
+        called and the test fails. If ``opposite`` is ``True``, the
+        failure is reported if a log entry is found.
 
         Args:
 
@@ -753,6 +754,9 @@ class LiveScenario(ARouteServerTestCase):
                 "<macro>: <BGPSpeakerInstance>" used to expand macros on
                 the *msg* argument. Macros are expanded using the BGP
                 speaker's specific client ID or protocol name.
+
+            opposite (bool): when set to True, the call fails if a match
+                is found.
 
         Example
         ---------
@@ -783,9 +787,16 @@ class LiveScenario(ARouteServerTestCase):
         if macros_dict:
             expanded_msg = expanded_msg.format(**macros_dict)
 
-        if not inst.log_contains(expanded_msg):
+        if not opposite and not inst.log_contains(expanded_msg):
             self.fail(
                 "Expected message not found on {} logs:\n\t{}".format(
+                    inst.name, expanded_msg
+                ) + self._instance_log_contains_errors_warning(inst)
+            )
+
+        if opposite and inst.log_contains(expanded_msg):
+            self.fail(
+                "Unexpected message found on {} logs:\n\t{}".format(
                     inst.name, expanded_msg
                 ) + self._instance_log_contains_errors_warning(inst)
             )

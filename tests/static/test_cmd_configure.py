@@ -17,6 +17,7 @@ import copy
 import os
 import shutil
 import tempfile
+from packaging import version
 try:
     import mock
 except ImportError:
@@ -107,7 +108,7 @@ class TestConfigureCmd(ARouteServerTestCase):
         }
     }
 
-    def setup_builder(self, cls, general, ip_ver=None):
+    def setup_builder(self, cls, general, **kwargs):
         tpl_dir = "bird" if cls is BIRDConfigBuilder else "openbgpd"
 
         MockedEnv(base_dir=os.path.dirname(__file__),
@@ -121,7 +122,7 @@ class TestConfigureCmd(ARouteServerTestCase):
             cfg_bogons="config.d/bogons.yml",
             cache_dir=self.temp_dir,
             cache_expiry=120,
-            ip_ver=ip_ver
+            **kwargs
         )
 
     def _setUp(self, *patches):
@@ -173,7 +174,7 @@ class TestConfigureCmd(ARouteServerTestCase):
         ).start()
         mock_wr_text.side_effect = None
 
-    def configure_and_build(self):
+    def configure_and_build(self, builder_cls, expected_config=None, **kwargs):
 
         def iter_compare(dic1, dic2, path=""):
             self.assertEqual(
@@ -197,16 +198,16 @@ class TestConfigureCmd(ARouteServerTestCase):
 
         compare_dic = copy.deepcopy(dic)
         del compare_dic["cfg"]["communities"]
-        iter_compare(compare_dic, self.expected_config)
+        iter_compare(compare_dic, expected_config or self.expected_config)
 
-        self.setup_builder(BIRDConfigBuilder, general, ip_ver=4)
+        self.setup_builder(builder_cls, general, **kwargs)
         self.builder.render_template()
         for msg in self.logger_handler.warnings:
             if msg.startswith("No AS-SETs provided"):
                 continue
-            self.fail("One or more warnings detected")
+            self.fail("One or more warnings detected: " + msg)
         for msg in self.logger_handler.msgs:
-            self.fail("One or more errors detected")
+            self.fail("One or more errors detected: " + msg)
 
         return dic
 
@@ -214,11 +215,16 @@ class TestConfigureCmd(ARouteServerTestCase):
         """Configure command: BIRD, simple"""
         self.mock_answers([
             "bird",
+            BIRDConfigBuilder.DEFAULT_VERSION,
             "999",
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
         ])
-        dic = self.configure_and_build()
+        dic = self.configure_and_build(
+            BIRDConfigBuilder,
+            ip_ver=4,
+            target_version=BIRDConfigBuilder.DEFAULT_VERSION
+        )
 
         for comm_name in dic["cfg"]["communities"]:
             self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
@@ -236,7 +242,10 @@ class TestConfigureCmd(ARouteServerTestCase):
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
         ])
-        dic = self.configure_and_build()
+        dic = self.configure_and_build(
+            OpenBGPDConfigBuilder,
+            target_version="6.0"
+        )
 
         for comm_name in dic["cfg"]["communities"]:
             self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
@@ -254,7 +263,10 @@ class TestConfigureCmd(ARouteServerTestCase):
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
         ])
-        dic = self.configure_and_build()
+        dic = self.configure_and_build(
+            OpenBGPDConfigBuilder,
+            target_version="6.1"
+        )
 
         for comm_name in dic["cfg"]["communities"]:
             self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
@@ -271,7 +283,10 @@ class TestConfigureCmd(ARouteServerTestCase):
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
         ])
-        dic = self.configure_and_build()
+        dic = self.configure_and_build(
+            OpenBGPDConfigBuilder,
+            target_version="6.2"
+        )
 
         for comm_name in dic["cfg"]["communities"]:
             self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
@@ -288,7 +303,10 @@ class TestConfigureCmd(ARouteServerTestCase):
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
         ])
-        dic = self.configure_and_build()
+        dic = self.configure_and_build(
+            OpenBGPDConfigBuilder,
+            target_version="6.4"
+        )
 
         for comm_name in dic["cfg"]["communities"]:
             self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
@@ -305,7 +323,10 @@ class TestConfigureCmd(ARouteServerTestCase):
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
         ])
-        dic = self.configure_and_build()
+        dic = self.configure_and_build(
+            OpenBGPDConfigBuilder,
+            target_version="6.5"
+        )
 
         for comm_name in dic["cfg"]["communities"]:
             self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
@@ -322,7 +343,10 @@ class TestConfigureCmd(ARouteServerTestCase):
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
         ])
-        dic = self.configure_and_build()
+        dic = self.configure_and_build(
+            OpenBGPDConfigBuilder,
+            target_version="6.7"
+        )
 
         for comm_name in dic["cfg"]["communities"]:
             self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
@@ -334,11 +358,16 @@ class TestConfigureCmd(ARouteServerTestCase):
         self.expected_config["cfg"]["rs_as"] = 999999
         self.mock_answers([
             "bird",
+            BIRDConfigBuilder.DEFAULT_VERSION,
             "999999",
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
         ])
-        dic = self.configure_and_build()
+        dic = self.configure_and_build(
+            BIRDConfigBuilder,
+            ip_ver=4,
+            target_version=BIRDConfigBuilder.DEFAULT_VERSION
+        )
         self.assertEqual(
             dic["cfg"]["communities"]["do_not_announce_to_any"]["std"],
             "0:65534"
@@ -347,3 +376,41 @@ class TestConfigureCmd(ARouteServerTestCase):
             dic["cfg"]["communities"]["announce_to_peer"]["std"],
             "65534:peer_as"
         )
+
+    def test_bird2_simple(self):
+        """Configure command: BIRD 2.0, simple"""
+        self.mock_answers([
+            "bird",
+            "2.0.7",
+            "999",
+            "192.0.2.1",
+            "192.0.2.0/24,2001:db8::/32"
+        ])
+
+        expected_config = copy.deepcopy(self.expected_config)
+        expected_config["cfg"]["filtering"]["max_prefix"]["count_rejected_routes"] = False
+        dic = self.configure_and_build(
+            BIRDConfigBuilder,
+            expected_config=expected_config,
+            target_version="2.0.7"
+        )
+
+    def test_bird2_receive_limit_check(self):
+        """Configure command: BIRD 2.0, receive limit > 2.0.7"""
+
+        # This test just verifies if there is any known BIRD
+        # release newer than 2.0.7, for which the 'receive limit'
+        # issue might be fixed; if so, we need to relax the check
+        # implemented in 'validate_bgpspeaker_specific_configuration'
+        # inside BIRDConfigBuilder, and also change the class
+        # ConfigureCommand so that count_rejected_routes will not
+        # be set to False anymore for BIRD > 2.0.7.
+        #
+        # If/when that will happen, this test can be dropped.
+
+        if any([version.parse(v) > version.parse("2.0.7")
+                for v in BIRDConfigBuilder.AVAILABLE_VERSION]):
+            self.fail("A release of BIRD > 2.0.7 has been added "
+                      "to the BIRDConfigBuilder class: maybe we "
+                      "need to relax the way 'receive limit' is "
+                      "handled? Check the test case for details.")

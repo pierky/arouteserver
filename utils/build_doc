@@ -111,7 +111,7 @@ function RenderExample() {
 			IP_VER="$1" ; shift
 			$CMD --ip-ver $IP_VER -o examples/$DST/bird$IP_VER.conf $@
 		else
-			$CMD --target-version 2.0.7 -o examples/$DST/bird_v2.conf $@
+			$CMD --target-version 2.0.7 --ignore-issues \* -o examples/$DST/bird_v2.conf $@
 		fi
 	elif [ "$COMMAND" == "openbgpd" ]; then
 		$CMD -o examples/$DST/openbgpd.conf --ignore-issues \* --target-version 6.5
@@ -194,7 +194,7 @@ EOF
 
 G="bird-general.yml"
 RenderConfigureExample "bird" $G \
-	"daemon=bird asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" | \
+	"daemon=bird version=1.6.8 asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" | \
 		sed 's/^/   /' >> $D
 ./scripts/arouteserver bird $OPTS --ip-ver 4 --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
 

@@ -35,6 +35,12 @@ jobs:
         - pip install coveralls
       after_success:
         - coveralls
+    - env: TOXENV=py36-cli
+      python: "3.6"
+      install:
+        - pip install tox
+      before_script:
+        - ./tests/external_resources/install_bgpq3.sh
 
     # External resources tests, run on push/PR and via cron job.
     - stage: test external resources
@@ -45,6 +51,7 @@ jobs:
       before_script:
         - ./tests/external_resources/install_bgpq3.sh
         - ./tests/external_resources/install_bgpq4.sh
+
     # Installation tests on Ubuntu, Debian, CentOS, run on push/PR with tags.
 
     # CentOS, latest

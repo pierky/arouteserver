@@ -310,6 +310,7 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
             CfgStatement("max_prefix", t="Max prefix", post_comment=True, sub=[
                 CfgStatement("action", pre_comment=True),
                 CfgStatement("restart_after", pre_comment=True),
+                CfgStatement("count_rejected_routes", pre_comment=True),
                 CfgStatement("peering_db", post_comment=True, sub = [
                     CfgStatement("enabled", pre_comment=True),
                     CfgStatement("increment", pre_comment=True, sub=[

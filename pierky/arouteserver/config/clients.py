@@ -100,6 +100,7 @@ class ConfigParserClients(ConfigParserBase):
                             mandatory=False
                         ),
                         "restart_after": ValidatorUInt(mandatory=False),
+                        "count_rejected_routes": ValidatorBool(mandatory=False),
                         "peering_db": {
                             "enabled": ValidatorBool(mandatory=False),
                             "increment": {

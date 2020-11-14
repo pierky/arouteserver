@@ -27,7 +27,7 @@ class Ask(object):
         if self.next_answer:
             ans = self.next_answer
             self.next_answer = None
-            self.wr_out(ans)
+            self.wr_out(ans + "\n")
             return ans
         else:
             return input()
