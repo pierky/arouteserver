@@ -33,6 +33,8 @@ Who is using ARouteServer?
 
 - `Netnod <https://www.netnod.se/>`__, BIRD and GoBGP\ :sup:`1`\.
 
+- `NIXI Mumbai (GPX) <https://nixi.in/>`__, BIRD.
+
 - `PIT-IX <https://pit-ix.net/>`__, BIRD.
 
 - `QCIX <http://www.qcix.net/>`__, BIRD.

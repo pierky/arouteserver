@@ -148,7 +148,6 @@ Mentions / endorsements:
 
 Who is using ARouteServer?
 --------------------------
-- `NIXI Mumbai (GPX) <https://nixi.in/>`__, BIRD.
 
 - `BharatIX <https://www.bharatix.net/>`__, BIRD.
 
@@ -167,6 +166,8 @@ Who is using ARouteServer?
 - `MIX <https://www.mix-it.net/>`__, BIRD.
 
 - `Netnod <https://www.netnod.se/>`__, BIRD and GoBGP\ :sup:`1`\.
+
+- `NIXI Mumbai (GPX) <https://nixi.in/>`__, BIRD.
 
 - `PIT-IX <https://pit-ix.net/>`__, BIRD.
 
