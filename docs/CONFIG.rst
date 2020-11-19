@@ -109,6 +109,7 @@ Example:
      rs_as: 999
      router_id: "192.0.2.2"
      passive: True
+     multihop: False
      gtsm: True
 
 **clients.yml**
@@ -125,6 +126,7 @@ Example:
        ip: "192.0.2.33"
        passive: False
        gtsm: False
+       multihop: True
 
 In this scenario, the route server's configuration will look like this:
 

@@ -22,6 +22,9 @@ group "clients" {
 {%	if client.cfg.passive %}
 		passive
 {%	endif %}
+{%	if client.cfg.multihop %}
+		multihop {{ client.cfg.multihop }}
+{%	endif %}
 {%	if client.password %}
 		tcp md5sig password "{{ client.password }}"
 {%	endif %}

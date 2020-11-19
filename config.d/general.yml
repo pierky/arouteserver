@@ -57,6 +57,13 @@ cfg:
   # Default: False
   gtsm: False
 
+  # Configure session as multihop. If enabled, provide maximum TTL permitted
+  #
+  # Can be overwritten on a client-by-client basis.
+  #
+  # Default: 0
+  multihop: 0
+
   # Use ADD-PATH (RFC7911).
   # The route server will be configure as "able to send multiple
   # paths to its peer".
