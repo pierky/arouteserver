@@ -239,7 +239,7 @@ class ConfigParserGeneral(ConfigParserBase):
             mandatory=False
         )
         b["policy_ipv6"] = ValidatorOption(
-            "policy_ipv6",client.cfg.multihop
+            "policy_ipv6",
             ("propagate-unchanged", "rewrite-next-hop"),
             mandatory=False
         )
