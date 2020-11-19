@@ -2,36 +2,36 @@
 
 # ---------------------------------------------------------
 # IRRDB
-
-{% for as_set_bundle_id in irrdb_info|sort %}
-{% set as_set_bundle = irrdb_info[as_set_bundle_id] %}
+{% if irrdb_info %}
+{%   for as_set_bundle_id in irrdb_info|sort %}
+{%   set as_set_bundle = irrdb_info[as_set_bundle_id] %}
 # {{ as_set_bundle.descr }}, used_by {{ as_set_bundle.used_by|sort|join(", ") }}
-{% if as_set_bundle.asns|length == 0 %}
+{%   if as_set_bundle.asns|length == 0 %}
 # no origin ASNs found for {{ as_set_bundle.name }}
-{% else %}
+{%   else %}
 define AS_SET_{{ as_set_bundle.name }}_asns = [
 {{ "\t" -}}
-{%	for asn in as_set_bundle.asns|sort %}
-{{-		asn -}}
-{%		if not loop.last %}, {% endif %}
-{%		if loop.index % 5 == 0 %}{{ "\n\t" }}{% endif %}
-{%	endfor %}
+{%	  for asn in as_set_bundle.asns|sort %}
+{{-		  asn -}}
+{%		  if not loop.last %}, {% endif %}
+{%		  if loop.index % 5 == 0 %}{{ "\n\t" }}{% endif %}
+{%	  endfor %}
 
 ];
-{% endif %}
+{%   endif %}
 
-{% for this_ip_ver in list_ip_vers %}
-{%   set this_ip_ver_prefixes = as_set_bundle.prefixes|selectattr("prefix", "is_ipver", this_ip_ver)|list %}
-{%   if this_ip_ver_prefixes|length == 0 %}
+{%   for this_ip_ver in list_ip_vers %}
+{%     set this_ip_ver_prefixes = as_set_bundle.prefixes|selectattr("prefix", "is_ipver", this_ip_ver)|list %}
+{%     if this_ip_ver_prefixes|length == 0 %}
 # no IPv{{ this_ip_ver }} prefixes found for {{ as_set_bundle.name }}
-{%   else %}
+{%     else %}
 define AS_SET_{{ as_set_bundle.name }}_prefixes_{{ this_ip_ver }} = [
 {{ write_prefix_list(this_ip_ver_prefixes, True) }}
 ];
-{%   endif %}
-{% endfor %}
-
-{% endfor %}
+{%     endif %}
+{%   endfor %}
+{%   endfor %}
+{% endif %}
 
 {% if cfg.filtering.irrdb.use_arin_bulk_whois_data.enabled and arin_whois_records %}
 # ARIN Whois database records

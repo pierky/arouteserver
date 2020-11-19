@@ -521,9 +521,13 @@ class ConfigBuilder(object):
         if irrdb_cfg["peering_db"]:
             used_enricher_classes += [PeeringDBConfigEnricher_ASSet]
 
-        used_enricher_classes += [IRRDBConfigEnricher_ASNs,
-                                  IRRDBConfigEnricher_Prefixes,
-                                  PeeringDBConfigEnricher_MaxPrefix]
+        if filtering["irrdb"]["enforce_origin_in_as_set"]:
+            used_enricher_classes.append(IRRDBConfigEnricher_ASNs)
+
+        if filtering["irrdb"]["enforce_prefix_in_as_set"]:
+            used_enricher_classes.append(IRRDBConfigEnricher_Prefixes)
+
+        used_enricher_classes.append(PeeringDBConfigEnricher_MaxPrefix)
 
         if self.cfg_general.rtt_based_functions_are_used:
             used_enricher_classes.append(RTTGetterConfigEnricher)
