@@ -105,8 +105,8 @@ class ConfigParserGeneral(ConfigParserBase):
         c["prepend_rs_as"] = ValidatorBool(default=False)
         c["path_hiding"] = ValidatorBool(default=True)
         c["passive"] = ValidatorBool(default=True)
+        c["multihop"] = ValidatorUInt(mandatory=False)
         c["gtsm"] = ValidatorBool(default=False)
-        c["multihop"] = ValidatorUInt(default=0, mandatory=True)
         c["add_path"] = ValidatorBool(default=False)
 
         c["filtering"] = OrderedDict()

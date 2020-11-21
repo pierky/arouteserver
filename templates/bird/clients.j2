@@ -406,10 +406,10 @@ protocol bgp {{ client.id }} {
 	{% else %}
 	ttl security off;
 	{% endif -%}
-	
+
 	{% if client.cfg.multihop %}
 	multihop {{ client.cfg.multihop }};
-	{% endif -%}
+	{% endif %}
 
 	{% if cfg.rfc1997_wellknown_communities.policy == "rfc1997" %}
 	interpret communities on;

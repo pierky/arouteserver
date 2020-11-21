@@ -58,7 +58,7 @@ class ConfigParserClients(ConfigParserBase):
                 "prepend_rs_as": ValidatorBool(mandatory=False),
                 "passive": ValidatorBool(mandatory=False),
                 "gtsm": ValidatorBool(mandatory=False),
-                "multihop": ValidatorUInt(default=0, mandatory=True),
+                "multihop": ValidatorUInt(mandatory=False),
                 "add_path": ValidatorBool(mandatory=False),
                 "filtering": {
                     "next_hop": {

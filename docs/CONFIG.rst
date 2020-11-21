@@ -109,7 +109,6 @@ Example:
      rs_as: 999
      router_id: "192.0.2.2"
      passive: True
-     multihop: False
      gtsm: True
 
 **clients.yml**
@@ -124,9 +123,9 @@ Example:
        passive: False
      - asn: 33
        ip: "192.0.2.33"
-       passive: False
-       gtsm: False
-       multihop: True
+       cfg:
+         passive: False
+         gtsm: False
 
 In this scenario, the route server's configuration will look like this:
 
@@ -498,6 +497,12 @@ The following list of limitations is based on the currently supported versions o
   - OpenBGPD: if the last non-aggregated AS in the AS_PATH is included in the list of ASNs generated from the IRR records, the routes pass the IRR filters.
 
     More details on `GitHub PR56 <https://github.com/pierky/arouteserver/pull/56>`_ (commit `a65934a <https://github.com/pierky/arouteserver/commit/a65934ad0ca636d7d381f705508f128b0ac17e5e>`_).
+
+- BIRD
+
+  - Multihop sessions are only supported on configurations for which **path hiding** mitigation is turned off.
+
+    More details on `GitHub PR61 <https://github.com/pierky/arouteserver/pull/61>`_.
 
 - OpenBGPD
 

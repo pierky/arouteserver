@@ -1,0 +1,7 @@
+clients:
+  - asn: 1
+    ip:
+    - "192.0.2.11"
+    - "2001:db8:1:1::11"
+    cfg:
+      multihop: 5
