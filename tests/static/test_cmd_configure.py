@@ -408,7 +408,7 @@ class TestConfigureCmd(ARouteServerTestCase):
         #
         # If/when that will happen, this test can be dropped.
 
-        if any([version.parse(v) > version.parse("2.0.7")
+        if any([version.parse(v) >= version.parse("2.0.8")
                 for v in BIRDConfigBuilder.AVAILABLE_VERSION]):
             self.fail("A release of BIRD > 2.0.7 has been added "
                       "to the BIRDConfigBuilder class: maybe we "

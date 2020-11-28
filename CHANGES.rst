@@ -12,6 +12,12 @@ next release
 
   More details on `GitHub PR61 <https://github.com/pierky/arouteserver/pull/61>`_.
 
+- Improvement (BIRD only): allow ``count_rejected_routes: True`` in BIRD 2.0.7 when the patch is used.
+
+  A `patch for BIRD 2.0.7 <https://www.mail-archive.com/bird-users@network.cz/msg05638.html>`_ was released to address the bug that leads the daemon to crash when a configuration is built using ``count_rejected_routes: True``. This release adds a new locally meaningful fictitious version of BIRD that can be used to overcome the limitation enforced in ARouteServer 1.0.1, by signalling to the tool the usage of a patched version of BIRD (``--target-version 2.0.7+b962967e``).
+
+  See the notes for the 1.0.1 release for more details.
+
 v1.0.1
 ------
 

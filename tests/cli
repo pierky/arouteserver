@@ -273,6 +273,8 @@ EXP_ERR="BIRD 2.0.7 is affected by an issue that prevents that statement from wo
 
 SUB_TEST="$LINENO"
 build_cmd "bird" --target-version 2.0.7 | must_contain "$EXP_ERR"
+SUB_TEST="$LINENO"
+build_cmd "bird" --target-version 2.0.7+b962967e | must_not_contain "$EXP_ERR"
 
 # ---------------------------------------------
 reset

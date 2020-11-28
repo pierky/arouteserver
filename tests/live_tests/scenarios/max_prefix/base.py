@@ -15,6 +15,7 @@
 
 import os
 import six
+from packaging import version
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
@@ -258,6 +259,17 @@ class MaxPrefixScenarioBIRD2(MaxPrefixScenarioBIRD):
     TARGET_VERSION = "2.0.7"
 
     EXPECTED_LOG_MSG = "import"
+
+    def test_001(self):
+        """{}: BIRD 2.0, receive limit > 2.0.7"""
+        if version.parse(self.TARGET_VERSION) >= version.parse("2.0.8"):
+            self.fail(
+                "Starting with BIRD 2.0.8 onward, the max-prefix limit "
+                "bug should be fixed, so this class can be reverted "
+                "back to its original state, that is with no method "
+                "overrides used to deal with the specific behaviour "
+                "of 2.0.7 that was implemented to deal with the bug."
+            )
 
     def test_020_sessions_up_AS5(self):
         """{}: AS5 session is up"""
