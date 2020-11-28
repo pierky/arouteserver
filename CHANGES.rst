@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- Improvement: multihop support.
+
+  For BIRD, this option can be configured only when path-hiding mitigation is turned off.
+
+  More details on `GitHub PR61 <https://github.com/pierky/arouteserver/pull/61>`_.
+
 v1.0.1
 ------
 
