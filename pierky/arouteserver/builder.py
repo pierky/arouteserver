@@ -751,8 +751,18 @@ class BIRDConfigBuilder(ConfigBuilder):
         if hooks:
             if not isinstance(hooks, list):
                 raise BuilderError(
-                    "hooks must be a list of hook names"
+                    "hooks must be a list of hook names."
                 )
+
+        for client in self.cfg_clients.cfg["clients"]:
+            if client["cfg"]["multihop"]:
+                if self.cfg_general["path_hiding"]:
+                    raise BuilderError(
+                        "multihop is not supported on BIRD configurations "
+                        "when path_hiding mitigation is enabled; "
+                        "see https://github.com/pierky/arouteserver/pull/61 "
+                        "for more details."
+                    )
 
         if version.parse(self.target_version) >= version.parse("2.0.7"):
             max_prefix_count_rejected_routes_clients = []

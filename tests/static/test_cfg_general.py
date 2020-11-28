@@ -1074,6 +1074,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "prepend_rs_as": False,
             "path_hiding": True,
             "passive": True,
+            "multihop": None,
             "gtsm": False,
             "add_path": False,
             "filtering": {
@@ -1194,6 +1195,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "prepend_rs_as": False,
             "path_hiding": True,
             "passive": True,
+            "multihop": None,
             "gtsm": False,
             "add_path": False,
             "filtering": {

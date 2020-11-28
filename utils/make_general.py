@@ -260,6 +260,7 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
         CfgStatement("prepend_rs_as", pre_comment=True),
         CfgStatement("path_hiding", pre_comment=True),
         CfgStatement("passive", pre_comment=True),
+        CfgStatement("multihop", pre_comment=True),
         CfgStatement("gtsm", pre_comment=True),
         CfgStatement("add_path", pre_comment=True),
         CfgStatement("filtering", t="Filtering", sub=[

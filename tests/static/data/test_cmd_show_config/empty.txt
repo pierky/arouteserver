@@ -4,6 +4,7 @@ configured        router_id: 192.0.2.1
 default           prepend_rs_as: False
 default           path_hiding: True
 default           passive: True
+default           multihop: None
 default           gtsm: False
 default           add_path: False
                   filtering:
