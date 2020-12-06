@@ -3,8 +3,8 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
-next release
-------------
+v1.1.0
+------
 
 - Improvement: multihop support.
 
@@ -17,6 +17,8 @@ next release
   A `patch for BIRD 2.0.7 <https://www.mail-archive.com/bird-users@network.cz/msg05638.html>`_ was released to address the bug that leads the daemon to crash when a configuration is built using ``count_rejected_routes: True``. This release adds a new locally meaningful fictitious version of BIRD that can be used to overcome the limitation enforced in ARouteServer 1.0.1, by signalling to the tool the usage of a patched version of BIRD (``--target-version 2.0.7+b962967e``).
 
   See the notes for the 1.0.1 release for more details.
+
+- New: Add support for OpenBGPD/OpenBSD 6.8 and OpenBGPD Portable 6.8p1, also added to the integration testing suite.
 
 v1.0.1
 ------
