@@ -21,7 +21,9 @@ notes = {
           "prepend_once_to_peer, do_not_announce_to_peer) "
           "are not scrubbed from routes that leave OpenBGPD "
           "route servers and so they are propagated to the "
-          "route server clients.")
+          "route server clients."),
+    "3": ("Multihop can be enabled only when path-hiding "
+          "mitigation is turned off."),
 }
 
 output = ""
@@ -249,6 +251,18 @@ add_feature("Active sessions", {
 add_feature("GTSM (Generalized TTL Security Mechanism)", {
     "bird": True,
     "bird2": True,
+    "openbgpd": True,
+    "openbgpd_portable": True,
+})
+add_feature("Multihop sessions", {
+    "bird": {
+        "value": True,
+        "note": 3
+    },
+    "bird2": {
+        "value": True,
+        "note": 3
+    },
     "openbgpd": True,
     "openbgpd_portable": True,
 })

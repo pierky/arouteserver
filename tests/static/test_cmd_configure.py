@@ -333,19 +333,19 @@ class TestConfigureCmd(ARouteServerTestCase):
             self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
             self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
 
-    def test_openbgpd67_simple(self):
-        """Configure command: OpenBGPD 6.7, simple"""
+    def test_openbgpd68_simple(self):
+        """Configure command: OpenBGPD 6.8, simple"""
         self.expected_config["cfg"]["path_hiding"] = False
         self.mock_answers([
             "openbgpd",
-            "6.7",
+            "6.8",
             "999",
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
         ])
         dic = self.configure_and_build(
             OpenBGPDConfigBuilder,
-            target_version="6.7"
+            target_version="6.8"
         )
 
         for comm_name in dic["cfg"]["communities"]:
@@ -408,7 +408,7 @@ class TestConfigureCmd(ARouteServerTestCase):
         #
         # If/when that will happen, this test can be dropped.
 
-        if any([version.parse(v) > version.parse("2.0.7")
+        if any([version.parse(v) >= version.parse("2.0.8")
                 for v in BIRDConfigBuilder.AVAILABLE_VERSION]):
             self.fail("A release of BIRD > 2.0.7 has been added "
                       "to the BIRDConfigBuilder class: maybe we "

@@ -269,10 +269,52 @@ cfg:
   router_id: "192.0.2.2"
 EOF
 
-EXP_ERR="the only available behaviour is to have the rejected routes counted towards the limit"
+EXP_ERR="BIRD 2.0.7 is affected by an issue that prevents that statement from working"
 
 SUB_TEST="$LINENO"
-build_cmd "bird" --target-version 2.0.7 | must_contain "BIRD 2.0.7 is affected by an issue that prevents that statement from working"
+build_cmd "bird" --target-version 2.0.7 | must_contain "$EXP_ERR"
+SUB_TEST="$LINENO"
+build_cmd "bird" --target-version 2.0.7+b962967e | must_not_contain "$EXP_ERR"
+
+# ---------------------------------------------
+reset
+TITLE="BIRD multihop with path_hiding"
+GENERAL="tests/var/general.yml"
+cat << EOF > $GENERAL
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+EOF
+CLIENTS="tests/var/clients.yml"
+cat << EOF > $CLIENTS
+clients:
+  - asn: 1
+    ip:
+    - "192.0.2.11"
+    - "2001:db8:1:1::11"
+    cfg:
+      multihop: 5
+EOF
+
+EXP_ERR="multihop is not supported on BIRD configurations when path_hiding mitigation is enabled"
+
+SUB_TEST="$LINENO"
+build_cmd "bird" --ip-ver 4 | must_contain "$EXP_ERR"
+SUB_TEST="$LINENO"
+build_cmd "bird" --target-version 2.0.7 | must_contain "$EXP_ERR"
+
+GENERAL="tests/var/general.yml"
+cat << EOF > $GENERAL
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+  path_hiding: False
+EOF
+
+SUB_TEST="$LINENO"
+build_cmd "bird" --ip-ver 4 | must_not_contain "$EXP_ERR"
+SUB_TEST="$LINENO"
+build_cmd "bird" --target-version 2.0.7 | must_not_contain "$EXP_ERR"
 
 # ---------------------------------------------
 # clients-from-euroix

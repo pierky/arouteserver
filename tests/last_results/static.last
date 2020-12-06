@@ -128,13 +128,15 @@ Clients from Euro-IX: route server classification, 0.6 ... ok
 Clients from Euro-IX: route server classification, 0.7 ... ok
 Clients from Euro-IX: route server classification, 1.0 ... ok
 Configure command: 32 bit route server ASN ... ok
+Configure command: BIRD 2.0, receive limit > 2.0.7 ... ok
+Configure command: BIRD 2.0, simple ... ok
 Configure command: BIRD, simple ... ok
 Configure command: OpenBGPD 6.0, simple ... ok
 Configure command: OpenBGPD 6.1, simple ... ok
 Configure command: OpenBGPD 6.2, simple ... ok
 Configure command: OpenBGPD 6.4, simple ... ok
 Configure command: OpenBGPD 6.5, simple ... ok
-Configure command: OpenBGPD 6.7, simple ... ok
+Configure command: OpenBGPD 6.8, simple ... ok
 IX-F Member Export from clients command: simple ... ok
 IX-F Member Export from clients command: with description ... ok
 IX-F Member Export from clients command: with AS-SET ... ok
@@ -201,6 +203,6 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 201 tests in 40.921s
+Ran 203 tests in 42.755s
 
 OK

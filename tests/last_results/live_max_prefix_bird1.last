@@ -1,11 +1,15 @@
 Live test, BIRD, max-prefix, IPv4: setting instances up...
 Live test, BIRD, max-prefix, IPv4: instances setup ... ok
 Live test, BIRD, max-prefix, IPv4: sessions are up ... ok
-Live test, BIRD, max-prefix, IPv4: log is populated ... ok
+Live test, BIRD, max-prefix, IPv4: AS5 session is down (max-prefix hit, action == shutdown) ... ok
+Live test, BIRD, max-prefix, IPv4: log is populated: receive limit, routes blocked ... ok
+Live test, BIRD, max-prefix, IPv4: log is populated: receive limit, session shutdown (AS5) ... ok
+Live test, BIRD, max-prefix, IPv4: log is populated: import limit, no warning in the log file (AS6) ... ok
 Live test, BIRD, max-prefix, IPv4: number of prefixes received by rs from AS1 ... ok
 Live test, BIRD, max-prefix, IPv4: number of prefixes received by rs from AS2 ... ok
 Live test, BIRD, max-prefix, IPv4: number of prefixes received by rs from AS3 ... ok
 Live test, BIRD, max-prefix, IPv4: number of prefixes received by rs from AS4 ... ok
+Live test, BIRD, max-prefix, IPv4: number of prefixes received by rs from AS6 ... ok
 Live test, BIRD, max-prefix, IPv4: reconfigure ... ok
 Live test, BIRD, max-prefix, IPv4: log contains errors ... ok
 Live test, BIRD, max-prefix, IPv4: dumping rs config...
@@ -14,11 +18,15 @@ Live test, BIRD, max-prefix, IPv4: stopping instances...
 Live test, BIRD, max-prefix, IPv6: setting instances up...
 Live test, BIRD, max-prefix, IPv6: instances setup ... ok
 Live test, BIRD, max-prefix, IPv6: sessions are up ... ok
-Live test, BIRD, max-prefix, IPv6: log is populated ... ok
+Live test, BIRD, max-prefix, IPv6: AS5 session is down (max-prefix hit, action == shutdown) ... ok
+Live test, BIRD, max-prefix, IPv6: log is populated: receive limit, routes blocked ... ok
+Live test, BIRD, max-prefix, IPv6: log is populated: receive limit, session shutdown (AS5) ... ok
+Live test, BIRD, max-prefix, IPv6: log is populated: import limit, no warning in the log file (AS6) ... ok
 Live test, BIRD, max-prefix, IPv6: number of prefixes received by rs from AS1 ... ok
 Live test, BIRD, max-prefix, IPv6: number of prefixes received by rs from AS2 ... ok
 Live test, BIRD, max-prefix, IPv6: number of prefixes received by rs from AS3 ... ok
 Live test, BIRD, max-prefix, IPv6: number of prefixes received by rs from AS4 ... ok
+Live test, BIRD, max-prefix, IPv6: number of prefixes received by rs from AS6 ... ok
 Live test, BIRD, max-prefix, IPv6: reconfigure ... ok
 Live test, BIRD, max-prefix, IPv6: log contains errors ... ok
 Live test, BIRD, max-prefix, IPv6: dumping rs config...
@@ -26,6 +34,6 @@ Live test, BIRD, max-prefix, IPv6: dumping routes...
 Live test, BIRD, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 18 tests in 62.912s
+Ran 26 tests in 152.019s
 
 OK

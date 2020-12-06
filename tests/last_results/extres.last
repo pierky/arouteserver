@@ -12,6 +12,6 @@ External resources: prefixes from AS-SET via bgpq3 ... ok
 External resources: prefixes from AS-SET via bgpq4 ... ok
 
 ----------------------------------------------------------------------
-Ran 12 tests in 44.048s
+Ran 12 tests in 52.401s
 
 OK

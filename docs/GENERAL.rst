@@ -91,6 +91,28 @@ General options: ``cfg``
 
 
 
+- ``multihop``:
+  Configure sessions as multihop.
+  To be set with the maximum TTL permitted.
+
+
+  BIRD: this option can be used only when
+  **path_hiding** is False for the whole configuration.
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+  Default: **not set.**
+
+  Example:
+
+  .. code:: yaml
+
+     multihop: 0
+
+
+
 - ``gtsm``:
   Use GTSM (Generalized TTL Security Mechanism).
   https://tools.ietf.org/html/rfc5082
