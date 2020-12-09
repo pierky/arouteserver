@@ -6,7 +6,7 @@ Presentations
 
 Mentions / endorsements:
 
-- Job Snijders, LINX99, 20 November 2017: `slides <http://instituut.net/~job/LINX99_route_servers.pdf>`__
+- Job Snijders, LACNIC29, 3 May 2018: `slides <https://www.lacnic.net/innovaportal/file/2621/1/lacnic29_peering_tutorial.pdf>`__ (PDF)
 
 - Anurag Bhatia, APNIC46, 12 September 2018: `video <https://www.youtube.com/watch?v=XfSNQbiR1cg&t=3140>`__, `slides <https://conference.apnic.net/46/assets/files/APNC402/Automate-your-IX-config.pdf>`__ (PDF)
 
