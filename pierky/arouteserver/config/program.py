@@ -284,7 +284,7 @@ class ConfigParserProgram(object):
                         return False
 
                     if yes_no.lower() == "yes":
-                        self.cp_file(s, bak_path)
+                        self.cp_file(d, bak_path)
                         self.cp_file(s, d)
                         write_title()
                         self.v("OK (backed up and updated)")
