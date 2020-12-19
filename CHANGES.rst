@@ -3,6 +3,13 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- Fix: ``setup-templates`` was not generating the correct backup of customized templates.
+
+  The bug only affected the upgrade procedure of deployments where the Jinja2 templates were locally customized. More details on the comments of commit `2ea6df69106d473f9f4170c65f929bab4a0d7676 <https://github.com/pierky/arouteserver/commit/2ea6df69106d473f9f4170c65f929bab4a0d7676>`_.
+
 v1.1.0
 ------
 
