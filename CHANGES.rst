@@ -6,6 +6,10 @@ Change log
 next release
 ------------
 
+- Improvement (BIRD only): ``tag_and_reject`` is now the default reject policy set by the ``configure`` command.
+
+  When the ``configure`` command is initially used to setup ARouteServer and to generate the ``general.yml`` file, the `reject policy <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#reject-policy-and-invalid-routes-tracking>`_ that it configures is ``tag_and_reject`` if BIRD is specified as the route server daemon.
+
 - Fix: ``setup-templates`` was not generating the correct backup of customized templates.
 
   The bug only affected the upgrade procedure of deployments where the Jinja2 templates were locally customized. More details on the comments of commit `2ea6df69106d473f9f4170c65f929bab4a0d7676 <https://github.com/pierky/arouteserver/commit/2ea6df69106d473f9f4170c65f929bab4a0d7676>`_.

@@ -342,6 +342,11 @@ class ConfigureCommand(ARouteServerCommand):
             "PeeringDB is used to fetch networks prefix count."
         )
 
+        if self.answers["daemon"] == "bird":
+            filtering["reject_policy"] = {
+                "policy": "tag_and_reject"
+            }
+
         if (
             self.answers["daemon"] == "bird" and \
             version.parse(self.answers["version"]) >= version.parse("2.0")
@@ -367,6 +372,10 @@ class ConfigureCommand(ARouteServerCommand):
         cfg["rfc1997_wellknown_communities"] = {"policy": "pass"}
 
         cfg["communities"] = OrderedDict()
+
+        if self.answers["daemon"] == "bird":
+            add_comm("reject_cause",
+                     "65520:dyn_val", "rs_as:65520:dyn_val")
 
         add_comm("prefix_present_in_as_set",
                  "64512:11", "rs_as:64512:11")
