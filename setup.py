@@ -46,6 +46,7 @@ prod releases (in 'master' branch):
 
 # upload to PyPi done by CD tools in GitHub/Travis
 #- ~/.local/bin/twine upload dist/*
+#- twine upload --repository testpypi dist/*
 #- git push
 
 - edit new release on GitHub

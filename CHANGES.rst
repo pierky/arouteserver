@@ -8,7 +8,7 @@ next release
 
 - Improvement (BIRD only): ``tag_and_reject`` is now the default reject policy set by the ``configure`` command.
 
-  When the ``configure`` command is initially used to setup ARouteServer and to generate the ``general.yml`` file, the `reject policy <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#reject-policy-and-invalid-routes-tracking>`_ that it configures is ``tag_and_reject`` if BIRD is specified as the route server daemon.
+  When the ``configure`` command is initially used to setup ARouteServer and to generate the ``general.yml`` file, the `reject policy <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#reject-policy-and-invalid-routes-tracking>`__ that it configures is ``tag_and_reject`` if BIRD is specified as the route server daemon.
 
 - Fix: ``setup-templates`` was not generating the correct backup of customized templates.
 
@@ -81,7 +81,7 @@ v0.25.0
 v0.24.1
 -------
 
-- Improvement: add support for `bgpq4 <https://github.com/bgp/bgpq4>`_.
+- Improvement: add support for `bgpq4 <https://github.com/bgp/bgpq4>`__.
 
   At least version 0.0.5 is required.
 
@@ -89,7 +89,7 @@ v0.24.1
 
 - Fix: ``clients-from-euroix`` command, route server detection on Euro-IX schema versions 0.7 and 1.0.
 
-  In version 0.7 and 1.0 of the `Euro-IX member list JSON file <https://github.com/euro-ix/json-schemas>`_ the way the route server information are exported changed. The ``clients-from-euroix`` command was no longer able to filter out the IP addresses that represent the route server of the same IXP for which the members are processed, basically generating a client entry for the same route server being configured.
+  In version 0.7 and 1.0 of the `Euro-IX member list JSON file <https://github.com/euro-ix/json-schemas>`__ the way the route server information are exported changed. The ``clients-from-euroix`` command was no longer able to filter out the IP addresses that represent the route server of the same IXP for which the members are processed, basically generating a client entry for the same route server being configured.
 
 v0.24.0
 -------
@@ -102,9 +102,9 @@ v0.24.0
 
   Related: `issue #55 on GitHub <https://github.com/pierky/arouteserver/issues/55>`_.
 
-- Improvement: add `alice-lg/birdwatcher <https://github.com/alice-lg/birdwatcher>`_ support to BIRD configs.
+- Improvement: add `alice-lg/birdwatcher <https://github.com/alice-lg/birdwatcher>`__ support to BIRD configs.
 
-  Changes the default BIRD time format to support `alice-lg/birdwatcher <https://github.com/alice-lg/birdwatcher>`_ out of the box.
+  Changes the default BIRD time format to support `alice-lg/birdwatcher <https://github.com/alice-lg/birdwatcher>`__ out of the box.
 
 - Improvement: include a table with the reject codes in the HTML output.
 
