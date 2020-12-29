@@ -396,4 +396,10 @@ cat $DOCS_DIR/README_footer.txt >> $DST_FILE
 
 # ----------------------------------------------------
 
+title "Testing package long description..."
+
+python setup.py --long-description | rst2html.py - /dev/null --strict
+
+# ----------------------------------------------------
+
 publish_docs

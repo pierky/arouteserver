@@ -3,6 +3,17 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- Improvement (BIRD only): ``tag_and_reject`` is now the default reject policy set by the ``configure`` command.
+
+  When the ``configure`` command is initially used to setup ARouteServer and to generate the ``general.yml`` file, the `reject policy <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#reject-policy-and-invalid-routes-tracking>`__ that it configures is ``tag_and_reject`` if BIRD is specified as the route server daemon.
+
+- Fix: ``setup-templates`` was not generating the correct backup of customized templates.
+
+  The bug only affected the upgrade procedure of deployments where the Jinja2 templates were locally customized. More details on the comments of commit `2ea6df69106d473f9f4170c65f929bab4a0d7676 <https://github.com/pierky/arouteserver/commit/2ea6df69106d473f9f4170c65f929bab4a0d7676>`_.
+
 v1.1.0
 ------
 
@@ -70,7 +81,7 @@ v0.25.0
 v0.24.1
 -------
 
-- Improvement: add support for `bgpq4 <https://github.com/bgp/bgpq4>`_.
+- Improvement: add support for `bgpq4 <https://github.com/bgp/bgpq4>`__.
 
   At least version 0.0.5 is required.
 
@@ -78,7 +89,7 @@ v0.24.1
 
 - Fix: ``clients-from-euroix`` command, route server detection on Euro-IX schema versions 0.7 and 1.0.
 
-  In version 0.7 and 1.0 of the `Euro-IX member list JSON file <https://github.com/euro-ix/json-schemas>`_ the way the route server information are exported changed. The ``clients-from-euroix`` command was no longer able to filter out the IP addresses that represent the route server of the same IXP for which the members are processed, basically generating a client entry for the same route server being configured.
+  In version 0.7 and 1.0 of the `Euro-IX member list JSON file <https://github.com/euro-ix/json-schemas>`__ the way the route server information are exported changed. The ``clients-from-euroix`` command was no longer able to filter out the IP addresses that represent the route server of the same IXP for which the members are processed, basically generating a client entry for the same route server being configured.
 
 v0.24.0
 -------
@@ -91,9 +102,9 @@ v0.24.0
 
   Related: `issue #55 on GitHub <https://github.com/pierky/arouteserver/issues/55>`_.
 
-- Improvement: add `alice-lg/birdwatcher <https://github.com/alice-lg/birdwatcher>`_ support to BIRD configs.
+- Improvement: add `alice-lg/birdwatcher <https://github.com/alice-lg/birdwatcher>`__ support to BIRD configs.
 
-  Changes the default BIRD time format to support `alice-lg/birdwatcher <https://github.com/alice-lg/birdwatcher>`_ out of the box.
+  Changes the default BIRD time format to support `alice-lg/birdwatcher <https://github.com/alice-lg/birdwatcher>`__ out of the box.
 
 - Improvement: include a table with the reject codes in the HTML output.
 

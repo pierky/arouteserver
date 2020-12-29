@@ -220,6 +220,11 @@ class TestConfigureCmd(ARouteServerTestCase):
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
         ])
+
+        self.expected_config["cfg"]["filtering"]["reject_policy"] = {
+            "policy": "tag_and_reject"
+        }
+
         dic = self.configure_and_build(
             BIRDConfigBuilder,
             ip_ver=4,
@@ -230,6 +235,15 @@ class TestConfigureCmd(ARouteServerTestCase):
             self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
             self.assertTrue("ext" in dic["cfg"]["communities"][comm_name])
             self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
+
+        self.assertEqual(
+            dic["cfg"]["communities"]["reject_cause"]["std"],
+            "65520:dyn_val"
+        )
+        self.assertEqual(
+            dic["cfg"]["communities"]["reject_cause"]["lrg"],
+            "rs_as:65520:dyn_val"
+        )
 
     def test_openbgpd60_simple(self):
         """Configure command: OpenBGPD 6.0, simple"""
@@ -355,6 +369,9 @@ class TestConfigureCmd(ARouteServerTestCase):
 
     def test_32bit_asn(self):
         """Configure command: 32 bit route server ASN"""
+        self.expected_config["cfg"]["filtering"]["reject_policy"] = {
+            "policy": "tag_and_reject"
+        }
         self.expected_config["cfg"]["rs_as"] = 999999
         self.mock_answers([
             "bird",
@@ -377,6 +394,15 @@ class TestConfigureCmd(ARouteServerTestCase):
             "65534:peer_as"
         )
 
+        self.assertEqual(
+            dic["cfg"]["communities"]["reject_cause"]["std"],
+            "65520:dyn_val"
+        )
+        self.assertEqual(
+            dic["cfg"]["communities"]["reject_cause"]["lrg"],
+            "rs_as:65520:dyn_val"
+        )
+
     def test_bird2_simple(self):
         """Configure command: BIRD 2.0, simple"""
         self.mock_answers([
@@ -387,12 +413,22 @@ class TestConfigureCmd(ARouteServerTestCase):
             "192.0.2.0/24,2001:db8::/32"
         ])
 
-        expected_config = copy.deepcopy(self.expected_config)
-        expected_config["cfg"]["filtering"]["max_prefix"]["count_rejected_routes"] = False
+        self.expected_config["cfg"]["filtering"]["max_prefix"]["count_rejected_routes"] = False
+        self.expected_config["cfg"]["filtering"]["reject_policy"] = {
+            "policy": "tag_and_reject"
+        }
         dic = self.configure_and_build(
             BIRDConfigBuilder,
-            expected_config=expected_config,
             target_version="2.0.7"
+        )
+
+        self.assertEqual(
+            dic["cfg"]["communities"]["reject_cause"]["std"],
+            "65520:dyn_val"
+        )
+        self.assertEqual(
+            dic["cfg"]["communities"]["reject_cause"]["lrg"],
+            "rs_as:65520:dyn_val"
         )
 
     def test_bird2_receive_limit_check(self):
