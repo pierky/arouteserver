@@ -1,0 +1,60 @@
+services:
+  rs:
+    build: ./rs
+    container_name: arouteserver_playground_rs
+    networks:
+      peering_fabric:
+        ipv4_address: 10.0.0.2
+    healthcheck:
+      test: ["CMD", "curl", "-L", "http://10.0.0.2:29184/protocols/bgp"]
+      interval: 10s
+      timeout: 5s
+      retries: 99999
+      start_period: 5s
+    # Set the following variable to 0 to prevent
+    # the run.sh script to automatically configure
+    # ARouteServer. More details can be found in
+    # the rs/run.sh file.
+    #
+    environment:
+      SETUP_AND_CONFIGURE_AROUTESERVER: 1
+
+  client_1:
+    image: pierky/bird:1.6.3
+    container_name: arouteserver_playground_client_1
+    networks:
+      peering_fabric:
+        ipv4_address: 10.0.0.11
+    volumes:
+      - ./client_1/bird.conf:/etc/bird/bird.conf
+
+  client_2:
+    image: pierky/bird:1.6.3
+    container_name: arouteserver_playground_client_2
+    networks:
+      peering_fabric:
+        ipv4_address: 10.0.0.12
+    volumes:
+      - ./client_2/bird.conf:/etc/bird/bird.conf
+
+  alice_lg:
+    image: pierky/alice-lg
+    container_name: arouteserver_playground_alicelg
+    depends_on:
+      rs:
+        condition: service_healthy
+    networks:
+      peering_fabric:
+        ipv4_address: 10.0.0.3
+    volumes:
+      - ./alice-lg/alice.conf:/etc/alice-lg/alice.conf
+    ports:
+      - 8080:80
+
+networks:
+  peering_fabric:
+    ipam:
+      config:
+        - subnet: 10.0.0.0/24
+          ip_range: 10.0.0.128/25
+          gateway: 10.0.0.1

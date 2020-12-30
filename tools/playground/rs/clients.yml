@@ -1,0 +1,9 @@
+clients:
+  - asn: 3333
+    ip:
+    - "10.0.0.11"
+    description: Test client 1
+  - asn: 10745
+    ip:
+    - "10.0.0.12"
+    description: Test client 2
