@@ -1,5 +1,7 @@
 # ARouteServer playground
 
+[![Playground tests status](https://github.com/pierky/arouteserver/workflows/Playground%20tests/badge.svg)](https://github.com/pierky/arouteserver/actions?query=workflow%3A%22Playground+tests%22)
+
 This is a Docker-based playground that can be use to experiment with ARouteServer.
 
 It offers and environment with several actors, configured to represents specific scenarios that can often be found on a real IX platform: a route server, some clients that announce some good and some bad routes, a looking glass.
@@ -18,11 +20,12 @@ $ git clone https://github.com/pierky/arouteserver.git
 $ cd arouteserver/tools/playground
 $ docker-compose build
 [... omitted...]
-$ docker-compose up
+$ docker-compose up -d
 Creating network "playground_peering_fabric" with the default driver
-Creating arouteserver_playground_client_2 ... done
-Creating arouteserver_playground_client_1 ... done
 Creating arouteserver_playground_rs       ... done
+Creating arouteserver_playground_client_1 ... done
+Creating arouteserver_playground_alicelg  ... done
+Creating arouteserver_playground_client_2 ... done
 ```
 
 This will spin up the a BIRD-based route server and some clients, and once the route server will be configured and ready to work, also an instance of [Alice-LG](https://github.com/alice-lg/alice-lg) will be executed and connected to the route server.
@@ -36,7 +39,7 @@ Users willing to simulate more "weird" situations are strongly encouraged to use
 Expectations can be checked by "logging in" into the route server or client instances and querying the local BGP daemon:
 
 ```
-docker-compose exec client_2 bash
+$ docker-compose exec client_2 bash
 root@ee27954906b9:~# birdc show route
 BIRD 1.6.3 ready.
 192.136.136.0/24   unreachable [own_prefixes 16:24:32] * (200)
@@ -46,7 +49,7 @@ BIRD 1.6.3 ready.
 Also, the Alice-LG WEB interface can be used to check the routes received by the route server, and their status: http://127.0.0.1:8080/routeservers/rs1-example-com/protocols/AS3333_1/routes?ne=0&q=202.12.29.0
 
 **Please note:** the route server that is spun up will be automatically configured by the provisioning script *rs/run.sh*.
-If the user desires to manually setup and configure ARouteServer and build a BIRD configuration from scratch (which is strongly recommended for the actual end goal of this playground), the *docker-compose.yml* file can be edited and the environment variable `SETUP_AND_CONFIGURE_AROUTESERVER` set to 0. The playground can then be recreated using `docker-compose down` / `docker-compose up`: at this point, the *rs* instance will only have a running *vanilla* BIRD instance and all the required dependencies setup. The users will be able to connect to it (`docker-compose exec rs bash`) and work on it. [SETUP_GUIDELINES.md](SETUP_GUIDELINES.md) contains some hints on how to configure it.
+If the user desires to manually setup and configure ARouteServer and build a BIRD configuration from scratch (which is strongly recommended for the actual end goal of this playground), the *docker-compose.yml* file can be edited and the environment variable `SETUP_AND_CONFIGURE_AROUTESERVER` set to 0. The playground can then be recreated using `docker-compose down` / `docker-compose up -d`: at this point, the *rs* instance will only have a running *vanilla* BIRD instance and all the required dependencies setup. The users will be able to connect to it (`docker-compose exec rs bash`) and work on it. [SETUP_GUIDELINES.md](SETUP_GUIDELINES.md) contains some hints on how to configure it.
 
 ## Actors
 

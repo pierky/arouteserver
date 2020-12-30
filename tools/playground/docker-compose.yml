@@ -1,21 +1,21 @@
 services:
   rs:
-    build: ./rs
+    build:
+      context: ./rs
+      args:
+        # Only used by the GitHub Actions workflow.
+        INSTALL_FROM_GITHUB_SHA: ${GITHUB_SHA:-}
+
     container_name: arouteserver_playground_rs
+
     networks:
       peering_fabric:
         ipv4_address: 10.0.0.2
-    healthcheck:
-      test: ["CMD", "curl", "-L", "http://10.0.0.2:29184/protocols/bgp"]
-      interval: 10s
-      timeout: 5s
-      retries: 99999
-      start_period: 5s
+
     # Set the following variable to 0 to prevent
     # the run.sh script to automatically configure
     # ARouteServer. More details can be found in
     # the rs/run.sh file.
-    #
     environment:
       SETUP_AND_CONFIGURE_AROUTESERVER: 1
 
@@ -40,14 +40,14 @@ services:
   alice_lg:
     image: pierky/alice-lg
     container_name: arouteserver_playground_alicelg
-    depends_on:
-      rs:
-        condition: service_healthy
+
     networks:
       peering_fabric:
         ipv4_address: 10.0.0.3
+
     volumes:
       - ./alice-lg/alice.conf:/etc/alice-lg/alice.conf
+
     ports:
       - 8080:80
 

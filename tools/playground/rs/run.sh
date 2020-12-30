@@ -7,6 +7,9 @@
 # configured and executes Alice-LG birdwatcher.
 nohup /root/run_birdwatcher_when_ready.sh &
 
+# Run BIRD - the route server daemon.
+bird -c /etc/bird/bird.conf
+
 # ARouteServer setup and configuration
 # ------------------------------------
 
@@ -65,9 +68,10 @@ if [ ${SETUP_AND_CONFIGURE_AROUTESERVER} -eq 1 ]; then
     arouteserver \
         bird --ip-ver 4 -o /etc/bird/bird.conf
 
-    echo "ARouteServer setup and configure complete."
+    echo "Reloading BIRD config... "
+    birdc "configure"
+
+    echo "ARouteServer setup and configure completed."
 fi
 
-# Run BIRD - the route server daemon.
-bird -c /etc/bird/bird.conf -f
-
+sleep 365d

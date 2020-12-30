@@ -12,22 +12,6 @@ RUN apt-get update && \
             python3-dev && \
     rm -rf /var/lib/apt/lists/*
 
-# ARouteServer dependencies: bgpq3
-# --------------------------------
-
-RUN mkdir /bgpq3 && \
-    cd /bgpq3 && \
-    git clone https://github.com/snar/bgpq3.git ./ && \
-    ./configure && \
-    make && \
-    make install
-
-# Installing ARouteServer
-# -----------------------
-
-RUN pip3 install --upgrade pip setuptools wheel
-RUN pip3 install arouteserver
-
 # Installing AliceLG birdwatcher
 # ------------------------------
 
@@ -42,6 +26,34 @@ RUN go get github.com/alice-lg/birdwatcher
 RUN mkdir -p /etc/birdwatcher
 
 COPY birdwatcher.conf /etc/birdwatcher/birdwatcher.conf
+
+# ARouteServer dependencies: bgpq3
+# --------------------------------
+
+RUN mkdir /bgpq3 && \
+    cd /bgpq3 && \
+    git clone https://github.com/snar/bgpq3.git ./ && \
+    ./configure && \
+    make && \
+    make install
+
+# Installing ARouteServer
+# -----------------------
+
+ARG INSTALL_FROM_GITHUB_SHA
+
+RUN pip3 install --upgrade pip setuptools wheel
+
+# INSTALL_FROM_GITHUB_SHA is used by the
+# test suite to perform the installation of
+# ARouteServer from source. If can be ignored
+# for the regular use of this playground.
+RUN if [ -z "$INSTALL_FROM_GITHUB_SHA" ]; \
+    then \
+        pip3 install arouteserver; \
+    else \
+        pip3 install git+https://github.com/pierky/arouteserver.git@$INSTALL_FROM_GITHUB_SHA; \
+    fi;
 
 # Environment setup
 # -----------------
