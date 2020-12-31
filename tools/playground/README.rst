@@ -5,7 +5,7 @@ ARouteServer playground
 
 This is a Docker-based playground that can be use to experiment with ARouteServer.
 
-It offers and environment with several actors, configured to represents specific scenarios that can often be found on a real IX platform: a route server, some clients that announce some good and some bad routes, a looking glass.
+It offers and environment with several actors, configured to represent specific scenarios that can often be found on a real IX platform: a route server, some clients that announce some good and some bad routes, a looking glass.
 
 The idea is to let the users play with the whole environment and see how easy it is to deploy a secure, feature-rich route server.
 
@@ -30,13 +30,13 @@ Once it's installed, it's just a matter of cloning this repository and using `do
     Creating arouteserver_playground_alicelg  ... done
     Creating arouteserver_playground_client_2 ... done
 
-This will spin up the a BIRD-based route server and some clients, and once the route server will be configured and ready to work, also an instance of `Alice-LG <https://github.com/alice-lg/alice-lg>`__ will be executed and connected to the route server.
+This will execute a BIRD-based route server and some clients, and once the route server will be configured and ready to work, also an instance of `Alice-LG <https://github.com/alice-lg/alice-lg>`__ will be run and connected to the route server, and made available via HTTP. (Please allow 1 minute or so for the provisioning script to complete the configuration of the route server container.)
 
-Some fictitious BGP announcements are simulated in order to reproduce situations that can be normally found in real IX route servers.
+Some fictitious BGP announcements are simulated in order to reproduce situations that can be normally found in real IX route servers (see `Client 1`_ section below).
 
-Unfortunately most of the AS numbers and IP prefixes used in this example have to be *real*, not from the example/documentation ranges, otherwise the route server would reject all of them because of their own nature.
+Unfortunately most of the AS numbers and IP prefixes used in this playground have to be *real*, not from the example/documentation ranges, otherwise the route server would reject all of them because of their own nature.
 
-Users willing to simulate more "weird" situations are strongly encouraged to use the existing clients as a template and to add more BGP announcements.
+Users willing to simulate more "weird" situations are strongly encouraged to use the existing clients as a template and to add more BGP announcements to their setup (see *client_1/bird.conf* for some examples).
 
 Expectations can be checked by "logging in" into the route server or client instances and querying the local BGP daemon:
 
@@ -48,10 +48,25 @@ Expectations can be checked by "logging in" into the route server or client inst
     192.136.136.0/24   unreachable [own_prefixes 16:24:32] * (200)
     193.0.0.0/21       via 10.0.0.11 on eth0 [the_rs 16:24:57 from 10.0.0.2] * (100) [AS3333i]
 
+.. code:: console
+
+    $ docker-compose exec rs bash
+    root@eccb1236bc32:~# birdc show route 193.0.22.0/23 all
+    BIRD 1.6.8 ready.
+    193.0.22.0/23      via 10.0.0.11 on eth0 [AS3333_1 2020-12-31 10:30:54] * (100) [AS3333i]
+        Type: BGP unicast univ
+        BGP.origin: IGP
+        BGP.as_path: 3333
+        BGP.next_hop: 10.0.0.11
+        BGP.local_pref: 100
+        BGP.community: (64512,21) (64512,11) (64512,31)
+        BGP.ext_community: (rt, 64512, 21) (rt, 64512, 11) (rt, 64512, 31) (generic, 0x43000000, 0x0)
+        BGP.large_community: (64500, 0, 10745) (64500, 64512, 21) (64500, 64512, 11) (64500, 64512, 31)
+
 Also, the Alice-LG WEB interface can be used to check the routes received by the route server, and their status: http://127.0.0.1:8080/routeservers/rs1-example-com/protocols/AS3333_1/routes?ne=0&q=202.12.29.0
 
 **Please note:** the route server that is spun up will be automatically configured by the provisioning script *rs/run.sh*.
-If the user desires to manually setup and configure ARouteServer and build a BIRD configuration from scratch (which is strongly recommended for the actual end goal of this playground), the *docker-compose.yml* file can be edited and the environment variable ``SETUP_AND_CONFIGURE_AROUTESERVER`` set to 0. The playground can then be recreated using ``docker-compose down`` / ``docker-compose up -d``: at this point, the *rs* instance will only have a running *vanilla* BIRD instance and all the required dependencies setup. The users will be able to connect to it (`docker-compose exec rs bash`) and work on it. `SETUP_GUIDELINES.rst <SETUP_GUIDELINES.rst>`__ contains some hints on how to configure it.
+If the user desires to manually setup and configure ARouteServer and build a BIRD configuration from scratch (which is strongly recommended for the actual end goal of this playground), the *docker-compose.yml* file can be edited and the environment variable ``SETUP_AND_CONFIGURE_AROUTESERVER`` set to 0. The playground can then be recreated using ``docker-compose down`` / ``docker-compose up -d``: at this point, the *rs* instance will only have a running vanilla BIRD instance and all the required dependencies setup. The users will be able to connect to it (``docker-compose exec rs bash``) and work on it. `SETUP_GUIDELINES.rst <SETUP_GUIDELINES.rst>`__ contains some hints on how to configure it.
 
 Actors
 ++++++
