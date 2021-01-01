@@ -35,6 +35,8 @@ Route server's general configuration and policies are outlined in the ``general.
 
 Configuration details and options can be found within the distributed `general <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`__ and `clients <https://github.com/pierky/arouteserver/blob/master/config.d/clients.yml>`__ configuration files on GitHub or in the :doc:`GENERAL` page.
 
+A Docker-based `playground <https://github.com/pierky/arouteserver/tree/master/tools/playground>`__ is available to experiment with the settings in a virtual IXP environment.
+
 Details about some particular topics are reported below.
 
 .. contents::
