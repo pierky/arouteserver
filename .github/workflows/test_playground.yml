@@ -1,0 +1,18 @@
+name: Playground tests
+
+on: push
+
+jobs:
+  test-playground:
+    name: Playground tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Playground tests
+        run: .github/test_playground.sh
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

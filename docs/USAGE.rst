@@ -37,6 +37,9 @@ It can be scheduled at regular intervals to re-build the configuration (for exam
         cp /etc/bird/bird4.new /etc/bird/bird4.conf && \
         birdcl configure
 
+.. Hint::
+   A Docker-based `playground <https://github.com/pierky/arouteserver/tree/master/tools/playground>`__ is available to experiment with the tool.
+
 .. _perform-graceful-shutdown:
 
 Route server graceful shutdown
