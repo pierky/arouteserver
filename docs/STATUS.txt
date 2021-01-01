@@ -25,6 +25,8 @@ Who is using ARouteServer?
 
 - `GAVLIX <https://gavlix.se/>`__.
 
+- `IX Australia <https://www.ix.asn.au/>`__, BIRD v2.
+
 - `IX-Denver <http://ix-denver.org/>`__, BIRD.
 
 - `MBIX <http://www.mbix.ca/>`__, BIRD.
@@ -34,6 +36,8 @@ Who is using ARouteServer?
 - `Netnod <https://www.netnod.se/>`__, BIRD and GoBGP\ :sup:`1`\.
 
 - `NIXI Mumbai (GPX) <https://nixi.in/>`__, BIRD.
+
+- `NZIX <https://ix.nz/>`__, BIRD v2.
 
 - `PIT-IX <https://pit-ix.net/>`__, BIRD.
 
