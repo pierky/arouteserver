@@ -1,0 +1,33 @@
+{#
+This is the template used to build the RPSL AS-SET
+object of the route server to update the relevant
+IRR DBs.
+
+The content of this template needs to be edited by
+the user. Instead of editing this file, that is the
+one distributed with ARouteServer and that can be
+found in the main "templates" directory, it's strongly
+suggested to make a copy of it in a different
+directory, and then pass the path of the new dir to the
+'arouteserver irr-as-set' command via the CLI option
+--templates-dir. This will help to keep a consistent
+version of the local custom file and to avoid the
+ARouteServer upgrade process to raise warnings about
+the local file not being in sync with the upstream one.
+
+Example:
+
+$ cp templates/irr-as-set/main.j2 ~/arouteserver/irr/main.js
+$ ~/arouteserver/irr-as-set ~/arouteserver/irr
+#}
+as-set:   AS{{ cfg.rs_as }}-RS{{ ip_ver_suffix }}
+descr:    AS{{ cfg.rs_as }} route server {{ ip_ver_descr }} routes
+remarks:  List of ASes and AS-SETs announced by {{ ip_ver_descr }}
+remarks:  clients to the AS{{ cfg.rs_as }} route servers.
+tech-c:   <to be set by the user>
+admin-c:  <to be set by the user>
+mnt-by:   <to be set by the user>
+{% for member in as_sets_rpsl_objects|sort %}
+members:  {{ member }}
+{% endfor %}
+source:   <to be set by the user>

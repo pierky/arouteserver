@@ -40,7 +40,7 @@ from .errors import MissingDirError, MissingFileError, BuilderError, \
                     ARouteServerError, MissingArgumentError, \
                     TemplateRenderingError, CompatibilityIssuesError, \
                     ConfigError, MissingGeneralConfigFileError
-from .ipaddresses import IPNetwork
+from .ipaddresses import IPNetwork, IPAddress
 from .irrdb import IRRDBInfo
 from .cached_objects import CachedObject, normalize_expiry_time
 
@@ -1223,3 +1223,75 @@ class TemplateContextDumper(ConfigBuilder):
         env.filters["to_yaml"] = to_yaml
         env.filters["parse_irrdb_info"] = parse_irrdb_info
         env.filters["parse_generic_irr_whois_records"] = parse_generic_irr_whois_records
+
+class IRRASSetBuilder(ConfigBuilder):
+
+    def enrich_j2_environment(self, env):
+
+        if self.ip_ver is None:
+            self.data["ip_ver_suffix"] = ""
+            self.data["ip_ver_descr"] = "IPv4 and IPv6"
+        else:
+            self.data["ip_ver_suffix"] = "-V{}".format(self.ip_ver)
+            self.data["ip_ver_descr"] = "IPv{}".format(self.ip_ver)
+
+        members = set()
+
+        for client in self.cfg_clients.cfg["clients"]:
+            if self.ip_ver is not None:
+                ip = client["ip"]
+                if IPAddress(ip).version != self.ip_ver:
+                    # The address family of this client is not the
+                    # current one used to build the configuration.
+                    continue
+
+            client_irrdb = client["cfg"]["filtering"]["irrdb"]
+
+            # Client's own ASN.
+            members.add("AS{}".format(client["asn"]))
+
+            # White lists.
+            if client_irrdb.get("white_list_asn", None):
+                for white_list_asn in client_irrdb.get("white_list_asn", []):
+                    members.add("AS{}".format(client_irrdb["white_list_asn"]))
+
+            # The client has its own list of AS-SETs.
+            # Use it and move to the next client.
+            if client_irrdb["as_sets"]:
+                members.update(client_irrdb["as_sets"])
+                continue
+
+            # If we're here, it means that the client
+            # has no AS-SETs configured.
+            # Let's look into the 'asns' configuration.
+
+            asn = "AS{}".format(client["asn"])
+            if asn in self.cfg_asns.cfg["asns"] and \
+                self.cfg_asns.cfg["asns"][asn]["as_sets"]:
+
+                # The client ASN is configured in the 'asns'
+                # section of the clients.yml file and there
+                # are AS-SETs set on it. Let's use them.
+                members.update(self.cfg_asns.cfg["asns"][asn]["as_sets"])
+                continue
+
+            # Let's check if AS-SETs were found on PeeringDB.
+
+            as_sets_from_pdb = client.get("as_sets_from_pdb", None)
+            if as_sets_from_pdb:
+                logging.info("No AS-SETs provided for the '{}' client. "
+                             "Using AS{} + those obtained from PeeringDB: "
+                             "{}.".format(
+                                    client["id"], client["asn"],
+                                    ", ".join(as_sets_from_pdb)
+                                ))
+                members.update(as_sets_from_pdb)
+                continue
+
+            # No other AS-SETs found for the client.
+            logging.warning("No AS-SETs provided for the '{}' client. "
+                            "Only AS{} will be expanded.".format(
+                                client["id"], client["asn"]
+                            ))
+
+        self.data["as_sets_rpsl_objects"] = sorted(members)

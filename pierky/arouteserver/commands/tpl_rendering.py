@@ -20,7 +20,8 @@ import sys
 
 from .base import ARouteServerCommand
 from ..builder import ConfigBuilder, BIRDConfigBuilder, \
-                      OpenBGPDConfigBuilder, TemplateContextDumper
+                      OpenBGPDConfigBuilder, TemplateContextDumper, \
+                      IRRASSetBuilder
 from ..config.program import program_config
 from ..errors import ARouteServerError, TemplateRenderingError
 
@@ -330,3 +331,15 @@ class DumpTemplateContextCommand(TemplateRenderingCommands):
 
     def _get_template_sub_dir(self):
         return "template-context"
+
+class IRRASSetCommand(TemplateRenderingCommands):
+
+    COMMAND_NAME = "irr-as-set"
+    COMMAND_HELP = ("Build the RPSL AS-SET object that contains the "
+                    "list of ASes and AS-SETs used by the clients of "
+                    "the route server.")
+
+    BUILDER_CLASS = IRRASSetBuilder
+
+    def _get_template_sub_dir(self):
+        return "irr-as-set"
