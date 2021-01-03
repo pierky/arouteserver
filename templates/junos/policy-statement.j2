@@ -1,0 +1,109 @@
+## Common policy statements begins ##
+
+policy-statement ALLOW-GRACEFUL-SHUTDOWN {
+    term 1 {
+        from {
+            protocol bgp;
+            community GRACEFUL_SHUTDOWN;
+        }
+        then {
+            local-preference 0;
+            next policy;
+        }
+    }
+}
+policy-statement BGP-IMPORT-REJECTv4 {
+    term bogon-asns {
+        from as-path-group BOGON-ASNs;
+        then reject;
+    }
+    term bogon-ipv4 {
+        from {
+            prefix-list BOGONS_v4;
+        }
+        then reject;
+    }
+    term reject_too_small_prefixes_v4 {
+        from {
+            route-filter 0.0.0.0/0 prefix-length-range /25-/32;
+        }
+        then reject;
+    }
+    term no-long-paths {
+        from as-path TOO-MANY-HOPS;
+        then reject;
+    }
+    term reject-rpki-invalid
+        from {
+            protocol bgp;
+            validation-database invalid;
+        }
+        then {
+            validation-state invalid;
+            reject;
+        }
+    }
+}
+policy-statement NO-REDISTRIBUTE {
+    term 0 {
+        from community NO-REDISTRIBUTE;
+        then reject;
+    }
+    term 1 {
+        from community WELL-KNOWN;
+        then reject;
+    }
+}
+policy-statement IMPORT-ALL-RIBS {
+    term to-all-ribs {
+        from community REDISTRIBUTE-ALL;
+        then accept;
+    }
+}
+policy-statement NO-ADVERTISE-NO-EXPORT {
+    term set-no-advertise {
+        from community NO-ADVERTISE;
+        then set community add no-advertise;
+    }
+    term set-no-export {
+        from community NO-EXPORT;
+        then set community add no-export;
+    }
+}
+## Common policy statements ends ##
+
+{% for client in clients %}
+policy-statement IMPORT-{{ client.id }}-RIB {
+    term block-this-rib {
+        from community BLOCK-TO-{{ client.id }};
+        then reject;
+    }
+    term permit-this-rib {
+        from community PERMIT-TO-{{ client.id }};
+        then accept;
+    }
+    term no-advertise-this-rib {
+        from community NO-ADVERTISE-{{ client.id }};
+        then community add no-advertise;
+    }
+    term no-export-this-rib {
+        from community NO-EXPORT-{{ client.id }};
+        then community add no-export;
+    }
+}
+
+policy-statement EXPORT-ASPATH-PADDING-{{ client.id }} {
+    term prepend-once-all {
+        from community [ PREPEND-ONCE-ALL PREPEND-ONCE-{{ client.id }} ];
+        then as-path-prepend {{ client.asn }};
+    }
+    term prepend-twice-all {
+        from community [ PREPEND-TWICE-ALL PREPEND-TWICE-{{ client.id }} ];
+        then  as-path-prepend "{{ client.asn }} {{ client.asn }}";
+    }
+    term prepend-trice-all {
+        from community [ PREPEND-TRICE-ALL PREPEND-TRICE-{{ client.id }}];
+        then as-path-prepend "{{ client.asn }} {{ client.asn }} {{ client.asn }}";
+    }
+}
+{% endfor %}

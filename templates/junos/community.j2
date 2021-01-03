@@ -1,0 +1,28 @@
+    {%- set prepend_once = cfg.communities.prepend_once_to_peer.std.split(":")[0] %}
+    {%- set prepend_twice = cfg.communities.prepend_twice_to_peer.std.split(":")[0] %}
+    {%- set prepend_thrice = cfg.communities.prepend_thrice_to_peer.std.split(":")[0] %}
+    community GRACEFUL_SHUTDOWN members 65535:0;
+    community WELL-KNOWN members [ no-advertise no-export ];
+    community NO-ADVERTISE 65535:65281;
+    community NO-EXPORT 65535:65282;
+
+    community REDISTRIBUTE-ALL members [{{ cfg.rs_as }}:{{ cfg.rs_as }} target:{{ cfg.rs_as }}:{{ cfg.rs_as }} {{ cfg.rs_as }}:1:0 ];
+    community NO-REDISTRIBUTE members [0:{{ cfg.rs_as }} target:0:{{ cfg.rs_as }} {{ cfg.rs_as }}:0:0 ];
+    community PREPEND-ONCE-ALL members [{{ prepend_once }}:0 target:{{ prepend_once }}:0 {{ cfg.rs_as }}:101:0 ];
+    community PREPEND-TWICE-ALL members [{{ prepend_twice }}:0 target:{{ prepend_twice }}:0 {{ cfg.rs_as }}:102:0 ];
+    community PREPEND-TRICE-ALL members [{{ prepend_thrice }}:0 target:{{ prepend_thrice }}:0 {{ cfg.rs_as }}:103:0 ];
+
+{% for client in clients %}
+    community BLOCK-TO-{{ client.id }} members [0:{{ client.asn }} target:0:{{ client.asn }} 6695:0:{{ client.asn }}];
+    community PERMIT-TO-{{ client.id }} members [{{ cfg.rs_as }}:{{ client.asn }} target:{{ cfg.rs_as }}:{{ client.asn }} {{ cfg.rs_as }}:1:{{ client.asn }}];
+    community PREPEND-ONCE-{{ client.id }} members [{{ prepend_once }}:{{ client.asn }} target:{{ prepend_once }}:{{ client.asn }} {{ cfg.rs_as }}:101:{{ client.asn }}];
+    community PREPEND-TWICE-{{ client.id }} members [{{ prepend_twice }}:{{ client.asn }} target:{{ prepend_twice }}:{{ client.asn }} {{ cfg.rs_as }}:102:{{ client.asn }}];
+    community PREPEND-TRICE-{{ client.id }} members [{{ prepend_thrice }}:{{ client.asn }} target:{{ prepend_thrice }}:{{ client.asn }} {{ cfg.rs_as }}:103:{{ client.asn }}];
+    community NO-ADVERTISE-{{ client.id }} members {{ cfg.rs_as }}:902:{{ client.asn }};
+    community NO-EXPORT-{{ client.id }} members {{ cfg.rs_as }}:901:{{ client.asn }};
+
+{% endfor %}
+
+    community origin-validation-state-invalid members 0x4300:0.0.0.0:2;
+    community origin-validation-state-unknown members 0x4300:0.0.0.0:1;
+    community origin-validation-state-valid members 0x4300:0.0.0.0:0;
