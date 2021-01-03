@@ -281,6 +281,15 @@ Please note: the output file generated with this command contains only a subset 
                },
    [...]
 
+Generation of route server AS-SET RPSL object
+---------------------------------------------
+
+The command ``arouteserver irr-as-set`` can be used to build the AS-SET RPSL object that describes the ASes and AS-SETs of route server clients. This object can then be used to update the relevant IRR DBs so that peering networks will also be able to build filters on their side.
+
+The ``main.j2`` file contained in the ``templates/irr-as-set`` directory must be edited by the operator to set some mandatory attributes. It's strongly suggested to make a copy of the original file in a different directory, and then pass the path of the new dir to the command via the CLI option ``--templates-dir``. This will help to keep a consistent version of the local custom file and to avoid the ARouteServer upgrade process to raise warnings about the local file not being in sync with the upstream one.
+
+.. literalinclude:: _static/examples_rich_irr-as-set.txt
+   :language: none
 
 Live tests, development and customization
 -----------------------------------------
