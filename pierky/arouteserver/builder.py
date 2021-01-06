@@ -1253,7 +1253,7 @@ class IRRASSetBuilder(ConfigBuilder):
             # White lists.
             if client_irrdb.get("white_list_asn", None):
                 for white_list_asn in client_irrdb.get("white_list_asn", []):
-                    members.add("AS{}".format(client_irrdb["white_list_asn"]))
+                    members.add("AS{}".format(white_list_asn))
 
             # The client has its own list of AS-SETs.
             # Use it and move to the next client.

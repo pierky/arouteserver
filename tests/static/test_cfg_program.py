@@ -157,7 +157,7 @@ class TestProgramConfig(unittest.TestCase):
         self._mk_dir("templates")
 
         errors = self.pr_cfg.verify_templates()
-        self.assertEqual(len(errors), 18)
+        self.assertEqual(len(errors), 19)
         for err in errors:
             self.assertTrue("expected but not found on the local templates directory" in err)
 

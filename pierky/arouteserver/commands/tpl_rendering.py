@@ -343,3 +343,34 @@ class IRRASSetCommand(TemplateRenderingCommands):
 
     def _get_template_sub_dir(self):
         return "irr-as-set"
+
+    def run(self):
+        if not self.args.template_name:
+            templates_dir = os.path.join(
+                program_config.get_dir("templates_dir"),
+                self.COMMAND_NAME
+            )
+
+            templates = [
+                f
+                for f in os.listdir(templates_dir)
+                if (
+                    os.path.isfile(
+                        os.path.join(templates_dir, f)
+                    ) and \
+                    f.endswith(".j2")
+                )
+            ]
+
+            raise ARouteServerError(
+                "The '--template-file-name' argument is required; the name "
+                "of the template to be used to build the IRR AS-SET "
+                "object must be provided. Possible choices: {templates}\n"
+                "Fore more details please see {url}".format(
+                    templates=", ".join(templates),
+                    url="https://arouteserver.readthedocs.io/en/latest/"
+                        "USAGE.html#irr-as-set"
+                )
+            )
+
+        super(IRRASSetCommand, self).run()

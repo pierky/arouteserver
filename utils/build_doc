@@ -128,7 +128,7 @@ function RenderExample() {
 		fi
 		$CMD $IP_VER_OPT -o examples/$DST/template-context$IP_VER
 	elif [ "$COMMAND" == "irr-as-set" ]; then
-		$CMD -o examples/$DST/irr-as-set.txt
+		$CMD -o examples/$DST/irr-as-set.txt --template-file-name plain_rpsl.j2
 		cp examples/$DST/irr-as-set.txt $DOCS_DIR/_static/examples_${DST}_irr-as-set.txt
 	else
 		echo "Command unknown: $COMMAND"
