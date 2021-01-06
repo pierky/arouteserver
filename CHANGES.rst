@@ -8,7 +8,7 @@ next release
 
 - New: ``irr-as-set`` command, to build the route server AS-SET object for IRR databases.
 
-  This new command can be used to build the AS-SET RPSL object that describes the ASes and AS-SETs of route server clients.
+  This new command can be used to build the AS-SET RPSL object that describes the ASes and AS-SETs of route server clients. Details and usage: https://arouteserver.readthedocs.io/en/latest/USAGE.html#irr-as-set
 
   Related: `issue #49 on GitHub <https://github.com/pierky/arouteserver/issues/49>`_.
 
