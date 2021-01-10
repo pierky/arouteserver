@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New: ``irr-as-set`` command, to build the route server AS-SET object for IRR databases.
+
+  This new command can be used to build the AS-SET RPSL object that describes the ASes and AS-SETs of route server clients. Details and usage: https://arouteserver.readthedocs.io/en/latest/USAGE.html#irr-as-set
+
+  Related: `issue #49 on GitHub <https://github.com/pierky/arouteserver/issues/49>`_.
+
 v1.2.0
 ------
 

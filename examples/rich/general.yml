@@ -56,6 +56,8 @@ cfg:
 
       allow_longer_prefixes: True
 
+      peering_db: True
+
       use_rpki_roas_as_route_objects:
         enabled: True
 

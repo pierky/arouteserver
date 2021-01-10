@@ -127,6 +127,9 @@ function RenderExample() {
 			IP_VER_OPT=""
 		fi
 		$CMD $IP_VER_OPT -o examples/$DST/template-context$IP_VER
+	elif [ "$COMMAND" == "irr-as-set" ]; then
+		$CMD -o examples/$DST/irr-as-set.txt --template-file-name plain_rpsl.j2
+		cp examples/$DST/irr-as-set.txt $DOCS_DIR/_static/examples_${DST}_irr-as-set.txt
 	else
 		echo "Command unknown: $COMMAND"
 	fi
@@ -234,6 +237,9 @@ RenderExample "default" "template-context" "$G" "$C" "config.d/bogons.yml"
 title "Building example: default, HTML"
 RenderExample "default" "html" "$G" "$C" "config.d/bogons.yml"
 
+title "Building example: default, IRR AS-SET object"
+RenderExample "default" "irr-as-set" "$G" "$C" "config.d/bogons.yml"
+
 title "Building example: rich, BIRD, IPv4"
 G="examples/rich/general.yml"
 C="examples/rich/clients.yml"
@@ -255,6 +261,9 @@ RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml"
 
 title "Building example: rich, HTML"
 RenderExample "rich" "html" "$G" "$C" "config.d/bogons.yml"
+
+title "Building example: rich, IRR AS-SET object"
+RenderExample "rich" "irr-as-set" "$G" "$C" "config.d/bogons.yml"
 
 title "Building example: BIRD hooks"
 G="examples/bird_hooks/general.yml"

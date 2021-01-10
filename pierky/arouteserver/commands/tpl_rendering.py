@@ -20,7 +20,8 @@ import sys
 
 from .base import ARouteServerCommand
 from ..builder import ConfigBuilder, BIRDConfigBuilder, \
-                      OpenBGPDConfigBuilder, TemplateContextDumper
+                      OpenBGPDConfigBuilder, TemplateContextDumper, \
+                      IRRASSetBuilder
 from ..config.program import program_config
 from ..errors import ARouteServerError, TemplateRenderingError
 
@@ -330,3 +331,46 @@ class DumpTemplateContextCommand(TemplateRenderingCommands):
 
     def _get_template_sub_dir(self):
         return "template-context"
+
+class IRRASSetCommand(TemplateRenderingCommands):
+
+    COMMAND_NAME = "irr-as-set"
+    COMMAND_HELP = ("Build the RPSL AS-SET object that contains the "
+                    "list of ASes and AS-SETs used by the clients of "
+                    "the route server.")
+
+    BUILDER_CLASS = IRRASSetBuilder
+
+    def _get_template_sub_dir(self):
+        return "irr-as-set"
+
+    def run(self):
+        if not self.args.template_name:
+            templates_dir = os.path.join(
+                program_config.get_dir("templates_dir"),
+                self.COMMAND_NAME
+            )
+
+            templates = [
+                f
+                for f in os.listdir(templates_dir)
+                if (
+                    os.path.isfile(
+                        os.path.join(templates_dir, f)
+                    ) and \
+                    f.endswith(".j2")
+                )
+            ]
+
+            raise ARouteServerError(
+                "The '--template-file-name' argument is required; the name "
+                "of the template to be used to build the IRR AS-SET "
+                "object must be provided. Possible choices: {templates}\n"
+                "Fore more details please see {url}".format(
+                    templates=", ".join(templates),
+                    url="https://arouteserver.readthedocs.io/en/latest/"
+                        "USAGE.html#irr-as-set"
+                )
+            )
+
+        return super(IRRASSetCommand, self).run()

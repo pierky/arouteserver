@@ -281,6 +281,70 @@ Please note: the output file generated with this command contains only a subset 
                },
    [...]
 
+.. _irr-as-set:
+
+Generation of route server AS-SET RPSL object
+---------------------------------------------
+
+The command ``arouteserver irr-as-set`` can be used to build the AS-SET RPSL object that describes the ASes and AS-SETs of route server clients. This object can then be used to update the relevant IRR DBs so that peering networks will also be able to build filters on their side.
+
+At this time, ARouteServer is not able to perform any actual update on the IRR databases; it's up to the network operator to implement a mechanism to update the information on the appropriate IRRDB. It is not excluded that an automatic update feature will be implemented in the future.
+
+Different templates can be used to build the object, depending on the output format that it is desired for it. Those templates are:
+
+- ``plain_rpsl.j2``, to produce an output in plain RPSL format (can be used, for example, to update registries that are leveraging the email system to receive updates)
+
+- ``ripe_ripeinator_yml.j2``, to build a YAML file that can be consumed by `ripeinator <https://github.com/xens/ripeinator>`__, to update AS-SET objects using the `RIPE REST-API <https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/updating-objects-in-the-ripe-database/6-1-restful-api>`__
+
+To select the desired template, the CLI argument ``--template-file-name`` must be set. See instructions below for more details.
+
+The template files contained in the ``templates/irr-as-set`` directory must be edited by the operator to set some mandatory attributes.
+Instead of editing the original files distributed with the tool, it's strongly suggested to make a copy of them in a different directory, and then pass the path of the new dir to the command via the CLI option ``--templates-dir``. This will help to keep a consistent version of the local custom files and to avoid the ARouteServer upgrade process to raise warnings about the local file not being in sync with the upstream one.
+
+Instructions:
+
+1. create a directory where custom templates will be
+   stored (example: ``~/arouteserver/custom_templates``)
+
+2) inside the new directory, create a new directory for
+   the templates used by the ``irr-as-set`` command; the
+   name of this sub-directory must be ``irr-as-set``, as
+   the command itself
+
+3) copy the original files into the newly-created
+   ``irr-as-set`` directory
+
+4) edit the new files and customise them as needed
+   (``vim ~/arouteserver/custom_templates/irr-as-set/<file_to_edit>``)
+
+5) run the ``arouteserver irr-as-set`` command and pass
+   the path of the main directory created in step 1 as
+   the ``--template-dir`` argument, and pass the name of
+   the template file to be used via the
+   ``--template-file-name`` argument.
+
+Example:
+
+.. code:: console
+
+  $ mkdir -p ~/arouteserver/custom_templates
+  $ mkdir ~/arouteserver/custom_templates/irr-as-set
+  $ # assuming that ARouteServer config files were
+  $ # installed in /etc/arouteserver
+  $ cp \
+      /etc/arouteserver/templates/irr-as-set/plain_rpsl.j2 \
+      ~/arouteserver/custom_templates/irr-as-set/plain_rpsl.j2
+  $ vim ~/arouteserver/custom_templates/irr-as-set/plain_rpsl.j2
+  $ arouteserver \
+       irr-as-set \
+       --output ~/arouteserver/my_as_set.txt \
+       --templates-dir ~/arouteserver/custom_templates \
+       --template-file-name plain_rpsl.j2
+
+Output example:
+
+.. literalinclude:: _static/examples_rich_irr-as-set.txt
+   :language: none
 
 Live tests, development and customization
 -----------------------------------------

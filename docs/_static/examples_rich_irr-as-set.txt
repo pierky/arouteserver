@@ -1,0 +1,11 @@
+as-set:   AS-AS999-RS
+descr:    AS999 route server IPv4 and IPv6 routes
+remarks:  List of ASes and AS-SETs announced by IPv4 and IPv6
+remarks:  clients to the AS999 route servers.
+tech-c:   <to be set by the user>
+admin-c:  <to be set by the user>
+mnt-by:   <to be set by the user>
+members:  AS-RIPENCC
+members:  AS10745
+members:  AS3333
+source:   <to be set by the user>

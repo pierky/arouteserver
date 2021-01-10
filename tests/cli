@@ -335,6 +335,23 @@ SUB_TEST="$LINENO"
 run_cmd "clients-from-euroix" --url https://ixpmanager.swissix.ch/api/v4/member-export/ixf/0.7 1 | must_contain "description: Packet Clearing House"
 
 # ---------------------------------------------
+# irr-as-set command
+reset
+TITLE="irr-as-set"
+GENERAL="tests/var/general.yml"
+cat << EOF > $GENERAL
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+  filtering:
+    irrdb:
+      peering_db: True
+EOF
+
+SUB_TEST="$LINENO"
+build_cmd "irr-as-set" --template-file-name plain_rpsl.j2 | must_contain "members:  AS-RIPENCC"
+
+# ---------------------------------------------
 ERROR=`cat $RES_FILE`
 if [ $ERROR -eq 1 ]; then
 	echo "Done! ERRORS FOUND"

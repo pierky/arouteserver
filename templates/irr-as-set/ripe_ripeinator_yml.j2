@@ -1,0 +1,23 @@
+{#
+This is the template used to build a YAML file
+that can be consumed by ripeinator
+(https://github.com/xens/ripeinator) to update
+AS-SET objects using the RIPE REST-API.
+
+See instructions at the following URL on how to
+edit and use it.
+
+https://arouteserver.readthedocs.io/en/latest/USAGE.html#irr-as-set
+#}
+AS-AS{{ cfg.rs_as }}-RS{{ ip_ver_suffix }}:
+- as-set:   AS-AS{{ cfg.rs_as }}-RS{{ ip_ver_suffix }}
+- descr:    AS{{ cfg.rs_as }} route server {{ ip_ver_descr }} routes
+- remarks:  List of ASes and AS-SETs announced by {{ ip_ver_descr }}
+- remarks:  clients to the AS{{ cfg.rs_as }} route servers.
+- tech-c:   <to be set by the user>
+- admin-c:  <to be set by the user>
+- mnt-by:   <to be set by the user>
+{% for member in as_sets_rpsl_objects|sort %}
+- members:  {{ member }}
+{% endfor %}
+- source:   <to be set by the user>
