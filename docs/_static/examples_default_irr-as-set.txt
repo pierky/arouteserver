@@ -1,4 +1,4 @@
-as-set:   AS999-RS
+as-set:   AS-AS999-RS
 descr:    AS999 route server IPv4 and IPv6 routes
 remarks:  List of ASes and AS-SETs announced by IPv4 and IPv6
 remarks:  clients to the AS999 route servers.

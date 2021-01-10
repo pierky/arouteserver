@@ -373,4 +373,4 @@ class IRRASSetCommand(TemplateRenderingCommands):
                 )
             )
 
-        super(IRRASSetCommand, self).run()
+        return super(IRRASSetCommand, self).run()
