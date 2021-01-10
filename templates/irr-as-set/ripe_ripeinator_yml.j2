@@ -11,7 +11,7 @@ https://arouteserver.readthedocs.io/en/latest/USAGE.html#irr-as-set
 #}
 AS-AS{{ cfg.rs_as }}-RS{{ ip_ver_suffix }}:
 - as-set:   AS-AS{{ cfg.rs_as }}-RS{{ ip_ver_suffix }}
-- descr:    AS-AS{{ cfg.rs_as }} route server {{ ip_ver_descr }} routes
+- descr:    AS{{ cfg.rs_as }} route server {{ ip_ver_descr }} routes
 - remarks:  List of ASes and AS-SETs announced by {{ ip_ver_descr }}
 - remarks:  clients to the AS{{ cfg.rs_as }} route servers.
 - tech-c:   <to be set by the user>
