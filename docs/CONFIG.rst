@@ -45,7 +45,7 @@ Details about some particular topics are reported below.
 YAML files inclusion and environment variables expansion
 ********************************************************
 
-ARouteServer's YAML configuration files can contain a custom directive (``!include <filepath>``) that can be used to include other files.
+ARouteServer's ``general.yml`` and ``clients.yml`` configuration files can contain a custom directive (``!include <filepath>``) that can be used to include other files.
 Moreover, environment variables (``${VAR_NAME}``) are expanded when the configuration files are loaded.
 This can be useful, for example, when the same configuration is shared by two route servers that differ only in their router ID.
 
