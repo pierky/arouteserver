@@ -35,6 +35,11 @@ Strongly suggested: setup a `Virtualenv <https://virtualenv.pypa.io/>`_.
    # on CentOS:
    sudo yum install epel-release
    sudo yum install python-pip python-virtualenv
+      
+   # OpenBSD
+   pkg_add bgpq3
+   pkg_add python3
+   pkg_add py3-packaging py3-wheel py3-pip py3-virtualenv
 
    # setup a virtualenv
    mkdir -p ~/.virtualenvs/arouteserver
