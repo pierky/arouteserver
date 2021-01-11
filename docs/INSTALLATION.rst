@@ -36,6 +36,10 @@ Strongly suggested: setup a `Virtualenv <https://virtualenv.pypa.io/>`_.
    sudo yum install epel-release
    sudo yum install python-pip python-virtualenv
 
+   # on OpenBSD
+   pkg_add python3
+   pkg_add py3-packaging py3-wheel py3-pip py3-virtualenv
+
    # setup a virtualenv
    mkdir -p ~/.virtualenvs/arouteserver
    virtualenv ~/.virtualenvs/arouteserver
@@ -126,6 +130,12 @@ ARouteServer uses the following external programs:
     ./configure
     make
     sudo make install
+
+  On OpenBSD you can also install the package directly:
+
+  .. code:: bash
+
+    pkg_add bgpq3
 
 - (optional) `Docker <https://www.docker.com/>`_ is used to perform :doc:`live validation <LIVETESTS>` of configurations.
 
