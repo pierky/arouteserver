@@ -17,6 +17,7 @@ import yaml
 import shutil
 import tempfile
 import unittest
+import requests
 
 from pierky.arouteserver.arin_db_dump import ARINWhoisDBDump
 from pierky.arouteserver.config.general import ConfigParserGeneral
@@ -26,6 +27,7 @@ from pierky.arouteserver.peering_db import PeeringDBNet, PeeringDBIXList, \
                                            PeeringDBNetNeverViaRouteServers
 from pierky.arouteserver.ripe_rpki_cache import RIPE_RPKI_ROAs
 from pierky.arouteserver.euro_ix import EuroIXMemberList
+from pierky.arouteserver.commands.ixf_member_list_from_clients import IXFMemberListFromClientsCommand
 
 cache_dir = None
 cache_cfg = {
@@ -174,3 +176,20 @@ class TestExternalResources(unittest.TestCase):
             "2001:7f8:18::60",
         ):
             self.assertTrue(member_ip in client_ips)
+
+    def test_euroix_json_file_from_clients(self):
+        clients_path = "config.d/clients.yml"
+
+        json_data = IXFMemberListFromClientsCommand.build_json(
+            clients_path, 1, "Test IX", 1, 1
+        )
+
+        validator_response = requests.post(
+            "https://api.ixpdb.net/v1/validation/",
+            json=json_data
+        )
+        validator_response.raise_for_status()
+
+        validator_results = validator_response.json()
+
+        self.assertTrue(validator_results["errors"] == [])

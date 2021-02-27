@@ -12,6 +12,10 @@ next release
 
   **Please note**: if that line was not explicitly configured and was left to its default value, users will either need to be sure that ``bgpq4`` is available on the system or they will need to configure it.
 
+- Fix: the ``ixf-member-export`` command now produces a JSON file compliant with `version 1.0 <https://github.com/euro-ix/json-schemas/blob/master/versions/ixp-member-list-1.0.schema.json>`_ of the `Euro-IX schema <https://github.com/euro-ix/json-schemas>`_.
+
+  See also `GitHub PR65 <https://github.com/pierky/arouteserver/pull/65>`_.
+
 v1.3.0
 ------
 
