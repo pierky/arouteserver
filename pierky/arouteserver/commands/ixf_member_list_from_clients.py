@@ -1,4 +1,5 @@
 # Copyright (C) 2017-2021 Pier Carlo Chiodi
+# Copyright (C) 2021 Ene Alin Gabriel
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -58,6 +59,15 @@ class IXFMemberListFromClientsCommand(ARouteServerCommand):
                  "infrastructure for which the list of clients is generated. "
                  "Default: 0",
             dest="ixp_id")
+
+        parser.add_argument(
+            "--ixf_id",
+            type=int,
+            default=0,
+            help="The numeric identifier used by the IX to identify the "
+                 "infrastructure for which the list of clients is generated. "
+                 "Default: 0",
+            dest="ixf_id")
 
         parser.add_argument(
             "--vlan-id",
@@ -163,11 +173,12 @@ class IXFMemberListFromClientsCommand(ARouteServerCommand):
             IXFMemberListFromClientsCommand.load_config_from_path(path)
 
         res = OrderedDict()
-        res["version"] = "0.6"
+        res["version"] = "1.0"
         res["timestamp"] = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 
         ixp_list_entry = OrderedDict()
         ixp_list_entry["ixp_id"] = ixp_id
+        ixp_list_entry["ixf_id"] = ixf_id
         ixp_list_entry["shortname"] = shortname
         ixp_list_entry["vlan"] = [{"id": vlan_id}]
         res["ixp_list"] = [ixp_list_entry]
