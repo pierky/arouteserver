@@ -14,7 +14,7 @@ Some *realistic* scenarios have been tested using ARouteServer by feeding it wit
 
   - BCIX, VLAN ID 1 ("BCIX Peering LAN")
 
-  - BIX, VLAN ID 1 ("IPv4 Peering LAN") and 2 ("IPv6 Peering LAN")
+  - BIX, VLAN ID 1 ("IPv4 Peeing LAN") and 2 ("IPv6 Peeing LAN")
 
   - GR-IX
 

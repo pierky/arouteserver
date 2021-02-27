@@ -30,9 +30,10 @@ COPY birdwatcher.conf /etc/birdwatcher/birdwatcher.conf
 # ARouteServer dependencies: bgpq3
 # --------------------------------
 
-RUN mkdir /bgpq3 && \
-    cd /bgpq3 && \
-    git clone https://github.com/snar/bgpq3.git ./ && \
+RUN mkdir /bgpq4 && \
+    cd /bgpq4 && \
+    git clone https://github.com/bgp/bgpq4.git ./ && \
+    ./bootstrap && \
     ./configure && \
     make && \
     make install
@@ -46,7 +47,7 @@ RUN pip3 install --upgrade pip setuptools wheel
 
 # INSTALL_FROM_GITHUB_SHA is used by the
 # test suite to perform the installation of
-# ARouteServer from source. If can be ignored
+# ARouteServer from source. It can be ignored
 # for the regular use of this playground.
 RUN if [ -z "$INSTALL_FROM_GITHUB_SHA" ]; \
     then \

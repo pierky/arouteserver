@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- Improvement: change the default value of ``bgpq3_path`` to ``bgpq4``.
+
+  The ``bgpq4`` tool is now referenced as the default one in the ``bgpq3_path`` configuration line of arouteserver.yml.
+
+  **Please note**: if that line was not explicitly configured and was left to its default value, users will either need to be sure that ``bgpq4`` is available on the system or they will need to configure it.
+
 v1.3.0
 ------
 
