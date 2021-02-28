@@ -38,6 +38,8 @@ How it works
 
 A Docker-based `playground <https://github.com/pierky/arouteserver/tree/master/tools/playground>`__ is available to experiment with the tool in a virtual IXP environment.
 
+Also, a `Docker image <https://hub.docker.com/r/pierky/arouteserver>`__ is provided to start building rich and secure configurations in a couple of minutes.
+
 .. _bgpq3: https://github.com/snar/bgpq3
 .. _bgpq4: https://github.com/bgp/bgpq4
 .. _PeeringDB: https://www.peeringdb.com/

@@ -3,8 +3,8 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
-next release
-------------
+v1.4.0
+------
 
 - New: Docker image to easily build route-server configurations.
 
@@ -14,7 +14,7 @@ next release
 
   The ``bgpq4`` tool is now referenced as the default one in the ``bgpq3_path`` configuration line of arouteserver.yml.
 
-  **Please note**: if that line was not explicitly configured and was left to its default value, users will either need to be sure that ``bgpq4`` is available on the system or they will need to configure it.
+  **Please note**: operators who are using the tool and who left the ``bgpq3_path`` configuration line unset will now need to either explicitly configure that line to point to their ``bgpq3`` binary or to make sure ``bgpq4`` is available on their system.
 
 - Fix: the ``ixf-member-export`` command now produces a JSON file compliant with `version 1.0 <https://github.com/euro-ix/json-schemas/blob/master/versions/ixp-member-list-1.0.schema.json>`_ of the `Euro-IX schema <https://github.com/euro-ix/json-schemas>`_.
 

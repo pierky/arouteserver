@@ -4,6 +4,8 @@ Installation
 .. Hint::
    A Docker-based `playground <https://github.com/pierky/arouteserver/tree/master/tools/playground>`__ is available to experiment with the installation and configuration steps reported in this section.
 
+   For a quick start, please also see the official `Docker image <https://hub.docker.com/r/pierky/arouteserver>`__.
+
 Dependencies
 ------------
 
