@@ -1,4 +1,5 @@
 # Copyright (C) 2017-2021 Pier Carlo Chiodi
+# Copyright (C) 2021 Ene Alin Gabriel
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -41,6 +42,12 @@ class IXFMemberListFromClientsCommand(ARouteServerCommand):
         parser.add_argument(
             "shortname",
             help="Short name of the IXP.")
+
+        parser.add_argument(
+            "ixf_id",
+            type=int,
+            help="IXP ID from the IX-F database.",
+            metavar="IXF_ID")
 
         parser.add_argument(
             "--clients",
@@ -158,16 +165,17 @@ class IXFMemberListFromClientsCommand(ARouteServerCommand):
         return asns, clients
 
     @staticmethod
-    def build_json(path, ixp_id, shortname, vlan_id):
+    def build_json(path, ixp_id, shortname, vlan_id, ixf_id):
         asns, clients = \
             IXFMemberListFromClientsCommand.load_config_from_path(path)
 
         res = OrderedDict()
-        res["version"] = "0.6"
+        res["version"] = "1.0"
         res["timestamp"] = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 
         ixp_list_entry = OrderedDict()
         ixp_list_entry["ixp_id"] = ixp_id
+        ixp_list_entry["ixf_id"] = ixf_id
         ixp_list_entry["shortname"] = shortname
         ixp_list_entry["vlan"] = [{"id": vlan_id}]
         res["ixp_list"] = [ixp_list_entry]
@@ -181,7 +189,7 @@ class IXFMemberListFromClientsCommand(ARouteServerCommand):
         path = self.args.cfg_clients or program_config.get("cfg_clients")
 
         dic = self.build_json(path, self.args.ixp_id, self.args.shortname,
-                              self.args.vlan_id)
+                              self.args.vlan_id, self.args.ixf_id)
 
         json.dump(dic, self.args.output_file, indent=2)
         return True

@@ -17,7 +17,7 @@ First, we need to connect to the docker instance where the route server and ARou
 
     $ docker-compose exec rs bash
 
-All the dependencies needed by ARouteServer (basically just Python and `bgpq3 <https://github.com/snar/bgpq3>`__ or `bgpq4 <https://github.com/bgp/bgpq4>`__) are already installed inside the Docker image (see `rs/Dockerfile <rs/Dockerfile>`__).
+All the dependencies needed by ARouteServer (basically just Python and `bgpq4 <https://github.com/bgp/bgpq4>`__) are already installed inside the Docker image (see `rs/Dockerfile <rs/Dockerfile>`__).
 
 We just need to setup the program and configure it.
 

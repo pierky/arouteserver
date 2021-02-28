@@ -57,7 +57,7 @@ class TestProgramConfig(unittest.TestCase):
             ("templates_dir", "config.d/templates"),
             ("template_name", "main.j2"),
             ("cache_dir", "config.d/cache"),
-            ("bgpq3_path", "bgpq3"),
+            ("bgpq3_path", "bgpq4"),
             ("bgpq3_host", "rr.ntt.net"),
             ("bgpq3_sources", ("RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,BBOI,"
                                "BELL,JPIRR,LEVEL3,RADB,RGNET,TC")),

@@ -31,16 +31,18 @@
 # Directory where cached data are stored.
 #cache_dir: "cache"
 
-# Path to the 'bgpq3' external program.
+# Path to the 'bgpq4'/'bgpq3' external program.
 # Going against the Principle of least astonishment,
 # the value of this configuration line can also
-# be set to the path of the 'bgpq4' program.
+# be set to the path of the 'bgpq4' program, even
+# though the name of the config knob seems pretty
+# specific.
 #
-# Version 0.1.35 or newer is suggested for bgpq3.
 # Version 0.0.5 or newer is required for bgpq4.
-#bgpq3_path: "bgpq3"
+# Version 0.1.35 or newer is suggested for bgpq3.
+#bgpq3_path: "bgpq4"
 
-# Host running IRRD software used by bgpq3/bgpq4.
+# Host running IRRD software used by bgpq4/bgpq3.
 # (-h argument).
 # Use "host:port" to specify alternate port.
 # Please note: to use rr.ntt.net at least bgpq3 0.1.35
@@ -49,7 +51,7 @@
 # https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#external-programs
 #bgpq3_host: "rr.ntt.net"
 
-# Sources used by bgpq3/bgpq4.
+# Sources used by bgpq4/bgpq3.
 # (-S argument).
 #bgpq3_sources: "RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,BBOI,BELL,JPIRR,LEVEL3,RADB,RGNET,TC"
 

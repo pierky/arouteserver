@@ -141,7 +141,7 @@ class ConfigBuilder(object):
 
     def __init__(self, template_dir=None, template_name=None,
                  cache_dir=None, cache_expiry=CachedObject.DEFAULT_EXPIRY,
-                 bgpq3_path="bgpq3", bgpq3_host=IRRDBInfo.BGPQ3_DEFAULT_HOST,
+                 bgpq3_path="bgpq4", bgpq3_host=IRRDBInfo.BGPQ3_DEFAULT_HOST,
                  bgpq3_sources=IRRDBInfo.BGPQ3_DEFAULT_SOURCES,
                  rtt_getter_path=None, threads=4,
                  ip_ver=None, perform_graceful_shutdown=False,
