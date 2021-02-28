@@ -6,6 +6,8 @@ This Docker image can be used to run [ARouteServer](https://github.com/pierky/ar
 
 ### Generating configurations
 
+This is a very easy and quick way to obtain secure and feature-rich configurations for Internet Exchange route-servers, based on top of industry best practices and routing security principles.
+
 To generate BIRD or OpenBGPD configurations, route-server clients need to be defined in your local system, in YAML, following the [ARouteServer format](https://github.com/pierky/arouteserver/blob/master/config.d/clients.yml).
 
 The clients need to be stored in a local file, `~/clients.yml` for example.
@@ -19,6 +21,8 @@ clients:
     - "192.0.2.22"
     - "2001:db8:1:1::22"
 ```
+
+It's also possible to build the `clients.yml` file automatically, starting from an existing Euro-IX JSON file, an IXP Manager export file or using records from PeeringDB. For more details, please see [Automatic `clients.yml` creation](https://arouteserver.readthedocs.io/en/latest/USAGE.html#automatic-clients-yml-creation).
 
 Docker can then be instructed to run the image using some input arguments that are needed to specify the route server's ASN, its router ID, which are the local prefixes of the peering LAN, and what's the target BGP daemon and its version (BIRD vs OpenBGPD).
 
@@ -47,6 +51,8 @@ docker run \
 ```
 
 After running the container, the configurations will be saved inside the local host's directory, `~/arouteserver_configs` in the example.
+
+Please note: the container will just terminate once the configuration is built; this is the expected behaviour, it's not supposed to stay up, but to only generate the config and then shutdown.
 
 #### Customizing the route-server features
 
@@ -83,7 +89,7 @@ The Dockerfile can also provide some useful hints on how to install and configur
 
 ## Tag `latest`
 
-The image is built on top of the latest release of ARouteServer.
+The image is built on top of the latest stable release of ARouteServer. Other tags are also available, please visit the Tags section on Docker Hub.
 
 # Author
 

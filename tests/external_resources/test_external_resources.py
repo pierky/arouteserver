@@ -178,6 +178,7 @@ class TestExternalResources(unittest.TestCase):
             self.assertTrue(member_ip in client_ips)
 
     def test_euroix_json_file_from_clients(self):
+        """External resources: Euro-IX from clients build and validation"""
         clients_path = "config.d/clients.yml"
 
         json_data = IXFMemberListFromClientsCommand.build_json(
