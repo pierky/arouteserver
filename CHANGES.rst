@@ -6,6 +6,10 @@ Change log
 next release
 ------------
 
+- New: Docker image to easily build route-server configurations.
+
+  For more details, see the `docker directory <https://github.com/pierky/arouteserver/tree/master/docker>`_.
+
 - Improvement: change the default value of ``bgpq3_path`` to ``bgpq4``.
 
   The ``bgpq4`` tool is now referenced as the default one in the ``bgpq3_path`` configuration line of arouteserver.yml.
