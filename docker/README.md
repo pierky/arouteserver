@@ -1,6 +1,6 @@
 # ARouteServer Docker image
 
-This Docker image can be used to run ARouteServer as a container, either to experiment with it or to easily generate production level configurations that are based on best practices and suggested settings.
+This Docker image can be used to run [ARouteServer](https://github.com/pierky/arouteserver) as a container, either to experiment with it or to easily generate production level configurations that are based on best practices and suggested settings.
 
 ## Usage
 
@@ -64,7 +64,7 @@ docker run \
     ... # other options
 ```
 
-### Interactively execution
+### Interactive execution
 
 To experiment with the tool, the Docker image can be executed interactively:
 
@@ -80,3 +80,14 @@ This will give you access to an environment where ARouteServer and its dependenc
 ## Dockerfile
 
 The Dockerfile can also provide some useful hints on how to install and configure ARouteServer on a host that is different than a Docker image. You can [check it out on GitHub](https://github.com/pierky/arouteserver/blob/master/docker/Dockerfile).
+
+## Tag `latest`
+
+The image is built on top of the latest release of ARouteServer.
+
+# Author
+
+Pier Carlo Chiodi - https://pierky.com
+
+Blog: https://blog.pierky.com Twitter: [@pierky](https://twitter.com/pierky)
+
