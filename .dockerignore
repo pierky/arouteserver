@@ -1,0 +1,10 @@
+.git/
+.github/
+arouteserver.egg-info/
+dist/
+tools/
+tests/last_results
+tests/live_tests/
+tools/
+utils/
+var/

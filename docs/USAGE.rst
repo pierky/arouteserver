@@ -40,6 +40,8 @@ It can be scheduled at regular intervals to re-build the configuration (for exam
 .. Hint::
    A Docker-based `playground <https://github.com/pierky/arouteserver/tree/master/tools/playground>`__ is available to experiment with the tool.
 
+   For a quick start, please also see the official `Docker image <https://hub.docker.com/r/pierky/arouteserver>`__.
+
 .. _perform-graceful-shutdown:
 
 Route server graceful shutdown
@@ -251,13 +253,14 @@ Please note: the output file generated with this command contains only a subset 
 
 .. code-block:: console
 
-   $ arouteserver ixf-member-export --clients examples/rich/clients.yml "Test IXP"
+   $ arouteserver ixf-member-export --clients examples/rich/clients.yml "Test IXP" 1
    {
-     "version": "0.6",
-     "timestamp": "2017-11-24T17:23:41Z",
+     "version": "1.0",
+     "timestamp": "2021-02-27T13:38:05Z,
      "ixp_list": [
        {
          "ixp_id": 0,
+         "ixf_id": 1,
          "shortname": "Test IXP",
          "vlan": [
            {

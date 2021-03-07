@@ -28,7 +28,7 @@ How it works
               - "RIPE::AS-FOO"
         ...
 
-#. ARouteServer acquires external information to enrich them: i.e. `bgpq3`_/`bgpq4`_ for IRR data, `PeeringDB`_ for max-prefix limit and AS-SETs, ...
+#. ARouteServer acquires external information to enrich them: i.e. `bgpq4`_/`bgpq3`_ for IRR data, `PeeringDB`_ for max-prefix limit and AS-SETs, ...
 
 #. `Jinja2`_ built-in templates are used to render the final route server's configuration file.
 
@@ -37,6 +37,8 @@ How it works
 **Validation** and testing of the configurations generated with this tool are performed using the built-in **live tests** framework: `Docker`_ instances are used to simulate several scenarios and to validate the behaviour of the route server after configuring it with ARouteServer. More details on the `Live tests <https://arouteserver.readthedocs.io/en/latest/LIVETESTS.html>`_ section.
 
 A Docker-based `playground <https://github.com/pierky/arouteserver/tree/master/tools/playground>`__ is available to experiment with the tool in a virtual IXP environment.
+
+Also, a `Docker image <https://hub.docker.com/r/pierky/arouteserver>`__ is provided to start building rich and secure configurations in a couple of minutes.
 
 .. _bgpq3: https://github.com/snar/bgpq3
 .. _bgpq4: https://github.com/bgp/bgpq4

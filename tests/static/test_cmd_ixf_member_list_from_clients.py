@@ -48,7 +48,7 @@ class TestIXFMemberListFromClientsCommand(ARouteServerTestCase):
 
         dic = cls.build_json(
             self.write_file("clients.yml", clients_content),
-            1, "Test IX", 1
+            1, "Test IX", 1, 1
         )
 
         if exp_res:

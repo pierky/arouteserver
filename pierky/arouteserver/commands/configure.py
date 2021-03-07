@@ -95,6 +95,9 @@ class ConfigureCommand(ARouteServerCommand):
                 raise ARouteServerError("Aborted!")
             if answer_ok:
                 break
+            else:
+                if self.preset_answers:
+                    raise ARouteServerError("Pre-set answer is invalid!")
         self.answers[answer_id] = answer
 
     def ask_list_of_ip_prefixes(self, text, raise_exc=False):

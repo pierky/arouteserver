@@ -44,6 +44,12 @@ class IXFMemberListFromClientsCommand(ARouteServerCommand):
             help="Short name of the IXP.")
 
         parser.add_argument(
+            "ixf_id",
+            type=int,
+            help="IXP ID from the IX-F database.",
+            metavar="IXF_ID")
+
+        parser.add_argument(
             "--clients",
             help="Route server clients configuration file. "
                  "Default: the one set in the program configuration "
@@ -59,15 +65,6 @@ class IXFMemberListFromClientsCommand(ARouteServerCommand):
                  "infrastructure for which the list of clients is generated. "
                  "Default: 0",
             dest="ixp_id")
-
-        parser.add_argument(
-            "--ixf_id",
-            type=int,
-            default=0,
-            help="The numeric identifier used by the IX to identify the "
-                 "infrastructure for which the list of clients is generated. "
-                 "Default: 0",
-            dest="ixf_id")
 
         parser.add_argument(
             "--vlan-id",
@@ -168,7 +165,7 @@ class IXFMemberListFromClientsCommand(ARouteServerCommand):
         return asns, clients
 
     @staticmethod
-    def build_json(path, ixp_id, shortname, vlan_id):
+    def build_json(path, ixp_id, shortname, vlan_id, ixf_id):
         asns, clients = \
             IXFMemberListFromClientsCommand.load_config_from_path(path)
 
@@ -192,7 +189,7 @@ class IXFMemberListFromClientsCommand(ARouteServerCommand):
         path = self.args.cfg_clients or program_config.get("cfg_clients")
 
         dic = self.build_json(path, self.args.ixp_id, self.args.shortname,
-                              self.args.vlan_id)
+                              self.args.vlan_id, self.args.ixf_id)
 
         json.dump(dic, self.args.output_file, indent=2)
         return True
