@@ -139,6 +139,7 @@ class IXFMemberListFromClientsCommand(ARouteServerCommand):
             connection_list_entry = OrderedDict()
             connection_list_entry["ixp_id"] = ixp_id
             connection_list_entry["vlan_list"] = members[member_asn]["vlan_list"]
+            connection_list_entry["if_speed"] = client["cfg"]["max_speed"].append(0)
             member["connection_list"] = [connection_list_entry]
             res.append(member)
 
