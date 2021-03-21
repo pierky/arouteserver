@@ -19,6 +19,8 @@ Who is using ARouteServer?
 
 - `CATNIX <http://www.catnix.net/en/>`__, BIRD.
 
+- `CHIX <https://chix.ch/>`__, BIRD and OpenBGPD.
+
 - `DO-IX <https://www.do-ix.net/>`__, BIRD.
 
 - `FCIX <https://fcix.net/>`__, BIRD.
