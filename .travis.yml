@@ -24,6 +24,7 @@ jobs:
       python: "3.6"
       install:
         - pip install tox
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker pull pierky/bird:1.6.8
         - docker pull pierky/bird:2.0.8
         - docker pull pierky/openbgpd:6.8p1
