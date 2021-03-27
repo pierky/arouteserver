@@ -116,12 +116,14 @@ class BIRD2RPKIRTRScenario(LiveScenario):
 
     def test_042_check_bird_rtr(self):
         """{}: check the RTR protocol on BIRD"""
+        time.sleep(10)
+
         res = self.rs.run_cmd("birdc show protocol MyValidator1")
 
         if "Established" not in res:
             self.fail("RTR protocol is not Established: {}".format(res))
 
-    def test_050_spin_up_routinator(self):
+    def test_050_route_dropped(self):
         """{}: route dropped after spinning the validator up"""
         self.rs.clear_cached_routes()
 
