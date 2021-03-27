@@ -322,7 +322,7 @@ class BIRDInstanceIPv6(BIRDInstance):
 
 class BIRD2Instance(BIRDInstance):
 
-    DOCKER_IMAGE = "pierky/bird:2.0.7"
+    DOCKER_IMAGE = "pierky/bird:2.0.8"
 
     TAG = "bird2"
 

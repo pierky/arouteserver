@@ -113,7 +113,7 @@ class GShutScenarioBIRD(GShutScenario):
 class GShutScenarioBIRD2(GShutScenarioBIRD):
     __test__ = False
 
-    TARGET_VERSION = "2.0.7"
+    TARGET_VERSION = "2.0.8"
 
 class GShutScenarioOpenBGPD(GShutScenario):
     __test__ = False

@@ -702,7 +702,7 @@ class TagASSetScenarioBIRD(TagASSetScenario):
 class TagASSetScenarioBIRD2(TagASSetScenarioBIRD):
     __test__ = False
 
-    TARGET_VERSION = "2.0.7"
+    TARGET_VERSION = "2.0.8"
 
 class TagASSetScenarioOpenBGPD(LiveScenario_TagRejectPolicy, TagASSetScenario):
     __test__ = False

@@ -24,7 +24,7 @@ class BIRD2RPKIRTRScenario(LiveScenario):
     RS_INSTANCE_CLASS = None
     CLIENT_INSTANCE_CLASS = None
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
-    TARGET_VERSION = "2.0.7"
+    TARGET_VERSION = "2.0.8"
     IP_VER = None
 
     @classmethod
