@@ -1,6 +1,6 @@
 #!/bin/sh
 set -ex
-wget https://github.com/bgp/bgpq4/archive/master.zip -O bgpq4.zip
+wget https://github.com/bgp/bgpq4/archive/refs/heads/main.zip -O bgpq4.zip
 unzip bgpq4.zip
 cd bgpq4-master
 ./bootstrap
