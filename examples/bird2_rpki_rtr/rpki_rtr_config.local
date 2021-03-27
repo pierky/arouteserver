@@ -3,7 +3,7 @@ protocol rpki MyValidator1 {
        roa6 { table RPKI6; };
 
        # IP and port of the validator.
-       remote 192.0.2.1;
+       remote 192.0.2.10;
        port 3323;
 
        # More config options.

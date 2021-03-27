@@ -19,7 +19,7 @@ from .docker import DockerInstance
 from .instances import Route, BGPSpeakerInstance, InstanceNotRunning
 
 
-class BIRDInstance(DockerInstance):
+class BIRDInstance(DockerInstance, BGPSpeakerInstance):
     """This class implements BIRD-specific methods.
 
     This class is derived from :class:`DockerInstance`, that implements
@@ -251,6 +251,9 @@ class BIRDInstance(DockerInstance):
                         route["localpref"] = line.split(": ")[1].strip()
             add_route(route)
             route = {}
+
+    def clear_cached_routes(self):
+        self.routes = {}
 
     def get_routes(self, prefix, include_filtered=False, only_best=False):
         if include_filtered and only_best:

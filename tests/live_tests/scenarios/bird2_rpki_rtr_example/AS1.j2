@@ -1,0 +1,23 @@
+router id 192.0.2.111;
+
+log "/var/log/bird.log" all;
+log syslog all;
+debug protocols all;
+
+protocol device { }
+
+protocol static own_prefixes {
+    route {{ data.AS1_1 }} reject;
+}
+
+filter to_rs {
+    accept;
+}
+protocol bgp the_rs {
+    local as 1;
+    neighbor {{ data.rs_IPAddress }} as 999;
+    import all;
+    export filter to_rs;
+    connect delay time 1;
+    connect retry time 1;
+}

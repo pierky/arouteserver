@@ -14,10 +14,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from .docker import DockerInstance
-from .instances import InstanceNotRunning
+from .instances import InstanceNotRunning, BGPSpeakerInstance
 
 
-class ExaBGPInstance(DockerInstance):
+class ExaBGPInstance(DockerInstance, BGPSpeakerInstance):
 
     MESSAGE_LOGGING_SUPPORT = False
 

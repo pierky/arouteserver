@@ -1,0 +1,20 @@
+{
+  "slurmVersion": 1,
+  "validationOutputFilters": {
+   "prefixFilters": [],
+   "bgpsecFilters": []
+  },
+  "locallyAddedAssertions": {
+   "prefixAssertions": [
+     {
+      "asn": 3333,
+      "prefix": "193.0.0.0/21"
+     },
+     {
+      "asn": 3333,
+      "prefix": "2001:67c:2e8::/48"
+     }
+   ],
+   "bgpsecAssertions": []
+  }
+}

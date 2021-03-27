@@ -17,9 +17,13 @@ import os
 import subprocess
 import time
 
-from .instances import InstanceError, BGPSpeakerInstance, InstanceNotRunning
+from .instances import (
+    BaseInstance,
+    InstanceError,
+    InstanceNotRunning
+)
 
-class DockerInstance(BGPSpeakerInstance):
+class DockerInstance(BaseInstance):
 
     DOCKER_PATH = "docker"
     DOCKER_INSTANCE_PREFIX = "ars_"
