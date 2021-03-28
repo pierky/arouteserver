@@ -128,7 +128,6 @@ Clients from Euro-IX: route server classification, 0.6 ... ok
 Clients from Euro-IX: route server classification, 0.7 ... ok
 Clients from Euro-IX: route server classification, 1.0 ... ok
 Configure command: 32 bit route server ASN ... ok
-Configure command: BIRD 2.0, receive limit > 2.0.7 ... ok
 Configure command: BIRD 2.0, simple ... ok
 Configure command: BIRD, simple ... ok
 Configure command: OpenBGPD 6.0, simple ... ok
@@ -137,6 +136,11 @@ Configure command: OpenBGPD 6.2, simple ... ok
 Configure command: OpenBGPD 6.4, simple ... ok
 Configure command: OpenBGPD 6.5, simple ... ok
 Configure command: OpenBGPD 6.8, simple ... ok
+IRR AS-SET command: AS1 with AS-AS1 and AS2 ... ok
+IRR AS-SET command: explicit AS-SETs from config, no PeeringDB record ... ok
+IRR AS-SET command: AS-SET from asns ... ok
+IRR AS-SET command: IPv6 clients only ... ok
+IRR AS-SET command: whitelist and PeeringDB ... ok
 IX-F Member Export from clients command: simple ... ok
 IX-F Member Export from clients command: with description ... ok
 IX-F Member Export from clients command: with AS-SET ... ok
@@ -203,6 +207,6 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 203 tests in 42.755s
+Ran 207 tests in 43.288s
 
 OK

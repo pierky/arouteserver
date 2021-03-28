@@ -6,7 +6,7 @@ Total test cases per BGP speaker
 =============== ========= ============ ============ ===========  
 **BGP speaker** **Total** **Passed ✔** **Failed ✖** **Skipped** 
 BIRD            806       799          0            7           
-BIRD v2         809       802          0            7           
+BIRD v2         810       803          0            7           
 OpenBGPD 6.7    434       423          0            11          
 OpenBGPD 6.8    434       423          0            11          
 OpenBGPD 6.8p1  434       423          0            11          
@@ -146,10 +146,15 @@ reconfigure                          ✔        ✔
 RTR protocol
 ++++++++++++
 
-=================== ======== =========== ================ ================ ================== 
-**Test**            **BIRD** **BIRD v2** **OpenBGPD 6.7** **OpenBGPD 6.8** **OpenBGPD 6.8p1** 
-log contains errors          ✔                                                                
-=================== ======== =========== ================ ================ ================== 
+============================================= ======== =========== ================ ================ ================== 
+**Test**                                      **BIRD** **BIRD v2** **OpenBGPD 6.7** **OpenBGPD 6.8** **OpenBGPD 6.8p1** 
+check the RTR protocol on BIRD                         ✔                                                                
+log contains errors                                    ✔                                                                
+restart the RTR protocol on BIRD                       ✔                                                                
+route accepted because validator not running           ✔                                                                
+route dropped after spinning the validator up          ✔                                                                
+spin up the validator                                  ✔                                                                
+============================================= ======== =========== ================ ================ ================== 
 
 default config, IPv4
 ++++++++++++++++++++
@@ -770,20 +775,16 @@ max-prefix, IPv4
 
 ================================================================ ======== =========== ================ ================ ================== 
 **Test**                                                         **BIRD** **BIRD v2** **OpenBGPD 6.7** **OpenBGPD 6.8** **OpenBGPD 6.8p1** 
-AS5 session is down (max-prefix hit, action == shutdown)         ✔                                                                         
-AS5 session is up                                                         ✔                                                                
-BIRD 2.0, receive limit > 2.0.7                                           ✔                                                                
+AS5 session is down (max-prefix hit, action == shutdown)         ✔        ✔                                                                
 clients log max-prefix notification                                                   ✔                ✔                ✔                  
 log contains errors                                              ✔        ✔           ✔                ✔                ✔                  
 log is populated: import limit, no warning in the log file (AS6) ✔        ✔                                                                
 log is populated: receive limit, routes blocked                  ✔        ✔                                                                
-log is populated: receive limit, session NOT shutdown (AS5)               ✔                                                                
-log is populated: receive limit, session shutdown (AS5)          ✔                                                                         
+log is populated: receive limit, session shutdown (AS5)          ✔        ✔                                                                
 number of prefixes received by rs from AS1                       ✔        ✔                                                                
 number of prefixes received by rs from AS2                       ✔        ✔                                                                
 number of prefixes received by rs from AS3                       ✔        ✔                                                                
 number of prefixes received by rs from AS4                       ✔        ✔                                                                
-number of prefixes received by rs from AS5                                ✔                                                                
 number of prefixes received by rs from AS6                       ✔        ✔                                                                
 reconfigure                                                      ✔        ✔           ✔                ✔                ✔                  
 sessions are down                                                                     ✔                ✔                ✔                  
@@ -794,20 +795,16 @@ max-prefix, IPv6
 
 ================================================================ ======== =========== ================ ================ ================== 
 **Test**                                                         **BIRD** **BIRD v2** **OpenBGPD 6.7** **OpenBGPD 6.8** **OpenBGPD 6.8p1** 
-AS5 session is down (max-prefix hit, action == shutdown)         ✔                                                                         
-AS5 session is up                                                         ✔                                                                
-BIRD 2.0, receive limit > 2.0.7                                           ✔                                                                
+AS5 session is down (max-prefix hit, action == shutdown)         ✔        ✔                                                                
 clients log max-prefix notification                                                   ✔                ✔                ✔                  
 log contains errors                                              ✔        ✔           ✔                ✔                ✔                  
 log is populated: import limit, no warning in the log file (AS6) ✔        ✔                                                                
 log is populated: receive limit, routes blocked                  ✔        ✔                                                                
-log is populated: receive limit, session NOT shutdown (AS5)               ✔                                                                
-log is populated: receive limit, session shutdown (AS5)          ✔                                                                         
+log is populated: receive limit, session shutdown (AS5)          ✔        ✔                                                                
 number of prefixes received by rs from AS1                       ✔        ✔                                                                
 number of prefixes received by rs from AS2                       ✔        ✔                                                                
 number of prefixes received by rs from AS3                       ✔        ✔                                                                
 number of prefixes received by rs from AS4                       ✔        ✔                                                                
-number of prefixes received by rs from AS5                                ✔                                                                
 number of prefixes received by rs from AS6                       ✔        ✔                                                                
 reconfigure                                                      ✔        ✔           ✔                ✔                ✔                  
 sessions are down                                                                     ✔                ✔                ✔                  

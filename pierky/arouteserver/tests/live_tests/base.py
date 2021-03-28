@@ -396,6 +396,9 @@ class LiveScenario(ARouteServerTestCase):
             os.makedirs(dest_dir)
 
         for instance in cls.INSTANCES:
+            if not isinstance(instance, BGPSpeakerInstance):
+                continue
+
             path = os.path.join(dest_dir, "{}.txt".format(instance.name))
             routes = instance.get_routes(None, include_filtered=True)
             sorted_routes = sorted(routes,

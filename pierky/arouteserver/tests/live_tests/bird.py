@@ -19,7 +19,7 @@ from .docker import DockerInstance
 from .instances import Route, BGPSpeakerInstance, InstanceNotRunning
 
 
-class BIRDInstance(DockerInstance):
+class BIRDInstance(DockerInstance, BGPSpeakerInstance):
     """This class implements BIRD-specific methods.
 
     This class is derived from :class:`DockerInstance`, that implements
@@ -252,6 +252,9 @@ class BIRDInstance(DockerInstance):
             add_route(route)
             route = {}
 
+    def clear_cached_routes(self):
+        self.routes = {}
+
     def get_routes(self, prefix, include_filtered=False, only_best=False):
         if include_filtered and only_best:
             raise Exception("Can't set both include_filtered and only_best")
@@ -322,7 +325,7 @@ class BIRDInstanceIPv6(BIRDInstance):
 
 class BIRD2Instance(BIRDInstance):
 
-    DOCKER_IMAGE = "pierky/bird:2.0.7"
+    DOCKER_IMAGE = "pierky/bird:2.0.8"
 
     TAG = "bird2"
 

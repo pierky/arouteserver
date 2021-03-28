@@ -20,4 +20,7 @@ class RichConfigExampleScenario_Data6(object):
 
         "AS10745_allowed_prefixes":         "2001:500:4::/48",
         "AS3333_allowed_prefixes":          "2001:67c:2e8::/48",
+
+        "AS1_1_IPAddress":                  "2001:db8:1:1::111",
+        "AS1_1":                            "2001:67c:2e8::/56"
     }

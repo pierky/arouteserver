@@ -352,8 +352,10 @@ class ConfigureCommand(ARouteServerCommand):
 
         if (
             self.answers["daemon"] == "bird" and \
-            version.parse(self.answers["version"]) >= version.parse("2.0")
+            version.parse(self.answers["version"]) >= version.parse("2.0") and \
+            version.parse(self.answers["version"]) <= version.parse("2.0.7")
         ):
+            # Why? See comments in v1.0.1 about the 'receive limit' bug in 2.0.7.
             filtering["max_prefix"]["count_rejected_routes"] = False
             self.notes.append(
                 "Rejected routes are not counted towards max-prefix limit."

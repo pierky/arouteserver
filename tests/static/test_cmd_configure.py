@@ -407,19 +407,18 @@ class TestConfigureCmd(ARouteServerTestCase):
         """Configure command: BIRD 2.0, simple"""
         self.mock_answers([
             "bird",
-            "2.0.7",
+            "2.0.8",
             "999",
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
         ])
 
-        self.expected_config["cfg"]["filtering"]["max_prefix"]["count_rejected_routes"] = False
         self.expected_config["cfg"]["filtering"]["reject_policy"] = {
             "policy": "tag_and_reject"
         }
         dic = self.configure_and_build(
             BIRDConfigBuilder,
-            target_version="2.0.7"
+            target_version="2.0.8"
         )
 
         self.assertEqual(
@@ -430,23 +429,3 @@ class TestConfigureCmd(ARouteServerTestCase):
             dic["cfg"]["communities"]["reject_cause"]["lrg"],
             "rs_as:65520:dyn_val"
         )
-
-    def test_bird2_receive_limit_check(self):
-        """Configure command: BIRD 2.0, receive limit > 2.0.7"""
-
-        # This test just verifies if there is any known BIRD
-        # release newer than 2.0.7, for which the 'receive limit'
-        # issue might be fixed; if so, we need to relax the check
-        # implemented in 'validate_bgpspeaker_specific_configuration'
-        # inside BIRDConfigBuilder, and also change the class
-        # ConfigureCommand so that count_rejected_routes will not
-        # be set to False anymore for BIRD > 2.0.7.
-        #
-        # If/when that will happen, this test can be dropped.
-
-        if any([version.parse(v) >= version.parse("2.0.8")
-                for v in BIRDConfigBuilder.AVAILABLE_VERSION]):
-            self.fail("A release of BIRD > 2.0.7 has been added "
-                      "to the BIRDConfigBuilder class: maybe we "
-                      "need to relax the way 'receive limit' is "
-                      "handled? Check the test case for details.")

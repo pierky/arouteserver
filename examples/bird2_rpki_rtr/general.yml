@@ -4,6 +4,11 @@ cfg:
   router_id: "192.0.2.2"
 
   filtering:
+
+    irrdb:
+      enforce_origin_in_as_set: False
+      enforce_prefix_in_as_set: False
+
     rpki_bgp_origin_validation:
       enabled: True
       reject_invalid: True

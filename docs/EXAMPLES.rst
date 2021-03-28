@@ -111,7 +111,7 @@ A list of BGP communities is also automatically built.
    limitations
    
    Which BGP daemon will be used? [bird/openbgpd] bird
-   Which version? [1.6.3/1.6.4/1.6.6/1.6.7/1.6.8/2.0.7/2.0.7+b962967e] 1.6.8
+   Which version? [1.6.3/1.6.4/1.6.6/1.6.7/1.6.8/2.0.7/2.0.7+b962967e/2.0.8] 1.6.8
    
    Router server's ASN
    ===================

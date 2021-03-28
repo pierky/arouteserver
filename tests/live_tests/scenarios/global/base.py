@@ -1189,7 +1189,7 @@ class BasicScenarioBIRD(BasicScenario):
 class BasicScenarioBIRD2(BasicScenarioBIRD):
     __test__ = False
 
-    TARGET_VERSION = "2.0.7"
+    TARGET_VERSION = "2.0.8"
 
     @classmethod
     def _get_local_file_name(cls):

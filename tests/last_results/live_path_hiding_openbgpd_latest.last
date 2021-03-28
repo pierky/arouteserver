@@ -52,6 +52,6 @@ Live test, OpenBGPD 6.8, path hiding, mitigation on, IPv6: dumping routes...
 Live test, OpenBGPD 6.8, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 36 tests in 244.808s
+Ran 36 tests in 242.400s
 
 OK (SKIP=4)

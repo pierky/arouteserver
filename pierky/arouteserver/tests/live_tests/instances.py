@@ -28,19 +28,7 @@ class InstanceNotRunning(InstanceError):
     def __str__(self):
         return "Instance '{}' is not running.".format(self.name)
 
-class BGPSpeakerInstance(object):
-    """This class abstracts a BGP speaker instance.
-
-    Currently, the ``start``, ``stop``, ``is_running`` and
-    ``run_cmd`` methods are implemented by the
-    :class:`DockerInstance` and :class:`KVMInstance` derived classes,
-    while the ``restart``, ``reload_config``, ``get_bgp_session``,
-    ``get_routes`` and ``log_contains`` methods by the
-    [Docker|KVM]Instance-derived :class:`BIRDInstance` and
-    :class:`OpenBGPDInstance` classes.
-    """
-
-    MESSAGE_LOGGING_SUPPORT = True
+class BaseInstance(object):
 
     DEBUG = False
 
@@ -84,6 +72,20 @@ class BGPSpeakerInstance(object):
 
     def run_cmd(self, args):
         raise NotImplementedError()
+
+class BGPSpeakerInstance(BaseInstance):
+    """This class abstracts a BGP speaker instance.
+
+    Currently, the ``start``, ``stop``, ``is_running`` and
+    ``run_cmd`` methods inherited from  BaseInstance are implemented by the
+    :class:`DockerInstance` and :class:`KVMInstance` derived classes,
+    while the ``restart``, ``reload_config``, ``get_bgp_session``,
+    ``get_routes`` and ``log_contains`` methods by the
+    [Docker|KVM]Instance-derived :class:`BIRDInstance` and
+    :class:`OpenBGPDInstance` classes.
+    """
+
+    MESSAGE_LOGGING_SUPPORT = True
 
     def get_bgp_session(self, other_inst, force_update=False):
         """Get information about the BGP session with ``other_inst``.

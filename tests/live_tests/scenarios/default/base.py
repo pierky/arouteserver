@@ -79,7 +79,7 @@ class DefaultConfigScenarioBIRD2(DefaultConfigScenarioBIRD):
 
     __test__ = False
 
-    TARGET_VERSION = "2.0.7"
+    TARGET_VERSION = "2.0.8"
 
 class DefaultConfigScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
                                     DefaultConfigScenario):

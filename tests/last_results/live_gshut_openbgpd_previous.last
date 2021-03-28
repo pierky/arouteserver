@@ -18,6 +18,6 @@ Live test, OpenBGPD 6.7, gshut, IPv6: dumping routes...
 Live test, OpenBGPD 6.7, gshut, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 10 tests in 85.589s
+Ran 10 tests in 82.938s
 
 OK

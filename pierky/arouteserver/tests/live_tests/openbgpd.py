@@ -369,7 +369,7 @@ class OpenBGPDClassicInstance(OpenBGPDInstance, KVMInstance):
             return False, ""
         return False
 
-class OpenBGPDPortableInstance(OpenBGPDInstance, DockerInstance):
+class OpenBGPDPortableInstance(OpenBGPDInstance, DockerInstance, BGPSpeakerInstance):
     """This class implements OpenBGPD-specific methods for the Portable edition.
 
     This class is derived from :class:`DockerInstance`, that implements

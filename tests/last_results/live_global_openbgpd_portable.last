@@ -180,6 +180,6 @@ Live test, OpenBGPD 6.8p1, global scenario, IPv6: dumping routes...
 Live test, OpenBGPD 6.8p1, global scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 172 tests in 141.258s
+Ran 172 tests in 139.794s
 
 OK (SKIP=4)

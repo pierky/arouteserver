@@ -256,76 +256,7 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
 class MaxPrefixScenarioBIRD2(MaxPrefixScenarioBIRD):
     __test__ = False
 
-    TARGET_VERSION = "2.0.7"
-
-    EXPECTED_LOG_MSG = "import"
-
-    def test_001(self):
-        """{}: BIRD 2.0, receive limit > 2.0.7"""
-        if version.parse(self.TARGET_VERSION) >= version.parse("2.0.8"):
-            self.fail(
-                "Starting with BIRD 2.0.8 onward, the max-prefix limit "
-                "bug should be fixed, so this class can be reverted "
-                "back to its original state, that is with no method "
-                "overrides used to deal with the specific behaviour "
-                "of 2.0.7 that was implemented to deal with the bug."
-            )
-
-    def test_020_sessions_up_AS5(self):
-        """{}: AS5 session is up"""
-        self.session_is_up(self.rs, self.AS5)
-
-    def test_030_blocked_sessions_AS5(self):
-        """{}: log is populated: receive limit, session NOT shutdown (AS5)"""
-
-        log = "Protocol {{inst}} hits route import limit"
-        # Please note: opposite=True, it fails if the msg is found in the logs:
-        # AS6 announces 2 valid routes + 2 invalid routes, so it doesn't hit
-        # the limit because invalid routes are not taken into account.
-        self.log_contains(self.rs, log, {"inst": self.AS5}, opposite=True)
-
-    def test_040_count_received_prefixes_AS1(self):
-        """{}: number of prefixes received by rs from AS1"""
-        asn = 1
-
-        self.assertEqual(len(self._get_routes_from(asn)), 4)
-        self.assertEqual(len(self._get_routes_from(asn, include_filtered=True)), 5)
-
-    def test_040_count_received_prefixes_AS2(self):
-        """{}: number of prefixes received by rs from AS2"""
-        asn = 2
-
-        self.assertEqual(len(self._get_routes_from(asn)), 3)
-        self.assertEqual(len(self._get_routes_from(asn, include_filtered=True)), 5)
-
-    def test_040_count_received_prefixes_AS3(self):
-        """{}: number of prefixes received by rs from AS3"""
-        asn = 3
-
-        self.assertEqual(len(self._get_routes_from(asn)), 2)
-        self.assertEqual(len(self._get_routes_from(asn, include_filtered=True)), 5)
-
-    def test_040_count_received_prefixes_AS4(self):
-        """{}: number of prefixes received by rs from AS4"""
-        asn = 4
-
-        self.assertEqual(len(self._get_routes_from(asn)), 6)
-        self.assertEqual(len(self._get_routes_from(asn, include_filtered=True)), 7)
-
-    def test_040_count_received_prefixes_AS5(self):
-        """{}: number of prefixes received by rs from AS5"""
-        asn = 5
-
-        self.assertEqual(len(self._get_routes_from(asn)), 2)
-        self.assertEqual(len(self._get_routes_from(asn, include_filtered=True)), 4)
-
-    def test_040_count_received_prefixes_AS6(self):
-        """{}: number of prefixes received by rs from AS6"""
-        asn = 6
-
-        self.assertEqual(len(self._get_routes_from(asn)), 2)
-        self.assertEqual(len(self._get_routes_from(asn, include_filtered=True)), 4)
-
+    TARGET_VERSION = "2.0.8"
 
 class MaxPrefixScenarioOpenBGPD(LiveScenario_TagRejectPolicy, MaxPrefixScenario):
     __test__ = False

@@ -49,6 +49,8 @@ function must_not_contain() {
 	fi
 }
 
+BIRD2_LATEST_VER=2.0.8
+
 # ---------------------------------------------
 # YAML include files
 reset
@@ -275,6 +277,8 @@ SUB_TEST="$LINENO"
 build_cmd "bird" --target-version 2.0.7 | must_contain "$EXP_ERR"
 SUB_TEST="$LINENO"
 build_cmd "bird" --target-version 2.0.7+b962967e | must_not_contain "$EXP_ERR"
+SUB_TEST="$LINENO"
+build_cmd "bird" --target-version ${BIRD2_LATEST_VER} | must_not_contain "$EXP_ERR"
 
 # ---------------------------------------------
 reset
@@ -301,7 +305,7 @@ EXP_ERR="multihop is not supported on BIRD configurations when path_hiding mitig
 SUB_TEST="$LINENO"
 build_cmd "bird" --ip-ver 4 | must_contain "$EXP_ERR"
 SUB_TEST="$LINENO"
-build_cmd "bird" --target-version 2.0.7 | must_contain "$EXP_ERR"
+build_cmd "bird" --target-version ${BIRD2_LATEST_VER} | must_contain "$EXP_ERR"
 
 GENERAL="tests/var/general.yml"
 cat << EOF > $GENERAL
@@ -314,7 +318,7 @@ EOF
 SUB_TEST="$LINENO"
 build_cmd "bird" --ip-ver 4 | must_not_contain "$EXP_ERR"
 SUB_TEST="$LINENO"
-build_cmd "bird" --target-version 2.0.7 | must_not_contain "$EXP_ERR"
+build_cmd "bird" --target-version ${BIRD2_LATEST_VER} | must_not_contain "$EXP_ERR"
 
 # ---------------------------------------------
 # clients-from-euroix
