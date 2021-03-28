@@ -18,6 +18,6 @@ Live test, OpenBGPD 6.8p1, max-prefix, IPv6: dumping routes...
 Live test, OpenBGPD 6.8p1, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 10 tests in 326.857s
+Ran 10 tests in 325.578s
 
 OK

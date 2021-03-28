@@ -52,6 +52,6 @@ Live test, OpenBGPD 6.8p1, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, OpenBGPD 6.8p1, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 44 tests in 115.635s
+Ran 44 tests in 114.237s
 
 OK (SKIP=3)
