@@ -44,18 +44,6 @@ if [[ -z "${VERSION}" ]]; then
     error_envvar_not_set "VERSION"
 fi
 
-if [[ -z "${RS_ASN}" ]]; then
-    error_envvar_not_set "RS_ASN"
-fi
-
-if [[ -z "${ROUTER_ID}" ]]; then
-    error_envvar_not_set "ROUTER_ID"
-fi
-
-if [[ -z "${LOCAL_PREFIXES}" ]]; then
-    error_envvar_not_set "LOCAL_PREFIXES"
-fi
-
 if [[ ! -e "${CLIENTS_FILE_PATH}" ]]; then
     error "Couldn't find the file ${CLIENTS_FILE_PATH} on the container.\n
            Please mount the local file where the list of clients is defined using '-v PATH_OF_CLIENTS_FILE_ON_THE_HOST:${CLIENTS_FILE_PATH}:ro' argument."
@@ -81,6 +69,18 @@ if [[ "${DAEMON}" == "bird" ]]; then
 fi
 
 if [[ ! -e /etc/arouteserver/general.yml ]]; then
+    if [[ -z "${RS_ASN}" ]]; then
+        error_envvar_not_set "RS_ASN"
+    fi
+
+    if [[ -z "${ROUTER_ID}" ]]; then
+        error_envvar_not_set "ROUTER_ID"
+    fi
+
+    if [[ -z "${LOCAL_PREFIXES}" ]]; then
+        error_envvar_not_set "LOCAL_PREFIXES"
+    fi
+
     echo ""
     bold "Configuring ARouteServer for ${DAEMON} ${VERSION}..."
     echo ""
