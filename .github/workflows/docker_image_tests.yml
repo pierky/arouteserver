@@ -115,3 +115,28 @@ jobs:
               -f /etc/bgpd/bgpd.conf \
               -d \
               -n
+
+      - name: Build configuration using custom general.yml file
+        run: >
+          docker run \
+              -it \
+              --rm \
+              -v $(pwd)/config.d/clients.yml:/root/clients.txt:ro \
+              -v $(pwd)/examples/auto-config/bird-general.yml:/etc/arouteserver/general.yml:ro \
+              -v ~/arouteserver_configs:/root/arouteserver_configs \
+              -e IP_VER=4 \
+              -e DAEMON=bird \
+              -e VERSION=1.6.8 \
+              pierky/arouteserver:latest
+
+      - name: Validate configuration built using custom general.yml file
+        run: >
+          docker run \
+            -t \
+            --rm \
+            -v ~/arouteserver_configs/bird4.cfg:/etc/bird/bird.cfg \
+            pierky/bird:1.6.8 \
+            bird \
+              -c /etc/bird/bird.cfg \
+              -d \
+              -p
