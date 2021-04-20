@@ -70,6 +70,23 @@ docker run \
     ... # other options
 ```
 
+### Textual representation
+
+A [textual representation](https://arouteserver.readthedocs.io/en/latest/USAGE.html#textual-representation) of the route server's options and policies will be generated automatically before the route server configuration is generated if the directory `/root/arouteserver_html` exists.
+
+Mount a writable directory to `/root/arouteserver_html` to enable generating textual representation.
+
+```bash
+# This is the local directory where HTML files will be stored:
+mkdir ~/arouteserver_html
+
+docker run \
+    -it \
+    --rm \
+    -v ~/arouteserver_html:/root/arouteserver_html \
+    ... # other options
+```
+
 ### Interactive execution
 
 To experiment with the tool, the Docker image can be executed interactively:
