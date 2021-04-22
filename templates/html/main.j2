@@ -175,14 +175,14 @@ Route <strong>validity state</strong> is signalled to route server clients using
   <tr>
 </thead>
 <tbody>
-  {{ write_communities_table_row(cfg.communities.prefix_present_in_as_set, "Prefix is included in client's AS-SET") }} 
-  {{ write_communities_table_row(cfg.communities.prefix_not_present_in_as_set, "Prefix is NOT included in client's AS-SET") }} 
-  {{ write_communities_table_row(cfg.communities.origin_present_in_as_set, "Origin ASN is included in client's AS-SET") }} 
-  {{ write_communities_table_row(cfg.communities.origin_not_present_in_as_set, "Origin ASN is NOT included in client's AS-SET") }} 
-  {{ write_communities_table_row(cfg.communities.prefix_validated_via_rpki_roas, "Prefix matched by a RPKI ROA for the authorized origin ASN") }} 
+  {{ write_communities_table_row(cfg.communities.prefix_present_in_as_set, "Prefix is included in client's AS-SET") }}
+  {{ write_communities_table_row(cfg.communities.prefix_not_present_in_as_set, "Prefix is NOT included in client's AS-SET") }}
+  {{ write_communities_table_row(cfg.communities.origin_present_in_as_set, "Origin ASN is included in client's AS-SET") }}
+  {{ write_communities_table_row(cfg.communities.origin_not_present_in_as_set, "Origin ASN is NOT included in client's AS-SET") }}
+  {{ write_communities_table_row(cfg.communities.prefix_validated_via_rpki_roas, "Prefix matched by a RPKI ROA for the authorized origin ASN") }}
   {{ write_communities_table_row(cfg.communities.prefix_validated_via_arin_whois_db_dump, "Prefix matched by an entry of the ARIN Whois DB dump") }}
   {{ write_communities_table_row(cfg.communities.prefix_validated_via_registrobr_whois_db_dump, "Prefix matched by an entry of the NIC.BR Whois DB dump") }}
-  {{ write_communities_table_row(cfg.communities.route_validated_via_white_list, "Route authorized soley because of a client white list entry") }} 
+  {{ write_communities_table_row(cfg.communities.route_validated_via_white_list, "Route authorized soley because of a client white list entry") }}
 </tbody>
 </table>
 </p></li>
@@ -277,7 +277,7 @@ Route <strong>validity state</strong> is signalled to route server clients using
 </div>
 </p></li>
 
-<li><p>IPv6 prefixes are accepted only if part of the IPv6 Global Unicast space 2000::/3.</p></li> 
+<li><p>IPv6 prefixes are accepted only if part of the IPv6 Global Unicast space 2000::/3.</p></li>
 </ul>
 {% endif %}
 
@@ -291,14 +291,14 @@ Route <strong>validity state</strong> is signalled to route server clients using
 {%	if cfg.communities.blackholing|community_is_set %}
 {%		for fmt in ("std", "ext", "lrg") %}
 {%			if cfg.communities.blackholing[fmt] %}
-{{ cfg.communities.blackholing[fmt] }}, 
+{{ cfg.communities.blackholing[fmt] }},
 {%			endif %}
 {%		endfor %}
 {%	endif %}
 65535:666 (<a href="https://tools.ietf.org/html/rfc7999#section-5">BLACKHOLE</a> well-known community)
 </p></li>
 
-<li><p>By default, routes are 
+<li><p>By default, routes are
 {%	if cfg.blackhole_filtering.announce_to_client %}
 <strong>propagated</strong> to all the clients unless they have been explicitly configured to not receive them.
 {%	else %}
@@ -427,13 +427,17 @@ that represents the reason for which it were discarded.</p></li>
   <tbody>
   <tr>
     <td align=right>0</td>
+    {% if cfg.communities.reject_cause|community_is_set %}
+    {{ write_communities_table_row(cfg.communities.reject_cause, "Generic code: the route must be treated as rejected", dyn_val=0, write_row=False) }}
+    {% else %}
     <td>Generic code: the route must be treated as rejected</td>
+    {% endif %}
   </tr>
   {% for ID in reject_reasons %}
   <tr>
     <td align=right>{{ ID }}</td>
     {% if cfg.communities.reject_cause|community_is_set %}
-    {{ write_communities_table_row(cfg.communities.reject_cause, reject_reasons[ID], dyn_val=ID) }}
+    {{ write_communities_table_row(cfg.communities.reject_cause, reject_reasons[ID], dyn_val=ID, write_row=False) }}
     {% else %}
     <td>{{ reject_reasons[ID] }}</td>
     {% endif %}
@@ -441,7 +445,11 @@ that represents the reason for which it were discarded.</p></li>
   {% endfor %}
   <tr>
     <td align=right>65535</td>
+    {% if cfg.communities.reject_cause|community_is_set %}
+    {{ write_communities_table_row(cfg.communities.reject_cause, "Unknown", dyn_val=65535, write_row=False) }}
+    {% else %}
     <td>Unknown</td>
+    {% endif %}
   </tr>
   </tbody>
 </table>
@@ -449,7 +457,7 @@ that represents the reason for which it were discarded.</p></li>
 
 
 {% if rtt_based_functions_are_used %}
-* For RTT-based communities, the following values can be used for <em>X</em>: 
+* For RTT-based communities, the following values can be used for <em>X</em>:
 {%	for threshold_val in cfg.rtt_thresholds %}
 {{ threshold_val }}{% if not loop.last %}, {% endif %}
 {%	endfor %}

@@ -121,35 +121,35 @@ Route <strong>validity state</strong> is signalled to route server clients using
     <td>rt:64512:11</td>
     <td>64496:64512:11</td>
   </tr>
- 
+
     <tr>
     <td>Prefix is NOT included in client's AS-SET</td>
     <td>64512:10</td>
     <td>rt:64512:10</td>
     <td>64496:64512:10</td>
   </tr>
- 
+
     <tr>
     <td>Origin ASN is included in client's AS-SET</td>
     <td>64512:21</td>
     <td>rt:64512:21</td>
     <td>64496:64512:21</td>
   </tr>
- 
+
     <tr>
     <td>Origin ASN is NOT included in client's AS-SET</td>
     <td>64512:20</td>
     <td>rt:64512:20</td>
     <td>64496:64512:20</td>
   </tr>
- 
+
     <tr>
     <td>Prefix matched by a RPKI ROA for the authorized origin ASN</td>
     <td>64512:31</td>
     <td>rt:64512:31</td>
     <td>64496:64512:31</td>
   </tr>
- 
+
   
   
     <tr>
@@ -158,7 +158,7 @@ Route <strong>validity state</strong> is signalled to route server clients using
     <td>rt:64512:41</td>
     <td>64496:64512:41</td>
   </tr>
- 
+
 </tbody>
 </table>
 </p></li>
@@ -478,7 +478,7 @@ Route <strong>validity state</strong> is signalled to route server clients using
 </div>
 </p></li>
 
-<li><p>IPv6 prefixes are accepted only if part of the IPv6 Global Unicast space 2000::/3.</p></li> 
+<li><p>IPv6 prefixes are accepted only if part of the IPv6 Global Unicast space 2000::/3.</p></li>
 </ul>
 
 
@@ -628,161 +628,139 @@ that represents the reason for which it were discarded.</p></li>
   <tbody>
   <tr>
     <td align=right>0</td>
-    <td>Generic code: the route must be treated as rejected</td>
+        <td>Generic code: the route must be treated as rejected</td>
+    <td>65520:0</td>
+    <td>rt:65520:0</td>
+    <td>64496:65520:0</td>
+
   </tr>
   <tr>
     <td align=right>1</td>
-      <tr>
-    <td>Invalid AS_PATH length</td>
+        <td>Invalid AS_PATH length</td>
     <td>65520:1</td>
     <td>rt:65520:1</td>
     <td>64496:65520:1</td>
-  </tr>
 
   </tr>
   <tr>
     <td align=right>2</td>
-      <tr>
-    <td>Prefix is bogon</td>
+        <td>Prefix is bogon</td>
     <td>65520:2</td>
     <td>rt:65520:2</td>
     <td>64496:65520:2</td>
-  </tr>
 
   </tr>
   <tr>
     <td align=right>3</td>
-      <tr>
-    <td>Prefix is in global blacklist</td>
+        <td>Prefix is in global blacklist</td>
     <td>65520:3</td>
     <td>rt:65520:3</td>
     <td>64496:65520:3</td>
-  </tr>
 
   </tr>
   <tr>
     <td align=right>4</td>
-      <tr>
-    <td>Invalid AFI</td>
+        <td>Invalid AFI</td>
     <td>65520:4</td>
     <td>rt:65520:4</td>
     <td>64496:65520:4</td>
-  </tr>
 
   </tr>
   <tr>
     <td align=right>5</td>
-      <tr>
-    <td>Invalid NEXT_HOP</td>
+        <td>Invalid NEXT_HOP</td>
     <td>65520:5</td>
     <td>rt:65520:5</td>
     <td>64496:65520:5</td>
-  </tr>
 
   </tr>
   <tr>
     <td align=right>6</td>
-      <tr>
-    <td>Invalid left-most ASN</td>
+        <td>Invalid left-most ASN</td>
     <td>65520:6</td>
     <td>rt:65520:6</td>
     <td>64496:65520:6</td>
-  </tr>
 
   </tr>
   <tr>
     <td align=right>7</td>
-      <tr>
-    <td>Invalid ASN in AS_PATH</td>
+        <td>Invalid ASN in AS_PATH</td>
     <td>65520:7</td>
     <td>rt:65520:7</td>
     <td>64496:65520:7</td>
-  </tr>
 
   </tr>
   <tr>
     <td align=right>8</td>
-      <tr>
-    <td>Transit-free ASN in AS_PATH</td>
+        <td>Transit-free ASN in AS_PATH</td>
     <td>65520:8</td>
     <td>rt:65520:8</td>
     <td>64496:65520:8</td>
-  </tr>
 
   </tr>
   <tr>
     <td align=right>9</td>
-      <tr>
-    <td>Origin ASN not in IRRDB AS-SETs</td>
+        <td>Origin ASN not in IRRDB AS-SETs</td>
     <td>65520:9</td>
     <td>rt:65520:9</td>
     <td>64496:65520:9</td>
-  </tr>
 
   </tr>
   <tr>
     <td align=right>10</td>
-      <tr>
-    <td>IPv6 prefix not in global unicast space</td>
+        <td>IPv6 prefix not in global unicast space</td>
     <td>65520:10</td>
     <td>rt:65520:10</td>
     <td>64496:65520:10</td>
-  </tr>
 
   </tr>
   <tr>
     <td align=right>11</td>
-      <tr>
-    <td>Prefix is in client blacklist</td>
+        <td>Prefix is in client blacklist</td>
     <td>65520:11</td>
     <td>rt:65520:11</td>
     <td>64496:65520:11</td>
-  </tr>
 
   </tr>
   <tr>
     <td align=right>12</td>
-      <tr>
-    <td>Prefix not in IRRDB AS-SETs</td>
+        <td>Prefix not in IRRDB AS-SETs</td>
     <td>65520:12</td>
     <td>rt:65520:12</td>
     <td>64496:65520:12</td>
-  </tr>
 
   </tr>
   <tr>
     <td align=right>13</td>
-      <tr>
-    <td>Invalid prefix length</td>
+        <td>Invalid prefix length</td>
     <td>65520:13</td>
     <td>rt:65520:13</td>
     <td>64496:65520:13</td>
-  </tr>
 
   </tr>
   <tr>
     <td align=right>14</td>
-      <tr>
-    <td>RPKI INVALID route</td>
+        <td>RPKI INVALID route</td>
     <td>65520:14</td>
     <td>rt:65520:14</td>
     <td>64496:65520:14</td>
-  </tr>
 
   </tr>
   <tr>
     <td align=right>15</td>
-      <tr>
-    <td>Never via route-servers ASN in AS_PATH</td>
+        <td>Never via route-servers ASN in AS_PATH</td>
     <td>65520:15</td>
     <td>rt:65520:15</td>
     <td>64496:65520:15</td>
-  </tr>
 
   </tr>
   <tr>
     <td align=right>65535</td>
-    <td>Unknown</td>
+        <td>Unknown</td>
+    <td>65520:65535</td>
+    <td>rt:65520:65535</td>
+    <td>64496:65520:65535</td>
+
   </tr>
   </tbody>
 </table>

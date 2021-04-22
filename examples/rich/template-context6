@@ -893,13 +893,13 @@ AS10745:
   le: 128
   length: 48
   max_length: 128
-  prefix: '2001:500:4::'
+  prefix: '2001:500:110::'
 - exact: false
   ge: 48
   le: 128
   length: 48
   max_length: 128
-  prefix: '2001:500:110::'
+  prefix: '2001:500:4::'
 
 
 registrobr_whois_db_records
@@ -996,6 +996,7 @@ never_via_route_servers_asns
 - 48265
 - 39967
 - 213252
+- 328445
 - 60412
 - 207484
 - 268091
@@ -1035,3 +1036,4 @@ never_via_route_servers_asns
 - 141892
 - 267214
 - 62164
+- 263686
