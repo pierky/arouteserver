@@ -185,7 +185,7 @@ Who is using ARouteServer?
 
 - `QCIX <http://www.qcix.net/>`__, BIRD.
 
-- `RO-CIX <https://rocix.net/>`__, OpenBGPD.
+- `RO-CIX <https://roix.net//>`__, OpenBGPD.
 
 - `SwissIX <https://www.swissix.ch/>`__, OpenBGPD.
 

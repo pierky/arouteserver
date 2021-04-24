@@ -1,0 +1,12 @@
+cfg:
+  rs_as: ${RS_ASN}
+  router_id: "${ROUTER_ID}"
+  filtering:
+    irrdb:
+      peering_db: True
+    reject_policy:
+      policy: tag
+  communities:
+    reject_cause:
+      std: 65000:dyn_val
+      lrg: 65000:65000:dyn_val

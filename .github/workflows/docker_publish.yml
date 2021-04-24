@@ -15,8 +15,8 @@ jobs:
         uses: actions/checkout@v2
         # Add the following 'with' to run this using the
         # 'on: push' trigger
-        with:
-          ref: v1.4.0
+        # with:
+        #   ref: v1.4.0
 
       - name: Get the release
         run: echo "::set-output name=CURRENT_RELEASE::$(python -c 'from pierky.arouteserver.version import __version__; print(__version__)')"

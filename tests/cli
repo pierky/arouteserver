@@ -52,6 +52,18 @@ function must_not_contain() {
 BIRD2_LATEST_VER=2.0.8
 
 # ---------------------------------------------
+# Environment variables expansion in general.yml
+reset
+TITLE="Environment variables expansion in general.yml"
+SUB_TEST="$LINENO"
+GENERAL="tests/var/general-env-vars-and-reject-reasons.yml"
+export RS_ASN=9999
+export ROUTER_ID="192.0.2.200"
+build_cmd "bird" --ip-ver 4 | must_contain "router id 192.0.2.200"
+unset RS_ASN
+unset ROUTER_ID
+
+# ---------------------------------------------
 # YAML include files
 reset
 TITLE="Configuration !include"

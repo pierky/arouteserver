@@ -30,13 +30,17 @@
 </table>
 {% endmacro %}
 
-{% macro write_communities_table_row(comm, function_descr, dyn_val=None) %}
+{% macro write_communities_table_row(comm, function_descr, dyn_val=None, write_row=True) %}
 {% if comm|community_is_set %}
+{%   if write_row %}
   <tr>
+{%   endif %}
     <td>{{ function_descr|replace("dyn_val", dyn_val) }}</td>
     <td>{{ comm.std|replace("dyn_val", dyn_val) }}</td>
     <td>{{ comm.ext|replace("dyn_val", dyn_val) }}</td>
     <td>{{ comm.lrg|replace("dyn_val", dyn_val) }}</td>
+{%   if write_row %}
   </tr>
+{%   endif %}
 {% endif %}
 {% endmacro %}

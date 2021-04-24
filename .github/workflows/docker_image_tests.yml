@@ -35,7 +35,9 @@ jobs:
               ./tests/cli
 
       - name: Prep environment for configuration building tests
-        run: mkdir ~/arouteserver_configs
+        run: |
+          mkdir ~/arouteserver_configs
+          mkdir ~/arouteserver_html
 
       - name: Build configuration for BIRD 1.x
         run: >
@@ -64,13 +66,14 @@ jobs:
               -d \
               -p
 
-      - name: Build configuration for BIRD 2
+      - name: Build configuration for BIRD 2 (+ HTML representation)
         run: >
           docker run \
             -t \
             --rm \
             -v $(pwd)/config.d/clients.yml:/root/clients.txt:ro \
             -v ~/arouteserver_configs:/root/arouteserver_configs \
+            -v ~/arouteserver_html:/root/arouteserver_html \
             -e RS_ASN=65500 \
             -e ROUTER_ID=192.0.2.123 \
             -e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
@@ -90,15 +93,22 @@ jobs:
               -d \
               -p
 
-      - name: Build configuration for OpenBGPD
+      - name: Validate HTML representation
+        run: >
+          grep \
+            'Configuration of route server 192.0.2.123 at AS65500' \
+            ~/arouteserver_html/bird.html &>/dev/null
+
+      - name: Build configuration for OpenBGPD (+ HTML representation)
         run: >
           docker run \
             -t \
             --rm \
             -v $(pwd)/config.d/clients.yml:/root/clients.txt:ro \
             -v ~/arouteserver_configs:/root/arouteserver_configs \
+            -v ~/arouteserver_html:/root/arouteserver_html \
             -e RS_ASN=65500 \
-            -e ROUTER_ID=192.0.2.123 \
+            -e ROUTER_ID=192.0.2.124 \
             -e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
             -e DAEMON=openbgpd \
             -e VERSION=6.7 \
@@ -115,3 +125,69 @@ jobs:
               -f /etc/bgpd/bgpd.conf \
               -d \
               -n
+
+      - name: Validate HTML representation
+        run: >
+          grep \
+            'Configuration of route server 192.0.2.124 at AS65500' \
+            ~/arouteserver_html/openbgpd.html &>/dev/null
+
+      - name: Build configuration using custom general.yml file
+        run: >
+          docker run \
+            -t \
+            --rm \
+            -v $(pwd)/config.d/clients.yml:/root/clients.txt:ro \
+            -v $(pwd)/examples/auto-config/bird-general.yml:/etc/arouteserver/general.yml:ro \
+            -v ~/arouteserver_configs:/root/arouteserver_configs \
+            -e IP_VER=4 \
+            -e DAEMON=bird \
+            -e VERSION=1.6.8 \
+            pierky/arouteserver:latest
+
+      - name: Validate configuration built using custom general.yml file
+        run: >
+          docker run \
+            -t \
+            --rm \
+            -v ~/arouteserver_configs/bird4.cfg:/etc/bird/bird.cfg \
+            pierky/bird:1.6.8 \
+            bird \
+              -c /etc/bird/bird.cfg \
+              -d \
+              -p
+
+      - name: Build configuration using custom general.yml file with env vars and reject reasons communities
+        run: >
+          docker run \
+            -t \
+            --rm \
+            -v $(pwd)/config.d/clients.yml:/root/clients.txt:ro \
+            -v $(pwd)/tests/var/general-env-vars-and-reject-reasons.yml:/etc/arouteserver/general.yml:ro \
+            -v ~/arouteserver_configs:/root/arouteserver_configs \
+            -v ~/arouteserver_html:/root/arouteserver_html \
+            -e IP_VER=4 \
+            -e DAEMON=bird \
+            -e VERSION=1.6.8 \
+            -e RS_ASN=9999 \
+            -e ROUTER_ID=192.0.2.200 \
+            pierky/arouteserver:latest
+
+      - name: Validate configuration built using custom general.yml file with env vars and reject reasons communities
+        run: |
+          docker run \
+            -t \
+            --rm \
+            -v ~/arouteserver_configs/bird4.cfg:/etc/bird/bird.cfg \
+            pierky/bird:1.6.8 \
+            bird \
+              -c /etc/bird/bird.cfg \
+              -d \
+              -p
+          cat ~/arouteserver_configs/bird4.cfg | grep 'router id 192.0.2.200'
+
+      - name: Validate HTML representation
+        run: >
+          grep \
+            'Configuration of route server 192.0.2.200 at AS9999' \
+            ~/arouteserver_html/bird.html &>/dev/null

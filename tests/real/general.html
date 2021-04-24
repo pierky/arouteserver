@@ -112,26 +112,26 @@ Route <strong>validity state</strong> is signalled to route server clients using
   <tr>
 </thead>
 <tbody>
-   
-   
+  
+  
     <tr>
     <td>Origin ASN is included in client's AS-SET</td>
     <td>65530:1</td>
     <td>None</td>
     <td>999:65530:1</td>
   </tr>
- 
+
     <tr>
     <td>Origin ASN is NOT included in client's AS-SET</td>
     <td>65530:0</td>
     <td>None</td>
     <td>999:65530:0</td>
   </tr>
- 
-   
+
   
   
-   
+  
+  
 </tbody>
 </table>
 </p></li>
@@ -451,7 +451,7 @@ Route <strong>validity state</strong> is signalled to route server clients using
 </div>
 </p></li>
 
-<li><p>IPv6 prefixes are accepted only if part of the IPv6 Global Unicast space 2000::/3.</p></li> 
+<li><p>IPv6 prefixes are accepted only if part of the IPv6 Global Unicast space 2000::/3.</p></li>
 </ul>
 
 
@@ -460,12 +460,12 @@ Route <strong>validity state</strong> is signalled to route server clients using
 
 <ul>
 <li><p>Blackhole filtering of more specific IP prefixes can be requested by tagging them with the following <strong>BGP communities</strong>:
-65534:0, 
-999:666:0, 
+65534:0,
+999:666:0,
 65535:666 (<a href="https://tools.ietf.org/html/rfc7999#section-5">BLACKHOLE</a> well-known community)
 </p></li>
 
-<li><p>By default, routes are 
+<li><p>By default, routes are
 <strong>propagated</strong> to all the clients unless they have been explicitly configured to not receive them.
 </p></li>
 
@@ -765,7 +765,7 @@ internal reporting purposes or in the route server log files.</p></li>
 
 
 
-* For RTT-based communities, the following values can be used for <em>X</em>: 
+* For RTT-based communities, the following values can be used for <em>X</em>:
 5, 10, 15, 20, 30, 50, 100, 200, 500
 
 </div>

@@ -28,6 +28,7 @@ IP_VER="${IP_VER}"
 
 CLIENTS_FILE_PATH="/root/clients.txt"
 OUTPUT_DIR="/root/arouteserver_configs"
+OUTPUT_DIR_HTML="/root/arouteserver_html"
 
 if [[ ! -e "${OUTPUT_DIR}" && ! -d "${OUTPUT_DIR}" ]]; then
     error "The output directory ${OUTPUT_DIR} can't be found.
@@ -42,18 +43,6 @@ fi
 
 if [[ -z "${VERSION}" ]]; then
     error_envvar_not_set "VERSION"
-fi
-
-if [[ -z "${RS_ASN}" ]]; then
-    error_envvar_not_set "RS_ASN"
-fi
-
-if [[ -z "${ROUTER_ID}" ]]; then
-    error_envvar_not_set "ROUTER_ID"
-fi
-
-if [[ -z "${LOCAL_PREFIXES}" ]]; then
-    error_envvar_not_set "LOCAL_PREFIXES"
 fi
 
 if [[ ! -e "${CLIENTS_FILE_PATH}" ]]; then
@@ -81,6 +70,18 @@ if [[ "${DAEMON}" == "bird" ]]; then
 fi
 
 if [[ ! -e /etc/arouteserver/general.yml ]]; then
+    if [[ -z "${RS_ASN}" ]]; then
+        error_envvar_not_set "RS_ASN"
+    fi
+
+    if [[ -z "${ROUTER_ID}" ]]; then
+        error_envvar_not_set "ROUTER_ID"
+    fi
+
+    if [[ -z "${LOCAL_PREFIXES}" ]]; then
+        error_envvar_not_set "LOCAL_PREFIXES"
+    fi
+
     echo ""
     bold "Configuring ARouteServer for ${DAEMON} ${VERSION}..."
     echo ""
@@ -95,6 +96,26 @@ if [[ ! -e /etc/arouteserver/general.yml ]]; then
 else
     echo ""
     bold "The user-provided configuration from general.yml will be used."
+    echo ""
+fi
+
+if [[ -e "${OUTPUT_DIR_HTML}" && -d "${OUTPUT_DIR_HTML}" ]]; then
+    OUTPUT_FILE_HTML="${DAEMON}.html"
+
+    echo ""
+    echo "Generating HTML textual representation of route server's options and policies"
+    echo ""
+
+    OUTPUT_PATH_HTML="${OUTPUT_DIR_HTML}/${OUTPUT_FILE_HTML}"
+
+    arouteserver \
+        html \
+        --clients "${CLIENTS_FILE_PATH}" \
+        -o "${OUTPUT_PATH_HTML}"
+
+    echo ""
+    bold "Textual representation of route server policy for ${DAEMON} saved to ${OUTPUT_PATH_HTML} (path on the container)."
+    echo "You will find the textual representation file in your host system, inside the directory that you mounted at run-time."
     echo ""
 fi
 

@@ -3,6 +3,21 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+v1.5.1
+------
+
+- Improvement (Docker image): generate HTML representation of the route server configuration through the Docker image.
+
+  See also `GitHub PR70 <https://github.com/pierky/arouteserver/pull/70>`_ and `issue 69 <https://github.com/pierky/arouteserver/issues/69>`_.
+
+- Fix (Docker image): make ``RS_ASN``, ``ROUTER_ID`` and ``LOCAL_PREFIXES`` environment variables not required when a custom general.yml file is used.
+
+  See also `GitHub PR68 <https://github.com/pierky/arouteserver/pull/68>`_.
+
+- Fix: the "Reject reasons" table in the HTML representation was rendered improperly.
+
+  See also `GitHub issue 71 <https://github.com/pierky/arouteserver/issues/71>`_.
+
 v1.5.0
 ------
 
