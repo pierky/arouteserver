@@ -489,8 +489,17 @@ class OpenBGPD68Instance(OpenBGPDClassicInstance):
     BGP_SPEAKER_VERSION = "6.8"
     TARGET_VERSION = "6.8"
 
-OpenBGPDPreviousInstance = OpenBGPD67Instance
-OpenBGPDLatestInstance = OpenBGPD68Instance
+class OpenBGPD69Instance(OpenBGPDClassicInstance):
+
+    VIRSH_DOMAINNAME = "arouteserver_openbgpd69"
+
+    TAG = "openbgpd69"
+
+    BGP_SPEAKER_VERSION = "6.9"
+    TARGET_VERSION = "6.9"
+
+OpenBGPDPreviousInstance = OpenBGPD68Instance
+OpenBGPDLatestInstance = OpenBGPD69Instance
 
 class OpenBGPD65PortableInstance(OpenBGPDPortableInstance):
 
@@ -528,4 +537,15 @@ class OpenBGPD68PortableInstance(OpenBGPDPortableInstance):
     # TARGET_VERSION not set here because it's assumed to be
     # the same of the OpenBGPD Latest one.
 
-OpenBGPDPortableLatestInstance = OpenBGPD68PortableInstance
+
+class OpenBGPD69PortableInstance(OpenBGPDPortableInstance):
+
+    DOCKER_IMAGE = "pierky/openbgpd:6.9p0"
+
+    TAG = "openbgpd69p"
+
+    BGP_SPEAKER_VERSION = "6.9p0"
+    # TARGET_VERSION not set here because it's assumed to be
+    # the same of the OpenBGPD Latest one.
+
+OpenBGPDPortableLatestInstance = OpenBGPD69PortableInstance

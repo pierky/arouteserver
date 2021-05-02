@@ -348,18 +348,18 @@ class TestConfigureCmd(ARouteServerTestCase):
             self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
 
     def test_openbgpd68_simple(self):
-        """Configure command: OpenBGPD 6.8, simple"""
+        """Configure command: OpenBGPD 6.9, simple"""
         self.expected_config["cfg"]["path_hiding"] = False
         self.mock_answers([
             "openbgpd",
-            "6.8",
+            "6.9",
             "999",
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
         ])
         dic = self.configure_and_build(
             OpenBGPDConfigBuilder,
-            target_version="6.8"
+            target_version="6.9"
         )
 
         for comm_name in dic["cfg"]["communities"]:
