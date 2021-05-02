@@ -13,14 +13,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-class RichConfigExampleScenario_Data6(object):
+from .base import RPKIRTRScenarioOpenBGPD
+from .data4 import RPKIRTRScenario_Data4
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPortableLatestInstance
 
-    DATA = {
-        "rs_IPAddress":                     "2001:db8:1:1::2",
+class RPKIRTRScenario_OpenBGPDIPv4(RPKIRTRScenario_Data4, RPKIRTRScenarioOpenBGPD):
+    __test__ = True
 
-        "AS10745_allowed_prefixes":         "2001:500:4::/48",
-        "AS3333_allowed_prefixes":          "2001:67c:2e8::/48",
-
-        "AS1_1_IPAddress":                  "2001:db8:1:1::111",
-        "AS1_1":                            "2001:67c:2e8::/56"
-    }
+    SHORT_DESCR = "Live test, OpenBGPD {}, RTR protocol".format(
+        OpenBGPDPortableLatestInstance.BGP_SPEAKER_VERSION
+    )
+    RS_INSTANCE_CLASS = OpenBGPDPortableLatestInstance
+    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4

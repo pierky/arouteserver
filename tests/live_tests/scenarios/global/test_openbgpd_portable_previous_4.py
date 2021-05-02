@@ -13,13 +13,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .base import BIRD2RPKIRTRScenario
-from .data4 import BIRD2RPKIRTRScenario_Data4
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, BIRD2Instance
+import os
+import unittest
 
-class BIRD2RPKIRTRScenario_IPv4(BIRD2RPKIRTRScenario_Data4, BIRD2RPKIRTRScenario):
+from .base import BasicScenarioOpenBGPDPrevious
+from .data4 import BasicScenario_Data4
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPortablePreviousInstance
+
+class BasicScenario_OpenBGPDIPv4(BasicScenario_Data4, BasicScenarioOpenBGPDPrevious):
+
     __test__ = True
 
-    SHORT_DESCR = "Live test, BIRD v2, RTR protocol"
-    RS_INSTANCE_CLASS = BIRD2Instance
+    SHORT_DESCR = "Live test, OpenBGPD {}, global scenario, IPv4".format(
+        OpenBGPDPortablePreviousInstance.BGP_SPEAKER_VERSION
+    )
+    RS_INSTANCE_CLASS = OpenBGPDPortablePreviousInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4

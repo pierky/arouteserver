@@ -108,7 +108,8 @@ cfg:
         enabled: true
         source: "rtrlib"
 EOF
-build_cmd "openbgpd" | must_contain "only the 'ripe-rpki-validator-cache' value"
+build_cmd "openbgpd" --target-version 6.8 | must_contain "only the 'ripe-rpki-validator-cache' value"
+build_cmd "openbgpd" --target-version 6.9 | must_not_contain "only the 'ripe-rpki-validator-cache' value"
 
 # ---------------------------------------------
 # RFC1997 'pass' policy and bgp comms collision

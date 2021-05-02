@@ -223,7 +223,7 @@ class BIRDInstance(DockerInstance, BGPSpeakerInstance):
                     if "BGP.as_path:" in line:
                         raw_as_path = line.split(": ")[1].strip()
                         if "{" in raw_as_path:
-                            # Stripping as_set in strings like this:
+                            # Stripping as_set in strings like this:
                             #   BGP.as_path: 222 333 { 333 333 }
                             as_path = raw_as_path[0:raw_as_path.index("{")].strip()
                             as_set = raw_as_path[raw_as_path.index("{") + 1:-1].strip()

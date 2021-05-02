@@ -10,6 +10,8 @@ Starting with this release, the default target version for OpenBGPD will be the 
 
 - New: Add support for OpenBGPD/OpenBSD 6.9 and OpenBGPD Portable 6.9p0, also added to the integration testing suite.
 
+- New (OpenBGPD): add support for RTR sessions starting with version 6.9.
+
 v1.5.1
 ------
 

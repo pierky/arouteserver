@@ -1140,20 +1140,48 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
         use_rpki_roas_as_route_objects_cfg = \
             self.cfg_general["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]
         if use_rpki_roas_as_route_objects_cfg["enabled"]:
-            if self.cfg_general["rpki_roas"]["source"] != "ripe-rpki-validator-cache":
+            if self.cfg_general["rpki_roas"]["source"] != "ripe-rpki-validator-cache" and \
+               version.parse(self.target_version) < version.parse("6.9"):
                 if not self.process_bgpspeaker_specific_compatibility_issue(
                     "rpki_roas_as_route_objects_source",
-                    "For OpenBGPD only the 'ripe-rpki-validator-cache' "
+                    "For OpenBGPD < 6.9 only the 'ripe-rpki-validator-cache' "
                     "value is allowed for the 'rpki_roas.source' option."
                 ):
                     res = False
 
         if self.cfg_general.rpki_roas_needed:
-            if self.cfg_general["rpki_roas"]["source"] != "ripe-rpki-validator-cache":
+            if self.cfg_general["rpki_roas"]["source"] != "ripe-rpki-validator-cache" and \
+               version.parse(self.target_version) < version.parse("6.9"):
                 if not self.process_bgpspeaker_specific_compatibility_issue(
                     "rpki_roas_source",
-                    "For OpenBGPD only the 'ripe-rpki-validator-cache' "
+                    "For OpenBGPD < 6.9 only the 'ripe-rpki-validator-cache' "
                     "value is allowed for the 'rpki_roas.source' option."
+                ):
+                    res = False
+
+            if self.cfg_general["rpki_roas"]["source"] == "rtr" and \
+               version.parse(self.target_version) == version.parse("6.9"):
+                if not self.process_bgpspeaker_specific_compatibility_issue(
+                    "rpki_roas_source",
+                    "The general configuration policy has 'rpki_roas.source' "
+                    "set to 'rtr', which means that ROAs will be retrieved "
+                    "using one or more RTR sessions directly configured on "
+                    "the route-server. "
+                    "However, for version 6.9 of OpenBGPD, some issues were "
+                    "observed that may affect the operations: please verify "
+                    "whether these issues are considered relevant for your "
+                    "deployment scenario, and if you believe they are not "
+                    "relevant, or if you patched the daemon to circumvent "
+                    "them, please ignore this error as reported at the end of "
+                    "this message.\n"
+                    "Information about those issues can be found here:\n"
+                    "- 'Invalid argument' error on RTR session establishment "
+                    "(OpenBGPD 6.9p0 portable edition, issue #23 on GitHub "
+                    "https://github.com/openbgpd-portable/openbgpd-portable/"
+                    "issues/23)\n"
+                    "- Blocking `connect()` call that may lead to the daemon "
+                    "to block until the connection times out "
+                    "(https://marc.info/?l=openbsd-tech&m=162005636502085&w=2)"
                 ):
                     res = False
 

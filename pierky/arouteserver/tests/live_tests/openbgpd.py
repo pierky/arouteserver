@@ -188,7 +188,7 @@ class OpenBGPDInstance(object):
             if last_line_new_route:
                 raw_as_path = line
                 if "{" in raw_as_path:
-                    # Stripping as_set in strings like this:
+                    # Stripping as_set in strings like this:
                     #   222 333 { 333 333 }
                     as_path = raw_as_path[0:raw_as_path.index("{")].strip()
                     as_set = raw_as_path[raw_as_path.index("{") + 1:-1].strip()
@@ -264,6 +264,9 @@ class OpenBGPDInstance(object):
                 route.lrg_comms == other_route.lrg_comms:
                 return True
         return False
+
+    def clear_cached_routes(self):
+        self.routes = {}
 
     def get_routes(self, prefix, include_filtered=False, only_best=False):
         if include_filtered and only_best:
@@ -540,7 +543,7 @@ class OpenBGPD68PortableInstance(OpenBGPDPortableInstance):
 
 class OpenBGPD69PortableInstance(OpenBGPDPortableInstance):
 
-    DOCKER_IMAGE = "pierky/openbgpd:6.9p0"
+    DOCKER_IMAGE = "pierky/openbgpd:6.9p0-patches"
 
     TAG = "openbgpd69p"
 
@@ -548,4 +551,5 @@ class OpenBGPD69PortableInstance(OpenBGPDPortableInstance):
     # TARGET_VERSION not set here because it's assumed to be
     # the same of the OpenBGPD Latest one.
 
+OpenBGPDPortablePreviousInstance = OpenBGPD68PortableInstance
 OpenBGPDPortableLatestInstance = OpenBGPD69PortableInstance

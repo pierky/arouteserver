@@ -272,10 +272,10 @@ HOOKS="pre_receive_from_client post_receive_from_client pre_announce_to_client p
 RenderExample "bird_hooks" "bird" "$G" "$C" "config.d/bogons.yml" 1 4 --use-hooks $HOOKS --use-local-files header
 RenderExample "bird_hooks" "bird" "$G" "$C" "config.d/bogons.yml" 1 6 --use-hooks $HOOKS --use-local-files header
 
-title "Building example: BIRD v2 RPKI RTR protocol"
-G="examples/bird2_rpki_rtr/general.yml"
-C="examples/bird2_rpki_rtr/clients.yml"
-RenderExample "bird2_rpki_rtr" "bird" "$G" "$C" "config.d/bogons.yml" 2
+title "Building example: BIRD v2 and OpenBGPD RPKI RTR protocol"
+G="examples/rpki_rtr/general.yml"
+C="examples/rpki_rtr/clients.yml"
+RenderExample "rpki_rtr" "bird" "$G" "$C" "config.d/bogons.yml" 2
 
 title "Build clients from Euro-IX files? [yes/NO] "
 read YES_NO
@@ -364,7 +364,7 @@ echo "Examples of configurations" >> $DST_FILE
 echo "==========================" >> $DST_FILE
 
 cd examples
-for d in default rich bird_hooks clients-from-euroix auto-config ixf-member-export bird2_rpki_rtr; do
+for d in default rich bird_hooks clients-from-euroix auto-config ixf-member-export rpki_rtr; do
 	EXAMPLE_NAME="$d"
 	if [ -e "$EXAMPLE_NAME/README.rst" ]; then
 		echo "" >> $DST_FILE

@@ -134,6 +134,10 @@ class BGPSpeakerInstance(BaseInstance):
             )
         )
 
+    def clear_cached_routes(self):
+        """Clear any internal cache where routes may be stored."""
+        raise NotImplementedError()
+
     def get_routes(self, prefix, include_filtered=False, only_best=False):
         """Get a list of all the known routes for ``prefix``.
 

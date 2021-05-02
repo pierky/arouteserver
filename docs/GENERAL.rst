@@ -955,17 +955,19 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
 
   - **rtr**: ROAs are loaded from an external RTR source.
     rtrllib (https://github.com/rtrlib/bird-rtrlib-cli) can be
-    used for BIRD 1.6.x; in BIRD v2 there is built-in support
-    for the RTR protocol.
+    used for BIRD 1.6.x; in BIRD v2 and OpenBGPD (starting with
+    version 6.9) there is built-in support for the RTR protocol.
     The name of the table where send the ROAs to is **RPKI** for
     BIRD 1.6.x and **RPKI4** and **RPKI6** for BIRD v2.
-    In BIRD v2, an external file **rpki_rtr_config.local** must be
+    When the built-in implementation is used for OpenBGPD (> 6.9)
+    or BIRD v2, an external file **rpki_rtr_config.local** must be
     found within the same directory where the main configuration
-    file is stored (/etc/bird usually) and must contain the BIRD 2
-    configuration for 'protocol rpki'. An example on how to
-    setup that file can be found in the examples/bird2_rpki_rtr
-    directory (please note, in order to use the RTR protocol BIRD
-    must be compiled with --enable-libssh).
+    file is stored (/etc/bird or /etc/bgpd usually) and must
+    contain the configuration of the RTR sessions specific for
+    that daemon.
+    An example on how to setup that file can be found in the
+    examples/rpki_rtr directory (please note, in order to use
+    the RTR protocol BIRD must be compiled with --enable-libssh).
 
 
   - **ripe-rpki-validator-cache**: ROAs are loaded from a JSON
@@ -986,10 +988,6 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
   from a trusted cache, unless the URL of a local, trusted
   instance of a RPKI validator is provided below in the
   **ripe_rpki_validator_url** option.
-
-
-  OpenBGPD: only the **ripe-rpki-validator-cache** source
-  is currently supported.
 
 
   Default: **ripe-rpki-validator-cache**
