@@ -6,6 +6,8 @@ Change log
 next release
 ------------
 
+Starting with this release, the default target version for OpenBGPD will be the latest stable (6.9 in this case).
+
 - New: Add support for OpenBGPD/OpenBSD 6.9 and OpenBGPD Portable 6.9p0, also added to the integration testing suite.
 
 v1.5.1
