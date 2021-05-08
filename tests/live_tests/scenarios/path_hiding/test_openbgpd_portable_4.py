@@ -46,4 +46,3 @@ class PathHidingScenario_MitigationOff_OpenBGPDIPv4(PathHidingScenario_Data4,
     SHORT_DESCR = "Live test, OpenBGPD {}, path hiding, mitigation off, IPv4".format(
         OpenBGPDPortableLatestInstance.BGP_SPEAKER_VERSION
     )
-

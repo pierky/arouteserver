@@ -13,6 +13,10 @@ group "clients" {
 		{{ "client"|include_local_file -}}
 		remote-as {{ client.asn }}
 
+{% if cfg.path_hiding and "6.9"|target_version_ge %}
+		rde evaluate all
+{% endif %}
+
 {%	if "6.1"|target_version_le %}
 		softreconfig in yes
 {%	endif %}

@@ -15,6 +15,7 @@
 
 import six
 import unittest
+from packaging import version
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
@@ -208,8 +209,9 @@ class PathHidingScenario_MitigationOn(object):
 
     def test_040_AS3_and_AS4_prefix_via_AS2(self):
         """{}: AS3 and AS4 receive prefix with sub-optimal path via AS2"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("Work in progress")
+        if isinstance(self.rs, OpenBGPDInstance) and \
+           version.parse(self.TARGET_VERSION.replace("p0", "")) < version.parse("6.9"):
+            raise unittest.SkipTest("Path hiding mititaion not supported on OpenBGPD < 6.9")
 
         for inst in (self.AS3, self.AS4):
             self.receive_route(inst, self.DATA["AS101_pref_ok1"], self.rs,
@@ -222,6 +224,22 @@ class PathHidingScenario_MitigationOn(object):
             with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                 self.receive_route(inst, self.DATA["AS101_pref_ok1"], self.rs,
                                    next_hop=self.AS1)
+
+    def test_061_2nd_best_withdrawn(self):
+        """{}: 2nd best is withdrawn and AS3 should not see it anymore"""
+
+        # Details on:
+        # https://github.com/openbgpd-portable/openbgpd-portable/issues/21#
+
+        self.AS101._birdcl("disable AS2")
+
+        self.rs.clear_cached_routes()
+        self.receive_route(self.rs, self.DATA["AS101_pref_ok1"], self.AS1,
+                           as_path="1 101")
+
+        self.AS3.clear_cached_routes()
+        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
+            self.receive_route(self.AS3, self.DATA["AS101_pref_ok1"])
 
 class PathHidingScenario_MitigationOff(object):
 
