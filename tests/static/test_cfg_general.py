@@ -1025,7 +1025,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
 
     def test_transit_free_asns(self):
         """{}: transit free, ASNs list"""
-        self.assertEqual(self.cfg["filtering"]["transit_free"]["asns"], [174, 209, 286, 701, 1239, 1299, 2828, 2914, 3257, 3320, 3356, 3549, 5511, 6453, 6461, 6762, 6830, 7018, 12956])
+        self.assertEqual(self.cfg["filtering"]["transit_free"]["asns"], [174, 701, 1299, 2914, 3257, 3320, 3356, 5511, 6453, 6461, 6762, 6830, 7018, 12956])
         self._test_optional(self.cfg["filtering"]["transit_free"], "asns")
 
         cfg = [
@@ -1218,7 +1218,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 },
                 "transit_free": {
                     "action": None,
-                    "asns": [174, 209, 286, 701, 1239, 1299, 2828, 2914, 3257, 3320, 3356, 3549, 5511, 6453, 6461, 6762, 6830, 7018, 12956]
+                    "asns": [174, 209, 286, 701, 1299, 2828, 2914, 3257, 3320, 3356, 3549, 5511, 6453, 6461, 6762, 6830, 7018, 12956]
                 },
                 "never_via_route_servers": {
                     "peering_db": True,
