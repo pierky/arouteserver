@@ -47,8 +47,8 @@ def put_table_line(lengths, char="="):
 add_feature("Path hiding mitigation (RFC7947, 2.3.1)", {
     "bird": True,
     "bird2": True,
-    "openbgpd": False,
-    "openbgpd_portable": False,
+    "openbgpd": True,
+    "openbgpd_portable": True,
 })
 
 

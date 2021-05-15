@@ -163,7 +163,7 @@ https://github.com/pierky/arouteserver/blob/master/examples/auto-config
 
 bird-general.yml.html - See the `textual representation of this configuration <_static/examples_auto-config_bird-general.yml.html>`__.
 
-openbgpd64-general.yml.html - See the `textual representation of this configuration <_static/examples_auto-config_openbgpd64-general.yml.html>`__.
+openbgpd-general.yml.html - See the `textual representation of this configuration <_static/examples_auto-config_openbgpd-general.yml.html>`__.
 
 IX-F Member Export files
 ------------------------

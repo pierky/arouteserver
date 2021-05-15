@@ -511,8 +511,6 @@ The following list of limitations is based on the currently supported versions o
 
 - OpenBGPD
 
-  - Currently, **path hiding** mitigation is not implemented for OpenBGPD configurations. Only single-RIB configurations are generated.
-
   - **ADD-PATH** is not supported by OpenBGPD.
 
   - For max-prefix filtering, only the ``shutdown`` and the ``restart`` actions are supported by OpenBGPD. Restart is configured with a 15 minutes timer.

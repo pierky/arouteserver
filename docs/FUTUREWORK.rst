@@ -20,7 +20,6 @@ Mid term
 Long term
 ---------
 
-- New feature: path-hiding mitigation technique on OpenBGPD
 - New feature: routing policies based on RPSL import-via/export-via
 - New feature: other BGP speakers support (GoBGP, ...)
 - New feature: balance clients among *n* different configurations (for multiple processes - see `Scaling BIRD Routeservers <https://ripe73.ripe.net/presentations/115-e-bru-20161026-RIPE73-scaling-bird-routeservers-final.pdf>`_)

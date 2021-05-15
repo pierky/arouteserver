@@ -61,7 +61,8 @@ General options: ``cfg``
   (http://bird.network.cz/?get_doc&f=bird-6.html#bgp-secondary)
 
 
-  OpenBGPD: not implemented in ARouteServer. Single RIB only.
+  OpenBGPD: 'rde evaluate all' is used.
+  (https://man.openbsd.org/bgpd.conf#rde)
 
 
   Default: **True**

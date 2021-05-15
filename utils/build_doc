@@ -61,6 +61,22 @@ if [ -n "$1" ]; then
 	shift
 fi
 
+BIRD_DEFAULT_VERSION=$(cat << EOF | python -
+from pierky.arouteserver.builder import BIRDConfigBuilder
+print(BIRDConfigBuilder.DEFAULT_VERSION)
+EOF
+)
+BIRD2_DEFAULT_VERSION=$(cat << EOF | python -
+from pierky.arouteserver.builder import BIRDConfigBuilder
+print(BIRDConfigBuilder.AVAILABLE_VERSION[-1])
+EOF
+)
+OPENBGPD_DEFAULT_VERSION=$(cat << EOF | python -
+from pierky.arouteserver.builder import OpenBGPDConfigBuilder
+print(OpenBGPDConfigBuilder.DEFAULT_VERSION)
+EOF
+)
+
 # ----------------------------------------------------
 D=docs/REJECT_REASON_COMMUNITIES.txt
 cat << EOF > $D
@@ -111,10 +127,10 @@ function RenderExample() {
 			IP_VER="$1" ; shift
 			$CMD --ip-ver $IP_VER -o examples/$DST/bird$IP_VER.conf $@
 		else
-			$CMD --target-version 2.0.7 --ignore-issues \* -o examples/$DST/bird_v2.conf $@
+			$CMD --target-version ${BIRD2_DEFAULT_VERSION} --ignore-issues \* -o examples/$DST/bird_v2.conf $@
 		fi
 	elif [ "$COMMAND" == "openbgpd" ]; then
-		$CMD -o examples/$DST/openbgpd.conf --ignore-issues \* --target-version 6.5
+		$CMD -o examples/$DST/openbgpd.conf --ignore-issues \*
 	elif [ "$COMMAND" == "html" ]; then
 		$CMD -o examples/$DST/description.html
 		cp examples/$DST/description.html $DOCS_DIR/_static/examples_$DST.html
@@ -197,14 +213,14 @@ EOF
 
 G="bird-general.yml"
 RenderConfigureExample "bird" $G \
-	"daemon=bird version=1.6.8 asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" | \
+	"daemon=bird version=${BIRD_DEFAULT_VERSION} asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" | \
 		sed 's/^/   /' >> $D
 ./scripts/arouteserver bird $OPTS --ip-ver 4 --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
 
-G="openbgpd64-general.yml"
+G="openbgpd-general.yml"
 RenderConfigureExample "openbgpd" $G \
-	"daemon=openbgpd version=6.5 asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" &>/dev/null
-./scripts/arouteserver openbgpd $OPTS --target-version 6.5 --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
+	"daemon=openbgpd version=${OPENBGPD_DEFAULT_VERSION} asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" &>/dev/null
+./scripts/arouteserver openbgpd $OPTS --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
 
 echo "The textual description (HTML) generated on the basis of the *general.yml* files produced by this command is also reported here." >> $D
 
