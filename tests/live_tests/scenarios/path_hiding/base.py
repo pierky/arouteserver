@@ -22,7 +22,8 @@ from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
                                                           OpenBGPDPreviousInstance, \
-                                                          OpenBGPDLatestInstance
+                                                          OpenBGPDLatestInstance, \
+                                                          OpenBGPDPortableLatestInstance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class PathHidingScenario(LiveScenario):
@@ -227,6 +228,9 @@ class PathHidingScenario_MitigationOn(object):
 
     def test_061_2nd_best_withdrawn(self):
         """{}: 2nd best is withdrawn and AS3 should not see it anymore"""
+
+        if not isinstance(self.rs, OpenBGPDPortableLatestInstance):
+            raise unittest.SkipTest("OpenBSD version not patched")
 
         # Details on:
         # https://github.com/openbgpd-portable/openbgpd-portable/issues/21#
