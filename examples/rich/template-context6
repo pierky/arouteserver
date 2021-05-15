@@ -294,17 +294,12 @@ cfg:
       action: reject
       asns:
       - 174
-      - 209
-      - 286
       - 701
-      - 1239
       - 1299
-      - 2828
       - 2914
       - 3257
       - 3320
       - 3356
-      - 3549
       - 5511
       - 6453
       - 6461
@@ -893,13 +888,13 @@ AS10745:
   le: 128
   length: 48
   max_length: 128
-  prefix: '2001:500:4::'
+  prefix: '2001:500:110::'
 - exact: false
   ge: 48
   le: 128
   length: 48
   max_length: 128
-  prefix: '2001:500:110::'
+  prefix: '2001:500:4::'
 
 
 registrobr_whois_db_records

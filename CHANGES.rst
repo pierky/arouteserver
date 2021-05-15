@@ -12,6 +12,26 @@ Starting with this release, the default target version for OpenBGPD will be the 
 
 - New (OpenBGPD): add support for RTR sessions starting with version 6.9.
 
+  Please note the following issues with OpenBGPD 6.9 if you want to enable RTR sessions; you might want to apply the available patches:
+
+  - ``Invalid argument`` error and RTR session not coming up (`issue #23 on GitHub <https://github.com/openbgpd-portable/openbgpd-portable/issues/23>`__ and `"bgpd, fix RTR connect" <https://marc.info/?l=openbsd-tech&m=162004696829635&w=2>`__ post on openbsd-tech)
+
+  - non blocking ``connect()`` call for RTR session establishment (`"bgpd behaviour when RTR endpoint is not available" <https://marc.info/?l=openbgpd-users&m=161997334304946&w=2>`__ post on openbgpd-users and `"bgpd, non-blocking rtr connect" <https://marc.info/?l=openbsd-tech&m=162005636502085&w=2>`__ post on openbsd-tech)
+
+- New (OpenBGPD): enable support for path-hiding mitigation.
+
+  Even though OpenBGPD supports path-hiding mitigation starting with version 6.9, the feature is not automatically enabled by the ``configure`` command because of some issues that might impair the stability of the routing ecosystem:
+
+  - withdrawal of 2nd best route with ``rde evaluate all`` (`issue #21 on GitHub <https://github.com/openbgpd-portable/openbgpd-portable/issues/21>`__ and `"bgpd fix for rde evaluate all" <https://marc.info/?l=openbsd-tech&m=162011500326166&w=2>`__ post on openbsd-tech)
+
+  - advertisement of 2nd best routes on reload with ``rde evaluate all`` (`issue #21 on GitHub <https://github.com/openbgpd-portable/openbgpd-portable/issues/21>`__ and `"bgpd better reload behaviour" <https://marc.info/?l=openbsd-tech&m=162021735205669&w=2>`__ post on openbsd-tech)
+
+  Please apply the existing patches before enabling it on a production environment, and acknowledge the error produced by ARouteServer using the ``--ignore-issues path_hiding_69`` CLI option.
+
+- Improvement: the default list of `"transit free" <https://arouteserver.readthedocs.io/en/latest/GENERAL.html#transit-free-networks-transit-free>`__ ASNs has been updated and some networks have been removed.
+
+  See also `GitHub PR73 <https://github.com/pierky/arouteserver/pull/73>`_.
+
 v1.5.1
 ------
 
