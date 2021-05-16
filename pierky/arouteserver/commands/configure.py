@@ -245,11 +245,21 @@ class ConfigureCommand(ARouteServerCommand):
         cfg["router_id"] = self.answers["router_id"]
 
         if self.answers["daemon"] == "openbgpd":
-            self.notes.append(
-                "For OpenBGPD, path-hiding mitigation techniques are "
-                "not implemented."
-            )
-            cfg["path_hiding"] = False
+            if version.parse(self.answers["version"]) < version.parse("6.9"):
+                self.notes.append(
+                    "For OpenBGPD < 6.9, path-hiding mitigation techniques are "
+                    "not implemented."
+                )
+                cfg["path_hiding"] = False
+            elif version.parse(self.answers["version"]) == version.parse("6.9"):
+                self.notes.append(
+                    "For OpenBGPD 6.9, path-hiding mitigation is available, but "
+                    "it's not automatically configured because of some issues "
+                    "in the implementations of bgpd. "
+                    "Please refer to the CHANGELOG for the release 1.6.0 of "
+                    "ARouteServer for more details."
+                )
+                cfg["path_hiding"] = False
 
         cfg["filtering"] = OrderedDict()
         filtering = cfg["filtering"]
@@ -277,9 +287,8 @@ class ConfigureCommand(ARouteServerCommand):
 
         filtering["transit_free"] = {
             "action": "reject",
-            "asns": [174, 209, 286, 701, 1239, 1299, 2828, 2914,
-                     3257, 3320, 3356, 3549, 5511, 6453, 6461,
-                     6762, 6830, 7018, 12956]
+            "asns": [174, 701, 1299, 2914, 3257, 3320, 3356, 5511,
+                     6453, 6461, 6762, 6830, 7018, 12956]
         }
         filtering["never_via_route_servers"] = {
             "peering_db": True

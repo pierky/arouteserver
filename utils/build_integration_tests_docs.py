@@ -1,8 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPortablePreviousInstance
+
+# Ignoring tests of previous portable release because it's only used in
+# 'global', not really relevant to build the content of this doc file.
+IGNORE_BGP_SPEAKERS = [
+    "OpenBGPD " + OpenBGPDPortablePreviousInstance.BGP_SPEAKER_VERSION
+]
 
 output = ""
-
 
 def put_line(s=""):
     global output
@@ -16,7 +22,7 @@ def put_table_line(lengths, char="="):
     output += "\n"
 
 
-last_ci_output = open("../tests/last", "r").read()
+last_ci_output = open("tests/last", "r").read()
 
 tests_to_skip = [
     "setting instances up...",
@@ -51,6 +57,9 @@ for line in last_ci_output.split("\n"):
 
     bgp_speaker = fields[0].strip()
     del fields[0]
+
+    if bgp_speaker in IGNORE_BGP_SPEAKERS:
+        continue
 
     rest = ",".join(fields)
     # global scenario, IPv4, tag: control communities, don't announce to any ... ok

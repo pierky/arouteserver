@@ -294,17 +294,12 @@ cfg:
       action: reject
       asns:
       - 174
-      - 209
-      - 286
       - 701
-      - 1239
       - 1299
-      - 2828
       - 2914
       - 3257
       - 3320
       - 3356
-      - 3549
       - 5511
       - 6453
       - 6461
@@ -1000,13 +995,6 @@ irrdb_info
     exact: false
     ge: null
     le: 32
-    length: 16
-    max_length: 32
-    prefix: 103.0.0.0
-  - comment: null
-    exact: false
-    ge: null
-    le: 32
     length: 22
     max_length: 32
     prefix: 103.1.0.0
@@ -1263,30 +1251,24 @@ AS10745:
   max_length: 128
   prefix: '2001:500:110::'
 - exact: false
-  ge: 48
-  le: 128
-  length: 48
-  max_length: 128
-  prefix: '2001:500:4::'
-- exact: false
   ge: 24
   le: 32
   length: 24
   max_length: 32
   prefix: 192.149.252.0
+- exact: false
+  ge: 48
+  le: 128
+  length: 48
+  max_length: 128
+  prefix: '2001:500:4::'
 AS12654:
 - exact: false
   ge: 24
   le: 32
   length: 24
   max_length: 32
-  prefix: 23.128.24.0
-- exact: false
-  ge: 24
-  le: 32
-  length: 24
-  max_length: 32
-  prefix: 23.128.125.0
+  prefix: 23.128.124.0
 - exact: false
   ge: 24
   le: 32
@@ -1298,7 +1280,13 @@ AS12654:
   le: 32
   length: 24
   max_length: 32
-  prefix: 23.128.124.0
+  prefix: 23.128.125.0
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
+  prefix: 23.128.24.0
 
 
 registrobr_whois_db_records
@@ -1354,9 +1342,11 @@ never_via_route_servers_asns
 - 202793
 - 134022
 - 3754
+- 264424
 - 264212
 - 11670
 - 3630
+- 7862
 - 262311
 - 48408
 - 52973
@@ -1368,11 +1358,13 @@ never_via_route_servers_asns
 - 135848
 - 134041
 - 138023
+- 136106
 - 132996
 - 30983
 - 263258
 - 396477
 - 7195
+- 262191
 - 54295
 - 138953
 - 263980
@@ -1436,3 +1428,7 @@ never_via_route_servers_asns
 - 267214
 - 62164
 - 263686
+- 269906
+- 52946
+- 30967
+- 211358

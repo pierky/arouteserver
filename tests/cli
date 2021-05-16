@@ -108,7 +108,8 @@ cfg:
         enabled: true
         source: "rtrlib"
 EOF
-build_cmd "openbgpd" | must_contain "only the 'ripe-rpki-validator-cache' value"
+build_cmd "openbgpd" --target-version 6.8 | must_contain "only the 'ripe-rpki-validator-cache' value"
+build_cmd "openbgpd" --target-version 6.9 | must_not_contain "only the 'ripe-rpki-validator-cache' value"
 
 # ---------------------------------------------
 # RFC1997 'pass' policy and bgp comms collision
@@ -153,7 +154,22 @@ build_cmd "openbgpd" | must_contain "A collision has been detected with the foll
 reset
 TITLE="OpenBGPD default config"
 SUB_TEST="$LINENO"
-build_cmd "openbgpd" | must_contain "ERROR Compatibility issue ID 'path_hiding'"
+build_cmd "openbgpd" --target-version 6.8 | must_contain "ERROR Compatibility issue ID 'path_hiding'"
+
+# ---------------------------------------------
+reset
+TITLE="OpenBGPD path-hiding 6.9"
+SUB_TEST="$LINENO"
+build_cmd "openbgpd" --target-version 6.9 | must_contain "ERROR Compatibility issue ID 'path_hiding_69'"
+build_cmd "openbgpd" --target-version 6.9 | must_not_contain "ERROR Compatibility issue ID 'path_hiding'"
+
+# ---------------------------------------------
+reset
+TITLE="OpenBGPD path-hiding latest"
+SUB_TEST="$LINENO"
+build_cmd "openbgpd" | must_not_contain "ERROR Compatibility issue ID 'path_hiding'"
+# The following test case shall be enabled when >6.9 will be out.
+#build_cmd "openbgpd" | must_not_contain "ERROR Compatibility issue ID 'path_hiding"
 
 # ---------------------------------------------
 reset

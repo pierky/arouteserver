@@ -346,7 +346,7 @@ prefix-set "{{ pref_list_name }}" {
 
 {% if client.cfg.filtering.irrdb.enforce_origin_in_as_set or client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}
 
-{% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled and rpki_roas %}
+{% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled %}
 # routes tagged with $INTCOMM_PREF_OK_ROA community have the prefix validated by a ROA; origin ASN previously validated ($INTCOMM_ORIGIN_OK)
 {%	if "6.4"|target_version_le %}
 # NO_ADVERTISE here means $INTCOMM_ORIGIN_OK
@@ -466,8 +466,7 @@ allow quick from {{ client.ip }} community BLACKHOLE
 
 {% if cfg.filtering.rpki_bgp_origin_validation.enabled and
 	client.cfg.filtering.rpki_bgp_origin_validation.enabled and
-	client.cfg.filtering.rpki_bgp_origin_validation.reject_invalid and
-	rpki_roas %}
+	client.cfg.filtering.rpki_bgp_origin_validation.reject_invalid %}
 # RPKI-based Origin Validation
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " ext-community $INTCOMM_RPKI_INVALID", 14) }}
 {% endif %}

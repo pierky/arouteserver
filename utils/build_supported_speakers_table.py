@@ -47,8 +47,8 @@ def put_table_line(lengths, char="="):
 add_feature("Path hiding mitigation (RFC7947, 2.3.1)", {
     "bird": True,
     "bird2": True,
-    "openbgpd": False,
-    "openbgpd_portable": False,
+    "openbgpd": True,
+    "openbgpd_portable": True,
 })
 
 
@@ -146,7 +146,12 @@ add_feature("RPKI-based filtering (BGP Prefix Origin Validation)", {
     "openbgpd": True,
     "openbgpd_portable": True,
 })
-
+add_feature("RPKI ROAs retrieved via RTR protocol", {
+    "bird": True,
+    "bird2": True,
+    "openbgpd": True,
+    "openbgpd_portable": True,
+})
 
 add_feature("Blackhole filtering support:")
 add_feature("Optional NEXT_HOP rewriting", {

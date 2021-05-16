@@ -61,6 +61,22 @@ if [ -n "$1" ]; then
 	shift
 fi
 
+BIRD_DEFAULT_VERSION=$(cat << EOF | python -
+from pierky.arouteserver.builder import BIRDConfigBuilder
+print(BIRDConfigBuilder.DEFAULT_VERSION)
+EOF
+)
+BIRD2_DEFAULT_VERSION=$(cat << EOF | python -
+from pierky.arouteserver.builder import BIRDConfigBuilder
+print(BIRDConfigBuilder.AVAILABLE_VERSION[-1])
+EOF
+)
+OPENBGPD_DEFAULT_VERSION=$(cat << EOF | python -
+from pierky.arouteserver.builder import OpenBGPDConfigBuilder
+print(OpenBGPDConfigBuilder.DEFAULT_VERSION)
+EOF
+)
+
 # ----------------------------------------------------
 D=docs/REJECT_REASON_COMMUNITIES.txt
 cat << EOF > $D
@@ -111,10 +127,10 @@ function RenderExample() {
 			IP_VER="$1" ; shift
 			$CMD --ip-ver $IP_VER -o examples/$DST/bird$IP_VER.conf $@
 		else
-			$CMD --target-version 2.0.7 --ignore-issues \* -o examples/$DST/bird_v2.conf $@
+			$CMD --target-version ${BIRD2_DEFAULT_VERSION} --ignore-issues \* -o examples/$DST/bird_v2.conf $@
 		fi
 	elif [ "$COMMAND" == "openbgpd" ]; then
-		$CMD -o examples/$DST/openbgpd.conf --ignore-issues \* --target-version 6.5
+		$CMD -o examples/$DST/openbgpd.conf --ignore-issues \*
 	elif [ "$COMMAND" == "html" ]; then
 		$CMD -o examples/$DST/description.html
 		cp examples/$DST/description.html $DOCS_DIR/_static/examples_$DST.html
@@ -197,14 +213,14 @@ EOF
 
 G="bird-general.yml"
 RenderConfigureExample "bird" $G \
-	"daemon=bird version=1.6.8 asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" | \
+	"daemon=bird version=${BIRD_DEFAULT_VERSION} asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" | \
 		sed 's/^/   /' >> $D
 ./scripts/arouteserver bird $OPTS --ip-ver 4 --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
 
-G="openbgpd64-general.yml"
+G="openbgpd-general.yml"
 RenderConfigureExample "openbgpd" $G \
-	"daemon=openbgpd version=6.5 asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" &>/dev/null
-./scripts/arouteserver openbgpd $OPTS --target-version 6.5 --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
+	"daemon=openbgpd version=${OPENBGPD_DEFAULT_VERSION} asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" &>/dev/null
+./scripts/arouteserver openbgpd $OPTS --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
 
 echo "The textual description (HTML) generated on the basis of the *general.yml* files produced by this command is also reported here." >> $D
 
@@ -272,10 +288,10 @@ HOOKS="pre_receive_from_client post_receive_from_client pre_announce_to_client p
 RenderExample "bird_hooks" "bird" "$G" "$C" "config.d/bogons.yml" 1 4 --use-hooks $HOOKS --use-local-files header
 RenderExample "bird_hooks" "bird" "$G" "$C" "config.d/bogons.yml" 1 6 --use-hooks $HOOKS --use-local-files header
 
-title "Building example: BIRD v2 RPKI RTR protocol"
-G="examples/bird2_rpki_rtr/general.yml"
-C="examples/bird2_rpki_rtr/clients.yml"
-RenderExample "bird2_rpki_rtr" "bird" "$G" "$C" "config.d/bogons.yml" 2
+title "Building example: BIRD v2 and OpenBGPD RPKI RTR protocol"
+G="examples/rpki_rtr/general.yml"
+C="examples/rpki_rtr/clients.yml"
+RenderExample "rpki_rtr" "bird" "$G" "$C" "config.d/bogons.yml" 2
 
 title "Build clients from Euro-IX files? [yes/NO] "
 read YES_NO
@@ -364,7 +380,7 @@ echo "Examples of configurations" >> $DST_FILE
 echo "==========================" >> $DST_FILE
 
 cd examples
-for d in default rich bird_hooks clients-from-euroix auto-config ixf-member-export bird2_rpki_rtr; do
+for d in default rich bird_hooks clients-from-euroix auto-config ixf-member-export rpki_rtr; do
 	EXAMPLE_NAME="$d"
 	if [ -e "$EXAMPLE_NAME/README.rst" ]; then
 		echo "" >> $DST_FILE

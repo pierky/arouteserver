@@ -64,9 +64,8 @@ class TestConfigureCmd(ARouteServerTestCase):
                 "transit_free": {
                     "action": "reject",
                     "asns": [
-                        174, 209, 286, 701, 1239, 1299, 2828, 2914,
-                        3257, 3320, 3356, 3549, 5511, 6453, 6461,
-                        6762, 6830, 7018, 12956
+                        174, 701, 1299, 2914, 3257, 3320, 3356, 5511,
+                        6453, 6461, 6762, 6830, 7018, 12956
                     ]
                 },
                 "never_via_route_servers": {
@@ -189,7 +188,7 @@ class TestConfigureCmd(ARouteServerTestCase):
                 else:
                     self.assertEqual(
                         dic1[k], dic2[k],
-                        msg="path: {}".format(path)
+                        msg="path: {} k: {} {} != {}".format(path, k, dic1[k], dic2[k])
                     )
 
         cmd = FakeConfigureCommand(None)
@@ -347,25 +346,72 @@ class TestConfigureCmd(ARouteServerTestCase):
             self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
             self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
 
-    def test_openbgpd68_simple(self):
-        """Configure command: OpenBGPD 6.8, simple"""
+    def test_openbgpd69_simple(self):
+        """Configure command: OpenBGPD 6.9, simple"""
         self.expected_config["cfg"]["path_hiding"] = False
         self.mock_answers([
             "openbgpd",
-            "6.8",
+            "6.9",
             "999",
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
         ])
         dic = self.configure_and_build(
             OpenBGPDConfigBuilder,
-            target_version="6.8"
+            target_version="6.9"
         )
 
         for comm_name in dic["cfg"]["communities"]:
             self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
             self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
             self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
+
+    def test_openbgpd69_no_path_hiding(self):
+        """Configure command: OpenBGPD 6.9, path-hiding"""
+
+        # This is to be sure that for OpenBGPD 6.9 the
+        # path hiding mitigation is not automatically
+        # configured.
+        self.expected_config["cfg"]["path_hiding"] = False
+        self.mock_answers([
+            "openbgpd",
+            "6.9",
+            "999",
+            "192.0.2.1",
+            "192.0.2.0/24,2001:db8::/32"
+        ])
+        dic = self.configure_and_build(
+            OpenBGPDConfigBuilder,
+            target_version="6.9"
+        )
+
+    def test_openbgpd_latest_path_hiding(self):
+        """Configure command: OpenBGPD > 6.9, path-hiding"""
+
+        # This is to be sure that release > 6.9 of  OpenBGPD
+        # get path hiding mitigation automatically configured.
+        # > 6.9 is not released AToW, but hopefully the patches
+        # that are already out at the moment to mitigate the
+        # 'rde evaluate all' issues will be merged when the
+        # next release will be out.
+
+        latest_version = OpenBGPDConfigBuilder.AVAILABLE_VERSION[-1]
+
+        if version.parse(latest_version) > version.parse("6.9"):
+            self.expected_config["cfg"]["path_hiding"] = True
+            self.mock_answers([
+                "openbgpd",
+                latest_version,
+                "999",
+                "192.0.2.1",
+                "192.0.2.0/24,2001:db8::/32"
+            ])
+            dic = self.configure_and_build(
+                OpenBGPDConfigBuilder,
+                target_version=latest_version
+            )
+        else:
+            self.skipTest("latest version <= 6.9")
 
     def test_32bit_asn(self):
         """Configure command: 32 bit route server ASN"""

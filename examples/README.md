@@ -22,6 +22,6 @@ Some lists of clients built starting from Euro-IX JSON files exported by some IX
 
 `general.yml` configurations files generated with the `configure` command.
 
-## `bird2_rpki_rtr` - BIRD v2 RTR protocol configuration
+## `rpki_rtr` - BIRD v2 and OpenBGPD RTR protocol configuration
 
-An example on how to use BIRD v2 built-in RTR protocol support.
+An example on how to use BIRD v2 and OpenBGPD built-in RTR protocol support.

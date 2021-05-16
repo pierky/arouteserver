@@ -23,6 +23,8 @@ Who is using ARouteServer?
 
 - `DO-IX <https://www.do-ix.net/>`__, BIRD.
 
+- `EVIX <https://evix.org/>`__, BIRD.
+
 - `FCIX <https://fcix.net/>`__, BIRD.
 
 - `GAVLIX <https://gavlix.se/>`__.
