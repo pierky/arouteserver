@@ -52,15 +52,15 @@ The command line argument ``--use-local-files`` enables the ``header`` inclusion
    :emphasize-lines: 11
 
    define rs_as = 999;
-   
+
    log "/var/log/bird.log" all;
    log syslog all;
    debug protocols all;
-   
+
    protocol device {};
-   
+
    table master sorted;
-   
+
    include "/etc/bird/header.local";
    ...
 
@@ -99,48 +99,48 @@ A list of BGP communities is also automatically built.
 .. code-block:: console
 
    $ arouteserver configure --output examples/auto-config/bird-general.yml
-   
+
    BGP daemon
    ==========
-   
+
    Depending on the BGP daemon used for the route server some features may not be
    available.
-   
+
    Details here:
    https://arouteserver.readthedocs.io/en/latest/CONFIG.html#caveats-and-
    limitations
-   
+
    Which BGP daemon will be used? [bird/openbgpd] bird
    Which version? [1.6.3/1.6.4/1.6.6/1.6.7/1.6.8/2.0.7/2.0.7+b962967e/2.0.8] 1.6.8
-   
+
    Router server's ASN
    ===================
-   
+
    What's the ASN of the route server? 64496
-   
+
    Route server's BGP router-id
    ============================
-   
+
    Please enter the route server BGP router-id: 192.0.2.1
-   
+
    List of local networks
    ======================
-   
+
    A list of local IPv4/IPv6 networks must be provided here: routes announced by
    route server clients for these prefixes will be filtered out.
-   
+
    Please enter a comma-separated list of local networks: 192.0.2.0/24,2001:db8::/32
-   
-   
-   
+
+
+
    Route server policy definition file generated successfully!
    ===========================================================
-   
+
    The content of the general configuration file will now be written to
    examples/auto-config/bird-general.yml
-   
+
    Some notes:
-   
+
     - Accepted prefix lengths are 8-24 for IPv6 and 12-48 for IPv6.
     - Routes with 'transit-free networks' or 'never via route-server' (PeeringDB)
    ASNs in the middle of AS_PATH are rejected.
@@ -156,7 +156,7 @@ A list of BGP communities is also automatically built.
     - PeeringDB is used to fetch networks prefix count.
     - Routes tagged with the GRACEFUL_SHUTDOWN well-known community (65535:0) are
    processed accordingly to draft-ietf-grow-bgp-gshut.
-   
+
 The textual description (HTML) generated on the basis of the *general.yml* files produced by this command is also reported here.
 
 https://github.com/pierky/arouteserver/blob/master/examples/auto-config
@@ -182,6 +182,7 @@ BIRD v2 and OpenBGPD (starting with release 6.9) have built-in support for the R
 To configure the daemons with ARouteServer in order to fetch ROAs using RTR, the ``rpki_roas.source`` option must be set to ``rtr`` and a local *rpki_rtr_config.local* file must be placed inside the same directory where the main configuration file is created (*/etc/bird* or */etc/bgpd* by default, or a custom one set using the ``--local-files-dir`` command line argument of ARouteServer).
 
 The *rpki_rtr_config.local* file is expected to contain the snippet of BIRD or OpenBGPD config needed to setup one or more RTR sessions:
+
 - BIRD v2: https://bird.network.cz/?get_doc&v=20&f=bird-6.html#ss6.13
 
   **Please note:** the names of the tables where ROAs will be injected into must be ``RPKI4`` and ``RPKI6``.
