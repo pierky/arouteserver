@@ -146,7 +146,12 @@ add_feature("RPKI-based filtering (BGP Prefix Origin Validation)", {
     "openbgpd": True,
     "openbgpd_portable": True,
 })
-
+add_feature("RPKI ROAs retrieved via RTR protocol", {
+    "bird": True,
+    "bird2": True,
+    "openbgpd": True,
+    "openbgpd_portable": True,
+})
 
 add_feature("Blackhole filtering support:")
 add_feature("Optional NEXT_HOP rewriting", {

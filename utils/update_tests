@@ -56,9 +56,9 @@ function join_last_results() {
 	echo "{\"unique_test_cases\": ${num_of_tests}}" > $TESTS_DIR/last.json
 
 	cd $ROOT
+	./utils/build_integration_tests_docs.py > docs/SUPPORTED_SPEAKERS_CI.txt
+	./utils/build_supported_speakers_table.py > docs/SUPPORTED_SPEAKERS_FEATURES.txt
 	cd docs
-	../utils/build_integration_tests_docs.py > SUPPORTED_SPEAKERS_CI.txt
-	../utils/build_supported_speakers_table.py > SUPPORTED_SPEAKERS_FEATURES.txt
 	make html
 
 	#rm $LAST_RESULTS_DIR/*.last

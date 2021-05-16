@@ -38,6 +38,8 @@ NIC.BR Whois data (slide n. 26) from Registro.br           Yes          Yes     
 ---------------------------------------------------------- ------------ ------------ ------------ ------------ 
 RPKI-based filtering (BGP Prefix Origin Validation)        Yes          Yes          Yes          Yes          
 ---------------------------------------------------------- ------------ ------------ ------------ ------------ 
+RPKI ROAs retrieved via RTR protocol                       Yes          Yes          Yes          Yes          
+---------------------------------------------------------- ------------ ------------ ------------ ------------ 
 **Blackhole filtering support:**                           
 --------------------------------------------------------------------------------------------------------------
 Optional NEXT_HOP rewriting                                Yes          Yes          Yes          Yes          
