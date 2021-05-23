@@ -26,7 +26,7 @@ ROUTER_ID="${ROUTER_ID}"
 LOCAL_PREFIXES="${LOCAL_PREFIXES}"
 IP_VER="${IP_VER}"
 
-CLIENTS_FILE_PATH="/root/clients.txt"
+CLIENTS_FILE_PATH="/root/clients.yml"
 OUTPUT_DIR="/root/arouteserver_configs"
 OUTPUT_DIR_HTML="/root/arouteserver_html"
 

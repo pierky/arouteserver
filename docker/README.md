@@ -28,7 +28,7 @@ Docker can then be instructed to run the image using some input arguments that a
 
 When BIRD 1.x is the target BGP daemon for which the configurations are built, also the `IP_VER` variable must be set, to specify for which address-family the configuration must be generated.
 
-The local file where clients are defined must be mounted into the `/root/clients.txt` path of the container, and the local directory where configuration files need to be saved must be mounted as `/root/arouteserver_configs`.
+The local file where clients are defined must be mounted into the `/root/clients.yml` path of the container, and the local directory where configuration files need to be saved must be mounted as `/root/arouteserver_configs`.
 
 Example:
 
@@ -39,7 +39,7 @@ mkdir ~/arouteserver_configs
 docker run \
     -it \
     --rm \
-    -v ~/clients.yml:/root/clients.txt:ro \
+    -v ~/clients.yml:/root/clients.yml:ro \
     -v ~/arouteserver_configs:/root/arouteserver_configs \
     -e RS_ASN=65500 \
     -e ROUTER_ID=192.0.2.123 \
