@@ -3,6 +3,11 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New: Add support for OpenBGPD/OpenBSD 7.0 and OpenBGPD Portable 7.0p0, also added to the integration testing suite.
+
 1.6.0
 -----
 

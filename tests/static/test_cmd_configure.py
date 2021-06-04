@@ -398,7 +398,6 @@ class TestConfigureCmd(ARouteServerTestCase):
         latest_version = OpenBGPDConfigBuilder.AVAILABLE_VERSION[-1]
 
         if version.parse(latest_version) > version.parse("6.9"):
-            self.expected_config["cfg"]["path_hiding"] = True
             self.mock_answers([
                 "openbgpd",
                 latest_version,

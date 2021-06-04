@@ -28,7 +28,7 @@ jobs:
         - docker pull pierky/bird:1.6.8
         - docker pull pierky/bird:2.0.8
         - docker pull pierky/openbgpd:6.8p1
-        - docker pull pierky/openbgpd:6.9p0-patches
+        - docker pull pierky/openbgpd:7.0p0
         - docker pull pierky/exabgp:4.2.7
         - docker pull nlnetlabs/routinator:v0.8.3
     - env: TOXENV=py36-coverage
