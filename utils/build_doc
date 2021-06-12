@@ -336,11 +336,9 @@ cd $ROOT
 
 title "Building the supported BGP speakers pages"
 
-cd $DOCS_DIR
-../utils/build_integration_tests_docs.py > SUPPORTED_SPEAKERS_CI.txt
-../utils/build_supported_speakers_table.py > SUPPORTED_SPEAKERS_FEATURES.txt
-
 cd $ROOT
+./utils/build_integration_tests_docs.py > ${DOCS_DIR}/SUPPORTED_SPEAKERS_CI.txt
+./utils/build_supported_speakers_table.py > ${DOCS_DIR}/SUPPORTED_SPEAKERS_FEATURES.txt
 
 # ----------------------------------------------------
 

@@ -6,7 +6,9 @@ Change log
 next release
 ------------
 
-- New: Add support for OpenBGPD/OpenBSD 7.0 and OpenBGPD Portable 7.0p0, also added to the integration testing suite.
+- New: Add support for `OpenBGPD 7.0 <https://marc.info/?l=openbgpd-users&m=162282647904441&w=2>`__, also added to the integration testing suite.
+
+  Please note: starting with this release, since the default target version for OpenBGPD is 7.0, path-hiding mitigation will be enabled by default by the `configure` command. This option can be modified in the ``general.yml`` file.
 
 1.6.0
 -----
