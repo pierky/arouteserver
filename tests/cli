@@ -168,8 +168,6 @@ reset
 TITLE="OpenBGPD path-hiding latest"
 SUB_TEST="$LINENO"
 build_cmd "openbgpd" | must_not_contain "ERROR Compatibility issue ID 'path_hiding'"
-# The following test case shall be enabled when >6.9 will be out.
-#build_cmd "openbgpd" | must_not_contain "ERROR Compatibility issue ID 'path_hiding"
 
 # ---------------------------------------------
 reset

@@ -1,7 +1,6 @@
 cfg:
   rs_as: 64496
   router_id: 192.0.2.1
-  path_hiding: false
   filtering:
     next_hop:
       policy: strict
