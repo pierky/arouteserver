@@ -3,12 +3,12 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
-next release
-------------
+1.7.0
+-----
 
-- New: Add support for `OpenBGPD 7.0 <https://marc.info/?l=openbgpd-users&m=162282647904441&w=2>`__, also added to the integration testing suite.
+- New: Add support for `OpenBGPD 7.0 <https://marc.info/?l=openbgpd-users&m=162282647904441&w=2>`__, also added to the integration testing suite (portable edition only).
 
-  Please note: starting with this release, since the default target version for OpenBGPD is 7.0, path-hiding mitigation will be enabled by default by the `configure` command. This option can be modified in the ``general.yml`` file.
+  Please note: starting with this release, since the default target version for OpenBGPD is 7.0, path-hiding mitigation will be enabled by default by the ``configure`` command. This option can be modified in the ``general.yml`` file.
 
 1.6.0
 -----
