@@ -1,0 +1,59 @@
+name: CI
+
+on: push
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.6]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install bgpq3 / bgpq4
+        run: |
+          ./tests/external_resources/install_bgpq3.sh
+          ./tests/external_resources/install_bgpq4.sh
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 coveralls nose
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Flake8
+        run: flake8 pierky/ scripts/
+
+      - name: Test CLI
+        run: ./tests/cli
+
+      - name: Test external resources
+        run: nosetests -vs --tests=tests/external_resources/
+        env:
+          TRAVIS: 1
+
+      - name: Fetch Docker images used by tests
+        run: |
+          echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+          docker pull pierky/bird:1.6.8
+          docker pull pierky/bird:2.0.8
+          docker pull pierky/openbgpd:6.8p1
+          docker pull pierky/openbgpd:7.0p0
+          docker pull pierky/exabgp:4.2.7
+          docker pull nlnetlabs/routinator:v0.8.3
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Tests
+        run: nosetests -vs -x --tests=tests/static/,tests/live_tests/
+        env:
+          TRAVIS: 1

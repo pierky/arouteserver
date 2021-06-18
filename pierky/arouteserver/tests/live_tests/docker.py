@@ -208,7 +208,7 @@ class DockerInstance(BaseInstance):
         if not self.is_running():
             raise InstanceNotRunning(self.name)
 
-        cmd = '{docker} exec -it {prefix}{name} {args}'.format(
+        cmd = '{docker} exec -t {prefix}{name} {args}'.format(
             docker=self.DOCKER_PATH,
             prefix=self.DOCKER_INSTANCE_PREFIX,
             name=self.name,

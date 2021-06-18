@@ -1,0 +1,38 @@
+name: Test external resources
+
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '16 9 * * *'
+
+jobs:
+  test_ext_res:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.6]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install bgpq3 / bgpq4
+        run: |
+          ./tests/external_resources/install_bgpq3.sh
+          ./tests/external_resources/install_bgpq4.sh
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 coveralls nose
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Test external resources
+        run: nosetests -vs --tests=tests/external_resources/
+        env:
+          TRAVIS: 1
