@@ -25,6 +25,8 @@ RS_ASN="${RS_ASN}"
 ROUTER_ID="${ROUTER_ID}"
 LOCAL_PREFIXES="${LOCAL_PREFIXES}"
 IP_VER="${IP_VER}"
+LOCAL_FILES="${LOCAL_FILES}"
+LOCAL_FILES_DIR="${LOCAL_FILES_DIR}"
 
 CLIENTS_FILE_PATH="/root/clients.yml"
 OUTPUT_DIR="/root/arouteserver_configs"
@@ -158,6 +160,17 @@ echo ""
 bold "Generating route server configuration for ${DAEMON} ${VERSION}..."
 echo ""
 
+LOCAL_FILES_ARG=""
+LOCAL_FILES_DIR_ARG=""
+
+if [[ -n "${LOCAL_FILES}" ]]; then
+    LOCAL_FILES_ARG="--use-local-files ${LOCAL_FILES}"
+
+    if [[ -n "${LOCAL_FILES_DIR}" ]]; then
+        LOCAL_FILES_DIR_ARG="--local-files-dir ${LOCAL_FILES_DIR}"
+    fi
+fi
+
 OUTPUT_PATH="${OUTPUT_DIR}/${OUTPUT_FILE}"
 
 arouteserver \
@@ -165,6 +178,8 @@ arouteserver \
     --target-version "${VERSION}" \
     ${IP_VER_ARG} \
     --clients "${CLIENTS_FILE_PATH}" \
+    ${LOCAL_FILES_ARG} \
+    ${LOCAL_FILES_DIR_ARG} \
     -o "${OUTPUT_PATH}"
 
 echo ""

@@ -70,6 +70,20 @@ docker run \
     ... # other options
 ```
 
+Also, [site-specific custom configuration files](https://arouteserver.readthedocs.io/en/latest/CONFIG.html#site-specific-custom-configuration-files) can be used by setting the optional environment variables `LOCAL_FILES` and `LOCAL_FILES_DIR`. For details about how to use them please refer to the documentation.
+
+Example:
+
+```bash
+docker run \
+    ...
+    -e DAEMON=bird \
+    -e VERSION=1.6.8 \
+    -e LOCAL_FILES="header footer" \
+    -e LOCAL_FILES_DIR=/var/pierky/test \
+    pierky/arouteserver:latest
+```
+
 ### Textual representation
 
 A [textual representation](https://arouteserver.readthedocs.io/en/latest/USAGE.html#textual-representation) of the route server's options and policies will be generated automatically before the route server configuration is generated if the directory `/root/arouteserver_html` exists on the container.

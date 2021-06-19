@@ -191,3 +191,29 @@ jobs:
           grep \
             'Configuration of route server 192.0.2.200 at AS9999' \
             ~/arouteserver_html/bird.html &>/dev/null
+
+      - name: Build configuration using local files
+        run: >
+          docker run \
+            -t \
+            --rm \
+            -v $(pwd)/config.d/clients.yml:/root/clients.yml:ro \
+            -v ~/arouteserver_configs:/root/arouteserver_configs \
+            -e RS_ASN=65500 \
+            -e ROUTER_ID=192.0.2.123 \
+            -e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
+            -e IP_VER=4 \
+            -e DAEMON=bird \
+            -e VERSION=1.6.8 \
+            -e LOCAL_FILES="header footer" \
+            -e LOCAL_FILES_DIR=/var/pierky/test \
+            pierky/arouteserver:latest
+
+      - name: Verify that include statements are there
+        run: |
+          cat ~/arouteserver_configs/bird4.cfg | \
+            grep include | \
+            grep /var/pierky/test | \
+            egrep 'header.local|footer.local' | \
+            wc -l | \
+            grep 2
