@@ -117,8 +117,8 @@ echo "Verifying if templates and fingerprints are aligned..."
 nosetests -vs -x tests/static/test_cfg_program.py 2>&1
 
 # Then check the code
-echo "Checking code via tox..."
-tox -e py36-syntax,py36-flake8 2>&1
+echo "Checking code..."
+flake8 pierky/ scripts/ 2>&1
 
 echo "Verifying no Docker instances are running..."
 if [ "`docker ps | grep -v "CONTAINER ID" | wc -l | awk '{print $1}'`" != "0" ]; then

@@ -15,7 +15,7 @@ Example: in a configuration where blackhole filtering is enabled, an instance of
                          next_hop="192.0.2.66",
                          std_comms=["65535:666"], lrg_comms=[])
 
-`Travis CI log file <https://travis-ci.org/pierky/arouteserver/>`_ contains the latest built-in live tests results.
-Since (AFAIK) OpenBGPD can't be run on Travis CI platform, the full live tests results including those run on OpenBGPD can be found on `this file <https://github.com/pierky/arouteserver/blob/master/tests/last>`_.
+`GitHub Actions log file <https://github.com/pierky/arouteserver/actions/workflows/tests.yml>`_ contains the latest built-in live tests results.
+Since (AFAIK) OpenBGPD can't be run on GitHub Actions platform, the full live tests results including those run on OpenBGPD can be found on `this file <https://github.com/pierky/arouteserver/blob/master/tests/last>`_.
 
 More details on the `Live tests <https://arouteserver.readthedocs.io/en/latest/LIVETESTS.html>`_ page on the official documentation.
