@@ -621,6 +621,17 @@ class ConfigBuilder(object):
             prefix = data
             return IPNetwork(prefix).version == ip_ver
 
+        def is_local_file_used(local_file_id):
+            if local_file_id not in self.LOCAL_FILES_IDS:
+                raise AssertionError(
+                    "Local file ID '{}' is referenced in J2 "
+                    "templates but is not in LOCAL_FILES_IDS.".format(
+                        local_file_id
+                    )
+                )
+            local_files = self.local_files or []
+            return local_file_id in local_files
+
         def include_local_file(local_file_id):
             # The 'rpki_rtr_config' local_file_id is always allowed
             # to be included, because it's referenced directly in
@@ -674,6 +685,7 @@ class ConfigBuilder(object):
         )
         env.tests["current_ipver"] = current_ipver
         env.tests["is_ipver"] = is_ipver
+        env.tests["used_local_file"] = is_local_file_used
         env.filters["community_is_set"] = community_is_set
         env.filters["ipaddr_ver"] = ipaddr_ver
         env.filters["include_local_file"] = include_local_file
@@ -719,7 +731,8 @@ class BIRDConfigBuilder(ConfigBuilder):
             the output configuration. Details: https://arouteserver.readthedocs.io/en/latest/CONFIG.html#bird-hooks
     """
 
-    LOCAL_FILES_IDS = ["header", "header4", "header6",
+    LOCAL_FILES_IDS = ["logging",
+                       "header", "header4", "header6",
                        "footer", "footer4", "footer6",
                        "client", "client4", "client6"]
     LOCAL_FILES_BASE_DIR = "/etc/bird"
@@ -859,7 +872,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
     """OpenBGPD configuration builder.
     """
 
-    LOCAL_FILES_IDS = ["header",
+    LOCAL_FILES_IDS = ["logging", "header",
                        "pre-irrdb", "post-irrdb",
                        "pre-clients", "post-clients", "client",
                        "pre-filters", "post-filters",

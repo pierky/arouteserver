@@ -1,9 +1,13 @@
 router id {{ cfg.router_id }};
 define rs_as = {{ cfg.rs_as }};
 
+{% if not "logging" is used_local_file %}
 log "/var/log/bird.log" all;
 log syslog all;
 debug protocols { states, routes, filters, interfaces, events };
+{% else %}
+{{ "logging"|include_local_file -}}
+{% endif %}
 
 timeformat base         iso long;
 timeformat log          iso long;

@@ -2,7 +2,11 @@ AS {{ cfg.rs_as }}
 router-id {{ cfg.router_id }}
 
 fib-update no
+{% if not "logging" is used_local_file %}
 log updates
+{% else %}
+{{ "logging"|include_local_file -}}
+{% endif %}
 
 nexthop qualify via default
 
