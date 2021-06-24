@@ -431,6 +431,12 @@ These files must be present on the host running the route server.
 
 The ``logging`` label has a special meaning: when it's used in the ``--local-files-dir`` option, the default logging settings of the BGP speaker are omitted, and they are replaced by the *include* statement.
 
+To determine the default logging configuration, please refer to the template files:
+
+- `BIRD <https://github.com/pierky/arouteserver/tree/master/templates/bird>`__: see  `header.j2 <https://github.com/pierky/arouteserver/blob/master/templates/bird/header.j2>`__ 
+
+- `OpenBGPD <https://github.com/pierky/arouteserver/tree/master/templates/openbgpd>`__: see `header.j2 <https://github.com/pierky/arouteserver/blob/master/templates/openbgpd/header.j2>`__
+
 - Example, BIRD, ``logging`` being used:
 
   .. code::
