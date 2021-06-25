@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- Improvement: add the ``logging`` option to ``--use-local-files`` argument, to allow customization of logging settings.
+
+  Details on the documentation: `Site-specific custom configuration files <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#site-specific-custom-configuration-files>`__.
+
+  See also `GitHub issue 75 <https://github.com/pierky/arouteserver/issues/75>`_.
+
 1.7.0
 -----
 

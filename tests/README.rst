@@ -11,6 +11,6 @@ The following directories contain code that is used to test ARouteServer:
 
 - **real**: some `realistic scenarios <https://arouteserver.readthedocs.io/en/latest/REALTESTS.html>`_ built on the basis of lists of clients pulled from actual IXPs' members lists.
 
-The latest results of *static*, *live* and *external_resources* tests can be found within the **last** file (and also on `GitHub Actions log file <https://github.com/pierky/arouteserver/actions/workflows/tests.yml>`_, except for OpenBGPD focused tests).
+The latest results of *static*, *live* and *external_resources* tests can be found within the **last** file (and also on `GitHub Actions log file <https://github.com/pierky/arouteserver/actions/workflows/cicd.yml>`_, except for OpenBGPD focused tests).
 
 Results for the *real* tests are reported within the **tests/real/last** file.

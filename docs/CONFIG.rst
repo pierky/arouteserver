@@ -350,9 +350,9 @@ Local files inclusion can be enabled by a command line argument, ``--use-local-f
 
 To determine in which point of the configuration file the local files identified by the labels above are inserted, please refer to the template files of each BGP speaker (you can search for ``include_local_file``):
 
-- `BIRD <https://github.com/pierky/arouteserver/tree/master/templates/bird>`__: see `main.j2 <https://github.com/pierky/arouteserver/blob/master/templates/bird/main.j2>`__, `clients.j2 <https://github.com/pierky/arouteserver/blob/master/templates/bird/clients.j2>`__ and `rpki.j2 <https://github.com/pierky/arouteserver/blob/master/templates/bird/rpki.j2>`__.
+- `BIRD <https://github.com/pierky/arouteserver/tree/master/templates/bird>`__: see `main.j2 <https://github.com/pierky/arouteserver/blob/master/templates/bird/main.j2>`__, `header.j2 <https://github.com/pierky/arouteserver/blob/master/templates/bird/header.j2>`__, `clients.j2 <https://github.com/pierky/arouteserver/blob/master/templates/bird/clients.j2>`__ and `rpki.j2 <https://github.com/pierky/arouteserver/blob/master/templates/bird/rpki.j2>`__.
 
-- `OpenBGPD <https://github.com/pierky/arouteserver/tree/master/templates/openbgpd>`__: see `main.j2 <https://github.com/pierky/arouteserver/blob/master/templates/openbgpd/main.j2>`__, `filters.j2 <https://github.com/pierky/arouteserver/blob/master/templates/openbgpd/filters.j2>`__, `rpki.j2 <https://github.com/pierky/arouteserver/blob/master/templates/openbgpd/rpki.j2>`__, `clients.j2 <https://github.com/pierky/arouteserver/blob/master/templates/openbgpd/clients.j2>`__, `irrdb.j2 <https://github.com/pierky/arouteserver/blob/master/templates/openbgpd/irrdb.j2>`__.
+- `OpenBGPD <https://github.com/pierky/arouteserver/tree/master/templates/openbgpd>`__: see `main.j2 <https://github.com/pierky/arouteserver/blob/master/templates/openbgpd/main.j2>`__, `header.j2 <https://github.com/pierky/arouteserver/blob/master/templates/openbgpd/header.j2>`__, `filters.j2 <https://github.com/pierky/arouteserver/blob/master/templates/openbgpd/filters.j2>`__, `rpki.j2 <https://github.com/pierky/arouteserver/blob/master/templates/openbgpd/rpki.j2>`__, `clients.j2 <https://github.com/pierky/arouteserver/blob/master/templates/openbgpd/clients.j2>`__, `irrdb.j2 <https://github.com/pierky/arouteserver/blob/master/templates/openbgpd/irrdb.j2>`__.
 
 One or more of these labels must be used as the argument's value in order to enable the relative inclusion points.
 For each enabled label, an *include* statement is added to the generated configuration in the point identified by the label itself. To modify the base directory, the ``--local-files-dir`` command line option can be used.
@@ -428,6 +428,33 @@ These files must be present on the host running the route server.
      include "/etc/footer.local"
 
   The example above uses the ``client`` label, that is used to add an ``include`` statement into every neighbor configuration. Also, the base directory is set to ``/etc/``.
+
+Logging configuration of the BGP daemon
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``logging`` label has a special meaning: when it's used in the ``--local-files-dir`` option, the default logging settings of the BGP speaker are omitted, and they are replaced by the *include* statement.
+
+To determine the default logging configuration, please refer to the template files:
+
+- `BIRD <https://github.com/pierky/arouteserver/tree/master/templates/bird>`__: see  `header.j2 <https://github.com/pierky/arouteserver/blob/master/templates/bird/header.j2>`__ 
+
+- `OpenBGPD <https://github.com/pierky/arouteserver/tree/master/templates/openbgpd>`__: see `header.j2 <https://github.com/pierky/arouteserver/blob/master/templates/openbgpd/header.j2>`__
+
+As you can see in the next example, the default logging settings are omitted and replaced with the *include* statement for *logging.local*.
+
+- Example, BIRD, ``logging`` being used:
+
+  .. code::
+
+      router id 192.0.2.123;
+      define rs_as = 65500;
+
+      include "/etc/bird/logging.local";
+
+      timeformat base         iso long;
+      timeformat log          iso long;
+      timeformat protocol     iso long;
+      timeformat route        iso long;
 
 .. _bird-hooks:
 
