@@ -3,12 +3,12 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
-next release
-------------
+1.8.0
+-----
 
 - Improvement: add the ``logging`` option to ``--use-local-files`` argument, to allow customization of logging settings.
 
-  Details on the documentation: `Site-specific custom configuration files <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#site-specific-custom-configuration-files>`__.
+  Details on the documentation: `Logging configuration of the BGP daemon <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#logging-configuration-of-the-bgp-daemon>`__.
 
   See also `GitHub issue 75 <https://github.com/pierky/arouteserver/issues/75>`_.
 
