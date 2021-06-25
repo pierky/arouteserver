@@ -429,6 +429,9 @@ These files must be present on the host running the route server.
 
   The example above uses the ``client`` label, that is used to add an ``include`` statement into every neighbor configuration. Also, the base directory is set to ``/etc/``.
 
+Logging configuration of the BGP daemon
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 The ``logging`` label has a special meaning: when it's used in the ``--local-files-dir`` option, the default logging settings of the BGP speaker are omitted, and they are replaced by the *include* statement.
 
 To determine the default logging configuration, please refer to the template files:
@@ -436,6 +439,8 @@ To determine the default logging configuration, please refer to the template fil
 - `BIRD <https://github.com/pierky/arouteserver/tree/master/templates/bird>`__: see  `header.j2 <https://github.com/pierky/arouteserver/blob/master/templates/bird/header.j2>`__ 
 
 - `OpenBGPD <https://github.com/pierky/arouteserver/tree/master/templates/openbgpd>`__: see `header.j2 <https://github.com/pierky/arouteserver/blob/master/templates/openbgpd/header.j2>`__
+
+As you can see in the next example, the default logging settings are omitted and replaced with the *include* statement for *logging.local*.
 
 - Example, BIRD, ``logging`` being used:
 
@@ -450,8 +455,6 @@ To determine the default logging configuration, please refer to the template fil
       timeformat log          iso long;
       timeformat protocol     iso long;
       timeformat route        iso long;
-
-As you can see, the default logging settings are omitted and replaced with the *include* statement for *logging.local*.
 
 .. _bird-hooks:
 
