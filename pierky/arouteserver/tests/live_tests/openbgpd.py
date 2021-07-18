@@ -526,8 +526,7 @@ class OpenBGPD66PortableInstance(OpenBGPDPortableInstance):
     TAG = "openbgpd66p"
 
     BGP_SPEAKER_VERSION = "6.6p0"
-    # TARGET_VERSION not set here because it's assumed to be
-    # the same of the OpenBGPD Latest one.
+    TARGET_VERSION = "6.6"
 
 class OpenBGPD67PortableInstance(OpenBGPDPortableInstance):
 
@@ -536,8 +535,7 @@ class OpenBGPD67PortableInstance(OpenBGPDPortableInstance):
     TAG = "openbgpd67p"
 
     BGP_SPEAKER_VERSION = "6.7p0"
-    # TARGET_VERSION not set here because it's assumed to be
-    # the same of the OpenBGPD Latest one.
+    TARGET_VERSION = "6.7"
 
 class OpenBGPD68PortableInstance(OpenBGPDPortableInstance):
 
@@ -546,8 +544,7 @@ class OpenBGPD68PortableInstance(OpenBGPDPortableInstance):
     TAG = "openbgpd68p"
 
     BGP_SPEAKER_VERSION = "6.8p1"
-    # TARGET_VERSION not set here because it's assumed to be
-    # the same of the OpenBGPD Latest one.
+    TARGET_VERSION = "6.8"
 
 class OpenBGPD69PortableInstance(OpenBGPDPortableInstance):
 
@@ -556,8 +553,7 @@ class OpenBGPD69PortableInstance(OpenBGPDPortableInstance):
     TAG = "openbgpd69p"
 
     BGP_SPEAKER_VERSION = "6.9p0"
-    # TARGET_VERSION not set here because it's assumed to be
-    # the same of the OpenBGPD Latest one.
+    TARGET_VERSION = "6.9"
 
 class OpenBGPD70PortableInstance(OpenBGPDPortableInstance):
 
@@ -566,8 +562,7 @@ class OpenBGPD70PortableInstance(OpenBGPDPortableInstance):
     TAG = "openbgpd70p"
 
     BGP_SPEAKER_VERSION = "7.0p0"
-    # TARGET_VERSION not set here because it's assumed to be
-    # the same of the OpenBGPD Latest one.
+    TARGET_VERSION = "7.0"
 
 class OpenBGPD71PortableInstance(OpenBGPDPortableInstance):
 
@@ -576,8 +571,7 @@ class OpenBGPD71PortableInstance(OpenBGPDPortableInstance):
     TAG = "openbgpd71p"
 
     BGP_SPEAKER_VERSION = "7.1p0"
-    # TARGET_VERSION not set here because it's assumed to be
-    # the same of the OpenBGPD Latest one.
+    TARGET_VERSION = "7.1"
 
 OpenBGPDPortablePreviousInstance = OpenBGPD68PortableInstance
 OpenBGPDPortableLatestInstance = OpenBGPD71PortableInstance

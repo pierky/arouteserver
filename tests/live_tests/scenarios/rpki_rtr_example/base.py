@@ -27,6 +27,7 @@ class RPKIRTRScenario(LiveScenario):
     MODULE_PATH = __file__
     RS_INSTANCE_CLASS = None
     CLIENT_INSTANCE_CLASS = None
+    TARGET_VERSION = None
 
     @classmethod
     def _setup_instances(cls):
@@ -107,7 +108,6 @@ class RPKIRTRScenario(LiveScenario):
 class RPKIRTRScenarioBIRD(RPKIRTRScenario):
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
-    TARGET_VERSION = "2.0.8"
     IP_VER = 4
 
     @classmethod
@@ -118,7 +118,7 @@ class RPKIRTRScenarioBIRD(RPKIRTRScenario):
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                     target_version=cls.TARGET_VERSION),
+                                     target_version=cls.TARGET_VERSION or cls.RS_INSTANCE_CLASS.TARGET_VERSION),
                     "/etc/bird/bird.conf"
                 ),
                 (
@@ -154,8 +154,6 @@ class RPKIRTRScenarioOpenBGPD(RPKIRTRScenario):
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
 
-    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION
-
     @classmethod
     def _setup_rs_instance(cls):
         return cls.RS_INSTANCE_CLASS(
@@ -164,7 +162,7 @@ class RPKIRTRScenarioOpenBGPD(RPKIRTRScenario):
             [
                 (
                     cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
-                                     target_version=cls.TARGET_VERSION),
+                                     target_version=cls.TARGET_VERSION or cls.RS_INSTANCE_CLASS.TARGET_VERSION),
                     "/etc/bgpd.conf"
                 ),
                 (

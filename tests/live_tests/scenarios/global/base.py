@@ -34,6 +34,7 @@ class BasicScenario(LiveScenario):
     RS_INSTANCE_CLASS = None
     CLIENT_INSTANCE_CLASS = None
     CONFIG_BUILDER_CLASS = None
+    TARGET_VERSION = None
 
     AS_SET = {
         "AS-AS1": [1],
@@ -1144,7 +1145,6 @@ class BasicScenarioBIRD(BasicScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
-    TARGET_VERSION = None
     IP_VER = None
 
     @classmethod
@@ -1179,7 +1179,7 @@ class BasicScenarioBIRD(BasicScenario):
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                     target_version=cls.TARGET_VERSION,
+                                     target_version=cls.TARGET_VERSION or cls.RS_INSTANCE_CLASS.TARGET_VERSION,
                                      local_files=["footer{}".format(ip_ver) for ip_ver in ip_vers]),
                     "/etc/bird/bird.conf"
                 )
@@ -1189,8 +1189,6 @@ class BasicScenarioBIRD(BasicScenario):
 class BasicScenarioBIRD2(BasicScenarioBIRD):
     __test__ = False
 
-    TARGET_VERSION = "2.0.8"
-
     @classmethod
     def _get_local_file_name(cls):
         return "bird2_local_file"
@@ -1199,7 +1197,6 @@ class BasicScenarioOpenBGPD(BasicScenario_TagRejectPolicy, BasicScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
-    TARGET_VERSION = None
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -1211,7 +1208,7 @@ class BasicScenarioOpenBGPD(BasicScenario_TagRejectPolicy, BasicScenario):
                     cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
                                      local_files_dir="/etc/bgpd",
                                      local_files=["post-clients", "post-filters"],
-                                     target_version=cls.TARGET_VERSION),
+                                     target_version=cls.TARGET_VERSION or cls.RS_INSTANCE_CLASS.TARGET_VERSION),
                     "/etc/bgpd.conf"
                 ),
                 (
@@ -1228,9 +1225,5 @@ class BasicScenarioOpenBGPD(BasicScenario_TagRejectPolicy, BasicScenario):
 class BasicScenarioOpenBGPDPrevious(BasicScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
-
 class BasicScenarioOpenBGPDLatest(BasicScenarioOpenBGPD):
     __test__ = False
-
-    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION

@@ -33,6 +33,8 @@ class BIRDInstance(DockerInstance, BGPSpeakerInstance):
 
     TAG = "bird16"
 
+    TARGET_VERSION = "1.6.8"
+
     def __init__(self, *args, **kwargs):
         DockerInstance.__init__(self, *args, **kwargs)
 
@@ -328,6 +330,8 @@ class BIRD2Instance(BIRDInstance):
     DOCKER_IMAGE = "pierky/bird:2.0.8"
 
     TAG = "bird2"
+
+    TARGET_VERSION = "2.0.8"
 
     def _get_start_cmd(self):
         return "bird -c /etc/bird/bird.conf -d"

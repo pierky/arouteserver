@@ -28,6 +28,7 @@ class TagASSetScenario(LiveScenario):
     RS_INSTANCE_CLASS = None
     CLIENT_INSTANCE_CLASS = None
     CONFIG_BUILDER_CLASS = None
+    TARGET_VERSION = None
 
     @classmethod
     def _setup_instances(cls):
@@ -682,7 +683,6 @@ class TagASSetScenarioBIRD(TagASSetScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
-    TARGET_VERSION = None
     IP_VER = None
 
     @classmethod
@@ -693,7 +693,7 @@ class TagASSetScenarioBIRD(TagASSetScenario):
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                     target_version=cls.TARGET_VERSION),
+                                     target_version=cls.TARGET_VERSION or cls.RS_INSTANCE_CLASS.TARGET_VERSION),
                     "/etc/bird/bird.conf"
                 )
             ]
@@ -702,14 +702,10 @@ class TagASSetScenarioBIRD(TagASSetScenario):
 class TagASSetScenarioBIRD2(TagASSetScenarioBIRD):
     __test__ = False
 
-    TARGET_VERSION = "2.0.8"
-
 class TagASSetScenarioOpenBGPD(LiveScenario_TagRejectPolicy, TagASSetScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
-
-    TARGET_VERSION = None
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -719,7 +715,7 @@ class TagASSetScenarioOpenBGPD(LiveScenario_TagRejectPolicy, TagASSetScenario):
             [
                 (
                     cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
-                                     target_version=cls.TARGET_VERSION),
+                                     target_version=cls.TARGET_VERSION or cls.RS_INSTANCE_CLASS.TARGET_VERSION),
                     "/etc/bgpd.conf"
                 )
             ]
@@ -728,9 +724,5 @@ class TagASSetScenarioOpenBGPD(LiveScenario_TagRejectPolicy, TagASSetScenario):
 class TagASSetScenarioOpenBGPDPrevious(TagASSetScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
-
 class TagASSetScenarioOpenBGPDLatest(TagASSetScenarioOpenBGPD):
     __test__ = False
-
-    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION

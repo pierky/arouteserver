@@ -31,6 +31,7 @@ class TagRejectPolicyScenario(LiveScenario):
     RS_INSTANCE_CLASS = None
     CLIENT_INSTANCE_CLASS = None
     CONFIG_BUILDER_CLASS = None
+    TARGET_VERSION = None
 
     AS_SET = {
         "AS-AS1": [1],
@@ -315,7 +316,6 @@ class TagRejectPolicyScenarioBIRD(LiveScenario_TagRejectPolicy, TagRejectPolicyS
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
-    TARGET_VERSION = None
     IP_VER = None
 
     @classmethod
@@ -351,7 +351,7 @@ class TagRejectPolicyScenarioBIRD(LiveScenario_TagRejectPolicy, TagRejectPolicyS
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
                                      local_files=["footer{}".format(ip_ver) for ip_ver in ip_vers],
-                                     target_version=cls.TARGET_VERSION),
+                                     target_version=cls.TARGET_VERSION or cls.RS_INSTANCE_CLASS.TARGET_VERSION),
                     "/etc/bird/bird.conf"
                 )
             ] + cls._get_local_file(),
@@ -359,8 +359,6 @@ class TagRejectPolicyScenarioBIRD(LiveScenario_TagRejectPolicy, TagRejectPolicyS
 
 class TagRejectPolicyScenarioBIRD2(TagRejectPolicyScenarioBIRD):
     __test__ = False
-
-    TARGET_VERSION = "2.0.8"
 
     @classmethod
     def _get_local_file_name(cls):
@@ -370,7 +368,6 @@ class TagRejectPolicyScenarioOpenBGPDPrevious(LiveScenario_TagRejectPolicy, TagR
     __test__ = False
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
-    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -382,7 +379,7 @@ class TagRejectPolicyScenarioOpenBGPDPrevious(LiveScenario_TagRejectPolicy, TagR
                     cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
                                      local_files_dir="/etc/bgpd",
                                      local_files=["post-clients", "post-filters"],
-                                     target_version=cls.TARGET_VERSION),
+                                     target_version=cls.TARGET_VERSION or cls.RS_INSTANCE_CLASS.TARGET_VERSION),
                     "/etc/bgpd.conf"
                 ),
                 (
@@ -398,5 +395,3 @@ class TagRejectPolicyScenarioOpenBGPDPrevious(LiveScenario_TagRejectPolicy, TagR
 
 class TagRejectPolicyScenarioOpenBGPDLatest(TagRejectPolicyScenarioOpenBGPDPrevious, TagRejectPolicyScenario):
     __test__ = False
-
-    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION

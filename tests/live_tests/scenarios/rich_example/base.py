@@ -28,6 +28,7 @@ class RichConfigExampleScenario(LiveScenario):
     RS_INSTANCE_CLASS = None
     CLIENT_INSTANCE_CLASS = None
     CONFIG_BUILDER_CLASS = None
+    TARGET_VERSION = None
 
     MOCK_RIPE_RPKI_CACHE = False
     MOCK_PEERING_DB = False
@@ -69,7 +70,6 @@ class RichConfigExampleScenarioBIRD(RichConfigExampleScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
-    TARGET_VERSION = None
     IP_VER = None
 
     @classmethod
@@ -85,7 +85,7 @@ class RichConfigExampleScenarioBIRD(RichConfigExampleScenario):
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
                                      local_files=["client"],
-                                     target_version=cls.TARGET_VERSION),
+                                     target_version=cls.TARGET_VERSION or cls.RS_INSTANCE_CLASS.TARGET_VERSION),
                     "/etc/bird/bird.conf"
                 ),
                 (
@@ -98,8 +98,6 @@ class RichConfigExampleScenarioBIRD(RichConfigExampleScenario):
 class RichConfigExampleScenarioBIRD2(RichConfigExampleScenarioBIRD):
     __test__ = False
 
-    TARGET_VERSION = "2.0.8"
-
     @classmethod
     def _get_local_file(cls):
         return "bird2.client.local"
@@ -110,8 +108,6 @@ class RichConfigExampleScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
 
-    TARGET_VERSION = None
-
     @classmethod
     def _setup_rs_instance(cls):
         return cls.RS_INSTANCE_CLASS(
@@ -120,7 +116,7 @@ class RichConfigExampleScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
             [
                 (
                     cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
-                                     target_version=cls.TARGET_VERSION),
+                                     target_version=cls.TARGET_VERSION or cls.RS_INSTANCE_CLASS.TARGET_VERSION),
                     "/etc/bgpd.conf"
                 )
             ]
@@ -130,10 +126,6 @@ class RichConfigExampleScenarioOpenBGPDPrevious(RichConfigExampleScenarioOpenBGP
 
     __test__ = False
 
-    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
-
 class RichConfigExampleScenarioOpenBGPDLatest(RichConfigExampleScenarioOpenBGPD):
 
     __test__ = False
-
-    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION
