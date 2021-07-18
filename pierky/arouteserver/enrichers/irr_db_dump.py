@@ -90,7 +90,21 @@ class GenericIRRWhoisDBDumpEnricher(BaseConfigEnricher):
         whois_db_dump = self.PARSER_CLASS(
             cache_dir=cache_dir, cache_expiry=self.builder.cache_expiry,
             source=source)
-        whois_db_dump.load_data()
+        try:
+            whois_db_dump.load_data()
+        except ARouteServerError as e:
+            raise e.__class__(
+                str(e) + " - "
+                "The error occurred while loading the IRR data from "
+                "{source}. If the data was moved to a different "
+                "location, it is possible to adjust the configuration "
+                "by changing the value of "
+                "'filtering.irrdb.{section}.source' inside "
+                "the general.yml file.".format(
+                    source=source,
+                    section=self.CONFIG_SECTION_NAME
+                )
+            )
         whois_records = whois_db_dump.whois_records
 
         # "ASx": ["1.2.3.0/24", ...]

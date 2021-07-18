@@ -314,7 +314,7 @@ cfg:
         # The source of the data must be set here.
         #
         # It can be an 'http://' or 'https://' URL or a local file
-        # path. The file must be in JSON format, accordingly to the
+        # path. The file must be in JSON format, according to the
         # following schema:
         #
         # {
