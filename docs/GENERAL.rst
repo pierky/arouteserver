@@ -576,7 +576,7 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
 
 
   It can be an **http://** or **https://** URL or a local file
-  path. The file must be in JSON format, accordingly to the
+  path. The file must be in JSON format, according to the
   following schema:
 
 
