@@ -569,5 +569,15 @@ class OpenBGPD70PortableInstance(OpenBGPDPortableInstance):
     # TARGET_VERSION not set here because it's assumed to be
     # the same of the OpenBGPD Latest one.
 
+class OpenBGPD71PortableInstance(OpenBGPDPortableInstance):
+
+    DOCKER_IMAGE = "pierky/openbgpd:7.1p0"
+
+    TAG = "openbgpd71p"
+
+    BGP_SPEAKER_VERSION = "7.1p0"
+    # TARGET_VERSION not set here because it's assumed to be
+    # the same of the OpenBGPD Latest one.
+
 OpenBGPDPortablePreviousInstance = OpenBGPD68PortableInstance
-OpenBGPDPortableLatestInstance = OpenBGPD70PortableInstance
+OpenBGPDPortableLatestInstance = OpenBGPD71PortableInstance

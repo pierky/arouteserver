@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New: Add support for `OpenBGPD 7.1 <https://marc.info/?l=openbgpd-users&m=162461267419135&w=2>`__, also added to the integration testing suite (portable edition only).
+
+- Improvement: provide hint on how to change URL for external IRR DB data sources.
+
+  See also `GitHub issue 77 <https://github.com/pierky/arouteserver/issues/77>`_.
+
 1.8.0
 -----
 
