@@ -12,6 +12,10 @@ next release
 
   See also `GitHub issue 77 <https://github.com/pierky/arouteserver/issues/77>`_.
 
+- Fix (OpenBGPD only): `RFC8097 communities <https://datatracker.ietf.org/doc/html/rfc8097>`_ were not added after BGP Origin Validation.
+
+  The *BGP Prefix Origin Validation State Extended Communities* were not added when RPKI OV was performed. INVALID routes were still dropped when the route server was configured to do so (those routes are internally marked using locally-meaningful communities).
+
 1.8.0
 -----
 

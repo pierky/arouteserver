@@ -20,6 +20,7 @@ from pierky.arouteserver.tests.live_tests.base import LiveScenario
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, OpenBGPDLatestInstance
 from pierky.arouteserver.tests.live_tests.routinator import RoutinatorInstance
+from pierky.arouteserver.tests.live_tests.instances import Route
 
 class RPKIRTRScenario(LiveScenario):
     __test__ = False
@@ -60,15 +61,10 @@ class RPKIRTRScenario(LiveScenario):
 
     def test_030_routinator_not_running(self):
         """{}: route accepted because validator not running"""
-        if isinstance(self.rs, BIRDInstance):
-            ext_comm_rpki_unknown = ["generic:0x43000000:0x1"]
-        else:
-            ext_comm_rpki_unknown = []
-
         self.receive_route(self.rs, self.DATA["AS1_1"], self.AS1_1,
                            next_hop=self.AS1_1, as_path="1",
                            std_comms=[], lrg_comms=[],
-                           ext_comms=ext_comm_rpki_unknown)
+                           ext_comms=[Route.RFC8097_NOT_FOUND])
 
     def test_040_spin_up_routinator(self):
         """{}: spin up the validator"""
@@ -94,11 +90,6 @@ class RPKIRTRScenario(LiveScenario):
 
     def test_051_route_dropped(self):
         """{}: route dropped after spinning the validator up"""
-        if isinstance(self.rs, BIRDInstance):
-            ext_comm_rpki_invalid = ["generic:0x43000000:0x2"]
-        else:
-            ext_comm_rpki_invalid = []
-
         self.rs.clear_cached_routes()
 
         with self.assertRaisesRegex(AssertionError, "Routes not found."):

@@ -217,6 +217,15 @@ class Route(object):
             for which the route is considered to be rejected.
     """
 
+    # Constants used to map the BGP speaker's representations of
+    # RFC8097 extended communities into a normalised value that
+    # can be used by the test suite to match those communities.
+    # BIRD format: generic:0x43000000:0x[0, 1, 2]
+    # OpenBGPD format: ovs:[valid | not-found | invalid]
+    RFC8097_NOT_FOUND = "rfc8097-not-found"
+    RFC8097_VALID = "rfc8097-valid"
+    RFC8097_INVALID = "rfc8097-invalid"
+
     def _parse_bgp_communities(self, communities):
         if not communities:
             return []
@@ -242,6 +251,19 @@ class Route(object):
     def _parse_ext_bgp_communities(self, communities):
         return self._parse_bgp_communities(communities)
 
+    def _normalise_rfc8097(self, communities):
+        res = []
+        for comm in communities:
+            if comm in ("generic:0x43000000:0x1", "ovs:not-found"):
+                res.append(self.RFC8097_NOT_FOUND)
+            elif comm in ("generic:0x43000000:0x0", "ovs:valid"):
+                res.append(self.RFC8097_VALID)
+            elif comm in ("generic:0x43000000:0x2", "ovs:invalid"):
+                res.append(self.RFC8097_INVALID)
+            else:
+                res.append(comm)
+        return res
+
     def _parse_lrg_bgp_communities(self, communities):
         return self._parse_bgp_communities(communities)
 
@@ -258,7 +280,9 @@ class Route(object):
         self.best = kwargs.get("best", None)
         self.std_comms = self._parse_std_bgp_communities(kwargs.get("std_comms", None))
         self.lrg_comms = self._parse_lrg_bgp_communities(kwargs.get("lrg_comms", None))
-        self.ext_comms = self._parse_ext_bgp_communities(kwargs.get("ext_comms", None))
+        self.ext_comms = self._normalise_rfc8097(
+            self._parse_ext_bgp_communities(kwargs.get("ext_comms", None))
+        )
         self.reject_reasons = []
 
     def process_reject_cause(self, re_pattern, announced_by_pattern):

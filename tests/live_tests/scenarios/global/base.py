@@ -26,6 +26,7 @@ from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
                                                           OpenBGPDLatestInstance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 from pierky.arouteserver.tests.live_tests.exabgp import ExaBGPInstance
+from pierky.arouteserver.tests.live_tests.instances import Route
 
 class BasicScenario(LiveScenario):
     __test__ = False
@@ -191,32 +192,28 @@ class BasicScenario(LiveScenario):
 
     def test_030_good_prefixes_received_by_rs(self):
         """{}: good prefixes received by rs"""
-        if isinstance(self.rs, BIRDInstance):
-            ext_comm_rpki_unknown = ["generic:0x43000000:0x1"]
-        else:
-            ext_comm_rpki_unknown = []
         self.receive_route(self.rs, self.DATA["AS1_good1"], self.AS1_1,
                            next_hop=self.AS1_1, as_path="1",
-                           std_comms=[], ext_comms=ext_comm_rpki_unknown, lrg_comms=[])
+                           std_comms=[], ext_comms=[Route.RFC8097_NOT_FOUND], lrg_comms=[])
         self.receive_route(self.rs, self.DATA["AS1_good2"], self.AS1_1,
                            next_hop=self.AS1_1, as_path="1",
-                           std_comms=[], ext_comms=ext_comm_rpki_unknown, lrg_comms=[])
+                           std_comms=[], ext_comms=[Route.RFC8097_NOT_FOUND], lrg_comms=[])
         self.receive_route(self.rs, self.DATA["AS1_good1"], self.AS1_2,
                            next_hop=self.AS1_2, as_path="1",
-                           std_comms=[], ext_comms=ext_comm_rpki_unknown, lrg_comms=[])
+                           std_comms=[], ext_comms=[Route.RFC8097_NOT_FOUND], lrg_comms=[])
         self.receive_route(self.rs, self.DATA["AS1_good2"], self.AS1_2,
                            next_hop=self.AS1_2, as_path="1",
-                           std_comms=[], ext_comms=ext_comm_rpki_unknown, lrg_comms=[])
+                           std_comms=[], ext_comms=[Route.RFC8097_NOT_FOUND], lrg_comms=[])
         # AS1_good3 is announced by AS1_2 with NEXT_HOP = AS1_1
         self.receive_route(self.rs, self.DATA["AS1_good3"], self.AS1_2,
                            next_hop=self.AS1_1, as_path="1",
-                           std_comms=[], ext_comms=ext_comm_rpki_unknown, lrg_comms=[])
+                           std_comms=[], ext_comms=[Route.RFC8097_NOT_FOUND], lrg_comms=[])
         self.receive_route(self.rs, self.DATA["AS2_good1"], self.AS2,
                            next_hop=self.AS2, as_path="2",
-                           std_comms=[], ext_comms=ext_comm_rpki_unknown, lrg_comms=[])
+                           std_comms=[], ext_comms=[Route.RFC8097_NOT_FOUND], lrg_comms=[])
         self.receive_route(self.rs, self.DATA["AS2_good2"], self.AS2,
                            next_hop=self.AS2, as_path="2",
-                           std_comms=[], ext_comms=ext_comm_rpki_unknown, lrg_comms=[])
+                           std_comms=[], ext_comms=[Route.RFC8097_NOT_FOUND], lrg_comms=[])
 
         # rs should not receive prefixes with the following criteria
         with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
@@ -575,33 +572,21 @@ class BasicScenario(LiveScenario):
 
     def test_045_rpki_invalid_prefix_asn(self):
         """{}: RPKI, invalid prefix (bad ASN) received by rs"""
-
-        if isinstance(self.rs, BIRDInstance):
-            ext_comm_rpki_invalid = ["generic:0x43000000:0x2"]
-        else:
-            ext_comm_rpki_invalid = []
-
         self.receive_route(self.rs, self.DATA["AS101_roa_invalid1"], self.AS1_1,
                            as_path="1 101", filtered=True,
-                           ext_comms=ext_comm_rpki_invalid)
+                           ext_comms=[Route.RFC8097_INVALID])
         self.receive_route(self.rs, self.DATA["AS101_roa_invalid1"], self.AS2,
                            as_path="2 101", filtered=True,
-                           ext_comms=ext_comm_rpki_invalid)
+                           ext_comms=[Route.RFC8097_INVALID])
 
     def test_045_rpki_invalid_prefix_length(self):
         """{}: RPKI, invalid prefix (bad length) received by rs"""
-
-        if isinstance(self.rs, BIRDInstance):
-            ext_comm_rpki_invalid = ["generic:0x43000000:0x2"]
-        else:
-            ext_comm_rpki_invalid = []
-
         self.receive_route(self.rs, self.DATA["AS101_roa_badlen"], self.AS1_1,
                            as_path="1 101", filtered=True,
-                           ext_comms=ext_comm_rpki_invalid)
+                           ext_comms=[Route.RFC8097_INVALID])
         self.receive_route(self.rs, self.DATA["AS101_roa_badlen"], self.AS2,
                            as_path="2 101", filtered=True,
-                           ext_comms=ext_comm_rpki_invalid)
+                           ext_comms=[Route.RFC8097_INVALID])
 
     def test_045_rpki_valid_prefix_propagated_to_clients(self):
         """{}: RPKI, valid prefix propagated to clients"""
@@ -697,8 +682,15 @@ class BasicScenario(LiveScenario):
     def test_070_blackhole_filtering_as_seen_by_rs_std_cust(self):
         """{}: blackhole filtering requests as seen by rs (std cust)"""
 
+        # For OpenBGPD, the RPKI origin validation state communities
+        # are kept and not stripped.
+        if isinstance(self.rs, OpenBGPDInstance):
+            ext_comms = [Route.RFC8097_NOT_FOUND]
+        else:
+            ext_comms = []
+
         self.receive_route(self.rs, self.DATA["AS2_blackhole2"], self.AS2, next_hop=self.AS2, as_path="2",
-                           std_comms=["65534:0"], lrg_comms=[], ext_comms=[])
+                           std_comms=["65534:0"], lrg_comms=[], ext_comms=ext_comms)
         self.log_contains(self.rs, "blackhole filtering request from {AS2_1} - ACCEPTING " + self.DATA["AS2_blackhole2"], {"AS2_1": self.AS2})
 
     def test_070_blackhole_filtering_as_seen_by_rs_lrg_cust(self):
@@ -1010,15 +1002,11 @@ class BasicScenario(LiveScenario):
 
     def test_085_control_communities_rtt_ext_comms_prep1x_gt_10_2x_gt_20(self):
         """{}: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms"""
-        if isinstance(self.rs, BIRDInstance):
-            ext_comm_rpki_unknown = ["generic:0x43000000:0x1"]
-        else:
-            ext_comm_rpki_unknown = []
         pref = self.DATA["AS4_rtt_10"]
         self.receive_route(self.rs, pref, self.AS4,
                            std_comms=[],
-                           ext_comms=ext_comm_rpki_unknown + ["rt:64537:10",
-                                                              "rt:64538:20"])
+                           ext_comms=[Route.RFC8097_NOT_FOUND, "rt:64537:10",
+                                                               "rt:64538:20"])
         for inst in [self.AS1_1, self.AS1_2]:
             self.receive_route(inst, pref, self.rs, as_path="4",
                                std_comms=[], lrg_comms=[], ext_comms=[])

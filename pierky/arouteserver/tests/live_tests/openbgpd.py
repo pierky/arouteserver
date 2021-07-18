@@ -59,22 +59,22 @@ class OpenBGPDRoute(Route):
         # rt 64537:10
         # rt 64537:10 rt 64538:20
 
-        next_field_should_be = "rt_soo"
-        rt_soo = ""
+        next_field_should_be_comm_type = True
+        comm_type = ""
         comm = ""
 
-        for part in communities.split(" "):
-            if next_field_should_be == "rt_soo":
-                if part not in ("rt", "soo"):
+        for part in communities.split():
+            if next_field_should_be_comm_type:
+                if part not in ("rt", "soo", "ovs"):
                     raise ValueError(
                         "Error while processing the extended communities "
-                        "string '{}': expected 'rt' or 'soo', but '{}' "
+                        "string '{}': expected 'rt', 'soo' or 'ovs', but '{}' "
                         "found.".format(communities, part)
                     )
-                rt_soo = part
-                next_field_should_be = "comm"
-            elif next_field_should_be == "comm":
-                if ":" not in part:
+                comm_type = part
+                next_field_should_be_comm_type = False
+            else:
+                if comm_type != "ovs" and ":" not in part:
                     raise ValueError(
                         "Error while processing the extended communities "
                         "string '{}': ':' not found in the community '{}' "
@@ -82,16 +82,9 @@ class OpenBGPDRoute(Route):
                     )
                 comm = part
 
-                res.append("{}:{}".format(rt_soo, comm))
+                res.append("{}:{}".format(comm_type, comm))
 
-                next_field_should_be = "rt_soo"
-
-        if next_field_should_be != "rt_soo":
-            raise ValueError(
-                "Error while processing the extended communities "
-                "string '{}': one part of the string remained "
-                "unprocessed.".format(communities)
-            )
+                next_field_should_be_comm_type = True
 
         return res
 
