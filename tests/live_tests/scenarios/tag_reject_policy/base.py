@@ -253,9 +253,6 @@ class TagRejectPolicyScenario(LiveScenario):
 
     def test_040_rpki_invalid(self):
         """{}: RPKI INVALID route"""
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("RPKI not supported by OpenBGPD")
-
         self.receive_route(self.rc, self.DATA["AS101_roa_invalid1"],
                 self.rs, next_hop=self.AS1_1,
                 filtered=False, std_comms=["65520:0", "65520:14"],
