@@ -984,6 +984,12 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
   - Routinator: https://nlnetlabs.nl/projects/rpki/routinator/
 
 
+  - rpki-client: https://www.rpki-client.org/
+
+
+  - OctoRPKI: https://github.com/cloudflare/cfrpki
+
+
   Please note that the second method is far from guaranteeing
   that a cryptographically validated dataset is retrieved
   from a trusted cache, unless the URL of a local, trusted
@@ -1010,7 +1016,7 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
   local files.
 
 
-  Default: **RIPE NCC instance, NTT instance**
+  Default: **rpki-client instance, NTT instance, RIPE NCC instance**
 
 
 - ``allowed_trust_anchors``:
@@ -1031,6 +1037,9 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
   - RIPE NCC instance: https://rpki-validator.ripe.net/trust-anchors
 
 
+  - rpki-client: https://console.rpki-client.org/
+
+
   Before enabling any ARIN TA, please consider the
   following URLs:
 
@@ -1042,6 +1051,32 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
 
 
   Default: **APNIC, AfriNIC, LACNIC and RIPE NCC.**
+
+
+- ``ignore_cache_files_older_than``:
+  When using the **ripe-rpki-validator-cache** source, ignore
+  cache files that are older than this period of time (in
+  seconds).
+
+
+  When a file is ignored, the next source is used (from the
+  **ripe_rpki_validator_url** list).
+
+
+  Depending on the format of the cache file, the build time
+  may be unavailable. At the moment, this information is known
+  to be included in the rpki-client and OctoRPKI JSON formats,
+  but not in the original RIPE NCC RPKI Validator format.
+
+
+  Default: **6 hours (21600 seconds).**
+
+  Example:
+
+  .. code:: yaml
+
+     ignore_cache_files_older_than: 21600
+
 
 
 

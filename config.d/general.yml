@@ -555,7 +555,7 @@ cfg:
     # They can be 'http://' or 'https://' URLs or paths of
     # local files.
     #
-    # Default: RIPE NCC instance, NTT instance
+    # Default: rpki-client instance, NTT instance, RIPE NCC instance
     ripe_rpki_validator_url:
       - "https://console.rpki-client.org/vrps.json"
       - "https://rpki.gin.ntt.net/api/export.json"

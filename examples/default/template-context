@@ -304,9 +304,11 @@ cfg:
     - afrinic
     - lacnic
     - ripe
+    ignore_cache_files_older_than: 21600
     ripe_rpki_validator_url:
-    - https://rpki-validator.ripe.net/api/export.json
+    - https://console.rpki-client.org/vrps.json
     - https://rpki.gin.ntt.net/api/export.json
+    - https://rpki-validator.ripe.net/api/export.json
     source: ripe-rpki-validator-cache
   rs_as: 999
   rtt_thresholds:
@@ -962,7 +964,6 @@ never_via_route_servers_asns
 - 8455
 - 57866
 - 36459
-- 8412
 - 7155
 - 263328
 - 12822
@@ -987,6 +988,7 @@ never_via_route_servers_asns
 - 34209
 - 263856
 - 135848
+- 137610
 - 138023
 - 136106
 - 132996

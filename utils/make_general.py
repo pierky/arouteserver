@@ -330,6 +330,7 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
             CfgStatement("source", pre_comment=True),
             CfgStatement("ripe_rpki_validator_url", pre_comment=True),
             CfgStatement("allowed_trust_anchors", pre_comment=True),
+            CfgStatement("ignore_cache_files_older_than", pre_comment=True)
         ]),
         CfgStatement("blackhole_filtering", t="Blackhole filtering", post_comment=True, sub=[
             CfgStatement("policy_ipv4", pre_comment=True),

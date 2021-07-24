@@ -8,13 +8,14 @@ How it works
       cfg:
         rs_as: 64496
         router_id: "192.0.2.2"
-        add_path: True
         filtering:
-          next_hop:
-            policy: "same-as"
-        blackhole_filtering:
-          policy_ipv4: "rewrite-next-hop"
-          ...
+          irrdb:
+            enforce_origin_in_as_set: True
+            enforce_prefix_in_as_set: True
+          rpki_bgp_origin_validation:
+            enabled: True
+            reject_invalid: True
+            ...
 
    .. code:: yaml
 
@@ -28,13 +29,13 @@ How it works
               - "RIPE::AS-FOO"
         ...
 
-#. ARouteServer acquires external information to enrich them: i.e. `bgpq4`_/`bgpq3`_ for IRR data, `PeeringDB`_ for max-prefix limit and AS-SETs, ...
+#. ARouteServer acquires external information to enrich them: i.e. `bgpq4`_/`bgpq3`_ for IRR data, `PeeringDB`_ for max-prefix limit and AS-SETs, RPKI ROAs, ...
 
 #. `Jinja2`_ built-in templates are used to render the final route server's configuration file.
 
-   Currently, **BIRD** (>= 1.6.3 up to 1.6.8), **BIRD v2** (starting from 2.0.7 - support for BIRD v2 is in `early stages <https://arouteserver.readthedocs.io/en/latest/SUPPORTED_SPEAKERS.html>`_) and **OpenBGPD** (OpenBSD 6.1 up to 7.1 and also OpenBGPD Portable 6.5p1 up to 7.1p0) are supported, with almost `feature parity <https://arouteserver.readthedocs.io/en/latest/SUPPORTED_SPEAKERS.html#supported-features>`_ between them.
+   Currently, **BIRD** (>= 1.6.3 up to 1.6.8), **BIRD v2** (starting from 2.0.7) and **OpenBGPD** (OpenBSD 6.1 up to 7.1 and also OpenBGPD Portable 6.5p1 up to 7.1p0) are supported, with almost `feature parity <https://arouteserver.readthedocs.io/en/latest/SUPPORTED_SPEAKERS.html#supported-features>`__ between them.
 
-**Validation** and testing of the configurations generated with this tool are performed using the built-in **live tests** framework: `Docker`_ instances are used to simulate several scenarios and to validate the behaviour of the route server after configuring it with ARouteServer. More details on the `Live tests <https://arouteserver.readthedocs.io/en/latest/LIVETESTS.html>`_ section.
+**Validation** and testing of the configurations generated with this tool are performed using the built-in **live tests** framework: `Docker`_ instances are used to simulate several scenarios and to validate the behaviour of the route server after configuring it with ARouteServer. More details on the `Live tests <https://arouteserver.readthedocs.io/en/latest/LIVETESTS.html>`__ section.
 
 A Docker-based `playground <https://github.com/pierky/arouteserver/tree/master/tools/playground>`__ is available to experiment with the tool in a virtual IXP environment.
 
@@ -49,36 +50,38 @@ Also, a `Docker image <https://hub.docker.com/r/pierky/arouteserver>`__ is provi
 Features
 --------
 
-- **Path hiding** mitigation techniques (`RFC7947`_ `section 2.3.1 <https://tools.ietf.org/html/rfc7947#section-2.3.1>`_).
+- **Path hiding** mitigation techniques (`RFC7947`_ `section 2.3.1 <https://tools.ietf.org/html/rfc7947#section-2.3.1>`__).
 
 - Basic filters (mostly enabled by default):
 
-  - **NEXT_HOP** enforcement (strict / same AS - `RFC7948`_ `section 4.8 <https://tools.ietf.org/html/rfc7948#section-4.8>`_);
+  - **NEXT_HOP** enforcement (strict / same AS - `RFC7948`_ `section 4.8 <https://tools.ietf.org/html/rfc7948#section-4.8>`__);
   - minimum and maximum IPv4/IPv6 **prefix length**;
   - maximum **AS_PATH length**;
   - reject **invalid AS_PATHs** (containing `private/invalid ASNs <http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html>`_);
-  - reject AS_PATHs containing **transit-free** or **never via route-servers** ASNs (using `PeeringDB info_never_via_route_servers attribute <https://github.com/peeringdb/peeringdb/issues/394>`_);
+  - reject AS_PATHs containing **transit-free** or **never via route-servers** ASNs (using `PeeringDB info_never_via_route_servers attribute <https://github.com/peeringdb/peeringdb/issues/394>`__);
   - reject **bogons**;
   - **max-prefix limit** based on global or client-specific values or on **PeeringDB** data.
 
 - Prefixes and origin ASNs validation (also in *tag-only* mode):
 
-  - **IRR-based filters** (`RFC7948`_ `section 4.6.2 <https://tools.ietf.org/html/rfc7948#section-4.6.2>`_);
+  - **IRR-based filters** (`RFC7948`_ `section 4.6.2 <https://tools.ietf.org/html/rfc7948#section-4.6.2>`__);
   - AS-SETs configured manually or fetched from PeeringDB;
   - support for **IRR sources** (RIPE::AS-FOO, RADB::AS-BAR);
   - **white lists** support;
   - extended dataset for filters generation:
 
     - RPKI **ROAs used as route objects**;
-    - `Origin AS <https://mailman.nanog.org/pipermail/nanog/2017-December/093525.html>`_ from **ARIN Whois** database dump;
+    - `Origin AS <https://mailman.nanog.org/pipermail/nanog/2017-December/093525.html>`__ from **ARIN Whois** database dump;
     - `NIC.BR Whois data <https://ripe76.ripe.net/presentations/43-RIPE76_IRR101_Job_Snijders.pdf>`_ (slide n. 26) from Registro.br;
 
-  - **RPKI**-based filtering (BGP Prefix Origin Validation).
+  - **RPKI**-based filtering (BGP Prefix Origin Validation);
+
+    - ROAs can be retrieved from publicly available JSON files or from a local validating cache.
 
 - **Blackhole filtering** support:
 
   - optional **NEXT_HOP rewriting**;
-  - signalling via BGP Communities (`BLACKHOLE <https://tools.ietf.org/html/rfc7999#section-5>`_ and custom communities);
+  - signalling via BGP Communities (`BLACKHOLE <https://tools.ietf.org/html/rfc7999#section-5>`__ and custom communities);
   - client-by-client control over propagation.
 
 - **Graceful shutdown** support:
@@ -96,7 +99,7 @@ Features
 
 - Optional session features on a client-by-client basis:
 
-  - prepend route server ASN (`RFC7947`_ `section 2.2.2.1 <https://tools.ietf.org/html/rfc7947#section-2.2.2.1>`_);
+  - prepend route server ASN (`RFC7947`_ `section 2.2.2.1 <https://tools.ietf.org/html/rfc7947#section-2.2.2.1>`__);
   - active sessions;
   - **GTSM** (Generalized TTL Security Mechanism - `RFC5082`_);
   - **ADD-PATH** capability (`RFC7911`_).
