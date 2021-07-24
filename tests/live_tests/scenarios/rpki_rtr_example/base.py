@@ -20,6 +20,7 @@ from pierky.arouteserver.tests.live_tests.base import LiveScenario
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, OpenBGPDLatestInstance
 from pierky.arouteserver.tests.live_tests.routinator import RoutinatorInstance
+from pierky.arouteserver.tests.live_tests.instances import Route
 
 class RPKIRTRScenario(LiveScenario):
     __test__ = False
@@ -27,6 +28,7 @@ class RPKIRTRScenario(LiveScenario):
     MODULE_PATH = __file__
     RS_INSTANCE_CLASS = None
     CLIENT_INSTANCE_CLASS = None
+    TARGET_VERSION = None
 
     @classmethod
     def _setup_instances(cls):
@@ -59,15 +61,10 @@ class RPKIRTRScenario(LiveScenario):
 
     def test_030_routinator_not_running(self):
         """{}: route accepted because validator not running"""
-        if isinstance(self.rs, BIRDInstance):
-            ext_comm_rpki_unknown = ["generic:0x43000000:0x1"]
-        else:
-            ext_comm_rpki_unknown = []
-
         self.receive_route(self.rs, self.DATA["AS1_1"], self.AS1_1,
                            next_hop=self.AS1_1, as_path="1",
                            std_comms=[], lrg_comms=[],
-                           ext_comms=ext_comm_rpki_unknown)
+                           ext_comms=[Route.RFC8097_NOT_FOUND])
 
     def test_040_spin_up_routinator(self):
         """{}: spin up the validator"""
@@ -93,11 +90,6 @@ class RPKIRTRScenario(LiveScenario):
 
     def test_051_route_dropped(self):
         """{}: route dropped after spinning the validator up"""
-        if isinstance(self.rs, BIRDInstance):
-            ext_comm_rpki_invalid = ["generic:0x43000000:0x2"]
-        else:
-            ext_comm_rpki_invalid = []
-
         self.rs.clear_cached_routes()
 
         with self.assertRaisesRegex(AssertionError, "Routes not found."):
@@ -107,7 +99,6 @@ class RPKIRTRScenario(LiveScenario):
 class RPKIRTRScenarioBIRD(RPKIRTRScenario):
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
-    TARGET_VERSION = "2.0.8"
     IP_VER = 4
 
     @classmethod
@@ -118,7 +109,7 @@ class RPKIRTRScenarioBIRD(RPKIRTRScenario):
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                     target_version=cls.TARGET_VERSION),
+                                     target_version=cls.TARGET_VERSION or cls.RS_INSTANCE_CLASS.TARGET_VERSION),
                     "/etc/bird/bird.conf"
                 ),
                 (
@@ -154,8 +145,6 @@ class RPKIRTRScenarioOpenBGPD(RPKIRTRScenario):
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
 
-    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION
-
     @classmethod
     def _setup_rs_instance(cls):
         return cls.RS_INSTANCE_CLASS(
@@ -164,7 +153,7 @@ class RPKIRTRScenarioOpenBGPD(RPKIRTRScenario):
             [
                 (
                     cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
-                                     target_version=cls.TARGET_VERSION),
+                                     target_version=cls.TARGET_VERSION or cls.RS_INSTANCE_CLASS.TARGET_VERSION),
                     "/etc/bgpd.conf"
                 ),
                 (

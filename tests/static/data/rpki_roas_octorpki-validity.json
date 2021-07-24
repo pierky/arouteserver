@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "counts": 42855,
+    "generated": 1924991999,
+    "valid": 1027025198
+  },
+  "roas": [
+    {
+      "prefix": "98.147.0.0/16",
+      "maxLength": 16,
+      "asn": "AS20001",
+      "ta": "tals/ARIN-Pilot.tal"
+    }
+  ]
+}

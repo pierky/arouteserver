@@ -1,0 +1,31 @@
+{
+	"metadata": {
+		"buildmachine": "yyz-vrp-gen1.rpki-client.org",
+		"buildtime": "2021-07-21T17:26:00Z",
+		"elapsedtime": "478",
+		"usertime": "199",
+		"systemtime": "101",
+		"roas": 93445,
+		"failedroas": 0,
+		"invalidroas": 1,
+		"certificates": 25917,
+		"failcertificates": 0,
+		"invalidcertificates": 0,
+		"tals": 5,
+		"talfiles": "/etc/rpki/afrinic.tal /etc/rpki/apnic.tal /etc/rpki/lacnic.tal /etc/rpki/ripe.tal /etc/rpki/arin.tal",
+		"manifests": 25917,
+		"failedmanifests": 3,
+		"stalemanifests": 6,
+		"crls": 25908,
+		"gbrs": 2,
+		"repositories": 25740,
+		"vrps": 277777,
+		"uniquevrps": 266991,
+		"cachedir_del_files": 133,
+		"cachedir_del_dirs": 226
+	},
+
+	"roas": [
+		{ "asn": 13335, "prefix": "1.0.0.0/24", "maxLength": 24, "ta": "apnic", "expires": 1027049909 }
+    ]
+}

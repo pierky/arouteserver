@@ -61,7 +61,7 @@ class RPKIINVALIDScenario(LiveScenario):
                 [
                     (
                         cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                         target_version=cls.TARGET_VERSION,
+                                         target_version=cls.TARGET_VERSION or cls.RS_INSTANCE_CLASS.TARGET_VERSION,
                                          local_files=cls._get_local_files(),
                                          hooks=[
                                              "announce_rpki_invalid_to_client",
@@ -228,8 +228,6 @@ class RPKIINVALIDScenario(LiveScenario):
 
 class RPKIINVALIDScenario2(RPKIINVALIDScenario):
     __test__ = False
-
-    TARGET_VERSION = "2.0.8"
 
     @classmethod
     def _get_local_files(cls):

@@ -59,22 +59,22 @@ class OpenBGPDRoute(Route):
         # rt 64537:10
         # rt 64537:10 rt 64538:20
 
-        next_field_should_be = "rt_soo"
-        rt_soo = ""
+        next_field_should_be_comm_type = True
+        comm_type = ""
         comm = ""
 
-        for part in communities.split(" "):
-            if next_field_should_be == "rt_soo":
-                if part not in ("rt", "soo"):
+        for part in communities.split():
+            if next_field_should_be_comm_type:
+                if part not in ("rt", "soo", "ovs"):
                     raise ValueError(
                         "Error while processing the extended communities "
-                        "string '{}': expected 'rt' or 'soo', but '{}' "
+                        "string '{}': expected 'rt', 'soo' or 'ovs', but '{}' "
                         "found.".format(communities, part)
                     )
-                rt_soo = part
-                next_field_should_be = "comm"
-            elif next_field_should_be == "comm":
-                if ":" not in part:
+                comm_type = part
+                next_field_should_be_comm_type = False
+            else:
+                if comm_type != "ovs" and ":" not in part:
                     raise ValueError(
                         "Error while processing the extended communities "
                         "string '{}': ':' not found in the community '{}' "
@@ -82,16 +82,9 @@ class OpenBGPDRoute(Route):
                     )
                 comm = part
 
-                res.append("{}:{}".format(rt_soo, comm))
+                res.append("{}:{}".format(comm_type, comm))
 
-                next_field_should_be = "rt_soo"
-
-        if next_field_should_be != "rt_soo":
-            raise ValueError(
-                "Error while processing the extended communities "
-                "string '{}': one part of the string remained "
-                "unprocessed.".format(communities)
-            )
+                next_field_should_be_comm_type = True
 
         return res
 
@@ -526,8 +519,7 @@ class OpenBGPD66PortableInstance(OpenBGPDPortableInstance):
     TAG = "openbgpd66p"
 
     BGP_SPEAKER_VERSION = "6.6p0"
-    # TARGET_VERSION not set here because it's assumed to be
-    # the same of the OpenBGPD Latest one.
+    TARGET_VERSION = "6.6"
 
 class OpenBGPD67PortableInstance(OpenBGPDPortableInstance):
 
@@ -536,8 +528,7 @@ class OpenBGPD67PortableInstance(OpenBGPDPortableInstance):
     TAG = "openbgpd67p"
 
     BGP_SPEAKER_VERSION = "6.7p0"
-    # TARGET_VERSION not set here because it's assumed to be
-    # the same of the OpenBGPD Latest one.
+    TARGET_VERSION = "6.7"
 
 class OpenBGPD68PortableInstance(OpenBGPDPortableInstance):
 
@@ -546,8 +537,7 @@ class OpenBGPD68PortableInstance(OpenBGPDPortableInstance):
     TAG = "openbgpd68p"
 
     BGP_SPEAKER_VERSION = "6.8p1"
-    # TARGET_VERSION not set here because it's assumed to be
-    # the same of the OpenBGPD Latest one.
+    TARGET_VERSION = "6.8"
 
 class OpenBGPD69PortableInstance(OpenBGPDPortableInstance):
 
@@ -556,8 +546,7 @@ class OpenBGPD69PortableInstance(OpenBGPDPortableInstance):
     TAG = "openbgpd69p"
 
     BGP_SPEAKER_VERSION = "6.9p0"
-    # TARGET_VERSION not set here because it's assumed to be
-    # the same of the OpenBGPD Latest one.
+    TARGET_VERSION = "6.9"
 
 class OpenBGPD70PortableInstance(OpenBGPDPortableInstance):
 
@@ -566,8 +555,16 @@ class OpenBGPD70PortableInstance(OpenBGPDPortableInstance):
     TAG = "openbgpd70p"
 
     BGP_SPEAKER_VERSION = "7.0p0"
-    # TARGET_VERSION not set here because it's assumed to be
-    # the same of the OpenBGPD Latest one.
+    TARGET_VERSION = "7.0"
+
+class OpenBGPD71PortableInstance(OpenBGPDPortableInstance):
+
+    DOCKER_IMAGE = "pierky/openbgpd:7.1p0"
+
+    TAG = "openbgpd71p"
+
+    BGP_SPEAKER_VERSION = "7.1p0"
+    TARGET_VERSION = "7.1"
 
 OpenBGPDPortablePreviousInstance = OpenBGPD68PortableInstance
-OpenBGPDPortableLatestInstance = OpenBGPD70PortableInstance
+OpenBGPDPortableLatestInstance = OpenBGPD71PortableInstance

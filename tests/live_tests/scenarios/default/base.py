@@ -27,6 +27,7 @@ class DefaultConfigScenario(LiveScenario):
     RS_INSTANCE_CLASS = None
     CLIENT_INSTANCE_CLASS = None
     CONFIG_BUILDER_CLASS = None
+    TARGET_VERSION = None
 
     AS_SET = {
         "AS3333": [3333],
@@ -58,7 +59,6 @@ class DefaultConfigScenarioBIRD(DefaultConfigScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
-    TARGET_VERSION = None
     IP_VER = None
 
     @classmethod
@@ -69,7 +69,7 @@ class DefaultConfigScenarioBIRD(DefaultConfigScenario):
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                     target_version=cls.TARGET_VERSION),
+                                     target_version=cls.TARGET_VERSION or cls.RS_INSTANCE_CLASS.TARGET_VERSION),
                     "/etc/bird/bird.conf"
                 )
             ]
@@ -79,15 +79,11 @@ class DefaultConfigScenarioBIRD2(DefaultConfigScenarioBIRD):
 
     __test__ = False
 
-    TARGET_VERSION = "2.0.8"
-
 class DefaultConfigScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
                                     DefaultConfigScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
-
-    TARGET_VERSION = None
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -97,7 +93,7 @@ class DefaultConfigScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
             [
                 (
                     cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
-                                     target_version=cls.TARGET_VERSION),
+                                     target_version=cls.TARGET_VERSION or cls.RS_INSTANCE_CLASS.TARGET_VERSION),
                     "/etc/bgpd.conf"
                 )
             ]
@@ -107,10 +103,6 @@ class DefaultConfigScenarioOpenBGPDPrevious(DefaultConfigScenarioOpenBGPD):
 
     __test__ = False
 
-    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
-
 class DefaultConfigScenarioOpenBGPDLatest(DefaultConfigScenarioOpenBGPD):
 
     __test__ = False
-
-    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION

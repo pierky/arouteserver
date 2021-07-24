@@ -33,6 +33,7 @@ class PathHidingScenario(LiveScenario):
     RS_INSTANCE_CLASS = None
     CLIENT_INSTANCE_CLASS = None
     CONFIG_BUILDER_CLASS = None
+    TARGET_VERSION = None
 
     CFG_GENERAL = None
 
@@ -149,7 +150,6 @@ class PathHidingScenarioBIRD(PathHidingScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
-    TARGET_VERSION = None
     IP_VER = None
 
     @classmethod
@@ -161,7 +161,7 @@ class PathHidingScenarioBIRD(PathHidingScenario):
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
                                      cfg_general=cls.CFG_GENERAL,
-                                     target_version=cls.TARGET_VERSION),
+                                     target_version=cls.TARGET_VERSION or cls.RS_INSTANCE_CLASS.TARGET_VERSION),
                     "/etc/bird/bird.conf"
                 )
             ]
@@ -170,14 +170,10 @@ class PathHidingScenarioBIRD(PathHidingScenario):
 class PathHidingScenarioBIRD2(PathHidingScenarioBIRD):
     __test__ = False
 
-    TARGET_VERSION = "2.0.8"
-
 class PathHidingScenarioOpenBGPD(LiveScenario_TagRejectPolicy, PathHidingScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
-
-    TARGET_VERSION = None
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -188,7 +184,7 @@ class PathHidingScenarioOpenBGPD(LiveScenario_TagRejectPolicy, PathHidingScenari
                 (
                     cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
                                      cfg_general=cls._get_cfg_general(cls.CFG_GENERAL),
-                                     target_version=cls.TARGET_VERSION),
+                                     target_version=cls.TARGET_VERSION or cls.RS_INSTANCE_CLASS.TARGET_VERSION),
                     "/etc/bgpd.conf"
                 )
             ]
@@ -197,12 +193,8 @@ class PathHidingScenarioOpenBGPD(LiveScenario_TagRejectPolicy, PathHidingScenari
 class PathHidingScenarioOpenBGPDPrevious(PathHidingScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
-
 class PathHidingScenarioOpenBGPDLatest(PathHidingScenarioOpenBGPD):
     __test__ = False
-
-    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION
 
 class PathHidingScenario_MitigationOn(object):
 
@@ -210,8 +202,10 @@ class PathHidingScenario_MitigationOn(object):
 
     def test_040_AS3_and_AS4_prefix_via_AS2(self):
         """{}: AS3 and AS4 receive prefix with sub-optimal path via AS2"""
+        target_version = self.TARGET_VERSION or self.RS_INSTANCE_CLASS.TARGET_VERSION
+
         if isinstance(self.rs, OpenBGPDInstance) and \
-           version.parse(self.TARGET_VERSION.replace("p0", "")) < version.parse("6.9"):
+           version.parse(target_version.replace("p0", "")) < version.parse("6.9"):
             raise unittest.SkipTest("Path hiding mititaion not supported on OpenBGPD < 6.9")
 
         for inst in (self.AS3, self.AS4):

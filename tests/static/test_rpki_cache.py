@@ -24,9 +24,11 @@ except ImportError:
     import unittest.mock as mock
 import time
 import unittest
+import datetime
 
 
 from pierky.arouteserver.ripe_rpki_cache import RIPE_RPKI_ROAs
+from pierky.arouteserver.errors import RPKIValidatorCacheError
 
 
 class TestRPKICache(unittest.TestCase):
@@ -34,16 +36,20 @@ class TestRPKICache(unittest.TestCase):
     ROAS_MUST_BE_PRESENT = [
         ("103.10.112.0/22", 0, 32, {
             "ripe": "APNIC RPKI Root",
-            "ntt": "apnic"}),
+            "ntt": "apnic",
+            "rpki-client": "apnic"}),
         ("185.168.163.0/24", 4214120002, 24, {
             "ripe": "RIPE NCC RPKI Root",
-            "ntt": "ripe"}),
+            "ntt": "ripe",
+            "rpki-client": "ripe"}),
         ("154.127.54.0/24", 397423, 24, {
             "ripe": "AfriNIC RPKI Root",
-            "ntt": "afrinic"}),
-        ("45.227.254.0/24", 395978, 24, {
+            "ntt": "afrinic",
+            "rpki-client": "afrinic"}),
+        ("45.229.7.0/24", 266676, 24, {
             "ripe": "LACNIC RPKI Root",
-            "ntt": "lacnic"})
+            "ntt": "lacnic",
+            "rpki-client": "lacnic"})
     ]
 
     def setUp(self):
@@ -102,7 +108,24 @@ class TestRPKICache(unittest.TestCase):
                 prefix, asn, max_len, tas[provider]
             )
 
-    def test_030(self):
+    @mock.patch.object(
+        RIPE_RPKI_ROAs,
+        "_get_utc_now",
+        return_value=datetime.datetime(2021, 7, 21, 17, 26)
+    )
+    def test_030(self, _):
+        """RPKI ROAs: rpki-client TAs"""
+        roas = self._setup_obj(
+            open("tests/static/data/rpki_roas_rpki-client.json").read()
+        )
+        provider = "rpki-client"
+        for prefix, asn, max_len, tas in self.ROAS_MUST_BE_PRESENT:
+            self._roa_is_present(
+                roas,
+                prefix, asn, max_len, tas[provider]
+            )
+
+    def test_100(self):
         """RPKI ROAs: different formats"""
         roas = self._setup_obj(
             '{'
@@ -118,3 +141,70 @@ class TestRPKICache(unittest.TestCase):
         self._roa_is_present(roas, "192.0.2.2/32", 0, 32, "test")
         self._roa_is_present(roas, "192.0.2.3/32", 0, 32, "test")
         self._roa_is_present(roas, "192.0.2.4/32", 0, 32, "test")
+
+    @mock.patch.object(
+        RIPE_RPKI_ROAs,
+        "_get_utc_now",
+        return_value=datetime.datetime(2030, 12, 31, 23, 59)
+    )
+    def test_200(self, _):
+        """RPKI ROAs: rpki-client expired file"""
+
+        # Same file as in test_030, but this time the mock
+        # _get_utc_now is in the future.
+        with six.assertRaisesRegex(self, RPKIValidatorCacheError, "was built at .* it will be ignored"):
+            roas = self._setup_obj(
+                open("tests/static/data/rpki_roas_rpki-client.json").read()
+            )
+
+    @mock.patch.object(
+        RIPE_RPKI_ROAs,
+        "_get_utc_now",
+        return_value=datetime.datetime(2021, 7, 21, 17, 26)
+    )
+    def test_210(self, _):
+        """RPKI ROAs: rpki-client expired ROAs"""
+
+        roas = self._setup_obj(
+            open("tests/static/data/rpki_roas_rpki-client_expired.json").read()
+        )
+        self.assertEqual(roas, [])
+
+    @mock.patch.object(
+        RIPE_RPKI_ROAs,
+        "_get_utc_now",
+        return_value=datetime.datetime(2030, 12, 31, 23, 59)
+    )
+    def test_220(self, _):
+        """RPKI ROAs: OctoRPKI expired file"""
+
+        with six.assertRaisesRegex(self, RPKIValidatorCacheError, r"was built at .* it will be ignored"):
+            roas = self._setup_obj(
+                open("tests/static/data/rpki_roas_octorpki.json").read()
+            )
+
+    @mock.patch.object(
+        RIPE_RPKI_ROAs,
+        "_get_utc_now",
+        return_value=datetime.datetime(2030, 12, 31, 23, 59)
+    )
+    def test_230(self, _):
+        """RPKI ROAs: OctoRPKI out of validity"""
+
+        with six.assertRaisesRegex(self, RPKIValidatorCacheError, r"is valid till .* it will be ignored"):
+            roas = self._setup_obj(
+                open("tests/static/data/rpki_roas_octorpki-validity.json").read()
+            )
+
+    @mock.patch.object(
+        RIPE_RPKI_ROAs,
+        "_get_utc_now",
+        return_value=datetime.datetime(2021, 7, 23, 6, 50)
+    )
+    def test_240(self, _):
+        """RPKI ROAs: OctoRPKI valid file"""
+
+        roas = self._setup_obj(
+            open("tests/static/data/rpki_roas_octorpki.json").read()
+        )
+        self.assertEqual(len(roas), 39680)

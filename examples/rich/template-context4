@@ -328,6 +328,7 @@ cfg:
     - afrinic
     - lacnic
     - ripe
+    ignore_cache_files_older_than: 21600
     ripe_rpki_validator_url:
     - examples/rich/ripe-rpki-cache.json
     source: ripe-rpki-validator-cache
@@ -1098,7 +1099,7 @@ AS12654:
   le: 32
   length: 24
   max_length: 32
-  prefix: 23.128.125.0
+  prefix: 23.128.25.0
 - exact: false
   ge: 24
   le: 32
@@ -1116,7 +1117,7 @@ AS12654:
   le: 32
   length: 24
   max_length: 32
-  prefix: 23.128.25.0
+  prefix: 23.128.125.0
 
 
 registrobr_whois_db_records
@@ -1139,6 +1140,7 @@ never_via_route_servers_asns
 - 1273
 - 174
 - 680
+- 2152
 - 6830
 - 3292
 - 5511
@@ -1153,6 +1155,7 @@ never_via_route_servers_asns
 - 11260
 - 34108
 - 20115
+- 39651
 - 48237
 - 9908
 - 15692
@@ -1162,7 +1165,6 @@ never_via_route_servers_asns
 - 8455
 - 57866
 - 36459
-- 8412
 - 7155
 - 263328
 - 12822
@@ -1182,11 +1184,12 @@ never_via_route_servers_asns
 - 48408
 - 52973
 - 265630
+- 37529
 - 27947
 - 34209
 - 263856
 - 135848
-- 134041
+- 137610
 - 138023
 - 136106
 - 132996
@@ -1203,6 +1206,7 @@ never_via_route_servers_asns
 - 58768
 - 1955
 - 328572
+- 49127
 - 393573
 - 18520
 - 14295
@@ -1238,6 +1242,7 @@ never_via_route_servers_asns
 - 140287
 - 212706
 - 265336
+- 43470
 - 269367
 - 36165
 - 202561
@@ -1245,7 +1250,6 @@ never_via_route_servers_asns
 - 213202
 - 141120
 - 141411
-- 138077
 - 262888
 - 131398
 - 38713
@@ -1260,6 +1264,9 @@ never_via_route_servers_asns
 - 269906
 - 52946
 - 30967
-- 211358
 - 11290
-- 142419
+- 271200
+- 13032
+- 51530
+- 31764
+- 137127

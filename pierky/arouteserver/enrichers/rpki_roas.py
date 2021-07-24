@@ -46,6 +46,27 @@ class RPKIROAsEnricher(BaseConfigEnricher):
     def enrich(self):
         logging.info("Updating RPKI ROAs...")
 
+        roas_cache_expiry = self.builder.cache_expiry.get(
+            RIPE_RPKI_ROAs.EXPIRY_TIME_TAG,
+            self.builder.cache_expiry.get(
+                "general",
+                None
+            )
+        )
+
+        if roas_cache_expiry > 60 * 60:
+            logging.warning(
+                "The cache expiry time for the JSON files used to get RPKI ROAs "
+                "is set to {} seconds, which is more than 1 hour. "
+                "Given the stale data checks that are implemented since version "
+                "1.9.0 of ARouteServer, it is advisable to use a cache expiry "
+                "time not longer than 1 hour, in order to avoid caching ROAs "
+                "that would turn out being expired at the next usage of the "
+                "cached copy of the files. "
+                "This setting can be changed in the arouteserver.yml file, "
+                "'cache_expiry' section.".format(roas_cache_expiry)
+            )
+
         filtering = self.builder.cfg_general["filtering"]
         self._roas_as_route_object = \
             filtering["irrdb"]["use_rpki_roas_as_route_objects"]["enabled"]
@@ -80,10 +101,12 @@ class RPKIROAsEnricher(BaseConfigEnricher):
         assert rpki_roas_cfg["source"] == "ripe-rpki-validator-cache", \
             "source is not ripe-rpki-validator-cache"
         urls = rpki_roas_cfg["ripe_rpki_validator_url"]
+        ignore_cache_files_older_than = rpki_roas_cfg["ignore_cache_files_older_than"]
 
         ripe_cache = RIPE_RPKI_ROAs(cache_dir=self.builder.cache_dir,
                                     cache_expiry=self.builder.cache_expiry,
-                                    ripe_rpki_validator_url=urls)
+                                    ripe_rpki_validator_url=urls,
+                                    ignore_cache_files_older_than=ignore_cache_files_older_than)
         ripe_cache.load_data()
         roas = ripe_cache.roas
 

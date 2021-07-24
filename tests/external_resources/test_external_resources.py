@@ -119,6 +119,10 @@ class TestExternalResources(unittest.TestCase):
         """External resources: RPKI ROAs, NTT"""
         self._test_rpki_roas_per_provider("ntt.net")
 
+    def test_rpki_roas_rpki_client(self):
+        """External resources: RPKI ROAs, rpki-client"""
+        self._test_rpki_roas_per_provider("rpki-client.org")
+
     def test_asset_bgpq3(self):
         """External resources: ASNs from AS-SET via bgpq3"""
         asset = ASSet(["AS-RIPENCC"], bgpq3_path="bgpq3", **cache_cfg)
