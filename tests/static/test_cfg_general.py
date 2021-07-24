@@ -1144,8 +1144,9 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "rpki_roas": {
                 "source": "ripe-rpki-validator-cache",
                 "ripe_rpki_validator_url": [
-                    "https://rpki-validator.ripe.net/api/export.json",
-                    "https://rpki.gin.ntt.net/api/export.json"
+                    "https://console.rpki-client.org/vrps.json",
+                    "https://rpki.gin.ntt.net/api/export.json",
+                    "https://rpki-validator.ripe.net/api/export.json"
                 ],
                 "allowed_trust_anchors": [
                     "APNIC RPKI Root",
@@ -1156,7 +1157,8 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "afrinic",
                     "lacnic",
                     "ripe"
-                ]
+                ],
+                "ignore_cache_files_older_than": 21600
             },
             "blackhole_filtering": {
                 "policy_ipv4": None,
@@ -1265,8 +1267,9 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "rpki_roas": {
                 "source": "ripe-rpki-validator-cache",
                 "ripe_rpki_validator_url": [
-                    "https://rpki-validator.ripe.net/api/export.json",
-                    "https://rpki.gin.ntt.net/api/export.json"
+                    "https://console.rpki-client.org/vrps.json",
+                    "https://rpki.gin.ntt.net/api/export.json",
+                    "https://rpki-validator.ripe.net/api/export.json"
                 ],
                 "allowed_trust_anchors": [
                     "APNIC RPKI Root",
@@ -1277,7 +1280,8 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "afrinic",
                     "lacnic",
                     "ripe"
-                ]
+                ],
+                "ignore_cache_files_older_than": 21600
             },
             "blackhole_filtering": {
                 "policy_ipv4": None,

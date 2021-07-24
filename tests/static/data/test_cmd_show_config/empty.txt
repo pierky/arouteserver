@@ -54,8 +54,9 @@ default               policy: reject
                   rpki_roas:
 default             source: ripe-rpki-validator-cache
 default             ripe_rpki_validator_url:
-default               - https://rpki-validator.ripe.net/api/export.json
+default               - https://console.rpki-client.org/vrps.json
 default               - https://rpki.gin.ntt.net/api/export.json
+default               - https://rpki-validator.ripe.net/api/export.json
 default             allowed_trust_anchors:
 default               - APNIC RPKI Root
 default               - AfriNIC RPKI Root
@@ -65,6 +66,7 @@ default               - apnic
 default               - afrinic
 default               - lacnic
 default               - ripe
+default             ignore_cache_files_older_than: 21600
                   blackhole_filtering:
 default             announce_to_client: True
 default             policy_ipv4: None

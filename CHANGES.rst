@@ -16,6 +16,23 @@ next release
 
   The *BGP Prefix Origin Validation State Extended Communities* were not added when RPKI OV was performed. INVALID routes were still dropped when the route server was configured to do so (those routes are internally marked using locally-meaningful communities).
 
+- Improvement: RPKI ROAs files are checked for stale data.
+
+  The JSON files fetched from validating caches are now checked to detect stale data (rpki-client and OctoRPKI formats include this information) and they are ignored if the data they contain is no longer valid. In this case, the next URL in the ``rpki_roas.ripe_rpki_validator_url`` list is used.
+
+  By default, files whose content is older than 21600 seconds (6 hours) are ignored; it's possible to change this option via the newly introduced ``rpki_roas.ignore_cache_files_older_than`` setting.
+
+  Where available (rpki-client format only at this time), also the `VRP expiration time <https://github.com/openbsd/src/commit/a66158d7f8cdffc32bf2f8aa5d8bbed1f08a3a3d#diff-b2e9c61c4c7cfd2d5a0cde6066efe9a7c18dd1bdf06b1e473abc054261ea315c>`__ is checked.
+
+  As a consequence of this, the default ARouteServer cache expiration time for RPKI ROAs JSON files has been reduced to 60 minutes, to avoid caching ROAs that would turn out being expired at the next use of their cached copy.
+
+- Improvement: new order for the default URLs of the RPKI JSON files.
+
+  Since the RIPE NCC RPKI Validator `is now in EoL <https://labs.ripe.net/author/nathalie_nathalie/lifecycle-of-the-ripe-ncc-rpki-validator/>`__, the URL of the JSON file that points to rpki-validator.ripe.net has been moved as the last resort option for ``rpki_roas.ripe_rpki_validator_url``.
+  The one exposed in the `rpki-client dashboard <https://console.rpki-client.org/>`__ has been added.
+
+  Please note: this change only affects the default configuration file that ships with ARouteServer and is not be automatically reflected in existing configurations that route-servers operators are already using. If you wish this setup to be reflected in your configuration, please update your general.yml file accordingly.
+
 1.8.0
 -----
 

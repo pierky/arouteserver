@@ -15,6 +15,7 @@
 
 import json
 import logging
+import datetime
 
 import requests
 
@@ -27,13 +28,19 @@ class RIPE_RPKI_ROAs(CachedObject):
 
     EXPIRY_TIME_TAG = "ripe_rpki_roas"
 
-    DEFAULT_URL = "https://rpki-validator.ripe.net/api/export.json"
+    DEFAULT_URL = "https://console.rpki-client.org/vrps.json"
+    DEFAULT_IGNORE_FILES_OLDER_THAN = 21600
 
     def __init__(self, *args, **kwargs):
         CachedObject.__init__(self, *args, **kwargs)
 
         self.urls = kwargs.get("ripe_rpki_validator_url",
                                [self.DEFAULT_URL])
+
+        self.ignore_cache_files_older_than = kwargs.get(
+            "ignore_cache_files_older_than",
+            self.DEFAULT_IGNORE_FILES_OLDER_THAN
+        )
 
         self.roas = {}
 
@@ -46,6 +53,10 @@ class RIPE_RPKI_ROAs(CachedObject):
 
     def _get_object_filename(self):
         return "ripe-rpki-cache.json"
+
+    @staticmethod
+    def _get_utc_now():
+        return datetime.datetime.utcnow()
 
     def _get_data_from_url(self, url):
         if url.lower().startswith(("http://", "https://")):
@@ -97,10 +108,98 @@ class RIPE_RPKI_ROAs(CachedObject):
         if not isinstance(roas["roas"], list):
             raise RPKIValidatorCacheError("'roas' root element is not a list")
 
+        buildtime_dt_utc = None
+
+        if "metadata" in roas and "buildtime" in roas["metadata"]:
+            # rpki-client format.
+
+            buildtime = roas["metadata"]["buildtime"]
+
+            try:
+                buildtime_dt_utc = datetime.datetime.strptime(
+                    buildtime,
+                    "%Y-%m-%dT%H:%M:%SZ"
+                )
+            except Exception as e:
+                raise RPKIValidatorCacheError(
+                    "Error while parsing metadata.buildtime from "
+                    "RPKI cache file ({}): {}".format(
+                        url, str(e)
+                    )
+                )
+
+        elif "metadata" in roas and "generated" in roas["metadata"]:
+            # OctoRPKI format.
+
+            generated = roas["metadata"]["generated"]
+
+            try:
+                buildtime_dt_utc = datetime.datetime.utcfromtimestamp(int(generated))
+            except Exception as e:
+                raise RPKIValidatorCacheError(
+                    "Error while parsing metadata.generated from "
+                    "RPKI cache file ({}): {}".format(
+                        url, str(e)
+                    )
+                )
+
+        if buildtime_dt_utc and buildtime_dt_utc < self._get_utc_now() - datetime.timedelta(
+            seconds=self.ignore_cache_files_older_than
+        ):
+            raise RPKIValidatorCacheError(
+                "The RPKI cache file from {} was built at {} UTC, "
+                "so it was generated more than {} seconds ago "
+                "(ignore_cache_files_older_than), hence "
+                "it will be ignored.".format(
+                    url,
+                    buildtime_dt_utc,
+                    self.ignore_cache_files_older_than
+                )
+            )
+
+        valid_dt_utc = None
+
+        if "metadata" in roas and "valid" in roas["metadata"]:
+            # OctoRPKI format.
+
+            valid = roas["metadata"]["valid"]
+
+            try:
+                valid_dt_utc = datetime.datetime.utcfromtimestamp(int(valid))
+            except Exception as e:
+                raise RPKIValidatorCacheError(
+                    "Error while parsing metadata.valid from "
+                    "RPKI cache file ({}): {}".format(
+                        url, str(e)
+                    )
+                )
+
+        if valid_dt_utc and valid_dt_utc < self._get_utc_now():
+            raise RPKIValidatorCacheError(
+                "The RPKI cache file from {} is valid till {} UTC, "
+                "hence it will be ignored.".format(
+                    url,
+                    valid_dt_utc
+                )
+            )
+
         max_invalid_roas = 10
         invalid = 0
+        timestamp_now_utc = int(datetime.datetime.timestamp(self._get_utc_now()))
+
+        result = {"roas": []}
         for roa in roas["roas"]:
             try:
+                if "expires" in roa:
+                    expires = roa["expires"]
+                    if not isinstance(expires, int):
+                        if not expires.isdigit():
+                            raise ValueError("invalid expires")
+                        else:
+                            expires = int(expires)
+                    if expires < timestamp_now_utc:
+                        continue
+
                 asn = roa.get("asn", None)
                 if asn is None:
                     raise ValueError("missing ASN")
@@ -134,6 +233,8 @@ class RIPE_RPKI_ROAs(CachedObject):
                     else:
                         roa["maxLength"] = int(max_len)
 
+                result["roas"].append(roa)
+
             except ValueError as e:
                 logging.warning("Invalid ROA: {}, {}".format(
                     str(roa), str(e)
@@ -148,7 +249,7 @@ class RIPE_RPKI_ROAs(CachedObject):
 
                 continue
 
-        return roas
+        return result
 
     def _get_data(self):
         # List of (url, error)
@@ -157,7 +258,7 @@ class RIPE_RPKI_ROAs(CachedObject):
             try:
                 res = self._get_data_from_url(url)
                 logging.info(
-                        "RPKI ROAs loaded successfully from {}".format(url)
+                    "RPKI ROAs loaded successfully from {}".format(url)
                 )
                 return res
             except RPKIValidatorCacheError as e:

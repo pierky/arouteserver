@@ -536,6 +536,8 @@ cfg:
     #   Known compatible implementations at time of writing:
     #   - RIPE NCC RPKI Validator: https://www.ripe.net
     #   - Routinator: https://nlnetlabs.nl/projects/rpki/routinator/
+    #   - rpki-client: https://www.rpki-client.org/
+    #   - OctoRPKI: https://github.com/cloudflare/cfrpki
     #
     #   Please note that the second method is far from guaranteeing
     #   that a cryptographically validated dataset is retrieved
@@ -555,8 +557,9 @@ cfg:
     #
     # Default: RIPE NCC instance, NTT instance
     ripe_rpki_validator_url:
-      - "https://rpki-validator.ripe.net/api/export.json"
+      - "https://console.rpki-client.org/vrps.json"
       - "https://rpki.gin.ntt.net/api/export.json"
+      - "https://rpki-validator.ripe.net/api/export.json"
 
     # When using the 'ripe-rpki-validator-cache' source, only the
     # following Trust Anchors will be taken into account.
@@ -567,6 +570,7 @@ cfg:
     # Configured Trust Anchors pages:
     # - NTT instance: https://rpki.gin.ntt.net/trust-anchors
     # - RIPE NCC instance: https://rpki-validator.ripe.net/trust-anchors
+    # - rpki-client: https://console.rpki-client.org/
     #
     # Before enabling any ARIN TA, please consider the
     # following URLs:
@@ -587,6 +591,21 @@ cfg:
       - "lacnic"
       - "ripe"
       #- "arin"
+
+    # When using the 'ripe-rpki-validator-cache' source, ignore
+    # cache files that are older than this period of time (in
+    # seconds).
+    #
+    # When a file is ignored, the next source is used (from the
+    # 'ripe_rpki_validator_url' list).
+    #
+    # Depending on the format of the cache file, the build time
+    # may be unavailable. At the moment, this information is known
+    # to be included in the rpki-client and OctoRPKI JSON formats,
+    # but not in the original RIPE NCC RPKI Validator format.
+    #
+    # Default: 6 hours (21600 seconds).
+    ignore_cache_files_older_than: 21600
 
   blackhole_filtering:
     # Destination-based blackholing policy: if a policy is given,

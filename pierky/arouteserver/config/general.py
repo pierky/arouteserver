@@ -212,8 +212,9 @@ class ConfigParserGeneral(ConfigParserBase):
         r["ripe_rpki_validator_url"] = ValidatorListOf(
             ValidatorText, mandatory=True,
             default=[
-                "https://rpki-validator.ripe.net/api/export.json",
-                "https://rpki.gin.ntt.net/api/export.json"
+                "https://console.rpki-client.org/vrps.json",
+                "https://rpki.gin.ntt.net/api/export.json",
+                "https://rpki-validator.ripe.net/api/export.json"
             ]
         )
         r["allowed_trust_anchors"] = ValidatorListOf(
@@ -228,6 +229,7 @@ class ConfigParserGeneral(ConfigParserBase):
                 "ripe"
             ]
         )
+        r["ignore_cache_files_older_than"] = ValidatorUInt(default=21600, mandatory=True)
 
         c["blackhole_filtering"] = OrderedDict()
         b = c["blackhole_filtering"]
