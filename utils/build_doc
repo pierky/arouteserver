@@ -92,8 +92,8 @@ Reject reasons
 
 EOF
 cat << EOF | python >> $D
-from pierky.arouteserver.builder import ConfigBuilder
-for reason, description in ConfigBuilder.REJECT_REASONS.items():
+from pierky.arouteserver.reject_reasons import REJECT_REASONS
+for reason, description in REJECT_REASONS.items():
     print("{0:>7} {1}".format(reason, description))
 
 EOF

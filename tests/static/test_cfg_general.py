@@ -948,6 +948,86 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.load_config(yaml="\n".join(tpl))
         self._contains_err()
 
+    def test_communities_reject_cause_map_ok(self):
+        """{}: reject_cause_map valid configuration"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  filtering:",
+            "    reject_policy:",
+            "      policy: tag",
+            "  communities:",
+            "    reject_cause:",
+            "      std: rs_as:dyn_val",
+            "    reject_cause_map:",
+            "      '1':",
+            "        std: rs_as:1"
+        ]
+        self.load_config(yaml="\n".join(tpl))
+        self._contains_err()
+
+    def test_communities_reject_cause_map_ko_1(self):
+        """{}: reject_cause_map invalid format"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  communities:",
+            "    reject_cause_map: 1",
+        ]
+        self.load_config(yaml="\n".join(tpl))
+        self._contains_err("The reject_cause_map section must be a dictionary")
+
+    def test_communities_reject_cause_map_ko_2(self):
+        """{}: reject_cause_map invalid reject code"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  communities:",
+            "    reject_cause_map:",
+            "      a: 1"
+        ]
+        self.load_config(yaml="\n".join(tpl))
+        self._contains_err("Invalid reject code in reject_cause_map (a): "
+                           "it is not a numeric value in string format.")
+
+    def test_communities_reject_cause_map_ko_3(self):
+        """{}: reject_cause_map invalid community"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  filtering:",
+            "    reject_policy:",
+            "      policy: tag",
+            "  communities:",
+            "    reject_cause_map:",
+            "      '1':",
+            "        std: '999999:1'"
+        ]
+        self.load_config(yaml="\n".join(tpl))
+        self._contains_err("Invalid BGP standard community: 999999:1")
+
+    def test_communities_reject_cause_map_ko_4(self):
+        """{}: reject_cause_map unknown reject code"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  filtering:",
+            "    reject_policy:",
+            "      policy: tag",
+            "  communities:",
+            "    reject_cause_map:",
+            "      '1234':",
+            "        std: 'rs_as:1'"
+        ]
+        self.load_config(yaml="\n".join(tpl))
+        self._contains_err("Invalid reject code in reject_cause_map (1234): "
+                           "no reject reasons found for this value.")
+
     def test_max_pref_action(self):
         """{}: max_prefix action"""
         self.assertEqual(self.cfg["filtering"]["max_prefix"]["action"], None)

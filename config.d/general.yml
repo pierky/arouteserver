@@ -1061,6 +1061,9 @@ cfg:
     # set to 'tag' or 'tag_and_reject'. It is used to track the code
     # of the reason that led the route to be considered as invalid.
     #
+    # The list of reject codes can be found at this URL:
+    # https://arouteserver.readthedocs.io/en/latest/CONFIG.html#reject-reasons
+    #
     # The following community is scrubbed from inbound routes.
     #
     # The 'rs_as' macro can be used here.
@@ -1069,6 +1072,51 @@ cfg:
       #std:
       #lrg:
       #ext:
+
+    #reject_cause_map:
+      # This section can be used to map reject codes to specific
+      # BGP communities, without following the general pattern
+      # imposed in 'reject_cause'. It can be used only when the
+      # 'reject_policy' option is set to 'tag' or 'tag_and_reject'.
+      #
+      # The 'reject_cause_map' setting can be used together with
+      # 'reject_cause': the BGP communities configured in this
+      # map have higher priority over the generic 'reject_cause'
+      # ones. When a route is rejected, in order to determine the
+      # BGP community to be attached to it to describe the reject
+      # reason, a lookup in this table is performed for the reject
+      # code: if an entry is found, the community mapped to that
+      # reject code is attached to the route; if no entries are
+      # found, a community formatted according to 'reject_cause'
+      # is used.
+      #
+      # The lookups described above are performed for each type
+      # of BGP community separately (standard, large and extended).
+      #
+      # To configure this section, values from the official list
+      # of reject codes must be used as the key of the dictionary.
+      #
+      # The 'rs_as' macro can be used here.
+      #
+      # Example:
+      #
+      #   reject_cause_map:
+      #     "14":
+      #       lrg: rs_as:1101:13
+      #
+      # In the example, 14 is the reject code for RPKI INVALID routes
+      #
+      # The list of reject codes can be found at this URL:
+      # https://arouteserver.readthedocs.io/en/latest/CONFIG.html#reject-reasons
+      #
+      #<reject_code_1>:
+      #  #std:
+      #  #lrg:
+      #  #ext:
+      #<reject_code_2>:
+      #  #std:
+      #  #lrg:
+      #  #ext:
 
     # This BGP community is used when the 'reject_policy' option is
     # set to 'tag' or 'tag_and_reject'. If configured, it is used

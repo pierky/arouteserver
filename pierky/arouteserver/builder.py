@@ -43,6 +43,7 @@ from .errors import MissingDirError, MissingFileError, BuilderError, \
 from .ipaddresses import IPNetwork, IPAddress
 from .irrdb import IRRDBInfo
 from .cached_objects import CachedObject, normalize_expiry_time
+from .reject_reasons import REJECT_REASONS
 
 
 class ConfigBuilder(object):
@@ -57,24 +58,6 @@ class ConfigBuilder(object):
     DEFAULT_VERSION = None
 
     IGNORABLE_ISSUES = []
-
-    REJECT_REASONS = {
-        "1": "Invalid AS_PATH length",
-        "2": "Prefix is bogon",
-        "3": "Prefix is in global blacklist",
-        "4": "Invalid AFI",
-        "5": "Invalid NEXT_HOP",
-        "6": "Invalid left-most ASN",
-        "7": "Invalid ASN in AS_PATH",
-        "8": "Transit-free ASN in AS_PATH",
-        "9": "Origin ASN not in IRRDB AS-SETs",
-        "10": "IPv6 prefix not in global unicast space",
-        "11": "Prefix is in client blacklist",
-        "12": "Prefix not in IRRDB AS-SETs",
-        "13": "Invalid prefix length",
-        "14": "RPKI INVALID route",
-        "15": "Never via route-servers ASN in AS_PATH",
-    }
 
     def validate_bgpspeaker_specific_configuration(self):
         """Check compatibility between config and target BGP speaker
@@ -607,7 +590,7 @@ class ConfigBuilder(object):
         self.data["rtt_based_functions_are_used"] = \
             self.cfg_general.rtt_based_functions_are_used
         self.data["perform_graceful_shutdown"] = self.perform_graceful_shutdown
-        self.data["reject_reasons"] = self.REJECT_REASONS
+        self.data["reject_reasons"] = REJECT_REASONS
 
         def ipaddr_ver(ip):
             return IPNetwork(ip).version

@@ -19,6 +19,7 @@ import logging
 from .base import ConfigParserBase, convert_deprecated
 from .validators import *
 from ..errors import ConfigError, ARouteServerError
+from ..reject_reasons import REJECT_REASONS
 
 
 class ConfigParserGeneral(ConfigParserBase):
@@ -308,6 +309,51 @@ class ConfigParserGeneral(ConfigParserBase):
                 schema["cfg"]["custom_communities"][comm] = \
                     self.new_community_validator(rs_as_macro)
 
+        # Reject cause map validation
+        if "communities" in self.cfg["cfg"] and \
+           "reject_cause_map" in self.cfg["cfg"]["communities"]:
+
+            reject_cause_map = self.cfg["cfg"]["communities"]["reject_cause_map"]
+
+            if not isinstance(reject_cause_map, dict):
+                logging.error("The reject_cause_map section must be a dictionary.")
+                raise ConfigError()
+
+            for reason, comm in reject_cause_map.items():
+                try:
+                    if isinstance(reason, int):
+                        raise ValueError(
+                            "it is not a string: "
+                            "please use \"{}\" (with quotes)".format(reason)
+                        )
+
+                    if not isinstance(reason, str) or not reason.isdigit():
+                        raise ValueError("it is not a numeric value in string format")
+
+                    if reason not in REJECT_REASONS:
+                        raise ValueError("no reject reasons found for this value")
+
+                except ValueError as e:
+                    logging.error(
+                        "Invalid reject code in reject_cause_map ({}): {}. "
+                        "Keys must be numeric values in string format, "
+                        "from the list of the official reject reason "
+                        "codes that can be found at "
+                        "https://arouteserver.readthedocs.io/"
+                        "en/latest/CONFIG.html#reject-reasons".format(
+                            reason,
+                            e
+                        )
+                    )
+                    raise ConfigError()
+
+        # Reject cause map validation schema
+        schema["cfg"]["communities"]["reject_cause_map"] = {}
+        for reject_reason in REJECT_REASONS:
+            schema["cfg"]["communities"]["reject_cause_map"][str(reject_reason)] = self.new_community_validator(
+                rs_as_macro, False, False
+            )
+
         try:
             convert_deprecated(self.cfg["cfg"])
 
@@ -376,6 +422,8 @@ class ConfigParserGeneral(ConfigParserBase):
         for comms in (self.cfg["cfg"]["communities"],
                       self.cfg["cfg"]["custom_communities"]):
             for comm_tag in sorted(comms):
+                if comm_tag == "reject_cause_map":
+                    continue
                 comm = comms[comm_tag]
                 for fmt in ("std", "lrg", "ext"):
                     if comm[fmt]:
@@ -391,7 +439,7 @@ class ConfigParserGeneral(ConfigParserBase):
 
         # The 'reject_cause' and 'rejected_route_announced_by' communities
         # can be set only if 'reject_policy' is 'tag' or 'tag_and_reject'.
-        if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] not in  ["tag", "tag_and_reject"]:
+        if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] not in ["tag", "tag_and_reject"]:
             for comm in ("reject_cause", "rejected_route_announced_by"):
                 reject_comm_is_set = False
                 for fmt in ("std", "ext", "lrg"):
@@ -403,6 +451,22 @@ class ConfigParserGeneral(ConfigParserBase):
                     logging.error(
                         "The '{}' community can be set only if "
                         "'reject_policy.policy' is 'tag' or 'tag_and_reject'.".format(comm))
+
+        # The 'reject_cause_map' communities can be set only if
+        # 'reject_policy' is 'tag' or 'tag_and_reject'.
+        if "reject_cause_map" in self.cfg["cfg"].get("communities", {}):
+            reject_cause_map_is_used = False
+            for reason in self.cfg["cfg"]["communities"]["reject_cause_map"]:
+                for fmt in ("std", "ext", "lrg"):
+                    reject_cause_map_is_used = reject_cause_map_is_used or \
+                        bool(self.cfg["cfg"]["communities"]["reject_cause_map"][reason].get(fmt, None))
+                if reject_cause_map_is_used and \
+                   self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] not in ["tag", "tag_and_reject"]:
+
+                    errors = True
+                    logging.error(
+                        "The 'reject_cause_map' communities map can be set only if "
+                        "'reject_policy.policy' is 'tag' or 'tag_and_reject'.")
 
         # The 'reject_cause' comm is mandatory when 'reject_policy' is 'tag' or 'tag_and_reject'.
         if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] in ["tag", "tag_and_reject"]:
@@ -428,6 +492,8 @@ class ConfigParserGeneral(ConfigParserBase):
         # Are RTT-based functions used?
         self.rtt_based_functions_are_used = False
         for comm_name in self.cfg["cfg"]["communities"]:
+            if comm_name not in self.COMMUNITIES_SCHEMA:
+                continue
             comm_schema = self.COMMUNITIES_SCHEMA[comm_name]
             if not comm_schema.get("rtt", False):
                 continue
