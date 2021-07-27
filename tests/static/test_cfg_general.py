@@ -948,8 +948,8 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.load_config(yaml="\n".join(tpl))
         self._contains_err()
 
-    def test_communities_reject_cause_map_ok(self):
-        """{}: reject_cause_map valid configuration"""
+    def test_communities_reject_cause_map_ok_str(self):
+        """{}: reject_cause_map valid configuration (code is str)"""
         tpl = [
             "cfg:",
             "  rs_as: 999",
@@ -962,6 +962,28 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "      std: rs_as:dyn_val",
             "    reject_cause_map:",
             "      '1':",
+            "        std: rs_as:1"
+        ]
+        self.load_config(yaml="\n".join(tpl))
+        self._contains_err()
+
+        self.assertTrue("reject_cause_map" not in self.cfg["communities"])
+        self.assertTrue("reject_cause_map_1" in self.cfg["communities"])
+
+    def test_communities_reject_cause_map_ok_str(self):
+        """{}: reject_cause_map valid configuration (code is int)"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  filtering:",
+            "    reject_policy:",
+            "      policy: tag",
+            "  communities:",
+            "    reject_cause:",
+            "      std: rs_as:dyn_val",
+            "    reject_cause_map:",
+            "      1:",
             "        std: rs_as:1"
         ]
         self.load_config(yaml="\n".join(tpl))
@@ -991,7 +1013,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
         ]
         self.load_config(yaml="\n".join(tpl))
         self._contains_err("Invalid reject code in reject_cause_map (a): "
-                           "it is not a numeric value in string format.")
+                           "it is not a numeric value.")
 
     def test_communities_reject_cause_map_ko_3(self):
         """{}: reject_cause_map invalid community"""

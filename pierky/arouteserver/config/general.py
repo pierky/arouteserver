@@ -309,6 +309,14 @@ class ConfigParserGeneral(ConfigParserBase):
                 schema["cfg"]["custom_communities"][comm] = \
                     self.new_community_validator(rs_as_macro)
 
+        # Reject cause map validation schema
+        for reject_reason in REJECT_REASONS:
+            comm_name = "reject_cause_map_{}".format(reject_reason)
+            schema["cfg"]["communities"][comm_name] = self.new_community_validator(
+                rs_as_macro, False, False
+            )
+            self.COMMUNITIES_SCHEMA[comm_name] = {"type": "internal"}
+
         # Reject cause map validation
         if "communities" in self.cfg["cfg"] and \
            "reject_cause_map" in self.cfg["cfg"]["communities"]:
@@ -321,24 +329,20 @@ class ConfigParserGeneral(ConfigParserBase):
 
             for reason, comm in reject_cause_map.items():
                 try:
-                    if isinstance(reason, int):
-                        raise ValueError(
-                            "it is not a string: "
-                            "please use \"{}\" (with quotes)".format(reason)
-                        )
+                    if not isinstance(reason, int) and not isinstance(reason, str):
+                        raise ValueError("it is not a number")
 
-                    if not isinstance(reason, str) or not reason.isdigit():
-                        raise ValueError("it is not a numeric value in string format")
+                    if isinstance(reason, str) and not reason.isdigit():
+                        raise ValueError("it is not a numeric value")
 
-                    if reason not in REJECT_REASONS:
+                    if str(reason) not in REJECT_REASONS:
                         raise ValueError("no reject reasons found for this value")
 
                 except ValueError as e:
                     logging.error(
                         "Invalid reject code in reject_cause_map ({}): {}. "
-                        "Keys must be numeric values in string format, "
-                        "from the list of the official reject reason "
-                        "codes that can be found at "
+                        "Keys must be numeric values from the list of the "
+                        "official reject reason codes that can be found at "
                         "https://arouteserver.readthedocs.io/"
                         "en/latest/CONFIG.html#reject-reasons".format(
                             reason,
@@ -347,12 +351,17 @@ class ConfigParserGeneral(ConfigParserBase):
                     )
                     raise ConfigError()
 
-        # Reject cause map validation schema
-        schema["cfg"]["communities"]["reject_cause_map"] = {}
-        for reject_reason in REJECT_REASONS:
-            schema["cfg"]["communities"]["reject_cause_map"][str(reject_reason)] = self.new_community_validator(
-                rs_as_macro, False, False
-            )
+            # The communities that are configured inside 'reject_cause_map' are
+            # now moved into 'communities', translated into regular communities
+            # having the name 'reject_cause_map_<reject_code>'.
+            # Eventually, the 'reject_cause_map' is removed from the configuration.
+            # This makes all the items of the 'communities' section looking the
+            # same, and the 'reject_cause_map_<reject_code>' can be treated like
+            # all the other communities by the rest of the code and the template.
+            for reason, comm in reject_cause_map.items():
+                self.cfg["cfg"]["communities"]["reject_cause_map_{}".format(reason)] = comm
+
+            del self.cfg["cfg"]["communities"]["reject_cause_map"]
 
         try:
             convert_deprecated(self.cfg["cfg"])
@@ -422,8 +431,6 @@ class ConfigParserGeneral(ConfigParserBase):
         for comms in (self.cfg["cfg"]["communities"],
                       self.cfg["cfg"]["custom_communities"]):
             for comm_tag in sorted(comms):
-                if comm_tag == "reject_cause_map":
-                    continue
                 comm = comms[comm_tag]
                 for fmt in ("std", "lrg", "ext"):
                     if comm[fmt]:
