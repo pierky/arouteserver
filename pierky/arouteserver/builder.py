@@ -591,6 +591,7 @@ class ConfigBuilder(object):
             self.cfg_general.rtt_based_functions_are_used
         self.data["perform_graceful_shutdown"] = self.perform_graceful_shutdown
         self.data["reject_reasons"] = REJECT_REASONS
+        self.data["any_reject_cause_map_community_set"] = self.cfg_general.any_reject_cause_map_community_set
 
         def ipaddr_ver(ip):
             return IPNetwork(ip).version

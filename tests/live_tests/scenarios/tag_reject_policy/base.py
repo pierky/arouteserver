@@ -181,10 +181,12 @@ class TagRejectPolicyScenario(LiveScenario):
 
     def test_040_peer_as1(self):
         """{}: invalid left-most ASN"""
+        # The reject code n. 6 is mapped to the ad-hoc community
+        # 999:1101:7 via the reject_cause_map.
         self.receive_route(self.rc, self.DATA["peer_as1"],
                 self.rs, next_hop=self.AS1_1,
-                filtered=False, std_comms=["65520:0", "65520:6"],
-                ext_comms=["rt:65520:1"])
+                filtered=False, std_comms=["65520:0"],
+                ext_comms=["rt:65520:1"], lrg_comms=["999:1101:7"])
 
     def test_040_invalid_asn1(self):
         """{}: invalid ASN in AS_PATH"""

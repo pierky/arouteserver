@@ -1079,19 +1079,16 @@ cfg:
       # imposed in 'reject_cause'. It can be used only when the
       # 'reject_policy' option is set to 'tag' or 'tag_and_reject'.
       #
-      # The 'reject_cause_map' setting can be used together with
+      # The 'reject_cause_map' setting must be used together with
       # 'reject_cause': the BGP communities configured in this
       # map have higher priority over the generic 'reject_cause'
       # ones. When a route is rejected, in order to determine the
       # BGP community to be attached to it to describe the reject
-      # reason, a lookup in this table is performed for the reject
+      # reason, a lookup is performed in this table for the reject
       # code: if an entry is found, the community mapped to that
       # reject code is attached to the route; if no entries are
       # found, a community formatted according to 'reject_cause'
       # is used.
-      #
-      # The lookups described above are performed for each type
-      # of BGP community separately (standard, large and extended).
       #
       # To configure this section, values from the official list
       # of reject codes must be used as the key of the dictionary.
@@ -1108,6 +1105,8 @@ cfg:
       #
       # The list of reject codes can be found at this URL:
       # https://arouteserver.readthedocs.io/en/latest/CONFIG.html#reject-reasons
+      #
+      # The communities configured here are scrubbed from inbound routes.
       #
       #<reject_code_1>:
       #  #std:

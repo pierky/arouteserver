@@ -318,6 +318,8 @@ class ConfigParserGeneral(ConfigParserBase):
             self.COMMUNITIES_SCHEMA[comm_name] = {"type": "internal"}
 
         # Reject cause map validation
+        self.any_reject_cause_map_community_set = False
+
         if "communities" in self.cfg["cfg"] and \
            "reject_cause_map" in self.cfg["cfg"]["communities"]:
 
@@ -360,6 +362,7 @@ class ConfigParserGeneral(ConfigParserBase):
             # all the other communities by the rest of the code and the template.
             for reason, comm in reject_cause_map.items():
                 self.cfg["cfg"]["communities"]["reject_cause_map_{}".format(reason)] = comm
+                self.any_reject_cause_map_community_set = True
 
             del self.cfg["cfg"]["communities"]["reject_cause_map"]
 
