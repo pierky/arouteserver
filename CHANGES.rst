@@ -3,6 +3,19 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New: add support for custom BGP communities to track rejected routes.
+
+  A new section of the general.yml file (``reject_cause_map``) allows to configure custom BGP communities for each reject reason (the list can be found on the `Reject reasons <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#reject-reasons>`__ paragraph of on the doc site).
+
+  When this is implemented along with ``reject_policy`` set to ``tag``or ``tag_and_reject``, ad-hoc custom BGP communities can be used to describe why a route was rejected by the route server.
+
+- Improvement (OpenBGPD): informational extended BGP communities are now scrubbed from outbound routes.
+
+  Certain informational extended BGP communities that need dynamic values (like the one used to track the reject code of a route that is discarded when ``reject_policy`` is set to ``tag``) were not scrubbed from outbound routes, because of lack of wildcard matching in OpenBGPD. Since this feature was recently added to the BGP speaker, they are now removed.
+
 1.9.0
 -----
 
