@@ -108,15 +108,9 @@ class BGPCommunitiesScenario(LiveScenario):
                            std_comms=[],
                            ext_comms=["rt:0:999", "rt:999:1"],
                            lrg_comms=[])
-        if isinstance(self.rs, OpenBGPDInstance):
-            #TODO: don't check for ext_comms on OpenBGPD since
-            #      it seems not possible to remove ext comms using
-            #      wildcard, so ext comms scrubbing is not implemented
-            self.receive_route(self.AS1, pref, self.rs,
-                               std_comms=[], lrg_comms=[])
-        else:
-            self.receive_route(self.AS1, pref, self.rs,
-                               std_comms=[], ext_comms=[], lrg_comms=[])
+
+        self.receive_route(self.AS1, pref, self.rs,
+                            std_comms=[], ext_comms=[], lrg_comms=[])
         with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS131073, pref)
         msg = ("route didn't pass control communities checks - "
@@ -145,15 +139,8 @@ class BGPCommunitiesScenario(LiveScenario):
                            std_comms=["0:999"],
                            ext_comms=["rt:999:131073"],
                            lrg_comms=[])
-        if isinstance(self.rs, OpenBGPDInstance):
-            #TODO: don't check for ext_comms on OpenBGPD since
-            #      it seems not possible to remove ext comms using
-            #      wildcard, so ext comms scrubbing is not implemented
-            self.receive_route(self.AS131073, pref, self.rs,
-                            std_comms=[], lrg_comms=[])
-        else:
-            self.receive_route(self.AS131073, pref, self.rs,
-                            std_comms=[], ext_comms=[], lrg_comms=[])
+        self.receive_route(self.AS131073, pref, self.rs,
+                        std_comms=[], ext_comms=[], lrg_comms=[])
         with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS1, pref)
         msg = ("route didn't pass control communities checks - "
@@ -167,15 +154,8 @@ class BGPCommunitiesScenario(LiveScenario):
                            std_comms=[],
                            ext_comms=[],
                            lrg_comms=["999:0:999", "999:999:131073"])
-        if isinstance(self.rs, OpenBGPDInstance):
-            #TODO: don't check for ext_comms on OpenBGPD since
-            #      it seems not possible to remove ext comms using
-            #      wildcard, so ext comms scrubbing is not implemented
-            self.receive_route(self.AS131073, pref, self.rs,
-                               std_comms=[], lrg_comms=[])
-        else:
-            self.receive_route(self.AS131073, pref, self.rs,
-                               std_comms=[], ext_comms=[], lrg_comms=[])
+        self.receive_route(self.AS131073, pref, self.rs,
+                            std_comms=[], ext_comms=[], lrg_comms=[])
         with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
             self.receive_route(self.AS1, pref)
         msg = ("route didn't pass control communities checks - "

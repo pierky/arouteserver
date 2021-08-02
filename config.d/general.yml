@@ -767,11 +767,6 @@ cfg:
     # OpenBGPD running on the route server, enable them by setting
     # the configuration target version to a value greater than or
     # equal to "6.1" (--target-version command line argument).
-    # Moreover, ext communities that use the 'peer_as' macro or the
-    # 'dyn_val' macro can't be scrubbed from outbound routes
-    # (routes announced by the route server to the clients) because
-    # of lack of wildcard
-    # matching.
 
     # Prefix/origin AS present in client's AS-SET.
     #

@@ -23,11 +23,21 @@ ext-community delete $INTCOMM_PREF_OK_ROA ext-community delete $INTCOMM_ROUTE_OK
 
 {% macro deny_inbound_route(tag_reject_policy, condition, cause_code) %}
 # Reject inbound routes when '{{ condition }}' - reject code: {{ cause_code }}
-{%	if tag_reject_policy %}
-{% if "6.4"|target_version_ge %}allow{% else %}match{% endif %} quick {{ condition }} set { localpref 1 community delete NO_ADVERTISE {{ internal_communities_list(all=true) }} {{- ins_communities(cfg.communities.reject_cause, dyn_val=0) -}} {{- ins_communities(cfg.communities.reject_cause, dyn_val=cause_code) -}} }
-{%	else %}
+{%  if tag_reject_policy %}
+{%    if any_reject_cause_map_community_set %}
+{%      set reject_cause_map_comm_name = "reject_cause_map_" ~ cause_code %}
+{%      if cfg.communities[reject_cause_map_comm_name]|community_is_set %}
+# community from reject_cause_map
+{%        if "6.4"|target_version_ge %}allow{% else %}match{% endif %} quick {{ condition }} set { localpref 1 community delete NO_ADVERTISE {{ internal_communities_list(all=true) }} {{- ins_communities(cfg.communities.reject_cause, dyn_val=0) -}} {{- ins_communities(cfg.communities[reject_cause_map_comm_name]) -}} }
+{%      else %}
+{%        if "6.4"|target_version_ge %}allow{% else %}match{% endif %} quick {{ condition }} set { localpref 1 community delete NO_ADVERTISE {{ internal_communities_list(all=true) }} {{- ins_communities(cfg.communities.reject_cause, dyn_val=0) -}} {{- ins_communities(cfg.communities.reject_cause, dyn_val=cause_code) -}} }
+{%      endif %}
+{%    else %}
+{%      if "6.4"|target_version_ge %}allow{% else %}match{% endif %} quick {{ condition }} set { localpref 1 community delete NO_ADVERTISE {{ internal_communities_list(all=true) }} {{- ins_communities(cfg.communities.reject_cause, dyn_val=0) -}} {{- ins_communities(cfg.communities.reject_cause, dyn_val=cause_code) -}} }
+{%    endif %}
+{%  else %}
 deny quick {{ condition }}
-{%	endif %}
+{%  endif %}
 {% endmacro %}
 
 {% macro irrdb_filter(client, objects, int_comm_ok, int_comm_ko, comm_object_present_in_as_set, comm_object_not_present_in_as_set) %}
@@ -107,10 +117,10 @@ bogons="{ {{ write_prefix_list(bogons) }} }"
 
 
 # Scrub communities from inbound routes
-{% for name in cfg.communities|sort if cfg.communities[name].type == "outbound" %}
+{% for name in cfg.communities|sort if cfg.communities[name].type in ["outbound", "internal"] %}
 {%	if cfg.communities[name]|community_is_set %}
 # {{ name }}
-{{ del_communities("match from group clients", cfg.communities[name]) -}}
+{{ del_communities("match from group clients", cfg.communities[name], replace_dyn_val="*") -}}
 {%	endif %}
 {% endfor %}
 {% for name in cfg.custom_communities|sort %}
@@ -663,7 +673,7 @@ allow to {{ client.ip }}
 
 
 # Scrub communities from outbound routes
-{% for name in cfg.communities|sort if cfg.communities[name].type == "inbound" %}
+{% for name in cfg.communities|sort if cfg.communities[name].type in ["inbound", "internal"] %}
 {%	if cfg.communities[name]|community_is_set %}
 # {{ name }}
 {{ del_communities("match to group clients", cfg.communities[name], cfg.communities[name].peer_as, replace_dyn_val="*") -}}
