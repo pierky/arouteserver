@@ -74,3 +74,5 @@ class CheckConfigCommand(ARouteServerCommand):
         logging.info("Checking configuration files")
 
         self.check_config()
+
+        return True
