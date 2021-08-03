@@ -959,7 +959,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "      policy: tag",
             "  communities:",
             "    reject_cause:",
-            "      std: rs_as:dyn_val",
+            "      std: 65520:dyn_val",
             "    reject_cause_map:",
             "      '1':",
             "        std: rs_as:1"
@@ -970,7 +970,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.assertTrue("reject_cause_map" not in self.cfg["communities"])
         self.assertTrue("reject_cause_map_1" in self.cfg["communities"])
 
-    def test_communities_reject_cause_map_ok_str(self):
+    def test_communities_reject_cause_map_ok_int(self):
         """{}: reject_cause_map valid configuration (code is int)"""
         tpl = [
             "cfg:",
@@ -981,7 +981,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "      policy: tag",
             "  communities:",
             "    reject_cause:",
-            "      std: rs_as:dyn_val",
+            "      std: 65520:dyn_val",
             "    reject_cause_map:",
             "      1:",
             "        std: rs_as:1"
@@ -1049,6 +1049,27 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.load_config(yaml="\n".join(tpl))
         self._contains_err("Invalid reject code in reject_cause_map (1234): "
                            "no reject reasons found for this value.")
+
+    def test_communities_reject_cause_map_ko_4(self):
+        """{}: reject_cause_map overlapping community"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  filtering:",
+            "    reject_policy:",
+            "      policy: tag",
+            "  communities:",
+            "    reject_cause:",
+            "      std: 1234:dyn_val",
+            "    reject_cause_map:",
+            "      1:",
+            "        std: '1234:1'"
+        ]
+        self.load_config(yaml="\n".join(tpl))
+        self._contains_err("Community 'reject_cause' and 'reject_cause_map_1' overlap: "
+                           "1234:dyn_val / 1234:1. Internal communities can't have "
+                           "overlapping values with any other internal community.")
 
     def test_max_pref_action(self):
         """{}: max_prefix action"""

@@ -755,5 +755,11 @@ class ConfigParserGeneral(ConfigParserBase):
             "Internal communities can't have overlapping values with any "
             "other community.")
 
+        errors = errors or not compare_communities(
+            internal_communities, internal_communities,
+            False,
+            "Internal communities can't have overlapping values with any "
+            "other internal community.")
+
         if errors:
             raise ConfigError()

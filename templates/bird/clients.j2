@@ -218,7 +218,7 @@ filter receive_from_{{ client.id }} {
 	# Attach custom BGP communities
 {%		for name in client.cfg.attach_custom_communities|sort %}
 	# {{ name }}
-{{			add_communities(cfg.custom_communities[name], tabs=1) }}
+	{{ add_communities(cfg.custom_communities[name], tabs=1) }}
 {%		endfor %}
 {%	endif %}
 
