@@ -1125,7 +1125,7 @@ class BasicScenario_TagRejectPolicy(LiveScenario_TagRejectPolicy):
 
         self.receive_route(self.rs, self.DATA["peer_as1"], self.AS1_1,
                            as_path="2 1", next_hop=self.AS1_1,
-                           filtered=True, lrg_comms=["999:1101:7"])
+                           filtered=True, reject_reason=6, lrg_comms=["999:1101:7"])
         self.log_contains(self.rs, "invalid left-most ASN [2] - REJECTING " + self.DATA["peer_as1"])
 
     def test_042_bad_prefixes_received_by_rs_bogon_wrong_tag(self):

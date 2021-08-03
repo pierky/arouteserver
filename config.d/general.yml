@@ -1074,16 +1074,15 @@ cfg:
       # imposed in 'reject_cause'. It can be used only when the
       # 'reject_policy' option is set to 'tag' or 'tag_and_reject'.
       #
-      # The 'reject_cause_map' setting must be used together with
+      # The 'reject_cause_map' does not replace the use of
       # 'reject_cause': the BGP communities configured in this
-      # map have higher priority over the generic 'reject_cause'
-      # ones. When a route is rejected, in order to determine the
+      # map are added to those built according to 'reject_cause'.
+      # When a route is rejected, in order to determine the
       # BGP community to be attached to it to describe the reject
       # reason, a lookup is performed in this table for the reject
       # code: if an entry is found, the community mapped to that
-      # reject code is attached to the route; if no entries are
-      # found, a community formatted according to 'reject_cause'
-      # is used.
+      # reject code is attached to the route, in addition to the
+      # BGP community formatted according to 'reject_cause'.
       #
       # To configure this section, values from the official list
       # of reject codes must be used as the key of the dictionary.

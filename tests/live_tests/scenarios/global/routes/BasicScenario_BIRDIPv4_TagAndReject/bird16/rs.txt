@@ -591,7 +591,7 @@
   ext comms:
   lrg comms: 999:1101:7
   best: False, LOCAL_PREF: 1
-  filtered: True ()
+  filtered: True (6)
 
 128.0.0.0/9, AS_PATH: 1 65536 1, NEXT_HOP: 192.0.2.11, via 192.0.2.11
   std comms:

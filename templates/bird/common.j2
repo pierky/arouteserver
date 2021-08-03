@@ -405,6 +405,9 @@ int dyn_val;
 	# cause: the reject cause
 	dyn_val = cause;
 
+	# add the generic community from reject_cause
+	{{ add_communities(cfg.communities.reject_cause) }}
+
 	{% if any_reject_cause_map_community_set %}
 	# communities from reject_cause_map
 	case cause {
@@ -413,18 +416,9 @@ int dyn_val;
 		{% 	 if cfg.communities[reject_cause_map_comm_name]|community_is_set %}
 		# {{ reject_code }} = {{ reject_reasons[reject_code] }}
 		{{ reject_code }} : {{ add_communities(cfg.communities[reject_cause_map_comm_name], tabs=0)|replace(";\n", "; ")|trim }}
-
-		{% 	 else %}
-		# {{ reject_code }} = {{ reject_reasons[reject_code] }}
-		# (reject code not mapped, using generic community from reject_cause)
-		{{ reject_code }} : {{ add_communities(cfg.communities.reject_cause, tabs=0)|replace(";\n", "; ")|trim }}
-
 		{% 	 endif %}
 		{% endfor %}
 	}
-	{% else %}
-	# add the generic community from reject_cause
-	{{ add_communities(cfg.communities.reject_cause) }}
 	{% endif %}
 
 {%	if cfg.communities.rejected_route_announced_by|community_is_set %}
