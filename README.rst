@@ -144,7 +144,10 @@ Full documentation can be found on ReadTheDocs: https://arouteserver.readthedocs
 Presentations
 -------------
 
+- Euro-IX "Learn with us: ARouteServer tutorial", 28 July 2021: `video <https://www.youtube.com/watch?v=aiBeFs6xnYs>`__ (33:13)
+
 - RIPE74, 10 May 2017, Connect Working Group: `video <https://ripe74.ripe.net/archives/video/87/>`__ (9:53), `slides <https://ripe74.ripe.net/presentations/22-RIPE74-ARouteServer.pdf>`__ (PDF)
+
 - Salottino MIX, 30 May 2017: `slides <https://www.slideshare.net/PierCarloChiodi/salottino-mix-2017-arouteserver-ixp-automation-made-easy>`__
 
 Mentions / endorsements:
