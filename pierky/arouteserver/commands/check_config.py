@@ -55,12 +55,6 @@ class CheckConfigCommand(ARouteServerCommand):
             dest="cfg_clients",
         )
 
-    def __init__(self, *args, **kwargs):
-        self.general_path = program_config.get("cfg_general")
-        self.clients_path = program_config.get("cfg_clients")
-
-        ARouteServerCommand.__init__(self, *args, **kwargs)
-
     def check_config(self):
         general = ConfigParserGeneral()
         general.load(self.general_path)
@@ -71,6 +65,15 @@ class CheckConfigCommand(ARouteServerCommand):
         clients.parse()
 
     def run(self):
+        self.general_path = program_config.get("cfg_general")
+        self.clients_path = program_config.get("cfg_clients")
+
+        if self.args.cfg_general:
+            self.general_path = self.args.cfg_general
+
+        if self.args.cfg_clients:
+            self.clients_path = self.args.cfg_clients
+
         logging.info("Checking configuration files")
 
         self.check_config()

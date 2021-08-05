@@ -1,52 +1,54 @@
 #!/bin/bash
 
 if [ ! -e "setup.py" ]; then
-	echo "The script must be executed from within the repository's root directory."
-	exit 1
+  echo "The script must be executed from within the repository's root directory."
+  exit 1
 fi
 
-export PYTHONPATH="`pwd`"
+export PYTHONPATH="$(pwd)"
 
 mkdir -p var/cache &>/dev/null
 
-RES_FILE=`mktemp`
-echo 0 > $RES_FILE
+RES_FILE=$(mktemp)
+echo 0 >$RES_FILE
 
 function reset() {
-	AROUTESERVER="./scripts/arouteserver"
-	CFG_FILE="tests/var/arouteserver.yml"
-	GENERAL="config.d/general.yml"
-	CLIENTS="config.d/clients.yml"
-	BOGONS="config.d/bogons.yml"
-	TITLE=""
-	SUB_TEST=""
+  AROUTESERVER="./scripts/arouteserver"
+  CFG_FILE="tests/var/arouteserver.yml"
+  GENERAL="config.d/general.yml"
+  CLIENTS="config.d/clients.yml"
+  BOGONS="config.d/bogons.yml"
+  TITLE=""
+  SUB_TEST=""
 }
 
 function build_cmd() {
-	COMMAND="$1" ; shift
-	$AROUTESERVER $COMMAND --cfg $CFG_FILE --logging-level ERROR --general $GENERAL --clients $CLIENTS --bogons $BOGONS $@ 2>&1
+  COMMAND="$1"
+  shift
+  $AROUTESERVER $COMMAND --cfg $CFG_FILE --logging-level ERROR --general $GENERAL --clients $CLIENTS --bogons $BOGONS $@ 2>&1
 }
 
 function run_cmd() {
-	COMMAND="$1" ; shift
-	$AROUTESERVER $COMMAND --cfg $CFG_FILE $@ 2>&1
+  COMMAND="$1"
+  shift
+  $AROUTESERVER $COMMAND --cfg $CFG_FILE $@ 2>&1
 }
 
 function error() {
-	echo "Failure during '$TITLE' at line $SUB_TEST: $1"
-	echo 1 > $RES_FILE
+  echo "Failure during '$TITLE' at line $SUB_TEST: $1"
+  echo 1 >$RES_FILE
 }
 
 function must_contain() {
-	grep "$1" &>/dev/null || error "\"$1\" not found."
+  grep "$1" &>/dev/null || error "\"$1\" not found."
 }
 
 function must_not_contain() {
-	grep "$1" &>/dev/null
+  grep "$1" &>/dev/null
 
-	if [ $? -eq 0 ]; then
-		error "\"$1\" found."
-	fi
+  if [ $? -eq 0 ]; then
+    error "\"$1\" found."
+  fi
 }
 
 BIRD2_LATEST_VER=2.0.8
@@ -68,19 +70,19 @@ unset ROUTER_ID
 reset
 TITLE="Configuration !include"
 GENERAL_RS1="tests/var/general-rs1.yml"
-cat << EOF > $GENERAL_RS1
+cat <<EOF >$GENERAL_RS1
 cfg:
   router_id: "192.0.2.1"
   !include general-shared.yml
 EOF
 GENERAL_RS2="tests/var/general-rs2.yml"
-cat << EOF > $GENERAL_RS2
+cat <<EOF >$GENERAL_RS2
 cfg:
   router_id: "192.0.2.2"
   !include general-shared.yml
 EOF
 GENERAL_SHARED="tests/var/general-shared.yml"
-cat << EOF > $GENERAL_SHARED
+cat <<EOF >$GENERAL_SHARED
   rs_as: 999
   passive: True
   gtsm: True
@@ -98,7 +100,7 @@ reset
 TITLE="RPKI ROAs as route objects invalid source"
 SUB_TEST="$LINENO"
 GENERAL="tests/var/general.yml"
-cat << EOF > $GENERAL
+cat <<EOF >$GENERAL
 cfg:
   rs_as: 999
   router_id: "192.0.2.2"
@@ -117,7 +119,7 @@ reset
 TITLE="RFC1997 'pass' policy and BGP comms collision"
 SUB_TEST="$LINENO"
 GENERAL="tests/var/general.yml"
-cat << EOF > $GENERAL
+cat <<EOF >$GENERAL
 cfg:
   rs_as: 999
   router_id: "192.0.2.2"
@@ -173,7 +175,7 @@ build_cmd "openbgpd" | must_not_contain "ERROR Compatibility issue ID 'path_hidi
 reset
 TITLE="OpenBGPD large comms only"
 GENERAL="tests/var/general.yml"
-cat << EOF > $GENERAL
+cat <<EOF >$GENERAL
 cfg:
   rs_as: 999
   router_id: "192.0.2.2"
@@ -197,7 +199,7 @@ build_cmd "openbgpd" --target-version 6.1 | must_not_contain "ERROR Compatibilit
 reset
 TITLE="OpenBGPD blackhole filtering rewrite next-hop IPv6"
 GENERAL="tests/var/general.yml"
-cat << EOF > $GENERAL
+cat <<EOF >$GENERAL
 cfg:
   rs_as: 999
   router_id: "192.0.2.2"
@@ -224,7 +226,7 @@ build_cmd "openbgpd" --ignore-issues "blackhole_filtering_rewrite_ipv6_nh" | mus
 reset
 TITLE="OpenBGPD large comms"
 GENERAL="tests/var/general.yml"
-cat << EOF > $GENERAL
+cat <<EOF >$GENERAL
 cfg:
   rs_as: 999
   router_id: "192.0.2.2"
@@ -255,7 +257,7 @@ build_cmd "openbgpd" --ignore-issues "large_communities" | must_not_contain "'do
 reset
 TITLE="OpenBGPD tag_and_reject reject policy"
 GENERAL="tests/var/general.yml"
-cat << EOF > $GENERAL
+cat <<EOF >$GENERAL
 cfg:
   rs_as: 999
   router_id: "192.0.2.2"
@@ -273,7 +275,7 @@ build_cmd "openbgpd" | must_not_contain "$EXP_ERR"
 reset
 TITLE="OpenBGPD max_prefix_count_rejected_routes"
 GENERAL="tests/var/general.yml"
-cat << EOF > $GENERAL
+cat <<EOF >$GENERAL
 cfg:
   rs_as: 999
   router_id: "192.0.2.2"
@@ -291,7 +293,7 @@ build_cmd "openbgpd" | must_contain "$EXP_ERR"
 reset
 TITLE="BIRD 2.0.7 max_prefix_count_rejected_routes"
 GENERAL="tests/var/general.yml"
-cat << EOF > $GENERAL
+cat <<EOF >$GENERAL
 cfg:
   rs_as: 999
   router_id: "192.0.2.2"
@@ -310,13 +312,13 @@ build_cmd "bird" --target-version ${BIRD2_LATEST_VER} | must_not_contain "$EXP_E
 reset
 TITLE="BIRD multihop with path_hiding"
 GENERAL="tests/var/general.yml"
-cat << EOF > $GENERAL
+cat <<EOF >$GENERAL
 cfg:
   rs_as: 999
   router_id: "192.0.2.2"
 EOF
 CLIENTS="tests/var/clients.yml"
-cat << EOF > $CLIENTS
+cat <<EOF >$CLIENTS
 clients:
   - asn: 1
     ip:
@@ -334,7 +336,7 @@ SUB_TEST="$LINENO"
 build_cmd "bird" --target-version ${BIRD2_LATEST_VER} | must_contain "$EXP_ERR"
 
 GENERAL="tests/var/general.yml"
-cat << EOF > $GENERAL
+cat <<EOF >$GENERAL
 cfg:
   rs_as: 999
   router_id: "192.0.2.2"
@@ -369,7 +371,7 @@ run_cmd "clients-from-euroix" --url https://ixpmanager.swissix.ch/api/v4/member-
 reset
 TITLE="irr-as-set"
 GENERAL="tests/var/general.yml"
-cat << EOF > $GENERAL
+cat <<EOF >$GENERAL
 cfg:
   rs_as: 999
   router_id: "192.0.2.2"
@@ -382,11 +384,27 @@ SUB_TEST="$LINENO"
 build_cmd "irr-as-set" --template-file-name plain_rpsl.j2 | must_contain "members:  AS-RIPENCC"
 
 # ---------------------------------------------
-ERROR=`cat $RES_FILE`
+# check-config command
+reset
+TITLE="check-config"
+SUB_TEST="$LINENO"
+GENERAL="tests/var/general-broken-yaml.yml"
+cat <<EOF >$GENERAL
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2
+  filtering:
+    irrdb:
+      peering_db: True
+EOF
+run_cmd "check-config" | must_contain "Can't parse YAML file: while parsing a block mapping"
+
+# ---------------------------------------------
+ERROR=$(cat $RES_FILE)
 if [ $ERROR -eq 1 ]; then
-	echo "Done! ERRORS FOUND"
+  echo "Done! ERRORS FOUND"
 else
-	echo "Done!"
+  echo "Done!"
 fi
 rm $RES_FILE
 
