@@ -1068,48 +1068,44 @@ cfg:
       #lrg:
       #ext:
 
+    # This section can be used to map reject codes to specific
+    # BGP communities, without following the general pattern
+    # imposed in 'reject_cause'. It can be used only when the
+    # 'reject_policy' option is set to 'tag' or 'tag_and_reject'.
+    #
+    # The 'reject_cause_map' does not replace the use of
+    # 'reject_cause': the BGP communities configured in this
+    # map are added to those built according to 'reject_cause'.
+    # When a route is rejected, in order to determine the
+    # BGP community to be attached to it to describe the reject
+    # reason, a lookup is performed in this table for the reject
+    # code: if an entry is found, the community mapped to that
+    # reject code is attached to the route, in addition to the
+    # BGP community formatted according to 'reject_cause'.
+    #
+    # To configure this section, values from the official list
+    # of reject codes must be used as the key of the dictionary.
+    #
+    # The 'rs_as' macro can be used here.
+    #
+    # Example:
+    #
+    #   reject_cause_map:
+    #     "14":
+    #       lrg: rs_as:1101:13
+    #
+    # In the example, 14 is the reject code for RPKI INVALID routes
+    #
+    # The list of reject codes can be found at this URL:
+    # https://arouteserver.readthedocs.io/en/latest/CONFIG.html#reject-reasons
+    #
+    # The communities configured here are scrubbed from inbound routes.
+    #
     #reject_cause_map:
-      # This section can be used to map reject codes to specific
-      # BGP communities, without following the general pattern
-      # imposed in 'reject_cause'. It can be used only when the
-      # 'reject_policy' option is set to 'tag' or 'tag_and_reject'.
-      #
-      # The 'reject_cause_map' does not replace the use of
-      # 'reject_cause': the BGP communities configured in this
-      # map are added to those built according to 'reject_cause'.
-      # When a route is rejected, in order to determine the
-      # BGP community to be attached to it to describe the reject
-      # reason, a lookup is performed in this table for the reject
-      # code: if an entry is found, the community mapped to that
-      # reject code is attached to the route, in addition to the
-      # BGP community formatted according to 'reject_cause'.
-      #
-      # To configure this section, values from the official list
-      # of reject codes must be used as the key of the dictionary.
-      #
-      # The 'rs_as' macro can be used here.
-      #
-      # Example:
-      #
-      #   reject_cause_map:
-      #     "14":
-      #       lrg: rs_as:1101:13
-      #
-      # In the example, 14 is the reject code for RPKI INVALID routes
-      #
-      # The list of reject codes can be found at this URL:
-      # https://arouteserver.readthedocs.io/en/latest/CONFIG.html#reject-reasons
-      #
-      # The communities configured here are scrubbed from inbound routes.
-      #
-      #<reject_code_1>:
-      #  #std:
-      #  #lrg:
-      #  #ext:
-      #<reject_code_2>:
-      #  #std:
-      #  #lrg:
-      #  #ext:
+      #reject_code_1:
+        #std:
+        #lrg:
+        #ext:
 
     # This BGP community is used when the 'reject_policy' option is
     # set to 'tag' or 'tag_and_reject'. If configured, it is used

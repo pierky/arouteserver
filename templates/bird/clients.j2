@@ -112,22 +112,22 @@ bool validated;
 
 {%	if cfg.filtering.irrdb.tag_as_set and cfg.communities.origin_not_present_in_as_set|community_is_set %}
 	if !origin_ok then {
-{{		add_communities(cfg.communities.origin_not_present_in_as_set) }}
+		{{ add_communities(cfg.communities.origin_not_present_in_as_set, tabs=2) }}
 	}
 {%	endif %}
 {%	if cfg.filtering.irrdb.tag_as_set and cfg.communities.origin_present_in_as_set|community_is_set %}
 	if origin_ok then {
-{{		add_communities(cfg.communities.origin_present_in_as_set) }}
+		{{ add_communities(cfg.communities.origin_present_in_as_set, tabs=2) }}
 	}
 {%	endif %}
 {%	if cfg.filtering.irrdb.tag_as_set and cfg.communities.prefix_not_present_in_as_set|community_is_set %}
 	if !prefix_ok then {
-{{		add_communities(cfg.communities.prefix_not_present_in_as_set) }}
+		{{ add_communities(cfg.communities.prefix_not_present_in_as_set, tabs=2) }}
 	}
 {%	endif %}
 {%	if cfg.filtering.irrdb.tag_as_set and cfg.communities.prefix_present_in_as_set|community_is_set %}
 	if prefix_ok then {
-{{		add_communities(cfg.communities.prefix_present_in_as_set) }}
+		{{ add_communities(cfg.communities.prefix_present_in_as_set, tabs=2) }}
 	}
 {%	endif %}
 
@@ -136,7 +136,7 @@ bool validated;
 	if origin_ok && prefix_in_rpki_roas_as_route_objects() then {
 {%		if cfg.filtering.irrdb.tag_as_set and
 			cfg.communities.prefix_validated_via_rpki_roas|community_is_set %}
-{{			add_communities(cfg.communities.prefix_validated_via_rpki_roas) }}
+		{{ add_communities(cfg.communities.prefix_validated_via_rpki_roas, tabs=2) }}
 {%		endif %}
 		validated = true;
 	}
@@ -147,7 +147,7 @@ bool validated;
 	if origin_ok && prefix_in_arin_whois_db() then {
 {%		if cfg.filtering.irrdb.tag_as_set and
 			cfg.communities.prefix_validated_via_arin_whois_db_dump|community_is_set %}
-{{			add_communities(cfg.communities.prefix_validated_via_arin_whois_db_dump) }}
+		{{ add_communities(cfg.communities.prefix_validated_via_arin_whois_db_dump, tabs=2) }}
 {%		endif %}
 		validated = true;
 	}
@@ -158,7 +158,7 @@ bool validated;
 	if origin_ok && prefix_in_registrobr_whois_db() then {
 {%		if cfg.filtering.irrdb.tag_as_set and
 			cfg.communities.prefix_validated_via_registrobr_whois_db_dump|community_is_set %}
-{{			add_communities(cfg.communities.prefix_validated_via_registrobr_whois_db_dump) }}
+		{{ add_communities(cfg.communities.prefix_validated_via_registrobr_whois_db_dump, tabs=2) }}
 {%		endif %}
 		validated = true;
 	}
@@ -171,13 +171,13 @@ bool validated;
 {%			if route.asn %}
 		if bgp_path.last = {{ route.asn }} then {
 {%				if cfg.filtering.irrdb.tag_as_set and cfg.communities.route_validated_via_white_list|community_is_set %}
-{{					add_communities(cfg.communities.route_validated_via_white_list) }}
+			{{ add_communities(cfg.communities.route_validated_via_white_list, tabs=3) }}
 {%				endif %}
 			validated = true;
 		}
 {%			else %}
 {%				if cfg.filtering.irrdb.tag_as_set and cfg.communities.route_validated_via_white_list|community_is_set %}
-{{					add_communities(cfg.communities.route_validated_via_white_list) }}
+		{{ add_communities(cfg.communities.route_validated_via_white_list, tabs=2) }}
 {%				endif %}
 		validated = true;
 {%			endif %}
