@@ -239,6 +239,12 @@ class ConfigureCommand(ARouteServerCommand):
         def add_euroix_reject_code_comm(code, lrg=None):
             # https://www.euro-ix.net/en/forixps/large-bgp-communities/
 
+            if self.answers["daemon"] == "openbgpd" and \
+               version.parse(self.answers["version"]) < version.parse("6.1"):
+                # Euro-IX communities are based on Large BGP Communities, which are
+                # not available in OpenBGPD 6.0 or older.
+                return
+
             assert isinstance(code, int)
 
             if self.answers["asn"] > 65535:
@@ -378,6 +384,13 @@ class ConfigureCommand(ARouteServerCommand):
             filtering["reject_policy"] = {
                 "policy": "tag_and_reject"
             }
+        else:
+            filtering["reject_policy"] = {
+                "policy": "tag"
+            }
+            self.notes.append(
+                "Rejected routes are kept but not advertised to clients."
+            )
 
         if (
             self.answers["daemon"] == "bird" and \
@@ -407,7 +420,7 @@ class ConfigureCommand(ARouteServerCommand):
 
         cfg["communities"] = OrderedDict()
 
-        if self.answers["daemon"] == "bird":
+        if filtering["reject_policy"]["policy"] in ("tag_and_reject", "tag"):
             add_comm("reject_cause",
                      "65520:dyn_val", "rs_as:65520:dyn_val")
 
