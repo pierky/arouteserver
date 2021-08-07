@@ -22,7 +22,6 @@ try:
     import mock
 except ImportError:
     import unittest.mock as mock
-import yaml
 
 from pierky.arouteserver.ask import Ask
 from pierky.arouteserver.builder import BIRDConfigBuilder, \
@@ -30,6 +29,7 @@ from pierky.arouteserver.builder import BIRDConfigBuilder, \
 from pierky.arouteserver.commands import ConfigureCommand
 from pierky.arouteserver.tests.mocked_env import MockedEnv
 from pierky.arouteserver.tests.base import ARouteServerTestCase
+from pierky.arouteserver.reject_reasons import REJECT_REASONS
 
 class FakeConfigureCommand(ConfigureCommand):
 
@@ -231,9 +231,18 @@ class TestConfigureCmd(ARouteServerTestCase):
         )
 
         for comm_name in dic["cfg"]["communities"]:
+            if comm_name == "reject_cause_map":
+                continue
             self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
             self.assertTrue("ext" in dic["cfg"]["communities"][comm_name])
             self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
+
+        self.assertIn("reject_cause_map", dic["cfg"]["communities"])
+        for reject_code in dic["cfg"]["communities"]["reject_cause_map"]:
+            self.assertTrue(isinstance(reject_code, int))
+            self.assertTrue(str(reject_code) in REJECT_REASONS)
+            self.assertTrue("lrg" in dic["cfg"]["communities"]["reject_cause_map"][reject_code])
+            self.assertTrue(dic["cfg"]["communities"]["reject_cause_map"][reject_code]["lrg"])
 
         self.assertEqual(
             dic["cfg"]["communities"]["reject_cause"]["std"],
@@ -265,6 +274,8 @@ class TestConfigureCmd(ARouteServerTestCase):
             self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
             self.assertTrue("lrg" not in dic["cfg"]["communities"][comm_name])
 
+        self.assertNotIn("reject_cause_map", dic["cfg"]["communities"])
+
     def test_openbgpd61_simple(self):
         """Configure command: OpenBGPD 6.1, simple"""
         self.expected_config["cfg"]["path_hiding"] = False
@@ -286,6 +297,8 @@ class TestConfigureCmd(ARouteServerTestCase):
             self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
             self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
 
+        self.assertNotIn("reject_cause_map", dic["cfg"]["communities"])
+
     def test_openbgpd62_simple(self):
         """Configure command: OpenBGPD 6.2, simple"""
         self.expected_config["cfg"]["path_hiding"] = False
@@ -305,6 +318,8 @@ class TestConfigureCmd(ARouteServerTestCase):
             self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
             self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
             self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
+
+        self.assertNotIn("reject_cause_map", dic["cfg"]["communities"])
 
     def test_openbgpd64_simple(self):
         """Configure command: OpenBGPD 6.4, simple"""
@@ -326,6 +341,8 @@ class TestConfigureCmd(ARouteServerTestCase):
             self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
             self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
 
+        self.assertNotIn("reject_cause_map", dic["cfg"]["communities"])
+
     def test_openbgpd65_simple(self):
         """Configure command: OpenBGPD 6.5, simple"""
         self.expected_config["cfg"]["path_hiding"] = False
@@ -345,6 +362,8 @@ class TestConfigureCmd(ARouteServerTestCase):
             self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
             self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
             self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
+
+        self.assertNotIn("reject_cause_map", dic["cfg"]["communities"])
 
     def test_openbgpd69_simple(self):
         """Configure command: OpenBGPD 6.9, simple"""
@@ -366,6 +385,8 @@ class TestConfigureCmd(ARouteServerTestCase):
             self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
             self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
 
+        self.assertNotIn("reject_cause_map", dic["cfg"]["communities"])
+
     def test_openbgpd69_no_path_hiding(self):
         """Configure command: OpenBGPD 6.9, path-hiding"""
 
@@ -380,7 +401,7 @@ class TestConfigureCmd(ARouteServerTestCase):
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
         ])
-        dic = self.configure_and_build(
+        self.configure_and_build(
             OpenBGPDConfigBuilder,
             target_version="6.9"
         )
@@ -405,7 +426,7 @@ class TestConfigureCmd(ARouteServerTestCase):
                 "192.0.2.1",
                 "192.0.2.0/24,2001:db8::/32"
             ])
-            dic = self.configure_and_build(
+            self.configure_and_build(
                 OpenBGPDConfigBuilder,
                 target_version=latest_version
             )

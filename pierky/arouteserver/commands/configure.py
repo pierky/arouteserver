@@ -236,6 +236,26 @@ class ConfigureCommand(ARouteServerCommand):
                             rs_as=rs_as
                         )
 
+        def add_euroix_reject_code_comm(code, lrg=None):
+            # https://www.euro-ix.net/en/forixps/large-bgp-communities/
+
+            assert isinstance(code, int)
+
+            if self.answers["asn"] > 65535:
+                rs_as = self.answers["comms_asn"]
+            else:
+                rs_as = "rs_as"
+
+            if "reject_cause_map" not in cfg["communities"]:
+                cfg["communities"]["reject_cause_map"] = {}
+
+            if code in cfg["communities"]["reject_cause_map"]:
+                raise ValueError(f"Duplicate code: {code}")
+
+            cfg["communities"]["reject_cause_map"][code] = {
+                "lrg": lrg.replace("RS", str(rs_as))
+            }
+
         res = OrderedDict()
         res["cfg"] = OrderedDict()
         cfg = res["cfg"]
@@ -391,6 +411,46 @@ class ConfigureCommand(ARouteServerCommand):
             add_comm("reject_cause",
                      "65520:dyn_val", "rs_as:65520:dyn_val")
 
+            # 1 == Invalid AS_PATH length == AS path too long
+            add_euroix_reject_code_comm(1, "RS:1101:5")
+
+            # 2 == Prefix is bogon == Bogon Prefix
+            add_euroix_reject_code_comm(2, "RS:1101:3")
+
+            # 3 == Prefix is in global blacklist == <missing>
+
+            # 4 == Invalid AFI == <missing>
+
+            # 5 == Invalid NEXT_HOP == next hop IP != peer IP
+            add_euroix_reject_code_comm(5, "RS:1101:8")
+
+            # 6 == Invalid left-most ASN == as-path.first != peeras
+            add_euroix_reject_code_comm(6, "RS:1101:7")
+
+            # 7 == Invalid ASN in AS_PATH == Bogon AS
+            add_euroix_reject_code_comm(7, "RS:1101:4")
+
+            # 8 == Transit-free ASN in AS_PATH == transit-free ASN in AS-Path
+            add_euroix_reject_code_comm(8, "RS:1101:14")
+
+            # 9 == Origin ASN not in IRRDB AS-SETs == Origin AS not in peer AS-SET
+            add_euroix_reject_code_comm(9, "RS:1101:10")
+
+            # 10 == IPv6 prefix not in global unicast space == Bogon Prefix
+            add_euroix_reject_code_comm(10, "RS:1101:3")
+
+            # 11 == Prefix is in client blacklist == <missing>
+
+            # 12 == Prefix not in IRRDB AS-SETs == IRRDB Prefix not found in AS-SET or aut-num
+            add_euroix_reject_code_comm(12, "RS:1101:9")
+
+            # 13 == Invalid prefix length == <missing, there's only too long/short>
+
+            # 14 == RPKI INVALID route == Prefix is RPKI INVALID
+            add_euroix_reject_code_comm(14, "RS:1101:13")
+
+            # 15 == Never via route-servers ASN in AS_PATH == <missing>
+
         add_comm("prefix_present_in_as_set",
                  "64512:11", "rs_as:64512:11")
         add_comm("prefix_not_present_in_as_set",
@@ -405,25 +465,25 @@ class ConfigureCommand(ARouteServerCommand):
                  "64512:41", "rs_as:64512:41")
 
         add_comm("do_not_announce_to_any",
-                 "0:{rs_as}", "rs_as:0:0")
+                 "0:{rs_as}", "rs_as:0:0")  # Euro-IX
         add_comm("do_not_announce_to_peer",
-                 "0:peer_as", "rs_as:0:peer_as")
+                 "0:peer_as", "rs_as:0:peer_as")  # Euro-IX
         add_comm("announce_to_peer",
-                 "{rs_as}:peer_as", "rs_as:1:peer_as")
+                 "{rs_as}:peer_as", "rs_as:1:peer_as")  # Euro-IX
 
         add_comm("prepend_once_to_any",
-                 "65501:{rs_as}", "rs_as:101:0")
+                 "65501:{rs_as}", "rs_as:101:0")  # Euro-IX
         add_comm("prepend_twice_to_any",
-                 "65502:{rs_as}", "rs_as:102:0")
+                 "65502:{rs_as}", "rs_as:102:0")  # Euro-IX
         add_comm("prepend_thrice_to_any",
-                 "65503:{rs_as}", "rs_as:103:0")
+                 "65503:{rs_as}", "rs_as:103:0")  # Euro-IX
 
         add_comm("prepend_once_to_peer",
-                 "65511:peer_as", "rs_as:101:peer_as")
+                 "65511:peer_as", "rs_as:101:peer_as")  # Euro-IX
         add_comm("prepend_twice_to_peer",
-                 "65512:peer_as", "rs_as:102:peer_as")
+                 "65512:peer_as", "rs_as:102:peer_as")  # Euro-IX
         add_comm("prepend_thrice_to_peer",
-                 "65513:peer_as", "rs_as:103:peer_as")
+                 "65513:peer_as", "rs_as:103:peer_as")  # Euro-IX
 
         add_comm("add_noexport_to_peer",
                  "65281:peer_as", "rs_as:65281:peer_as")

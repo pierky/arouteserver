@@ -989,6 +989,27 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.load_config(yaml="\n".join(tpl))
         self._contains_err()
 
+    def test_communities_reject_cause_map_ok_same_comm(self):
+        """{}: reject_cause_map valid configuration (same comm used twice)"""
+        tpl = [
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  filtering:",
+            "    reject_policy:",
+            "      policy: tag",
+            "  communities:",
+            "    reject_cause:",
+            "      std: 65520:dyn_val",
+            "    reject_cause_map:",
+            "      1:",
+            "        std: rs_as:1",
+            "      2:",
+            "        std: rs_as:1"
+        ]
+        self.load_config(yaml="\n".join(tpl))
+        self._contains_err()
+
     def test_communities_reject_cause_map_ko_1(self):
         """{}: reject_cause_map invalid format"""
         tpl = [

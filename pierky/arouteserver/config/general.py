@@ -430,14 +430,14 @@ class ConfigParserGeneral(ConfigParserBase):
                                 "name.".format(comm))
 
         # Duplicate communities?
-        unique_communities = []
+        unique_communities = set()
         for comms in (self.cfg["cfg"]["communities"],
                       self.cfg["cfg"]["custom_communities"]):
             for comm_tag in sorted(comms):
                 comm = comms[comm_tag]
                 for fmt in ("std", "lrg", "ext"):
                     if comm[fmt]:
-                        if comm[fmt] in unique_communities:
+                        if comm[fmt] in unique_communities and not comm_tag.startswith("reject_cause_map_"):
                             errors = True
                             logging.error(
                                 "The '{}.{}' community's value ({}) "
@@ -445,7 +445,7 @@ class ConfigParserGeneral(ConfigParserBase):
                                 "community.".format(comm_tag, fmt, comm[fmt])
                             )
                         else:
-                            unique_communities.append(comm[fmt])
+                            unique_communities.add(comm[fmt])
 
         # The 'reject_cause' and 'rejected_route_announced_by' communities
         # can be set only if 'reject_policy' is 'tag' or 'tag_and_reject'.
@@ -690,6 +690,10 @@ class ConfigParserGeneral(ConfigParserBase):
             for tag1 in sorted(comms1):
                 for tag2 in sorted(comms2):
                     if tag1 == tag2:
+                        continue
+                    if tag1.startswith("reject_cause_map_") and tag2.startswith("reject_cause_map_"):
+                        # We allow the same community to be used multiple times for different
+                        # reject codes.
                         continue
                     try:
                         communities_overlap(
