@@ -208,6 +208,96 @@ cfg:
       peer_as: false
       std: null
       type: internal
+    reject_cause_map_1:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_10:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_11:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_12:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_13:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_14:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_15:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_2:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_3:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_4:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_5:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_6:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_7:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_8:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_9:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
     rejected_route_announced_by:
       ext: null
       lrg: null
@@ -1238,13 +1328,13 @@ AS10745:
   le: 32
   length: 24
   max_length: 32
-  prefix: 199.43.0.0
+  prefix: 192.136.136.0
 - exact: false
   ge: 24
   le: 32
   length: 24
   max_length: 32
-  prefix: 192.136.136.0
+  prefix: 199.43.0.0
 - exact: false
   ge: 48
   le: 128
@@ -1252,17 +1342,17 @@ AS10745:
   max_length: 128
   prefix: '2001:500:4::'
 - exact: false
-  ge: 48
-  le: 128
-  length: 48
-  max_length: 128
-  prefix: '2001:500:110::'
-- exact: false
   ge: 24
   le: 32
   length: 24
   max_length: 32
   prefix: 192.149.252.0
+- exact: false
+  ge: 48
+  le: 128
+  length: 48
+  max_length: 128
+  prefix: '2001:500:110::'
 AS12654:
 - exact: false
   ge: 24
@@ -1275,6 +1365,12 @@ AS12654:
   le: 32
   length: 24
   max_length: 32
+  prefix: 23.128.125.0
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
   prefix: 23.128.124.0
 - exact: false
   ge: 24
@@ -1282,12 +1378,6 @@ AS12654:
   length: 24
   max_length: 32
   prefix: 23.128.25.0
-- exact: false
-  ge: 24
-  le: 32
-  length: 24
-  max_length: 32
-  prefix: 23.128.125.0
 
 
 registrobr_whois_db_records
@@ -1341,6 +1431,7 @@ never_via_route_servers_asns
 - 46450
 - 263945
 - 63290
+- 278
 - 62567
 - 202793
 - 134022
@@ -1440,3 +1531,5 @@ never_via_route_servers_asns
 - 51530
 - 31764
 - 137127
+- 142369
+- 270796

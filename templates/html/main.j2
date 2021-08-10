@@ -404,18 +404,18 @@ The NO_EXPORT well-known community is also added.
 <ul>
 <li><p>The following values are used to identify the reason for which
 routes are rejected. This is mostly used for troubleshooting,
-internal reporting purposes or in the route server log files.</p></li>
+internal reporting purposes, looking glasses or in the route server log files.</p></li>
 
 {% if cfg.communities.reject_cause|community_is_set %}
 <li><p>Routes which are rejected are tagged with the BGP community
-that represents the reason for which it were discarded.</p></li>
+that represents the reason for which they were discarded.</p></li>
 {% endif %}
 </ul>
 
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>ID</th>
+      <th style="text-align:right">ID</th>
       <th>Reason</th>
       {% if cfg.communities.reject_cause|community_is_set %}
       <th>Standard</th>
@@ -453,6 +453,37 @@ that represents the reason for which it were discarded.</p></li>
   </tr>
   </tbody>
 </table>
+
+{% if any_reject_cause_map_community_set %}
+<ul>
+<li>In addition to the BGP communities reported above, the following <em>custom</em> ones are also used for the reject reasons listed below.</li>
+</ul>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th style="text-align: right">ID</th>
+      <th>Reason</th>
+      {% if cfg.communities.reject_cause|community_is_set %}
+      <th>Standard</th>
+      <th>Extended</th>
+      <th>Large</th>
+      {% endif %}
+    </tr>
+  </thead>
+  <tbody>
+  {% for ID in reject_reasons %}
+  {%   set reject_cause_map_comm_name = "reject_cause_map_" ~ ID %}
+  {%     if cfg.communities[reject_cause_map_comm_name]|community_is_set %}
+  <tr>
+    <td align=right>{{ ID }}</td>
+    {{ write_communities_table_row(cfg.communities[reject_cause_map_comm_name], reject_reasons[ID], write_row=False) }}
+  </tr>
+  {%     endif %}
+  {% endfor %}
+  </tbody>
+</table>
+{% endif %}
 
 
 

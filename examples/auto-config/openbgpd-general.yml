@@ -55,11 +55,37 @@ cfg:
       action: shutdown
       peering_db:
         enabled: true
+    reject_policy:
+      policy: tag
   graceful_shutdown:
     enabled: true
   rfc1997_wellknown_communities:
     policy: pass
   communities:
+    reject_cause:
+      std: 65520:dyn_val
+      lrg: rs_as:65520:dyn_val
+    reject_cause_map:
+      1:
+        lrg: rs_as:1101:5
+      2:
+        lrg: rs_as:1101:3
+      5:
+        lrg: rs_as:1101:8
+      6:
+        lrg: rs_as:1101:7
+      7:
+        lrg: rs_as:1101:4
+      8:
+        lrg: rs_as:1101:14
+      9:
+        lrg: rs_as:1101:10
+      10:
+        lrg: rs_as:1101:3
+      12:
+        lrg: rs_as:1101:9
+      14:
+        lrg: rs_as:1101:13
     prefix_present_in_as_set:
       std: '64512:11'
       lrg: rs_as:64512:11

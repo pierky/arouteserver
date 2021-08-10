@@ -47,50 +47,54 @@
 {% endmacro %}
 
 {% macro del_communities(comm, replace_peer_as=False, replace_dyn_val=False) %}
+{% set indent = "\t" %}
 {% if comm %}
 {%	if comm.std %}
 {%		if replace_peer_as %}
-        bgp_community.delete([{{ write_community(comm.std, "1..64511") }}]);
+{{ indent }}bgp_community.delete([{{ write_community(comm.std, "1..64511") }}]);
 {%		elif replace_dyn_val %}
-        bgp_community.delete([{{ write_community(comm.std, replace_dyn_val=replace_dyn_val) }}]);
+{{ indent }}bgp_community.delete([{{ write_community(comm.std, replace_dyn_val=replace_dyn_val) }}]);
 {%		else %}
-        bgp_community.delete([{{ write_community(comm.std) }}]);
+{{ indent }}bgp_community.delete([{{ write_community(comm.std) }}]);
 {%		endif %}
 {%	endif %}
 {%	if comm.lrg %}
 {%		if replace_peer_as %}
-        bgp_large_community.delete([{{ write_community(comm.lrg, "1..64511") }}]);
-        bgp_large_community.delete([{{ write_community(comm.lrg, "131072..4199999999") }}]);
+{{ indent }}bgp_large_community.delete([{{ write_community(comm.lrg, "1..64511") }}]);
+{{ indent }}bgp_large_community.delete([{{ write_community(comm.lrg, "131072..4199999999") }}]);
 {%		elif replace_dyn_val %}
-        bgp_large_community.delete([{{ write_community(comm.lrg, replace_dyn_val=replace_dyn_val) }}]);
+{{ indent }}bgp_large_community.delete([{{ write_community(comm.lrg, replace_dyn_val=replace_dyn_val) }}]);
 {%		else %}
-        bgp_large_community.delete([{{ write_community(comm.lrg) }}]);
+{{ indent }}bgp_large_community.delete([{{ write_community(comm.lrg) }}]);
 {%		endif %}
 {%	endif %}
 {%	if comm.ext %}
 {%		if replace_peer_as %}
-        bgp_ext_community.delete([{{ write_community(comm.ext, "1..64511") }}]);
-        bgp_ext_community.delete([{{ write_community(comm.ext, "131072..4199999999") }}]);
+{{ indent }}bgp_ext_community.delete([{{ write_community(comm.ext, "1..64511") }}]);
+{{ indent }}bgp_ext_community.delete([{{ write_community(comm.ext, "131072..4199999999") }}]);
 {%		elif replace_dyn_val %}
-        bgp_ext_community.delete([{{ write_community(comm.ext, replace_dyn_val=replace_dyn_val) }}]);
+{{ indent }}bgp_ext_community.delete([{{ write_community(comm.ext, replace_dyn_val=replace_dyn_val) }}]);
 {%		else %}
-        bgp_ext_community.delete([{{ write_community(comm.ext) }}]);
+{{ indent }}bgp_ext_community.delete([{{ write_community(comm.ext) }}]);
 {%		endif %}
 {%	endif %}
 {% endif %}
 {% endmacro %}
 
 {% macro add_communities(comm, tabs=2) %}
-{% set indent = "\t" * tabs %}
+{% set indent = "" %}
 {% if comm %}
 {%	if comm.std %}
 {{ indent }}bgp_community.add({{ write_community(comm.std) }});
+{%          set indent = "\t" * tabs %}
 {%	endif %}
 {%	if comm.lrg %}
 {{ indent }}bgp_large_community.add({{ write_community(comm.lrg) }});
+{%          set indent = "\t" * tabs %}
 {% 	endif %}
 {%	if comm.ext %}
 {{ indent }}bgp_ext_community.add({{ write_community(comm.ext) }});
+{%          set indent = "\t" * tabs %}
 {% 	endif %}
 {% endif %}
 {% endmacro %}

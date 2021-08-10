@@ -105,6 +105,7 @@ Features
   - do (not) announce to any / **peer** / on **RTT basis**;
   - **prepend** to any / **peer** / on **RTT basis**;
   - add **NO_EXPORT** / **NO_ADVERTISE** to any / **peer**;
+  - `Euro-IX large BGP communities <https://www.euro-ix.net/en/forixps/large-bgp-communities/>`__ to track reject reasons;
   - custom informational BGP communities.
 
 - Optional session features on a client-by-client basis:

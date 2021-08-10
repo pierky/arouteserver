@@ -382,6 +382,9 @@ class BasicScenario(LiveScenario):
     def test_040_bad_prefixes_received_by_rs_leftmost_asn(self):
         """{}: bad prefixes received by rs: left-most ASN"""
 
+        # Different implementations of this test case exist in BasicScenario
+        # and BasicScenario_TagRejectPolicy: the latter overrides the former.
+
         self.receive_route(self.rs, self.DATA["peer_as1"], self.AS1_1,
                            as_path="2 1", next_hop=self.AS1_1,
                            filtered=True, reject_reason=6)
@@ -1110,6 +1113,20 @@ class BasicScenario(LiveScenario):
         self.test_020_sessions_up()
 
 class BasicScenario_TagRejectPolicy(LiveScenario_TagRejectPolicy):
+
+    def test_040_bad_prefixes_received_by_rs_leftmost_asn(self):
+        """{}: bad prefixes received by rs: left-most ASN"""
+
+        # Different implementations of this test case exist in BasicScenario
+        # and BasicScenario_TagRejectPolicy: the latter overrides the former.
+
+        # Here, the reject code 6 (Invalid left-most ASN) is mapped to the
+        # ad-hoc community rs_as:1101:7 via reject_cause_map.
+
+        self.receive_route(self.rs, self.DATA["peer_as1"], self.AS1_1,
+                           as_path="2 1", next_hop=self.AS1_1,
+                           filtered=True, reject_reason=6, lrg_comms=["999:1101:7"])
+        self.log_contains(self.rs, "invalid left-most ASN [2] - REJECTING " + self.DATA["peer_as1"])
 
     def test_042_bad_prefixes_received_by_rs_bogon_wrong_tag(self):
         """{}: bad prefixes received by rs: bogon (wrong tag)"""

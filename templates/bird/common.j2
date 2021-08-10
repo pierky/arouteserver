@@ -402,9 +402,24 @@ int dyn_val;
 	dyn_val = 0;
 	{{ add_communities(cfg.communities.reject_cause) }}
 
-	# cause: the real cause
+	# cause: the reject cause
 	dyn_val = cause;
+
+	# add the generic community from reject_cause
 	{{ add_communities(cfg.communities.reject_cause) }}
+
+	{% if any_reject_cause_map_community_set %}
+	# communities from reject_cause_map
+	case cause {
+		{% for reject_code in reject_reasons %}
+		{% 	 set reject_cause_map_comm_name = "reject_cause_map_" ~ reject_code %}
+		{% 	 if cfg.communities[reject_cause_map_comm_name]|community_is_set %}
+		# {{ reject_code }} = {{ reject_reasons[reject_code] }}
+		{{ reject_code }} : {{ add_communities(cfg.communities[reject_cause_map_comm_name], tabs=0)|replace(";\n", "; ")|trim }}
+		{% 	 endif %}
+		{% endfor %}
+	}
+	{% endif %}
 
 {%	if cfg.communities.rejected_route_announced_by|community_is_set %}
 	# announcing_asn: the ASN of the peer that announced the route

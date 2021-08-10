@@ -20,6 +20,7 @@ import re
 
 RE_COMMENT = re.compile("^\s+#\s+([^\s].*)")
 RE_COMMENT_EMPTY_LINE = re.compile("^\s+#\s*$")
+RE_GENERIC_STATEMENT = re.compile("^\s+(#?)(\w+):\s*(.*)$")
 
 class CfgStatement(object):
 
@@ -51,6 +52,8 @@ class CfgStatement(object):
                        "^\s+(#?)({}):\s*(.*)$".format(self.name))
         )
 
+        self._last_file_position_before_current_line = None
+
     def debug(self, s):
         return
         print("{} - {}".format(self.name, s))
@@ -59,6 +62,8 @@ class CfgStatement(object):
         return self.name
 
     def get_next_line(self):
+        self._last_file_position_before_current_line = self.f.tell()
+
         line = self.f.readline()
         if not line:
             raise ValueError("EOF")
@@ -240,6 +245,11 @@ class CfgStatement(object):
 
                 continue
 
+            elif RE_GENERIC_STATEMENT.match(line) and self.post_comment:
+                self.debug("END OF STATEMENT")
+                self.f.seek(self._last_file_position_before_current_line)
+                break
+
             elif line.strip().startswith("- ") or line.strip().startswith("#- "):
                 continue
 
@@ -390,6 +400,9 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
             CommCfgStatement("add_noadvertise_to_peer", group_with_previous="add_noexport_to_peer"),
 
             CommCfgStatement("reject_cause", g="Reject cause", pre_comment=True),
+            CfgStatement("reject_cause_map", pre_comment=True, sub=[
+                CommCfgStatement("reject_code_1", hide=True)
+            ]),
             CommCfgStatement("rejected_route_announced_by", pre_comment=True)
         ]),
         CfgStatement("custom_communities", t="Custom BGP communities", sub=[

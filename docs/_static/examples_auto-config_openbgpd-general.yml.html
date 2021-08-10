@@ -609,85 +609,256 @@ Route <strong>validity state</strong> is signalled to route server clients using
 <ul>
 <li><p>The following values are used to identify the reason for which
 routes are rejected. This is mostly used for troubleshooting,
-internal reporting purposes or in the route server log files.</p></li>
+internal reporting purposes, looking glasses or in the route server log files.</p></li>
 
+<li><p>Routes which are rejected are tagged with the BGP community
+that represents the reason for which they were discarded.</p></li>
 </ul>
 
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>ID</th>
+      <th style="text-align:right">ID</th>
       <th>Reason</th>
+      <th>Standard</th>
+      <th>Extended</th>
+      <th>Large</th>
     </tr>
   </thead>
   <tbody>
   <tr>
     <td align=right>0</td>
-    <td>Generic code: the route must be treated as rejected</td>
+        <td>Generic code: the route must be treated as rejected</td>
+    <td>65520:0</td>
+    <td>None</td>
+    <td>64496:65520:0</td>
+
   </tr>
   <tr>
     <td align=right>1</td>
-    <td>Invalid AS_PATH length</td>
+        <td>Invalid AS_PATH length</td>
+    <td>65520:1</td>
+    <td>None</td>
+    <td>64496:65520:1</td>
+
   </tr>
   <tr>
     <td align=right>2</td>
-    <td>Prefix is bogon</td>
+        <td>Prefix is bogon</td>
+    <td>65520:2</td>
+    <td>None</td>
+    <td>64496:65520:2</td>
+
   </tr>
   <tr>
     <td align=right>3</td>
-    <td>Prefix is in global blacklist</td>
+        <td>Prefix is in global blacklist</td>
+    <td>65520:3</td>
+    <td>None</td>
+    <td>64496:65520:3</td>
+
   </tr>
   <tr>
     <td align=right>4</td>
-    <td>Invalid AFI</td>
+        <td>Invalid AFI</td>
+    <td>65520:4</td>
+    <td>None</td>
+    <td>64496:65520:4</td>
+
   </tr>
   <tr>
     <td align=right>5</td>
-    <td>Invalid NEXT_HOP</td>
+        <td>Invalid NEXT_HOP</td>
+    <td>65520:5</td>
+    <td>None</td>
+    <td>64496:65520:5</td>
+
   </tr>
   <tr>
     <td align=right>6</td>
-    <td>Invalid left-most ASN</td>
+        <td>Invalid left-most ASN</td>
+    <td>65520:6</td>
+    <td>None</td>
+    <td>64496:65520:6</td>
+
   </tr>
   <tr>
     <td align=right>7</td>
-    <td>Invalid ASN in AS_PATH</td>
+        <td>Invalid ASN in AS_PATH</td>
+    <td>65520:7</td>
+    <td>None</td>
+    <td>64496:65520:7</td>
+
   </tr>
   <tr>
     <td align=right>8</td>
-    <td>Transit-free ASN in AS_PATH</td>
+        <td>Transit-free ASN in AS_PATH</td>
+    <td>65520:8</td>
+    <td>None</td>
+    <td>64496:65520:8</td>
+
   </tr>
   <tr>
     <td align=right>9</td>
-    <td>Origin ASN not in IRRDB AS-SETs</td>
+        <td>Origin ASN not in IRRDB AS-SETs</td>
+    <td>65520:9</td>
+    <td>None</td>
+    <td>64496:65520:9</td>
+
   </tr>
   <tr>
     <td align=right>10</td>
-    <td>IPv6 prefix not in global unicast space</td>
+        <td>IPv6 prefix not in global unicast space</td>
+    <td>65520:10</td>
+    <td>None</td>
+    <td>64496:65520:10</td>
+
   </tr>
   <tr>
     <td align=right>11</td>
-    <td>Prefix is in client blacklist</td>
+        <td>Prefix is in client blacklist</td>
+    <td>65520:11</td>
+    <td>None</td>
+    <td>64496:65520:11</td>
+
   </tr>
   <tr>
     <td align=right>12</td>
-    <td>Prefix not in IRRDB AS-SETs</td>
+        <td>Prefix not in IRRDB AS-SETs</td>
+    <td>65520:12</td>
+    <td>None</td>
+    <td>64496:65520:12</td>
+
   </tr>
   <tr>
     <td align=right>13</td>
-    <td>Invalid prefix length</td>
+        <td>Invalid prefix length</td>
+    <td>65520:13</td>
+    <td>None</td>
+    <td>64496:65520:13</td>
+
   </tr>
   <tr>
     <td align=right>14</td>
-    <td>RPKI INVALID route</td>
+        <td>RPKI INVALID route</td>
+    <td>65520:14</td>
+    <td>None</td>
+    <td>64496:65520:14</td>
+
   </tr>
   <tr>
     <td align=right>15</td>
-    <td>Never via route-servers ASN in AS_PATH</td>
+        <td>Never via route-servers ASN in AS_PATH</td>
+    <td>65520:15</td>
+    <td>None</td>
+    <td>64496:65520:15</td>
+
   </tr>
   <tr>
     <td align=right>65535</td>
-    <td>Unknown</td>
+        <td>Unknown</td>
+    <td>65520:65535</td>
+    <td>None</td>
+    <td>64496:65520:65535</td>
+
+  </tr>
+  </tbody>
+</table>
+
+<ul>
+<li>In addition to the BGP communities reported above, the following <em>custom</em> ones are also used for the reject reasons listed below.</li>
+</ul>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th style="text-align: right">ID</th>
+      <th>Reason</th>
+      <th>Standard</th>
+      <th>Extended</th>
+      <th>Large</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td align=right>1</td>
+        <td>Invalid AS_PATH length</td>
+    <td>None</td>
+    <td>None</td>
+    <td>64496:1101:5</td>
+
+  </tr>
+  <tr>
+    <td align=right>2</td>
+        <td>Prefix is bogon</td>
+    <td>None</td>
+    <td>None</td>
+    <td>64496:1101:3</td>
+
+  </tr>
+  <tr>
+    <td align=right>5</td>
+        <td>Invalid NEXT_HOP</td>
+    <td>None</td>
+    <td>None</td>
+    <td>64496:1101:8</td>
+
+  </tr>
+  <tr>
+    <td align=right>6</td>
+        <td>Invalid left-most ASN</td>
+    <td>None</td>
+    <td>None</td>
+    <td>64496:1101:7</td>
+
+  </tr>
+  <tr>
+    <td align=right>7</td>
+        <td>Invalid ASN in AS_PATH</td>
+    <td>None</td>
+    <td>None</td>
+    <td>64496:1101:4</td>
+
+  </tr>
+  <tr>
+    <td align=right>8</td>
+        <td>Transit-free ASN in AS_PATH</td>
+    <td>None</td>
+    <td>None</td>
+    <td>64496:1101:14</td>
+
+  </tr>
+  <tr>
+    <td align=right>9</td>
+        <td>Origin ASN not in IRRDB AS-SETs</td>
+    <td>None</td>
+    <td>None</td>
+    <td>64496:1101:10</td>
+
+  </tr>
+  <tr>
+    <td align=right>10</td>
+        <td>IPv6 prefix not in global unicast space</td>
+    <td>None</td>
+    <td>None</td>
+    <td>64496:1101:3</td>
+
+  </tr>
+  <tr>
+    <td align=right>12</td>
+        <td>Prefix not in IRRDB AS-SETs</td>
+    <td>None</td>
+    <td>None</td>
+    <td>64496:1101:9</td>
+
+  </tr>
+  <tr>
+    <td align=right>14</td>
+        <td>RPKI INVALID route</td>
+    <td>None</td>
+    <td>None</td>
+    <td>64496:1101:13</td>
+
   </tr>
   </tbody>
 </table>

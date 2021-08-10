@@ -881,6 +881,8 @@ class LiveScenario_TagRejectPolicy(object):
     if the ``reject_policy.policy`` is ``tag``, the ``65520:dyn_val``
     value is used for the ``reject_cause`` BGP community and the
     ``rt:65520:dyn_val`` value for the ``rejected_route_announced_by`` one.
+    Additionally, using the ``reject_cause_map``, some reject codes are
+    mapped to specific BGP communities in the ``rs_as:1101:*`` range.
 
     The ``general.yml`` file, or the file given in the ``orig_file`` argument
     of ``_get_cfg_general`` method, is cloned and reconfigured with the
@@ -917,6 +919,11 @@ class LiveScenario_TagRejectPolicy(object):
             cfg["cfg"]["communities"] = {}
         cfg["cfg"]["communities"]["reject_cause"] = {"std": "65520:dyn_val"}
         cfg["cfg"]["communities"]["rejected_route_announced_by"] = {"ext": "rt:65520:dyn_val"}
+        cfg["cfg"]["communities"]["reject_cause_map"] = {
+            6: {
+                "lrg": "rs_as:1101:7"
+            }
+        }
 
         with open(dest_path, "w") as f:
             yaml.safe_dump(cfg, f, default_flow_style=False)

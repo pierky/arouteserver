@@ -609,16 +609,16 @@ Route <strong>validity state</strong> is signalled to route server clients using
 <ul>
 <li><p>The following values are used to identify the reason for which
 routes are rejected. This is mostly used for troubleshooting,
-internal reporting purposes or in the route server log files.</p></li>
+internal reporting purposes, looking glasses or in the route server log files.</p></li>
 
 <li><p>Routes which are rejected are tagged with the BGP community
-that represents the reason for which it were discarded.</p></li>
+that represents the reason for which they were discarded.</p></li>
 </ul>
 
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>ID</th>
+      <th style="text-align:right">ID</th>
       <th>Reason</th>
       <th>Standard</th>
       <th>Extended</th>
@@ -760,6 +760,104 @@ that represents the reason for which it were discarded.</p></li>
     <td>65520:65535</td>
     <td>rt:65520:65535</td>
     <td>64496:65520:65535</td>
+
+  </tr>
+  </tbody>
+</table>
+
+<ul>
+<li>In addition to the BGP communities reported above, the following <em>custom</em> ones are also used for the reject reasons listed below.</li>
+</ul>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th style="text-align: right">ID</th>
+      <th>Reason</th>
+      <th>Standard</th>
+      <th>Extended</th>
+      <th>Large</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td align=right>1</td>
+        <td>Invalid AS_PATH length</td>
+    <td>None</td>
+    <td>None</td>
+    <td>64496:1101:5</td>
+
+  </tr>
+  <tr>
+    <td align=right>2</td>
+        <td>Prefix is bogon</td>
+    <td>None</td>
+    <td>None</td>
+    <td>64496:1101:3</td>
+
+  </tr>
+  <tr>
+    <td align=right>5</td>
+        <td>Invalid NEXT_HOP</td>
+    <td>None</td>
+    <td>None</td>
+    <td>64496:1101:8</td>
+
+  </tr>
+  <tr>
+    <td align=right>6</td>
+        <td>Invalid left-most ASN</td>
+    <td>None</td>
+    <td>None</td>
+    <td>64496:1101:7</td>
+
+  </tr>
+  <tr>
+    <td align=right>7</td>
+        <td>Invalid ASN in AS_PATH</td>
+    <td>None</td>
+    <td>None</td>
+    <td>64496:1101:4</td>
+
+  </tr>
+  <tr>
+    <td align=right>8</td>
+        <td>Transit-free ASN in AS_PATH</td>
+    <td>None</td>
+    <td>None</td>
+    <td>64496:1101:14</td>
+
+  </tr>
+  <tr>
+    <td align=right>9</td>
+        <td>Origin ASN not in IRRDB AS-SETs</td>
+    <td>None</td>
+    <td>None</td>
+    <td>64496:1101:10</td>
+
+  </tr>
+  <tr>
+    <td align=right>10</td>
+        <td>IPv6 prefix not in global unicast space</td>
+    <td>None</td>
+    <td>None</td>
+    <td>64496:1101:3</td>
+
+  </tr>
+  <tr>
+    <td align=right>12</td>
+        <td>Prefix not in IRRDB AS-SETs</td>
+    <td>None</td>
+    <td>None</td>
+    <td>64496:1101:9</td>
+
+  </tr>
+  <tr>
+    <td align=right>14</td>
+        <td>RPKI INVALID route</td>
+    <td>None</td>
+    <td>None</td>
+    <td>64496:1101:13</td>
 
   </tr>
   </tbody>
