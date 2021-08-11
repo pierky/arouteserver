@@ -63,6 +63,9 @@ cfg:
                 prefix_validated_via_arin_whois_db_dump:
                         std: "65530:3"
                         lrg: "rs_as:65530:3"
+                rpki_bgp_origin_validation_not_performed:
+                        std: "65530:4"
+                        lrg: "rs_as:65530:4"
                 do_not_announce_to_peer:
                         std: "0:peer_as"
                         ext: "rt:0:peer_as"

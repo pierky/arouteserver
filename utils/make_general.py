@@ -369,6 +369,11 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
             CommCfgStatement("prefix_validated_via_registrobr_whois_db_dump", group_with_previous="prefix_present_in_as_set"),
             CommCfgStatement("route_validated_via_white_list", group_with_previous="prefix_present_in_as_set"),
 
+            CommCfgStatement("rpki_bgp_origin_validation_not_performed", g="RPKI BGP Origin Validation communities", pre_comment=True),
+            CommCfgStatement("rpki_bgp_origin_validation_valid", pre_comment=True),
+            CommCfgStatement("rpki_bgp_origin_validation_unknown", group_with_previous="rpki_bgp_origin_validation_valid"),
+            CommCfgStatement("rpki_bgp_origin_validation_invalid", group_with_previous="rpki_bgp_origin_validation_valid"),
+
             CommCfgStatement("blackholing", g="Blackhole filtering", pre_comment=True),
 
             CommCfgStatement("do_not_announce_to_any", g="Propagation control", pre_comment=True),

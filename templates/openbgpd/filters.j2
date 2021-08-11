@@ -468,6 +468,11 @@ match from {{ client.ip }} set community delete NO_ADVERTISE
 {{ del_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, replace_dyn_val=client.asn) }}
 # Remove internal communities before accepting the route
 match from {{ client.ip }} community BLACKHOLE set { {{ internal_communities_list() }} }
+{%    if cfg.communities.rpki_bgp_origin_validation_not_performed|community_is_set %}
+# Add the rpki_bgp_origin_validation_not_performed community
+{{ add_communities("match from " ~ client.ip ~ " community BLACKHOLE", cfg.communities.rpki_bgp_origin_validation_not_performed) }}
+{{ match_communities("match from " ~ client.ip, cfg.communities.blackholing, "set {" ~ ins_communities(cfg.communities.rpki_bgp_origin_validation_not_performed) ~ "}") }}
+{%    endif %}
 {{ match_communities("allow from " ~ client.ip, cfg.communities.blackholing, "set {" ~ internal_communities_list() ~ " }") }}
 allow quick from {{ client.ip }} community BLACKHOLE
 {{ match_communities("allow quick from " ~ client.ip, cfg.communities.blackholing, "") }}

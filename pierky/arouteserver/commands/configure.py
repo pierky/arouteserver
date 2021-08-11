@@ -477,6 +477,15 @@ class ConfigureCommand(ARouteServerCommand):
         add_comm("route_validated_via_white_list",
                  "64512:41", "rs_as:64512:41")
 
+        add_comm("rpki_bgp_origin_validation_not_performed",
+                 "64512:50", "rs_as:1000:3")  # Euro-IX
+        add_comm("rpki_bgp_origin_validation_valid",
+                 "64512:51", "rs_as:1000:1")  # Euro-IX
+        add_comm("rpki_bgp_origin_validation_unknown",
+                 "64512:52", "rs_as:1000:2")  # Euro-IX
+        add_comm("rpki_bgp_origin_validation_invalid",
+                 "64512:53", "rs_as:1000:4")  # Euro-IX
+
         add_comm("do_not_announce_to_any",
                  "0:{rs_as}", "rs_as:0:0")  # Euro-IX
         add_comm("do_not_announce_to_peer",

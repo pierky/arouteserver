@@ -320,6 +320,7 @@ int client_rtt;
 # keep track of RPKI validation state.
 # RFC8097 extended communities are used here.
 function add_rpki_community(string comm_name) {
+	# RFC8097 BGP communities
 	if comm_name = "valid" then {
 		bgp_ext_community.add((unknown 0x4300, 0, 0));
 	}
@@ -329,6 +330,25 @@ function add_rpki_community(string comm_name) {
 	if comm_name = "invalid" then {
 		bgp_ext_community.add((unknown 0x4300, 0, 2));
 	}
+
+	{% if cfg.communities["rpki_bgp_origin_validation_valid"]|community_is_set %}
+	# rpki_bgp_origin_validation_valid communities
+	if comm_name = "valid" then {
+		{{ add_communities(cfg.communities["rpki_bgp_origin_validation_valid"], tabs=2) }}
+	}
+	{% endif %}
+	{% if cfg.communities["rpki_bgp_origin_validation_unknown"]|community_is_set %}
+	# rpki_bgp_origin_validation_unknown communities
+	if comm_name = "unknown" then {
+		{{ add_communities(cfg.communities["rpki_bgp_origin_validation_unknown"], tabs=2) }}
+	}
+	{% endif %}
+	{% if cfg.communities["rpki_bgp_origin_validation_invalid"]|community_is_set %}
+	# rpki_bgp_origin_validation_invalid communities
+	if comm_name = "invalid" then {
+		{{ add_communities(cfg.communities["rpki_bgp_origin_validation_invalid"], tabs=2) }}
+	}
+	{% endif %}
 }
 
 # This functions performs RPKI validation of the current

@@ -284,6 +284,11 @@ filter receive_from_{{ client.id }} {
 
 	# Blackhole request?
 	if is_blackhole_filtering_request() then {
+		{% if cfg.communities["rpki_bgp_origin_validation_not_performed"]|community_is_set %}
+		# rpki_bgp_origin_validation_not_performed communities
+		{{ add_communities(cfg.communities["rpki_bgp_origin_validation_not_performed"], tabs=2) }}
+		{% endif %}
+
 		accept "blackhole filtering request from {{ client.id }} - ACCEPTING ", net;
 	} else {
 		{% if cfg.filtering.rpki_bgp_origin_validation.enabled %}
@@ -293,6 +298,11 @@ filter receive_from_{{ client.id }} {
 		if route_is_rpki_invalid() then
 			{{ reject(client, 14, '"RPKI, route is INVALID - REJECTING ", net') }}
 		{%	endif %}
+		{% else %}
+			{% if cfg.communities["rpki_bgp_origin_validation_not_performed"]|community_is_set %}
+			# rpki_bgp_origin_validation_not_performed communities
+			{{ add_communities(cfg.communities["rpki_bgp_origin_validation_not_performed"], tabs=3) }}
+			{% endif %}
 		{% endif %}
 
 		# Prefix: length

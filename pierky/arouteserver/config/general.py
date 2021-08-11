@@ -47,6 +47,10 @@ class ConfigParserGeneral(ConfigParserBase):
         "prefix_validated_via_arin_whois_db_dump": { "type": "outbound" },
         "prefix_validated_via_registrobr_whois_db_dump": { "type": "outbound" },
         "route_validated_via_white_list": { "type": "outbound" },
+        "rpki_bgp_origin_validation_valid": { "type": "internal" },
+        "rpki_bgp_origin_validation_unknown": { "type": "internal" },
+        "rpki_bgp_origin_validation_invalid": { "type": "internal" },
+        "rpki_bgp_origin_validation_not_performed": { "type": "outbound" },
 
         "blackholing": { "type": "inbound" },
 
