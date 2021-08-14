@@ -18,7 +18,7 @@
 # the route should be discarded.
 
 {% macro internal_communities_list(all=false) %}
-ext-community delete $INTCOMM_PREF_OK_ROA ext-community delete $INTCOMM_ROUTE_OK_WL ext-community delete $INTCOMM_PREF_OK_ARINDB ext-community delete $INTCOMM_PREF_OK_REGISTROBRDB ext-community delete $INTCOMM_ORIGIN_OK ext-community delete $INTCOMM_ORIGIN_KO ext-community delete $INTCOMM_PREFIX_OK ext-community delete $INTCOMM_PREFIX_KO ext-community delete $INTCOMM_IRR_REJECT ext-community delete $INTCOMM_RPKI_UNKNOWN ext-community delete $INTCOMM_RPKI_INVALID ext-community delete $INTCOMM_RPKI_VALID {% if all %} ext-community delete $INTCOMM_NO_EXPORT ext-community delete $INTCOMM_NO_ADVERTISE {% endif %}
+ext-community delete $INTCOMM_PREF_OK_ROA ext-community delete $INTCOMM_ROUTE_OK_WL ext-community delete $INTCOMM_PREF_OK_ARINDB ext-community delete $INTCOMM_PREF_OK_REGISTROBRDB ext-community delete $INTCOMM_ORIGIN_OK ext-community delete $INTCOMM_ORIGIN_KO ext-community delete $INTCOMM_PREFIX_OK ext-community delete $INTCOMM_PREFIX_KO ext-community delete $INTCOMM_IRR_REJECT ext-community delete $INTCOMM_RPKI_UNKNOWN {% if all %}ext-community delete $INTCOMM_RPKI_INVALID {% endif %}ext-community delete $INTCOMM_RPKI_VALID {% if all %} ext-community delete $INTCOMM_NO_EXPORT ext-community delete $INTCOMM_NO_ADVERTISE {% endif %}
 {% endmacro %}
 
 {% macro deny_inbound_route(tag_reject_policy, condition, cause_code) %}
@@ -467,13 +467,13 @@ match from {{ client.ip }} set community delete NO_ADVERTISE
 # Blackhole request?
 {{ del_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, replace_dyn_val=client.asn) }}
 # Remove internal communities before accepting the route
-match from {{ client.ip }} community BLACKHOLE set { {{ internal_communities_list() }} }
+match from {{ client.ip }} community BLACKHOLE set { ext-community delete $INTCOMM_RPKI_INVALID {{ internal_communities_list() }} }
+{{ match_communities("allow from " ~ client.ip, cfg.communities.blackholing, "set { ext-community delete $INTCOMM_RPKI_INVALID " ~ internal_communities_list() ~ " }") }}
 {%    if cfg.communities.rpki_bgp_origin_validation_not_performed|community_is_set %}
 # Add the rpki_bgp_origin_validation_not_performed community
 {{ add_communities("match from " ~ client.ip ~ " community BLACKHOLE", cfg.communities.rpki_bgp_origin_validation_not_performed) }}
 {{ match_communities("match from " ~ client.ip, cfg.communities.blackholing, "set {" ~ ins_communities(cfg.communities.rpki_bgp_origin_validation_not_performed) ~ "}") }}
 {%    endif %}
-{{ match_communities("allow from " ~ client.ip, cfg.communities.blackholing, "set {" ~ internal_communities_list() ~ " }") }}
 allow quick from {{ client.ip }} community BLACKHOLE
 {{ match_communities("allow quick from " ~ client.ip, cfg.communities.blackholing, "") }}
 {{ add_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, dyn_val=client.asn) }}

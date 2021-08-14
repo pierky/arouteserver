@@ -24,6 +24,12 @@ next release
 
   Certain informational extended BGP communities that need dynamic values (like the one used to track the reject code of a route that is discarded when ``reject_policy`` is set to ``tag``) were not scrubbed from outbound routes, because of lack of wildcard matching in OpenBGPD. Since this feature was recently added to the BGP speaker, they are now removed.
 
+- Fix (OpenBGPD): make behaviour of ``rpki_bgp_origin_validation.reject_invalid`` consistent with BIRD.
+
+  Contrary to what ``reject_invalid: False`` might seem doing, the actual behaviour it is designed for is to still prevent the propagation of INVALID routes when RPKI BOV is enabled. When it's set to ``True`` (the default value) the BGP daemons are configured to immediately drop INVALID routes in the inbound filters; when it's set to ``False`` those routes are accepted but not propagated to clients, they are blocked in the outbound filters: basically they are just kept internally to the route server to allow analysis and troubleshooting.
+
+  While the BIRD implementation of ``reject_invalid: False`` was working fine, a bug was found in the OpenBGPD one that prevented those routes from being blocked in the outbound direction, letting them to be propagated to clients.
+
 1.9.0
 -----
 
