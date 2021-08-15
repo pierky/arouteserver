@@ -408,7 +408,7 @@ class OpenBGPDPortableInstance(OpenBGPDInstance, DockerInstance, BGPSpeakerInsta
         try:
             res = self.run_cmd("bgpctl reload")
         except:
-            pass
+            res = ""
 
         if "request processed" in res:
             time.sleep(5)

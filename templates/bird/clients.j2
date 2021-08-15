@@ -288,7 +288,6 @@ filter receive_from_{{ client.id }} {
 		# rpki_bgp_origin_validation_not_performed communities
 		{{ add_communities(cfg.communities["rpki_bgp_origin_validation_not_performed"], tabs=2) }}
 		{% endif %}
-
 		accept "blackhole filtering request from {{ client.id }} - ACCEPTING ", net;
 	} else {
 		{% if cfg.filtering.rpki_bgp_origin_validation.enabled %}

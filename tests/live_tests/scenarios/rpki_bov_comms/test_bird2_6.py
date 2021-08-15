@@ -13,16 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .base import RPKIINVALIDScenario
+from .base import RPKICustomBOVCommunitiesScenario_BIRD2
 from .data6 import DATA_6
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6, BIRD2Instance
 
-class RPKIINVALIDRoutesScenario_BIRDIPv6(RPKIINVALIDScenario):
+class RPKICustomBOVCommunitiesScenario_BIRDIPv6(RPKICustomBOVCommunitiesScenario_BIRD2):
     __test__ = True
 
-    SHORT_DESCR = "Live test, BIRD, RPKI INVALID tagging, IPv6"
-    RS_INSTANCE_CLASS = BIRDInstanceIPv6
+    SHORT_DESCR = "Live test, BIRD v2, BOV custom comms, IPv6"
+    RS_INSTANCE_CLASS = BIRD2Instance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
-    IP_VER = 6
 
     DATA = DATA_6
