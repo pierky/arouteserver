@@ -1,3 +1,4 @@
+# Copyright (C) 2017-2021 Pier Carlo Chiodi
 # Copyright (C) 2021 Vilhelm Prytz
 #
 # This program is free software: you can redistribute it and/or modify
@@ -74,7 +75,7 @@ class CheckConfigCommand(ARouteServerCommand):
         if self.args.cfg_clients:
             self.clients_path = self.args.cfg_clients
 
-        logging.info("Checking configuration files")
+        logging.info(f"Checking configuration files {self.general_path} and {self.clients_path}...")
 
         self.check_config()
 
