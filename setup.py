@@ -1,6 +1,6 @@
 import os
 from os.path import abspath, dirname, join
-from setuptools import setup, find_packages
+from setuptools import setup
 
 """
 New release procedure
@@ -84,7 +84,7 @@ setup(
                                 "pierky/arouteserver/tests/live_tests/skeleton/*.j2"]
     },
     include_package_data=True,
-    
+
     license="GPLv3",
     description="A Python tool to automatically build (and test) configurations for BGP route servers.",
     long_description=long_description,
@@ -105,7 +105,7 @@ setup(
 
     scripts=["scripts/arouteserver"],
 
-    keywords=['BGP', 'Route server', 'BIRD', 'IP Routing'],
+    keywords=['BGP', 'Route server', 'BIRD', 'IP Routing', 'OpenBGPD', 'IXP', 'IX', 'Internet Exchange'],
 
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -122,7 +122,6 @@ setup(
         "Operating System :: Unix",
 
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.6",
 
