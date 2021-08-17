@@ -30,6 +30,12 @@ next release
 
   In addition to this, some of the BGP communities set by the ``configure`` command have been changed in order to match those suggested in the Euro-IX document above.
 
+- New: ``check-config`` command, to verify configuration files (general.yml and clients.yml).
+
+  This command can be used to verify that the content of the two main configuration files is valid, without building the configurations.
+
+  See also `GitHub PR 82 <https://github.com/pierky/arouteserver/pull/82>`_ and `issue 79 <https://github.com/pierky/arouteserver/issues/79>`_.
+
 - Improvement (OpenBGPD): informational extended BGP communities are now scrubbed from outbound routes.
 
   Certain informational extended BGP communities that need dynamic values (like the one used to track the reject code of a route that is discarded when ``reject_policy`` is set to ``tag``) were not scrubbed from outbound routes, because of lack of wildcard matching in OpenBGPD. Since this feature was recently added to the BGP speaker, they are now removed.
