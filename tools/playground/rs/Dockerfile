@@ -9,7 +9,8 @@ RUN apt-get update && \
             git \
             build-essential \
             python3-pip \
-            python3-dev && \
+            python3-dev \
+            libtool && \
     rm -rf /var/lib/apt/lists/*
 
 # Installing AliceLG birdwatcher
