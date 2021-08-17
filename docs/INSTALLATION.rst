@@ -108,6 +108,8 @@ ARouteServer uses the following external programs:
 
 - (mandatory) `bgpq4 <https://github.com/bgp/bgpq4>`_ or `bgpq3 <https://github.com/snar/bgpq3>`_ are used to gather information from IRRDBs: at least one of them must be installed on the system where ARouteServer is executed.
 
+  **Please note**: the ``libtool`` package may need to be added to the system in order to compile bgpq4: ``apt-get install libtool`` / ``yum install -y libtool``.
+
   To install bgpq4:
 
   .. code:: bash
