@@ -1,4 +1,5 @@
 # Copyright (C) 2017-2021 Pier Carlo Chiodi
+# Copyright (C) 2021 Vilhelm Prytz
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,9 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .tpl_rendering import HTMLCommand, DumpTemplateContextCommand, \
-                          BIRDCommand, OpenBGPDCommand, BuildCommand, \
-                          IRRASSetCommand
+from .tpl_rendering import (
+    HTMLCommand,
+    DumpTemplateContextCommand,
+    BIRDCommand,
+    OpenBGPDCommand,
+    BuildCommand,
+    IRRASSetCommand,
+)
 from .check_new_release import CheckNewRelease
 from .clients_from_peeringdb import ClientsFromPeeringDBCommand
 from .clients_from_euroix import ClientsFromEuroIXCommand
@@ -26,6 +32,7 @@ from .init_scenario import InitScenarioCommand
 from .configure import ConfigureCommand
 from .show_config import ShowConfigCommand
 from .ixf_member_list_from_clients import IXFMemberListFromClientsCommand
+from .check_config import CheckConfigCommand
 
 all_commands = [
     BuildCommand,
@@ -43,5 +50,6 @@ all_commands = [
     ShowConfigCommand,
     IXFMemberListFromClientsCommand,
     InitScenarioCommand,
-    CheckNewRelease
+    CheckNewRelease,
+    CheckConfigCommand,
 ]
