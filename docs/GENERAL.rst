@@ -694,7 +694,7 @@ RPKI BGP Origin Validation: ``rpki_bgp_origin_validation``
   RFC8097 BGP communities for further internal processing or
   to be used by external custom functions implemented in .local
   files.
-  INVALID routes are not announced to clients.
+  In any case, INVALID routes are not announced to clients.
 
 
   OpenBGPD: RFC8097 BGP communities tagging available since 6.4.
@@ -1365,6 +1365,60 @@ Prefix/origin AS present in client's AS-SET
 
 
   The following communities are scrubbed from inbound routes.
+
+
+  The **rs_as** macro can be used here.
+
+
+
+
+
+
+RPKI BGP Origin Validation communities
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- ``rpki_bgp_origin_validation_not_performed``:
+  RPKI BGP Origin Validation not performed.
+
+
+  When **rpki_bgp_origin_validation.enabled** is False (thus BGP
+  origin validation is not performed), if the next community
+  is configured the routes are tagged with it.
+  Similarly, this community is also used to tag routes that are
+  processed according to the blackhole policy when the BLACKHOLE
+  community (or the custom one defined in **blackholing** below)
+  is used, even though RPKI BGP Origin Validation is globally
+  enabled.
+
+
+  The following communities are scrubbed from inbound routes.
+
+
+  The **rs_as** macro can be used here.
+
+
+
+
+
+
+- ``rpki_bgp_origin_validation_valid``, ``rpki_bgp_origin_validation_unknown`` and ``rpki_bgp_origin_validation_invalid``:
+  RPKI BGP Origin Validation state.
+
+
+  When **rpki_bgp_origin_validation.enabled** is True and BGP origin
+  validation is performed, in addition to RFC8097 BGP communities
+  the following ones are also used to tag routes depending on
+  their state.
+  These communities are not advertised to the clients, they are
+  meant to be used only "internally" to the route server (for
+  example for troubleshooting purposes or via looking glasses).
+
+
+  OpenBGPD: these communities are supported only on version >= 6.4.
+
+
+  The following communities are scrubbed from inbound and outbound
+  routes.
 
 
   The **rs_as** macro can be used here.

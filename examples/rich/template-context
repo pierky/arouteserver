@@ -310,6 +310,30 @@ cfg:
       peer_as: false
       std: '65530:3'
       type: outbound
+    rpki_bgp_origin_validation_invalid:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    rpki_bgp_origin_validation_not_performed:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: outbound
+    rpki_bgp_origin_validation_unknown:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    rpki_bgp_origin_validation_valid:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
   custom_communities:
     from_europe:
       ext: rt:65534:1
@@ -1328,13 +1352,7 @@ AS10745:
   le: 32
   length: 24
   max_length: 32
-  prefix: 192.136.136.0
-- exact: false
-  ge: 24
-  le: 32
-  length: 24
-  max_length: 32
-  prefix: 199.43.0.0
+  prefix: 192.149.252.0
 - exact: false
   ge: 48
   le: 128
@@ -1342,30 +1360,24 @@ AS10745:
   max_length: 128
   prefix: '2001:500:4::'
 - exact: false
-  ge: 24
-  le: 32
-  length: 24
-  max_length: 32
-  prefix: 192.149.252.0
-- exact: false
   ge: 48
   le: 128
   length: 48
   max_length: 128
   prefix: '2001:500:110::'
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
+  prefix: 199.43.0.0
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
+  prefix: 192.136.136.0
 AS12654:
-- exact: false
-  ge: 24
-  le: 32
-  length: 24
-  max_length: 32
-  prefix: 23.128.24.0
-- exact: false
-  ge: 24
-  le: 32
-  length: 24
-  max_length: 32
-  prefix: 23.128.125.0
 - exact: false
   ge: 24
   le: 32
@@ -1378,6 +1390,18 @@ AS12654:
   length: 24
   max_length: 32
   prefix: 23.128.25.0
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
+  prefix: 23.128.24.0
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
+  prefix: 23.128.125.0
 
 
 registrobr_whois_db_records
@@ -1422,9 +1446,11 @@ never_via_route_servers_asns
 - 8943
 - 37271
 - 714
+- 12353
 - 8455
 - 57866
 - 36459
+- 17665
 - 7155
 - 263328
 - 12822
@@ -1532,4 +1558,7 @@ never_via_route_servers_asns
 - 31764
 - 137127
 - 142369
+- 137207
 - 270796
+- 142348
+- 23888

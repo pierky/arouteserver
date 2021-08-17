@@ -170,10 +170,68 @@ Route <strong>validity state</strong> is signalled to route server clients using
 
 <ul>
 
-<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI BGP Prefix Origin Validation</a> of routes received by the route server is <strong>enabled</strong>.</p></li>
+<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI BGP Origin Validation</a> of routes received by the route server is <strong>enabled</strong>.</p></li>
 
 <li><p>When an INVALID route is received by the route server, <strong>it is rejected</strong>.</p></li>
 </ul>
+
+<li><p>The following communities are used to keep track of the validity state of the routes (only internally to the route server, they are not propagated to the clients):
+<table class="table">
+<thead>
+  <tr>
+    <th>State</th>
+    <th>Standard</th>
+    <th>Extended</th>
+    <th>Large</th>
+  <tr>
+</thead>
+<tbody>
+    <tr>
+    <td>Valid</td>
+    <td>64512:51</td>
+    <td>rt:64512:51</td>
+    <td>64496:1000:1</td>
+  </tr>
+
+    <tr>
+    <td>Unknown</td>
+    <td>64512:52</td>
+    <td>rt:64512:52</td>
+    <td>64496:1000:2</td>
+  </tr>
+
+    <tr>
+    <td>Invalid</td>
+    <td>64512:53</td>
+    <td>rt:64512:53</td>
+    <td>64496:1000:4</td>
+  </tr>
+
+</tbody>
+</table>
+</p></li>
+
+<li><p>In circumstances (if any) where BGP Origin Validation is not performed, the following BGP communities are attached to the route:
+<table class="table">
+<thead>
+  <tr>
+    <th>Description</th>
+    <th>Standard</th>
+    <th>Extended</th>
+    <th>Large</th>
+  <tr>
+</thead>
+<tbody>
+    <tr>
+    <td>RPKI BGP Origin Validation not performed</td>
+    <td>64512:50</td>
+    <td>rt:64512:50</td>
+    <td>64496:1000:3</td>
+  </tr>
+
+</tbody>
+</table>
+</p></li>
 
 
 

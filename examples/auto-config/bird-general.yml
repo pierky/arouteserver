@@ -111,6 +111,22 @@ cfg:
       std: '64512:41'
       ext: rt:64512:41
       lrg: rs_as:64512:41
+    rpki_bgp_origin_validation_not_performed:
+      std: '64512:50'
+      ext: rt:64512:50
+      lrg: rs_as:1000:3
+    rpki_bgp_origin_validation_valid:
+      std: '64512:51'
+      ext: rt:64512:51
+      lrg: rs_as:1000:1
+    rpki_bgp_origin_validation_unknown:
+      std: '64512:52'
+      ext: rt:64512:52
+      lrg: rs_as:1000:2
+    rpki_bgp_origin_validation_invalid:
+      std: '64512:53'
+      ext: rt:64512:53
+      lrg: rs_as:1000:4
     do_not_announce_to_any:
       std: 0:rs_as
       ext: rt:0:rs_as

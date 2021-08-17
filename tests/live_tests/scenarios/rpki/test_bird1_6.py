@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from .base import RPKIINVALIDScenario
+from .data6 import DATA_6
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
 
 class RPKIINVALIDRoutesScenario_BIRDIPv6(RPKIINVALIDScenario):
@@ -24,22 +25,4 @@ class RPKIINVALIDRoutesScenario_BIRDIPv6(RPKIINVALIDScenario):
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
     IP_VER = 6
 
-    DATA = {
-        "rs_IPAddress":             "2001:db8:1:1::2",
-        "AS1_IPAddress":            "2001:db8:1:1::11",
-        "AS2_IPAddress":            "2001:db8:1:1::22",
-        "AS3_IPAddress":            "2001:db8:1:1::33",
-        "AS4_IPAddress":            "2001:db8:1:1::44",
-
-        "AS2_invalid1":             "3002:0:9::/48",
-        "AS2_badlen":               "3002:0:8000::/35",
-        "AS2_valid1":               "3002:0:8::/48",
-        "AS2_valid2":               "3002:0:8000::/34",
-        "AS2_unknown1":             "3002:3002::/32",
-
-        "AS3_invalid1":             "3003:0:9::/48",
-        "AS3_badlen":               "3003:0:8000::/35",
-        "AS3_valid1":               "3003:0:8::/48",
-        "AS3_valid2":               "3003:0:8000::/34",
-        "AS3_unknown1":             "3003:3003::/32",
-    }
+    DATA = DATA_6

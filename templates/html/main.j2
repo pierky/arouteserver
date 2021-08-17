@@ -195,16 +195,63 @@ Route <strong>validity state</strong> is signalled to route server clients using
 
 <ul>
 
-<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI BGP Prefix Origin Validation</a> of routes received by the route server is <strong>{% if cfg.filtering.rpki_bgp_origin_validation.enabled %}enabled{% else %}disabled{% endif %}</strong>.</p></li>
+<li><p><a href="https://tools.ietf.org/html/rfc6483">RPKI BGP Origin Validation</a> of routes received by the route server is <strong>{% if cfg.filtering.rpki_bgp_origin_validation.enabled %}enabled{% else %}disabled{% endif %}</strong>.</p></li>
 
 {% if cfg.filtering.rpki_bgp_origin_validation.enabled %}
-{%	if cfg.filtering.rpki_bgp_origin_validation.reject_invalid %}
+{%  if cfg.filtering.rpki_bgp_origin_validation.reject_invalid %}
 <li><p>When an INVALID route is received by the route server, <strong>it is rejected</strong>.</p></li>
-{%	else %}
+{%  else %}
 <li><p>INVALID routes are not announced to clients.</p></li>
-{%	endif %}
+{%  endif %}
 {% endif %}
 </ul>
+
+{% if cfg.filtering.rpki_bgp_origin_validation.enabled and
+   (
+     cfg.communities.rpki_bgp_origin_validation_valid|community_is_set or
+     cfg.communities.rpki_bgp_origin_validation_unknown|community_is_set or
+     cfg.communities.rpki_bgp_origin_validation_invalid|community_is_set
+   ) %}
+<li><p>The following communities are used to keep track of the validity state of the routes (only internally to the route server, they are not propagated to the clients):
+<table class="table">
+<thead>
+  <tr>
+    <th>State</th>
+    <th>Standard</th>
+    <th>Extended</th>
+    <th>Large</th>
+  <tr>
+</thead>
+<tbody>
+  {{ write_communities_table_row(cfg.communities.rpki_bgp_origin_validation_valid, "Valid") }}
+  {{ write_communities_table_row(cfg.communities.rpki_bgp_origin_validation_unknown, "Unknown") }}
+  {{ write_communities_table_row(cfg.communities.rpki_bgp_origin_validation_invalid, "Invalid") }}
+</tbody>
+</table>
+</p></li>
+{% endif %}
+
+{% if cfg.communities.rpki_bgp_origin_validation_not_performed|community_is_set %}
+{%  if cfg.filtering.rpki_bgp_origin_validation.enabled %}
+<li><p>In circumstances (if any) where BGP Origin Validation is not performed, the following BGP communities are attached to the route:
+{%  else %}
+<li><p>To signal that BGP Origin Validation is not performed, the following BGP communities are attached to the route:
+{%  endif %}
+<table class="table">
+<thead>
+  <tr>
+    <th>Description</th>
+    <th>Standard</th>
+    <th>Extended</th>
+    <th>Large</th>
+  <tr>
+</thead>
+<tbody>
+  {{ write_communities_table_row(cfg.communities.rpki_bgp_origin_validation_not_performed, "RPKI BGP Origin Validation not performed") }}
+</tbody>
+</table>
+</p></li>
+{% endif %}
 
 
 
@@ -217,7 +264,7 @@ Route <strong>validity state</strong> is signalled to route server clients using
 {%	if cfg.rpki_roas.source == "ripe-rpki-validator-cache" %}
 <li><p>RPKI ROAs are fetched from the RIPE RPKI Validator format cache files at {{ cfg.rpki_roas.ripe_rpki_validator_url|map("urlize")|join(", ") }}. The following Trust Anchors are used: {{ cfg.rpki_roas.allowed_trust_anchors|join(", ") }}</p></li>
 {%	else %}
-<li><p>RPKI ROAs are supplied using an external program.</p></li>
+<li><p>RPKI ROAs are fetched via RTR protocol from an external validating cache.</p></li>
 {%	endif %}
 </ul>
 {% endif %}
