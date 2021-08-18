@@ -12,6 +12,9 @@ mkdir -p var/cache &>/dev/null
 RES_FILE=$(mktemp)
 echo 0 >$RES_FILE
 
+LOG_FILE=$(mktemp)
+echo "Let's start" >$LOG_FILE
+
 function reset() {
   AROUTESERVER="./scripts/arouteserver"
   CFG_FILE="tests/var/arouteserver.yml"
@@ -23,19 +26,25 @@ function reset() {
 }
 
 function build_cmd() {
+  echo "" >>${LOG_FILE}
+  echo "Test case: ${TITLE}" >>${LOG_FILE}
+  echo "#####################################################" >>${LOG_FILE}
   COMMAND="$1"
   shift
-  $AROUTESERVER $COMMAND --cfg $CFG_FILE --logging-level ERROR --general $GENERAL --clients $CLIENTS --bogons $BOGONS $@ 2>&1
+  $AROUTESERVER $COMMAND --cfg $CFG_FILE --logging-level ERROR --general $GENERAL --clients $CLIENTS --bogons $BOGONS $@ 2>&1 | tee -a ${LOG_FILE}
 }
 
 function run_cmd() {
+  echo "" >>${LOG_FILE}
+  echo "Test case: ${TITLE}" >>${LOG_FILE}
+  echo "#####################################################" >>${LOG_FILE}
   COMMAND="$1"
   shift
-  $AROUTESERVER $COMMAND --cfg $CFG_FILE $@ 2>&1
+  $AROUTESERVER $COMMAND --cfg $CFG_FILE $@ 2>&1 | tee -a ${LOG_FILE}
 }
 
 function error() {
-  echo "Failure during '$TITLE' at line $SUB_TEST: $1"
+  echo "Failure during '$TITLE' at line $SUB_TEST: $1" | tee -a ${LOG_FILE}
   echo 1 >$RES_FILE
 }
 
@@ -414,9 +423,12 @@ run_cmd "check-config" --general "${GENERAL}" --clients "${CLIENTS}" | must_cont
 ERROR=$(cat $RES_FILE)
 if [ $ERROR -eq 1 ]; then
   echo "Done! ERRORS FOUND"
+  echo "Printing the whole output..."
+  cat ${LOG_FILE}
 else
   echo "Done!"
 fi
 rm $RES_FILE
+rm $LOG_FILE
 
 exit $ERROR
