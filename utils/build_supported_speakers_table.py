@@ -15,14 +15,7 @@ notes = {
     "1": ("For max-prefix filtering, only the shutdown and "
           "the restart actions are supported by OpenBGPD. "
           "Restart is configured with a 15 minutes timer."),
-    "2": ("OpenBGPD does not offer a way to delete extended "
-          "communities using wildcard (rt xxx:\*): "
-          "peer-ASN-specific extended communities (such as "
-          "prepend_once_to_peer, do_not_announce_to_peer) "
-          "are not scrubbed from routes that leave OpenBGPD "
-          "route servers and so they are propagated to the "
-          "route server clients."),
-    "3": ("Multihop can be enabled only when path-hiding "
+    "2": ("Multihop can be enabled only when path-hiding "
           "mitigation is turned off."),
 }
 
@@ -199,38 +192,20 @@ add_feature("Prefix/origin ASN in IRRDBs data", {
 add_feature("Do (not) announce to any / peer / on RTT basis", {
     "bird": True,
     "bird2": True,
-    "openbgpd": {
-        "value": True,
-        "note": 2
-    },
-    "openbgpd_portable": {
-        "value": True,
-        "note": 2
-    },
+    "openbgpd": True,
+    "openbgpd_portable": True,
 })
 add_feature("Prepend to any / peer / on RTT basis", {
     "bird": True,
     "bird2": True,
-    "openbgpd": {
-        "value": True,
-        "note": 2
-    },
-    "openbgpd_portable": {
-        "value": True,
-        "note": 2
-    },
+    "openbgpd": True,
+    "openbgpd_portable": True,
 })
 add_feature("Add NO_EXPORT / NO_ADVERTISE to any / peer", {
     "bird": True,
     "bird2": True,
-    "openbgpd": {
-        "value": True,
-        "note": 2
-    },
-    "openbgpd_portable": {
-        "value": True,
-        "note": 2
-    },
+    "openbgpd": True,
+    "openbgpd_portable": True,
 })
 add_feature("Custom informational BGP communities", {
     "bird": True,
@@ -262,11 +237,11 @@ add_feature("GTSM (Generalized TTL Security Mechanism)", {
 add_feature("Multihop sessions", {
     "bird": {
         "value": True,
-        "note": 3
+        "note": 2
     },
     "bird2": {
         "value": True,
-        "note": 3
+        "note": 2
     },
     "openbgpd": True,
     "openbgpd_portable": True,

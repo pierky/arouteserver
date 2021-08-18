@@ -573,8 +573,6 @@ The following list of limitations is based on the currently supported versions o
 
   - For max-prefix filtering, only the ``shutdown`` and the ``restart`` actions are supported by OpenBGPD. Restart is configured with a 15 minutes timer.
 
-  - OpenBGPD does not offer a way to delete **extended communities** using wildcard (``rt xxx:*``): peer-ASN-specific extended communities (such as ``prepend_once_to_peer``, ``do_not_announce_to_peer``) are not scrubbed from routes that leave OpenBGPD route servers and so they are propagated to the route server clients.
-
   - The Site of Origin Extended BGP communities in the range 65535:* are reserved for internal reasons.
 
 A list of all the features and their support level among the BGP speakers is maintained on the :ref:`Supported BGP speakers and features` section of this documentation.
