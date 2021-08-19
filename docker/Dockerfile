@@ -6,6 +6,7 @@ WORKDIR /arouteserver
 RUN mkdir /bgpq4 && \
     cd /bgpq4 && \
     git clone https://github.com/bgp/bgpq4.git ./ && \
+    git checkout tags/1.2 && \
     ./bootstrap && \
     ./configure && \
     make && \
