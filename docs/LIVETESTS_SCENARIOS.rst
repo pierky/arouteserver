@@ -11,6 +11,7 @@
    LIVETESTS_SCENARIOS_path_hiding
    LIVETESTS_SCENARIOS_rich_example
    LIVETESTS_SCENARIOS_rpki
+   LIVETESTS_SCENARIOS_rpki_bov_comms
    LIVETESTS_SCENARIOS_rpki_rtr_example
    LIVETESTS_SCENARIOS_tag_as_set
    LIVETESTS_SCENARIOS_tag_reject_policy

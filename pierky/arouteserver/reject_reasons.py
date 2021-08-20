@@ -1,0 +1,17 @@
+REJECT_REASONS = {
+"1": "Invalid AS_PATH length",
+"2": "Prefix is bogon",
+"3": "Prefix is in global blacklist",
+"4": "Invalid AFI",
+"5": "Invalid NEXT_HOP",
+"6": "Invalid left-most ASN",
+"7": "Invalid ASN in AS_PATH",
+"8": "Transit-free ASN in AS_PATH",
+"9": "Origin ASN not in IRRDB AS-SETs",
+"10": "IPv6 prefix not in global unicast space",
+"11": "Prefix is in client blacklist",
+"12": "Prefix not in IRRDB AS-SETs",
+"13": "Invalid prefix length",
+"14": "RPKI INVALID route",
+"15": "Never via route-servers ASN in AS_PATH",
+}

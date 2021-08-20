@@ -65,17 +65,9 @@
 {%-	endif -%}
 {%-     if comm.ext -%}
 {%-             if "peer_as" in comm.ext -%}
-{%-			if peer_as == "*" -%}
-# Warning: {{ comm.ext }} ext comm skipped: can't delete ext comms using wildcard
-{%-			else -%}
 {{ left }} ext-community {{ delete }}{{ comm.ext|convert_ext_comm|replace("peer_as", peer_as) }}{{ right_val }}
-{%-			endif -%}
 {%-		else -%}
-{%-			if "dyn_val" in comm.ext and dyn_val == "*" -%}
-# Warning: {{ comm.ext }} ext comm skipped: can't delete ext comms using wildcard
-{%-			else -%}
 {{ left }} ext-community {{ delete }}{{ comm.ext|convert_ext_comm|replace("dyn_val", dyn_val) }}{{ right_val }}
-{%-			endif -%}
 {%-		endif -%}
 {%-		if left -%}{{ "\n" }}{%- endif -%}
 {%-	endif -%}

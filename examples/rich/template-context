@@ -208,6 +208,96 @@ cfg:
       peer_as: false
       std: null
       type: internal
+    reject_cause_map_1:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_10:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_11:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_12:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_13:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_14:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_15:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_2:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_3:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_4:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_5:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_6:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_7:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_8:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_9:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
     rejected_route_announced_by:
       ext: null
       lrg: null
@@ -220,6 +310,30 @@ cfg:
       peer_as: false
       std: '65530:3'
       type: outbound
+    rpki_bgp_origin_validation_invalid:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    rpki_bgp_origin_validation_not_performed:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: outbound
+    rpki_bgp_origin_validation_unknown:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    rpki_bgp_origin_validation_valid:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
   custom_communities:
     from_europe:
       ext: rt:65534:1
@@ -1238,13 +1352,7 @@ AS10745:
   le: 32
   length: 24
   max_length: 32
-  prefix: 199.43.0.0
-- exact: false
-  ge: 24
-  le: 32
-  length: 24
-  max_length: 32
-  prefix: 192.136.136.0
+  prefix: 192.149.252.0
 - exact: false
   ge: 48
   le: 128
@@ -1262,14 +1370,14 @@ AS10745:
   le: 32
   length: 24
   max_length: 32
-  prefix: 192.149.252.0
-AS12654:
+  prefix: 199.43.0.0
 - exact: false
   ge: 24
   le: 32
   length: 24
   max_length: 32
-  prefix: 23.128.24.0
+  prefix: 192.136.136.0
+AS12654:
 - exact: false
   ge: 24
   le: 32
@@ -1282,6 +1390,12 @@ AS12654:
   length: 24
   max_length: 32
   prefix: 23.128.25.0
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
+  prefix: 23.128.24.0
 - exact: false
   ge: 24
   le: 32
@@ -1332,15 +1446,18 @@ never_via_route_servers_asns
 - 8943
 - 37271
 - 714
+- 12353
 - 8455
 - 57866
 - 36459
+- 17665
 - 7155
 - 263328
 - 12822
 - 46450
 - 263945
 - 63290
+- 278
 - 62567
 - 202793
 - 134022
@@ -1440,3 +1557,8 @@ never_via_route_servers_asns
 - 51530
 - 31764
 - 137127
+- 142369
+- 137207
+- 270796
+- 142348
+- 23888

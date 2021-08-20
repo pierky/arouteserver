@@ -92,8 +92,8 @@ Reject reasons
 
 EOF
 cat << EOF | python >> $D
-from pierky.arouteserver.builder import ConfigBuilder
-for reason, description in ConfigBuilder.REJECT_REASONS.items():
+from pierky.arouteserver.reject_reasons import REJECT_REASONS
+for reason, description in REJECT_REASONS.items():
     print("{0:>7} {1}".format(reason, description))
 
 EOF
@@ -292,6 +292,16 @@ title "Building example: BIRD v2 and OpenBGPD RPKI RTR protocol"
 G="examples/rpki_rtr/general.yml"
 C="examples/rpki_rtr/clients.yml"
 RenderExample "rpki_rtr" "bird" "$G" "$C" "config.d/bogons.yml" 2
+
+title "Building example: auto-config via 'configure', BIRD"
+C="config.d/clients.yml"
+G="examples/auto-config/bird-general.yml"
+RenderExample "auto-config" "bird" "$G" "$C" "config.d/bogons.yml" 1 4
+
+title "Building example: auto-config via 'configure', OpenBGPD"
+C="config.d/clients.yml"
+G="examples/auto-config/openbgpd-general.yml"
+RenderExample "auto-config" "openbgpd" "$G" "$C" "config.d/bogons.yml"
 
 title "Build clients from Euro-IX files? [yes/NO] "
 read YES_NO

@@ -1,5 +1,6 @@
 {% from 'macros.j2' import write_roa_set %}
 {% from 'macros.j2' import write_roas_action %}
+{% from 'macros.j2' import add_communities %}
 
 {% if cfg.rpki_roas_needed %}
 # ---------------------------------------------------------
@@ -49,9 +50,9 @@ roa-set {
 
 # Add $INTCOMM_RPKI_UNKNOWN, $INTCOMM_RPKI_INVALID and $INTCOMM_RPKI_VALID
 # ext community on the basis of ovs.
-match from group clients ovs not-found set { ext-community $INTCOMM_RPKI_UNKNOWN ext-community ovs not-found }
-match from group clients ovs valid set { ext-community $INTCOMM_RPKI_VALID ext-community ovs valid }
-match from group clients ovs invalid set { ext-community $INTCOMM_RPKI_INVALID ext-community ovs invalid }
+match from group clients ovs not-found set { ext-community $INTCOMM_RPKI_UNKNOWN ext-community ovs not-found {{- ins_communities(cfg.communities.rpki_bgp_origin_validation_unknown) -}} }
+match from group clients ovs valid set { ext-community $INTCOMM_RPKI_VALID ext-community ovs valid {{- ins_communities(cfg.communities.rpki_bgp_origin_validation_valid) -}} }
+match from group clients ovs invalid set { ext-community $INTCOMM_RPKI_INVALID ext-community ovs invalid {{- ins_communities(cfg.communities.rpki_bgp_origin_validation_invalid) -}} }
 
 {%   else %}
 
@@ -72,6 +73,11 @@ match from group clients ext-community $INTCOMM_RPKI_INVALID set ext-community d
 
 {%   endif %}
 
+{% else %}
+{%    if cfg.communities.rpki_bgp_origin_validation_not_performed|community_is_set %}
+# RPKI-based Origin Validation not performed; adding rpki_bgp_origin_validation_not_performed BGP communities
+{{ add_communities("match from group clients", cfg.communities.rpki_bgp_origin_validation_not_performed, "") }}
+{%    endif %}
 {% endif %}
 
 {% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled %}

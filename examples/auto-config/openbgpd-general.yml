@@ -55,11 +55,37 @@ cfg:
       action: shutdown
       peering_db:
         enabled: true
+    reject_policy:
+      policy: tag
   graceful_shutdown:
     enabled: true
   rfc1997_wellknown_communities:
     policy: pass
   communities:
+    reject_cause:
+      std: 65520:dyn_val
+      lrg: rs_as:65520:dyn_val
+    reject_cause_map:
+      1:
+        lrg: rs_as:1101:5
+      2:
+        lrg: rs_as:1101:3
+      5:
+        lrg: rs_as:1101:8
+      6:
+        lrg: rs_as:1101:7
+      7:
+        lrg: rs_as:1101:4
+      8:
+        lrg: rs_as:1101:14
+      9:
+        lrg: rs_as:1101:10
+      10:
+        lrg: rs_as:1101:3
+      12:
+        lrg: rs_as:1101:9
+      14:
+        lrg: rs_as:1101:13
     prefix_present_in_as_set:
       std: '64512:11'
       lrg: rs_as:64512:11
@@ -78,6 +104,18 @@ cfg:
     route_validated_via_white_list:
       std: '64512:41'
       lrg: rs_as:64512:41
+    rpki_bgp_origin_validation_not_performed:
+      std: '64512:50'
+      lrg: rs_as:1000:3
+    rpki_bgp_origin_validation_valid:
+      std: '64512:51'
+      lrg: rs_as:1000:1
+    rpki_bgp_origin_validation_unknown:
+      std: '64512:52'
+      lrg: rs_as:1000:2
+    rpki_bgp_origin_validation_invalid:
+      std: '64512:53'
+      lrg: rs_as:1000:4
     do_not_announce_to_any:
       std: 0:rs_as
       lrg: rs_as:0:0

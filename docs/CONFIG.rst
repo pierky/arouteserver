@@ -436,7 +436,7 @@ The ``logging`` label has a special meaning: when it's used in the ``--local-fil
 
 To determine the default logging configuration, please refer to the template files:
 
-- `BIRD <https://github.com/pierky/arouteserver/tree/master/templates/bird>`__: see  `header.j2 <https://github.com/pierky/arouteserver/blob/master/templates/bird/header.j2>`__ 
+- `BIRD <https://github.com/pierky/arouteserver/tree/master/templates/bird>`__: see  `header.j2 <https://github.com/pierky/arouteserver/blob/master/templates/bird/header.j2>`__
 
 - `OpenBGPD <https://github.com/pierky/arouteserver/tree/master/templates/openbgpd>`__: see `header.j2 <https://github.com/pierky/arouteserver/blob/master/templates/openbgpd/header.j2>`__
 
@@ -509,19 +509,44 @@ An example (including functions' prototypes) is provided within the "examples/bi
 Reject policy and invalid routes tracking
 *****************************************
 
-Invalid routes, that is those routes that failed the validation process, can be simply discarded as they enter the route server (default behaviour) or, optionally, they can be kept for troubleshooting purposes, analysis or statistic reporting.
+Invalid routes, that is those routes that failed the validation process, can be simply discarded as they enter the route server (default behaviour) or, optionally, they can be kept for troubleshooting purposes, analysis or statistic reporting (for example using a looking glass).
 
 The ``reject_policy`` configuration option can be set to ``tag`` in order to have invalid routes tagged with a user-configurable BGP Community (``reject_reason``) whose purpose is to keep track of the reason for which they are considered to be invalid. These routes are also set with a low local-pref value (``1``) and tagged with a control BGP Community that prevents them from being exported to clients. If configured, the ``rejected_route_announced_by`` community is used to track the ASN of the client that announced the invalid route to the route server.
 
 The goal of this feature is to allow the deployment of route collectors that can be used to further process invalid routes announced by clients. These route collectors can be configured using :ref:`site-specific .local files <site-specific-custom-config>`. The `InvalidRoutesReporter <https://github.com/pierky/invalidroutesreporter>`_ is an example of this kind of route collector.
 
-The reason that brought the server to reject the route is identified using a numeric value in the last part of the BGP Community; the list of reject reasons follow:
+The reason that led the server to reject the route is identified using a numeric value in the last part of the BGP Community; the list of reject reasons follow:
 
 .. include:: REJECT_REASON_COMMUNITIES.txt
 
 \* This is not really a reject reason code, it only means that the route must be treated as rejected and must not be propagated to clients.
 
 On BIRD, it's also possible to configure the ``reject_policy`` using the ``tag_and_reject`` value: doing this, the ``reject_reason`` and optionally the ``rejected_route_announced_by`` BGP communities are still attached to the invalid routes, but then they are rejected by BIRD. Since the BIRD-specific ``import keep filtered on`` configuration statement is used, those routes remain available within the BIRD daemon and can be seen using BIRD-specific commands like ``show route filtered all``.
+
+Additional custom BGP communities to track reject reasons
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When the reject policy is set to ``tag`` (or ``tag_and_reject``), in addition to the ``reject_reason`` community some custom BGP communities can be configured for each reject code of those implemented in ARouteServer (see the list above).
+
+This can be done using the ``reject_cause_map`` option:
+
+.. code:: yaml
+
+   cfg:
+     # ...
+     communities:
+       # ...
+       reject_cause_map:
+         1:
+           lrg: rs_as:1101:5
+         2:
+           lrg: rs_as:1101:3
+
+When a route that doesn't pass the inbound validation process is received, the communities corresponding to the reject code that led to its refusal are attached to the route itself.
+
+In the example above, routes towards bogon IP prefixes (reject code 2) are tagged with the large BGP community ``rs_as:1101:3`` (in addition to the community configured in ``reject_reason``).
+
+This option is leveraged by the ``configure`` command to automatically generate policies (general.yml files) that use the `Euro-IX Large BGP Communities <https://www.euro-ix.net/en/forixps/large-bgp-communities/>`__ to track the discard reasons.
 
 Caveats and limitations
 ***********************
@@ -547,8 +572,6 @@ The following list of limitations is based on the currently supported versions o
   - **ADD-PATH** is not supported by OpenBGPD.
 
   - For max-prefix filtering, only the ``shutdown`` and the ``restart`` actions are supported by OpenBGPD. Restart is configured with a 15 minutes timer.
-
-  - OpenBGPD does not offer a way to delete **extended communities** using wildcard (``rt xxx:*``): peer-ASN-specific extended communities (such as ``prepend_once_to_peer``, ``do_not_announce_to_peer``) are not scrubbed from routes that leave OpenBGPD route servers and so they are propagated to the route server clients.
 
   - The Site of Origin Extended BGP communities in the range 65535:* are reserved for internal reasons.
 

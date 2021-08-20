@@ -208,6 +208,96 @@ cfg:
       peer_as: false
       std: null
       type: internal
+    reject_cause_map_1:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_10:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_11:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_12:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_13:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_14:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_15:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_2:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_3:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_4:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_5:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_6:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_7:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_8:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    reject_cause_map_9:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
     rejected_route_announced_by:
       ext: null
       lrg: null
@@ -220,6 +310,30 @@ cfg:
       peer_as: false
       std: null
       type: outbound
+    rpki_bgp_origin_validation_invalid:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    rpki_bgp_origin_validation_not_performed:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: outbound
+    rpki_bgp_origin_validation_unknown:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    rpki_bgp_origin_validation_valid:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
   custom_communities: {}
   filtering:
     global_black_list_pref: null
@@ -931,15 +1045,18 @@ never_via_route_servers_asns
 - 8943
 - 37271
 - 714
+- 12353
 - 8455
 - 57866
 - 36459
+- 17665
 - 7155
 - 263328
 - 12822
 - 46450
 - 263945
 - 63290
+- 278
 - 62567
 - 202793
 - 134022
@@ -1039,3 +1156,8 @@ never_via_route_servers_asns
 - 51530
 - 31764
 - 137127
+- 142369
+- 137207
+- 270796
+- 142348
+- 23888

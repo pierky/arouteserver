@@ -694,7 +694,7 @@ RPKI BGP Origin Validation: ``rpki_bgp_origin_validation``
   RFC8097 BGP communities for further internal processing or
   to be used by external custom functions implemented in .local
   files.
-  INVALID routes are not announced to clients.
+  In any case, INVALID routes are not announced to clients.
 
 
   OpenBGPD: RFC8097 BGP communities tagging available since 6.4.
@@ -1350,11 +1350,6 @@ building the configuration. If supported by the release of
 OpenBGPD running on the route server, enable them by setting
 the configuration target version to a value greater than or
 equal to "6.1" (--target-version command line argument).
-Moreover, ext communities that use the **peer_as** macro or the
-**dyn_val** macro can't be scrubbed from outbound routes
-(routes announced by the route server to the clients) because
-of lack of wildcard
-matching.
 
 Prefix/origin AS present in client's AS-SET
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1370,6 +1365,60 @@ Prefix/origin AS present in client's AS-SET
 
 
   The following communities are scrubbed from inbound routes.
+
+
+  The **rs_as** macro can be used here.
+
+
+
+
+
+
+RPKI BGP Origin Validation communities
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- ``rpki_bgp_origin_validation_not_performed``:
+  RPKI BGP Origin Validation not performed.
+
+
+  When **rpki_bgp_origin_validation.enabled** is False (thus BGP
+  origin validation is not performed), if the next community
+  is configured the routes are tagged with it.
+  Similarly, this community is also used to tag routes that are
+  processed according to the blackhole policy when the BLACKHOLE
+  community (or the custom one defined in **blackholing** below)
+  is used, even though RPKI BGP Origin Validation is globally
+  enabled.
+
+
+  The following communities are scrubbed from inbound routes.
+
+
+  The **rs_as** macro can be used here.
+
+
+
+
+
+
+- ``rpki_bgp_origin_validation_valid``, ``rpki_bgp_origin_validation_unknown`` and ``rpki_bgp_origin_validation_invalid``:
+  RPKI BGP Origin Validation state.
+
+
+  When **rpki_bgp_origin_validation.enabled** is True and BGP origin
+  validation is performed, in addition to RFC8097 BGP communities
+  the following ones are also used to tag routes depending on
+  their state.
+  These communities are not advertised to the clients, they are
+  meant to be used only "internally" to the route server (for
+  example for troubleshooting purposes or via looking glasses).
+
+
+  OpenBGPD: these communities are supported only on version >= 6.4.
+
+
+  The following communities are scrubbed from inbound and outbound
+  routes.
 
 
   The **rs_as** macro can be used here.
@@ -1648,11 +1697,62 @@ Reject cause
   of the reason that led the route to be considered as invalid.
 
 
+  The list of reject codes can be found at this URL:
+  https://arouteserver.readthedocs.io/en/latest/CONFIG.html#reject-reasons
+
+
   The following community is scrubbed from inbound routes.
 
 
   The **rs_as** macro can be used here.
   The **dyn_val** macro must appear in the last part of values.
+
+
+
+
+
+
+- ``reject_cause_map``:
+  This section can be used to map reject codes to specific
+  BGP communities, without following the general pattern
+  imposed in **reject_cause**. It can be used only when the
+  **reject_policy** option is set to **tag** or **tag_and_reject**.
+
+
+  The **reject_cause_map** does not replace the use of
+  **reject_cause**: the BGP communities configured in this
+  map are added to those built according to **reject_cause**.
+  When a route is rejected, in order to determine the
+  BGP community to be attached to it to describe the reject
+  reason, a lookup is performed in this table for the reject
+  code: if an entry is found, the community mapped to that
+  reject code is attached to the route, in addition to the
+  BGP community formatted according to **reject_cause**.
+
+
+  To configure this section, values from the official list
+  of reject codes must be used as the key of the dictionary.
+
+
+  The **rs_as** macro can be used here.
+
+
+  Example:
+
+
+  reject_cause_map:
+  "14":
+  lrg: rs_as:1101:13
+
+
+  In the example, 14 is the reject code for RPKI INVALID routes
+
+
+  The list of reject codes can be found at this URL:
+  https://arouteserver.readthedocs.io/en/latest/CONFIG.html#reject-reasons
+
+
+  The communities configured here are scrubbed from inbound routes.
 
 
 

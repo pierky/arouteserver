@@ -32,7 +32,7 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Flake8
-        run: flake8 pierky/ scripts/
+        run: flake8
 
       - name: Test CLI
         run: ./tests/cli

@@ -78,7 +78,7 @@
 2a99::/32, AS_PATH: 2 1, NEXT_HOP: 2001:db8:1:1::11, via 2001:db8:1:1::2
   std comms: 65520:0, 65520:6
   ext comms: rt:65520:1
-  lrg comms:
+  lrg comms: 999:1101:7
   best: True, LOCAL_PREF: 100
   filtered: False ()
 

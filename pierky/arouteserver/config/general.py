@@ -19,6 +19,7 @@ import logging
 from .base import ConfigParserBase, convert_deprecated
 from .validators import *
 from ..errors import ConfigError, ARouteServerError
+from ..reject_reasons import REJECT_REASONS
 
 
 class ConfigParserGeneral(ConfigParserBase):
@@ -46,6 +47,10 @@ class ConfigParserGeneral(ConfigParserBase):
         "prefix_validated_via_arin_whois_db_dump": { "type": "outbound" },
         "prefix_validated_via_registrobr_whois_db_dump": { "type": "outbound" },
         "route_validated_via_white_list": { "type": "outbound" },
+        "rpki_bgp_origin_validation_valid": { "type": "internal" },
+        "rpki_bgp_origin_validation_unknown": { "type": "internal" },
+        "rpki_bgp_origin_validation_invalid": { "type": "internal" },
+        "rpki_bgp_origin_validation_not_performed": { "type": "outbound" },
 
         "blackholing": { "type": "inbound" },
 
@@ -308,6 +313,63 @@ class ConfigParserGeneral(ConfigParserBase):
                 schema["cfg"]["custom_communities"][comm] = \
                     self.new_community_validator(rs_as_macro)
 
+        # Reject cause map validation schema
+        for reject_reason in REJECT_REASONS:
+            comm_name = "reject_cause_map_{}".format(reject_reason)
+            schema["cfg"]["communities"][comm_name] = self.new_community_validator(
+                rs_as_macro, False, False
+            )
+            self.COMMUNITIES_SCHEMA[comm_name] = {"type": "internal"}
+
+        # Reject cause map validation
+        self.any_reject_cause_map_community_set = False
+
+        if "communities" in self.cfg["cfg"] and \
+           "reject_cause_map" in self.cfg["cfg"]["communities"]:
+
+            reject_cause_map = self.cfg["cfg"]["communities"]["reject_cause_map"]
+
+            if not isinstance(reject_cause_map, dict):
+                logging.error("The reject_cause_map section must be a dictionary.")
+                raise ConfigError()
+
+            for reason, comm in reject_cause_map.items():
+                try:
+                    if not isinstance(reason, int) and not isinstance(reason, str):
+                        raise ValueError("it is not a number")
+
+                    if isinstance(reason, str) and not reason.isdigit():
+                        raise ValueError("it is not a numeric value")
+
+                    if str(reason) not in REJECT_REASONS:
+                        raise ValueError("no reject reasons found for this value")
+
+                except ValueError as e:
+                    logging.error(
+                        "Invalid reject code in reject_cause_map ({}): {}. "
+                        "Keys must be numeric values from the list of the "
+                        "official reject reason codes that can be found at "
+                        "https://arouteserver.readthedocs.io/"
+                        "en/latest/CONFIG.html#reject-reasons".format(
+                            reason,
+                            e
+                        )
+                    )
+                    raise ConfigError()
+
+            # The communities that are configured inside 'reject_cause_map' are
+            # now moved into 'communities', translated into regular communities
+            # having the name 'reject_cause_map_<reject_code>'.
+            # Eventually, the 'reject_cause_map' is removed from the configuration.
+            # This makes all the items of the 'communities' section looking the
+            # same, and the 'reject_cause_map_<reject_code>' can be treated like
+            # all the other communities by the rest of the code and the template.
+            for reason, comm in reject_cause_map.items():
+                self.cfg["cfg"]["communities"]["reject_cause_map_{}".format(reason)] = comm
+                self.any_reject_cause_map_community_set = True
+
+            del self.cfg["cfg"]["communities"]["reject_cause_map"]
+
         try:
             convert_deprecated(self.cfg["cfg"])
 
@@ -372,14 +434,14 @@ class ConfigParserGeneral(ConfigParserBase):
                                 "name.".format(comm))
 
         # Duplicate communities?
-        unique_communities = []
+        unique_communities = set()
         for comms in (self.cfg["cfg"]["communities"],
                       self.cfg["cfg"]["custom_communities"]):
             for comm_tag in sorted(comms):
                 comm = comms[comm_tag]
                 for fmt in ("std", "lrg", "ext"):
                     if comm[fmt]:
-                        if comm[fmt] in unique_communities:
+                        if comm[fmt] in unique_communities and not comm_tag.startswith("reject_cause_map_"):
                             errors = True
                             logging.error(
                                 "The '{}.{}' community's value ({}) "
@@ -387,11 +449,11 @@ class ConfigParserGeneral(ConfigParserBase):
                                 "community.".format(comm_tag, fmt, comm[fmt])
                             )
                         else:
-                            unique_communities.append(comm[fmt])
+                            unique_communities.add(comm[fmt])
 
         # The 'reject_cause' and 'rejected_route_announced_by' communities
         # can be set only if 'reject_policy' is 'tag' or 'tag_and_reject'.
-        if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] not in  ["tag", "tag_and_reject"]:
+        if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] not in ["tag", "tag_and_reject"]:
             for comm in ("reject_cause", "rejected_route_announced_by"):
                 reject_comm_is_set = False
                 for fmt in ("std", "ext", "lrg"):
@@ -403,6 +465,22 @@ class ConfigParserGeneral(ConfigParserBase):
                     logging.error(
                         "The '{}' community can be set only if "
                         "'reject_policy.policy' is 'tag' or 'tag_and_reject'.".format(comm))
+
+        # The 'reject_cause_map' communities can be set only if
+        # 'reject_policy' is 'tag' or 'tag_and_reject'.
+        if "reject_cause_map" in self.cfg["cfg"].get("communities", {}):
+            reject_cause_map_is_used = False
+            for reason in self.cfg["cfg"]["communities"]["reject_cause_map"]:
+                for fmt in ("std", "ext", "lrg"):
+                    reject_cause_map_is_used = reject_cause_map_is_used or \
+                        bool(self.cfg["cfg"]["communities"]["reject_cause_map"][reason].get(fmt, None))
+                if reject_cause_map_is_used and \
+                   self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] not in ["tag", "tag_and_reject"]:
+
+                    errors = True
+                    logging.error(
+                        "The 'reject_cause_map' communities map can be set only if "
+                        "'reject_policy.policy' is 'tag' or 'tag_and_reject'.")
 
         # The 'reject_cause' comm is mandatory when 'reject_policy' is 'tag' or 'tag_and_reject'.
         if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] in ["tag", "tag_and_reject"]:
@@ -428,6 +506,8 @@ class ConfigParserGeneral(ConfigParserBase):
         # Are RTT-based functions used?
         self.rtt_based_functions_are_used = False
         for comm_name in self.cfg["cfg"]["communities"]:
+            if comm_name not in self.COMMUNITIES_SCHEMA:
+                continue
             comm_schema = self.COMMUNITIES_SCHEMA[comm_name]
             if not comm_schema.get("rtt", False):
                 continue
@@ -615,6 +695,10 @@ class ConfigParserGeneral(ConfigParserBase):
                 for tag2 in sorted(comms2):
                     if tag1 == tag2:
                         continue
+                    if tag1.startswith("reject_cause_map_") and tag2.startswith("reject_cause_map_"):
+                        # We allow the same community to be used multiple times for different
+                        # reject codes.
+                        continue
                     try:
                         communities_overlap(
                             tag1, comms1[tag1],
@@ -678,6 +762,12 @@ class ConfigParserGeneral(ConfigParserBase):
             not allow_private_asns,
             "Internal communities can't have overlapping values with any "
             "other community.")
+
+        errors = errors or not compare_communities(
+            internal_communities, internal_communities,
+            False,
+            "Internal communities can't have overlapping values with any "
+            "other internal community.")
 
         if errors:
             raise ConfigError()

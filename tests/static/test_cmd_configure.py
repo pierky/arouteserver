@@ -22,7 +22,6 @@ try:
     import mock
 except ImportError:
     import unittest.mock as mock
-import yaml
 
 from pierky.arouteserver.ask import Ask
 from pierky.arouteserver.builder import BIRDConfigBuilder, \
@@ -30,6 +29,7 @@ from pierky.arouteserver.builder import BIRDConfigBuilder, \
 from pierky.arouteserver.commands import ConfigureCommand
 from pierky.arouteserver.tests.mocked_env import MockedEnv
 from pierky.arouteserver.tests.base import ARouteServerTestCase
+from pierky.arouteserver.reject_reasons import REJECT_REASONS
 
 class FakeConfigureCommand(ConfigureCommand):
 
@@ -210,6 +210,48 @@ class TestConfigureCmd(ARouteServerTestCase):
 
         return dic
 
+    def verify_communities(self, communities, ext_expected=True, lrg_expected=True):
+        for comm_name in communities:
+            if comm_name == "reject_cause_map":
+                continue
+
+            self.assertTrue("std" in communities[comm_name])
+
+            if ext_expected:
+                self.assertTrue("ext" in communities[comm_name])
+            else:
+                self.assertTrue("ext" not in communities[comm_name])
+
+            if lrg_expected:
+                self.assertTrue("lrg" in communities[comm_name])
+            else:
+                self.assertTrue("lrg" not in communities[comm_name])
+
+        if lrg_expected:
+            self.assertIn("reject_cause_map", communities)
+
+            for reject_code in communities["reject_cause_map"]:
+                self.assertTrue(isinstance(reject_code, int))
+                self.assertTrue(str(reject_code) in REJECT_REASONS)
+                self.assertTrue("lrg" in communities["reject_cause_map"][reject_code])
+                self.assertTrue(communities["reject_cause_map"][reject_code]["lrg"])
+        else:
+            self.assertNotIn("reject_cause_map", communities)
+
+        self.assertEqual(
+            communities["reject_cause"]["std"],
+            "65520:dyn_val"
+        )
+
+        if lrg_expected:
+            # Large BGP comms not expected, thus Euro-IX communities should not be added.
+            self.assertEqual(
+                communities["reject_cause"]["lrg"],
+                "rs_as:65520:dyn_val"
+            )
+        else:
+            self.assertNotIn("lrg", communities["reject_cause"])
+
     def test_bird_simple(self):
         """Configure command: BIRD, simple"""
         self.mock_answers([
@@ -230,24 +272,15 @@ class TestConfigureCmd(ARouteServerTestCase):
             target_version=BIRDConfigBuilder.DEFAULT_VERSION
         )
 
-        for comm_name in dic["cfg"]["communities"]:
-            self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
-            self.assertTrue("ext" in dic["cfg"]["communities"][comm_name])
-            self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
-
-        self.assertEqual(
-            dic["cfg"]["communities"]["reject_cause"]["std"],
-            "65520:dyn_val"
-        )
-        self.assertEqual(
-            dic["cfg"]["communities"]["reject_cause"]["lrg"],
-            "rs_as:65520:dyn_val"
-        )
+        self.verify_communities(dic["cfg"]["communities"])
 
     def test_openbgpd60_simple(self):
         """Configure command: OpenBGPD 6.0, simple"""
         self.expected_config["cfg"]["path_hiding"] = False
         self.expected_config["cfg"]["graceful_shutdown"]["enabled"] = False
+        self.expected_config["cfg"]["filtering"]["reject_policy"] = {
+            "policy": "tag"
+        }
         self.mock_answers([
             "openbgpd",
             "6.0",
@@ -260,15 +293,19 @@ class TestConfigureCmd(ARouteServerTestCase):
             target_version="6.0"
         )
 
-        for comm_name in dic["cfg"]["communities"]:
-            self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
-            self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
-            self.assertTrue("lrg" not in dic["cfg"]["communities"][comm_name])
+        self.verify_communities(
+            dic["cfg"]["communities"],
+            ext_expected=False,
+            lrg_expected=False
+        )
 
     def test_openbgpd61_simple(self):
         """Configure command: OpenBGPD 6.1, simple"""
         self.expected_config["cfg"]["path_hiding"] = False
         self.expected_config["cfg"]["graceful_shutdown"]["enabled"] = False
+        self.expected_config["cfg"]["filtering"]["reject_policy"] = {
+            "policy": "tag"
+        }
         self.mock_answers([
             "openbgpd",
             "6.1",
@@ -281,14 +318,17 @@ class TestConfigureCmd(ARouteServerTestCase):
             target_version="6.1"
         )
 
-        for comm_name in dic["cfg"]["communities"]:
-            self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
-            self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
-            self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
+        self.verify_communities(
+            dic["cfg"]["communities"],
+            ext_expected=False
+        )
 
     def test_openbgpd62_simple(self):
         """Configure command: OpenBGPD 6.2, simple"""
         self.expected_config["cfg"]["path_hiding"] = False
+        self.expected_config["cfg"]["filtering"]["reject_policy"] = {
+            "policy": "tag"
+        }
         self.mock_answers([
             "openbgpd",
             "6.2",
@@ -301,14 +341,17 @@ class TestConfigureCmd(ARouteServerTestCase):
             target_version="6.2"
         )
 
-        for comm_name in dic["cfg"]["communities"]:
-            self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
-            self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
-            self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
+        self.verify_communities(
+            dic["cfg"]["communities"],
+            ext_expected=False
+        )
 
     def test_openbgpd64_simple(self):
         """Configure command: OpenBGPD 6.4, simple"""
         self.expected_config["cfg"]["path_hiding"] = False
+        self.expected_config["cfg"]["filtering"]["reject_policy"] = {
+            "policy": "tag"
+        }
         self.mock_answers([
             "openbgpd",
             "6.4",
@@ -321,14 +364,17 @@ class TestConfigureCmd(ARouteServerTestCase):
             target_version="6.4"
         )
 
-        for comm_name in dic["cfg"]["communities"]:
-            self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
-            self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
-            self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
+        self.verify_communities(
+            dic["cfg"]["communities"],
+            ext_expected=False
+        )
 
     def test_openbgpd65_simple(self):
         """Configure command: OpenBGPD 6.5, simple"""
         self.expected_config["cfg"]["path_hiding"] = False
+        self.expected_config["cfg"]["filtering"]["reject_policy"] = {
+            "policy": "tag"
+        }
         self.mock_answers([
             "openbgpd",
             "6.5",
@@ -341,14 +387,17 @@ class TestConfigureCmd(ARouteServerTestCase):
             target_version="6.5"
         )
 
-        for comm_name in dic["cfg"]["communities"]:
-            self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
-            self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
-            self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
+        self.verify_communities(
+            dic["cfg"]["communities"],
+            ext_expected=False
+        )
 
     def test_openbgpd69_simple(self):
         """Configure command: OpenBGPD 6.9, simple"""
         self.expected_config["cfg"]["path_hiding"] = False
+        self.expected_config["cfg"]["filtering"]["reject_policy"] = {
+            "policy": "tag"
+        }
         self.mock_answers([
             "openbgpd",
             "6.9",
@@ -361,10 +410,10 @@ class TestConfigureCmd(ARouteServerTestCase):
             target_version="6.9"
         )
 
-        for comm_name in dic["cfg"]["communities"]:
-            self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
-            self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
-            self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
+        self.verify_communities(
+            dic["cfg"]["communities"],
+            ext_expected=False
+        )
 
     def test_openbgpd69_no_path_hiding(self):
         """Configure command: OpenBGPD 6.9, path-hiding"""
@@ -373,6 +422,9 @@ class TestConfigureCmd(ARouteServerTestCase):
         # path hiding mitigation is not automatically
         # configured.
         self.expected_config["cfg"]["path_hiding"] = False
+        self.expected_config["cfg"]["filtering"]["reject_policy"] = {
+            "policy": "tag"
+        }
         self.mock_answers([
             "openbgpd",
             "6.9",
@@ -385,8 +437,17 @@ class TestConfigureCmd(ARouteServerTestCase):
             target_version="6.9"
         )
 
+        self.verify_communities(
+            dic["cfg"]["communities"],
+            ext_expected=False
+        )
+
     def test_openbgpd_latest_path_hiding(self):
         """Configure command: OpenBGPD > 6.9, path-hiding"""
+
+        self.expected_config["cfg"]["filtering"]["reject_policy"] = {
+            "policy": "tag"
+        }
 
         # This is to be sure that release > 6.9 of  OpenBGPD
         # get path hiding mitigation automatically configured.
@@ -408,6 +469,10 @@ class TestConfigureCmd(ARouteServerTestCase):
             dic = self.configure_and_build(
                 OpenBGPDConfigBuilder,
                 target_version=latest_version
+            )
+            self.verify_communities(
+                dic["cfg"]["communities"],
+                ext_expected=False
             )
         else:
             self.skipTest("latest version <= 6.9")
@@ -448,6 +513,8 @@ class TestConfigureCmd(ARouteServerTestCase):
             "rs_as:65520:dyn_val"
         )
 
+        self.verify_communities(dic["cfg"]["communities"])
+
     def test_bird2_simple(self):
         """Configure command: BIRD 2.0, simple"""
         self.mock_answers([
@@ -474,3 +541,5 @@ class TestConfigureCmd(ARouteServerTestCase):
             dic["cfg"]["communities"]["reject_cause"]["lrg"],
             "rs_as:65520:dyn_val"
         )
+
+        self.verify_communities(dic["cfg"]["communities"])
