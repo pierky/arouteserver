@@ -1194,13 +1194,13 @@ AS10745:
   le: 32
   length: 24
   max_length: 32
-  prefix: 199.43.0.0
+  prefix: 192.136.136.0
 - exact: false
   ge: 24
   le: 32
   length: 24
   max_length: 32
-  prefix: 192.136.136.0
+  prefix: 199.43.0.0
 - exact: false
   ge: 24
   le: 32
@@ -1213,25 +1213,25 @@ AS12654:
   le: 32
   length: 24
   max_length: 32
-  prefix: 23.128.124.0
-- exact: false
-  ge: 24
-  le: 32
-  length: 24
-  max_length: 32
-  prefix: 23.128.125.0
-- exact: false
-  ge: 24
-  le: 32
-  length: 24
-  max_length: 32
   prefix: 23.128.25.0
 - exact: false
   ge: 24
   le: 32
   length: 24
   max_length: 32
+  prefix: 23.128.124.0
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
   prefix: 23.128.24.0
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
+  prefix: 23.128.125.0
 
 
 registrobr_whois_db_records
@@ -1392,3 +1392,5 @@ never_via_route_servers_asns
 - 270796
 - 142348
 - 23888
+- 141856
+- 267026
