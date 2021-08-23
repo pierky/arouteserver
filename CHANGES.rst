@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+1.10.1
+------
+
+- Fix: the HTML representation of RPKI validation custom communities was broken.
+
+  After adding custom RPKI validation communities implemented as part of v1.10.0 the route server configuration textual representation file hada small cosmetic problem.
+
+  See also `GitHub issue 83 <https://github.com/pierky/arouteserver/issues/83>`_.
+
 1.10.0
 ------
 
