@@ -126,6 +126,7 @@ class ConfigBuilder(object):
                  cache_dir=None, cache_expiry=CachedObject.DEFAULT_EXPIRY,
                  bgpq3_path="bgpq4", bgpq3_host=IRRDBInfo.BGPQ3_DEFAULT_HOST,
                  bgpq3_sources=IRRDBInfo.BGPQ3_DEFAULT_SOURCES,
+                 bgpq3_timeout=IRRDBInfo.BGPQ3_DEFAULT_TIMEOUT,
                  rtt_getter_path=None, threads=4,
                  ip_ver=None, perform_graceful_shutdown=False,
                  ignore_errors=[], live_tests=False,
@@ -293,8 +294,11 @@ class ConfigBuilder(object):
 
                 - *bgpq3_path* program's configuration file option.
 
-            bgpq3_host (str): the host that will be queried by bgpq3/bgpq4; this
-                will be used to set the *-h* argument of the program.
+            bgpq3_host (str): the host(s) that will be queried by bgpq3/bgpq4; this
+                will be used to set the *-h* argument of the program. Multiple hosts
+                can be passed using a comma-delimited string, in which case they
+                will be used sequentially in case of failures of the IRR queries or
+                timeouts.
 
                 Same of:
 
@@ -307,6 +311,12 @@ class ConfigBuilder(object):
                 Same of:
 
                 - *bgpq3_sources* program's configuration file option.
+
+            bgpq3_timeout (int): timeout for the bgpq4/bgpq3 queries (in seconds).
+
+                Same of:
+
+                - *bgpq3_timeout* program's configuration file option.
 
             rtt_getter_path (str): path to the program that is executed to
                 determine the RTT of a peer.
@@ -354,6 +364,7 @@ class ConfigBuilder(object):
         self.bgpq3_path = bgpq3_path
         self.bgpq3_host = bgpq3_host
         self.bgpq3_sources = bgpq3_sources
+        self.bgpq3_timeout = bgpq3_timeout
 
         self.rtt_getter_path = rtt_getter_path
 

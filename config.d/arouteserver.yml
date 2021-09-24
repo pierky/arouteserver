@@ -42,14 +42,24 @@
 # Version 0.1.35 or newer is suggested for bgpq3.
 #bgpq3_path: "bgpq4"
 
-# Host running IRRD software used by bgpq4/bgpq3.
+# Host(s) running IRRD software used by bgpq4/bgpq3.
 # (-h argument).
+# In case of failures while performing a query, the
+# next host in the list will be used.
 # Use "host:port" to specify alternate port.
 # Please note: to use rr.ntt.net at least bgpq3 0.1.35
 # is needed (https://www.us.ntt.net/support/policy/rr.cfm).
 # Instructions to compile it can be found here:
 # https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#external-programs
-#bgpq3_host: "rr.ntt.net"
+#bgpq3_host: "rr.ntt.net, rr1.ntt.net"
+
+# Timeout for the bgpq4/bgpq3 queries (in seconds).
+# When bgpq4/bgpq3 is executed to retrieve data from
+# the IRRD server, it is killed after this number of
+# seconds if the query is not completed yet.
+# The next host in the 'bgpq3_host' (if available)
+# is then used.
+#bgpq3_timeout: 120
 
 # Sources used by bgpq4/bgpq3.
 # (-S argument).

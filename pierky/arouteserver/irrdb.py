@@ -25,6 +25,9 @@ from .errors import IRRDBToolsError
 from .ipaddresses import IPNetwork
 
 
+TIMEDOUT_IRR_HOSTS = set()
+
+
 class AS_SET_Bundle(object):
 
     @staticmethod
@@ -112,10 +115,11 @@ class AS_SET_Bundle(object):
 
 class IRRDBInfo(CachedObject, AS_SET_Bundle):
 
-    BGPQ3_DEFAULT_HOST = "rr.ntt.net"
+    BGPQ3_DEFAULT_HOST = ["rr.ntt.net", "rr1.ntt.net"]
     BGPQ3_DEFAULT_SOURCES = ("RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,"
                              "BBOI,BELL,JPIRR,LEVEL3,RADB,RGNET,"
                              "TC")
+    BGPQ3_DEFAULT_TIMEOUT = 120
     EXPIRY_TIME_TAG = "irr_as_sets"
 
     def __init__(self, object_names, *args, **kwargs):
@@ -126,6 +130,7 @@ class IRRDBInfo(CachedObject, AS_SET_Bundle):
         self.bgpq3_host = kwargs.get("bgpq3_host", self.BGPQ3_DEFAULT_HOST)
         self.bgpq3_sources = kwargs.get("bgpq3_sources",
                                         self.BGPQ3_DEFAULT_SOURCES)
+        self.bgpq3_timeout = kwargs.get("bgpq3_timeout", self.BGPQ3_DEFAULT_TIMEOUT)
 
         self.bgpq = "bgpq4" if "bgpq4" in self.bgpq3_path else "bgpq3"
 
@@ -150,7 +155,13 @@ class IRRDBInfo(CachedObject, AS_SET_Bundle):
         proc = subprocess.Popen(cmd,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
-        out, err = proc.communicate()
+
+        try:
+            out, err = proc.communicate(timeout=self.bgpq3_timeout)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            proc.communicate()
+            raise
 
         if proc.returncode != 0:
             err_msg = "{} exit code is {}".format(self.bgpq, proc.returncode)
@@ -166,6 +177,71 @@ class IRRDBInfo(CachedObject, AS_SET_Bundle):
                             ))
 
         return out
+
+    def _run_query(self, args):
+        hosts_to_use = [
+            host
+            for host in self.bgpq3_host
+            if host not in TIMEDOUT_IRR_HOSTS
+        ]
+
+        if not hosts_to_use:
+            raise IRRDBToolsError(
+                "All the IRRD hosts timed out so far; there are no more hosts "
+                "to use to perform the IRR queries."
+            )
+
+        num_of_hosts = len(hosts_to_use)
+
+        attempt_n = 0
+        for host in hosts_to_use:
+            attempt_n += 1
+
+            cmd = [self.bgpq3_path]
+            cmd += ["-h", host]
+            cmd += ["-S", self._get_bgpq3_sources()]
+            cmd += ["-3"]
+            cmd += ["-j"]
+            cmd += args
+
+            try:
+                out = self._run_cmd(cmd)
+
+                return json.loads(out.decode("utf-8"))
+            except subprocess.TimeoutExpired:
+                err_msg = (
+                    "{} timed out while running the following command: '{}' "
+                    "The host {} will not be used for the next IRR queries. "
+                    "The timeout is {} seconds; to modify it, please "
+                    "edit the program's configuration file (usually "
+                    "arouteserver.yml) and change the 'bgpq3_timeout' setting."
+                ).format(
+                    self.bgpq,
+                    " ".join(cmd),
+                    host,
+                    self.bgpq3_timeout
+                )
+                TIMEDOUT_IRR_HOSTS.add(host)
+            except Exception as e:
+                err_msg = (
+                    "Error while parsing {} output "
+                    "for the following command: '{}': {}".format(
+                        self.bgpq,
+                        " ".join(cmd), str(e)
+                    )
+                )
+
+            if attempt_n == num_of_hosts:
+                raise IRRDBToolsError(
+                    "{} - No more attempts will be performed, all the "
+                    "hosts in the list failed.".format(err_msg)
+                )
+            else:
+                logging.warning(
+                    "{} - Another attempt will be performed using the next "
+                    "host in the list.".format(err_msg)
+                )
+
 
 class ASSet(IRRDBInfo):
 
@@ -191,33 +267,17 @@ class ASSet(IRRDBInfo):
             re.match("^AS[0-9]+$", object_names[0]):
             return [int(object_names[0][2:])]
 
-        cmd = [self.bgpq3_path]
-        cmd += ["-h", self.bgpq3_host]
-        cmd += ["-S", self._get_bgpq3_sources()]
-        cmd += ["-3"]
-        cmd += ["-j"]
-        cmd += ["-f", "1"]
-        cmd += ["-l", "asn_list"]
-        cmd += object_names
+        query_args = []
+        query_args += ["-f", "1"]
+        query_args += ["-l", "asn_list"]
+        query_args += object_names
 
         try:
-            out = self._run_cmd(cmd)
+            data = self._run_query(query_args)
         except Exception as e:
             raise IRRDBToolsError(
-                "Can't get list of authorized ASNs for {}: {} - "
-                "Command: {}".format(
-                    self.descr, str(e), " ".join(cmd)
-                )
-            )
-
-        try:
-            data = json.loads(out.decode("utf-8"))
-        except Exception as e:
-            raise IRRDBToolsError(
-                "Error while parsing {} output "
-                "for the following command: '{}': {}".format(
-                    self.bgpq,
-                    " ".join(cmd), str(e)
+                "Can't get list of authorized ASNs for {}: {}".format(
+                    self.descr, str(e)
                 )
             )
 
@@ -248,37 +308,21 @@ class RSet(IRRDBInfo):
         )
 
     def _get_data(self):
-        cmd = [self.bgpq3_path]
-        cmd += ["-h", self.bgpq3_host]
-        cmd += ["-S", self._get_bgpq3_sources()]
-        cmd += ["-3"]
-        cmd += ["-4"] if self.ip_ver == 4 else ["-6"]
-        cmd += ["-A"]
-        cmd += ["-j"]
-        cmd += ["-l", "prefix_list"]
+        query_args = []
+        query_args += ["-4"] if self.ip_ver == 4 else ["-6"]
+        query_args += ["-A"]
+        query_args += ["-l", "prefix_list"]
         if self.allow_longer_prefixes:
-            cmd += ["-R"]
-            cmd += ["32"] if self.ip_ver == 4 else ["128"]
-        cmd += self._get_bgpq3_names()
+            query_args += ["-R"]
+            query_args += ["32"] if self.ip_ver == 4 else ["128"]
+        query_args += self._get_bgpq3_names()
 
         try:
-            out = self._run_cmd(cmd)
+            data = self._run_query(query_args)
         except Exception as e:
             raise IRRDBToolsError(
-                "Can't get authorized prefix list for {} IPv{}: {} - "
-                "Command: {}".format(
-                    self.descr, self.ip_ver, str(e), " ".join(cmd)
-                )
-            )
-
-        try:
-            data = json.loads(out.decode("utf-8"))
-        except Exception as e:
-            raise IRRDBToolsError(
-                "Error while parsing {} output "
-                "for the following command: '{}': {}".format(
-                    self.bgpq,
-                    " ".join(cmd), str(e)
+                "Can't get authorized prefix list for {} IPv{}: {}".format(
+                    self.descr, self.ip_ver, str(e)
                 )
             )
 

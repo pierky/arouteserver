@@ -60,6 +60,7 @@ class ConfigParserProgram(object):
         "bgpq3_path": "bgpq4",
         "bgpq3_host": IRRDBInfo.BGPQ3_DEFAULT_HOST,
         "bgpq3_sources": IRRDBInfo.BGPQ3_DEFAULT_SOURCES,
+        "bgpq3_timeout": IRRDBInfo.BGPQ3_DEFAULT_TIMEOUT,
 
         "rtt_getter_path": "",
 
@@ -126,6 +127,10 @@ class ConfigParserProgram(object):
             self.cfg["cfg_dir"] = os.path.expanduser(self.cfg["cfg_dir"])
         else:
             self.cfg["cfg_dir"] = os.path.dirname(os.path.expanduser(path))
+
+        if isinstance(self.cfg["bgpq3_host"], str):
+            list_as_str = self.cfg["bgpq3_host"]
+            self.cfg["bgpq3_host"] = list(map(str.strip, list_as_str.split(",")))
 
         # relative path -> absolute path
         for cfg_key in self.PATH_KEYS:

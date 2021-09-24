@@ -154,6 +154,7 @@ class TemplateRenderingCommands(ARouteServerCommand):
             "bgpq3_path": program_config.get("bgpq3_path"),
             "bgpq3_host": program_config.get("bgpq3_host"),
             "bgpq3_sources": program_config.get("bgpq3_sources"),
+            "bgpq3_timeout": program_config.get("bgpq3_timeout"),
             "rtt_getter_path": program_config.get("rtt_getter_path"),
             "template_dir": program_config.get_dir("templates_dir"),
             "template_name": program_config.get("template_name"),

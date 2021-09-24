@@ -363,6 +363,7 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
             "bgpq3_path": self.builder.bgpq3_path,
             "bgpq3_host": self.builder.bgpq3_host,
             "bgpq3_sources": self.builder.bgpq3_sources,
+            "bgpq3_timeout": self.builder.bgpq3_timeout,
             "cache_dir": self.builder.cache_dir,
             "cache_expiry": self.builder.cache_expiry,
         }

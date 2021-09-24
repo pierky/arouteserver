@@ -58,9 +58,10 @@ class TestProgramConfig(unittest.TestCase):
             ("template_name", "main.j2"),
             ("cache_dir", "config.d/cache"),
             ("bgpq3_path", "bgpq4"),
-            ("bgpq3_host", "rr.ntt.net"),
+            ("bgpq3_host", ["rr.ntt.net", "rr1.ntt.net"]),
             ("bgpq3_sources", ("RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,BBOI,"
                                "BELL,JPIRR,LEVEL3,RADB,RGNET,TC")),
+            ("bgpq3_timeout", 120),
             ("rtt_getter_path", ""),
             ("threads", 4),
             ("cache_expiry",
