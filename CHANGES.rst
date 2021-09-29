@@ -3,6 +3,16 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- Improvement: better handling of IRRd query failures.
+
+  Multiple hosts can now be configured as servers used for the IRR queries performed via ``bgpq3`/``bgpq4``. In case of timeout or failure, the next host in the list is used.
+  A timeout of 2 minutes is used by default. These settings can be modified in the ``arouteserver.yml`` file.
+
+  See also `GitHub issue 85 <https://github.com/pierky/arouteserver/issues/85>`_.
+
 1.10.1
 ------
 
