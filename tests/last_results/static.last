@@ -34,6 +34,13 @@ General config parser: blackhole_filtering, policy_ipv4 ... ok
 General config parser: blackhole_filtering, policy_ipv6 ... ok
 General config parser: extended BGP communities ... ok
 General config parser: large BGP communities ... ok
+General config parser: reject_cause_map invalid format ... ok
+General config parser: reject_cause_map invalid reject code ... ok
+General config parser: reject_cause_map invalid community ... ok
+General config parser: reject_cause_map overlapping community ... ok
+General config parser: reject_cause_map valid configuration (code is int) ... ok
+General config parser: reject_cause_map valid configuration (same comm used twice) ... ok
+General config parser: reject_cause_map valid configuration (code is str) ... ok
 General config parser: standard BGP communities ... ok
 General config parser: custom communities: invalid ... ok
 General config parser: custom communities: reserved name ... ok
@@ -135,7 +142,9 @@ Configure command: OpenBGPD 6.1, simple ... ok
 Configure command: OpenBGPD 6.2, simple ... ok
 Configure command: OpenBGPD 6.4, simple ... ok
 Configure command: OpenBGPD 6.5, simple ... ok
-Configure command: OpenBGPD 6.8, simple ... ok
+Configure command: OpenBGPD 6.9, path-hiding ... ok
+Configure command: OpenBGPD 6.9, simple ... ok
+Configure command: OpenBGPD > 6.9, path-hiding ... ok
 IRR AS-SET command: AS1 with AS-AS1 and AS2 ... ok
 IRR AS-SET command: explicit AS-SETs from config, no PeeringDB record ... ok
 IRR AS-SET command: AS-SET from asns ... ok
@@ -168,6 +177,10 @@ IRRDB enricher: autnum only ... ok
 IRRDB enricher: IPv4 white list for IPv6 configs ... ok
 IRRDB enricher: empty autnum + empty AS-SET ... ok
 Max-prefix from PeeringDB: increment ... ok
+IRR queries fail-over: all failure ... ok
+IRR queries fail-over: all timeout ... ok
+IRR queries fail-over: single failure ... ok
+IRR queries fail-over: single timeout ... ok
 IRRDB info: base, AS_SET bundle info (1) ... ok
 IRRDB info: base, AS_SET bundle info (3) ... ok
 IRRDB info: base, AS_SET bundle info (4) ... ok
@@ -191,7 +204,13 @@ PeeringDB network: missing data ... ok
 PeeringDB: AS-SETs parsing ... ok
 RPKI ROAs: RIPE Validator TAs ... ok
 RPKI ROAs: NTT TAs ... ok
+RPKI ROAs: rpki-client TAs ... ok
 RPKI ROAs: different formats ... ok
+RPKI ROAs: rpki-client expired file ... ok
+RPKI ROAs: rpki-client expired ROAs ... ok
+RPKI ROAs: OctoRPKI expired file ... ok
+RPKI ROAs: OctoRPKI out of validity ... ok
+RPKI ROAs: OctoRPKI valid file ... ok
 RTT getter parser: 0 ... ok
 RTT getter parser: 0.1 ... ok
 RTT getter parser: 1 ... ok
@@ -207,6 +226,6 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 207 tests in 43.288s
+Ran 226 tests in 66.018s
 
 OK

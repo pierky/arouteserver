@@ -52,6 +52,6 @@ Live test, BIRD v2, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, BIRD v2, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 44 tests in 102.593s
+Ran 44 tests in 120.693s
 
 OK (SKIP=1)

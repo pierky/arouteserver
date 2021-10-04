@@ -19,6 +19,7 @@ Live test, BIRD v2, path hiding, mitigation on, IPv4: rs should have best toward
 Live test, BIRD v2, path hiding, mitigation on, IPv4: AS1 wants rs to not announce to AS3 and AS4 ... ok
 Live test, BIRD v2, path hiding, mitigation on, IPv4: AS3 and AS4 receive prefix with sub-optimal path via AS2 ... ok
 Live test, BIRD v2, path hiding, mitigation on, IPv4: AS3 and AS4 don't receive prefix via AS1 ... ok
+Live test, BIRD v2, path hiding, mitigation on, IPv4: 2nd best is withdrawn and AS3 should not see it anymore ... SKIP: OpenBSD version not patched
 Live test, BIRD v2, path hiding, mitigation on, IPv4: reconfigure ... ok
 Live test, BIRD v2, path hiding, mitigation on, IPv4: log contains errors ... ok
 Live test, BIRD v2, path hiding, mitigation on, IPv4: dumping rs config...
@@ -45,6 +46,7 @@ Live test, BIRD v2, path hiding, mitigation on, IPv6: rs should have best toward
 Live test, BIRD v2, path hiding, mitigation on, IPv6: AS1 wants rs to not announce to AS3 and AS4 ... ok
 Live test, BIRD v2, path hiding, mitigation on, IPv6: AS3 and AS4 receive prefix with sub-optimal path via AS2 ... ok
 Live test, BIRD v2, path hiding, mitigation on, IPv6: AS3 and AS4 don't receive prefix via AS1 ... ok
+Live test, BIRD v2, path hiding, mitigation on, IPv6: 2nd best is withdrawn and AS3 should not see it anymore ... SKIP: OpenBSD version not patched
 Live test, BIRD v2, path hiding, mitigation on, IPv6: reconfigure ... ok
 Live test, BIRD v2, path hiding, mitigation on, IPv6: log contains errors ... ok
 Live test, BIRD v2, path hiding, mitigation on, IPv6: dumping rs config...
@@ -52,6 +54,6 @@ Live test, BIRD v2, path hiding, mitigation on, IPv6: dumping routes...
 Live test, BIRD v2, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 36 tests in 152.568s
+Ran 38 tests in 172.150s
 
-OK
+OK (SKIP=2)

@@ -9,10 +9,11 @@ External resources: PeeringDB, never via route-servers ... ok
 External resources: route servers excluded from clients-from-euroix ... ok
 External resources: RPKI ROAs, NTT ... ok
 External resources: RPKI ROAs, RIPE ... ok
+External resources: RPKI ROAs, rpki-client ... ok
 External resources: prefixes from AS-SET via bgpq3 ... ok
 External resources: prefixes from AS-SET via bgpq4 ... ok
 
 ----------------------------------------------------------------------
-Ran 13 tests in 59.497s
+Ran 14 tests in 49.652s
 
 OK

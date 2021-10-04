@@ -20,7 +20,7 @@ ROOT="`pwd`"
 TESTS_DIR="tests"
 LAST_RESULTS_DIR="$TESTS_DIR/last_results"
 
-ALL_BGPSPEAKERS="bird1 bird2 openbgpd_portable openbgpd_previous openbgpd_latest"
+ALL_BGPSPEAKERS="bird1 bird2 openbgpd_portable"
 BGPSPEAKERS="$ALL_BGPSPEAKERS"
 LIVE_TEST_IDS="`find $TESTS_DIR/live_tests/scenarios/* -maxdepth 0 -type d | cut -d '/' -f 4`"
 
@@ -126,11 +126,11 @@ if [ "`docker ps | grep -v "CONTAINER ID" | wc -l | awk '{print $1}'`" != "0" ];
 	exit
 fi
 
-echo "Verifying no VMs are running..."
-if [ "`virsh list --name --state-running | wc -w`" != "0" ]; then
-	echo "One or more VMs are already running"
-	exit
-fi
+# echo "Verifying no VMs are running..."
+# if [ "`virsh list --name --state-running | wc -w`" != "0" ]; then
+# 	echo "One or more VMs are already running"
+# 	exit
+# fi
 
 if [ ! -d $LAST_RESULTS_DIR ]; then
 	mkdir -p $LAST_RESULTS_DIR
