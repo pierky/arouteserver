@@ -875,7 +875,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
     LOCAL_FILES_BASE_DIR = "/etc/bgpd"
 
     AVAILABLE_VERSION = ["6.0", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7",
-                         "6.8", "6.9", "7.0", "7.1"]
+                         "6.8", "6.9", "7.0", "7.1", "7.2"]
     DEFAULT_VERSION = AVAILABLE_VERSION[-1]
 
     IGNORABLE_ISSUES = ["path_hiding", "transit_free_action",
