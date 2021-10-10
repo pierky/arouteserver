@@ -10,7 +10,7 @@ Change log
 
 - Improvement: better handling of IRRd query failures.
 
-  Multiple hosts can now be configured as servers used for the IRR queries performed via ``bgpq3`/``bgpq4``. In case of timeout or failure, the next host in the list is used.
+  Multiple hosts can now be configured as servers used for the IRR queries performed via ``bgpq3``/``bgpq4``. In case of timeout or failure, the next host in the list is used.
   A timeout of 2 minutes is used by default. These settings can be modified in the ``arouteserver.yml`` file.
 
   See also `GitHub issue 85 <https://github.com/pierky/arouteserver/issues/85>`_.
