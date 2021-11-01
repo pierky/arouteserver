@@ -178,6 +178,8 @@ Who is using ARouteServer?
 
 - `GAVLIX <https://gavlix.se/>`__.
 
+- `GigaPIX <https://gigapix.pt/>`__, BIRD and BIRD v2.
+
 - `IX Australia <https://www.ix.asn.au/>`__, BIRD v2.
 
 - `IX-Denver <http://ix-denver.org/>`__, BIRD.
