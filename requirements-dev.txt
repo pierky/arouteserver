@@ -1,4 +1,2 @@
 nose
 mock
-sphinx
-sphinx_rtd_theme
