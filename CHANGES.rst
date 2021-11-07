@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+1.11.1
+------
+
+- Fix: better error handling for clients configured with no IP address.
+
+  When a client was mistakenly configured with no IP addresses, the program raised an unhandled exception, instead of providing a good feedback to the user.
+
+  See also `GitHub issue 87 <https://github.com/pierky/arouteserver/issues/87>`_.
+
 1.11.0
 ------
 

@@ -34,9 +34,9 @@ class ConfigParserClients(ConfigParserBase):
 
         def get_client_descr(client):
             client_descr = ""
-            if "asn" in client:
+            if client.get("asn", None):
                 client_descr += "AS{}".format(client["asn"])
-            if "ip" in client:
+            if client.get("ip", None):
                 client_descr += " " + client["ip"]
             if not client_descr:
                 client_descr = "unknown client"

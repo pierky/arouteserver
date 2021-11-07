@@ -17,7 +17,7 @@ import unittest
 
 import yaml
 
-from .cfg_base import TestConfigParserBase 
+from .cfg_base import TestConfigParserBase
 from pierky.arouteserver.config.clients import ConfigParserClients
 from pierky.arouteserver.config.general import ConfigParserGeneral
 
@@ -57,6 +57,12 @@ class TestConfigParserClients(TestConfigParserBase):
         self.cfg[0]["ip"] = "192.0.2.1"
         self.cfg[1]["ip"] = self.cfg[0]["ip"]
         self._contains_err("Duplicate IP address found: 192.0.2.1.")
+
+    def test_no_ip(self):
+        """{}: no IP addresses"""
+        self.cfg[0]["ip"] = None
+        self._contains_err("Error parsing 'ip' at 'clients' level - Can't be empty.")
+        self._contains_err("One or more errors occurred while processing the client configuration for 'AS3333'")
 
     def test_next_hop_policy_no_authorized_addresses_with_list(self):
         """{}: next_hop.policy != authorized_addresses, list given"""
@@ -282,7 +288,7 @@ class TestConfigParserClients(TestConfigParserBase):
             "  - asn: 111",
             "    ip: 192.0.2.11",
             "    cfg:",
-            "      blackhole_filtering:",             
+            "      blackhole_filtering:",
             "  - asn: 222",
             "    ip: 192.0.2.21",
             "    cfg:",
@@ -325,7 +331,7 @@ class TestConfigParserClients(TestConfigParserBase):
             "  rs_as: 999",
             "  router_id: 192.0.2.2",
             "  blackhole_filtering:",
-            "    announce_to_client: False"  
+            "    announce_to_client: False"
         ]))
         general.parse()
 
