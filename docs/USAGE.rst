@@ -246,7 +246,7 @@ Since the popular `IXP-Manager <https://github.com/inex/IXP-Manager>`_ allows to
 IX-F Member Export JSON file from ``clients.yml``
 -------------------------------------------------
 
-The ``ixf-member-export`` command can be used to generate `IX-F Member Export JSON files <https://ml.ix-f.net/>`__ from the list of clients that are configured on the route server.
+The ``ixf-member-export`` command can be used to generate `IX-F Member Export JSON files <https://github.com/euro-ix/json-schemas>`__ from the list of clients that are configured on the route server.
 Although the ``clients.yml`` file used by ARouteServer to build the route server configuration contains only those clients that are supposed to connect to the route server itself, it's a quite common practice to preconfigure passive BGP sessions for all the IXP members there. When that's true the clients file contains a comprehensive representation of all the IXP participants.
 
 Please note: the output file generated with this command contains only a subset of the attributes available in the IX-F JSON schema: ASN, IP addresses, max-prefix limits and AS macros. Only information that are hard-coded in the ``clients.yml`` file are exported: AS-SETs or max prefix limits that during the configuration building process are fetched from PeeringDB or other external data sources are not included in the output file.

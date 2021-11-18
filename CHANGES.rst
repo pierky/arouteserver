@@ -515,7 +515,7 @@ v0.15.0
 
   - ``show_config``: to display current configuration settings and also options that have been left to their default values.
 
-- New feature: ``ixf-member-export`` command, to build `IX-F Member Export JSON files <https://ml.ix-f.net/>`__ from the list of clients.
+- New feature: ``ixf-member-export`` command, to build `IX-F Member Export JSON files <https://github.com/euro-ix/json-schemas>`__ from the list of clients.
 
 - Improvement: cache expiry time values can be set for each external resource type: PeeringDB info, IRR data, ...
 
