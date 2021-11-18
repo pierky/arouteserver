@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New: add the ``--merge-file`` option to the ``ixf-member-export`` command, to include user-created content into the IX-F Member Export JSON file.
+
+  For more details on how it works please check the `documentation <https://arouteserver.readthedocs.io/en/latest/USAGE.html#ixf-member-export-command>`__.
+
+  See also `GitHub issue 89 <https://github.com/pierky/arouteserver/issues/89>`_.
+
 1.11.1
 ------
 
