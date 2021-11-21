@@ -9,7 +9,7 @@
       "ixf_id": 2,
       "ixp_id": 1,
       "support_email": "operations@example.com",
-      "support_phone": "+123456789",
+      "support_phone": "+123 456789",
       "support_contact_hours": "24/7",
       "peering_policy_list": [
         "open",
@@ -22,11 +22,11 @@
           "id": 1,
           "name": "LAN1",
           "ipv4": {
-            "prefix": "192.0.2.0/24",
+            "prefix": "192.0.2.0",
             "mask_length": 24
           },
           "ipv6": {
-            "prefix": "2001:db8::/32",
+            "prefix": "2001:db8::",
             "mask_length": 32
           }
         }
