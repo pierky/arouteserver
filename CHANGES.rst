@@ -16,6 +16,12 @@ next release
 
   In the future, the ``--ixp_id`` version of the option will be dropped. A warning message will be shown when the deprecated version of that command line argument is used.
 
+- Improvement (OpenBGPD): use ``as-set`` to configure the list of "never via route server" ASNs.
+
+  This change reduces the size of the configuration and hopefully makes the filter processing faster.
+
+  See also `GitHub issue 90 <https://github.com/pierky/arouteserver/issues/90>`_.
+
 1.11.1
 ------
 

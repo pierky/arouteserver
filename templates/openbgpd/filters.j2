@@ -104,6 +104,13 @@ prefix-set "bogons" {
 bogons="{ {{ write_prefix_list(bogons) }} }"
 {% endif %}
 
+{% if never_via_route_servers_asns and "6.4"|target_version_ge %}
+# never via route-servers ASNs
+as-set "neverviarouteserver" {
+	{{ never_via_route_servers_asns|sort|join(", ") }}
+}
+{% endif %}
+
 {{ "pre-filters"|include_local_file -}}
 
 # =====================================================================================
@@ -305,7 +312,11 @@ match from {{ client.ip }} nexthop {{ same_as_client.ip }} set community delete 
 
 {% if never_via_route_servers_asns %}
 # AS_PATH: never via route-servers ASNs
+{%	 if "6.4"|target_version_ge %}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS as-set neverviarouteserver", 15) }}
+{%   else %}
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS { " ~ never_via_route_servers_asns|sort|join(", ") ~ " }", 15) }}
+{%   endif %}
 {% endif %}
 
 {% if client.cfg.filtering.irrdb.white_list_route %}
