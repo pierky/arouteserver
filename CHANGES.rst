@@ -12,6 +12,10 @@ next release
 
   See also `GitHub issue 89 <https://github.com/pierky/arouteserver/issues/89>`_.
 
+- Improvement: in the ``ixf-member-export`` command, the value of IXP ID can now be set via the ``--ixp-id`` in addition to the existing ``--ixp_id`` option.
+
+  In the future, the ``--ixp_id`` version of the option will be dropped. A warning message will be shown when the deprecated version of that command line argument is used.
+
 1.11.1
 ------
 

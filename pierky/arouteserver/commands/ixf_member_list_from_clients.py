@@ -59,7 +59,7 @@ class IXFMemberListFromClientsCommand(ARouteServerCommand):
             dest="cfg_clients")
 
         parser.add_argument(
-            "--ixp_id",
+            "--ixp_id", "--ixp-id",
             type=int,
             default=0,
             help="The numeric identifier used by the IX to identify the "
@@ -309,6 +309,14 @@ class IXFMemberListFromClientsCommand(ARouteServerCommand):
 
         dic = self.build_json(path, self.args.ixp_id, self.args.shortname,
                               self.args.vlan_id, self.args.ixf_id)
+
+        if "--ixp_id" in sys.argv:
+            logging.warning(
+                "Deprecation notice: the '--ixp_id' option is now deprecated in favor "
+                "of '--ixp-id' (dash instead of underscore). Please adjust your tooling "
+                "to use the new version of the option. In the future, the '--ixp_id' "
+                "will be removed."
+            )
 
         if self.args.merge_file:
             merge_file_raw_content = self.args.merge_file.read()
