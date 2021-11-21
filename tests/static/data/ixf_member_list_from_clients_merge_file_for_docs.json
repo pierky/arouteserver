@@ -10,7 +10,7 @@
       "ixp_id": 1,
       "support_email": "operations@example.com",
       "support_phone": "+123456789",
-      "support_contact_hours": "24x7",
+      "support_contact_hours": "24/7",
       "peering_policy_list": [
         "open",
         "selective",
