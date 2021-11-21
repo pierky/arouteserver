@@ -210,7 +210,12 @@ class TestExternalResources(unittest.TestCase):
         )
 
         final_output = IXFMemberListFromClientsCommand.apply_merge_file(
-            json_data, merge_file_content, None
+            json_data, merge_file_content, {
+                "ixp_id": 1,
+                "ixf_id": 2,
+                "shortname": "Test short name",
+                "vlan": 1
+            }
         )
 
         validator_response = requests.post(
