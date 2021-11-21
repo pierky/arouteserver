@@ -16,11 +16,21 @@ next release
 
   In the future, the ``--ixp_id`` version of the option will be dropped. A warning message will be shown when the deprecated version of that command line argument is used.
 
+- Improvement: ask for 16bit placeholder ASN in ``configure`` when the route-server is on a 32bit ASN.
+
+  When the ``configure`` command is used to generate the policy for a route-server running on a 32bit ASN, a prompt asks the operator which 16bit placeholder ASN should be used to setup the BGP communities. So far, the fixed value 65534 was used.
+
+  See also `GitHub issue 88 <https://github.com/pierky/arouteserver/issues/88>`_.
+
 - Improvement (OpenBGPD): use ``as-set`` to configure the list of "never via route server" ASNs.
 
   This change reduces the size of the configuration and hopefully makes the filter processing faster.
 
   See also `GitHub issue 90 <https://github.com/pierky/arouteserver/issues/90>`_.
+
+- Fix: when the route-server ASN was a 32bit value, the `Euro-IX Large BGP Communities <https://www.euro-ix.net/en/forixps/large-bgp-communities/>`__ automatically configured via ``configure`` were using the 16bit placeholder ASN.
+
+  When the ``configure`` command was used to build the ``genera.yml`` policy for route-servers running on 32bit ASNs, the Large BGP Communities used to map route reject causes to Euro-IX codes were using the 16bit placeholder ASN instead of the actual route-server's 32bit ASN.
 
 1.11.1
 ------

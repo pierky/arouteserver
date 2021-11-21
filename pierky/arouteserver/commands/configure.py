@@ -248,11 +248,6 @@ class ConfigureCommand(ARouteServerCommand):
 
             assert isinstance(code, int)
 
-            if self.answers["asn"] > 65535:
-                rs_as = self.answers["comms_asn"]
-            else:
-                rs_as = "rs_as"
-
             if "reject_cause_map" not in cfg["communities"]:
                 cfg["communities"]["reject_cause_map"] = {}
 
@@ -260,7 +255,7 @@ class ConfigureCommand(ARouteServerCommand):
                 raise ValueError(f"Duplicate code: {code}")
 
             cfg["communities"]["reject_cause_map"][code] = {
-                "lrg": lrg.replace("RS", str(rs_as))
+                "lrg": lrg.replace("RS", "rs_as")
             }
 
         res = OrderedDict()

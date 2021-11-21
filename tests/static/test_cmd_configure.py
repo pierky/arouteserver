@@ -513,6 +513,10 @@ class TestConfigureCmd(ARouteServerTestCase):
             dic["cfg"]["communities"]["reject_cause"]["lrg"],
             "rs_as:65520:dyn_val"
         )
+        self.assertEqual(
+            dic["cfg"]["communities"]["reject_cause_map"][1]["lrg"],
+            "rs_as:1101:5"
+        )
 
         self.verify_communities(dic["cfg"]["communities"])
 
