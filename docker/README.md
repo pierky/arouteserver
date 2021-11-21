@@ -54,6 +54,8 @@ After running the container, the configurations will be saved inside the local h
 
 Please note: the container will just terminate once the configuration is built; this is the expected behaviour, it's not supposed to stay up, but to only generate the config and then shutdown.
 
+For route-servers running on 32bit ASNs, also the `PLACEHOLDER_16BIT_ASN` variable must be provided, to pass a 16bit ASN in the range 64512-65534 to be used as a placeholder in standard BGP communities.
+
 #### Customizing the route-server features
 
 The options used to build the configuration files can be customized by providing a user-defined general.yml file at run-time.

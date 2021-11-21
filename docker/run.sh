@@ -22,6 +22,7 @@ function error_envvar_not_set {
 DAEMON="${DAEMON}"
 VERSION="${VERSION}"
 RS_ASN="${RS_ASN}"
+PLACEHOLDER_16BIT_ASN="${PLACEHOLDER_16BIT_ASN}"
 ROUTER_ID="${ROUTER_ID}"
 LOCAL_PREFIXES="${LOCAL_PREFIXES}"
 IP_VER="${IP_VER}"
@@ -111,6 +112,16 @@ if [[ ! -e /etc/arouteserver/general.yml ]]; then
         error_envvar_not_set "RS_ASN"
     fi
 
+    if [[ ${RS_ASN} -gt 65535 ]]; then
+        if [[ -z "${PLACEHOLDER_16BIT_ASN}" ]]; then
+            error_envvar_not_set "PLACEHOLDER_16BIT_ASN"
+        else
+            comms_asn_optional_arg="comms_asn=${PLACEHOLDER_16BIT_ASN}"
+        fi
+    else
+        comms_asn_optional_arg=""
+    fi
+
     if [[ -z "${ROUTER_ID}" ]]; then
         error_envvar_not_set "ROUTER_ID"
     fi
@@ -128,6 +139,7 @@ if [[ ! -e /etc/arouteserver/general.yml ]]; then
             daemon=${DAEMON} \
             version=${VERSION} \
             asn=${RS_ASN} \
+            ${comms_asn_optional_arg} \
             router_id=${ROUTER_ID} \
             black_list=${LOCAL_PREFIXES}
 else

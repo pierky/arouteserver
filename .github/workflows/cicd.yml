@@ -276,6 +276,27 @@ jobs:
             wc -l | \
             grep 2
 
+      - name: Build configuration for 32bit ASN route-servers
+        run: >
+          docker run \
+            -t \
+            --rm \
+            -v $(pwd)/config.d/clients.yml:/root/clients.yml:ro \
+            -v ~/arouteserver_configs:/root/arouteserver_configs \
+            -e RS_ASN=99999999 \
+            -e PLACEHOLDER_16BIT_ASN=65333 \
+            -e ROUTER_ID=192.0.2.123 \
+            -e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
+            -e IP_VER=4 \
+            -e DAEMON=bird \
+            -e VERSION=1.6.8 \
+            pierky/arouteserver:latest
+
+      - name: Verify that the desired 16bit placeholder ASN is used
+        run: |
+          cat ~/arouteserver_configs/bird4.cfg | \
+            grep "if (65333, peer_as) ~ bgp_community then"
+
   push_to_pypi:
     name: Push to PyPi
 

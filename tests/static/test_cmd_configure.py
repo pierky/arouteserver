@@ -487,6 +487,7 @@ class TestConfigureCmd(ARouteServerTestCase):
             "bird",
             BIRDConfigBuilder.DEFAULT_VERSION,
             "999999",
+            "65533",
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
         ])
@@ -497,11 +498,11 @@ class TestConfigureCmd(ARouteServerTestCase):
         )
         self.assertEqual(
             dic["cfg"]["communities"]["do_not_announce_to_any"]["std"],
-            "0:65534"
+            "0:65533"
         )
         self.assertEqual(
             dic["cfg"]["communities"]["announce_to_peer"]["std"],
-            "65534:peer_as"
+            "65533:peer_as"
         )
 
         self.assertEqual(
