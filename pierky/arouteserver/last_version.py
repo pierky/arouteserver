@@ -21,6 +21,7 @@ from six.moves.urllib.error import HTTPError
 
 from .cached_objects import CachedObject
 from .errors import LastVersionCheckingError
+from .version import __version__
 
 
 class LastVersion(CachedObject):
@@ -39,7 +40,7 @@ class LastVersion(CachedObject):
         return "last_version.json"
 
     def _get_data(self):
-        logging.info("Checking latest version")
+        logging.info("Checking latest version (current version is {})...".format(__version__))
 
         url = "https://pypi.python.org/pypi/arouteserver/json"
 
