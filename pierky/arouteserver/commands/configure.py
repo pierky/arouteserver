@@ -115,14 +115,18 @@ class ConfigureCommand(ARouteServerCommand):
                 return False, None
         return True, res
 
-    #def ask_16bit_int(self, text, raise_exc=False):
-    #    answer_given, v = self.ask.ask_int(text, None, None, raise_exc)
-    #    if not answer_given:
-    #        return False, None
-    #    if v > 65535:
-    #        print("Invalid input: a 16-bit integer is expected.")
-    #        return False, None
-    #    return True, v
+    def ask_16bit_placeholder_asn(self, text, raise_exc=False, default=None):
+        answer_given, v = self.ask.ask_int(text, default, raise_exc)
+        if not answer_given:
+            return False, None
+        if v > 65535:
+            print("Invalid input: a 16-bit integer is expected.")
+            return False, None
+        if not 64512 <= v <= 65534:
+            print("To avoid potential overlapping with peers' ASN, only "
+                  "values in the 64512-65534 can be used")
+            return False, None
+        return True, v
 
     def collect_answers(self):
         if self.answers:
@@ -168,19 +172,16 @@ class ConfigureCommand(ARouteServerCommand):
             self.wr_text(
                 "Since the ASN used for the route server is "
                 "a 32-bit value, features and services offered "
-                "to clients using BGP communities "
-                "will be configured to use a placeholder 16 bit "
-                "ASN: 65534",
-                #"can be "
-                #"automatically configured only if a 16-bit "
-                #"placeholder ASN is also given "
-                #"(with the exception of BGP Large Communities).",
+                "to clients using (standard) BGP communities "
+                "need to be configured using a placeholder 16 bit "
+                "ASN. Please provide the value of the 16 bit ASN "
+                "to be used as placeholder (range: 64512-65534).",
                 title="Place-holder 16-bit ASN for BGP communities"
             )
-            #self.add_answer("comms_asn", self.ask_16bit_int,
-            #    "16-bit ASN used for BGP communities"
-            #)
-            self.answers["comms_asn"] = 65534
+            self.add_answer("comms_asn", self.ask_16bit_placeholder_asn,
+               "16-bit placeholder ASN used for BGP communities",
+               default="65534"
+            )
 
         self.wr_text(
             None, title="Route server's BGP router-id"
@@ -247,11 +248,6 @@ class ConfigureCommand(ARouteServerCommand):
 
             assert isinstance(code, int)
 
-            if self.answers["asn"] > 65535:
-                rs_as = self.answers["comms_asn"]
-            else:
-                rs_as = "rs_as"
-
             if "reject_cause_map" not in cfg["communities"]:
                 cfg["communities"]["reject_cause_map"] = {}
 
@@ -259,7 +255,7 @@ class ConfigureCommand(ARouteServerCommand):
                 raise ValueError(f"Duplicate code: {code}")
 
             cfg["communities"]["reject_cause_map"][code] = {
-                "lrg": lrg.replace("RS", str(rs_as))
+                "lrg": lrg.replace("RS", "rs_as")
             }
 
         res = OrderedDict()

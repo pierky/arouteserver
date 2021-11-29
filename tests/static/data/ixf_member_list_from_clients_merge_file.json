@@ -1,0 +1,12 @@
+{
+  "ixp_list": [
+    {
+      "ixp_id": 1,
+      "ixf_id": 1234,
+      "shortname": "Test IX short name",
+      "country": "IT",
+      "name": "Test IX full name"
+    }
+  ]
+}
+

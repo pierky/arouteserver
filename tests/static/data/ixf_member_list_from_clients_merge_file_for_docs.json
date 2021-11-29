@@ -1,0 +1,36 @@
+{
+  "ixp_list": [
+    {
+      "shortname": "IX short name",
+      "name": "IX full name",
+      "country": "IT",
+      "url": "https://www.example.com/",
+      "peeringdb_id": 1,
+      "ixf_id": 2,
+      "ixp_id": 1,
+      "support_email": "operations@example.com",
+      "support_phone": "+123 456789",
+      "support_contact_hours": "24/7",
+      "peering_policy_list": [
+        "open",
+        "selective",
+        "mandatory",
+        "closed"
+      ],
+      "vlan": [
+        {
+          "id": 1,
+          "name": "LAN1",
+          "ipv4": {
+            "prefix": "192.0.2.0",
+            "mask_length": 24
+          },
+          "ipv6": {
+            "prefix": "2001:db8::",
+            "mask_length": 32
+          }
+        }
+      ]
+    }
+  ]  
+}

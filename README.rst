@@ -43,7 +43,7 @@ How it works
 
 #. `Jinja2`_ built-in templates are used to render the final route server's configuration file.
 
-   Currently, **BIRD** (>= 1.6.3 up to 1.6.8), **BIRD v2** (starting from 2.0.7) and **OpenBGPD** (OpenBSD 6.1 up to 7.1 and also OpenBGPD Portable 6.5p1 up to 7.1p0) are supported, with almost `feature parity <https://arouteserver.readthedocs.io/en/latest/SUPPORTED_SPEAKERS.html#supported-features>`__ between them.
+   Currently, **BIRD** (>= 1.6.3 up to 1.6.8), **BIRD v2** (starting from 2.0.7) and **OpenBGPD** (OpenBSD 6.1 up to 7.2 and also OpenBGPD Portable 6.5p1 up to 7.2) are supported, with almost `feature parity <https://arouteserver.readthedocs.io/en/latest/SUPPORTED_SPEAKERS.html#supported-features>`__ between them.
 
 **Validation** and testing of the configurations generated with this tool are performed using the built-in **live tests** framework: `Docker`_ instances are used to simulate several scenarios and to validate the behaviour of the route server after configuring it with ARouteServer. More details on the `Live tests <https://arouteserver.readthedocs.io/en/latest/LIVETESTS.html>`__ section.
 

@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import yaml
+import json
 import shutil
 import tempfile
 import unittest
@@ -192,6 +192,35 @@ class TestExternalResources(unittest.TestCase):
         validator_response = requests.post(
             "https://api.ixpdb.net/v1/validation/",
             json=json_data
+        )
+        validator_response.raise_for_status()
+
+        validator_results = validator_response.json()
+
+        self.assertTrue(validator_results["errors"] == [])
+
+    def test_euroix_json_file_from_clients_merge_file_docs(self):
+        """External resources: Euro-IX from clients build and validation (using merge-file)"""
+        clients_path = "config.d/clients.yml"
+
+        merge_file_content = json.load(open("tests/static/data/ixf_member_list_from_clients_merge_file_for_docs.json"))
+
+        json_data = IXFMemberListFromClientsCommand.build_json(
+            clients_path, 1, "Test IX", 1, 1
+        )
+
+        final_output = IXFMemberListFromClientsCommand.apply_merge_file(
+            json_data, merge_file_content, {
+                "ixp_id": 1,
+                "ixf_id": 2,
+                "shortname": "Test short name",
+                "vlan": 1
+            }
+        )
+
+        validator_response = requests.post(
+            "https://api.ixpdb.net/v1/validation/",
+            json=final_output
         )
         validator_response.raise_for_status()
 
