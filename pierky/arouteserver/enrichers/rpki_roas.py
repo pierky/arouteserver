@@ -145,6 +145,9 @@ class RPKIROAsEnricher(BaseConfigEnricher):
             roa_payload = {"prefix": prefix, "length": prefix_obj.prefixlen,
                            "max_len": max_len, "asn": asn}
 
+            if "expires" in roa:
+                roa_payload["expires"] = int(roa["expires"])
+
             prefix_len = str(prefix_obj.prefixlen)
             if prefix_len not in self.builder.rpki_roas:
                 self.builder.rpki_roas[prefix_len] = [roa_payload]

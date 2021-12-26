@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New (OpenBGPD): use the ``expires`` attribute of ROAs from rpki-client format.
+
+  In OpenBGPD configurations (starting with 7.2), the ``expires`` attribute of ROAs gathered from JSON feeds that contain it is passed on into the configuration of the ``roa-set``.
+
+  See also `GitHub issue 92 <https://github.com/pierky/arouteserver/issues/92>`_.
+
 1.12.0
 ------
 

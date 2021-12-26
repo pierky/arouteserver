@@ -83,7 +83,7 @@ class TestExternalResources(unittest.TestCase):
         self.assertTrue(int(ver.split(".")[1]) >= 0)
         self.assertTrue(int(ver.split(".")[2]) >= 0)
 
-    def _test_rpki_roas_per_provider(self, provider):
+    def _test_rpki_roas_per_provider(self, provider, use_expires_attr=False):
         cfg = ConfigParserGeneral()
         urls = cfg.get_schema()["cfg"]["rpki_roas"]["ripe_rpki_validator_url"].default
         for url in urls:
@@ -93,6 +93,13 @@ class TestExternalResources(unittest.TestCase):
         rpki_roas.load_data()
         self.assertTrue(len(rpki_roas.roas) > 0)
         self.assertTrue(any([r for r in rpki_roas.roas["roas"] if r["prefix"] == "193.0.0.0/21"]))
+        if use_expires_attr:
+            self.assertTrue(
+                all(
+                    r.get("expires", None) > 0
+                    for r in rpki_roas.roas["roas"]
+                )
+            )
 
         allowed_per_ta = {}
 
@@ -117,11 +124,11 @@ class TestExternalResources(unittest.TestCase):
 
     def test_rpki_roas_ntt(self):
         """External resources: RPKI ROAs, NTT"""
-        self._test_rpki_roas_per_provider("ntt.net")
+        self._test_rpki_roas_per_provider("ntt.net", use_expires_attr=True)
 
     def test_rpki_roas_rpki_client(self):
         """External resources: RPKI ROAs, rpki-client"""
-        self._test_rpki_roas_per_provider("rpki-client.org")
+        self._test_rpki_roas_per_provider("rpki-client.org", use_expires_attr=True)
 
     def test_asset_bgpq3(self):
         """External resources: ASNs from AS-SET via bgpq3"""
