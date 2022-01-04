@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2021 Pier Carlo Chiodi
+# Copyright (C) 2017-2022 Pier Carlo Chiodi
 # Copyright (C) 2021 Vilhelm Prytz
 #
 # This program is free software: you can redistribute it and/or modify
