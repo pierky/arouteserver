@@ -163,8 +163,9 @@ class CompatibilityIssuesError(BuilderError):
     def extra_info(self):
         return(
             "Please check the errors reported above for more details.\n"
-            "To ignore those errors, use the '--ignore-issues' command "
-            "line argument and list the IDs of the issues you want to "
+            "Errors for which a 'Compatibility issue ID' is provided can "
+            "be acknowledged and ignored using the '--ignore-issues' command "
+            "line argument, providing a list of IDs of the issues to "
             "ignore."
         )
 
