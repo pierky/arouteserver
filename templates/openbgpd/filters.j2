@@ -6,7 +6,6 @@
 {% from 'macros.j2' import del_communities %}
 {% from 'macros.j2' import ins_communities %}
 {% from 'macros.j2' import write_prepending_comm %}
-{% from 'macros.j2' import remove_prepending_comms %}
 # ---------------------------------------------------------
 # FILTERS
 
@@ -36,6 +35,7 @@ ext-community delete $INTCOMM_PREF_OK_ROA
 	ext-community delete $INTCOMM_NO_EXPORT
 	ext-community delete $INTCOMM_NO_ADVERTISE
 	{% endif %}
+	ext-community delete $INTCOMM_PROCESS_PREPEND_COMMS
 {% endmacro %}
 
 {% macro deny_inbound_route(tag_reject_policy, condition, cause_code) %}
@@ -682,20 +682,23 @@ allow to {{ client.ip }}
 {{	match_communities("allow to " ~ client.ip, cfg.communities.announce_to_peer, "", client.asn) -}}
 {% endif %}
 
+# Add the $INTCOMM_PROCESS_PREPEND_COMMS ext community to signal that communities
+# for prepending can be processed. As soon as one prepending action is performed,
+# this internal community is removed, so that further actions are not processed.
+match to {{ client.ip }} set ext-community $INTCOMM_PROCESS_PREPEND_COMMS
+
 {% if cfg.communities.prepend_once_to_peer|community_is_set %}
-# prepend_once_to_peer AS{{ client.asn }}; remove further "prepend" communities from matching routes
-{{	match_communities("match to " ~ client.ip, cfg.communities.prepend_once_to_peer, "set prepend-neighbor 1", client.asn) -}}
-{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_once_to_peer, cfg.communities, client.asn, cfg.rtt_thresholds) -}}
+# prepend_once_to_peer AS{{ client.asn }}; remove INTCOMM_PROCESS_PREPEND_COMMS to prevent further prepending actions
+{{	match_communities("match to " ~ client.ip ~ " ext-community $INTCOMM_PROCESS_PREPEND_COMMS", cfg.communities.prepend_once_to_peer, "set {\n	prepend-neighbor 1\n	ext-community delete $INTCOMM_PROCESS_PREPEND_COMMS\n}", client.asn) -}}
 {% endif %}
 {% if cfg.communities.prepend_twice_to_peer|community_is_set %}
-# prepend_twice_to_peer AS{{ client.asn }}; remove further "prepend" communities from matching routes
-{{	match_communities("match to " ~ client.ip, cfg.communities.prepend_twice_to_peer, "set prepend-neighbor 2", client.asn) -}}
-{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_twice_to_peer, cfg.communities, client.asn, cfg.rtt_thresholds) -}}
+# prepend_twice_to_peer AS{{ client.asn }}; remove INTCOMM_PROCESS_PREPEND_COMMS to prevent further prepending actions
+{{	match_communities("match to " ~ client.ip ~ " ext-community $INTCOMM_PROCESS_PREPEND_COMMS", cfg.communities.prepend_twice_to_peer, "set {\n	prepend-neighbor 2\n	ext-community delete $INTCOMM_PROCESS_PREPEND_COMMS\n}", client.asn) -}}
 {% endif %}
 {% if cfg.communities.prepend_thrice_to_peer|community_is_set %}
-# prepend_thrice_to_peer AS{{ client.asn }}; remove further "prepend" communities from matching routes
-{{	match_communities("match to " ~ client.ip, cfg.communities.prepend_thrice_to_peer, "set prepend-neighbor 3", client.asn) -}}
-{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_thrice_to_peer, cfg.communities, client.asn, cfg.rtt_thresholds) -}}
+# prepend_thrice_to_peer AS{{ client.asn }}; remove INTCOMM_PROCESS_PREPEND_COMMS to prevent further prepending actions
+{{	match_communities("match to " ~ client.ip ~ " ext-community $INTCOMM_PROCESS_PREPEND_COMMS", cfg.communities.prepend_thrice_to_peer, "set {\n	prepend-neighbor 3\n	ext-community delete $INTCOMM_PROCESS_PREPEND_COMMS\n}", client.asn) -}}
+
 {% endif %}
 
 {% if rtt_based_functions_are_used and
@@ -707,9 +710,8 @@ allow to {{ client.ip }}
 {%				if cfg.communities[comm_name]|community_is_set %}
 {%					if (lower_higher == "lower" and client["rtt"]|get_normalized_rtt <= threshold_val) or
 				           (lower_higher == "higher" and client["rtt"]|get_normalized_rtt > threshold_val) %}
-# {{ comm_name }} {{ threshold_val }} ms; remove further "prepend" communities from matching routes
-{{						match_communities("match to " ~ client.ip, cfg.communities[comm_name], "set prepend-neighbor " ~ times_num, dyn_val=threshold_val) }}
-{{						remove_prepending_comms("match to " ~ client.ip, cfg.communities[comm_name], cfg.communities, client.asn, cfg.rtt_thresholds, if_comm_dyn_val=threshold_val) -}}
+# {{ comm_name }} {{ threshold_val }} ms; remove INTCOMM_PROCESS_PREPEND_COMMS to prevent further prepending actions
+{{						match_communities("match to " ~ client.ip ~ " ext-community $INTCOMM_PROCESS_PREPEND_COMMS", cfg.communities[comm_name], "set {\n	prepend-neighbor " ~ times_num ~ "\n	ext-community delete $INTCOMM_PROCESS_PREPEND_COMMS\n}", dyn_val=threshold_val) }}
 {%					endif %}
 {%				endif %}
 {%			endfor %}
@@ -718,19 +720,16 @@ allow to {{ client.ip }}
 {% endif %}
 
 {% if cfg.communities.prepend_once_to_any|community_is_set %}
-# prepend_once_to_any; remove further "prepend" communities from matching routes
-{{	match_communities("match to " ~ client.ip, cfg.communities.prepend_once_to_any, "set prepend-neighbor 1") -}}
-{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_once_to_any, cfg.communities, client.asn, cfg.rtt_thresholds) -}}
+# prepend_once_to_any; remove INTCOMM_PROCESS_PREPEND_COMMS to prevent further prepending actions
+{{	match_communities("match to " ~ client.ip ~ " ext-community $INTCOMM_PROCESS_PREPEND_COMMS", cfg.communities.prepend_once_to_any, "set {\n	prepend-neighbor 1\n	ext-community delete $INTCOMM_PROCESS_PREPEND_COMMS\n}") -}}
 {% endif %}
 {% if cfg.communities.prepend_twice_to_any|community_is_set %}
-# prepend_twice_to_any; remove further "prepend" communities from matching routes
-{{	match_communities("match to " ~ client.ip, cfg.communities.prepend_twice_to_any, "set prepend-neighbor 2") -}}
-{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_twice_to_any, cfg.communities, client.asn, cfg.rtt_thresholds) -}}
+# prepend_twice_to_any; remove INTCOMM_PROCESS_PREPEND_COMMS to prevent further prepending actions
+{{	match_communities("match to " ~ client.ip ~ " ext-community $INTCOMM_PROCESS_PREPEND_COMMS", cfg.communities.prepend_twice_to_any, "set {\n	prepend-neighbor 2\n	ext-community delete $INTCOMM_PROCESS_PREPEND_COMMS\n}") -}}
 {% endif %}
 {% if cfg.communities.prepend_thrice_to_any|community_is_set %}
-# prepend_thrice_to_any; remove further "prepend" communities from matching routes
-{{	match_communities("match to " ~ client.ip, cfg.communities.prepend_thrice_to_any, "set prepend-neighbor 3") -}}
-{{	remove_prepending_comms("match to " ~ client.ip, cfg.communities.prepend_thrice_to_any, cfg.communities, client.asn, cfg.rtt_thresholds) -}}
+# prepend_thrice_to_any; remove INTCOMM_PROCESS_PREPEND_COMMS to prevent further prepending actions
+{{	match_communities("match to " ~ client.ip ~ " ext-community $INTCOMM_PROCESS_PREPEND_COMMS", cfg.communities.prepend_thrice_to_any, "set {\n	prepend-neighbor 3\n	ext-community delete $INTCOMM_PROCESS_PREPEND_COMMS\n}") -}}
 {% endif %}
 
 {% endfor %}
