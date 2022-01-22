@@ -12,6 +12,10 @@ next release
 
   See also `GitHub issue 95 <https://github.com/pierky/arouteserver/issues/95>`_.
 
+- Fix (OpenBGPD): syntax error when prepend functionalities were configured with 'std' communities only and 32bit ASN clients were present.
+
+  See also `GitHub issue 98 <https://github.com/pierky/arouteserver/issues/98>`_.
+
 - Improvement: better explaination of when error messages can be ignored.
 
   See also `GitHub issue 96 <https://github.com/pierky/arouteserver/issues/96>`_.
