@@ -134,22 +134,6 @@
 {%	endif %}
 {% endmacro %}
 
-{% macro list_prepending_comms(comms, asn, rtt_thresholds) %}
-{% for comm_name in comms|sort %}
-{%	if comm_name.startswith("prepend_") %}
-{%		set comm = comms[comm_name] %}
-{%		if comm|community_is_set %}
-	# {{ comm_name }}
-{{			write_prepending_comm(comm, asn, rtt_thresholds).rstrip() ~ "\n" }}
-{%		endif %}
-{%	endif %}
-{% endfor %}
-{% endmacro %}
-
-{% macro remove_prepending_comms(left, if_comm, comms, asn, rtt_thresholds, if_comm_dyn_val=None) %}
-{{ match_communities(left, if_comm, "set {\n" ~ list_prepending_comms(comms, asn, rtt_thresholds) ~ "\n}", peer_as=asn, dyn_val=if_comm_dyn_val) }}
-{% endmacro %}
-
 {% macro write_roas_action(rpki_roas, action) %}
 {%	for roa in rpki_roas if roa.asn != 0 %}
 match from group clients source-as {{ roa.asn }} prefix {{ roa.prefix }}
