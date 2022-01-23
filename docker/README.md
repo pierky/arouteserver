@@ -120,9 +120,11 @@ This will give you access to an environment where ARouteServer and its dependenc
 
 The Dockerfile can also provide some useful hints on how to install and configure ARouteServer on a host that is different than a Docker image. You can [check it out on GitHub](https://github.com/pierky/arouteserver/blob/master/docker/Dockerfile).
 
-## Tag `latest`
+## Tags
 
-The image is built on top of the latest stable release of ARouteServer. Other tags are also available, please visit the Tags section on Docker Hub.
+The `latest` tag is built on top of the latest stable release of ARouteServer. Other tags in the form `<version number>` are also available, please visit the Tags section on Docker Hub.
+
+A collection of images based on [PyPy3](https://www.pypy.org/) is also made available. The tags are in the form `latest-pypy3` (for the latest stable release of ARouteServer) or `<version number>-pypy3` for the version-specific images (example: `1.14.0-pypy3`).
 
 # Author
 
