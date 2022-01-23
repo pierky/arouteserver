@@ -16,8 +16,7 @@
 import json
 import logging
 
-from six.moves.urllib.request import urlopen
-from six.moves.urllib.error import HTTPError
+import requests
 
 from .cached_objects import CachedObject
 from .errors import LastVersionCheckingError
@@ -45,12 +44,12 @@ class LastVersion(CachedObject):
         url = "https://pypi.python.org/pypi/arouteserver/json"
 
         try:
-            response = urlopen(url, timeout=10)
-        except HTTPError as e:
+            response = requests.get(url, timeout=10)
+        except requests.HTTPError as e:
             raise LastVersionCheckingError(
                 "HTTP error while retrieving latest version info from "
-                "PyPI ({}): code: {}, reason: {} - {}".format(
-                    url, e.code, e.reason, str(e)
+                "PyPI ({}): {}".format(
+                    url, str(e)
                 )
             )
         except Exception as e:
@@ -62,7 +61,7 @@ class LastVersion(CachedObject):
             )
 
         try:
-            info = json.loads(response.read().decode("utf-8"))
+            info = response.json()
         except Exception as e:
             raise LastVersionCheckingError(
                 "Error while parsing latest version info from "

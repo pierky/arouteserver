@@ -16,8 +16,7 @@
 import atexit
 import logging
 import shutil
-from six.moves import cPickle
-import six
+import pickle
 import tempfile
 
 from .base import BaseConfigEnricher, BaseConfigEnricherThread
@@ -111,7 +110,7 @@ class IRRDBRecord(AS_SET_Bundle):
     def save(self, objects, data):
         if objects in ("asns", "prefixes"):
             with open(self.get_path(objects), "wb") as f:
-                cPickle.dump(data, f, cPickle.HIGHEST_PROTOCOL)
+                pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
             self.saved_objects += [objects]
         else:
             raise ValueError("Unknown objects: {}".format(objects))
@@ -119,7 +118,7 @@ class IRRDBRecord(AS_SET_Bundle):
     def load(self, objects):
         if objects in self.saved_objects:
             with open(self.get_path(objects), "rb") as f:
-                return cPickle.load(f)
+                return pickle.load(f)
         else:
             return []
 
@@ -372,7 +371,7 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
         target_objects = self.WORKER_THREAD_CLASS.TARGET_FIELD
 
         # Enqueuing tasks.
-        for as_set_record_id, as_set_record in six.iteritems(self.builder.irrdb_info):
+        for _, as_set_record in self.builder.irrdb_info.items():
             if target_objects in as_set_record.requested_objects:
                 self.tasks_q.put(as_set_record)
 

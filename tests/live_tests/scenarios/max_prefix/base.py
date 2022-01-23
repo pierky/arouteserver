@@ -13,16 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-import six
-from packaging import version
-
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPreviousInstance, \
-                                                          OpenBGPDLatestInstance
 
 class MaxPrefixScenario(LiveScenario):
     __test__ = False
@@ -163,10 +156,7 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
 
     def test_020_sessions_up_AS5(self):
         """{}: AS5 session is down (max-prefix hit, action == shutdown)"""
-        with six.assertRaisesRegex(
-            self,
-            AssertionError, "is not up"
-        ):
+        with self.assertRaisesRegex(AssertionError, "is not up"):
             self.session_is_up(self.rs, self.AS5)
 
     def test_030_blocked_sessions(self):
@@ -279,9 +269,7 @@ class MaxPrefixScenarioOpenBGPD(LiveScenario_TagRejectPolicy, MaxPrefixScenario)
     def test_020_sessions_down(self):
         """{}: sessions are down"""
         for inst in (self.AS1, self.AS2, self.AS3, self.AS4):
-            with six.assertRaisesRegex(self,
-                AssertionError, "is not up"
-            ):
+            with self.assertRaisesRegex(AssertionError, "is not up"):
                 self.session_is_up(self.rs, inst)
 
     def test_030_clients_receive_maxpref_not(self):

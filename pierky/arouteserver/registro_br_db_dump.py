@@ -16,7 +16,10 @@
 import logging
 import os
 
-from six.moves.urllib.request import urlopen
+import requests
+import urllib.request as request
+from contextlib import closing
+
 
 from .ipaddresses import IPNetwork
 from .cached_objects import CachedObject
@@ -96,14 +99,14 @@ class RegistroBRWhoisDBDump(CachedObject):
 
     def _get_data(self):
         if self.source.lower().startswith("http://") or \
-            self.source.lower().startswith("https://") or \
-            self.source.lower().startswith("ftp://"):
+            self.source.lower().startswith("https://"):
 
-            logging.debug("Downloading Registro.br Whois DB dump")
+            logging.debug("Downloading Registro.br Whois DB dump via HTTP(S)...")
 
             url = self.source
             try:
-                response = urlopen(url).read()
+                response = requests.get(url)
+                raw_data = response.text
             except Exception as e:
                 raise RegistroBRWhoisDBDumpError(
                     "Error while retrieving Registro.br Whois DB dump "
@@ -111,6 +114,23 @@ class RegistroBRWhoisDBDump(CachedObject):
                         url, str(e)
                     )
                 )
+
+        elif self.source.lower().startswith("ftp://"):
+            logging.debug("Downloading Registro.br Whois DB dump via FTP...")
+
+            url = self.source
+            try:
+                with closing(request.urlopen(url)) as r:
+                    raw_data = r.read()
+
+            except Exception as e:
+                raise RegistroBRWhoisDBDumpError(
+                    "Error while retrieving Registro.br Whois DB dump "
+                    "from {}: {}".format(
+                        url, str(e)
+                    )
+                )
+
         else:
             logging.debug("Loading Registro.br Whois DB dump")
 
@@ -122,7 +142,7 @@ class RegistroBRWhoisDBDump(CachedObject):
                 )
             try:
                 with open(path, "rb") as f:
-                    response = f.read()
+                    raw_data = f.read()
             except Exception as e:
                 raise RegistroBRWhoisDBDumpError(
                     "Error while reading the Registro.br Whois DB dump "
@@ -130,10 +150,8 @@ class RegistroBRWhoisDBDump(CachedObject):
                 )
 
         try:
-            raw = response.decode("utf-8")
+            return raw_data.decode("utf-8")
         except Exception as e:
             raise RegistroBRWhoisDBDumpError(
                 "Can't decode Registro.br Whois DB raw file: {}".format(str(e))
             )
-
-        return raw

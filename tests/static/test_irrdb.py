@@ -16,7 +16,6 @@
 import json
 import os
 import shutil
-import six
 import tempfile
 try:
     import mock

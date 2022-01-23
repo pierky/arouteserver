@@ -13,15 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import six
-import unittest
-
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
-from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
-                                                      LiveScenario_TagRejectPolicy
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPreviousInstance, \
-                                                          OpenBGPDLatestInstance
+from pierky.arouteserver.tests.live_tests.base import LiveScenario
 
 class GShutScenario(LiveScenario):
     __test__ = False

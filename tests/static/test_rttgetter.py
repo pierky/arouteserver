@@ -13,7 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import six
 import unittest
 
 from pierky.arouteserver.enrichers.rtt import RTTGetter_WorkerThread
@@ -23,7 +22,7 @@ class TestRTTGetterParser(unittest.TestCase):
 
     def _parse(self, raw, exp_result=None, exp_failure=None):
         if exp_failure:
-            with six.assertRaisesRegex(self, Exception, exp_failure):
+            with self.assertRaisesRegex(Exception, exp_failure):
                 res = RTTGetter_WorkerThread._parse_result(raw)
         else:
             res = RTTGetter_WorkerThread._parse_result(raw)

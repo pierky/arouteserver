@@ -13,16 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import six
 import unittest
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
-                                                          OpenBGPDPreviousInstance, \
-                                                          OpenBGPDLatestInstance
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
+
 
 class TagRejectPolicyScenario(LiveScenario):
     __test__ = False
@@ -159,7 +155,7 @@ class TagRejectPolicyScenario(LiveScenario):
 
     def test_040_bogon1_wrong_announcing_asn(self):
         """{}: bogon prefix, wrong announcing ASN"""
-        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
+        with self.assertRaisesRegex(AssertionError, "Routes not found."):
             self.receive_route(self.rc, self.DATA["bogon1"],
                     self.rs, next_hop=self.AS1_1,
                     filtered=False, std_comms=["65520:0", "65520:2"],
@@ -270,7 +266,7 @@ class TagRejectPolicyScenario(LiveScenario):
                        "AS3_prepend1_AS1", "AS3_prepend2_AS2",
                        "AS3_prep3AS1_1any", "AS3_noexport_any",
                        "AS3_noexport_AS1"):
-            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
+            with self.assertRaisesRegex(AssertionError, "Routes not found."):
                 self.receive_route(self.rc, self.DATA[prefix])
 
     def test_100_prefixes_received_by_clients_AS1_1(self):

@@ -13,8 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import six
-
 from pierky.arouteserver.builder import BIRDConfigBuilder, OpenBGPDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
@@ -109,7 +107,7 @@ class RPKICustomBOVCommunitiesScenario(LiveScenario):
                            lrg_comms=[])
 
         for client in (self.AS1, ):
-            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
+            with self.assertRaisesRegex(AssertionError, "Routes not found."):
                 self.receive_route(client, prefix, self.rs)
 
     def test_040_rpki_AS2_valid_1(self):

@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from six import StringIO
+from io import StringIO
 import shutil
 import tempfile
 import unittest

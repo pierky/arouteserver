@@ -17,7 +17,6 @@ import logging
 import json
 import re
 import requests
-import six
 from packaging import version
 
 from .peering_db import PeeringDBNet, PeeringDBNoInfoError
@@ -47,7 +46,7 @@ class EuroIXMemberList(object):
 
         if isinstance(input_object, dict):
             self.raw_data = input_object
-        elif isinstance(input_object, six.string_types):
+        elif isinstance(input_object, str):
             response = requests.get(input_object)
             raw = response.content.decode("utf-8")
             try:
@@ -78,13 +77,13 @@ class EuroIXMemberList(object):
     @staticmethod
     def _check_type(v, vname, expected_type):
         if expected_type is str:
-            expected_type_set = six.string_types
+            expected_type_set = str
         else:
             expected_type_set = expected_type
 
         if not isinstance(v, expected_type_set):
             if expected_type is int and \
-                isinstance(v, six.string_types) and \
+                isinstance(v, str) and \
                 v.isdigit():
                 return int(v)
 

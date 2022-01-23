@@ -13,9 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import six
-import unittest
-
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
@@ -95,7 +92,7 @@ class BGPCommunitiesScenario(LiveScenario):
                            lrg_comms=[])
         self.receive_route(self.AS1, pref, self.rs,
                            std_comms=[], ext_comms=[], lrg_comms=[])
-        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
+        with self.assertRaisesRegex(AssertionError, "Routes not found."):
             self.receive_route(self.AS131073, pref)
         msg = ("route didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
@@ -111,7 +108,7 @@ class BGPCommunitiesScenario(LiveScenario):
 
         self.receive_route(self.AS1, pref, self.rs,
                             std_comms=[], ext_comms=[], lrg_comms=[])
-        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
+        with self.assertRaisesRegex(AssertionError, "Routes not found."):
             self.receive_route(self.AS131073, pref)
         msg = ("route didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
@@ -126,7 +123,7 @@ class BGPCommunitiesScenario(LiveScenario):
                            lrg_comms=["999:0:999", "999:999:1"])
         self.receive_route(self.AS1, pref, self.rs,
                            std_comms=[], ext_comms=[], lrg_comms=[])
-        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
+        with self.assertRaisesRegex(AssertionError, "Routes not found."):
             self.receive_route(self.AS131073, pref)
         msg = ("route didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
@@ -141,7 +138,7 @@ class BGPCommunitiesScenario(LiveScenario):
                            lrg_comms=[])
         self.receive_route(self.AS131073, pref, self.rs,
                         std_comms=[], ext_comms=[], lrg_comms=[])
-        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
+        with self.assertRaisesRegex(AssertionError, "Routes not found."):
             self.receive_route(self.AS1, pref)
         msg = ("route didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))
@@ -156,7 +153,7 @@ class BGPCommunitiesScenario(LiveScenario):
                            lrg_comms=["999:0:999", "999:999:131073"])
         self.receive_route(self.AS131073, pref, self.rs,
                             std_comms=[], ext_comms=[], lrg_comms=[])
-        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
+        with self.assertRaisesRegex(AssertionError, "Routes not found."):
             self.receive_route(self.AS1, pref)
         msg = ("route didn't pass control communities checks - "
                "NOT ANNOUNCING {} TO {{inst}}".format(pref))

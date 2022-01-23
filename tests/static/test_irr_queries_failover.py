@@ -18,7 +18,6 @@ import os
 import shutil
 import tempfile
 import yaml
-import six
 try:
     import mock
 except ImportError:
@@ -219,7 +218,7 @@ class TestIRRDBEnricher_HostsFailover_AllTimeout(TestIRRDBEnricher_HostsFailover
 
     def test_failure(self, *patches):
         """IRR queries fail-over: all timeout"""
-        with six.assertRaisesRegex(self, BuilderError, ""):
+        with self.assertRaisesRegex(BuilderError, ""):
             self.setup_builder(self.GENERAL_SIMPLE, self.CLIENTS_SIMPLE)
 
         self.assertTrue(
@@ -241,7 +240,7 @@ class TestIRRDBEnricher_HostsFailover_AllTimeout(TestIRRDBEnricher_HostsFailover
 
         self.clear_log()
 
-        with six.assertRaisesRegex(self, BuilderError, ""):
+        with self.assertRaisesRegex(BuilderError, ""):
             self.setup_builder(self.GENERAL_SIMPLE, self.CLIENTS_SIMPLE)
 
         self.assertTrue(
@@ -263,7 +262,7 @@ class TestIRRDBEnricher_HostsFailover_AllFailure(TestIRRDBEnricher_HostsFailover
 
     def test_failure(self, *patches):
         """IRR queries fail-over: all failure"""
-        with six.assertRaisesRegex(self, BuilderError, ""):
+        with self.assertRaisesRegex(BuilderError, ""):
             self.setup_builder(self.GENERAL_SIMPLE, self.CLIENTS_SIMPLE)
 
         self.assertTrue(

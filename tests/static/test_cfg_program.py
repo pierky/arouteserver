@@ -15,7 +15,7 @@
 
 import os
 import shutil
-import six
+import io
 import tempfile
 import unittest
 
@@ -41,7 +41,7 @@ class TestProgramConfig(unittest.TestCase):
 
     def _load_from_temp_dir(self, cfg):
         buf = cfg.format(temp_dir=self.temp_dir)
-        f = six.StringIO(buf)
+        f = io.StringIO(buf)
         self.pr_cfg.load(f)
 
     def test_010_load_distributed_file(self):
@@ -97,7 +97,7 @@ class TestProgramConfig(unittest.TestCase):
         self.pr_cfg.get_dir("cfg_dir")
 
         for d in ("templates_dir", "cache_dir"):
-            with six.assertRaisesRegex(self, ProgramConfigError,
+            with self.assertRaisesRegex(ProgramConfigError,
                                        "does not exist"):
                 self.pr_cfg.get_dir(d)
 

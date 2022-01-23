@@ -13,16 +13,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import json
 import os
 import shutil
-import six
 import tempfile
 try:
     import mock
 except ImportError:
     import unittest.mock as mock
-import time
 import unittest
 import datetime
 
@@ -152,7 +149,7 @@ class TestRPKICache(unittest.TestCase):
 
         # Same file as in test_030, but this time the mock
         # _get_utc_now is in the future.
-        with six.assertRaisesRegex(self, RPKIValidatorCacheError, "was built at .* it will be ignored"):
+        with self.assertRaisesRegex(RPKIValidatorCacheError, "was built at .* it will be ignored"):
             roas = self._setup_obj(
                 open("tests/static/data/rpki_roas_rpki-client.json").read()
             )
@@ -178,7 +175,7 @@ class TestRPKICache(unittest.TestCase):
     def test_220(self, _):
         """RPKI ROAs: OctoRPKI expired file"""
 
-        with six.assertRaisesRegex(self, RPKIValidatorCacheError, r"was built at .* it will be ignored"):
+        with self.assertRaisesRegex(RPKIValidatorCacheError, r"was built at .* it will be ignored"):
             roas = self._setup_obj(
                 open("tests/static/data/rpki_roas_octorpki.json").read()
             )
@@ -191,7 +188,7 @@ class TestRPKICache(unittest.TestCase):
     def test_230(self, _):
         """RPKI ROAs: OctoRPKI out of validity"""
 
-        with six.assertRaisesRegex(self, RPKIValidatorCacheError, r"is valid till .* it will be ignored"):
+        with self.assertRaisesRegex(RPKIValidatorCacheError, r"is valid till .* it will be ignored"):
             roas = self._setup_obj(
                 open("tests/static/data/rpki_roas_octorpki-validity.json").read()
             )

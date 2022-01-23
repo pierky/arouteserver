@@ -15,7 +15,6 @@
 
 import json
 import os
-import six
 import unittest
 import yaml
 
@@ -71,7 +70,7 @@ class TestClientsFromEuroIX(unittest.TestCase):
         self._result_match_file("official_more_complex_example",
             ixp_id=42, vlan_id=0, routeserver_only=True)
 
-        with six.assertRaisesRegex(self, Exception, "IXP ID 1 not found"):
+        with self.assertRaisesRegex(Exception, "IXP ID 1 not found"):
             self._run("official_more_complex_example", ixp_id=1)
 
         self._run("official_more_complex_example", ixp_id=42, vlan_id=1)
@@ -240,8 +239,7 @@ class TestClientsFromEuroIX(unittest.TestCase):
         self._run("official_more_complex_example", ixp_id=42, vlan_id=0)
         clients = {"clients": self.clients}
 
-        with six.assertRaisesRegex(
-            self,
+        with self.assertRaisesRegex(
             Exception,
             "Error while processing the client n. 1 from "
             "the set of clients to be merged: 'ip' not found"
@@ -253,8 +251,7 @@ class TestClientsFromEuroIX(unittest.TestCase):
         self._run("official_more_complex_example", ixp_id=42, vlan_id=0)
         clients = {"clients": self.clients}
 
-        with six.assertRaisesRegex(
-            self,
+        with self.assertRaisesRegex(
             Exception,
             "Validation of the final clients file failed: "
             "check the logs for more details."
@@ -266,8 +263,7 @@ class TestClientsFromEuroIX(unittest.TestCase):
         self._run("official_more_complex_example", ixp_id=42, vlan_id=0)
         clients = {"clients": self.clients}
 
-        with six.assertRaisesRegex(
-            self,
+        with self.assertRaisesRegex(
             Exception,
             "Error while processing the client n. 1 from "
             "the set of clients to be merged: "

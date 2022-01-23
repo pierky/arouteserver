@@ -13,7 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import six
 import unittest
 from packaging import version
 
@@ -21,10 +20,7 @@ from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
-                                                          OpenBGPDPreviousInstance, \
-                                                          OpenBGPDLatestInstance, \
                                                           OpenBGPDPortableLatestInstance
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class PathHidingScenario(LiveScenario):
     __test__ = False
@@ -216,7 +212,7 @@ class PathHidingScenario_MitigationOn(object):
     def test_041_AS3_and_AS4_no_prefix_via_AS1(self):
         """{}: AS3 and AS4 don't receive prefix via AS1"""
         for inst in (self.AS3, self.AS4):
-            with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
+            with self.assertRaisesRegex(AssertionError, "Routes not found."):
                 self.receive_route(inst, self.DATA["AS101_pref_ok1"], self.rs,
                                    next_hop=self.AS1)
 
@@ -236,7 +232,7 @@ class PathHidingScenario_MitigationOn(object):
                            as_path="1 101")
 
         self.AS3.clear_cached_routes()
-        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
+        with self.assertRaisesRegex(AssertionError, "Routes not found."):
             self.receive_route(self.AS3, self.DATA["AS101_pref_ok1"])
 
 class PathHidingScenario_MitigationOff(object):
@@ -245,7 +241,7 @@ class PathHidingScenario_MitigationOff(object):
 
     def test_050_AS3_prefix_not_received_by_AS3(self):
         """{}: AS3 does not receive prefix at all"""
-        with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
+        with self.assertRaisesRegex(AssertionError, "Routes not found."):
             self.receive_route(self.AS3, self.DATA["AS101_pref_ok1"])
 
     def test_051_AS4_receives_prefix_via_AS2_because_of_ADD_PATH(self):

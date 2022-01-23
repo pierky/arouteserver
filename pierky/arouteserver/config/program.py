@@ -19,7 +19,6 @@ import hashlib
 import filecmp
 import logging
 import os
-import six
 import sys
 import textwrap
 import yaml
@@ -91,7 +90,7 @@ class ConfigParserProgram(object):
     def load(self, path_or_file):
         self._reset_to_default()
 
-        if isinstance(path_or_file, six.string_types):
+        if isinstance(path_or_file, str):
             path = path_or_file
 
             if path and not os.path.exists(os.path.expanduser(path)):
