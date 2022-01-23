@@ -16,6 +16,10 @@ next-release
 
   The Docker image was using version 1.2.
 
+- Improvement (Docker image): PyPy3-based image added.
+
+  The Docker images based on PyPy3 will have tags in the form ``latest-pypy3`` and ``<version>-pypy3`` (like ``1.14.0-pypy3``).
+
 - Improvements: drop dependencies on libraries needed for Python 2 compatibility.
 
   Also, tests are now performed using Python 3.6, 3.8 and 3.9 too.
