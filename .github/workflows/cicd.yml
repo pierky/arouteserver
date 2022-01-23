@@ -10,7 +10,12 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.9]
+        python-version:
+        - 3.6
+        - 3.8
+        - 3.9  # Reference version used to run integration tests;
+               # to keep in sync with 'if: ' statements in the rest
+               # of this file.
 
     steps:
       - uses: actions/checkout@v2
@@ -37,12 +42,19 @@ jobs:
       - name: Test CLI
         run: ./tests/cli
 
+      - name: Static tests
+        run: nosetests -vs -x --tests=tests/static/
+        env:
+          TRAVIS: 1
+
       - name: Test external resources
+        if: ${{ matrix.python-version == '3.9' }}
         run: nosetests -vs --tests=tests/external_resources/
         env:
           TRAVIS: 1
 
       - name: Fetch Docker images used by tests
+        if: ${{ matrix.python-version == '3.9' }}
         run: |
           echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
           docker pull pierky/bird:1.6.8
@@ -55,8 +67,9 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Tests
-        run: nosetests -vs -x --tests=tests/static/,tests/live_tests/
+      - name: Integration tests
+        if: ${{ matrix.python-version == '3.9' }}
+        run: nosetests -vs -x --tests=tests/live_tests/
         env:
           TRAVIS: 1
 

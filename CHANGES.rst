@@ -16,6 +16,10 @@ next-release
 
   The Docker image was using version 1.2.
 
+- Improvements: drop dependencies on libraries needed for Python 2 compatibility.
+
+  Also, tests are now performed using Python 3.6, 3.8 and 3.9 too.
+
 1.13.1
 ------
 
