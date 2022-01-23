@@ -200,7 +200,8 @@ class IRRDBInfo(CachedObject, AS_SET_Bundle):
             cmd = [self.bgpq3_path]
             cmd += ["-h", host]
             cmd += ["-S", self._get_bgpq3_sources()]
-            cmd += ["-3"]
+            if "bgpq4" not in self.bgpq3_path:
+                cmd += ["-3"]
             cmd += ["-j"]
             cmd += args
 

@@ -3,6 +3,23 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- Fix: avoid running ``bgpq4`` using the ``-3`` option.
+
+  It seems that the ``-3`` CLI option has been dropped in ``bgpq4`` and is no longer supported (it was added as a way to not break compatibility with ``bgpq3`` syntax).
+
+  See also `GitHub issue 95 <https://github.com/pierky/arouteserver/issues/95>`_.
+
+- Fix (OpenBGPD): syntax error when prepend functionalities were configured with 'std' communities only and 32bit ASN clients were present.
+
+  See also `GitHub issue 98 <https://github.com/pierky/arouteserver/issues/98>`_.
+
+- Improvement: better explaination of when error messages can be ignored.
+
+  See also `GitHub issue 96 <https://github.com/pierky/arouteserver/issues/96>`_.
+
 1.13.0
 ------
 

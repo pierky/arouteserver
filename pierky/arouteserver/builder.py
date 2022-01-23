@@ -83,9 +83,14 @@ class ConfigBuilder(object):
         msg = "Compatibility issue ID '{}'. {}".format(issue_id, text)
         if issue_id in self.ignore_errors or "*" in self.ignore_errors:
             logging.warning(
-                "{} - Ignored".format(msg)
+                "{} - Ignored via --ignore-issues {}".format(msg, issue_id)
             )
             return True
+
+        msg += (
+            " - This issue can be acknowledged and ignored via the CLI option "
+            "--ignore-issues {}".format(issue_id)
+        )
         logging.error(msg)
         return False
 
@@ -944,8 +949,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
 
         reject_policy = self.cfg_general["filtering"]["reject_policy"]["policy"]
         if reject_policy == "tag_and_reject":
-            res = False
-            logging.error(
+            raise BuilderError(
                 "For OpenBGP, 'reject_policy' can't be set to "
                 "'tag_and_reject'."
             )
@@ -1122,15 +1126,16 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             self.cfg_general.check_overlapping_communities(
                 allow_private_asns=False)
         except ConfigError as e:
-            res = False
-            logging.error("{}OpenBGPD doesn't allow to delete BGP "
-                          "communities using ranges of values, but only "
-                          "using the wildcard ('*'), so also "
-                          "outbound communities whose last part contain "
-                          "private ASNs collide with inbound communities "
-                          "that use the 'peer_as' macro.".format(
-                              str(e) + " " if str(e) else ""
-                            ))
+            raise BuilderError(
+                "{}OpenBGPD doesn't allow to delete BGP "
+                "communities using ranges of values, but only "
+                "using the wildcard ('*'), so also "
+                "outbound communities whose last part contain "
+                "private ASNs collide with inbound communities "
+                "that use the 'peer_as' macro.".format(
+                    str(e) + " " if str(e) else ""
+                )
+            )
 
         if (self.cfg_general["graceful_shutdown"]["enabled"] or \
             self.perform_graceful_shutdown) and \

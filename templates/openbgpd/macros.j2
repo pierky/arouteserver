@@ -107,7 +107,7 @@
 {% macro write_prepending_comm(comm, asn, rtt_thresholds) %}
 {%	if comm|community_is_set %}
 {%		if comm.std %}
-{%			if not asn or asn <= 65535 %}
+{%			if not asn or asn <= 65535 or "peer_as" not in comm.std %}
 {{-			" community delete " ~ comm.std|replace("peer_as", asn)|replace("dyn_val", "*") -}}
 {%			endif %}
 {%		endif %}
