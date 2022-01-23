@@ -16,6 +16,7 @@ jobs:
         - 3.9  # Reference version used to run integration tests;
                # to keep in sync with 'if: ' statements in the rest
                # of this file.
+        - pypy3
 
     steps:
       - uses: actions/checkout@v2
@@ -78,6 +79,14 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        docker-image:
+        - base_image: python:3.9
+          target_image: latest
+        - base_image: pypy:3.8
+          target_image: latest-pypy3
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -85,7 +94,8 @@ jobs:
       - name: Build the image
         run: >
           docker build \
-            -t pierky/arouteserver:latest \
+            --build-arg base_image=${{ matrix.docker-image.base_image }} \
+            -t pierky/arouteserver:${{ matrix.docker-image.target_image }} \
             -f docker/Dockerfile \
             .
 
@@ -94,7 +104,7 @@ jobs:
           docker run \
             -t \
             --rm \
-            pierky/arouteserver:latest \
+            pierky/arouteserver:${{ matrix.docker-image.target_image }} \
               bash -c 'pip install -r requirements-dev.txt && nosetests -vsx tests/static'
 
       - name: Run CLI tests
@@ -102,7 +112,7 @@ jobs:
           docker run \
             -t \
             --rm \
-            pierky/arouteserver:latest \
+            pierky/arouteserver:${{ matrix.docker-image.target_image }} \
               ./tests/cli
 
       - name: Prep environment for configuration building tests
@@ -123,7 +133,7 @@ jobs:
             -e IP_VER=4 \
             -e DAEMON=bird \
             -e VERSION=1.6.8 \
-            pierky/arouteserver:latest
+            pierky/arouteserver:${{ matrix.docker-image.target_image }}
 
       - name: Validate BIRD 1.x configuration
         run: >
@@ -150,7 +160,7 @@ jobs:
             -e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
             -e DAEMON=bird \
             -e VERSION=2.0.7 \
-            pierky/arouteserver:latest
+            pierky/arouteserver:${{ matrix.docker-image.target_image }}
 
       - name: Validate BIRD 2 configuration
         run: >
@@ -183,7 +193,7 @@ jobs:
             -e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
             -e DAEMON=openbgpd \
             -e VERSION=6.7 \
-            pierky/arouteserver:latest
+            pierky/arouteserver:${{ matrix.docker-image.target_image }}
 
       - name: Validate OpenBGPD configuration
         run: >
@@ -214,7 +224,7 @@ jobs:
             -e IP_VER=4 \
             -e DAEMON=bird \
             -e VERSION=1.6.8 \
-            pierky/arouteserver:latest
+            pierky/arouteserver:${{ matrix.docker-image.target_image }}
 
       - name: Validate configuration built using custom general.yml file
         run: >
@@ -242,7 +252,7 @@ jobs:
             -e VERSION=1.6.8 \
             -e RS_ASN=9999 \
             -e ROUTER_ID=192.0.2.200 \
-            pierky/arouteserver:latest
+            pierky/arouteserver:${{ matrix.docker-image.target_image }}
 
       - name: Validate configuration built using custom general.yml file with env vars and reject reasons communities
         run: |
@@ -278,7 +288,7 @@ jobs:
             -e VERSION=1.6.8 \
             -e LOCAL_FILES="header footer" \
             -e LOCAL_FILES_DIR=/var/pierky/test \
-            pierky/arouteserver:latest
+            pierky/arouteserver:${{ matrix.docker-image.target_image }}
 
       - name: Verify that include statements are there
         run: |
@@ -303,7 +313,7 @@ jobs:
             -e IP_VER=4 \
             -e DAEMON=bird \
             -e VERSION=1.6.8 \
-            pierky/arouteserver:latest
+            pierky/arouteserver:${{ matrix.docker-image.target_image }}
 
       - name: Verify that the desired 16bit placeholder ASN is used
         run: |

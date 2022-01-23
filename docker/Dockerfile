@@ -1,4 +1,6 @@
-FROM python:3.9
+ARG base_image="python:3.9"
+
+FROM ${base_image}
 
 RUN mkdir /arouteserver
 WORKDIR /arouteserver
