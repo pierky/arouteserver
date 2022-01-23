@@ -1369,24 +1369,6 @@ arin_whois_db_records
 ---------------------
 AS10745:
 - exact: false
-  ge: 48
-  le: 128
-  length: 48
-  max_length: 128
-  prefix: '2001:500:110::'
-- exact: false
-  ge: 24
-  le: 32
-  length: 24
-  max_length: 32
-  prefix: 192.149.252.0
-- exact: false
-  ge: 24
-  le: 32
-  length: 24
-  max_length: 32
-  prefix: 192.136.136.0
-- exact: false
   ge: 24
   le: 32
   length: 24
@@ -1397,20 +1379,38 @@ AS10745:
   le: 128
   length: 48
   max_length: 128
+  prefix: '2001:500:110::'
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
+  prefix: 192.136.136.0
+- exact: false
+  ge: 48
+  le: 128
+  length: 48
+  max_length: 128
   prefix: '2001:500:4::'
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
+  prefix: 192.149.252.0
 AS12654:
 - exact: false
   ge: 24
   le: 32
   length: 24
   max_length: 32
-  prefix: 23.128.124.0
+  prefix: 23.128.25.0
 - exact: false
   ge: 24
   le: 32
   length: 24
   max_length: 32
-  prefix: 23.128.25.0
+  prefix: 23.128.124.0
 - exact: false
   ge: 24
   le: 32
@@ -1440,6 +1440,7 @@ never_via_route_servers_asns
 - 11670
 - 8607
 - 12322
+- 6730
 - 13030
 - 3320
 - 174
@@ -1449,6 +1450,7 @@ never_via_route_servers_asns
 - 3292
 - 17451
 - 35836
+- 21396
 - 29169
 - 20161
 - 11260
@@ -1458,6 +1460,7 @@ never_via_route_servers_asns
 - 39651
 - 9908
 - 15692
+- 10013
 - 8943
 - 48237
 - 37271
@@ -1475,8 +1478,9 @@ never_via_route_servers_asns
 - 714
 - 62567
 - 8075
+- 3257
+- 13760
 - 263328
-- 19151
 - 11164
 - 12822
 - 5511
@@ -1485,6 +1489,7 @@ never_via_route_servers_asns
 - 47377
 - 57866
 - 46450
+- 263801
 - 263945
 - 63290
 - 8365
@@ -1495,6 +1500,7 @@ never_via_route_servers_asns
 - 43470
 - 3754
 - 3630
+- 135706
 - 264424
 - 264212
 - 7862
@@ -1563,7 +1569,6 @@ never_via_route_servers_asns
 - 269367
 - 36165
 - 202561
-- 328748
 - 213202
 - 141120
 - 141411
@@ -1572,7 +1577,6 @@ never_via_route_servers_asns
 - 38713
 - 399338
 - 53859
-- 268872
 - 269654
 - 141892
 - 1299
@@ -1588,7 +1592,9 @@ never_via_route_servers_asns
 - 31764
 - 142369
 - 270796
+- 142348
 - 23888
+- 398203
 - 141856
 - 267026
 - 146958
@@ -1602,4 +1608,10 @@ never_via_route_servers_asns
 - 328959
 - 55244
 - 92
-- 138281
+- 136874
+- 40063
+- 149296
+- 327732
+- 210030
+- 51630
+- 272018

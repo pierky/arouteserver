@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next-release
+------------
+
+- Improvement (OpenBGPD): improve readability of the configurations.
+
+  A better formatting of the output configuration allows a better readability. Also, wherever possible, extended communities are removed using wildcard matching, allowing a more compact configuration.
+
+  See also `GitHub issue 97 <https://github.com/pierky/arouteserver/issues/97>`_ and `99 <https://github.com/pierky/arouteserver/issues/99>`_.
+
 1.13.1
 ------
 
