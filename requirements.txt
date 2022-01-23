@@ -1,8 +1,6 @@
 aggregate6>=1.0.12
 ipaddr>=2.1.11;python_version<"3.3"
 Jinja2>=2.9.4
-mock>=2.0.0;python_version<"3.3"
-nose>=1.3.7
 PyYAML>=3.13
 requests>=2.18.4
 packaging
