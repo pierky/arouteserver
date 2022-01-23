@@ -12,6 +12,10 @@ next-release
 
   See also `GitHub issue 97 <https://github.com/pierky/arouteserver/issues/97>`_ and `99 <https://github.com/pierky/arouteserver/issues/99>`_.
 
+- Improvement (Docker image): use ``bgpq4`` version 1.4.
+
+  The Docker image was using version 1.2.
+
 1.13.1
 ------
 
