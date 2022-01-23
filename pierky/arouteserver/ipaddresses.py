@@ -13,23 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-try:
-    import ipaddr
-    ip_library = "ipaddr"
-except ImportError:
-    import ipaddress
-    ip_library = "ipaddress"
+import ipaddress
 
 
 class IPAddress(object):
 
     def __init__(self, ip):
-        if ip_library == "ipaddr":
-            self.obj = ipaddr.IPAddress(ip)
-            self.ip = str(self.obj)
-        else:
-            self.obj = ipaddress.ip_address(ip)
-            self.ip = str(self.obj.compressed)
+        self.obj = ipaddress.ip_address(ip)
+        self.ip = str(self.obj.compressed)
 
         self.version = self.obj.version
 
@@ -40,12 +31,8 @@ class IPAddress(object):
 class IPNetwork(object):
 
     def __init__(self, ip):
-        if ip_library == "ipaddr":
-            self.obj = ipaddr.IPNetwork(ip)
-            self.ip = str(self.obj.ip)
-        else:
-            self.obj = ipaddress.ip_network(ip)
-            self.ip = str(self.obj.network_address)
+        self.obj = ipaddress.ip_network(ip)
+        self.ip = str(self.obj.network_address)
 
         self.prefixlen = self.obj.prefixlen
         self.max_prefixlen = self.obj.max_prefixlen
