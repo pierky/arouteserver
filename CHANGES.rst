@@ -6,6 +6,8 @@ Change log
 next-release
 ------------
 
+- New: Add support for `BIRD 2.0.9 <https://www.mail-archive.com/bird-users@network.cz/msg06594.html>`_ (also included into the integration testing suite).
+
 - Improvement (OpenBGPD): improve readability of the configurations.
 
   A better formatting of the output configuration allows a better readability. Also, wherever possible, extended communities are removed using wildcard matching, allowing a more compact configuration.
