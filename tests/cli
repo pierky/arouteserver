@@ -60,7 +60,7 @@ function must_not_contain() {
   fi
 }
 
-BIRD2_LATEST_VER=2.0.8
+BIRD2_LATEST_VER=2.0.9
 
 # ---------------------------------------------
 # Environment variables expansion in general.yml

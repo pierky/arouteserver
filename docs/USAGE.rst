@@ -21,7 +21,7 @@ To build configuration for BIRD v2, ``--target-version`` must be used and set to
 
   .. code:: bash
 
-    arouteserver bird --target-version 2.0.8 -o /etc/bird/bird.conf
+    arouteserver bird --target-version 2.0.9 -o /etc/bird/bird.conf
 
 The script exits with ``0`` if everything is fine or with an exit code different than zero if something wrong occurs.
 
