@@ -25,4 +25,7 @@ class TagRejectPolicyScenario_BIRD2IPv4(BasicScenario_Data4, TagRejectPolicyScen
     RS_INSTANCE_CLASS = BIRD2Instance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
 
-    ALLOWED_LOG_ERRORS = ["AS1_1: Invalid NEXT_HOP attribute in route 1.0.3.0/24"]
+    ALLOWED_LOG_ERRORS = [
+        "Invalid NEXT_HOP attribute - neighbor address 192.0.2.11",
+        "Invalid route 1.0.3.0/24 withdrawn"
+    ]
