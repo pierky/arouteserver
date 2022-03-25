@@ -134,6 +134,9 @@ function RenderExample() {
 	elif [ "$COMMAND" == "html" ]; then
 		$CMD -o examples/$DST/description.html
 		cp examples/$DST/description.html $DOCS_DIR/_static/examples_$DST.html
+	elif [ "$COMMAND" == "md" ]; then
+		$CMD -o examples/$DST/description.md
+		cp examples/$DST/description.md $DOCS_DIR/_static/examples_$DST.md
 	elif [ "$COMMAND" == "template-context" ]; then
 		if [ "$#" -gt 0 ]; then
 			IP_VER="$1" ; shift
