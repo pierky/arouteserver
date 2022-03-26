@@ -321,6 +321,18 @@ class HTMLCommand(TemplateRenderingCommands):
     def _get_template_sub_dir(self):
         return "html"
 
+class MDCommand(TemplateRenderingCommands):
+
+    COMMAND_NAME = "md"
+    COMMAND_HELP = ("Build an markdown descriptive page containing the "
+                    "textual representation of the route server "
+                    "configuration.")
+
+    BUILDER_CLASS = ConfigBuilder
+
+    def _get_template_sub_dir(self):
+        return "md"
+
 class DumpTemplateContextCommand(TemplateRenderingCommands):
 
     COMMAND_NAME = "template-context"

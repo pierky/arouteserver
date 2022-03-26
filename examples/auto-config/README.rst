@@ -68,4 +68,4 @@ A list of BGP communities is also automatically built.
     - Routes tagged with the GRACEFUL_SHUTDOWN well-known community (65535:0) are
    processed accordingly to draft-ietf-grow-bgp-gshut.
    
-The textual description (HTML) generated on the basis of the *general.yml* files produced by this command is also reported here.
+The textual description (HTML and Markdown) generated on the basis of the *general.yml* files produced by this command is also reported here.

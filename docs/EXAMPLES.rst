@@ -10,7 +10,7 @@ Configurations built using the default ``general.yml`` and ``clients.yml`` files
 
 https://github.com/pierky/arouteserver/blob/master/examples/default
 
-See the `textual representation of this configuration <_static/examples_default.html>`__.
+See the `textual representation (HTML) of this configuration <_static/examples_default.html>`__.
 
 Feature-rich example
 --------------------
@@ -33,7 +33,7 @@ Please note: for the sake of readability of the configuration files built in thi
 
 https://github.com/pierky/arouteserver/blob/master/examples/rich
 
-See the `textual representation of this configuration <_static/examples_rich.html>`__.
+See the `textual representation (HTML) of this configuration <_static/examples_rich.html>`__.
 
 BIRD hooks example
 ------------------
@@ -157,13 +157,13 @@ A list of BGP communities is also automatically built.
     - Routes tagged with the GRACEFUL_SHUTDOWN well-known community (65535:0) are
    processed accordingly to draft-ietf-grow-bgp-gshut.
    
-The textual description (HTML) generated on the basis of the *general.yml* files produced by this command is also reported here.
+The textual description (HTML and Markdown) generated on the basis of the *general.yml* files produced by this command is also reported here.
 
 https://github.com/pierky/arouteserver/blob/master/examples/auto-config
 
-bird-general.yml.html - See the `textual representation of this configuration <_static/examples_auto-config_bird-general.yml.html>`__.
+bird-general.yml.html - See the `textual representation (HTML) of this configuration <_static/examples_auto-config_bird-general.yml.html>`__.
 
-openbgpd-general.yml.html - See the `textual representation of this configuration <_static/examples_auto-config_openbgpd-general.yml.html>`__.
+openbgpd-general.yml.html - See the `textual representation (HTML) of this configuration <_static/examples_auto-config_openbgpd-general.yml.html>`__.
 
 IX-F Member Export files
 ------------------------

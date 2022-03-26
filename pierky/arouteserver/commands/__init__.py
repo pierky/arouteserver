@@ -16,6 +16,7 @@
 
 from .tpl_rendering import (
     HTMLCommand,
+    MDCommand,
     DumpTemplateContextCommand,
     BIRDCommand,
     OpenBGPDCommand,
@@ -39,6 +40,7 @@ all_commands = [
     BIRDCommand,
     OpenBGPDCommand,
     HTMLCommand,
+    MDCommand,
     DumpTemplateContextCommand,
     IRRASSetCommand,
     ClientsFromPeeringDBCommand,
