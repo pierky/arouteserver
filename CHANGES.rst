@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New: ``md`` command, to build a textual representation in Markdown format.
+
+  This command works like the ``html`` command and can be used to build a textual representation of the route server's configuration policy in Markdown format.
+
+  For more details see the `Textual representation <https://arouteserver.readthedocs.io/en/latest/USAGE.html#textual-representation>`__ section of the documentation.
+
 1.14.0
 ------
 
