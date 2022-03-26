@@ -171,6 +171,12 @@ function RenderConfigureExample() {
 	$CMD &>/dev/null
 
 	cp examples/auto-config/${DST}.html $DOCS_DIR/_static/examples_auto-config_${DST}.html
+
+	CMD="./scripts/arouteserver md $OPTS --output examples/auto-config/${DST}.md --general examples/auto-config/${DST}"
+
+	$CMD &>/dev/null
+
+	cp examples/auto-config/${DST}.md $DOCS_DIR/_static/examples_auto-config_${DST}.md
 }
 
 function ClientsFromEuroIX() {
@@ -225,7 +231,7 @@ RenderConfigureExample "openbgpd" $G \
 	"daemon=openbgpd version=${OPENBGPD_DEFAULT_VERSION} asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" &>/dev/null
 ./scripts/arouteserver openbgpd $OPTS --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
 
-echo "The textual description (HTML) generated on the basis of the *general.yml* files produced by this command is also reported here." >> $D
+echo "The textual description (HTML and Markdown) generated on the basis of the *general.yml* files produced by this command is also reported here." >> $D
 
 # Invalidating the cache because the previous commands fetched the real (huge)
 # dataset from the RIPE RPKI Validator, while the following commands just need
@@ -255,6 +261,7 @@ RenderExample "default" "template-context" "$G" "$C" "config.d/bogons.yml"
 
 title "Building example: default, HTML"
 RenderExample "default" "html" "$G" "$C" "config.d/bogons.yml"
+RenderExample "default" "md" "$G" "$C" "config.d/bogons.yml"
 
 title "Building example: default, IRR AS-SET object"
 RenderExample "default" "irr-as-set" "$G" "$C" "config.d/bogons.yml"
@@ -280,6 +287,7 @@ RenderExample "rich" "template-context" "$G" "$C" "config.d/bogons.yml"
 
 title "Building example: rich, HTML"
 RenderExample "rich" "html" "$G" "$C" "config.d/bogons.yml"
+RenderExample "rich" "md" "$G" "$C" "config.d/bogons.yml"
 
 title "Building example: rich, IRR AS-SET object"
 RenderExample "rich" "irr-as-set" "$G" "$C" "config.d/bogons.yml"
@@ -404,12 +412,12 @@ for d in default rich bird_hooks clients-from-euroix auto-config ixf-member-expo
 		set -e
 		if [ $html_cnt -eq 1 ]; then
 			echo "" >> $DST_FILE
-			echo "See the \`textual representation of this configuration <_static/examples_$EXAMPLE_NAME.html>\`__." >> $DST_FILE
+			echo "See the \`textual representation (HTML) of this configuration <_static/examples_$EXAMPLE_NAME.html>\`__." >> $DST_FILE
 		elif [ $html_cnt -gt 1 ]; then
 			for f in `ls $d/*.html`; do
 				filename=`basename $f`
 				echo "" >> $DST_FILE
-				echo "$filename - See the \`textual representation of this configuration <_static/examples_${EXAMPLE_NAME}_${filename}>\`__." >> $DST_FILE
+				echo "$filename - See the \`textual representation (HTML) of this configuration <_static/examples_${EXAMPLE_NAME}_${filename}>\`__." >> $DST_FILE
 			done
 		fi
 	fi
