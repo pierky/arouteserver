@@ -71,7 +71,9 @@
 {%	if comm.ext %}
 {%		if replace_peer_as %}
 {{ indent }}bgp_ext_community.delete([{{ write_community(comm.ext, "1..64511") }}]);
+{%			if comm.ext.split(":")[1]|int < 65536 and comm.ext.split(":")[2]|int < 65536 %}
 {{ indent }}bgp_ext_community.delete([{{ write_community(comm.ext, "131072..4199999999") }}]);
+{%			endif %}
 {%		elif replace_dyn_val %}
 {{ indent }}bgp_ext_community.delete([{{ write_community(comm.ext, replace_dyn_val=replace_dyn_val) }}]);
 {%		else %}

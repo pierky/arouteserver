@@ -72,6 +72,20 @@ class ValidatorUInt(ConfigParserValidator):
                 raise ConfigError()
         raise ConfigError()
 
+class ValidatorInterface(ConfigParserValidator):
+
+    def _validate(self, v):
+        IFNAMSIZ = 16
+        IlligalCharacters = set(" \\")
+        if v is not None:
+            ifname = str(v)
+            if len(ifname) >= IFNAMSIZ:
+                raise ConfigError("Interface name can't exceed 16(IFNAMSIZ)")
+            if len(set(ifname) & IlligalCharacters) > 0:
+                raise ConfigError("Interface name can't contain '/' or any whitespace characters")
+            return ifname
+        return None
+
 class ValidatorText(ConfigParserValidator):
 
     def _validate(self, v):

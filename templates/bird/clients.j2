@@ -400,6 +400,10 @@ protocol bgp {{ client.id }} {
 	neighbor {{ client.ip }} as {{ client.asn }};
 	rs client;
 
+	{% if client.interface %}
+	interface "{{ client.interface }}";
+	{% endif -%}
+
 	{% if client.password %}
 	password "{{ client.password }}";
 	{% endif -%}
@@ -457,6 +461,10 @@ protocol bgp {{ client.id }} {
 	{% 	endif %}
 	{% endif %}
 
+	{% if "2.0.8"|target_version_ge and client.ip|ipaddr_ver == 6 and client.cfg.extended_next_hop %}
+	extended next hop on;
+	{% endif %}
+
 	{% if "2.0.0"|target_version_ge %}
 	import table on;
 	{% endif %}
@@ -477,6 +485,7 @@ protocol bgp {{ client.id }} {
 	{% else %}
 	{{ "client6"|include_local_file -}}
 	{% endif %}
+
 }
 
 {% endfor -%}
