@@ -125,6 +125,9 @@ class ConfigParserGeneral(ConfigParserBase):
             ("strict", "same-as", "authorized_addresses"),
             default="strict"
         )
+        f["next_hop"]["authorized_addresses_list"] = ValidatorListOf(
+            ValidatorIPAddr, mandatory=False
+        )
         f["ipv4_pref_len"] = ValidatorIPMinMaxLen(
             4, default={"min": 8, "max": 24}
         )
