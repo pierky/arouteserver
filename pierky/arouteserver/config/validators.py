@@ -76,9 +76,11 @@ class ValidatorInterface(ConfigParserValidator):
 
     def _validate(self, v):
         IFNAMSIZ = 16
-        IlligalCharacters = set(" \\")
+        IlligalCharacters = set(" /")
         if v is not None:
             ifname = str(v)
+            if ifname == "/":
+                return ifname
             if len(ifname) >= IFNAMSIZ:
                 raise ConfigError("Interface name can't exceed 16(IFNAMSIZ)")
             if len(set(ifname) & IlligalCharacters) > 0:

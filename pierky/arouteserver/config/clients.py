@@ -52,10 +52,10 @@ class ConfigParserClients(ConfigParserBase):
         schema = {
             "asn": ValidatorASN(),
             "ip": ValidatorIPAddr(),
-            "interface": ValidatorInterface(mandatory=False),
             "description": ValidatorText(mandatory=False),
             "password": ValidatorText(mandatory=False),
             "cfg": {
+                "interface": ValidatorInterface(mandatory=False),
                 "extended_next_hop": ValidatorBool(mandatory=False),
                 "prepend_rs_as": ValidatorBool(mandatory=False),
                 "passive": ValidatorBool(mandatory=False),

@@ -400,8 +400,8 @@ protocol bgp {{ client.id }} {
 	neighbor {{ client.ip }} as {{ client.asn }};
 	rs client;
 
-	{% if client.interface %}
-	interface "{{ client.interface }}";
+	{% if client.cfg.interface and client.cfg.interface != '/' %}
+	interface "{{ client.cfg.interface }}";
 	{% endif -%}
 
 	{% if client.password %}

@@ -111,6 +111,8 @@ class ConfigParserGeneral(ConfigParserBase):
         c["path_hiding"] = ValidatorBool(default=True)
         c["passive"] = ValidatorBool(default=True)
         c["multihop"] = ValidatorUInt(mandatory=False)
+        c["interface"] = ValidatorInterface(mandatory=False)
+        c["extended_next_hop"] = ValidatorUInt(default=False)
         c["gtsm"] = ValidatorBool(default=False)
         c["add_path"] = ValidatorBool(default=False)
 
