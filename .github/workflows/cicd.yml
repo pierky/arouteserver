@@ -112,6 +112,7 @@ jobs:
           docker run \
             -t \
             --rm \
+            -e DO_NOT_PERFORM_VALIDATION=1 \
             pierky/arouteserver:${{ matrix.docker-image.target_image }} \
               ./tests/cli
 

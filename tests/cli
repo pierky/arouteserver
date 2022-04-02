@@ -27,7 +27,7 @@ function reset() {
 
 function build_cmd() {
   echo "" >>${LOG_FILE}
-  echo "Test case: ${TITLE}" >>${LOG_FILE}
+  echo "Test case: ${TITLE} (build_cmd)" 1>&2 | tee -a ${LOG_FILE}
   echo "#####################################################" >>${LOG_FILE}
   COMMAND="$1"
   shift
@@ -36,11 +36,63 @@ function build_cmd() {
 
 function run_cmd() {
   echo "" >>${LOG_FILE}
-  echo "Test case: ${TITLE}" >>${LOG_FILE}
+  echo "Test case: ${TITLE} (run_cmd)" 1>&2 | tee -a ${LOG_FILE}
   echo "#####################################################" >>${LOG_FILE}
   COMMAND="$1"
   shift
   $AROUTESERVER $COMMAND --cfg $CFG_FILE $@ 2>&1 | tee -a ${LOG_FILE}
+}
+
+function validate_bird() {
+  if [ "${DO_NOT_PERFORM_VALIDATION:-0}" == "1" ]; then
+    echo "Validation skipped because DO_NOT_PERFORM_VALIDATION == 1"
+    return
+  fi
+
+  echo "Test case: ${TITLE} (validate BIRD config)" 1>&2 | tee -a ${LOG_FILE}
+
+  BGP_CFG_FILE="$1"
+  BIRD_VER="$2"
+
+  docker run \
+    -t \
+    --rm \
+    -v "${BGP_CFG_FILE}":/etc/bird/bird.cfg \
+    pierky/bird:${BIRD_VER} \
+    bird \
+      -c /etc/bird/bird.cfg \
+      -d \
+      -p
+
+  if [ $? -ne 0 ]; then
+    error "BIRD config validation failed (${BGP_CFG_FILE})."
+  fi
+}
+
+function validate_openbgpd() {
+  if [ "${DO_NOT_PERFORM_VALIDATION:-0}" == "1" ]; then
+    echo "Validation skipped because DO_NOT_PERFORM_VALIDATION == 1"
+    return
+  fi
+
+  echo "Test case: ${TITLE} (validate OpenBGPD config)" 1>&2 | tee -a ${LOG_FILE}
+
+  BGP_CFG_FILE="$1"
+  OPENBGPD_VER="$2"
+
+  docker run \
+    -t \
+    --rm \
+    -v "${BGP_CFG_FILE}":/etc/bgpd/bgpd.conf \
+    pierky/openbgpd:"${OPENBGPD_VER}" \
+    bgpd \
+      -f /etc/bgpd/bgpd.conf \
+      -d \
+      -n
+
+  if [ $? -ne 0 ]; then
+    error "OpenBGPD config validation failed (${BGP_CFG_FILE})."
+  fi
 }
 
 function error() {
@@ -61,6 +113,46 @@ function must_not_contain() {
 }
 
 BIRD2_LATEST_VER=2.0.9
+OPENBGPD_LATEST_VER=7.2
+
+# ---------------------------------------------
+# Build and validate configs
+
+reset
+GENERAL="tests/var/general.yml"
+cat <<EOF >$GENERAL
+cfg:
+  rs_as: 99999999
+  router_id: "192.0.2.2"
+  communities:
+    announce_to_peer:
+      ext: "rt:rs_as:peer_as"
+EOF
+CLIENTS="tests/var/clients.yml"
+cat <<EOF >$CLIENTS
+clients:
+  - asn: 88888888
+    ip:
+    - "192.0.2.11"
+    - "2001:db8:1:1::11"
+EOF
+SUB_TEST="$LINENO"
+TITLE="Validate BIRD BGP Extended Communities and 32bit ASNs"
+OUTPUT_CFG="$(mktemp)"
+build_cmd "bird" \
+  --ip-ver 4 \
+  --ignore-issues ext-comms-32bit-asn \
+  --output "${OUTPUT_CFG}"
+validate_bird "${OUTPUT_CFG}" 1.6.8
+
+SUB_TEST="$LINENO"
+TITLE="Validate OpenBGPD BGP Extended Communities and 32bit ASNs"
+OUTPUT_CFG="$(mktemp)"
+build_cmd "openbgpd" \
+  --ignore-issues ext-comms-32bit-asn extended_communities \
+  --target-ver "${OPENBGPD_LATEST_VER}" \
+  --output "${OUTPUT_CFG}"
+validate_openbgpd "${OUTPUT_CFG}" "${OPENBGPD_LATEST_VER}"
 
 # ---------------------------------------------
 # BGP Extended Communities and 32bit ASNs
