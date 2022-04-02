@@ -5,7 +5,7 @@
 {% from 'macros.j2' import add_communities %}
 {% from 'macros.j2' import del_communities %}
 {% from 'macros.j2' import ins_communities %}
-{% from 'macros.j2' import write_prepending_comm %}
+{% from 'macros.j2' import delete_prepending_comm %}
 # ---------------------------------------------------------
 # FILTERS
 
@@ -747,7 +747,7 @@ match to {{ client.ip }} set ext-community $INTCOMM_PROCESS_PREPEND_COMMS
 # Scrub prepending communities
 {% for comm_name in cfg.communities|sort if "prepend" in comm_name and cfg.communities[comm_name]|community_is_set %}
 match to group clients set {
-{{ write_prepending_comm(cfg.communities[comm_name], "*", cfg.rtt_thresholds) }}
+{{ delete_prepending_comm(cfg.communities[comm_name], cfg.rtt_thresholds) }}
 }
 {% endfor %}
 
