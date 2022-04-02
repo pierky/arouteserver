@@ -63,6 +63,30 @@ function must_not_contain() {
 BIRD2_LATEST_VER=2.0.9
 
 # ---------------------------------------------
+# BGP Extended Communities and 32bit ASNs
+reset
+TITLE="BGP Extended Communities and 32bit ASNs"
+SUB_TEST="$LINENO"
+GENERAL="tests/var/general.yml"
+cat <<EOF >$GENERAL
+cfg:
+  rs_as: 99999999
+  router_id: "192.0.2.2"
+  communities:
+    prepend_once_to_peer:
+      ext: "rt:rs_as:peer_as"
+EOF
+CLIENTS="tests/var/clients.yml"
+cat <<EOF >$CLIENTS
+clients:
+  - asn: 88888888
+    ip:
+    - "192.0.2.11"
+    - "2001:db8:1:1::11"
+EOF
+build_cmd "openbgpd" | must_contain "One or more BGP extended communities are defined"
+
+# ---------------------------------------------
 # Environment variables expansion in general.yml
 reset
 TITLE="Environment variables expansion in general.yml"

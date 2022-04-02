@@ -18,7 +18,6 @@ try:
 except ImportError:
     import unittest.mock as mock
 import os
-import unittest
 
 import yaml
 
@@ -451,6 +450,12 @@ class TestConfigParserGeneral(TestConfigParserBase):
             self.cfg["communities"]["blackholing"]["ext"] = c
             self._contains_err("'peer_as' macro not allowed")
         self._test_optional(self.cfg["communities"]["blackholing"], "ext")
+
+        self.cfg["rs_as"] = 65536
+        self._contains_err()
+
+        self.cfg["communities"]["do_not_announce_to_any"]["ext"] = "rt:rs_as:65536"
+        self._contains_err("Invalid BGP extended community: rt:rs_as:65536")
 
     def test_mandatory_peer_as_communities(self):
         """{}: communities that need peer_as macro"""
@@ -1071,7 +1076,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._contains_err("Invalid reject code in reject_cause_map (1234): "
                            "no reject reasons found for this value.")
 
-    def test_communities_reject_cause_map_ko_4(self):
+    def test_communities_reject_cause_map_ko_5(self):
         """{}: reject_cause_map overlapping community"""
         tpl = [
             "cfg:",

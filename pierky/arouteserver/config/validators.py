@@ -595,12 +595,16 @@ class ValidatorCommunityExt(ValidatorCommunity):
                 if part_val < 0 or part_val > 4294967295:
                     raise ConfigError()
                 validated_parts.append(str(int(part_val)))
+            if int(validated_parts[1]) > 65535:
+                if validated_parts[2].isdigit() and int(validated_parts[2]) > 65535:
+                    raise ConfigError()
             return ":".join(validated_parts)
         except ConfigError as e:
             raise ConfigError(
                 "Invalid BGP extended community: {}{}; "
-                "it must be in the k:x:x format, with k one of "
-                "'rt' or 'ro' and x = an unsigned integer; "
+                "it must be in the k:x:y format, with k one of "
+                "'rt' or 'ro' and x and y unsigned integers "
+                "(only one among x and y can be > 65535); "
                 "the 'rs_as' and 'peer-as' macros "
                 "can be used to represent, respectively, the route "
                 "server's ASN and the destination peer's ASN".format(
