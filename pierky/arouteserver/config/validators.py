@@ -653,3 +653,62 @@ class ValidatorRTTThresholds(ConfigParserValidator):
             res.append(rtt)
 
         return res
+
+class ValidatorClientCustomOptions(ConfigParserValidator):
+
+    def _validate(self, v):
+        ALLOWED_BGP_SPEAKER = ("bird", "openbgpd")
+        ALLOWED_AF = ("ipv4", "ipv6", "any")
+
+        if not isinstance(v, dict):
+            raise ConfigError(
+                "Invalid format for custom_options: must be a dictionary"
+            )
+
+        custom_options = v
+
+        for bgp_speaker in custom_options:
+            if bgp_speaker not in ALLOWED_BGP_SPEAKER:
+                raise ConfigError(
+                    "Unknown BGP speaker: {bgp_speaker}. "
+                    "Must be one of {allowed}".format(
+                        bgp_speaker=bgp_speaker,
+                        allowed=", ".join(ALLOWED_BGP_SPEAKER)
+                    )
+                )
+            for af in custom_options[bgp_speaker]:
+                if af not in ALLOWED_AF:
+                    raise ConfigError(
+                        "Unknown AF in custom_options.{bgp_speaker}: {af}. "
+                        "Must be one of {allowed}".format(
+                            bgp_speaker=bgp_speaker,
+                            af=af,
+                            allowed=", ".join(ALLOWED_AF)
+                        )
+                    )
+
+                custom_data = custom_options[bgp_speaker][af]
+
+                if not isinstance(custom_data, dict):
+                    raise ConfigError(
+                        "Unknown format custom_options.{bgp_speaker}.{af}: "
+                        "must be a dict".format(
+                            bgp_speaker=bgp_speaker,
+                            af=af
+                        )
+                    )
+
+                if list(custom_data.keys()) != ["config_lines"] or \
+                    not isinstance(custom_data["config_lines"], list):
+
+                    raise ConfigError(
+                        "Unknown format for custom_options.{bgp_speaker}.{af}: "
+                        "at the moment the only supported key is config_lines, "
+                        "a list of custom configuration lines "
+                        "specific to the BGP speaker".format(
+                            bgp_speaker=bgp_speaker,
+                            af=af
+                        )
+                    )
+
+        return custom_options

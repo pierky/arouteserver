@@ -125,7 +125,8 @@ class ConfigParserClients(ConfigParserBase):
                     "enabled": ValidatorBool(mandatory=False)
                 },
                 "attach_custom_communities": ValidatorListOf(ValidatorText,
-                                                             mandatory=False)
+                                                             mandatory=False),
+                "custom_options": ValidatorClientCustomOptions(mandatory=False)
             }
         }
 

@@ -118,6 +118,46 @@ OPENBGPD_LATEST_VER=7.2
 # ---------------------------------------------
 # Build and validate configs
 
+# Custom options
+reset
+CLIENTS="tests/var/clients.yml"
+cat <<EOF >$CLIENTS
+clients:
+  - asn: 123
+    ip:
+    - "192.0.2.11"
+    - "fe80::123:456"
+    cfg:
+      custom_options:
+        bird:
+          any:
+            config_lines:
+            - interface "eth0";
+          ipv6:
+            config_lines:
+            - extended next hop on;
+            - aigp on;
+        openbgpd:
+          any:
+            config_lines:
+            - depend on eth0
+EOF
+SUB_TEST="$LINENO"
+TITLE="Validate custom options"
+
+OUTPUT_CFG="$(mktemp)"
+build_cmd "bird" \
+  --target-ver "${BIRD2_LATEST_VER}" \
+  --output "${OUTPUT_CFG}"
+validate_bird "${OUTPUT_CFG}" "${BIRD2_LATEST_VER}"
+
+OUTPUT_CFG="$(mktemp)"
+build_cmd "openbgpd" \
+  --target-ver "${OPENBGPD_LATEST_VER}" \
+  --output "${OUTPUT_CFG}"
+validate_openbgpd "${OUTPUT_CFG}" "${OPENBGPD_LATEST_VER}"
+
+# BGP Extended Communities and 32bit ASNs
 reset
 GENERAL="tests/var/general.yml"
 cat <<EOF >$GENERAL
