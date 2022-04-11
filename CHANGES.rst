@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+1.14.1
+------
+
+- Fix: import limit is not set if PeeringDB records are not found.
+
+  For clients not configured with a specific max-prefix value, when a PeeringDB record was not found the value from the general limit was not used to build the import limit configuration. The tool was expected to fallback to the ``general_limit_ipv4`` value instead.
+
+  See also `GitHub issue 105 <https://github.com/pierky/arouteserver/issues/105>`_.
+
 1.14.0
 ------
 

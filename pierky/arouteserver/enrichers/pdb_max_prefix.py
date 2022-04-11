@@ -19,6 +19,9 @@ from .base import BaseConfigEnricher, BaseConfigEnricherThread
 from ..errors import BuilderError, PeeringDBError, PeeringDBNoInfoError
 from ..peering_db import PeeringDBNet
 
+class UseGeneralLimitsSignal:
+    pass
+
 class PeeringDBConfigEnricher_MaxPrefix_WorkerThread(BaseConfigEnricherThread):
 
     DESCR = "PeeringDB max-prefix"
@@ -49,7 +52,8 @@ class PeeringDBConfigEnricher_MaxPrefix_WorkerThread(BaseConfigEnricherThread):
             logging.debug("No data found on PeeringDB "
                           "for AS{} while looking for "
                           "max-prefix limit.".format(asn))
-            pass
+
+            return UseGeneralLimitsSignal(), UseGeneralLimitsSignal()
         except PeeringDBError as e:
             logging.error(
                 "An error occurred while retrieving info from PeeringDB "
@@ -75,9 +79,15 @@ class PeeringDBConfigEnricher_MaxPrefix_WorkerThread(BaseConfigEnricherThread):
         for client in clients:
             client_max_prefix = client["cfg"]["filtering"]["max_prefix"]
             if limit4 and not client_max_prefix["limit_ipv4"]:
-                self._set_client_max_prefix_from_pdb(client, 4, limit4)
+                if isinstance(limit4, UseGeneralLimitsSignal):
+                    client_max_prefix["limit_ipv4"] = self.general_limits["ipv4"]
+                else:
+                    self._set_client_max_prefix_from_pdb(client, 4, limit4)
             if limit6 and not client_max_prefix["limit_ipv6"]:
-                self._set_client_max_prefix_from_pdb(client, 6, limit6)
+                if isinstance(limit6, UseGeneralLimitsSignal):
+                    client_max_prefix["limit_ipv6"] = self.general_limits["ipv6"]
+                else:
+                    self._set_client_max_prefix_from_pdb(client, 6, limit6)
 
 class PeeringDBConfigEnricher_MaxPrefix(BaseConfigEnricher):
 

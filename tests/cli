@@ -63,6 +63,36 @@ function must_not_contain() {
 BIRD2_LATEST_VER=2.0.9
 
 # ---------------------------------------------
+# MaxPrefix limit when PeeringDB record not present
+reset
+TITLE="MaxPrefix limit when PeeringDB record not present"
+GENERAL="tests/var/general.yml"
+cat <<EOF >$GENERAL
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+  filtering:
+    max_prefix:
+      action: "shutdown"
+      restart_after: 5
+      general_limit_ipv4: 1000
+      general_limit_ipv6: 100
+      count_rejected_routes: false
+      peering_db:
+        enabled: true
+EOF
+CLIENTS="tests/var/clients.yml"
+cat <<EOF >$CLIENTS
+clients:
+  - asn: 136127
+    ip:
+    - "192.0.2.11"
+    - "2001:db8:1:1::11"
+EOF
+SUB_TEST="$LINENO"
+build_cmd "bird" --ip-ver 4 | must_contain "import limit 1000 action disable;"
+
+# ---------------------------------------------
 # Environment variables expansion in general.yml
 reset
 TITLE="Environment variables expansion in general.yml"
