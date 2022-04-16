@@ -126,7 +126,7 @@ clients:
   - asn: 123
     ip:
     - "192.0.2.11"
-    - "fe80::123:456"
+    - "2001:db8::123:456"
     cfg:
       custom_options:
         bird:
@@ -193,6 +193,21 @@ build_cmd "openbgpd" \
   --target-ver "${OPENBGPD_LATEST_VER}" \
   --output "${OUTPUT_CFG}"
 validate_openbgpd "${OUTPUT_CFG}" "${OPENBGPD_LATEST_VER}"
+
+# ---------------------------------------------
+# IPv6 link-local NEXT_HOP
+reset
+TITLE="IPv6 link-local NEXT_HOP"
+SUB_TEST="$LINENO"
+CLIENTS="tests/var/clients.yml"
+cat <<EOF >$CLIENTS
+clients:
+  - asn: 1
+    ip:
+    - "fe80::1"
+EOF
+build_cmd "bird" --target-ver "${BIRD2_LATEST_VER}" | must_contain "ERROR Compatibility issue ID 'ipv6_link_local_next_hop'"
+build_cmd "bird" --target-ver "${BIRD2_LATEST_VER}" --ignore-issues ipv6_link_local_next_hop | must_contain "IPv6 link-local one; we can't check it"
 
 # ---------------------------------------------
 # BGP Extended Communities and 32bit ASNs
