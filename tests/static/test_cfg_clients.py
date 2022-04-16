@@ -410,3 +410,97 @@ class TestConfigParserClients(TestConfigParserBase):
         self.cfg = ConfigParserClients(general_cfg=general)
         self.cfg._load_from_yaml("\n".join(clients_config))
         self._contains_err("Unknown statement at 'clients.cfg.filtering.irrdb' level: 'allow_longer_prefixes'")
+
+    def test_custom_options_ok(self):
+        """{}: custom_options"""
+
+        general = ConfigParserGeneral()
+        general._load_from_yaml("\n".join([
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2"
+        ]))
+        general.parse()
+
+        self.cfg = ConfigParserClients(general_cfg=general)
+        self.cfg._load_from_yaml("\n".join([
+            "clients:",
+            "  - asn: 222",
+            "    ip: 192.0.2.21",
+            "    cfg:",
+            "      custom_options:",
+            "        bird:",
+            "          ipv4:",
+            "            config_lines:",
+            "              - AA",
+            "              - BB",
+            "          ipv6:",
+            "            config_lines:",
+            "              - AA",
+            "              - BB",
+            "          any:",
+            "            config_lines:",
+            "              - AA",
+            "              - BB",
+        ]))
+        self.cfg.parse()
+        self._contains_err()
+
+        client = self.cfg[0]
+        self.assertEqual(client["cfg"]["custom_options"]["bird"]["ipv4"]["config_lines"][0], "AA")
+
+    def test_custom_options_bad_format(self):
+        """{}: custom_options - bad format"""
+
+        self.cfg[0]["cfg"]["custom_options"] = 1
+        self._contains_err("Invalid format for custom_options: must be a dictionary.")
+
+    def test_custom_options_bad_bgp_speaker(self):
+        """{}: custom_options - bad BGP speaker"""
+
+        self.cfg[0]["cfg"]["custom_options"] = {"A": 1}
+        self._contains_err("Unknown BGP speaker: A. Must be one of bird, openbgpd.")
+
+    def test_custom_options_bad_bgp_speaker_fmt(self):
+        """{}: custom_options - bad BGP speaker format"""
+
+        self.cfg[0]["cfg"]["custom_options"] = {"bird": "A"}
+        self._contains_err(
+            "Unknown AF in custom_options.bird: A. Must be one of ipv4, ipv6, any."
+        )
+
+    def test_custom_options_bad_af_value(self):
+        """{}: custom_options - bad AF"""
+
+        self.cfg[0]["cfg"]["custom_options"] = {"bird": {"A": ""}}
+        self._contains_err(
+            "Unknown AF in custom_options.bird: A. Must be one of ipv4, ipv6, any."
+        )
+
+    def test_custom_options_bad_af_frm(self):
+        """{}: custom_options - bad AF format"""
+
+        self.cfg[0]["cfg"]["custom_options"] = {"bird": {"ipv4": "A"}}
+        self._contains_err(
+            "Unknown format custom_options.bird.ipv4: must be a dict."
+        )
+
+    def test_custom_options_bad_option(self):
+        """{}: custom_options - bad option"""
+
+        self.cfg[0]["cfg"]["custom_options"] = {"bird": {"ipv4": {"A": "B"}}}
+        self._contains_err(
+            "Unknown format for custom_options.bird.ipv4: at the moment the "
+            "only supported key is config_lines, a list of custom configuration "
+            "lines specific to the BGP speaker."
+        )
+
+    def test_custom_options_missing_options(self):
+        """{}: custom_options - missing options"""
+
+        self.cfg[0]["cfg"]["custom_options"] = {"bird": {"ipv4": {}}}
+        self._contains_err(
+            "Unknown format for custom_options.bird.ipv4: at the moment the "
+            "only supported key is config_lines, a list of custom configuration "
+            "lines specific to the BGP speaker."
+        )

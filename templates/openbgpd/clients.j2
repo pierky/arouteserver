@@ -1,3 +1,15 @@
+{% macro write_custom_config_lines(client, af) %}
+{% 	 if client.cfg.custom_options and
+		"openbgpd" in client.cfg.custom_options and
+		af in client.cfg.custom_options["openbgpd"] and
+		client.cfg.custom_options["openbgpd"][af].get("config_lines") %}
+# Custom options for AF {{ af }} follow
+{%     for custom_config_line in client.cfg.custom_options["openbgpd"][af]["config_lines"] %}
+{{ custom_config_line }}
+{%     endfor %}
+{%   endif %}
+{% endmacro %}
+
 # ---------------------------------------------------------
 # MEMBERS
 
@@ -74,6 +86,10 @@ group "clients" {
 {%	endif %}
 
 		set nexthop no-modify
+
+		{{ write_custom_config_lines(client, "ipv" ~ client.ip|ipaddr_ver)|indent("		") }}
+
+		{{ write_custom_config_lines(client, "any")|indent("		") }}
 	}
 {% endfor %}
 }
