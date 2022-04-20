@@ -507,6 +507,8 @@ Details about hook functions can be found in the :doc:`BIRD_HOOKS` page.
 
 An example (including functions' prototypes) is provided within the "examples/bird_hooks" directory (`also on GitHub <https://github.com/pierky/arouteserver/tree/master/examples/bird_hooks>`_).
 
+.. _custom_options:
+
 Client custom options
 ~~~~~~~~~~~~~~~~~~~~~
 
