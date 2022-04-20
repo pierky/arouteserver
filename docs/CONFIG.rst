@@ -526,11 +526,12 @@ The expected format follows:
         custom_options:
           bird | openbgpd:
             ipv4 | ipv6 | any:
-              config_lines:
-              - "BGP-speaker specific line of config 1"
-              - "BGP-speaker specific line of config 2"
+              protocol | channel | client:
+                config_lines:
+                - "BGP-speaker specific line of config 1"
+                - "BGP-speaker specific line of config 2"
 
-These custom lines of configuration are pulled into the final output file on an BGP-speaker and Address-Family basis: when the target BGP speaker is BIRD, only the ``custom_options.bird`` section is considered, and similarly for ``custom_options.openbgpd`` when OpenBGPD is used. The custom lines of configuration from the ``ipv4`` or ``ipv6`` sub-sections are applied only to the IPv4 or IPv6 session of the client to which they belong, while the lines from the ``any`` section are always applied.
+These custom lines of configuration are pulled into the final output file on an BGP-speaker and Address-Family basis: when the target BGP speaker is BIRD, only the ``custom_options.bird`` section is considered, and similarly for ``custom_options.openbgpd`` when OpenBGPD is used. The custom lines of configuration from the ``ipv4`` or ``ipv6`` sub-sections are applied only to the IPv4 or IPv6 session of the client to which they belong, while the lines from the ``any`` sub-section are always applied. For BIRD, two levels exist, ``protocol`` and ``channel``: the former is used on BIRD 1.6 and BIRD 2 configurations, the latter only on BIRD 2 (depending on which BIRD config stanza the custom lines are desired to be added, protocol-level of channel-level). For OpenBGPD, only the ``client`` level exists.
 
 An example follows:
 
@@ -545,17 +546,20 @@ An example follows:
         custom_options:
           bird:
             any:
-              config_lines:
-              - interface "eth0";
+              protocol:
+                config_lines:
+                - interface "eth0";
             ipv6:
-              config_lines:
-              - extended next hop on;
+              channel:
+                config_lines:
+                - extended next hop on;
           openbgpd:
             any:
-              config_lines:
-              - holdtime 30
+              client:
+                config_lines:
+                - holdtime 30
 
-In the example above, we can see that for the AS123 client the BIRD route-server will be configured to use eth0 for both the IPv4 and IPv6 sessions; Extended Next-Hop will be enabled on the IPv6 session; the OpenBGPD configuration for that client will have a holdtime of 30 seconds for both the IPv4 and IPv6 sessions.
+In the example above, we can see that for the AS123 client the BIRD 2 route-server will be configured to use eth0 for both the IPv4 and IPv6 sessions; Extended Next-Hop will be enabled on the IPv6 session; the OpenBGPD configuration for that client will have a holdtime of 30 seconds for both the IPv4 and IPv6 sessions.
 
 .. warning:: ARouteServer functionalities may be adversely affected by the usage of custom options; the tool does not check the content of the ``custom_options`` section, so if options that contradict or overlap with those used by ARouteServer are set, the output configuration may not reflect the expected results. Please double check the settings provided here and test them carefully before releasing them in production.
 

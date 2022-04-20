@@ -11,13 +11,14 @@
 {% endif %}
 {% endmacro %}
 
-{% macro write_custom_config_lines(client, af) %}
+{% macro write_custom_config_lines(client, af, section) %}
 {% 	 if client.cfg.custom_options and
 		"bird" in client.cfg.custom_options and
 		af in client.cfg.custom_options["bird"] and
-		client.cfg.custom_options["bird"][af].get("config_lines") %}
+		section in client.cfg.custom_options["bird"][af] and
+		client.cfg.custom_options["bird"][af][section].get("config_lines") %}
 # Custom options for AF {{ af }} follow
-{%     for custom_config_line in client.cfg.custom_options["bird"][af]["config_lines"] %}
+{%     for custom_config_line in client.cfg.custom_options["bird"][af][section]["config_lines"] %}
 {{ custom_config_line }}
 {%     endfor %}
 {%   endif %}
@@ -484,14 +485,16 @@ protocol bgp {{ client.id }} {
 	import filter receive_from_{{ client.id }};
 	export filter announce_to_{{ client.id }};
 
-	{{ write_custom_config_lines(client, "ipv" ~ client.ip|ipaddr_ver)|indent("	") }}
-
 	{% if "2.0.0"|target_version_ge %}
+	{{ write_custom_config_lines(client, "ipv" ~ client.ip|ipaddr_ver, "channel")|indent("	") }}
+	{{ write_custom_config_lines(client, "any", "channel")|indent("	") }}
+
 	# ---------------------------------------
 	};
 	{% endif %}
 
-	{{ write_custom_config_lines(client, "any")|indent("	") }}
+	{{ write_custom_config_lines(client, "ipv" ~ client.ip, "protocol")|indent("	") }}
+	{{ write_custom_config_lines(client, "any", "protocol")|indent("	") }}
 
 	{{ "client"|include_local_file -}}
 	{% if client.ip|ipaddr_ver == 4 %}
