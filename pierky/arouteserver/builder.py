@@ -798,7 +798,7 @@ class BIRDConfigBuilder(ConfigBuilder):
              "scrub_communities_in", "scrub_communities_out",
              "apply_blackhole_filtering_policy"]
 
-    IGNORABLE_ISSUES = ConfigBuilder.IGNORABLE_ISSUES + ["max_prefix_count_rejected_routes"]
+    IGNORABLE_ISSUES = ConfigBuilder.IGNORABLE_ISSUES + ["max_prefix_count_rejected_routes", "ipv6_link_local_next_hop"]
 
     AVAILABLE_VERSION = ["1.6.3", "1.6.4", "1.6.6", "1.6.7", "1.6.8",
                          "2.0.7", "2.0.7+b962967e", "2.0.8", "2.0.9"]
@@ -831,6 +831,27 @@ class BIRDConfigBuilder(ConfigBuilder):
                         "see https://github.com/pierky/arouteserver/pull/61 "
                         "for more details."
                     )
+
+        if self.ip_ver is None or self.ip_ver == 6:
+            link_local_clients = []
+
+            for client in self.cfg_clients.cfg["clients"]:
+                ip = client["ip"]
+                if IPAddress(ip).obj.is_link_local:
+                    link_local_clients.append(ip)
+
+            if link_local_clients:
+                if not self.process_compatibility_issue(
+                    "ipv6_link_local_next_hop",
+                    "Due to a limitation of BIRD, it is not possible to verify "
+                    "the NEXT_HOP attribute of routes announced by the following "
+                    "IPv6 clients, because the BGP sessions are configured "
+                    "using link-local addresses, which are not handled correctly "
+                    "by the BIRD function that returns the next-hop: {}".format(
+                        ", ".join(link_local_clients)
+                    )
+                ):
+                    res = False
 
         if version.parse(self.target_version) == version.parse("2.0.7"):
             max_prefix_count_rejected_routes_clients = []

@@ -78,23 +78,26 @@ function prefix_is_in_{{ client.id }}_as_set() {
 function next_hop_is_valid_for_{{ client.id }}()
 {
 	# Checks if NEXT_HOP is one of those allowed for routes announced by {{ client.id }}
-{% if client.ip|ipaddr_ver == 6 and (client.ip|lower).startswith("fe80::") %}
-	# The client address is an IPv6 link-local one; we can't check
-{% endif %}
-{% if client.cfg.filtering.next_hop.policy == "strict" %}
+{%	if client.ip|ipaddr_ver == 6 and (client.ip|lower).startswith("fe80::") %}
+	# The client address is an IPv6 link-local one; we can't check it since
+	# BIRD doesn't handle it well and returns "::" as the next-hop of the route.
+	return true;
+{%	else %}
+{%		if client.cfg.filtering.next_hop.policy == "strict" %}
 	if bgp_next_hop = {{ client.ip }} then return true;
-{% elif client.cfg.filtering.next_hop.policy == "authorized_addresses" %}
-{%	for addr in client.cfg.filtering.next_hop.authorized_addresses_list|sort if addr|ipaddr_ver == client.ip|ipaddr_ver %}
+{%		elif client.cfg.filtering.next_hop.policy == "authorized_addresses" %}
+{%			for addr in client.cfg.filtering.next_hop.authorized_addresses_list|sort if addr|ipaddr_ver == client.ip|ipaddr_ver %}
 	if bgp_next_hop = {{ addr }} then return true;
-{%	endfor %}
-{% else %}
-{%	for asn, same_as_clients in clients|groupby("asn") if asn == client.asn %}
-{%		for same_as_client in same_as_clients|sort(attribute="ip") if same_as_client.ip|ipaddr_ver == client.ip|ipaddr_ver %}
+{%			endfor %}
+{%		else %}
+{%			for asn, same_as_clients in clients|groupby("asn") if asn == client.asn %}
+{%				for same_as_client in same_as_clients|sort(attribute="ip") if same_as_client.ip|ipaddr_ver == client.ip|ipaddr_ver %}
 	if bgp_next_hop = {{ same_as_client.ip }} then return true;	# {{ same_as_client.id }}
-{%		endfor %}
-{%	endfor %}
-{% endif %}
+{%				endfor %}
+{%			endfor %}
+{%		endif %}
 	return false;
+{%	endif %}
 }
 
 {% if client.cfg.filtering.black_list_pref %}
