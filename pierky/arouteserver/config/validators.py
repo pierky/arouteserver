@@ -659,6 +659,10 @@ class ValidatorClientCustomOptions(ConfigParserValidator):
     def _validate(self, v):
         ALLOWED_BGP_SPEAKER = ("bird", "openbgpd")
         ALLOWED_AF = ("ipv4", "ipv6", "any")
+        ALLOWED_SECTIONS = {
+            "bird": ("protocol", "channel"),
+            "openbgpd": ("client",)
+        }
 
         if not isinstance(v, dict):
             raise ConfigError(
@@ -698,17 +702,40 @@ class ValidatorClientCustomOptions(ConfigParserValidator):
                         )
                     )
 
-                if list(custom_data.keys()) != ["config_lines"] or \
-                    not isinstance(custom_data["config_lines"], list):
-
+                if not custom_data.keys():
                     raise ConfigError(
-                        "Unknown format for custom_options.{bgp_speaker}.{af}: "
-                        "at the moment the only supported key is config_lines, "
-                        "a list of custom configuration lines "
-                        "specific to the BGP speaker".format(
+                        "Missing section in custom_options.{bgp_speaker}.{af}. "
+                        "For {bgp_speaker}, it must be one of {allowed}".format(
                             bgp_speaker=bgp_speaker,
-                            af=af
+                            af=af,
+                            allowed=", ".join(ALLOWED_SECTIONS[bgp_speaker])
                         )
                     )
+
+                for section in custom_data:
+                    if section not in ALLOWED_SECTIONS[bgp_speaker]:
+                        raise ConfigError(
+                            "Unknown section in custom_options.{bgp_speaker}.{af}: {section}. "
+                            "For {bgp_speaker}, it must be one of {allowed}".format(
+                                bgp_speaker=bgp_speaker,
+                                af=af,
+                                section=section,
+                                allowed=", ".join(ALLOWED_SECTIONS[bgp_speaker])
+                            )
+                        )
+
+                    if list(custom_data[section].keys()) != ["config_lines"] or \
+                        not isinstance(custom_data[section]["config_lines"], list):
+
+                        raise ConfigError(
+                            "Unknown format for custom_options.{bgp_speaker}.{af}.{section}: "
+                            "at the moment the only supported key is config_lines, "
+                            "a list of custom configuration lines "
+                            "specific to the BGP speaker".format(
+                                bgp_speaker=bgp_speaker,
+                                af=af,
+                                section=section
+                            )
+                        )
 
         return custom_options

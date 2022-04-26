@@ -431,23 +431,32 @@ class TestConfigParserClients(TestConfigParserBase):
             "      custom_options:",
             "        bird:",
             "          ipv4:",
-            "            config_lines:",
-            "              - AA",
-            "              - BB",
+            "            channel:",
+            "              config_lines:",
+            "                - AA",
+            "                - BB",
             "          ipv6:",
-            "            config_lines:",
-            "              - AA",
-            "              - BB",
+            "            protocol:",
+            "              config_lines:",
+            "                - AA",
+            "                - BB",
             "          any:",
-            "            config_lines:",
-            "              - AA",
-            "              - BB",
+            "            channel:",
+            "              config_lines:",
+            "                - AA",
+            "                - BB",
+            "        openbgpd:",
+            "          ipv4:",
+            "            client:",
+            "              config_lines:",
+            "                - AA",
+            "                - BB",
         ]))
         self.cfg.parse()
         self._contains_err()
 
         client = self.cfg[0]
-        self.assertEqual(client["cfg"]["custom_options"]["bird"]["ipv4"]["config_lines"][0], "AA")
+        self.assertEqual(client["cfg"]["custom_options"]["bird"]["ipv4"]["channel"]["config_lines"][0], "AA")
 
     def test_custom_options_bad_format(self):
         """{}: custom_options - bad format"""
@@ -477,7 +486,7 @@ class TestConfigParserClients(TestConfigParserBase):
             "Unknown AF in custom_options.bird: A. Must be one of ipv4, ipv6, any."
         )
 
-    def test_custom_options_bad_af_frm(self):
+    def test_custom_options_bad_af_fmt(self):
         """{}: custom_options - bad AF format"""
 
         self.cfg[0]["cfg"]["custom_options"] = {"bird": {"ipv4": "A"}}
@@ -485,12 +494,30 @@ class TestConfigParserClients(TestConfigParserBase):
             "Unknown format custom_options.bird.ipv4: must be a dict."
         )
 
-    def test_custom_options_bad_option(self):
-        """{}: custom_options - bad option"""
+    def test_custom_options_bad_section_bird(self):
+        """{}: custom_options - bad section"""
 
         self.cfg[0]["cfg"]["custom_options"] = {"bird": {"ipv4": {"A": "B"}}}
         self._contains_err(
-            "Unknown format for custom_options.bird.ipv4: at the moment the "
+            "Unknown section in custom_options.bird.ipv4: A. "
+            "For bird, it must be one of protocol, channel."
+        )
+
+    def test_custom_options_missing_section(self):
+        """{}: custom_options - missing section"""
+
+        self.cfg[0]["cfg"]["custom_options"] = {"bird": {"ipv4": {}}}
+        self._contains_err(
+            "Missing section in custom_options.bird.ipv4. For bird, it must be one of protocol, channel."
+        )
+
+
+    def test_custom_options_bad_option(self):
+        """{}: custom_options - bad option"""
+
+        self.cfg[0]["cfg"]["custom_options"] = {"bird": {"ipv4": {"channel": {"A": "B"}}}}
+        self._contains_err(
+            "Unknown format for custom_options.bird.ipv4.channel: at the moment the "
             "only supported key is config_lines, a list of custom configuration "
             "lines specific to the BGP speaker."
         )
@@ -498,9 +525,9 @@ class TestConfigParserClients(TestConfigParserBase):
     def test_custom_options_missing_options(self):
         """{}: custom_options - missing options"""
 
-        self.cfg[0]["cfg"]["custom_options"] = {"bird": {"ipv4": {}}}
+        self.cfg[0]["cfg"]["custom_options"] = {"bird": {"ipv4": {"protocol": {}}}}
         self._contains_err(
-            "Unknown format for custom_options.bird.ipv4: at the moment the "
+            "Unknown format for custom_options.bird.ipv4.protocol: at the moment the "
             "only supported key is config_lines, a list of custom configuration "
             "lines specific to the BGP speaker."
         )

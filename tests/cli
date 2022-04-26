@@ -131,16 +131,19 @@ clients:
       custom_options:
         bird:
           any:
-            config_lines:
-            - interface "eth0";
+            protocol:
+              config_lines:
+              - interface "eth0";
           ipv6:
-            config_lines:
-            - extended next hop on;
-            - aigp on;
+            channel:
+              config_lines:
+              - extended next hop on;
+              - aigp on;
         openbgpd:
           any:
-            config_lines:
-            - depend on eth0
+            client:
+              config_lines:
+              - depend on eth0
 EOF
 SUB_TEST="$LINENO"
 TITLE="Validate custom options"
