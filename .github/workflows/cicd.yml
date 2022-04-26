@@ -60,8 +60,8 @@ jobs:
           echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
           docker pull pierky/bird:1.6.8
           docker pull pierky/bird:2.0.9
-          docker pull pierky/openbgpd:7.1p0
           docker pull pierky/openbgpd:7.2
+          docker pull pierky/openbgpd:7.3
           docker pull pierky/exabgp:4.2.7
           docker pull nlnetlabs/routinator:v0.8.3
         env:
