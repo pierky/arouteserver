@@ -3,15 +3,15 @@
 {% from 'macros.j2' import add_communities %}
 {% from 'macros.j2' import match_communities %}
 
-{% macro write_max_pref_action(action) %}
+{%- macro write_max_pref_action(action) -%}
 {% if action == "shutdown" %}disable;
 {% elif action == "restart" %}restart;
 {% elif action == "block" %}block;
 {% else %}warn;
 {% endif %}
-{% endmacro %}
+{%- endmacro -%}
 
-{% macro write_custom_config_lines(client, af, section) %}
+{%- macro write_custom_config_lines(client, af, section) %}
 {% 	 if client.cfg.custom_options and
 		"bird" in client.cfg.custom_options and
 		af in client.cfg.custom_options["bird"] and
@@ -22,9 +22,9 @@
 {{ custom_config_line }}
 {%     endfor %}
 {%   endif %}
-{% endmacro %}
+{%- endmacro -%}
 
-{% macro reject(client, cause, err_msg, avoid_braces=False) %}
+{%- macro reject(client, cause, err_msg, avoid_braces=False) %}
 {% if client.cfg.filtering.reject_policy.policy == "reject" %}
 reject {{ err_msg }};
 {% elif client.cfg.filtering.reject_policy.policy == "tag_and_reject" %}
@@ -32,7 +32,7 @@ reject {{ err_msg }};
 {% else %}
 {%	if not avoid_braces %}{{ "{ " }}{% endif %}tag_and_reject({{ cause}}, {{ client.asn }}); print {{ err_msg }}; accept;{% if not avoid_braces %}{{ " }" }}{% endif %}
 {% endif %}
-{% endmacro %}
+{%- endmacro -%}
 # ---------------------------------------------------------
 # MEMBERS
 
@@ -485,17 +485,15 @@ protocol bgp {{ client.id }} {
 	import filter receive_from_{{ client.id }};
 	export filter announce_to_{{ client.id }};
 
-	{% if "2.0.0"|target_version_ge %}
-	{{ write_custom_config_lines(client, "ipv" ~ client.ip|ipaddr_ver, "channel")|indent("	") }}
-	{{ write_custom_config_lines(client, "any", "channel")|indent("	") }}
-
+	{%- if "2.0.0"|target_version_ge %}
+	{{- write_custom_config_lines(client, "ipv" ~ client.ip|ipaddr_ver, "channel")|indent("	") }}
+	{{- write_custom_config_lines(client, "any", "channel")|indent("	") }}
 	# ---------------------------------------
 	};
 	{% endif %}
 
-	{{ write_custom_config_lines(client, "ipv" ~ client.ip, "protocol")|indent("	") }}
-	{{ write_custom_config_lines(client, "any", "protocol")|indent("	") }}
-
+	{{- write_custom_config_lines(client, "ipv" ~ client.ip, "protocol")|indent("	") }}
+	{{- write_custom_config_lines(client, "any", "protocol")|indent("	") }}
 	{{ "client"|include_local_file -}}
 	{% if client.ip|ipaddr_ver == 4 %}
 	{{ "client4"|include_local_file -}}
