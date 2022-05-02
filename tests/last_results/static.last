@@ -12,6 +12,16 @@ Bogons config parser: valid configuration ... ok
 Clients config parser: AS number ... ok
 Clients config parser: inherit from general cfg - blackhole filtering ... ok
 Clients config parser: custom BGP communities ... ok
+Clients config parser: custom_options - bad AF format ... ok
+Clients config parser: custom_options - bad AF ... ok
+Clients config parser: custom_options - bad BGP speaker ... ok
+Clients config parser: custom_options - bad BGP speaker format ... ok
+Clients config parser: custom_options - bad format ... ok
+Clients config parser: custom_options - bad option ... ok
+Clients config parser: custom_options - bad section ... ok
+Clients config parser: custom_options - missing options ... ok
+Clients config parser: custom_options - missing section ... ok
+Clients config parser: custom_options ... ok
 Clients config parser: duplicate IP addresses ... ok
 Clients config parser: global only option ... ok
 Clients config parser: inherit from general cfg ... ok
@@ -23,6 +33,7 @@ Clients config parser: next_hop.policy authorized_addresses, invalid IP addr ...
 Clients config parser: next_hop.policy authorized_addresses, ok ... ok
 Clients config parser: next_hop.policy and next_hop_policy ... ok
 Clients config parser: next_hop.policy != authorized_addresses, list given ... ok
+Clients config parser: no IP addresses ... ok
 Clients config parser: unknown statement ... ok
 Clients config parser: valid configuration ... ok
 General config parser: add_path ... ok
@@ -37,6 +48,7 @@ General config parser: large BGP communities ... ok
 General config parser: reject_cause_map invalid format ... ok
 General config parser: reject_cause_map invalid reject code ... ok
 General config parser: reject_cause_map invalid community ... ok
+General config parser: reject_cause_map unknown reject code ... ok
 General config parser: reject_cause_map overlapping community ... ok
 General config parser: reject_cause_map valid configuration (code is int) ... ok
 General config parser: reject_cause_map valid configuration (same comm used twice) ... ok
@@ -226,6 +238,6 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 226 tests in 66.018s
+Ran 238 tests in 54.410s
 
 OK

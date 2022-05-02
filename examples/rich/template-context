@@ -784,6 +784,7 @@ clients:
     - from_europe
     blackhole_filtering:
       announce_to_client: true
+    custom_options: null
     filtering:
       black_list_pref: null
       ipv4_pref_len: &id001
@@ -843,6 +844,7 @@ clients:
     - from_usa
     blackhole_filtering:
       announce_to_client: true
+    custom_options: null
     filtering:
       black_list_pref: null
       ipv4_pref_len: *id001
@@ -896,6 +898,7 @@ clients:
     - from_usa
     blackhole_filtering:
       announce_to_client: true
+    custom_options: null
     filtering:
       black_list_pref: null
       ipv4_pref_len: *id001
@@ -957,6 +960,13 @@ irrdb_info
   id: 454ed823addc298946e5f2ad415842d8a0a89403cf8ad05e584f94caf52ef799ca506a90f5386c1335f271047089bc0612014069cbb3d9a7851d595a0374c5c3
   name: AS3333
   prefixes:
+  - comment: null
+    exact: false
+    ge: null
+    le: 32
+    length: 24
+    max_length: 32
+    prefix: 89.116.100.0
   - comment: null
     exact: false
     ge: null
@@ -1040,13 +1050,6 @@ irrdb_info
     le: 128
     length: 48
     max_length: 128
-    prefix: '2001:500:30::'
-  - comment: null
-    exact: false
-    ge: null
-    le: 128
-    length: 48
-    max_length: 128
     prefix: '2001:500:110::'
   used_by: client AS10745_1, client AS10745_2
 - asns:
@@ -1057,6 +1060,13 @@ irrdb_info
   id: eebc9f9547473dabd311a3600514a2739a270244f539716931686e30e1f248cfa8f69c24f6edeafc78c4aa3d50901c0ef59d65f4775604d0b0c9f975f5929614
   name: AS_RIPENCC
   prefixes:
+  - comment: null
+    exact: false
+    ge: null
+    le: 32
+    length: 24
+    max_length: 32
+    prefix: 23.128.24.0
   - comment: null
     exact: false
     ge: null
@@ -1085,6 +1095,13 @@ irrdb_info
     length: 19
     max_length: 32
     prefix: 84.205.64.0
+  - comment: null
+    exact: false
+    ge: null
+    le: 32
+    length: 24
+    max_length: 32
+    prefix: 89.116.100.0
   - comment: null
     exact: false
     ge: null
@@ -1375,17 +1392,17 @@ AS10745:
   max_length: 32
   prefix: 199.43.0.0
 - exact: false
-  ge: 24
-  le: 32
-  length: 24
-  max_length: 32
-  prefix: 192.136.136.0
-- exact: false
   ge: 48
   le: 128
   length: 48
   max_length: 128
   prefix: '2001:500:4::'
+- exact: false
+  ge: 48
+  le: 128
+  length: 48
+  max_length: 128
+  prefix: '2001:500:110::'
 - exact: false
   ge: 24
   le: 32
@@ -1393,18 +1410,12 @@ AS10745:
   max_length: 32
   prefix: 192.149.252.0
 - exact: false
-  ge: 48
-  le: 128
-  length: 48
-  max_length: 128
-  prefix: '2001:500:110::'
-AS12654:
-- exact: false
   ge: 24
   le: 32
   length: 24
   max_length: 32
-  prefix: 23.128.124.0
+  prefix: 192.136.136.0
+AS12654:
 - exact: false
   ge: 24
   le: 32
@@ -1416,13 +1427,19 @@ AS12654:
   le: 32
   length: 24
   max_length: 32
-  prefix: 23.128.24.0
+  prefix: 23.128.124.0
 - exact: false
   ge: 24
   le: 32
   length: 24
   max_length: 32
   prefix: 23.128.25.0
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
+  prefix: 23.128.24.0
 
 
 registrobr_whois_db_records
@@ -1477,6 +1494,7 @@ never_via_route_servers_asns
 - 714
 - 12353
 - 8455
+- 40029
 - 57433
 - 57866
 - 36459
@@ -1486,6 +1504,7 @@ never_via_route_servers_asns
 - 263328
 - 12822
 - 46450
+- 17012
 - 263801
 - 63290
 - 278
@@ -1497,11 +1516,11 @@ never_via_route_servers_asns
 - 135706
 - 264424
 - 132563
-- 264212
 - 11670
 - 3630
 - 7862
 - 48408
+- 24282
 - 52973
 - 265630
 - 37529
@@ -1604,6 +1623,7 @@ never_via_route_servers_asns
 - 268772
 - 269512
 - 141134
+- 212539
 - 328959
 - 55244
 - 92
@@ -1622,3 +1642,6 @@ never_via_route_servers_asns
 - 35900
 - 201978
 - 208425
+- 212512
+- 142164
+- 149663

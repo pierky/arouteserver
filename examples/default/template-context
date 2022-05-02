@@ -759,6 +759,7 @@ clients:
     attach_custom_communities: null
     blackhole_filtering:
       announce_to_client: true
+    custom_options: null
     filtering:
       black_list_pref: null
       ipv4_pref_len: &id001
@@ -814,6 +815,7 @@ clients:
     attach_custom_communities: null
     blackhole_filtering:
       announce_to_client: true
+    custom_options: null
     filtering:
       black_list_pref: null
       ipv4_pref_len: *id001
@@ -865,6 +867,7 @@ clients:
     attach_custom_communities: null
     blackhole_filtering:
       announce_to_client: true
+    custom_options: null
     filtering:
       black_list_pref: null
       ipv4_pref_len: *id001
@@ -929,6 +932,13 @@ irrdb_info
   id: 454ed823addc298946e5f2ad415842d8a0a89403cf8ad05e584f94caf52ef799ca506a90f5386c1335f271047089bc0612014069cbb3d9a7851d595a0374c5c3
   name: AS3333
   prefixes:
+  - comment: null
+    exact: true
+    ge: null
+    le: null
+    length: 24
+    max_length: 32
+    prefix: 89.116.100.0
   - comment: null
     exact: true
     ge: null
@@ -1012,13 +1022,6 @@ irrdb_info
     le: null
     length: 48
     max_length: 128
-    prefix: '2001:500:30::'
-  - comment: null
-    exact: true
-    ge: null
-    le: null
-    length: 48
-    max_length: 128
     prefix: '2001:500:110::'
   used_by: client AS10745_1, client AS10745_2
 
@@ -1085,6 +1088,7 @@ never_via_route_servers_asns
 - 714
 - 12353
 - 8455
+- 40029
 - 57433
 - 57866
 - 36459
@@ -1094,6 +1098,7 @@ never_via_route_servers_asns
 - 263328
 - 12822
 - 46450
+- 17012
 - 263801
 - 63290
 - 278
@@ -1105,11 +1110,11 @@ never_via_route_servers_asns
 - 135706
 - 264424
 - 132563
-- 264212
 - 11670
 - 3630
 - 7862
 - 48408
+- 24282
 - 52973
 - 265630
 - 37529
@@ -1212,6 +1217,7 @@ never_via_route_servers_asns
 - 268772
 - 269512
 - 141134
+- 212539
 - 328959
 - 55244
 - 92
@@ -1230,3 +1236,6 @@ never_via_route_servers_asns
 - 35900
 - 201978
 - 208425
+- 212512
+- 142164
+- 149663

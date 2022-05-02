@@ -1,39 +1,39 @@
-Live test, OpenBGPD 7.2, BGP communities, IPv4: setting instances up...
-Live test, OpenBGPD 7.2, BGP communities, IPv4: instances setup ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv4: sessions are up ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv4: announce to AS1 only (ext) ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv4: announce to AS1 only (lrg) ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv4: announce to AS1 only (std) ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv4: announce to AS131073 only (ext) ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv4: announce to AS131073 only (lrg) ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv4: custom BGP community (ext) ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv4: custom BGP community (lrg) ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv4: custom BGP community (std) ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv4: custom BGP community scrubbed ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv4: reconfigure ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv4: log contains errors ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv4: dumping rs config...
-Live test, OpenBGPD 7.2, BGP communities, IPv4: dumping routes...
-Live test, OpenBGPD 7.2, BGP communities, IPv4: stopping instances...
-Live test, OpenBGPD 7.2, BGP communities, IPv6: setting instances up...
-Live test, OpenBGPD 7.2, BGP communities, IPv6: instances setup ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv6: sessions are up ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv6: announce to AS1 only (ext) ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv6: announce to AS1 only (lrg) ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv6: announce to AS1 only (std) ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv6: announce to AS131073 only (ext) ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv6: announce to AS131073 only (lrg) ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv6: custom BGP community (ext) ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv6: custom BGP community (lrg) ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv6: custom BGP community (std) ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv6: custom BGP community scrubbed ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv6: reconfigure ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv6: log contains errors ... ok
-Live test, OpenBGPD 7.2, BGP communities, IPv6: dumping rs config...
-Live test, OpenBGPD 7.2, BGP communities, IPv6: dumping routes...
-Live test, OpenBGPD 7.2, BGP communities, IPv6: stopping instances...
+Live test, OpenBGPD 7.3, BGP communities, IPv4: setting instances up...
+Live test, OpenBGPD 7.3, BGP communities, IPv4: instances setup ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv4: sessions are up ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv4: announce to AS1 only (ext) ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv4: announce to AS1 only (lrg) ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv4: announce to AS1 only (std) ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv4: announce to AS131073 only (ext) ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv4: announce to AS131073 only (lrg) ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv4: custom BGP community (ext) ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv4: custom BGP community (lrg) ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv4: custom BGP community (std) ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv4: custom BGP community scrubbed ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv4: reconfigure ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv4: log contains errors ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv4: dumping rs config...
+Live test, OpenBGPD 7.3, BGP communities, IPv4: dumping routes...
+Live test, OpenBGPD 7.3, BGP communities, IPv4: stopping instances...
+Live test, OpenBGPD 7.3, BGP communities, IPv6: setting instances up...
+Live test, OpenBGPD 7.3, BGP communities, IPv6: instances setup ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv6: sessions are up ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv6: announce to AS1 only (ext) ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv6: announce to AS1 only (lrg) ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv6: announce to AS1 only (std) ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv6: announce to AS131073 only (ext) ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv6: announce to AS131073 only (lrg) ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv6: custom BGP community (ext) ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv6: custom BGP community (lrg) ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv6: custom BGP community (std) ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv6: custom BGP community scrubbed ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv6: reconfigure ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv6: log contains errors ... ok
+Live test, OpenBGPD 7.3, BGP communities, IPv6: dumping rs config...
+Live test, OpenBGPD 7.3, BGP communities, IPv6: dumping routes...
+Live test, OpenBGPD 7.3, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 70.451s
+Ran 26 tests in 69.660s
 
 OK

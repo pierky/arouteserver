@@ -18,14 +18,14 @@ next release
 
   For more details see the `Client custom options <<https://arouteserver.readthedocs.io/en/latest/CONFIG.html#custom_options>`_.>`__ section of the documentation.
 
-  See also `GitHub PR 104 <https://github.com/pierky/arouteserver/pull/104>`_.
+  See also `GitHub PR 104 <https://github.com/pierky/arouteserver/pull/104>`__.
 
 - Improvement (BIRD): skip NEXT_HOP check for IPv6 link-local clients.
 
   Due to a limitation of BIRD, it is not possible to verify the NEXT_HOP attribute of routes announced by IPv6 clients configured using link-local addresses.
   The configurations generated using this release skip that check (upon operator's approval if such clients are present).
 
-  See also `GitHub PR 104 <https://github.com/pierky/arouteserver/pull/104>`_.
+  See also `GitHub PR 104 <https://github.com/pierky/arouteserver/pull/104>`__.
 
 - Fix: detect infeasible extended BGP communities when a 32bit ASN is used for the route server.
 
@@ -33,7 +33,7 @@ next release
 
   This release detects similar situations in advance and aborts the configuration building process.
 
-  See also `GitHub PR 104 <https://github.com/pierky/arouteserver/pull/104>`_.
+  See also `GitHub PR 104 <https://github.com/pierky/arouteserver/pull/104>`__.
 
 1.14.0
 ------
