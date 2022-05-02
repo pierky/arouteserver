@@ -1225,13 +1225,13 @@ AS10745:
   le: 32
   length: 24
   max_length: 32
-  prefix: 199.43.0.0
+  prefix: 192.149.252.0
 - exact: false
   ge: 24
   le: 32
   length: 24
   max_length: 32
-  prefix: 192.149.252.0
+  prefix: 199.43.0.0
 - exact: false
   ge: 24
   le: 32
@@ -1250,13 +1250,13 @@ AS12654:
   le: 32
   length: 24
   max_length: 32
-  prefix: 23.128.124.0
+  prefix: 23.128.25.0
 - exact: false
   ge: 24
   le: 32
   length: 24
   max_length: 32
-  prefix: 23.128.25.0
+  prefix: 23.128.124.0
 - exact: false
   ge: 24
   le: 32
@@ -1298,7 +1298,6 @@ never_via_route_servers_asns
 - 39326
 - 6908
 - 11164
-- 17451
 - 29169
 - 16509
 - 20161
@@ -1442,13 +1441,13 @@ never_via_route_servers_asns
 - 139667
 - 47583
 - 60757
-- 210777
 - 268772
 - 269512
 - 141134
 - 212539
 - 328959
 - 55244
+- 49910
 - 92
 - 147059
 - 136874
