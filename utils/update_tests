@@ -136,22 +136,22 @@ if [ ! -d $LAST_RESULTS_DIR ]; then
 	mkdir -p $LAST_RESULTS_DIR
 fi
 
-if [[ -z "$1" || `echo "$1" | grep -P "\bcli\b"` ]]; then
+if [[ -z "$1" || `echo "$1" | grep  "\bcli\b"` ]]; then
 	echo -n "Testing CLI commands... "
 	./tests/cli 2>&1
 fi
 
-if [[ -z "$1" || `echo "$1" | grep -P "\bstatic\b"` ]]; then
+if [[ -z "$1" || `echo "$1" | grep  "\bstatic\b"` ]]; then
 	echo "Running static tests..."
 	nosetests -vs -x $TESTS_DIR/static 2>&1 | tee $LAST_RESULTS_DIR/static.last
 fi
 
-if [[ -z "$1" || `echo "$1" | grep -P "\bextres\b"` ]]; then
+if [[ -z "$1" || `echo "$1" | grep  "\bextres\b"` ]]; then
 	echo "Running external resources tests..."
 	nosetests -vs -x $TESTS_DIR/external_resources 2>&1 | tee $LAST_RESULTS_DIR/extres.last
 fi
 
-if [[ -z "$1" || `echo "$1" | grep -P "\bbuild_only\b"` ]]; then
+if [[ -z "$1" || `echo "$1" | grep  "\bbuild_only\b"` ]]; then
 	echo "Testing live scenarios with BUILD_ONLY=1..."
 	BUILD_ONLY=1 nosetests -vs -x $TESTS_DIR/live_tests/scenarios/*/test_*.py -m test_010_setup
 fi
@@ -162,7 +162,7 @@ for bgpspeaker in $BGPSPEAKERS; do
 		if [ -d $d ]; then
 			LIVE_TEST_NAME="`basename $d`"
 
-			if [[ -z "$1" || "$1" == "all" || `echo "$1" | grep -P "\b$LIVE_TEST_NAME\b"` ]]; then
+			if [[ -z "$1" || "$1" == "all" || `echo "$1" | grep  "$LIVE_TEST_NAME"` ]]; then
 				if [[ `find $d/test_${bgpspeaker}*.py 2>/dev/null | wc -l` -gt 0 ]]; then
 					echo " - live test: $LIVE_TEST_NAME, $bgpspeaker"
 					TARGET_FILE="live_${LIVE_TEST_NAME}_${bgpspeaker}.last"

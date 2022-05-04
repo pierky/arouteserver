@@ -595,12 +595,16 @@ class ValidatorCommunityExt(ValidatorCommunity):
                 if part_val < 0 or part_val > 4294967295:
                     raise ConfigError()
                 validated_parts.append(str(int(part_val)))
+            if int(validated_parts[1]) > 65535:
+                if validated_parts[2].isdigit() and int(validated_parts[2]) > 65535:
+                    raise ConfigError()
             return ":".join(validated_parts)
         except ConfigError as e:
             raise ConfigError(
                 "Invalid BGP extended community: {}{}; "
-                "it must be in the k:x:x format, with k one of "
-                "'rt' or 'ro' and x = an unsigned integer; "
+                "it must be in the k:x:y format, with k one of "
+                "'rt' or 'ro' and x and y unsigned integers "
+                "(only one among x and y can be > 65535); "
                 "the 'rs_as' and 'peer-as' macros "
                 "can be used to represent, respectively, the route "
                 "server's ASN and the destination peer's ASN".format(
@@ -649,3 +653,89 @@ class ValidatorRTTThresholds(ConfigParserValidator):
             res.append(rtt)
 
         return res
+
+class ValidatorClientCustomOptions(ConfigParserValidator):
+
+    def _validate(self, v):
+        ALLOWED_BGP_SPEAKER = ("bird", "openbgpd")
+        ALLOWED_AF = ("ipv4", "ipv6", "any")
+        ALLOWED_SECTIONS = {
+            "bird": ("protocol", "channel"),
+            "openbgpd": ("client",)
+        }
+
+        if not isinstance(v, dict):
+            raise ConfigError(
+                "Invalid format for custom_options: must be a dictionary"
+            )
+
+        custom_options = v
+
+        for bgp_speaker in custom_options:
+            if bgp_speaker not in ALLOWED_BGP_SPEAKER:
+                raise ConfigError(
+                    "Unknown BGP speaker: {bgp_speaker}. "
+                    "Must be one of {allowed}".format(
+                        bgp_speaker=bgp_speaker,
+                        allowed=", ".join(ALLOWED_BGP_SPEAKER)
+                    )
+                )
+            for af in custom_options[bgp_speaker]:
+                if af not in ALLOWED_AF:
+                    raise ConfigError(
+                        "Unknown AF in custom_options.{bgp_speaker}: {af}. "
+                        "Must be one of {allowed}".format(
+                            bgp_speaker=bgp_speaker,
+                            af=af,
+                            allowed=", ".join(ALLOWED_AF)
+                        )
+                    )
+
+                custom_data = custom_options[bgp_speaker][af]
+
+                if not isinstance(custom_data, dict):
+                    raise ConfigError(
+                        "Unknown format custom_options.{bgp_speaker}.{af}: "
+                        "must be a dict".format(
+                            bgp_speaker=bgp_speaker,
+                            af=af
+                        )
+                    )
+
+                if not custom_data.keys():
+                    raise ConfigError(
+                        "Missing section in custom_options.{bgp_speaker}.{af}. "
+                        "For {bgp_speaker}, it must be one of {allowed}".format(
+                            bgp_speaker=bgp_speaker,
+                            af=af,
+                            allowed=", ".join(ALLOWED_SECTIONS[bgp_speaker])
+                        )
+                    )
+
+                for section in custom_data:
+                    if section not in ALLOWED_SECTIONS[bgp_speaker]:
+                        raise ConfigError(
+                            "Unknown section in custom_options.{bgp_speaker}.{af}: {section}. "
+                            "For {bgp_speaker}, it must be one of {allowed}".format(
+                                bgp_speaker=bgp_speaker,
+                                af=af,
+                                section=section,
+                                allowed=", ".join(ALLOWED_SECTIONS[bgp_speaker])
+                            )
+                        )
+
+                    if list(custom_data[section].keys()) != ["config_lines"] or \
+                        not isinstance(custom_data[section]["config_lines"], list):
+
+                        raise ConfigError(
+                            "Unknown format for custom_options.{bgp_speaker}.{af}.{section}: "
+                            "at the moment the only supported key is config_lines, "
+                            "a list of custom configuration lines "
+                            "specific to the BGP speaker".format(
+                                bgp_speaker=bgp_speaker,
+                                af=af,
+                                section=section
+                            )
+                        )
+
+        return custom_options

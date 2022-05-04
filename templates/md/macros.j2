@@ -1,0 +1,18 @@
+{% macro write_prefix_list(prefix_list) %}
+| Prefix | More specific | Comment |
+| --- | --- | --- |
+{% if prefix_list %}
+{% for entry in prefix_list if entry.prefix is current_ipver %}| {{ entry.prefix }}/{{ entry.length }} |{% if not entry.exact %}
+{% if (not entry.ge or entry.ge == entry.length ) and (not entry.le or entry.le == entry.max_length) %} any more specific prefix |{% else %} with len in the
+ {% if not entry.ge %}{{ entry.length }}{% else %}{{ entry.ge }}{% endif %}-{% if not entry.le %}{{ entry.max_length }}{% else %}{{ entry.le }}{% endif %} range |{% endif %}
+{% else %} only the exact prefix |{% endif %} {{ entry.comment }} |
+{% endfor %}
+{% endif %}
+{% endmacro %}
+
+{% macro write_communities_table_row(comm, function_descr, dyn_val=None, write_row=True) %}
+{% if comm|community_is_set %}
+{% if write_row %}|{% endif %} {{ function_descr|replace("dyn_val", dyn_val) }} | {{ comm.std|replace("dyn_val", dyn_val) }} | {{ comm.ext|replace("dyn_val", dyn_val) }} | {{ comm.lrg|replace("dyn_val", dyn_val) }} |{% if write_row %}{% endif %}
+
+{% endif %}
+{% endmacro %}

@@ -70,13 +70,15 @@ ARouteServer can be used as a Python library too: see :doc:`LIBRARY` for more de
 Textual representation
 ----------------------
 
-To build an HTML textual representation of route server's options and policies, the ``html`` command can be used:
+To build an HTML or Markdown textual representation of route server's options and policies, the ``html`` or ``md`` commands can be used:
 
   .. code:: bash
 
     arouteserver html -o /var/www/html/rs_description.html
 
-This command writes an HTML page that contains a brief textual representation of route server's policies. An example can be found `here <_static/examples_rich.html>`_.
+    arouteserver md -o /var/www/html/rs_description.md
+
+These commands write an HTML page or Markdown .md file that contain a brief textual representation of the route server's policies. Some examples can be found `here <_static/examples_rich.html>`_ or on GitHub, `inside the "examples" directory <https://github.com/search?q=repo%3Apierky%2Farouteserver+extension%3Amd+extension%3Ahtml+path%3A%2Fexamples+-filename%3AREADME.md&type=Code&ref=advsearch&l=&l=>`__.
 
 .. _automatic-clients:
 

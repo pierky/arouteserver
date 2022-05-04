@@ -57,7 +57,7 @@ class ConfigBuilder(object):
 
     DEFAULT_VERSION = None
 
-    IGNORABLE_ISSUES = []
+    IGNORABLE_ISSUES = ["ext-comms-32bit-asn"]
 
     def validate_bgpspeaker_specific_configuration(self):
         """Check compatibility between config and target BGP speaker
@@ -70,8 +70,8 @@ class ConfigBuilder(object):
         """
         return True
 
-    def process_bgpspeaker_specific_compatibility_issue(self, issue_id, text):
-        """Process a compatibility issue with the target BGP speaker
+    def process_compatibility_issue(self, issue_id, text):
+        """Handle a compatibility issue which can be acknowledged by the user.
 
         If the issue has been ignored via command-line, logs a warning
         message and returns True.
@@ -459,6 +459,55 @@ class ConfigBuilder(object):
                         )
                     )
 
+        if self.cfg_general["rs_as"] > 65535 and self._are_there_32bit_clients():
+            ext_comms_32bit = []
+
+            for comm_name in ConfigParserGeneral.COMMUNITIES_SCHEMA:
+                comm = self.cfg_general["communities"][comm_name]
+
+                ext_comm = comm.get("ext")
+                if not ext_comm:
+                    continue
+
+                if all(
+                    (part.isdigit() and int(part) > 65535) or part == "peer_as"
+                    for part in ext_comm.split(":")[1:]
+                ):
+                    ext_comms_32bit.append((comm_name, ext_comm))
+
+            if ext_comms_32bit:
+                ext_comms_32bit_asn_issue = (
+                    "One or more BGP extended communities are defined which "
+                    "may end up containing or matching both value parts "
+                    "against a 32bit number. This is not possible since "
+                    "only one part at a time can represent a 32bit integer. "
+                    "This happens because the ASN used for the route server "
+                    "is a 32bit number and also one or more 32bit ASN "
+                    "clients are configured. In order to avoid unexpected "
+                    "behaviours and/or loosing the functionalities implemented "
+                    "by those communities please consider changing them, for "
+                    "example using a 'placeholder' ASN instead of the "
+                    "actual route server ASN ({rs_as}) or 'rs_as' macro. "
+                    "The list of affected communities follows: {comms_list}"
+                ).format(
+                    rs_as=self.cfg_general["rs_as"],
+                    comms_list=", ".join(
+                        "{comm_name} ({comm_value})".format(
+                            comm_name=comm_name,
+                            comm_value=comm_value
+                        )
+                        for comm_name, comm_value in ext_comms_32bit
+                    )
+                )
+                if not self.process_compatibility_issue(
+                    "ext-comms-32bit-asn",
+                    ext_comms_32bit_asn_issue
+                ):
+                    raise CompatibilityIssuesError(
+                        "One or more compatibility issues have been found."
+                    )
+
+
         if not self.validate_bgpspeaker_specific_configuration():
             raise CompatibilityIssuesError(
                 "One or more compatibility issues have been found."
@@ -477,6 +526,12 @@ class ConfigBuilder(object):
 
         logging.info("Configuration processing completed after "
                      "{} seconds.".format(stop_time - start_time))
+
+    def _are_there_32bit_clients(self):
+        for client in self.cfg_clients.cfg["clients"]:
+            if client["asn"] > 65535:
+                return True
+        return False
 
     def enrich_config(self):
         errors = False
@@ -743,7 +798,7 @@ class BIRDConfigBuilder(ConfigBuilder):
              "scrub_communities_in", "scrub_communities_out",
              "apply_blackhole_filtering_policy"]
 
-    IGNORABLE_ISSUES = ["max_prefix_count_rejected_routes"]
+    IGNORABLE_ISSUES = ConfigBuilder.IGNORABLE_ISSUES + ["max_prefix_count_rejected_routes", "ipv6_link_local_next_hop"]
 
     AVAILABLE_VERSION = ["1.6.3", "1.6.4", "1.6.6", "1.6.7", "1.6.8",
                          "2.0.7", "2.0.7+b962967e", "2.0.8", "2.0.9"]
@@ -777,6 +832,27 @@ class BIRDConfigBuilder(ConfigBuilder):
                         "for more details."
                     )
 
+        if self.ip_ver is None or self.ip_ver == 6:
+            link_local_clients = []
+
+            for client in self.cfg_clients.cfg["clients"]:
+                ip = client["ip"]
+                if IPAddress(ip).obj.is_link_local:
+                    link_local_clients.append(ip)
+
+            if link_local_clients:
+                if not self.process_compatibility_issue(
+                    "ipv6_link_local_next_hop",
+                    "Due to a limitation of BIRD, it is not possible to verify "
+                    "the NEXT_HOP attribute of routes announced by the following "
+                    "IPv6 clients, because the BGP sessions are configured "
+                    "using link-local addresses, which are not handled correctly "
+                    "by the BIRD function that returns the next-hop: {}".format(
+                        ", ".join(link_local_clients)
+                    )
+                ):
+                    res = False
+
         if version.parse(self.target_version) == version.parse("2.0.7"):
             max_prefix_count_rejected_routes_clients = []
 
@@ -789,7 +865,7 @@ class BIRDConfigBuilder(ConfigBuilder):
                 self.cfg_general["filtering"]["max_prefix"]["count_rejected_routes"] or \
                 max_prefix_count_rejected_routes_clients
             ):
-                if not self.process_bgpspeaker_specific_compatibility_issue(
+                if not self.process_compatibility_issue(
                     "max_prefix_count_rejected_routes",
                     "In BIRD, the functionality represented by the "
                     "'count_rejected_routes: True' option is "
@@ -880,10 +956,11 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
     LOCAL_FILES_BASE_DIR = "/etc/bgpd"
 
     AVAILABLE_VERSION = ["6.0", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7",
-                         "6.8", "6.9", "7.0", "7.1", "7.2"]
+                         "6.8", "6.9", "7.0", "7.1", "7.2", "7.3"]
     DEFAULT_VERSION = AVAILABLE_VERSION[-1]
 
-    IGNORABLE_ISSUES = ["path_hiding", "transit_free_action",
+    IGNORABLE_ISSUES = ConfigBuilder.IGNORABLE_ISSUES + \
+                        ["path_hiding", "transit_free_action",
                         "add_path", "max_prefix_action",
                         "max_prefix_count_rejected_routes",
                         "blackhole_filtering_rewrite_ipv6_nh",
@@ -905,7 +982,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
 
         if self.cfg_general["path_hiding"] and \
             version.parse(self.target_version) < version.parse("6.9"):
-            if not self.process_bgpspeaker_specific_compatibility_issue(
+            if not self.process_compatibility_issue(
                 "path_hiding",
                 "The 'path_hiding' general configuration parameter is "
                 "set to True, but the configuration generated by "
@@ -916,7 +993,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
 
         if self.cfg_general["path_hiding"] and \
             version.parse(self.target_version) == version.parse("6.9"):
-            if not self.process_bgpspeaker_specific_compatibility_issue(
+            if not self.process_compatibility_issue(
                 "path_hiding_69",
                 "The 'path_hiding' general configuration parameter is "
                 "set to True, however, for version 6.9 of OpenBGPD, "
@@ -939,7 +1016,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
 
         transit_free_action = self.cfg_general["filtering"]["transit_free"]["action"]
         if transit_free_action and transit_free_action != "reject":
-            if not self.process_bgpspeaker_specific_compatibility_issue(
+            if not self.process_compatibility_issue(
                 "transit_free_action",
                 "Transit free ASNs policy is configured with "
                 "'action' = '{}' but only 'reject' is supported "
@@ -973,7 +1050,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
         if add_path_clients:
             clients = add_path_clients
             cnt = len(clients)
-            if not self.process_bgpspeaker_specific_compatibility_issue(
+            if not self.process_compatibility_issue(
                 "add_path",
                 "ADD_PATH not supported by OpenBGPD but "
                 "enabled for the following clients: {}{}.".format(
@@ -986,7 +1063,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
         if max_prefix_action_clients:
             clients = max_prefix_action_clients
             cnt = len(clients)
-            if not self.process_bgpspeaker_specific_compatibility_issue(
+            if not self.process_compatibility_issue(
                 "max_prefix_action",
                 "Invalid max-prefix 'action' for the following "
                 "clients: {}{}; only 'shutdown' and 'restart' "
@@ -1000,7 +1077,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
         if max_prefix_count_rejected_routes_clients:
             clients = max_prefix_count_rejected_routes_clients
             cnt = len(clients)
-            if not self.process_bgpspeaker_specific_compatibility_issue(
+            if not self.process_compatibility_issue(
                 "max_prefix_count_rejected_routes",
                 "Invalid max-prefix 'count_rejected_routes' option for "
                 "the following clients: {}{}; in OpenBGPD, the "
@@ -1014,7 +1091,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
 
         if self.cfg_general["blackhole_filtering"]["policy_ipv6"] == "rewrite-next-hop" and \
             version.parse(self.target_version) < version.parse("6.1"):
-            if not self.process_bgpspeaker_specific_compatibility_issue(
+            if not self.process_compatibility_issue(
                 "blackhole_filtering_rewrite_ipv6_nh",
                 "On OpenBSD < 6.1 there is an issue related to next-hop rewriting "
                 "that impacts blackhole filtering policies when "
@@ -1060,7 +1137,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
         if only_large_comms and \
             version.parse(self.target_version) < version.parse("6.1"):
             comms = only_large_comms
-            if not self.process_bgpspeaker_specific_compatibility_issue(
+            if not self.process_compatibility_issue(
                 "large_communities",
                 "The communit{y_ies} '{names}' ha{s_ve} been configured to be "
                 "implemented using only the large communit{y_ies} "
@@ -1083,7 +1160,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
         if large_comms_used and \
             version.parse(self.target_version) < version.parse("6.1"):
             comms = large_comms_used
-            if not self.process_bgpspeaker_specific_compatibility_issue(
+            if not self.process_compatibility_issue(
                 "large_communities",
                 "The communit{y_ies} '{names}' ha{s_ve} been configured to be "
                 "implemented using also the large communit{y_ies} "
@@ -1106,7 +1183,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
 
         if peer_as_ext_comms:
             comms = peer_as_ext_comms
-            if not self.process_bgpspeaker_specific_compatibility_issue(
+            if not self.process_compatibility_issue(
                 "extended_communities",
                 "The peer-ASN-specific communit{y_ies} '{names}' "
                 "ha{s_ve} been configured to be implemented using the "
@@ -1140,7 +1217,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
         if (self.cfg_general["graceful_shutdown"]["enabled"] or \
             self.perform_graceful_shutdown) and \
             version.parse(self.target_version) <= version.parse("6.1"):
-            if not self.process_bgpspeaker_specific_compatibility_issue(
+            if not self.process_compatibility_issue(
                 "graceful_shutdown",
                 "GRACEFUL_SHUTDOWN BGP community is not implemented "
                 "on OpenBGPD versions prior to 6.2. By marking this issue "
@@ -1161,7 +1238,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             if comm["ext"] and comm["ext"].startswith("ro:65535:"):
                 internal_communities_collistion.append(comm_name)
         if internal_communities_collistion:
-            if not self.process_bgpspeaker_specific_compatibility_issue(
+            if not self.process_compatibility_issue(
                 "internal_communities",
                 "The Extended BGP communities in the range ro:65535:* "
                 "are reserved for internal purposes. "
@@ -1179,7 +1256,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
         if use_rpki_roas_as_route_objects_cfg["enabled"]:
             if self.cfg_general["rpki_roas"]["source"] != "ripe-rpki-validator-cache" and \
                version.parse(self.target_version) < version.parse("6.9"):
-                if not self.process_bgpspeaker_specific_compatibility_issue(
+                if not self.process_compatibility_issue(
                     "rpki_roas_as_route_objects_source",
                     "For OpenBGPD < 6.9 only the 'ripe-rpki-validator-cache' "
                     "value is allowed for the 'rpki_roas.source' option."
@@ -1189,7 +1266,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
         if self.cfg_general.rpki_roas_needed:
             if self.cfg_general["rpki_roas"]["source"] != "ripe-rpki-validator-cache" and \
                version.parse(self.target_version) < version.parse("6.9"):
-                if not self.process_bgpspeaker_specific_compatibility_issue(
+                if not self.process_compatibility_issue(
                     "rpki_roas_source",
                     "For OpenBGPD < 6.9 only the 'ripe-rpki-validator-cache' "
                     "value is allowed for the 'rpki_roas.source' option."
@@ -1198,7 +1275,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
 
             if self.cfg_general["rpki_roas"]["source"] == "rtr" and \
                version.parse(self.target_version) == version.parse("6.9"):
-                if not self.process_bgpspeaker_specific_compatibility_issue(
+                if not self.process_compatibility_issue(
                     "rpki_roas_source",
                     "The general configuration policy has 'rpki_roas.source' "
                     "set to 'rtr', which means that ROAs will be retrieved "

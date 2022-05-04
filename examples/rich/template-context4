@@ -784,6 +784,7 @@ clients:
     - from_europe
     blackhole_filtering:
       announce_to_client: true
+    custom_options: null
     filtering:
       black_list_pref: null
       ipv4_pref_len: &id001
@@ -843,6 +844,7 @@ clients:
     - from_usa
     blackhole_filtering:
       announce_to_client: true
+    custom_options: null
     filtering:
       black_list_pref: null
       ipv4_pref_len: *id001
@@ -896,6 +898,7 @@ clients:
     - from_usa
     blackhole_filtering:
       announce_to_client: true
+    custom_options: null
     filtering:
       black_list_pref: null
       ipv4_pref_len: *id001
@@ -955,6 +958,13 @@ irrdb_info
   id: 454ed823addc298946e5f2ad415842d8a0a89403cf8ad05e584f94caf52ef799ca506a90f5386c1335f271047089bc0612014069cbb3d9a7851d595a0374c5c3
   name: AS3333
   prefixes:
+  - comment: null
+    exact: false
+    ge: null
+    le: 32
+    length: 24
+    max_length: 32
+    prefix: 89.116.100.0
   - comment: null
     exact: false
     ge: null
@@ -1033,6 +1043,13 @@ irrdb_info
     le: 32
     length: 24
     max_length: 32
+    prefix: 23.128.24.0
+  - comment: null
+    exact: false
+    ge: null
+    le: 32
+    length: 24
+    max_length: 32
     prefix: 27.0.0.0
   - comment: null
     exact: false
@@ -1055,6 +1072,13 @@ irrdb_info
     length: 19
     max_length: 32
     prefix: 84.205.64.0
+  - comment: null
+    exact: false
+    ge: null
+    le: 32
+    length: 24
+    max_length: 32
+    prefix: 89.116.100.0
   - comment: null
     exact: false
     ge: null
@@ -1220,12 +1244,6 @@ AS12654:
   le: 32
   length: 24
   max_length: 32
-  prefix: 23.128.124.0
-- exact: false
-  ge: 24
-  le: 32
-  length: 24
-  max_length: 32
   prefix: 23.128.24.0
 - exact: false
   ge: 24
@@ -1233,6 +1251,12 @@ AS12654:
   length: 24
   max_length: 32
   prefix: 23.128.25.0
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
+  prefix: 23.128.124.0
 - exact: false
   ge: 24
   le: 32
@@ -1250,89 +1274,83 @@ never_via_route_servers_asns
 ----------------------------
 - 2914
 - 3491
-- 34209
 - 6079
-- 1104
+- 7843
+- 1299
+- 3257
 - 3265
-- 11670
 - 8607
+- 6805
 - 12322
 - 6730
 - 13030
 - 3320
+- 1273
 - 174
 - 680
-- 8455
 - 2152
+- 6830
 - 3292
-- 17451
-- 35836
+- 5511
+- 8365
 - 21396
+- 8075
+- 39326
+- 6908
+- 11164
 - 29169
+- 16509
 - 20161
 - 11260
 - 34108
-- 7843
 - 20115
 - 39651
+- 48237
 - 9908
 - 15692
+- 47377
 - 10013
 - 8943
 - 5391
-- 48237
 - 37271
+- 714
 - 12353
-- 6908
-- 6830
-- 17665
+- 8455
+- 40029
+- 57433
+- 57866
 - 36459
 - 52965
-- 51530
-- 1273
-- 57433
-- 39326
-- 27947
-- 714
-- 62567
-- 8075
-- 3257
+- 7155
 - 13760
 - 263328
-- 11164
 - 12822
-- 35900
-- 5511
-- 7155
-- 6805
-- 47377
-- 57866
 - 46450
+- 17012
 - 263801
-- 263945
 - 63290
-- 8365
 - 278
+- 62567
 - 202793
 - 33983
 - 134022
-- 43470
 - 3754
-- 3630
 - 135706
 - 264424
 - 132563
-- 264212
+- 11670
+- 3630
 - 7862
 - 48408
-- 137207
+- 24282
 - 52973
 - 265630
 - 37529
+- 27947
+- 34209
 - 263856
 - 135848
-- 147059
-- 62623
+- 19237
 - 137610
 - 34587
 - 138023
@@ -1341,11 +1359,8 @@ never_via_route_servers_asns
 - 30983
 - 263258
 - 396477
-- 51095
 - 262191
 - 54295
-- 18520
-- 14295
 - 138953
 - 268952
 - 58768
@@ -1353,13 +1368,14 @@ never_via_route_servers_asns
 - 328572
 - 49127
 - 393573
+- 18520
+- 14295
 - 393684
 - 269156
 - 207353
 - 209699
 - 270544
 - 328582
-- 267373
 - 267442
 - 269535
 - 48265
@@ -1379,14 +1395,18 @@ never_via_route_servers_asns
 - 271172
 - 271203
 - 270653
+- 62623
 - 140287
 - 212706
 - 265336
+- 212623
+- 43470
 - 269367
 - 36165
 - 202561
 - 213202
 - 141120
+- 35836
 - 141411
 - 262888
 - 131398
@@ -1395,7 +1415,6 @@ never_via_route_servers_asns
 - 53859
 - 269654
 - 141892
-- 1299
 - 267214
 - 62164
 - 263686
@@ -1403,30 +1422,34 @@ never_via_route_servers_asns
 - 52946
 - 200807
 - 30967
+- 141091
 - 11290
 - 141140
 - 271200
 - 13032
+- 51530
 - 31764
 - 142369
+- 137207
 - 270796
 - 142348
 - 23888
-- 398203
 - 141856
 - 146846
-- 267026
 - 146958
+- 398203
 - 139667
 - 47583
 - 60757
-- 210777
 - 268772
 - 269512
 - 141134
+- 212539
 - 328959
 - 55244
+- 49910
 - 92
+- 147059
 - 136874
 - 40063
 - 149296
@@ -1437,3 +1460,10 @@ never_via_route_servers_asns
 - 146904
 - 396304
 - 269190
+- 208548
+- 35900
+- 201978
+- 208425
+- 212512
+- 142164
+- 149663

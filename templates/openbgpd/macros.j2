@@ -35,50 +35,54 @@
 
 {%- macro write_community(left, comm, right, peer_as=None, dyn_val=None, is_delete=False) -%}
 {%- if is_delete -%}
-{%-	set delete = "delete " -%}
+{%- set delete = "delete " -%}
 {%- else -%}
-{%-	set delete = "" -%}
+{%- set delete = "" -%}
 {%- endif -%}
 {%- if right -%}
-{%-	set right_val = " " ~ right -%}
+{%- set right_val = " " ~ right -%}
 {%- else -%}
-{%-	set right_val = "" -%}
+{%- set right_val = "" -%}
 {%- endif -%}
 {%- if comm|community_is_set -%}
-{%-      if comm.std -%}
-{%-             if "peer_as" in comm.std -%}
-{%-			if peer_as == "*" or peer_as <= 65535 -%}
+{%-     if comm.std -%}
+{%-         if "peer_as" in comm.std -%}
+{%-             if peer_as == "*" or peer_as <= 65535 -%}
 {{ left }} community {{ delete }}{{ comm.std|replace("peer_as", peer_as) }}{{ right_val }}
-{%-			else -%}
+{%-             else -%}
 # Warning: must skip {{ comm.std }} because peer_as > 65535 ({{ peer_as }})
-{%-			endif -%}
-{%-		elif "dyn_val" in comm.std -%}
-{%-			if dyn_val == "*" or dyn_val <= 65535 -%}
+{%-             endif -%}
+{%-         elif "dyn_val" in comm.std -%}
+{%-             if dyn_val == "*" or dyn_val <= 65535 -%}
 {{ left }} community {{ delete }}{{ comm.std|replace("dyn_val", dyn_val) }}{{ right_val }}
-{%-			else -%}
+{%-             else -%}
 # Warning: must skip {{ comm.std }} because dyn_val > 65535 ({{ dyn_val }})
-{%-			endif -%}
-{%-		else -%}
+{%-             endif -%}
+{%-         else -%}
 {{ left }} community {{ delete }}{{ comm.std }}{{ right_val }}
-{%-		endif -%}
-{%-		if left -%}{{ "\n" }}{%- endif -%}
-{%-	endif -%}
+{%-         endif -%}
+{%-         if left -%}{{ "\n" }}{%- endif -%}
+{%-     endif -%}
 {%-     if comm.ext -%}
-{%-             if "peer_as" in comm.ext -%}
+{%-         if "peer_as" in comm.ext -%}
+{%-             if comm.ext.split(":")[1]|int <= 65535 or peer_as == "*" or peer_as|int <= 65535 -%}
 {{ left }} ext-community {{ delete }}{{ comm.ext|convert_ext_comm|replace("peer_as", peer_as) }}{{ right_val }}
-{%-		else -%}
+{%-             else -%}
+# Warning: must skip {{ comm.ext }} because peer_as > 65535 ({{ peer_as }}) and also {{ comm.ext.split(":")[1] }} is a 32bit number
+{%-             endif -%}
+{%-         else -%}
 {{ left }} ext-community {{ delete }}{{ comm.ext|convert_ext_comm|replace("dyn_val", dyn_val) }}{{ right_val }}
-{%-		endif -%}
-{%-		if left -%}{{ "\n" }}{%- endif -%}
-{%-	endif -%}
+{%-         endif -%}
+{%-         if left -%}{{ "\n" }}{%- endif -%}
+{%-     endif -%}
 {%-     if comm.lrg and "6.1"|target_version_ge -%}
-{%-             if "peer_as" in comm.lrg -%}
+{%-         if "peer_as" in comm.lrg -%}
 {{ left }} large-community {{ delete }}{{ comm.lrg|replace("peer_as", peer_as) }}{{ right_val }}
-{%-		else -%}
+{%-         else -%}
 {{ left }} large-community {{ delete }}{{ comm.lrg|replace("dyn_val", dyn_val) }}{{ right_val }}
-{%-		endif -%}
-{%-		if left -%}{{ "\n" }}{%- endif -%}
-{%-	endif -%}
+{%-         endif -%}
+{%-         if left -%}{{ "\n" }}{%- endif -%}
+{%-     endif -%}
 {%- endif -%}
 {%- endmacro -%}
 
@@ -104,30 +108,16 @@
 {{ write_community(left ~ " set", comm, "", peer_as, replace_dyn_val, True) }}
 {% endmacro %}
 
-{% macro write_prepending_comm(comm, asn, rtt_thresholds) %}
+{% macro delete_prepending_comm(comm, rtt_thresholds) %}
 {%	if comm|community_is_set %}
 {%		if comm.std %}
-{%			if "peer_as" in comm.std %}
-{%				if asn == "*" %}
-{{					"	community delete " ~ comm.std|replace("peer_as", asn)|replace("dyn_val", "*") }}
-{%				elif asn <= 65535 %}
-{{					"	community delete " ~ comm.std|replace("peer_as", asn)|replace("dyn_val", "*") }}
-{%				elif asn > 65535 %}
-{{					"	# skipped, peer asn (" ~ asn ~ ") > 65535" }}
-{%				endif %}
-{%			else %}
-{{					"	community delete " ~ comm.std|replace("dyn_val", "*") }}
-{%			endif %}
+{{			"	community delete " ~ comm.std|replace("peer_as", "*")|replace("dyn_val", "*") }}
 {%		endif %}
 {%		if comm.ext %}
-{%			if "dyn_val" in comm.ext %}
-{{				"	ext-community delete " ~ comm.ext|convert_ext_comm|replace("peer_as", asn)|replace("dyn_val", "*") }}
-{%			else %}
-{{				"	ext-community delete " ~ comm.ext|convert_ext_comm|replace("peer_as", asn) }}
-{%			endif %}
+{{			"	ext-community delete " ~ comm.ext|convert_ext_comm|replace("peer_as", "*")|replace("dyn_val", "*") }}
 {%		endif %}
 {%		if comm.lrg and "6.1"|target_version_ge %}
-{{			"	large-community delete " ~ comm.lrg|replace("peer_as", asn)|replace("dyn_val", "*") }}
+{{			"	large-community delete " ~ comm.lrg|replace("peer_as", "*")|replace("dyn_val", "*") }}
 {%		endif %}
 {%	endif %}
 {% endmacro %}
