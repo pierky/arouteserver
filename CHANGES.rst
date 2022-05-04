@@ -6,6 +6,8 @@ Change log
 1.15.0
 ------
 
+- New: add support for OpenBGPD 7.3, also added to the integration testing suite (portable edition only).
+
 - New: ``md`` command, to build a textual representation in Markdown format.
 
   This command works like the ``html`` command and can be used to build a textual representation of the route server's configuration policy in Markdown format.
