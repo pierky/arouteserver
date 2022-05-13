@@ -1,5 +1,5 @@
-aggregate6>=1.0.12
-Jinja2>=2.9.4
-PyYAML>=3.13
-requests>=2.18.4
-packaging
+aggregate6~=1.0
+Jinja2>=3.0.0, <4.0
+PyYAML>=6.0, <7.0
+requests>=2.18.4, <3.0
+packaging~=21.0

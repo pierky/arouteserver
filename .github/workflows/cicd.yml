@@ -48,6 +48,12 @@ jobs:
         env:
           TRAVIS: 1
 
+      - name: Config build tests
+        if: ${{ matrix.python-version != '3.9' }}
+        run: BUILD_ONLY=1 nosetests -vs -x --tests=tests/live_tests/
+        env:
+          TRAVIS: 1
+
       - name: Test external resources
         if: ${{ matrix.python-version == '3.9' }}
         run: nosetests -vs --tests=tests/external_resources/
