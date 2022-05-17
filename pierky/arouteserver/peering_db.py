@@ -16,6 +16,7 @@
 import logging
 import json
 import re
+import os
 import requests
 
 from .cached_objects import CachedObject
@@ -35,17 +36,41 @@ class PeeringDBInfo(CachedObject):
 
     @staticmethod
     def _read_from_url(url):
-        response = requests.get(url)
+        headers = None
+
+        peeringdb_api_key = None
+
+        for env_var in ("SECRET_PEERINGDB_API_KEY", "PEERINGDB_API_KEY", "API_KEY"):
+            if env_var in os.environ:
+                peeringdb_api_key = os.environ[env_var].strip()
+                break
+
+        if peeringdb_api_key:
+            headers = {"Authorization": "Api-Key {}".format(peeringdb_api_key)}
+
+        response = requests.get(url, headers=headers)
+
         try:
             response.raise_for_status()
         except requests.exceptions.HTTPError as e:
             if e.response.status_code == 404:
                 return "{}"
             else:
+                additional_info = ""
+                if e.response.status_code == 429:
+                    additional_info = (
+                        " - Please consider setting the SECRET_PEERINGDB_API_KEY "
+                        "environment variable to instruct ARouteServer to use "
+                        "a PeeringDB API key to perform authentication. "
+                        "Documentation on how to create an API key can be found "
+                        "on the peeringdb.com web site "
+                        "(https://docs.peeringdb.com/howto/api_keys/)"
+                    )
+
                 raise PeeringDBError(
                     "HTTP error while retrieving info from PeeringDB: "
-                    "{}".format(
-                        str(e)
+                    "{}{}".format(
+                        str(e), additional_info
                     )
                 )
         except Exception as e:

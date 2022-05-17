@@ -42,6 +42,17 @@ It can be scheduled at regular intervals to re-build the configuration (for exam
 
    For a quick start, please also see the official `Docker image <https://hub.docker.com/r/pierky/arouteserver>`__.
 
+Environment variables
+---------------------
+
+The following environment variables can be set to customise the way ARouteServer works:
+
+- ``SECRET_PEERINGDB_API_KEY``: the API key to be used to perform PeeringDB queries.
+
+    Using an API key allows to mitigate the effect of the anonymous API throttling mechanism.
+
+    Details on how to obtain an API key can be found on the `PeeringDB web site <https://docs.peeringdb.com/howto/api_keys/>`__.
+
 .. _perform-graceful-shutdown:
 
 Route server graceful shutdown

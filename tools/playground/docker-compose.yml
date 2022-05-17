@@ -18,6 +18,7 @@ services:
     # the rs/run.sh file.
     environment:
       SETUP_AND_CONFIGURE_AROUTESERVER: 1
+      SECRET_PEERINGDB_API_KEY: "${SECRET_PEERINGDB_API_KEY}"
 
   client_1:
     image: pierky/bird:1.6.3
