@@ -14,7 +14,8 @@ Change log
 
 - Fix: allow setting PeeringDB API key to mitigate anonymous API throttling mechanism.
 
-  The environment variable ``SECRET_PEERINGDB_API_KEY`` can now be configured to instruct ARouteServer to use an API key to perform authentication against the PeeringDB API server.
+  ARouteServer can now be instructed to use an API key to perform authentication against the PeeringDB API server. This can be done by setting the environment variable ``SECRET_PEERINGDB_API_KEY`` or by storing the same key inside one of the following well-known files: ``~/.arouteserver/peeringdb_api.key``, ``~/.peeringdb_api.key``.
+
   This should mitigate the effects of the anonymous API throttling mechanism introduced on PeeringDB.
 
   See also `GitHub issue 107 <https://github.com/pierky/arouteserver/issues/107>`__.

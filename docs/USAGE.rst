@@ -49,7 +49,7 @@ The following environment variables can be set to customise the way ARouteServer
 
 - ``SECRET_PEERINGDB_API_KEY``: the API key to be used to perform PeeringDB queries.
 
-    Using an API key allows to mitigate the effect of the anonymous API throttling mechanism.
+    Using an API key allows to mitigate the effect of the anonymous API throttling mechanism. The same API key can also be stored on a local file, at one of the following well-known paths: ``~/.arouteserver/peeringdb_api.key``, ``~/.peeringdb_api.key``.
 
     Details on how to obtain an API key can be found on the `PeeringDB web site <https://docs.peeringdb.com/howto/api_keys/>`__.
 
