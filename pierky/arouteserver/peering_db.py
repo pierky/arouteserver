@@ -17,12 +17,42 @@ import logging
 import json
 import re
 import os
+import threading
+
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 from .cached_objects import CachedObject
 from .config.validators import ValidatorASSet
 from .errors import PeeringDBError, PeeringDBNoInfoError, ConfigError
 from .irrdb import IRRDBInfo
+
+
+session_cache = {}
+
+
+def _get_request_session():
+    thread_id = threading.get_ident()
+
+    if thread_id in session_cache:
+        return session_cache[thread_id]
+
+    retry_strategy = Retry(
+        total=3,
+        backoff_factor=2,
+        status_forcelist=[413, 429, 500, 502, 503, 504],
+        allowed_methods=["HEAD", "GET", "POST", "OPTIONS"],
+    )
+
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+
+    session = requests.Session()
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+
+    session_cache[thread_id] = session
+    return session
 
 
 class PeeringDBInfo(CachedObject):
@@ -48,7 +78,8 @@ class PeeringDBInfo(CachedObject):
         if peeringdb_api_key:
             headers = {"Authorization": "Api-Key {}".format(peeringdb_api_key)}
 
-        response = requests.get(url, headers=headers)
+        session = _get_request_session()
+        response = session.get(url, headers=headers)
 
         try:
             response.raise_for_status()

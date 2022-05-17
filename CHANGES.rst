@@ -19,6 +19,12 @@ Change log
 
   See also `GitHub issue 107 <https://github.com/pierky/arouteserver/issues/107>`__.
 
+- Improvement: retry on PeeringDB API failure or rate-limit.
+
+  In case of failure or rate-limit of the PeeringDB API the tool now retries the same query multiple times.
+
+  See also `GitHub issue 107 <https://github.com/pierky/arouteserver/issues/107>`__.
+
 1.15.0
 ------
 
