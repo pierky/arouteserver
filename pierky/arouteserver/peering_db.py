@@ -16,12 +16,68 @@
 import logging
 import json
 import re
+import os
+import threading
+
 import requests
+from requests.adapters import HTTPAdapter
+from requests.exceptions import HTTPError, RetryError
+from urllib3.util.retry import Retry
 
 from .cached_objects import CachedObject
 from .config.validators import ValidatorASSet
 from .errors import PeeringDBError, PeeringDBNoInfoError, ConfigError
 from .irrdb import IRRDBInfo
+
+
+session_cache = {}
+
+
+class TimeoutHTTPAdapter(HTTPAdapter):
+
+    def __init__(self, *args, **kwargs) :
+        self.timeout = 30
+
+        if "timeout" in kwargs:
+            self.timeout = kwargs["timeout"]
+            del kwargs["timeout"]
+
+        super().__init__(*args, **kwargs)
+
+    def send(self, request, **kwargs):
+        timeout = kwargs.get("timeout")
+
+        if timeout is None:
+            kwargs["timeout"] = self.timeout
+
+        return super().send(request, **kwargs)
+
+
+def _get_request_session():
+    thread_id = threading.get_ident()
+
+    if thread_id in session_cache:
+        return session_cache[thread_id]
+
+    retry_strategy = Retry(
+        total=3,
+        backoff_factor=2,
+        status_forcelist=[413, 429, 500, 502, 503, 504],
+        allowed_methods=["HEAD", "GET", "POST", "OPTIONS"],
+
+        # This is to avoid we wait for minutes in case of a 429 with a long
+        # Retry-After header.
+        respect_retry_after_header=False
+    )
+
+    adapter = TimeoutHTTPAdapter(max_retries=retry_strategy)
+
+    session = requests.Session()
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+
+    session_cache[thread_id] = session
+    return session
 
 
 class PeeringDBInfo(CachedObject):
@@ -30,22 +86,72 @@ class PeeringDBInfo(CachedObject):
 
     MISSING_INFO_EXCEPTION = PeeringDBNoInfoError
 
+    PEERING_DB_API_KEY_ENV_VAR = "SECRET_PEERINGDB_API_KEY"
+
+    PEERING_DB_API_KEY_WELL_KNOWN_FILES = (
+        "~/.arouteserver/peeringdb_api.key",
+        "~/.peeringdb_api.key"
+    )
+
     def _get_peeringdb_url(self):
         raise NotImplementedError()
 
     @staticmethod
     def _read_from_url(url):
-        response = requests.get(url)
+        headers = None
+
+        peeringdb_api_key = None
+
+        for env_var in (PeeringDBInfo.PEERING_DB_API_KEY_ENV_VAR, "PEERINGDB_API_KEY", "API_KEY"):
+            if env_var in os.environ:
+                peeringdb_api_key = os.environ[env_var].strip()
+                break
+
+        if not peeringdb_api_key:
+            for well_known_file in PeeringDBInfo.PEERING_DB_API_KEY_WELL_KNOWN_FILES:
+                path = os.path.expanduser(well_known_file)
+                if os.path.exists(path):
+                    with open(path, "r") as f:
+                        peeringdb_api_key = f.read().strip()
+                        break
+
+        if peeringdb_api_key:
+            headers = {"Authorization": "Api-Key {}".format(peeringdb_api_key)}
+
+        session = _get_request_session()
+
         try:
+            response = session.get(url, headers=headers)
             response.raise_for_status()
-        except requests.exceptions.HTTPError as e:
-            if e.response.status_code == 404:
+
+        except (HTTPError, RetryError) as e:
+            if isinstance(e, HTTPError) and e.response.status_code == 404:
                 return "{}"
             else:
+                additional_info = ""
+                if (
+                    (isinstance(e, HTTPError) and e.response.status_code == 429) or \
+                    isinstance(e, RetryError)
+                ):
+                    additional_info = (
+                        " - Please consider using a PeeringDB API key to perform "
+                        "authentication, which could help mitigating the effects "
+                        "of anonymous API query rate-limit. "
+                        "The key can be configured by setting the environment "
+                        "variable {} or can be stored inside one of the following "
+                        "well-known files: {} "
+                        "Documentation on how to create an API key can be found "
+                        "on the peeringdb.com web site "
+                        "(https://docs.peeringdb.com/howto/api_keys/)".format(
+                            PeeringDBInfo.PEERING_DB_API_KEY_ENV_VAR,
+                            ", ".join(PeeringDBInfo.PEERING_DB_API_KEY_WELL_KNOWN_FILES)
+                        )
+                    )
+
                 raise PeeringDBError(
                     "HTTP error while retrieving info from PeeringDB: "
-                    "{}".format(
-                        str(e)
+                    "{}{}".format(
+                        str(e), additional_info
                     )
                 )
         except Exception as e:

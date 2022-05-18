@@ -37,3 +37,4 @@ jobs:
         run: nosetests -vs --tests=tests/external_resources/
         env:
           TRAVIS: 1
+          SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}

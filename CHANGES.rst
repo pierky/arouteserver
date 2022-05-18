@@ -3,6 +3,29 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+1.15.1
+------
+
+- Fix: update the requirements.
+
+  The min. version of Jinja2 reported in the requirements file was not enough to satisfy the needs of the templates.
+
+  See also `GitHub issue 106 <https://github.com/pierky/arouteserver/issues/106>`__.
+
+- Fix: allow setting PeeringDB API key to mitigate anonymous API throttling mechanism.
+
+  ARouteServer can now be instructed to use an API key to perform authentication against the PeeringDB API server. This can be done by setting the environment variable ``SECRET_PEERINGDB_API_KEY`` or by storing the same key inside one of the following well-known files: ``~/.arouteserver/peeringdb_api.key``, ``~/.peeringdb_api.key``.
+
+  This should mitigate the effects of the anonymous API throttling mechanism introduced on PeeringDB.
+
+  See also `GitHub issue 107 <https://github.com/pierky/arouteserver/issues/107>`__.
+
+- Improvement: retry on PeeringDB API failure or rate-limit.
+
+  In case of failure or rate-limit of the PeeringDB API the tool now retries the same query multiple times.
+
+  See also `GitHub issue 107 <https://github.com/pierky/arouteserver/issues/107>`__.
+
 1.15.0
 ------
 

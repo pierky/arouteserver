@@ -47,12 +47,21 @@ jobs:
         run: nosetests -vs -x --tests=tests/static/
         env:
           TRAVIS: 1
+          SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
+
+      - name: Config build tests
+        if: ${{ matrix.python-version != '3.9' }}
+        run: BUILD_ONLY=1 nosetests -vs -x --tests=tests/live_tests/
+        env:
+          TRAVIS: 1
+          SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
 
       - name: Test external resources
         if: ${{ matrix.python-version == '3.9' }}
         run: nosetests -vs --tests=tests/external_resources/
         env:
           TRAVIS: 1
+          SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
 
       - name: Fetch Docker images used by tests
         if: ${{ matrix.python-version == '3.9' }}
@@ -73,6 +82,7 @@ jobs:
         run: nosetests -vs -x --tests=tests/live_tests/
         env:
           TRAVIS: 1
+          SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
 
   docker-image-tests:
     name: Docker image tests
@@ -104,8 +114,11 @@ jobs:
           docker run \
             -t \
             --rm \
+            -e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
             pierky/arouteserver:${{ matrix.docker-image.target_image }} \
               bash -c 'pip install -r requirements-dev.txt && nosetests -vsx tests/static'
+        env:
+          SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
 
       - name: Run CLI tests
         run: >
@@ -113,8 +126,11 @@ jobs:
             -t \
             --rm \
             -e DO_NOT_PERFORM_VALIDATION=1 \
+            -e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
             pierky/arouteserver:${{ matrix.docker-image.target_image }} \
               ./tests/cli
+        env:
+          SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
 
       - name: Prep environment for configuration building tests
         run: |
@@ -134,7 +150,10 @@ jobs:
             -e IP_VER=4 \
             -e DAEMON=bird \
             -e VERSION=1.6.8 \
+            -e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
             pierky/arouteserver:${{ matrix.docker-image.target_image }}
+        env:
+          SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
 
       - name: Validate BIRD 1.x configuration
         run: >
@@ -161,7 +180,10 @@ jobs:
             -e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
             -e DAEMON=bird \
             -e VERSION=2.0.7 \
+            -e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
             pierky/arouteserver:${{ matrix.docker-image.target_image }}
+        env:
+          SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
 
       - name: Validate BIRD 2 configuration
         run: >
@@ -194,7 +216,10 @@ jobs:
             -e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
             -e DAEMON=openbgpd \
             -e VERSION=6.7 \
+            -e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
             pierky/arouteserver:${{ matrix.docker-image.target_image }}
+        env:
+          SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
 
       - name: Validate OpenBGPD configuration
         run: >
@@ -225,7 +250,10 @@ jobs:
             -e IP_VER=4 \
             -e DAEMON=bird \
             -e VERSION=1.6.8 \
+            -e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
             pierky/arouteserver:${{ matrix.docker-image.target_image }}
+        env:
+          SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
 
       - name: Validate configuration built using custom general.yml file
         run: >
@@ -253,7 +281,10 @@ jobs:
             -e VERSION=1.6.8 \
             -e RS_ASN=9999 \
             -e ROUTER_ID=192.0.2.200 \
+            -e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
             pierky/arouteserver:${{ matrix.docker-image.target_image }}
+        env:
+          SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
 
       - name: Validate configuration built using custom general.yml file with env vars and reject reasons communities
         run: |
@@ -289,7 +320,10 @@ jobs:
             -e VERSION=1.6.8 \
             -e LOCAL_FILES="header footer" \
             -e LOCAL_FILES_DIR=/var/pierky/test \
+            -e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
             pierky/arouteserver:${{ matrix.docker-image.target_image }}
+        env:
+          SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
 
       - name: Verify that include statements are there
         run: |
@@ -314,7 +348,10 @@ jobs:
             -e IP_VER=4 \
             -e DAEMON=bird \
             -e VERSION=1.6.8 \
+            -e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
             pierky/arouteserver:${{ matrix.docker-image.target_image }}
+        env:
+          SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
 
       - name: Verify that the desired 16bit placeholder ASN is used
         run: |
