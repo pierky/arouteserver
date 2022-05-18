@@ -33,6 +33,26 @@ from .irrdb import IRRDBInfo
 session_cache = {}
 
 
+class TimeoutHTTPAdapter(HTTPAdapter):
+
+    def __init__(self, *args, **kwargs) :
+        self.timeout = 30
+
+        if "timeout" in kwargs:
+            self.timeout = kwargs["timeout"]
+            del kwargs["timeout"]
+
+        super().__init__(*args, **kwargs)
+
+    def send(self, request, **kwargs):
+        timeout = kwargs.get("timeout")
+
+        if timeout is None:
+            kwargs["timeout"] = self.timeout
+
+        return super().send(request, **kwargs)
+
+
 def _get_request_session():
     thread_id = threading.get_ident()
 
@@ -44,9 +64,13 @@ def _get_request_session():
         backoff_factor=2,
         status_forcelist=[413, 429, 500, 502, 503, 504],
         allowed_methods=["HEAD", "GET", "POST", "OPTIONS"],
+
+        # This is to avoid we wait for minutes in case of a 429 with a long
+        # Retry-After header.
+        respect_retry_after_header=False
     )
 
-    adapter = HTTPAdapter(max_retries=retry_strategy)
+    adapter = TimeoutHTTPAdapter(max_retries=retry_strategy)
 
     session = requests.Session()
     session.mount("https://", adapter)
