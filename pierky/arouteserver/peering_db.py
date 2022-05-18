@@ -21,6 +21,7 @@ import threading
 
 import requests
 from requests.adapters import HTTPAdapter
+from requests.exceptions import HTTPError, RetryError
 from urllib3.util.retry import Retry
 
 from .cached_objects import CachedObject
@@ -61,28 +62,29 @@ class PeeringDBInfo(CachedObject):
 
     MISSING_INFO_EXCEPTION = PeeringDBNoInfoError
 
+    PEERING_DB_API_KEY_ENV_VAR = "SECRET_PEERINGDB_API_KEY"
+
+    PEERING_DB_API_KEY_WELL_KNOWN_FILES = (
+        "~/.arouteserver/peeringdb_api.key",
+        "~/.peeringdb_api.key"
+    )
+
     def _get_peeringdb_url(self):
         raise NotImplementedError()
 
     @staticmethod
     def _read_from_url(url):
-        PEERING_DB_API_KEY_ENV_VAR = "SECRET_PEERINGDB_API_KEY"
-        PEERING_DB_API_KEY_WELL_KNOWN_FILES = (
-            "~/.arouteserver/peeringdb_api.key",
-            "~/.peeringdb_api.key"
-        )
-
         headers = None
 
         peeringdb_api_key = None
 
-        for env_var in (PEERING_DB_API_KEY_ENV_VAR, "PEERINGDB_API_KEY", "API_KEY"):
+        for env_var in (PeeringDBInfo.PEERING_DB_API_KEY_ENV_VAR, "PEERINGDB_API_KEY", "API_KEY"):
             if env_var in os.environ:
                 peeringdb_api_key = os.environ[env_var].strip()
                 break
 
         if not peeringdb_api_key:
-            for well_known_file in PEERING_DB_API_KEY_WELL_KNOWN_FILES:
+            for well_known_file in PeeringDBInfo.PEERING_DB_API_KEY_WELL_KNOWN_FILES:
                 path = os.path.expanduser(well_known_file)
                 if os.path.exists(path):
                     with open(path, "r") as f:
@@ -93,16 +95,20 @@ class PeeringDBInfo(CachedObject):
             headers = {"Authorization": "Api-Key {}".format(peeringdb_api_key)}
 
         session = _get_request_session()
-        response = session.get(url, headers=headers)
 
         try:
+            response = session.get(url, headers=headers)
             response.raise_for_status()
-        except requests.exceptions.HTTPError as e:
-            if e.response.status_code == 404:
+
+        except (HTTPError, RetryError) as e:
+            if isinstance(e, HTTPError) and e.response.status_code == 404:
                 return "{}"
             else:
                 additional_info = ""
-                if e.response.status_code == 429:
+                if (
+                    (isinstance(e, HTTPError) and e.response.status_code == 429) or \
+                    isinstance(e, RetryError)
+                ):
                     additional_info = (
                         " - Please consider using a PeeringDB API key to perform "
                         "authentication, which could help mitigating the effects "
@@ -113,8 +119,8 @@ class PeeringDBInfo(CachedObject):
                         "Documentation on how to create an API key can be found "
                         "on the peeringdb.com web site "
                         "(https://docs.peeringdb.com/howto/api_keys/)".format(
-                            PEERING_DB_API_KEY_ENV_VAR,
-                            ", ".join(PEERING_DB_API_KEY_WELL_KNOWN_FILES)
+                            PeeringDBInfo.PEERING_DB_API_KEY_ENV_VAR,
+                            ", ".join(PeeringDBInfo.PEERING_DB_API_KEY_WELL_KNOWN_FILES)
                         )
                     )
 
