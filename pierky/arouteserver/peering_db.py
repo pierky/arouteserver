@@ -175,14 +175,21 @@ class PeeringDBInfo(CachedObject):
                 )
             )
 
+    def _get_data_from_peeringdb_bulk_query(self):
+        return None
+
     def _get_data(self):
+        data = self._get_data_from_peeringdb_bulk_query()
+        if data:
+            return [data]
+
         data = self._get_data_from_peeringdb()
         if "data" not in data:
             raise PeeringDBNoInfoError("Missing 'data'")
         if not isinstance(data["data"], list):
             raise PeeringDBNoInfoError("Unexpected format: 'data' is not a list")
         if len(data["data"]) == 0:
-            raise PeeringDBNoInfoError("No data for this nextwork")
+            raise PeeringDBNoInfoError("No data for this network")
 
         return data["data"]
 
@@ -191,10 +198,58 @@ class PeeringDBNet(PeeringDBInfo):
     EXPIRY_TIME_TAG = "pdb_info"
 
     PEERINGDB_URL = "https://www.peeringdb.com/api/net?asn={asn}"
+    PEERINGDB_BULK_QUERY_URL = "https://www.peeringdb.com/api/net?asn__in={asns}"
+
+    BULK_QUERY_CACHE = {}
 
     def __init__(self, asn, **kwargs):
         PeeringDBInfo.__init__(self, **kwargs)
         self.asn = asn
+
+    @classmethod
+    def populate_bulk_query_cache(cls, asns):
+        logging.debug("Pre-populating PeeringDB 'net' cache for {} ASNs...".format(len(asns)))
+
+        def chunks(lst, n):
+            """Yield successive n-sized chunks from lst."""
+            for i in range(0, len(lst), n):
+                yield lst[i:i + n]
+
+        chunk_size = int(os.getenv("PEERINGDB_BULK_QUERY_CHUNK_SIZE", 150))
+
+        for asns_group in chunks(asns, chunk_size):
+
+            plain_text = cls._read_from_url(
+                cls.PEERINGDB_BULK_QUERY_URL.format(
+                    asns=",".join(map(str, asns_group))
+                )
+            )
+
+            try:
+                data = json.loads(plain_text)
+            except Exception as e:
+                raise PeeringDBError(
+                    "Error while decoding PeeringDB output for bulk query: {}".format(
+                        str(e)
+                    )
+                )
+
+            for asn in asns_group:
+                if asn not in cls.BULK_QUERY_CACHE:
+                    cls.BULK_QUERY_CACHE[asn] = None
+
+                for peering_db_net in data["data"]:
+                    peering_db_net_asn = peering_db_net["asn"]
+                    cls.BULK_QUERY_CACHE[peering_db_net_asn] = peering_db_net
+
+    def _get_data_from_peeringdb_bulk_query(self):
+        if self.asn in self.BULK_QUERY_CACHE:
+            data = self.BULK_QUERY_CACHE[self.asn]
+            if data:
+                logging.debug("Bulk query cache hit for {}".format(self.asn))
+                return data
+            else:
+                raise PeeringDBNoInfoError("No data for this network")
 
     def load_data(self):
         logging.debug("Getting data from PeeringDB: net {}".format(self.asn))
