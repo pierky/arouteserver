@@ -28,6 +28,7 @@ from .cached_objects import CachedObject
 from .config.validators import ValidatorASSet
 from .errors import PeeringDBError, PeeringDBNoInfoError, ConfigError
 from .irrdb import IRRDBInfo
+from .version import __version__
 
 
 session_cache = {}
@@ -98,7 +99,9 @@ class PeeringDBInfo(CachedObject):
 
     @staticmethod
     def _read_from_url(url):
-        headers = None
+        headers = {
+            "User-Agent": "arouteserver/{}".format(__version__)
+        }
 
         peeringdb_api_key = None
 
@@ -116,7 +119,7 @@ class PeeringDBInfo(CachedObject):
                         break
 
         if peeringdb_api_key:
-            headers = {"Authorization": "Api-Key {}".format(peeringdb_api_key)}
+            headers["Authorization"] = "Api-Key {}".format(peeringdb_api_key)
 
         session = _get_request_session()
 
