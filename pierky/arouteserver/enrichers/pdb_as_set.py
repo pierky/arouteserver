@@ -99,5 +99,7 @@ class PeeringDBConfigEnricher_ASSet(BaseConfigEnricher):
                 tasks[asn] = []
             tasks[asn].append(client)
 
+        PeeringDBNet.populate_bulk_query_cache(list(tasks.keys()))
+
         for asn in tasks:
             self.tasks_q.put((int(asn), tasks[asn]))

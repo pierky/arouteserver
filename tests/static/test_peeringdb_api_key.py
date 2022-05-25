@@ -26,6 +26,7 @@ from requests.exceptions import HTTPError
 
 from pierky.arouteserver.peering_db import session_cache, PeeringDBNet
 from pierky.arouteserver.errors import PeeringDBError
+from pierky.arouteserver.version import __version__
 
 
 def _no_cache():
@@ -70,14 +71,21 @@ class TestPeeringDBAPIKey(unittest.TestCase):
         """PeeringDB API key: empty"""
         PeeringDBNet(1).load_data()
         self.mock_requests_session.get.assert_called_once()
-        self.assertEqual(self.mock_requests_session.get.call_args[1], {"headers": None})
+        self.assertEqual(self.mock_requests_session.get.call_args[1], {"headers": {
+            "User-Agent": "arouteserver/{}".format(__version__)
+        }})
 
     @mock.patch.dict(os.environ, {"SECRET_PEERINGDB_API_KEY": "test"})
     def test_peeringdb_api_via_env_var(self):
         """PeeringDB API key: via env var"""
         PeeringDBNet(1).load_data()
         self.mock_requests_session.get.assert_called_once()
-        self.assertEqual(self.mock_requests_session.get.call_args[1], {"headers": {"Authorization": "Api-Key test"}})
+        call_arg = self.mock_requests_session.get.call_args[1]
+        self.assertIn("headers", call_arg)
+        headers = call_arg["headers"]
+        self.assertIn("User-Agent", headers)
+        self.assertIn("Authorization", headers)
+        self.assertEqual(headers["Authorization"], "Api-Key test")
 
     @mock.patch.dict(os.environ, {}, clear=True)
     def test_peeringdb_api_via_file(self):
@@ -95,7 +103,12 @@ class TestPeeringDBAPIKey(unittest.TestCase):
 
             PeeringDBNet(1).load_data()
             self.mock_requests_session.get.assert_called_once()
-            self.assertEqual(self.mock_requests_session.get.call_args[1], {"headers": {"Authorization": "Api-Key The Key From The File"}})
+            call_arg = self.mock_requests_session.get.call_args[1]
+            self.assertIn("headers", call_arg)
+            headers = call_arg["headers"]
+            self.assertIn("User-Agent", headers)
+            self.assertIn("Authorization", headers)
+            self.assertEqual(headers["Authorization"], "Api-Key The Key From The File")
 
     @mock.patch.dict(os.environ, {"SECRET_PEERINGDB_API_KEY": "The Key From The Env Var"})
     def test_peeringdb_api_priorities(self):
@@ -113,7 +126,12 @@ class TestPeeringDBAPIKey(unittest.TestCase):
 
             PeeringDBNet(1).load_data()
             self.mock_requests_session.get.assert_called_once()
-            self.assertEqual(self.mock_requests_session.get.call_args[1], {"headers": {"Authorization": "Api-Key The Key From The Env Var"}})
+            call_arg = self.mock_requests_session.get.call_args[1]
+            self.assertIn("headers", call_arg)
+            headers = call_arg["headers"]
+            self.assertIn("User-Agent", headers)
+            self.assertIn("Authorization", headers)
+            self.assertEqual(headers["Authorization"], "Api-Key The Key From The Env Var")
 
     def test_peeringdb_api_429_handling(self):
         """PeeringDB API key: 429 error handling"""

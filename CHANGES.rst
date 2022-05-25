@@ -3,6 +3,17 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+1.16.0
+------
+
+- Improvement: use bulk queries to get clients' records from PeeringDB.
+
+  Clients' details (such as IRR records and max-prefix limits) are now retrieved from PeeringDB using *bulk* API queries, where multiple ASNs are checked at once.
+
+  This speeds up the configuration building process and reduces the number of queries to PeeringDB, reducing the risk of hitting the API rate limit.
+
+  See also `GitHub issue 107 <https://github.com/pierky/arouteserver/issues/107>`__.
+
 1.15.1
 ------
 

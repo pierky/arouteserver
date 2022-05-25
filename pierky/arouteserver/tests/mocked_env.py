@@ -198,6 +198,10 @@ class MockedEnv(object):
         ).start()
         mock_get_url_net.side_effect = get_url_net
 
+        mock.patch.object(
+            PeeringDBNet, "populate_bulk_query_cache"
+        ).start()
+
         mock_get_url_net = mock.patch.object(
             PeeringDBNetNeverViaRouteServers, "_get_peeringdb_url", autospec=True
         ).start()
