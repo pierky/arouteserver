@@ -214,6 +214,15 @@ IRRDB info: RSets, cache expired ... ok
 PeeringDB network: get data ... ok
 PeeringDB network: missing data ... ok
 PeeringDB: AS-SETs parsing ... ok
+PeeringDB API: 429 error handling ... ok
+PeeringDB API key: 429 error handling ... ok
+PeeringDB API key: empty ... ok
+PeeringDB API key: env var wins over file ... ok
+PeeringDB API key: via env var ... ok
+PeeringDB API key: via file ... ok
+PeeringDB bulk query cache: hit ... ok
+PeeringDB bulk query cache: hit missed ... ok
+PeeringDB bulk query cache: hit with no data ... ok
 RPKI ROAs: RIPE Validator TAs ... ok
 RPKI ROAs: NTT TAs ... ok
 RPKI ROAs: rpki-client TAs ... ok
@@ -238,6 +247,6 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 238 tests in 54.410s
+Ran 247 tests in 69.193s
 
 OK

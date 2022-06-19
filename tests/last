@@ -214,6 +214,15 @@ IRRDB info: RSets, cache expired ... ok
 PeeringDB network: get data ... ok
 PeeringDB network: missing data ... ok
 PeeringDB: AS-SETs parsing ... ok
+PeeringDB API: 429 error handling ... ok
+PeeringDB API key: 429 error handling ... ok
+PeeringDB API key: empty ... ok
+PeeringDB API key: env var wins over file ... ok
+PeeringDB API key: via env var ... ok
+PeeringDB API key: via file ... ok
+PeeringDB bulk query cache: hit ... ok
+PeeringDB bulk query cache: hit missed ... ok
+PeeringDB bulk query cache: hit with no data ... ok
 RPKI ROAs: RIPE Validator TAs ... ok
 RPKI ROAs: NTT TAs ... ok
 RPKI ROAs: rpki-client TAs ... ok
@@ -238,7 +247,7 @@ RTT getter parser: new line only ... ok
 RTT getter parser: none ... ok
 
 ----------------------------------------------------------------------
-Ran 238 tests in 54.410s
+Ran 247 tests in 69.193s
 
 OK
 External resources: ARIN Whois database dump ... ok
@@ -258,9 +267,10 @@ External resources: prefixes from AS-SET via bgpq3 ... ok
 External resources: prefixes from AS-SET via bgpq4 ... ok
 
 ----------------------------------------------------------------------
-Ran 15 tests in 48.703s
+Ran 15 tests in 48.378s
 
 OK
+Error: No such network: arouteserver
 Live test, BIRD, hooks example, IPv4: setting instances up...
 Live test, BIRD, hooks example, IPv4: instances setup ... ok
 Live test, BIRD, hooks example, IPv4: log contains errors ... ok
@@ -275,7 +285,7 @@ Live test, BIRD, hooks example, IPv6: dumping routes...
 Live test, BIRD, hooks example, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 14.888s
+Ran 4 tests in 15.145s
 
 OK
 Live test, BIRD, BGP communities, IPv4: setting instances up...
@@ -314,7 +324,7 @@ Live test, BIRD, BGP communities, IPv6: dumping routes...
 Live test, BIRD, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 63.708s
+Ran 26 tests in 64.614s
 
 OK
 Live test, BIRD, default config, IPv4: setting instances up...
@@ -331,7 +341,7 @@ Live test, BIRD, default config, IPv6: dumping routes...
 Live test, BIRD, default config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 14.617s
+Ran 4 tests in 15.273s
 
 OK
 Live test, BIRD, global scenario, IPv4: setting instances up...
@@ -872,7 +882,7 @@ Live test, BIRD, global scenario, IPv6, tag&reject: dumping routes...
 Live test, BIRD, global scenario, IPv6, tag&reject: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 512 tests in 499.559s
+Ran 512 tests in 511.947s
 
 OK (SKIP=6)
 Live test, BIRD, gshut, IPv4: setting instances up...
@@ -895,7 +905,7 @@ Live test, BIRD, gshut, IPv6: dumping routes...
 Live test, BIRD, gshut, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 10 tests in 44.512s
+Ran 10 tests in 44.442s
 
 OK
 Live test, BIRD, max-prefix, IPv4: setting instances up...
@@ -934,7 +944,7 @@ Live test, BIRD, max-prefix, IPv6: dumping routes...
 Live test, BIRD, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 168.263s
+Ran 26 tests in 168.860s
 
 OK
 Live test, BIRD, path hiding, mitigation off, IPv4: setting instances up...
@@ -993,7 +1003,7 @@ Live test, BIRD, path hiding, mitigation on, IPv6: dumping routes...
 Live test, BIRD, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 38 tests in 176.542s
+Ran 38 tests in 174.651s
 
 OK (SKIP=2)
 Live test, BIRD, examples, rich config, IPv4: setting instances up...
@@ -1010,7 +1020,7 @@ Live test, BIRD, examples, rich config, IPv6: dumping routes...
 Live test, BIRD, examples, rich config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 24.625s
+Ran 4 tests in 25.134s
 
 OK
 Live test, BIRD, RPKI INVALID tagging, IPv4: setting instances up...
@@ -1051,7 +1061,7 @@ Live test, BIRD, RPKI INVALID tagging, IPv6: dumping routes...
 Live test, BIRD, RPKI INVALID tagging, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 28 tests in 80.733s
+Ran 28 tests in 79.266s
 
 OK
 Live test, BIRD, BOV custom comms, IPv4: setting instances up...
@@ -1076,7 +1086,7 @@ Live test, BIRD, BOV custom comms, IPv6: dumping routes...
 Live test, BIRD, BOV custom comms, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 12 tests in 46.039s
+Ran 12 tests in 45.940s
 
 OK
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: setting instances up...
@@ -1263,7 +1273,7 @@ Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: dumping routes...
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 166 tests in 167.815s
+Ran 166 tests in 165.136s
 
 OK
 Live test, BIRD, 'tag' reject policy scenario, IPv4: setting instances up...
@@ -1320,7 +1330,7 @@ Live test, BIRD, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, BIRD, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 44 tests in 117.180s
+Ran 44 tests in 116.715s
 
 OK (SKIP=1)
 Live test, BIRD v2, BGP communities, IPv4: setting instances up...
@@ -1359,7 +1369,7 @@ Live test, BIRD v2, BGP communities, IPv6: dumping routes...
 Live test, BIRD v2, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 63.403s
+Ran 26 tests in 63.231s
 
 OK
 Live test, BIRD v2, default config, IPv4: setting instances up...
@@ -1376,7 +1386,7 @@ Live test, BIRD v2, default config, IPv6: dumping routes...
 Live test, BIRD v2, default config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 14.723s
+Ran 4 tests in 15.338s
 
 OK
 Live test, BIRD v2, global scenario, IPv4: setting instances up...
@@ -1917,7 +1927,7 @@ Live test, BIRD v2, global scenario, IPv6, tag&reject: dumping routes...
 Live test, BIRD v2, global scenario, IPv6, tag&reject: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 512 tests in 501.113s
+Ran 512 tests in 501.144s
 
 OK (SKIP=6)
 Live test, BIRD v2, gshut, IPv4: setting instances up...
@@ -1940,7 +1950,7 @@ Live test, BIRD v2, gshut, IPv6: dumping routes...
 Live test, BIRD v2, gshut, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 10 tests in 44.506s
+Ran 10 tests in 44.005s
 
 OK
 Live test, BIRD v2, max-prefix, IPv4: setting instances up...
@@ -1979,7 +1989,7 @@ Live test, BIRD v2, max-prefix, IPv6: dumping routes...
 Live test, BIRD v2, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 174.631s
+Ran 26 tests in 168.092s
 
 OK
 Live test, BIRD v2, path hiding, mitigation off, IPv4: setting instances up...
@@ -2038,7 +2048,7 @@ Live test, BIRD v2, path hiding, mitigation on, IPv6: dumping routes...
 Live test, BIRD v2, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 38 tests in 174.770s
+Ran 38 tests in 173.813s
 
 OK (SKIP=2)
 Live test, BIRD v2, examples, rich config, IPv4: setting instances up...
@@ -2055,7 +2065,7 @@ Live test, BIRD v2, examples, rich config, IPv6: dumping routes...
 Live test, BIRD v2, examples, rich config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 24.988s
+Ran 4 tests in 26.346s
 
 OK
 Live test, BIRD v2, RPKI INVALID tagging, IPv4: setting instances up...
@@ -2096,7 +2106,7 @@ Live test, BIRD v2, RPKI INVALID tagging, IPv6: dumping routes...
 Live test, BIRD v2, RPKI INVALID tagging, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 28 tests in 79.198s
+Ran 28 tests in 79.234s
 
 OK
 Live test, BIRD v2, BOV custom comms, IPv4: setting instances up...
@@ -2121,7 +2131,7 @@ Live test, BIRD v2, BOV custom comms, IPv6: dumping routes...
 Live test, BIRD v2, BOV custom comms, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 12 tests in 46.021s
+Ran 12 tests in 45.809s
 
 OK
 Live test, BIRD v2, RTR protocol: setting instances up...
@@ -2138,7 +2148,7 @@ Live test, BIRD v2, RTR protocol: dumping routes...
 Live test, BIRD v2, RTR protocol: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 8 tests in 41.300s
+Ran 8 tests in 41.164s
 
 OK
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: setting instances up...
@@ -2325,7 +2335,7 @@ Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: dumping routes...
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 166 tests in 167.553s
+Ran 166 tests in 166.310s
 
 OK
 Live test, BIRD v2, 'tag' reject policy scenario, IPv4: setting instances up...
@@ -2382,65 +2392,245 @@ Live test, BIRD v2, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, BIRD v2, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 44 tests in 116.722s
+Ran 44 tests in 116.248s
 
 OK (SKIP=1)
-Live test, OpenBGPD 7.3, BGP communities, IPv4: setting instances up...
-Live test, OpenBGPD 7.3, BGP communities, IPv4: instances setup ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv4: sessions are up ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv4: announce to AS1 only (ext) ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv4: announce to AS1 only (lrg) ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv4: announce to AS1 only (std) ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv4: announce to AS131073 only (ext) ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv4: announce to AS131073 only (lrg) ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv4: custom BGP community (ext) ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv4: custom BGP community (lrg) ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv4: custom BGP community (std) ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv4: custom BGP community scrubbed ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv4: reconfigure ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv4: log contains errors ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv4: dumping rs config...
-Live test, OpenBGPD 7.3, BGP communities, IPv4: dumping routes...
-Live test, OpenBGPD 7.3, BGP communities, IPv4: stopping instances...
-Live test, OpenBGPD 7.3, BGP communities, IPv6: setting instances up...
-Live test, OpenBGPD 7.3, BGP communities, IPv6: instances setup ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv6: sessions are up ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv6: announce to AS1 only (ext) ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv6: announce to AS1 only (lrg) ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv6: announce to AS1 only (std) ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv6: announce to AS131073 only (ext) ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv6: announce to AS131073 only (lrg) ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv6: custom BGP community (ext) ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv6: custom BGP community (lrg) ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv6: custom BGP community (std) ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv6: custom BGP community scrubbed ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv6: reconfigure ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv6: log contains errors ... ok
-Live test, OpenBGPD 7.3, BGP communities, IPv6: dumping rs config...
-Live test, OpenBGPD 7.3, BGP communities, IPv6: dumping routes...
-Live test, OpenBGPD 7.3, BGP communities, IPv6: stopping instances...
+Live test, OpenBGPD 7.4, BGP communities, IPv4: setting instances up...
+Live test, OpenBGPD 7.4, BGP communities, IPv4: instances setup ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv4: sessions are up ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv4: announce to AS1 only (ext) ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv4: announce to AS1 only (lrg) ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv4: announce to AS1 only (std) ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv4: announce to AS131073 only (ext) ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv4: announce to AS131073 only (lrg) ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv4: custom BGP community (ext) ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv4: custom BGP community (lrg) ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv4: custom BGP community (std) ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv4: custom BGP community scrubbed ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv4: reconfigure ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv4: log contains errors ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv4: dumping rs config...
+Live test, OpenBGPD 7.4, BGP communities, IPv4: dumping routes...
+Live test, OpenBGPD 7.4, BGP communities, IPv4: stopping instances...
+Live test, OpenBGPD 7.4, BGP communities, IPv6: setting instances up...
+Live test, OpenBGPD 7.4, BGP communities, IPv6: instances setup ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv6: sessions are up ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv6: announce to AS1 only (ext) ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv6: announce to AS1 only (lrg) ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv6: announce to AS1 only (std) ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv6: announce to AS131073 only (ext) ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv6: announce to AS131073 only (lrg) ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv6: custom BGP community (ext) ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv6: custom BGP community (lrg) ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv6: custom BGP community (std) ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv6: custom BGP community scrubbed ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv6: reconfigure ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv6: log contains errors ... ok
+Live test, OpenBGPD 7.4, BGP communities, IPv6: dumping rs config...
+Live test, OpenBGPD 7.4, BGP communities, IPv6: dumping routes...
+Live test, OpenBGPD 7.4, BGP communities, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 26 tests in 69.660s
+Ran 26 tests in 67.294s
 
 OK
-Live test, OpenBGPD 7.3, default config, IPv4: setting instances up...
-Live test, OpenBGPD 7.3, default config, IPv4: instances setup ... ok
-Live test, OpenBGPD 7.3, default config, IPv4: log contains errors ... ok
-Live test, OpenBGPD 7.3, default config, IPv4: dumping rs config...
-Live test, OpenBGPD 7.3, default config, IPv4: dumping routes...
-Live test, OpenBGPD 7.3, default config, IPv4: stopping instances...
-Live test, OpenBGPD 7.3, default config, IPv6: setting instances up...
-Live test, OpenBGPD 7.3, default config, IPv6: instances setup ... ok
-Live test, OpenBGPD 7.3, default config, IPv6: log contains errors ... ok
-Live test, OpenBGPD 7.3, default config, IPv6: dumping rs config...
-Live test, OpenBGPD 7.3, default config, IPv6: dumping routes...
-Live test, OpenBGPD 7.3, default config, IPv6: stopping instances...
+Live test, OpenBGPD 7.4, default config, IPv4: setting instances up...
+Live test, OpenBGPD 7.4, default config, IPv4: instances setup ... ok
+Live test, OpenBGPD 7.4, default config, IPv4: log contains errors ... ok
+Live test, OpenBGPD 7.4, default config, IPv4: dumping rs config...
+Live test, OpenBGPD 7.4, default config, IPv4: dumping routes...
+Live test, OpenBGPD 7.4, default config, IPv4: stopping instances...
+Live test, OpenBGPD 7.4, default config, IPv6: setting instances up...
+Live test, OpenBGPD 7.4, default config, IPv6: instances setup ... ok
+Live test, OpenBGPD 7.4, default config, IPv6: log contains errors ... ok
+Live test, OpenBGPD 7.4, default config, IPv6: dumping rs config...
+Live test, OpenBGPD 7.4, default config, IPv6: dumping routes...
+Live test, OpenBGPD 7.4, default config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 12.193s
+Ran 4 tests in 11.854s
 
 OK
+Live test, OpenBGPD 7.4, global scenario, IPv4: setting instances up...
+Live test, OpenBGPD 7.4, global scenario, IPv4: instances setup ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: sessions are up ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: session configured via local include files ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: good prefixes because of use_arin_bulk_whois_data ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: good prefixes received by rs: IRRdb white-list ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: good prefixes because of use_registrobr_bulk_whois_data ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: good prefixes received by rs ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: good prefixes received by rs: non-client NEXT_HOP ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: IRRdb white-list ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: IRR check for AS_SET origin, BIRD ... SKIP: BIRD specific
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: AS_PATH len ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: bogon ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: client blacklist ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: global blacklist ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: invalid ASN in AS-PATH ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: invalid NEXT_HOP ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: left-most ASN ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: origin not in AS-SET ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: prefix not in AS-SET ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: invalid prefix-len ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: unknown NEXT_HOP ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: RPKI ROAs as route objects failed ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: default route ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes not received by clients ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: bogon (wrong tag) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad prefixes received by rs: global blacklist (wrong tag) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: RPKI, blackhole request for a covered prefix ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: RPKI, invalid prefix (bad ASN) received by rs ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: RPKI, invalid prefix (bad length) received by rs ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: RPKI, invalid prefix (bad ASN) not propagated to clients ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: RPKI, valid prefix received by rs ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: RPKI, valid prefix propagated to clients ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: prefixes from AS101 received by its upstreams ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: prefixes from AS101 received by rs ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad communities as seen by AS101 upstreams ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad communities scrubbed by rs (lrg) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: bad communities scrubbed by rs (std) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: other communities not scrubbed by rs (lrg) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: other communities not scrubbed by rs (std) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: blackhole filtering requests as seen by rs (BLACKHOLE) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: blackhole filtering requests as seen by rs (lrg cust) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: blackhole filtering requests as seen by rs (std cust) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: blackholed prefixes as seen by enabled clients (BLACKHOLE) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: blackholed prefixes as seen by enabled clients (lrg_cust) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: blackholed prefixes as seen by enabled clients (std_cust) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: blackholed prefixes not seen by not enabled clients ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: gshut by an enabled client ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: gshut by a not enabled client ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, announce to AS1 only ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, don't announce to any ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, announce to all except AS1 ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, prepend once to any ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, prepend twice to any ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, prepend thrice to any ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, prepend once to AS1 ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, prepend twice to AS2 ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, prepend thrice to AS1, once to others ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, NO_EXPORT to AS1 ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, NO_EXPORT to any ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, RFC1997 NO_EXPORT ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, RTT, blackhole, not peers > 20 ms ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, RTT, not peers > 15 ms ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, RTT, not peers > 5 ms ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, RTT, not peers > 5 ms + AS3 ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, RTT, not peers <= 5 and > 100 ms ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, RTT, only peers <= 15 ms ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, RTT, only peers <= 5 ms ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: prefixes received by clients: AS1_1 ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: prefixes received by clients: AS1_2 ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: prefixes received by clients: AS2 ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: prefixes received by clients: AS3 ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: prefixes received by clients: AS3 (with ADD-PATH) ... SKIP: ADD-PATH not supported by OpenBGPD
+Live test, OpenBGPD 7.4, global scenario, IPv4: reconfigure ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: log contains errors ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv4: dumping rs config...
+Live test, OpenBGPD 7.4, global scenario, IPv4: dumping routes...
+Live test, OpenBGPD 7.4, global scenario, IPv4: stopping instances...
+Live test, OpenBGPD 7.4, global scenario, IPv6: setting instances up...
+Live test, OpenBGPD 7.4, global scenario, IPv6: instances setup ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: sessions are up ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: session configured via local include files ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: good prefixes because of use_arin_bulk_whois_data ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: good prefixes received by rs: IRRdb white-list ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: good prefixes because of use_registrobr_bulk_whois_data ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: good prefixes received by rs ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: good prefixes received by rs: non-client NEXT_HOP ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: not IPv6 global unicast space ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: IRRdb white-list ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: IRR check for AS_SET origin, BIRD ... SKIP: BIRD specific
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: AS_PATH len ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: bogon ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: client blacklist ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: global blacklist ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: invalid ASN in AS-PATH ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: invalid NEXT_HOP ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: left-most ASN ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: origin not in AS-SET ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: prefix not in AS-SET ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: invalid prefix-len ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: unknown NEXT_HOP ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: RPKI ROAs as route objects failed ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: default route ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes not received by clients ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: bogon (wrong tag) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad prefixes received by rs: global blacklist (wrong tag) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: RPKI, blackhole request for a covered prefix ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: RPKI, invalid prefix (bad ASN) received by rs ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: RPKI, invalid prefix (bad length) received by rs ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: RPKI, invalid prefix (bad ASN) not propagated to clients ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: RPKI, valid prefix received by rs ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: RPKI, valid prefix propagated to clients ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: prefixes from AS101 received by its upstreams ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: prefixes from AS101 received by rs ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad communities as seen by AS101 upstreams ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad communities scrubbed by rs (lrg) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: bad communities scrubbed by rs (std) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: other communities not scrubbed by rs (lrg) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: other communities not scrubbed by rs (std) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: blackhole filtering requests as seen by rs (BLACKHOLE) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: blackhole filtering requests as seen by rs (lrg cust) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: blackhole filtering requests as seen by rs (std cust) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: blackholed prefixes as seen by enabled clients (BLACKHOLE) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: blackholed prefixes as seen by enabled clients (lrg_cust) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: blackholed prefixes as seen by enabled clients (std_cust) ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: blackholed prefixes not seen by not enabled clients ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: gshut by an enabled client ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: gshut by a not enabled client ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, announce to AS1 only ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, don't announce to any ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, announce to all except AS1 ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, prepend once to any ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, prepend twice to any ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, prepend thrice to any ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, prepend once to AS1 ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, prepend twice to AS2 ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, prepend thrice to AS1, once to others ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, NO_EXPORT to AS1 ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, NO_EXPORT to any ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, RFC1997 NO_EXPORT ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, RTT, blackhole, not peers > 20 ms ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, RTT, not peers > 15 ms ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, RTT, not peers > 5 ms ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, RTT, not peers > 5 ms + AS3 ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, RTT, not peers <= 5 and > 100 ms ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, RTT, only peers <= 15 ms ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, RTT, only peers <= 5 ms ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: prefixes received by clients: AS1_1 ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: prefixes received by clients: AS1_2 ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: prefixes received by clients: AS2 ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: prefixes received by clients: AS3 ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: prefixes received by clients: AS3 (with ADD-PATH) ... SKIP: ADD-PATH not supported by OpenBGPD
+Live test, OpenBGPD 7.4, global scenario, IPv6: reconfigure ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: log contains errors ... ok
+Live test, OpenBGPD 7.4, global scenario, IPv6: dumping rs config...
+Live test, OpenBGPD 7.4, global scenario, IPv6: dumping routes...
+Live test, OpenBGPD 7.4, global scenario, IPv6: stopping instances...
 Live test, OpenBGPD 7.3, global scenario, IPv4: setting instances up...
 Live test, OpenBGPD 7.3, global scenario, IPv4: instances setup ... ok
 Live test, OpenBGPD 7.3, global scenario, IPv4: sessions are up ... ok
@@ -2621,571 +2811,391 @@ Live test, OpenBGPD 7.3, global scenario, IPv6: log contains errors ... ok
 Live test, OpenBGPD 7.3, global scenario, IPv6: dumping rs config...
 Live test, OpenBGPD 7.3, global scenario, IPv6: dumping routes...
 Live test, OpenBGPD 7.3, global scenario, IPv6: stopping instances...
-Live test, OpenBGPD 7.2, global scenario, IPv4: setting instances up...
-Live test, OpenBGPD 7.2, global scenario, IPv4: instances setup ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: sessions are up ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: session configured via local include files ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: good prefixes because of use_arin_bulk_whois_data ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: good prefixes received by rs: IRRdb white-list ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: good prefixes because of use_registrobr_bulk_whois_data ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: good prefixes received by rs ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: good prefixes received by rs: non-client NEXT_HOP ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: not IPv6 global unicast space ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: IRRdb white-list ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: IRR check for AS_SET origin, BIRD ... SKIP: BIRD specific
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: AS_PATH len ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: bogon ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: client blacklist ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: global blacklist ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: invalid ASN in AS-PATH ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: invalid NEXT_HOP ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: left-most ASN ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: origin not in AS-SET ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: prefix not in AS-SET ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: invalid prefix-len ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: unknown NEXT_HOP ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: RPKI ROAs as route objects failed ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: default route ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes not received by clients ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: bogon (wrong tag) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad prefixes received by rs: global blacklist (wrong tag) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: RPKI, blackhole request for a covered prefix ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: RPKI, invalid prefix (bad ASN) received by rs ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: RPKI, invalid prefix (bad length) received by rs ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: RPKI, invalid prefix (bad ASN) not propagated to clients ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: RPKI, valid prefix received by rs ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: RPKI, valid prefix propagated to clients ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: prefixes from AS101 received by its upstreams ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: prefixes from AS101 received by rs ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad communities as seen by AS101 upstreams ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad communities scrubbed by rs (lrg) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: bad communities scrubbed by rs (std) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: other communities not scrubbed by rs (lrg) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: other communities not scrubbed by rs (std) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: blackhole filtering requests as seen by rs (BLACKHOLE) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: blackhole filtering requests as seen by rs (lrg cust) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: blackhole filtering requests as seen by rs (std cust) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: blackholed prefixes as seen by enabled clients (BLACKHOLE) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: blackholed prefixes as seen by enabled clients (lrg_cust) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: blackholed prefixes as seen by enabled clients (std_cust) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: blackholed prefixes not seen by not enabled clients ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: gshut by an enabled client ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: gshut by a not enabled client ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, announce to AS1 only ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, don't announce to any ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, announce to all except AS1 ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, prepend once to any ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, prepend twice to any ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, prepend thrice to any ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, prepend once to AS1 ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, prepend twice to AS2 ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, prepend thrice to AS1, once to others ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, NO_EXPORT to AS1 ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, NO_EXPORT to any ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, RFC1997 NO_EXPORT ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, RTT, blackhole, not peers > 20 ms ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, RTT, not peers > 15 ms ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, RTT, not peers > 5 ms ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, RTT, not peers > 5 ms + AS3 ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, RTT, not peers <= 5 and > 100 ms ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, RTT, only peers <= 15 ms ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, RTT, only peers <= 5 ms ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: prefixes received by clients: AS1_1 ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: prefixes received by clients: AS1_2 ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: prefixes received by clients: AS2 ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: prefixes received by clients: AS3 ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: prefixes received by clients: AS3 (with ADD-PATH) ... SKIP: ADD-PATH not supported by OpenBGPD
-Live test, OpenBGPD 7.2, global scenario, IPv4: reconfigure ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: log contains errors ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv4: dumping rs config...
-Live test, OpenBGPD 7.2, global scenario, IPv4: dumping routes...
-Live test, OpenBGPD 7.2, global scenario, IPv4: stopping instances...
-Live test, OpenBGPD 7.2, global scenario, IPv6: setting instances up...
-Live test, OpenBGPD 7.2, global scenario, IPv6: instances setup ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: sessions are up ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: session configured via local include files ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: good prefixes because of use_arin_bulk_whois_data ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: good prefixes received by rs: IRRdb white-list ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: good prefixes because of use_registrobr_bulk_whois_data ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: exact ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: covering ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: good prefixes received by rs ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: good prefixes received by rs: non-client NEXT_HOP ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: not IPv6 global unicast space ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: IRRdb white-list ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: IRR check for AS_SET origin, BIRD ... SKIP: BIRD specific
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: AS_PATH len ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: bogon ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: client blacklist ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: global blacklist ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: invalid ASN in AS-PATH ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: invalid NEXT_HOP ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: left-most ASN ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: origin not in AS-SET ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: prefix not in AS-SET ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: invalid prefix-len ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: unknown NEXT_HOP ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: RPKI ROAs as route objects failed ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: default route ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes not received by clients ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: bogon (wrong tag) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad prefixes received by rs: global blacklist (wrong tag) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: RPKI, blackhole request for a covered prefix ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: RPKI, invalid prefix (bad ASN) received by rs ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: RPKI, invalid prefix (bad length) received by rs ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: RPKI, invalid prefix (bad ASN) not propagated to clients ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: RPKI, valid prefix received by rs ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: RPKI, valid prefix propagated to clients ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: prefixes from AS101 received by its upstreams ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: prefixes from AS101 received by rs ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad communities as seen by AS101 upstreams ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad communities scrubbed by rs (lrg) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: bad communities scrubbed by rs (std) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: other communities not scrubbed by rs (lrg) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: other communities not scrubbed by rs (std) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: blackhole filtering requests as seen by rs (BLACKHOLE) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: blackhole filtering requests as seen by rs (lrg cust) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: blackhole filtering requests as seen by rs (std cust) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: blackholed prefixes as seen by enabled clients (BLACKHOLE) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: blackholed prefixes as seen by enabled clients (lrg_cust) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: blackholed prefixes as seen by enabled clients (std_cust) ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: blackholed prefixes not seen by not enabled clients ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: gshut by an enabled client ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: gshut by a not enabled client ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, announce to AS1 only ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, don't announce to any ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, announce to all except AS1 ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, prepend once to any ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, prepend twice to any ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, prepend thrice to any ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, prepend once to AS1 ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, prepend twice to AS2 ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, prepend thrice to AS1, once to others ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, NO_EXPORT to AS1 ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, NO_EXPORT to any ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, RFC1997 NO_EXPORT ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, RTT, blackhole, not peers > 20 ms ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, RTT, not peers > 15 ms ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, RTT, not peers > 5 ms ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, RTT, not peers > 5 ms + AS3 ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, RTT, not peers <= 5 and > 100 ms ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, RTT, only peers <= 15 ms ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, RTT, only peers <= 5 ms ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: prefixes received by clients: AS1_1 ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: prefixes received by clients: AS1_2 ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: prefixes received by clients: AS2 ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: prefixes received by clients: AS3 ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: prefixes received by clients: AS3 (with ADD-PATH) ... SKIP: ADD-PATH not supported by OpenBGPD
-Live test, OpenBGPD 7.2, global scenario, IPv6: reconfigure ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: log contains errors ... ok
-Live test, OpenBGPD 7.2, global scenario, IPv6: dumping rs config...
-Live test, OpenBGPD 7.2, global scenario, IPv6: dumping routes...
-Live test, OpenBGPD 7.2, global scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 344 tests in 380.152s
+Ran 344 tests in 334.500s
 
 OK (SKIP=8)
-Live test, OpenBGPD 7.3, gshut, IPv4: setting instances up...
-Live test, OpenBGPD 7.3, gshut, IPv4: instances setup ... ok
-Live test, OpenBGPD 7.3, gshut, IPv4: sessions are up ... ok
-Live test, OpenBGPD 7.3, gshut, IPv4: clients receive routes tagged with GRACEFUL_SHUTDOWN ... ok
-Live test, OpenBGPD 7.3, gshut, IPv4: reconfigure ... ok
-Live test, OpenBGPD 7.3, gshut, IPv4: log contains errors ... ok
-Live test, OpenBGPD 7.3, gshut, IPv4: dumping rs config...
-Live test, OpenBGPD 7.3, gshut, IPv4: dumping routes...
-Live test, OpenBGPD 7.3, gshut, IPv4: stopping instances...
-Live test, OpenBGPD 7.3, gshut, IPv6: setting instances up...
-Live test, OpenBGPD 7.3, gshut, IPv6: instances setup ... ok
-Live test, OpenBGPD 7.3, gshut, IPv6: sessions are up ... ok
-Live test, OpenBGPD 7.3, gshut, IPv6: clients receive routes tagged with GRACEFUL_SHUTDOWN ... ok
-Live test, OpenBGPD 7.3, gshut, IPv6: reconfigure ... ok
-Live test, OpenBGPD 7.3, gshut, IPv6: log contains errors ... ok
-Live test, OpenBGPD 7.3, gshut, IPv6: dumping rs config...
-Live test, OpenBGPD 7.3, gshut, IPv6: dumping routes...
-Live test, OpenBGPD 7.3, gshut, IPv6: stopping instances...
+Live test, OpenBGPD 7.4, gshut, IPv4: setting instances up...
+Live test, OpenBGPD 7.4, gshut, IPv4: instances setup ... ok
+Live test, OpenBGPD 7.4, gshut, IPv4: sessions are up ... ok
+Live test, OpenBGPD 7.4, gshut, IPv4: clients receive routes tagged with GRACEFUL_SHUTDOWN ... ok
+Live test, OpenBGPD 7.4, gshut, IPv4: reconfigure ... ok
+Live test, OpenBGPD 7.4, gshut, IPv4: log contains errors ... ok
+Live test, OpenBGPD 7.4, gshut, IPv4: dumping rs config...
+Live test, OpenBGPD 7.4, gshut, IPv4: dumping routes...
+Live test, OpenBGPD 7.4, gshut, IPv4: stopping instances...
+Live test, OpenBGPD 7.4, gshut, IPv6: setting instances up...
+Live test, OpenBGPD 7.4, gshut, IPv6: instances setup ... ok
+Live test, OpenBGPD 7.4, gshut, IPv6: sessions are up ... ok
+Live test, OpenBGPD 7.4, gshut, IPv6: clients receive routes tagged with GRACEFUL_SHUTDOWN ... ok
+Live test, OpenBGPD 7.4, gshut, IPv6: reconfigure ... ok
+Live test, OpenBGPD 7.4, gshut, IPv6: log contains errors ... ok
+Live test, OpenBGPD 7.4, gshut, IPv6: dumping rs config...
+Live test, OpenBGPD 7.4, gshut, IPv6: dumping routes...
+Live test, OpenBGPD 7.4, gshut, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 10 tests in 51.392s
+Ran 10 tests in 49.293s
 
 OK
-Live test, OpenBGPD 7.3, max-prefix, IPv4: setting instances up...
-Live test, OpenBGPD 7.3, max-prefix, IPv4: instances setup ... ok
-Live test, OpenBGPD 7.3, max-prefix, IPv4: sessions are down ... ok
-Live test, OpenBGPD 7.3, max-prefix, IPv4: clients log max-prefix notification ... ok
-Live test, OpenBGPD 7.3, max-prefix, IPv4: reconfigure ... ok
-Live test, OpenBGPD 7.3, max-prefix, IPv4: log contains errors ... ok
-Live test, OpenBGPD 7.3, max-prefix, IPv4: dumping rs config...
-Live test, OpenBGPD 7.3, max-prefix, IPv4: dumping routes...
-Live test, OpenBGPD 7.3, max-prefix, IPv4: stopping instances...
-Live test, OpenBGPD 7.3, max-prefix, IPv6: setting instances up...
-Live test, OpenBGPD 7.3, max-prefix, IPv6: instances setup ... ok
-Live test, OpenBGPD 7.3, max-prefix, IPv6: sessions are down ... ok
-Live test, OpenBGPD 7.3, max-prefix, IPv6: clients log max-prefix notification ... ok
-Live test, OpenBGPD 7.3, max-prefix, IPv6: reconfigure ... ok
-Live test, OpenBGPD 7.3, max-prefix, IPv6: log contains errors ... ok
-Live test, OpenBGPD 7.3, max-prefix, IPv6: dumping rs config...
-Live test, OpenBGPD 7.3, max-prefix, IPv6: dumping routes...
-Live test, OpenBGPD 7.3, max-prefix, IPv6: stopping instances...
+Live test, OpenBGPD 7.4, max-prefix, IPv4: setting instances up...
+Live test, OpenBGPD 7.4, max-prefix, IPv4: instances setup ... ok
+Live test, OpenBGPD 7.4, max-prefix, IPv4: sessions are down ... ok
+Live test, OpenBGPD 7.4, max-prefix, IPv4: clients log max-prefix notification ... ok
+Live test, OpenBGPD 7.4, max-prefix, IPv4: reconfigure ... ok
+Live test, OpenBGPD 7.4, max-prefix, IPv4: log contains errors ... ok
+Live test, OpenBGPD 7.4, max-prefix, IPv4: dumping rs config...
+Live test, OpenBGPD 7.4, max-prefix, IPv4: dumping routes...
+Live test, OpenBGPD 7.4, max-prefix, IPv4: stopping instances...
+Live test, OpenBGPD 7.4, max-prefix, IPv6: setting instances up...
+Live test, OpenBGPD 7.4, max-prefix, IPv6: instances setup ... ok
+Live test, OpenBGPD 7.4, max-prefix, IPv6: sessions are down ... ok
+Live test, OpenBGPD 7.4, max-prefix, IPv6: clients log max-prefix notification ... ok
+Live test, OpenBGPD 7.4, max-prefix, IPv6: reconfigure ... ok
+Live test, OpenBGPD 7.4, max-prefix, IPv6: log contains errors ... ok
+Live test, OpenBGPD 7.4, max-prefix, IPv6: dumping rs config...
+Live test, OpenBGPD 7.4, max-prefix, IPv6: dumping routes...
+Live test, OpenBGPD 7.4, max-prefix, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 10 tests in 387.851s
+Ran 10 tests in 363.605s
 
 OK
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv4: setting instances up...
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv4: instances setup ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv4: sessions are up ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv4: rs should receive prefix from both AS1 and AS2 ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv4: rs should have best toward AS1 ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv4: AS1 wants rs to not announce to AS3 and AS4 ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv4: AS3 does not receive prefix at all ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv4: AS4 receives the prefix via AS2 because of ADD-PATH ... SKIP: ADD-PATH not supported by OpenBGPD
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv4: reconfigure ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv4: log contains errors ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv4: dumping rs config...
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv4: dumping routes...
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv4: stopping instances...
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv4: setting instances up...
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv4: instances setup ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv4: sessions are up ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv4: rs should receive prefix from both AS1 and AS2 ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv4: rs should have best toward AS1 ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv4: AS1 wants rs to not announce to AS3 and AS4 ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv4: AS3 and AS4 receive prefix with sub-optimal path via AS2 ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv4: AS3 and AS4 don't receive prefix via AS1 ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv4: 2nd best is withdrawn and AS3 should not see it anymore ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv4: reconfigure ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv4: log contains errors ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv4: dumping rs config...
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv4: dumping routes...
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv4: stopping instances...
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv6: setting instances up...
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv6: instances setup ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv6: sessions are up ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv6: rs should receive prefix from both AS1 and AS2 ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv6: rs should have best toward AS1 ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv6: AS1 wants rs to not announce to AS3 and AS4 ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv6: AS3 does not receive prefix at all ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv6: AS4 receives the prefix via AS2 because of ADD-PATH ... SKIP: ADD-PATH not supported by OpenBGPD
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv6: reconfigure ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv6: log contains errors ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv6: dumping rs config...
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv6: dumping routes...
-Live test, OpenBGPD 7.3, path hiding, mitigation off, IPv6: stopping instances...
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv6: setting instances up...
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv6: instances setup ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv6: sessions are up ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv6: rs should receive prefix from both AS1 and AS2 ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv6: rs should have best toward AS1 ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv6: AS1 wants rs to not announce to AS3 and AS4 ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv6: AS3 and AS4 receive prefix with sub-optimal path via AS2 ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv6: AS3 and AS4 don't receive prefix via AS1 ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv6: 2nd best is withdrawn and AS3 should not see it anymore ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv6: reconfigure ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv6: log contains errors ... ok
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv6: dumping rs config...
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv6: dumping routes...
-Live test, OpenBGPD 7.3, path hiding, mitigation on, IPv6: stopping instances...
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv4: setting instances up...
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv4: instances setup ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv4: sessions are up ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv4: rs should receive prefix from both AS1 and AS2 ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv4: rs should have best toward AS1 ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv4: AS1 wants rs to not announce to AS3 and AS4 ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv4: AS3 does not receive prefix at all ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv4: AS4 receives the prefix via AS2 because of ADD-PATH ... SKIP: ADD-PATH not supported by OpenBGPD
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv4: reconfigure ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv4: log contains errors ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv4: dumping rs config...
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv4: dumping routes...
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv4: stopping instances...
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv4: setting instances up...
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv4: instances setup ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv4: sessions are up ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv4: rs should receive prefix from both AS1 and AS2 ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv4: rs should have best toward AS1 ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv4: AS1 wants rs to not announce to AS3 and AS4 ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv4: AS3 and AS4 receive prefix with sub-optimal path via AS2 ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv4: AS3 and AS4 don't receive prefix via AS1 ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv4: 2nd best is withdrawn and AS3 should not see it anymore ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv4: reconfigure ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv4: log contains errors ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv4: dumping rs config...
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv4: dumping routes...
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv4: stopping instances...
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv6: setting instances up...
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv6: instances setup ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv6: sessions are up ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv6: rs should receive prefix from both AS1 and AS2 ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv6: rs should have best toward AS1 ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv6: AS1 wants rs to not announce to AS3 and AS4 ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv6: AS3 does not receive prefix at all ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv6: AS4 receives the prefix via AS2 because of ADD-PATH ... SKIP: ADD-PATH not supported by OpenBGPD
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv6: reconfigure ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv6: log contains errors ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv6: dumping rs config...
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv6: dumping routes...
+Live test, OpenBGPD 7.4, path hiding, mitigation off, IPv6: stopping instances...
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv6: setting instances up...
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv6: instances setup ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv6: sessions are up ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv6: rs should receive prefix from both AS1 and AS2 ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv6: rs should have best toward AS1 ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv6: AS1 wants rs to not announce to AS3 and AS4 ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv6: AS3 and AS4 receive prefix with sub-optimal path via AS2 ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv6: AS3 and AS4 don't receive prefix via AS1 ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv6: 2nd best is withdrawn and AS3 should not see it anymore ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv6: reconfigure ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv6: log contains errors ... ok
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv6: dumping rs config...
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv6: dumping routes...
+Live test, OpenBGPD 7.4, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 38 tests in 210.974s
+Ran 38 tests in 192.769s
 
 OK (SKIP=2)
-Live test, OpenBGPD 7.3, examples, rich config, IPv4: setting instances up...
-Live test, OpenBGPD 7.3, examples, rich config, IPv4: instances setup ... ok
-Live test, OpenBGPD 7.3, examples, rich config, IPv4: log contains errors ... ok
-Live test, OpenBGPD 7.3, examples, rich config, IPv4: dumping rs config...
-Live test, OpenBGPD 7.3, examples, rich config, IPv4: dumping routes...
-Live test, OpenBGPD 7.3, examples, rich config, IPv4: stopping instances...
-Live test, OpenBGPD 7.3, examples, rich config, IPv6: setting instances up...
-Live test, OpenBGPD 7.3, examples, rich config, IPv6: instances setup ... ok
-Live test, OpenBGPD 7.3, examples, rich config, IPv6: log contains errors ... ok
-Live test, OpenBGPD 7.3, examples, rich config, IPv6: dumping rs config...
-Live test, OpenBGPD 7.3, examples, rich config, IPv6: dumping routes...
-Live test, OpenBGPD 7.3, examples, rich config, IPv6: stopping instances...
+Live test, OpenBGPD 7.4, examples, rich config, IPv4: setting instances up...
+Live test, OpenBGPD 7.4, examples, rich config, IPv4: instances setup ... ok
+Live test, OpenBGPD 7.4, examples, rich config, IPv4: log contains errors ... ok
+Live test, OpenBGPD 7.4, examples, rich config, IPv4: dumping rs config...
+Live test, OpenBGPD 7.4, examples, rich config, IPv4: dumping routes...
+Live test, OpenBGPD 7.4, examples, rich config, IPv4: stopping instances...
+Live test, OpenBGPD 7.4, examples, rich config, IPv6: setting instances up...
+Live test, OpenBGPD 7.4, examples, rich config, IPv6: instances setup ... ok
+Live test, OpenBGPD 7.4, examples, rich config, IPv6: log contains errors ... ok
+Live test, OpenBGPD 7.4, examples, rich config, IPv6: dumping rs config...
+Live test, OpenBGPD 7.4, examples, rich config, IPv6: dumping routes...
+Live test, OpenBGPD 7.4, examples, rich config, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 22.444s
+Ran 4 tests in 21.778s
 
 OK
-Live test, OpenBGPD 7.3, RTR protocol: setting instances up...
-Live test, OpenBGPD 7.3, RTR protocol: instances setup ... ok
-Live test, OpenBGPD 7.3, RTR protocol: sessions are up ... ok
-Live test, OpenBGPD 7.3, RTR protocol: route accepted because validator not running ... ok
-Live test, OpenBGPD 7.3, RTR protocol: spin up the validator ... ok
-Live test, OpenBGPD 7.3, RTR protocol: restart OpenBGPD to speed up RTR session establishment ... ok
-Live test, OpenBGPD 7.3, RTR protocol: check the RTR session is up ... ok
-Live test, OpenBGPD 7.3, RTR protocol: route dropped after spinning the validator up ... ok
-Live test, OpenBGPD 7.3, RTR protocol: log contains errors ... ok
-Live test, OpenBGPD 7.3, RTR protocol: dumping rs config...
-Live test, OpenBGPD 7.3, RTR protocol: dumping routes...
-Live test, OpenBGPD 7.3, RTR protocol: stopping instances...
+Live test, OpenBGPD 7.4, RTR protocol: setting instances up...
+Live test, OpenBGPD 7.4, RTR protocol: instances setup ... ok
+Live test, OpenBGPD 7.4, RTR protocol: sessions are up ... ok
+Live test, OpenBGPD 7.4, RTR protocol: route accepted because validator not running ... ok
+Live test, OpenBGPD 7.4, RTR protocol: spin up the validator ... ok
+Live test, OpenBGPD 7.4, RTR protocol: restart OpenBGPD to speed up RTR session establishment ... ok
+Live test, OpenBGPD 7.4, RTR protocol: check the RTR session is up ... ok
+Live test, OpenBGPD 7.4, RTR protocol: route dropped after spinning the validator up ... ok
+Live test, OpenBGPD 7.4, RTR protocol: log contains errors ... ok
+Live test, OpenBGPD 7.4, RTR protocol: dumping rs config...
+Live test, OpenBGPD 7.4, RTR protocol: dumping routes...
+Live test, OpenBGPD 7.4, RTR protocol: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 8 tests in 43.691s
+Ran 8 tests in 43.511s
 
 OK
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: setting instances up...
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: instances setup ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: sessions are up ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS2 prefix ko origin ko ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS2 prefix ko origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok origin ko ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS4 route filtered (origin ko) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS4 prefix ko origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS4 prefix ok origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS4 route filtered (prefix ko, origin ko) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS5 route filtered (prefix ko, origin ko) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS5 route filtered (prefix ko) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS5 prefix ok origin ko ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS5 prefix ok origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (exact) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS4 route white list, reject (more spec) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (more spec) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS4 route white list, reject (origin KO) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (origin any) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS6 ARIN Whois DB: ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: reconfigure ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: log contains errors ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: dumping rs config...
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: dumping routes...
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv4: stopping instances...
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: setting instances up...
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: instances setup ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: sessions are up ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS2 no enforcement, prefix and origin not in AS-SET ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS4 origin enforcement ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS4 prefix enforcement ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (exact) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (more spec) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (more spec) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (origin KO) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (origin any) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: ko ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas]) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS6 prefix ok, origin ok, ROA + ARIN: rejected ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforced (rejected) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: reconfigure ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: log contains errors ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: dumping rs config...
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: dumping routes...
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv4: stopping instances...
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: setting instances up...
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: instances setup ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: sessions are up ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS2 prefix ko origin ko ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS2 prefix ko origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok origin ko ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS4 route filtered (origin ko) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS4 prefix ko origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS4 prefix ok origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS4 route filtered (prefix ko, origin ko) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (prefix ko, origin ko) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (prefix ko) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ko ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (exact) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS4 route white list, reject (more spec) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (more spec) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS4 route white list, reject (origin KO) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (origin any) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS6 ARIN Whois DB: ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: reconfigure ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: log contains errors ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: dumping rs config...
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: dumping routes...
-Live test, OpenBGPD 7.3, tag prefix/origin in AS-SET, IPv6: stopping instances...
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: setting instances up...
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: instances setup ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: sessions are up ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS2 no enforcement, prefix and origin not in AS-SET ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS4 origin enforcement ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS4 prefix enforcement ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (exact) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (more spec) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (more spec) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (origin KO) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (origin any) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ko, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ok, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: ko ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas]) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS6 prefix ok, origin ok, ROA + ARIN: rejected ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforced (rejected) ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: reconfigure ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: log contains errors ... ok
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: dumping rs config...
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: dumping routes...
-Live test, OpenBGPD 7.3, tag prefix/origin empty AS-SET, IPv6: stopping instances...
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: setting instances up...
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: instances setup ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: sessions are up ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS2 prefix ko origin ko ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS2 prefix ko origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok origin ko ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS4 route filtered (origin ko) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS4 prefix ko origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS4 prefix ok origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS4 route filtered (prefix ko, origin ko) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS5 route filtered (prefix ko, origin ko) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS5 route filtered (prefix ko) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS5 prefix ok origin ko ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS5 prefix ok origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (exact) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS4 route white list, reject (more spec) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (more spec) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS4 route white list, reject (origin KO) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (origin any) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS6 ARIN Whois DB: ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: reconfigure ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: log contains errors ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: dumping rs config...
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: dumping routes...
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv4: stopping instances...
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: setting instances up...
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: instances setup ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: sessions are up ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS2 no enforcement, prefix and origin not in AS-SET ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS4 origin enforcement ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS4 prefix enforcement ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (exact) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (more spec) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (more spec) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (origin KO) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (origin any) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: ko ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS6 prefix ok, origin ok, ROA + ARIN: rejected ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforced (rejected) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: reconfigure ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: log contains errors ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: dumping rs config...
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: dumping routes...
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv4: stopping instances...
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: setting instances up...
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: instances setup ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: sessions are up ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS2 prefix ko origin ko ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS2 prefix ko origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok origin ko ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS4 route filtered (origin ko) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS4 prefix ko origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS4 prefix ok origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS4 route filtered (prefix ko, origin ko) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (prefix ko, origin ko) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (prefix ko) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ko ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (exact) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS4 route white list, reject (more spec) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (more spec) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS4 route white list, reject (origin KO) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (origin any) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS6 ARIN Whois DB: ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: reconfigure ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: log contains errors ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: dumping rs config...
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: dumping routes...
+Live test, OpenBGPD 7.4, tag prefix/origin in AS-SET, IPv6: stopping instances...
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: setting instances up...
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: instances setup ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: sessions are up ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS2 no enforcement, prefix and origin not in AS-SET ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS4 origin enforcement ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS4 prefix enforcement ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (exact) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (more spec) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (more spec) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (origin KO) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (origin any) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ko, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ok, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ko ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ok ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin WL ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: ko ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS6 ARIN Whois DB: ok (solely because of route white list) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas]) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS6 prefix ok, origin ok, ROA + ARIN: rejected ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforced (rejected) ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: reconfigure ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: log contains errors ... ok
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: dumping rs config...
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: dumping routes...
+Live test, OpenBGPD 7.4, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 166 tests in 177.483s
+Ran 166 tests in 177.003s
 
 OK
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: setting instances up...
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: instances setup ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: sessions are up ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: AS_PATH too long ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: bogon prefix ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: bogon prefix, wrong announcing ASN ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: prefix in client's blacklist ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: invalid ASN in AS_PATH ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: invalid NEXT_HOP ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: local black list ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: prefix is not in IPv6 global unicast space ... SKIP: IPv6 only test
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: origin not in as-macro ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: invalid left-most ASN ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: prefix length ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: prefix not in as-macro ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: RPKI INVALID route ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: transit-free ASN in AS_PATH ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: good routes not received ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS1_1 ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS1_2 ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS2 ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: reconfigure ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: log contains errors ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: dumping rs config...
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: dumping routes...
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv4: stopping instances...
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: setting instances up...
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: instances setup ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: sessions are up ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: AS_PATH too long ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: bogon prefix ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: bogon prefix, wrong announcing ASN ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: prefix in client's blacklist ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: invalid ASN in AS_PATH ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: invalid NEXT_HOP ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: local black list ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: prefix is not in IPv6 global unicast space ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: origin not in as-macro ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: invalid left-most ASN ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: prefix length ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: prefix not in as-macro ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: RPKI INVALID route ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: transit-free ASN in AS_PATH ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: good routes not received ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS1_1 ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS1_2 ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS2 ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: reconfigure ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: log contains errors ... ok
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: dumping rs config...
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: dumping routes...
-Live test, OpenBGPD 7.3, 'tag' reject policy scenario, IPv6: stopping instances...
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: setting instances up...
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: instances setup ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: sessions are up ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: AS_PATH too long ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: bogon prefix ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: bogon prefix, wrong announcing ASN ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: prefix in client's blacklist ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: invalid ASN in AS_PATH ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: invalid NEXT_HOP ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: local black list ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: prefix is not in IPv6 global unicast space ... SKIP: IPv6 only test
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: origin not in as-macro ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: invalid left-most ASN ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: prefix length ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: prefix not in as-macro ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: RPKI INVALID route ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: transit-free ASN in AS_PATH ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: good routes not received ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS1_1 ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS1_2 ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS2 ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: reconfigure ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: log contains errors ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: dumping rs config...
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: dumping routes...
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv4: stopping instances...
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: setting instances up...
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: instances setup ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: sessions are up ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: AS_PATH too long ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: bogon prefix ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: bogon prefix, wrong announcing ASN ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: prefix in client's blacklist ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: invalid ASN in AS_PATH ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: invalid NEXT_HOP ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: local black list ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: prefix is not in IPv6 global unicast space ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: origin not in as-macro ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: invalid left-most ASN ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: prefix length ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: prefix not in as-macro ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: RPKI INVALID route ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: transit-free ASN in AS_PATH ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: good routes not received ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS1_1 ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS1_2 ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS2 ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: reconfigure ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: log contains errors ... ok
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: dumping rs config...
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: dumping routes...
+Live test, OpenBGPD 7.4, 'tag' reject policy scenario, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 44 tests in 122.287s
+Ran 44 tests in 121.095s
 
 OK (SKIP=1)
