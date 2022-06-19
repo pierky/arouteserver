@@ -3,6 +3,19 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+1.16.1
+------
+
+- New: add support for OpenBGPD 7.4, also added to the integration testing suite (portable edition only).
+
+- Fix: pin down `urllib3` version to avoid issues on upgrade.
+
+  See also `GitHub issue 110 <https://github.com/pierky/arouteserver/issues/110>`__.
+
+- Fix: the `playground <https://github.com/pierky/arouteserver/tree/master/tools/playground>`__ Docker image was not building anymore.
+
+  Go and AliceLG birdwatcher versions have been bumped to the latest available.
+
 1.16.0
 ------
 
