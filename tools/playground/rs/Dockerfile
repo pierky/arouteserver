@@ -17,12 +17,12 @@ RUN apt-get update && \
 # ------------------------------
 
 RUN curl \
-    -OL https://golang.org/dl/go1.15.6.linux-amd64.tar.gz && \
-    tar -C /usr/local -xzf go1.15.6.linux-amd64.tar.gz
+    -OL https://golang.org/dl/go1.18.3.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.18.3.linux-amd64.tar.gz
 
 ENV PATH=$PATH:/usr/local/go/bin
 
-RUN go get github.com/alice-lg/birdwatcher
+RUN go install github.com/alice-lg/birdwatcher@2.2.3
 
 RUN mkdir -p /etc/birdwatcher
 
