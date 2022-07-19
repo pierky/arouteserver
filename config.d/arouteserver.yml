@@ -63,7 +63,7 @@
 
 # Sources used by bgpq4/bgpq3.
 # (-S argument).
-#bgpq3_sources: "RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,BBOI,BELL,JPIRR,LEVEL3,RADB,RGNET,TC"
+#bgpq3_sources: "RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,BBOI,BELL,JPIRR,LEVEL3,RADB,TC"
 
 # Path to the program used to determine the RTT of peers.
 #
