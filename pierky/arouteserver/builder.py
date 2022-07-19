@@ -1048,12 +1048,14 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             if not max_prefix_count_rejected_routes:
                 max_prefix_count_rejected_routes_clients.append(client["ip"])
 
-        if add_path_clients:
+        if add_path_clients and \
+            version.parse(self.target_version) < version.parse("7.5"):
+
             clients = add_path_clients
             cnt = len(clients)
             if not self.process_compatibility_issue(
                 "add_path",
-                "ADD_PATH not supported by OpenBGPD but "
+                "ADD_PATH not supported by OpenBGPD < 7.5 but "
                 "enabled for the following clients: {}{}.".format(
                     ", ".join(clients[:3]),
                     "" if cnt <= 3 else " and {} more".format(cnt - 3)

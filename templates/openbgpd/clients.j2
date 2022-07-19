@@ -27,7 +27,15 @@ group "clients" {
 		remote-as {{ client.asn }}
 
 {% if cfg.path_hiding and "6.9"|target_version_ge %}
+{%		if "7.5"|target_version_ge and client.cfg.add_path %}
+		# This is needed to avoid the bgpd error
+		#	"neighbors with add-path send cannot use 'rde evaluate all'"
+		# It overrides the global 'rde evaluate all' setting for
+		# the neighbors for which ADD-PATH is configured.
+		rde evaluate default
+{%		else %}
 		rde evaluate all
+{%		endif %}
 {% endif %}
 
 {%	if "6.1"|target_version_le %}
@@ -84,6 +92,9 @@ group "clients" {
 {%	else %}
 		announce IPv6 unicast
 		announce IPv4 none
+{%	endif %}
+{%	if "7.5"|target_version_ge and client.cfg.add_path %}
+		announce add-path send best plus 5
 {%	endif %}
 
 		set nexthop no-modify

@@ -205,9 +205,27 @@ class PathHidingScenario_MitigationOn(object):
             raise unittest.SkipTest("Path hiding mititaion not supported on OpenBGPD < 6.9")
 
         for inst in (self.AS3, self.AS4):
-            self.receive_route(inst, self.DATA["AS101_pref_ok1"], self.rs,
-                               as_path="2 101 101 101 101", next_hop=self.AS2,
-                               std_comms=[])
+            if isinstance(self.rs, OpenBGPDInstance) and \
+                version.parse(target_version) >= version.parse("7.5") and \
+                inst is self.AS3:
+                # On OpenBGPD 7.5, ADD_PATH support was introduced: however,
+                # when it is set, the 'rde evaluate all' config knob that allows
+                # the BGP daemon to keep evaluating alternative paths in case
+                # the selected path is filtered out cannot be turned on - bgpd
+                # would generate the error
+                #   neighbors with add-path send cannot use 'rde evaluate all'
+                #
+                # The clients in this scenario are all configured with ADD_PATH
+                # send enabled, but only AS4 has it also configured on its end
+                # with the rx, so AS3 would not benefit from the path hiding
+                # mitigation offered when 'rde evaluate all' is set, thus it
+                # would not be able to receive the route.
+                with self.assertRaisesRegex(AssertionError, "Routes not found."):
+                    self.receive_route(inst, self.DATA["AS101_pref_ok1"], self.rs)
+            else:
+                self.receive_route(inst, self.DATA["AS101_pref_ok1"], self.rs,
+                                as_path="2 101 101 101 101", next_hop=self.AS2,
+                                std_comms=[])
 
     def test_041_AS3_and_AS4_no_prefix_via_AS1(self):
         """{}: AS3 and AS4 don't receive prefix via AS1"""
@@ -247,7 +265,8 @@ class PathHidingScenario_MitigationOff(object):
     def test_051_AS4_receives_prefix_via_AS2_because_of_ADD_PATH(self):
         """{}: AS4 receives the prefix via AS2 because of ADD-PATH"""
         if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("ADD-PATH not supported by OpenBGPD")
+            if version.parse(self.rs.TARGET_VERSION) < version.parse("7.5"):
+                raise unittest.SkipTest("ADD-PATH not supported by OpenBGPD < 7.5")
 
         self.receive_route(self.AS4, self.DATA["AS101_pref_ok1"], self.rs,
                            as_path="2 101 101 101 101", next_hop=self.AS2,
