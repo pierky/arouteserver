@@ -1,4 +1,3 @@
-Error: No such network: arouteserver
 Live test, BIRD, hooks example, IPv4: setting instances up...
 Live test, BIRD, hooks example, IPv4: instances setup ... ok
 Live test, BIRD, hooks example, IPv4: log contains errors ... ok
@@ -13,6 +12,6 @@ Live test, BIRD, hooks example, IPv6: dumping routes...
 Live test, BIRD, hooks example, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 4 tests in 15.145s
+Ran 4 tests in 14.255s
 
 OK

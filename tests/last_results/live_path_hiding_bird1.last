@@ -54,6 +54,6 @@ Live test, BIRD, path hiding, mitigation on, IPv6: dumping routes...
 Live test, BIRD, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 38 tests in 174.651s
+Ran 38 tests in 174.239s
 
 OK (SKIP=2)
