@@ -534,8 +534,6 @@ class ConfigBuilder(object):
         return False
 
     def enrich_config(self):
-        errors = False
-
         # Unique ASNs from clients list.
         clients_asns = {}
 
@@ -604,12 +602,10 @@ class ConfigBuilder(object):
             try:
                 enricher.enrich()
             except ARouteServerError as e:
-                errors = True
                 if str(e):
                     logging.error(str(e))
 
-        if errors:
-            raise BuilderError()
+                raise BuilderError()
 
     def _include_local_file(self, local_file_id):
         raise NotImplementedError()
@@ -801,7 +797,8 @@ class BIRDConfigBuilder(ConfigBuilder):
     IGNORABLE_ISSUES = ConfigBuilder.IGNORABLE_ISSUES + ["max_prefix_count_rejected_routes", "ipv6_link_local_next_hop"]
 
     AVAILABLE_VERSION = ["1.6.3", "1.6.4", "1.6.6", "1.6.7", "1.6.8",
-                         "2.0.7", "2.0.7+b962967e", "2.0.8", "2.0.9"]
+                         "2.0.7", "2.0.7+b962967e", "2.0.8", "2.0.9",
+                         "2.0.10"]
     DEFAULT_VERSION = "1.6.8"
 
     def validate_bgpspeaker_specific_configuration(self):
@@ -956,7 +953,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
     LOCAL_FILES_BASE_DIR = "/etc/bgpd"
 
     AVAILABLE_VERSION = ["6.0", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7",
-                         "6.8", "6.9", "7.0", "7.1", "7.2", "7.3", "7.4"]
+                         "6.8", "6.9", "7.0", "7.1", "7.2", "7.3", "7.4", "7.5"]
     DEFAULT_VERSION = AVAILABLE_VERSION[-1]
 
     IGNORABLE_ISSUES = ConfigBuilder.IGNORABLE_ISSUES + \
@@ -1047,12 +1044,14 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             if not max_prefix_count_rejected_routes:
                 max_prefix_count_rejected_routes_clients.append(client["ip"])
 
-        if add_path_clients:
+        if add_path_clients and \
+            version.parse(self.target_version) < version.parse("7.5"):
+
             clients = add_path_clients
             cnt = len(clients)
             if not self.process_compatibility_issue(
                 "add_path",
-                "ADD_PATH not supported by OpenBGPD but "
+                "ADD_PATH not supported by OpenBGPD < 7.5 but "
                 "enabled for the following clients: {}{}.".format(
                     ", ".join(clients[:3]),
                     "" if cnt <= 3 else " and {} more".format(cnt - 3)

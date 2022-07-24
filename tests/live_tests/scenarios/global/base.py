@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from packaging import version
 import unittest
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
@@ -20,9 +21,7 @@ from pierky.arouteserver.ipaddresses import IPNetwork
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy, \
                                                       LiveScenario_TagAndRejectRejectPolicy
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
-                                                          OpenBGPDPreviousInstance, \
-                                                          OpenBGPDLatestInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 from pierky.arouteserver.tests.live_tests.exabgp import ExaBGPInstance
 from pierky.arouteserver.tests.live_tests.instances import Route
@@ -1094,7 +1093,8 @@ class BasicScenario(LiveScenario):
         """{}: prefixes received by clients: AS3 (with ADD-PATH)"""
 
         if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("ADD-PATH not supported by OpenBGPD")
+            if version.parse(self.rs.TARGET_VERSION) < version.parse("7.5"):
+                raise unittest.SkipTest("ADD-PATH not supported by OpenBGPD < 7.5")
 
         # AS3 has prepend_rs_as, so all the prefixes received from the rs
         # have AS_PATH "999 x"

@@ -117,8 +117,7 @@ class IRRDBInfo(CachedObject, AS_SET_Bundle):
 
     BGPQ3_DEFAULT_HOST = ["rr.ntt.net", "rr1.ntt.net"]
     BGPQ3_DEFAULT_SOURCES = ("RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,"
-                             "BBOI,BELL,JPIRR,LEVEL3,RADB,RGNET,"
-                             "TC")
+                             "BBOI,BELL,JPIRR,LEVEL3,RADB,TC")
     BGPQ3_DEFAULT_TIMEOUT = 120
     EXPIRY_TIME_TAG = "irr_as_sets"
 

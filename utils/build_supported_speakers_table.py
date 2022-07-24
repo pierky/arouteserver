@@ -249,8 +249,8 @@ add_feature("Multihop sessions", {
 add_feature("ADD_PATH capability (RFC7911)", {
     "bird": True,
     "bird2": True,
-    "openbgpd": None,
-    "openbgpd_portable": None,
+    "openbgpd": True,
+    "openbgpd_portable": True,
 })
 
 

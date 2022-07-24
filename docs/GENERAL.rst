@@ -134,11 +134,11 @@ General options: ``cfg``
 
 - ``add_path``:
   Use ADD-PATH (RFC7911).
-  The route server will be configure as "able to send multiple
+  The route server will be configured as "able to send multiple
   paths to its peer".
 
 
-  OpenBGPD: not supported.
+  OpenBGPD: supported only from version 7.5.
 
 
   Can be overwritten on a client-by-client basis.
