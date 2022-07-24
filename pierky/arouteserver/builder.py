@@ -534,8 +534,6 @@ class ConfigBuilder(object):
         return False
 
     def enrich_config(self):
-        errors = False
-
         # Unique ASNs from clients list.
         clients_asns = {}
 
@@ -604,12 +602,10 @@ class ConfigBuilder(object):
             try:
                 enricher.enrich()
             except ARouteServerError as e:
-                errors = True
                 if str(e):
                     logging.error(str(e))
 
-        if errors:
-            raise BuilderError()
+                raise BuilderError()
 
     def _include_local_file(self, local_file_id):
         raise NotImplementedError()
