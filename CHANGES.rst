@@ -3,6 +3,25 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+1.17.0
+------
+
+- New: add support for `BIRD 2.0.10 <https://www.mail-archive.com/bird-users@network.cz/msg06819.html>`__, also added to the integration testing suite.
+
+- New: add support for `OpenBGPD 7.5 <https://undeadly.org/cgi?action=article;sid=20220716101930>`__, also added to the integration testing suite (portable edition only).
+
+- New (OpenBGPD): add support for ADD-PATH (on version 7.5 or above).
+
+- Improvement: abort the configuration building process as soon as one *enricher* fails.
+
+  This shorten the user feedback in case of errors that unavoidably would make the final configuration broken and not usable.
+
+- Fix: remove ``RGNET`` from the list of default IRR sources.
+
+  To remove it from existing deployments, or to add it back, users can edit the arouteserver.yml file, ``bgpq3_sources`` section.
+
+  See also `GitHub issue 111 <https://github.com/pierky/arouteserver/issues/111>`__.
+
 1.16.1
 ------
 
