@@ -20,8 +20,10 @@ import tempfile
 import unittest
 import yaml
 
+from pierky.arouteserver.tests.base import setup_requests_mock
 from pierky.arouteserver.builder import TemplateContextDumper
 from pierky.arouteserver.tests.mocked_env import MockedEnv
+
 
 class TestIRRDBEnricher_Base(unittest.TestCase):
 
@@ -64,9 +66,12 @@ class TestIRRDBEnricher_Base(unittest.TestCase):
     def setUp(self, *patches):
         MockedEnv(base_dir=os.path.dirname(__file__), default=False, irr=True)
         self.temp_dir = tempfile.mkdtemp(suffix="arouteserver_unittest")
+        # Prevent actual calls to external APIs.
+        self.requests_mock = setup_requests_mock()
 
     def tearDown(self):
         MockedEnv.stopall()
+        self.requests_mock.stop()
         shutil.rmtree(self.temp_dir, ignore_errors=True)
 
     def write_file(self, name, dic):

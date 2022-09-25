@@ -17,6 +17,26 @@ import logging
 import os
 import sys
 import unittest
+import requests_mock
+import json
+
+
+def setup_requests_mock():
+    res = requests_mock.Mocker()
+    res.start()
+    res.get(
+        "https://www.peeringdb.com/api/net?info_never_via_route_servers=1",
+        json={}
+    )
+    res.get(
+        "https://www.peeringdb.com/api/net?asn__in=3333,10745",
+        json=json.load(open("tests/static/data/peeringdb_net_3333_10745.json"))
+    )
+    res.get(
+        "http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2",
+        content=open("tests/static/data/arin-whois-originas.json.bz2", "br").read()
+    )
+    return res
 
 
 class CaptureLog(logging.Handler):
@@ -45,6 +65,7 @@ class CaptureLog(logging.Handler):
             self._reset_messages()
         finally:
             self.release()
+
 
 class ARouteServerTestCase(unittest.TestCase):
 
@@ -79,6 +100,8 @@ class ARouteServerTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        # Prevent actual calls to external APIs.
+        cls.requests_mock = setup_requests_mock()
         cls._setUpClass()
 
     @classmethod
@@ -87,6 +110,7 @@ class ARouteServerTestCase(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        cls.requests_mock.stop()
         cls._tearDownClass()
 
     @classmethod
