@@ -617,5 +617,15 @@ class OpenBGPD76PortableInstance(OpenBGPDPortableInstance):
     TARGET_VERSION = "7.6"
 
 
-OpenBGPDPortablePreviousInstance = OpenBGPD75PortableInstance
-OpenBGPDPortableLatestInstance = OpenBGPD76PortableInstance
+class OpenBGPD77PortableInstance(OpenBGPDPortableInstance):
+
+    DOCKER_IMAGE = "pierky/openbgpd:7.7"
+
+    TAG = "openbgpd77p"
+
+    BGP_SPEAKER_VERSION = "7.7"
+    TARGET_VERSION = "7.7"
+
+
+OpenBGPDPortablePreviousInstance = OpenBGPD76PortableInstance
+OpenBGPDPortableLatestInstance = OpenBGPD77PortableInstance
