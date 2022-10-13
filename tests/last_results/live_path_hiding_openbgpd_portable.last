@@ -1,59 +1,59 @@
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv4: setting instances up...
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv4: instances setup ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv4: sessions are up ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv4: rs should receive prefix from both AS1 and AS2 ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv4: rs should have best toward AS1 ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv4: AS1 wants rs to not announce to AS3 and AS4 ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv4: AS3 does not receive prefix at all ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv4: AS4 receives the prefix via AS2 because of ADD-PATH ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv4: reconfigure ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv4: log contains errors ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv4: dumping rs config...
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv4: dumping routes...
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv4: stopping instances...
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv4: setting instances up...
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv4: instances setup ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv4: sessions are up ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv4: rs should receive prefix from both AS1 and AS2 ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv4: rs should have best toward AS1 ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv4: AS1 wants rs to not announce to AS3 and AS4 ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv4: AS3 and AS4 receive prefix with sub-optimal path via AS2 ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv4: AS3 and AS4 don't receive prefix via AS1 ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv4: 2nd best is withdrawn and AS3 should not see it anymore ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv4: reconfigure ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv4: log contains errors ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv4: dumping rs config...
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv4: dumping routes...
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv4: stopping instances...
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv6: setting instances up...
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv6: instances setup ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv6: sessions are up ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv6: rs should receive prefix from both AS1 and AS2 ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv6: rs should have best toward AS1 ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv6: AS1 wants rs to not announce to AS3 and AS4 ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv6: AS3 does not receive prefix at all ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv6: AS4 receives the prefix via AS2 because of ADD-PATH ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv6: reconfigure ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv6: log contains errors ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv6: dumping rs config...
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv6: dumping routes...
-Live test, OpenBGPD 7.5, path hiding, mitigation off, IPv6: stopping instances...
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv6: setting instances up...
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv6: instances setup ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv6: sessions are up ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv6: rs should receive prefix from both AS1 and AS2 ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv6: rs should have best toward AS1 ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv6: AS1 wants rs to not announce to AS3 and AS4 ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv6: AS3 and AS4 receive prefix with sub-optimal path via AS2 ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv6: AS3 and AS4 don't receive prefix via AS1 ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv6: 2nd best is withdrawn and AS3 should not see it anymore ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv6: reconfigure ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv6: log contains errors ... ok
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv6: dumping rs config...
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv6: dumping routes...
-Live test, OpenBGPD 7.5, path hiding, mitigation on, IPv6: stopping instances...
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: setting instances up...
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: instances setup ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: sessions are up ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: rs should receive prefix from both AS1 and AS2 ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: rs should have best toward AS1 ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: AS1 wants rs to not announce to AS3 and AS4 ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: AS3 does not receive prefix at all ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: AS4 receives the prefix via AS2 because of ADD-PATH ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: reconfigure ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: log contains errors ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: dumping rs config...
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: dumping routes...
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: stopping instances...
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: setting instances up...
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: instances setup ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: sessions are up ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: rs should receive prefix from both AS1 and AS2 ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: rs should have best toward AS1 ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: AS1 wants rs to not announce to AS3 and AS4 ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: AS3 and AS4 receive prefix with sub-optimal path via AS2 ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: AS3 and AS4 don't receive prefix via AS1 ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: 2nd best is withdrawn and AS3 should not see it anymore ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: reconfigure ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: log contains errors ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: dumping rs config...
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: dumping routes...
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: stopping instances...
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: setting instances up...
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: instances setup ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: sessions are up ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: rs should receive prefix from both AS1 and AS2 ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: rs should have best toward AS1 ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: AS1 wants rs to not announce to AS3 and AS4 ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: AS3 does not receive prefix at all ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: AS4 receives the prefix via AS2 because of ADD-PATH ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: reconfigure ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: log contains errors ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: dumping rs config...
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: dumping routes...
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: stopping instances...
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: setting instances up...
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: instances setup ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: sessions are up ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: rs should receive prefix from both AS1 and AS2 ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: rs should have best toward AS1 ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: AS1 wants rs to not announce to AS3 and AS4 ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: AS3 and AS4 receive prefix with sub-optimal path via AS2 ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: AS3 and AS4 don't receive prefix via AS1 ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: 2nd best is withdrawn and AS3 should not see it anymore ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: reconfigure ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: log contains errors ... ok
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: dumping rs config...
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: dumping routes...
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 38 tests in 192.492s
+Ran 38 tests in 197.166s
 
 OK

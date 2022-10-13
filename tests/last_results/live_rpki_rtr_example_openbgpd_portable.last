@@ -1,17 +1,17 @@
-Live test, OpenBGPD 7.5, RTR protocol: setting instances up...
-Live test, OpenBGPD 7.5, RTR protocol: instances setup ... ok
-Live test, OpenBGPD 7.5, RTR protocol: sessions are up ... ok
-Live test, OpenBGPD 7.5, RTR protocol: route accepted because validator not running ... ok
-Live test, OpenBGPD 7.5, RTR protocol: spin up the validator ... ok
-Live test, OpenBGPD 7.5, RTR protocol: restart OpenBGPD to speed up RTR session establishment ... ok
-Live test, OpenBGPD 7.5, RTR protocol: check the RTR session is up ... ok
-Live test, OpenBGPD 7.5, RTR protocol: route dropped after spinning the validator up ... ok
-Live test, OpenBGPD 7.5, RTR protocol: log contains errors ... ok
-Live test, OpenBGPD 7.5, RTR protocol: dumping rs config...
-Live test, OpenBGPD 7.5, RTR protocol: dumping routes...
-Live test, OpenBGPD 7.5, RTR protocol: stopping instances...
+Live test, OpenBGPD 7.7, RTR protocol: setting instances up...
+Live test, OpenBGPD 7.7, RTR protocol: instances setup ... ok
+Live test, OpenBGPD 7.7, RTR protocol: sessions are up ... ok
+Live test, OpenBGPD 7.7, RTR protocol: route accepted because validator not running ... ok
+Live test, OpenBGPD 7.7, RTR protocol: spin up the validator ... ok
+Live test, OpenBGPD 7.7, RTR protocol: restart OpenBGPD to speed up RTR session establishment ... ok
+Live test, OpenBGPD 7.7, RTR protocol: check the RTR session is up ... ok
+Live test, OpenBGPD 7.7, RTR protocol: route dropped after spinning the validator up ... ok
+Live test, OpenBGPD 7.7, RTR protocol: log contains errors ... ok
+Live test, OpenBGPD 7.7, RTR protocol: dumping rs config...
+Live test, OpenBGPD 7.7, RTR protocol: dumping routes...
+Live test, OpenBGPD 7.7, RTR protocol: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 8 tests in 43.032s
+Ran 8 tests in 44.083s
 
 OK

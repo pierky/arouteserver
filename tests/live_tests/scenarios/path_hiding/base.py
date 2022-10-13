@@ -207,6 +207,7 @@ class PathHidingScenario_MitigationOn(object):
         for inst in (self.AS3, self.AS4):
             if isinstance(self.rs, OpenBGPDInstance) and \
                 version.parse(target_version) >= version.parse("7.5") and \
+                version.parse(target_version) < version.parse("7.6") and \
                 inst is self.AS3:
                 # On OpenBGPD 7.5, ADD_PATH support was introduced: however,
                 # when it is set, the 'rde evaluate all' config knob that allows

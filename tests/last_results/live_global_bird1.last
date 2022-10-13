@@ -536,6 +536,6 @@ Live test, BIRD, global scenario, IPv6, tag&reject: dumping routes...
 Live test, BIRD, global scenario, IPv6, tag&reject: stopping instances...
 
 ----------------------------------------------------------------------
-Ran 512 tests in 509.215s
+Ran 512 tests in 540.852s
 
 OK (SKIP=6)
