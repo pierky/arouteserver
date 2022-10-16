@@ -104,7 +104,7 @@ At this point, the command will print a summary of the settings that it produced
 
     Some notes:
 
-     - Accepted prefix lengths are 8-24 for IPv6 and 12-48 for IPv6.
+     - Accepted prefix lengths are 8-24 for IPv4 and 12-48 for IPv6.
      - Routes with 'transit-free networks' or 'never via route-server' (PeeringDB)
     ASNs in the middle of AS_PATH are rejected.
      - IRR-based filters are enabled; prefixes that are more specific of those

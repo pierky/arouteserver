@@ -291,7 +291,7 @@ class ConfigureCommand(ARouteServerCommand):
         filtering["ipv4_pref_len"] = {"min": 8, "max": 24}
         filtering["ipv6_pref_len"] = {"min": 12, "max": 48}
         self.notes.append(
-            "Accepted prefix lengths are 8-24 for IPv6 and 12-48 for IPv6."
+            "Accepted prefix lengths are 8-24 for IPv4 and 12-48 for IPv6."
         )
 
         filtering["global_black_list_pref"] = []
