@@ -11,7 +11,6 @@ jobs:
     strategy:
       matrix:
         python-version:
-        - 3.6
         - 3.8
         - 3.9  # Reference version used to run integration tests;
                # to keep in sync with 'if: ' statements in the rest
