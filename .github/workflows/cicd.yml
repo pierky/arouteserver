@@ -15,6 +15,7 @@ jobs:
         - 3.9  # Reference version used to run integration tests;
                # to keep in sync with 'if: ' statements in the rest
                # of this file.
+        - "3.10"
         - pypy3.8  # To keep in sync with other pypy releases referenced in the
                    # "Docker image tests" and "Push Docker image to Docker Hub"
                    # sections of this file.
@@ -374,7 +375,7 @@ jobs:
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
-          python-version: 3.6
+          python-version: 3.8
 
       - name: Install dependencies
         run: |
