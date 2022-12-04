@@ -1,20 +1,24 @@
-External resources: ARIN Whois database dump ... ok
-External resources: ASNs from AS-SET via bgpq3 ... ok
-External resources: ASNs from AS-SET via bgpq4 ... ok
-External resources: Euro-IX from clients build and validation ... ok
-External resources: Euro-IX from clients build and validation (using merge-file) ... ok
-External resources: PeeringDB IX list ... ok
-External resources: last version via PyPI ... ok
-External resources: PeeringDB, max-prefix and AS-SET ... ok
-External resources: PeeringDB, never via route-servers ... ok
-External resources: route servers excluded from clients-from-euroix ... ok
-External resources: RPKI ROAs, NTT ... ok
-External resources: RPKI ROAs, RIPE ... ok
-External resources: RPKI ROAs, rpki-client ... ok
-External resources: prefixes from AS-SET via bgpq3 ... ok
-External resources: prefixes from AS-SET via bgpq4 ... ok
+============================= test session starts ==============================
+platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
+cachedir: .pytest_cache
+rootdir: /Users/pchiodi/github/public/arouteserver
+plugins: requests-mock-1.9.3
+collecting ... collected 15 items
 
-----------------------------------------------------------------------
-Ran 15 tests in 62.975s
+External resources: ARIN Whois database dump PASSED
+External resources: ASNs from AS-SET via bgpq3 PASSED
+External resources: ASNs from AS-SET via bgpq4 PASSED
+External resources: Euro-IX from clients build and validation PASSED
+External resources: Euro-IX from clients build and validation (using merge-file) PASSED
+External resources: PeeringDB IX list PASSED
+External resources: last version via PyPI PASSED
+External resources: PeeringDB, max-prefix and AS-SET PASSED
+External resources: PeeringDB, never via route-servers PASSED
+External resources: route servers excluded from clients-from-euroix PASSED
+External resources: RPKI ROAs, NTT PASSED
+External resources: RPKI ROAs, RIPE PASSED
+External resources: RPKI ROAs, rpki-client PASSED
+External resources: prefixes from AS-SET via bgpq3 PASSED
+External resources: prefixes from AS-SET via bgpq4 PASSED
 
-OK
+======================== 15 passed in 335.74s (0:05:35) ========================

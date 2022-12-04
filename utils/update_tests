@@ -14,6 +14,11 @@ if [ ! -e "setup.py" ]; then
 	exit
 fi
 
+if [ -z "${SECRET_PEERINGDB_API_KEY}" ]; then
+	echo "SECRET_PEERINGDB_API_KEY must be set, but it is not."
+	exit
+fi
+
 export PYTHONPATH="`pwd`"
 ROOT="`pwd`"
 
@@ -102,6 +107,15 @@ if [ -d "$LAST_RESULTS_DIR" -a -z "$1" ]; then
 	exit
 fi
 
+echo "Pulling Docker images needed for the tests..."
+# To be kept in sync with .github/workflows/cicd.yml
+docker pull pierky/bird:1.6.8
+docker pull pierky/bird:2.0.10
+docker pull pierky/openbgpd:7.6
+docker pull pierky/openbgpd:7.7
+docker pull pierky/exabgp:4.2.7
+docker pull nlnetlabs/routinator:v0.8.3
+
 # Check for codetags
 echo "Verifying codetags..."
 set +e
@@ -153,7 +167,7 @@ fi
 
 if [[ -z "$1" || `echo "$1" | grep  "\bbuild_only\b"` ]]; then
 	echo "Testing live scenarios with BUILD_ONLY=1..."
-	BUILD_ONLY=1 pytest -vs -x $TESTS_DIR/live_tests/scenarios/*/test_*.py -m test_010_setup
+	BUILD_ONLY=1 pytest -vs -x $TESTS_DIR/live_tests/scenarios/*/test_*.py -k test_010_setup
 fi
 
 echo "Running live tests..."

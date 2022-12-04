@@ -83,7 +83,7 @@ for line in last_ci_output.split("\n"):
         test = rest.split(" FAILED")[0].strip()
         test_result = False
     else:
-        test = test.strip()
+        test = rest.strip()
         test_result = False
 
     if bgp_speaker not in stats_per_bgp_speaker:

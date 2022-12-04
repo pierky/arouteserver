@@ -124,6 +124,7 @@ class ARouteServerTestCase(unittest.TestCase):
 
     @classmethod
     def info(cls, s):
+        cls.print_msg("")
         cls.print_msg(s)
 
     def shortDescription(self):
