@@ -7,6 +7,11 @@ if [ ! -e "setup.py" ]; then
 	exit
 fi
 
+if [ -z "${SECRET_PEERINGDB_API_KEY}" ]; then
+    echo "SECRET_PEERINGDB_API_KEY must be set, but it isn't."
+    exit
+fi
+
 export PYTHONPATH="`pwd`"
 ROOT="`pwd`"
 
