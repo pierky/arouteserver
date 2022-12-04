@@ -1,4 +1,4 @@
-ARG base_image="python:3.9"
+ARG base_image="python:3.11"
 
 FROM ${base_image}
 

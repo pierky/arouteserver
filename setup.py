@@ -121,10 +121,13 @@ setup(
         "Operating System :: POSIX",
         "Operating System :: Unix",
 
+        # To be kept in sync with .github/workflows/cicd.yml
         "Programming Language :: Python",
+        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
 
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: System :: Networking",

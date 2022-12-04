@@ -3,10 +3,14 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
-1.17.2
+1.18.0
 ------
 
-- Tests are no longer performed for Python 3.6; 3.10 tests are introduced.
+No new functionalities nor bug fixes here, just a change in the releases of Python which are supported and tested.
+
+- Tests are no longer performed for Python 3.6 (EoL); 3.10 and 3.11 tests are introduced.
+
+- Docker images are built on top of Python 3.11 and PyPy 3.9.
 
 1.17.1
 ------

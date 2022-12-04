@@ -11,14 +11,17 @@ jobs:
     strategy:
       matrix:
         python-version:
-        - 3.8
-        - 3.9  # Reference version used to run integration tests;
-               # to keep in sync with 'if: ' statements in the rest
-               # of this file.
+        # This list must be kept in sync with setup.py.
+        - "3.7"
+        - "3.8"
+        - "3.9"
         - "3.10"
-        - pypy3.8  # To keep in sync with other pypy releases referenced in the
-                   # "Docker image tests" and "Push Docker image to Docker Hub"
-                   # sections of this file.
+        - "3.11"  # Reference version used to run integration tests;
+                  # to keep in sync with 'if: ' statements in the rest
+                  # of this file.
+        - "pypy3.9"  # To keep in sync with other pypy releases referenced in the
+                     # "Docker image tests" and "Push Docker image to Docker Hub"
+                     # sections of this file.
 
     steps:
       - uses: actions/checkout@v2
@@ -52,21 +55,21 @@ jobs:
           SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
 
       - name: Config build tests
-        if: ${{ matrix.python-version != '3.9' }}
+        if: ${{ matrix.python-version != '3.11' }}
         run: BUILD_ONLY=1 pytest -vs -x tests/live_tests/
         env:
           TRAVIS: 1
           SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
 
       - name: Test external resources
-        if: ${{ matrix.python-version == '3.9' }}
+        if: ${{ matrix.python-version == '3.11' }}
         run: pytest -vs tests/external_resources/
         env:
           TRAVIS: 1
           SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
 
       - name: Fetch Docker images used by tests
-        if: ${{ matrix.python-version == '3.9' }}
+        if: ${{ matrix.python-version == '3.11' }}
         run: |
           echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
           docker pull pierky/bird:1.6.8
@@ -80,7 +83,7 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Integration tests
-        if: ${{ matrix.python-version == '3.9' }}
+        if: ${{ matrix.python-version == '3.11' }}
         run: pytest -vs -x tests/live_tests/
         env:
           TRAVIS: 1
@@ -94,9 +97,9 @@ jobs:
     strategy:
       matrix:
         docker-image:
-        - base_image: python:3.9
+        - base_image: python:3.11
           target_image: latest
-        - base_image: pypy:3.8
+        - base_image: pypy:3.9
           target_image: latest-pypy3
 
     steps:
@@ -375,7 +378,7 @@ jobs:
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: 3.11
 
       - name: Install dependencies
         run: |
@@ -436,7 +439,7 @@ jobs:
           push: true
           file: ./docker/Dockerfile
           build-args: |
-            base_image=python:3.9
+            base_image=python:3.11
           tags: pierky/arouteserver:${{ steps.get_the_release.outputs.CURRENT_RELEASE }}
 
       - name: Push to Docker Hub (current release, PyPy)
@@ -445,7 +448,7 @@ jobs:
           push: true
           file: ./docker/Dockerfile
           build-args: |
-            base_image=pypy:3.8
+            base_image=pypy:3.9
           tags: pierky/arouteserver:${{ steps.get_the_release.outputs.CURRENT_RELEASE }}-pypy3
 
       - name: Push to Docker Hub (latest, CPython)
@@ -456,7 +459,7 @@ jobs:
           push: true
           file: ./docker/Dockerfile
           build-args: |
-            base_image=python:3.9
+            base_image=python:3.11
           tags: pierky/arouteserver:latest
 
       - name: Push to Docker Hub (latest, PyPy)
@@ -467,7 +470,7 @@ jobs:
           push: true
           file: ./docker/Dockerfile
           build-args: |
-            base_image=pypy:3.8
+            base_image=pypy:3.9
           tags: pierky/arouteserver:latest-pypy3
 
       - name: Update Docker Hub description
