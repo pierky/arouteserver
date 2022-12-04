@@ -26,7 +26,7 @@ class RTTGetter_WorkerThread(BaseConfigEnricherThread):
     DESCR = "RTTGetter"
 
     # The following regex pattern is reported by docs/RTT_GETTER.rst
-    RETURN_VALUE_RE_PATTERN = re.compile("^\d+[.]?\d*$")
+    RETURN_VALUE_RE_PATTERN = re.compile(r"^\d+[.]?\d*$")
 
     def __init__(self, *args, **kwargs):
         BaseConfigEnricherThread.__init__(self, *args, **kwargs)

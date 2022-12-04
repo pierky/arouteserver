@@ -156,7 +156,7 @@ class OpenBGPDInstance(object):
         return None
 
     def _parse_routes(self, out):
-        regex = "BGP routing table entry for ([0-9\.\:a-f]+/[0-9]+)"
+        regex = r"BGP routing table entry for ([0-9\.\:a-f]+/[0-9]+)"
 
         route = {}
         routes = []

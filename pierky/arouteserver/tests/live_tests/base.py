@@ -113,7 +113,7 @@ class LiveScenario(ARouteServerTestCase):
       The value of this attribute must be a regular expression that
       matches the standard, extended or large BGP communities used to
       tag invalid routes. For example, if the standard BGP community
-      ``65520:dyn_val`` is used, the value must be ``^65520:(\d+)$``.
+      ``65520:dyn_val`` is used, the value must be ``^65520:(\\d+)$``.
       If this attribute is not None, routes that have LOCAL_PREF == 1
       and the ``reject_cause`` BGP community with ``dyn_val == 0``
       are considered as filtered.
@@ -901,8 +901,8 @@ class LiveScenario_TagRejectPolicy(object):
 
     """
 
-    REJECT_CAUSE_COMMUNITY = "^65520:(\d+)$"
-    REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY = "^rt:65520:(\d+)$"
+    REJECT_CAUSE_COMMUNITY = r"^65520:(\d+)$"
+    REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY = r"^rt:65520:(\d+)$"
     REJECT_POLICY = "tag"
 
     @classmethod

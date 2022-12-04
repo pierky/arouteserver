@@ -115,7 +115,7 @@ class BIRDInstance(DockerInstance, BGPSpeakerInstance):
         for line in lines:
             if line.strip() and not line.startswith(" "):
                 last_protoname = line.split(" ")[0]
-                last_proto_status = re.search("\sup\s", line) is not None
+                last_proto_status = re.search(r"\sup\s", line) is not None
                 continue
 
             if line.strip().startswith("Neighbor address: "):
@@ -170,27 +170,27 @@ class BIRDInstance(DockerInstance, BGPSpeakerInstance):
         if is_bird2:
             # unicast [AS1_1 15:53:50.281] * (100) [AS1i]
             route_beginning_re = (
-                "[ ]+unicast "
-                "\[(?P<via_name>[^\s]+)"
+                r"[ ]+unicast "
+                r"\[(?P<via_name>[^\s]+)"
             )
 
             # 3.0.11.0/24          unicast [AS3_1 15:53:45.706] * (100) [AS3i]
-            prefix_beginning_re = "^(?P<prefix>[0-9\.\:a-f]+/[0-9]+){}".format(
+            prefix_beginning_re = r"^(?P<prefix>[0-9\.\:a-f]+/[0-9]+){}".format(
                 route_beginning_re
             )
         else:
             # ' via 192.0.2.11 on eth0 [AS1_1 09:57:45] * (100) [AS101i]'
             #       ----------          -----
             route_beginning_re = (
-                "[ ]+via "
-                "(?P<via>[0-9\.\:a-f]+)"
-                "[^\[]+"
-                "\[(?P<via_name>[^\s]+)"
+                r"[ ]+via "
+                r"(?P<via>[0-9\.\:a-f]+)"
+                r"[^\[]+"
+                r"\[(?P<via_name>[^\s]+)"
             )
 
             # '101.2.128.0/24     via 192.0.2.11 on eth0 [AS1_1 09:57:45] * (100) [AS101i]'
             #  --------------         ----------          -----
-            prefix_beginning_re = "^(?P<prefix>[0-9\.\:a-f]+/[0-9]+){}".format(
+            prefix_beginning_re = r"^(?P<prefix>[0-9\.\:a-f]+/[0-9]+){}".format(
                 route_beginning_re
             )
 

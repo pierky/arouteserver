@@ -119,14 +119,14 @@ class ValidatorASSet(ValidatorText):
         # At least one component of such a name must be an actual
         # set name (i.e. start with one of the prefixes above)."
         # https://datatracker.ietf.org/doc/html/rfc2622#section-5
-        if re.match("^AS[\d]+$", macro):
+        if re.match(r"^AS[\d]+$", macro):
             return macro
 
         as_dash_found = False
         parts = []
         for part in macro.split(":"):
             name = part.strip().upper()
-            if not re.match("^(?:AS[\d]+|AS-[A-Z0-9_\-]*[A-Z0-9])$", name):
+            if not re.match(r"^(?:AS[\d]+|AS-[A-Z0-9_\-]*[A-Z0-9])$", name):
                 raise ConfigError("invalid name {}".format(name))
             if name.startswith("AS-"):
                 as_dash_found = True

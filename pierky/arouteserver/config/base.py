@@ -78,7 +78,7 @@ class ConfigParserBase(object):
         def expand_env_vars(doc):
             res = doc
             res = os.path.expandvars(res)
-            res = re.sub("\$\{[A-Za-z0-9_]+\}", "", res)
+            res = re.sub(r"\$\{[A-Za-z0-9_]+\}", "", res)
             return res
 
         lines = doc.split("\n")

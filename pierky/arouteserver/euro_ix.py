@@ -186,8 +186,8 @@ class EuroIXMemberList(object):
         def normalize_bgp_community(s):
             res = s.decode("utf-8")
             res = res.lower()
-            res = re.sub("[\\/\[ \]+-]", "_", res)
-            res = re.sub("[^0-9a-zA-Z_]", "", res)
+            res = re.sub(r"[\\/\[ \]+-]", "_", res)
+            res = re.sub(r"[^0-9a-zA-Z_]", "", res)
             return res
 
         def attach_custom_bgp_community(client, prefix, name):

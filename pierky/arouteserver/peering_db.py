@@ -268,7 +268,7 @@ class PeeringDBNet(PeeringDBInfo):
     def parse_as_sets(self, raw_irr_as_sets):
         res = []
         if raw_irr_as_sets and raw_irr_as_sets.strip():
-            raw_irr_as_sets = re.split("[/,&\s]", raw_irr_as_sets)
+            raw_irr_as_sets = re.split(r"[/,&\s]", raw_irr_as_sets)
             for raw_irr_as_set in raw_irr_as_sets:
                 irr_as_set = self.parse_as_set(raw_irr_as_set)
                 if irr_as_set and irr_as_set not in res:
