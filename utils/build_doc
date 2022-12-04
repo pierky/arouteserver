@@ -21,11 +21,11 @@ fi
 function publish_docs() {
 	title "Publishing docs via HTTP"
 
-	echo "cd $DOCS_DIR ; make html ; cd _build/html/ ; python -m SimpleHTTPServer 8000 ; cd $ROOT"
+	echo "cd $DOCS_DIR ; make html ; cd _build/html/ ; python3 -m http.server -b 127.0.0.1 8000 ; cd $ROOT"
 	cd $DOCS_DIR
 	make html
 	cd _build/html/
-	python3 -m http.server -b 127.0.0.1
+	python3 -m http.server -b 127.0.0.1 8000
 	cd $ROOT
 }
 
@@ -442,7 +442,7 @@ cat $DOCS_DIR/README_footer.txt >> $DST_FILE
 
 title "Testing package long description..."
 
-python setup.py --long-description | rst2html.py - /dev/null --strict
+python setup.py --long-description | rst2html.py - /dev/null --strict --syntax-highlight=none
 
 # ----------------------------------------------------
 
