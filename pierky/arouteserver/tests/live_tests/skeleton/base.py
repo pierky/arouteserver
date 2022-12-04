@@ -110,7 +110,7 @@ class SkeletonScenario(LiveScenario):
         pierky.arouteserver.tests.live_tests.base.LiveScenario.log_contains
     """
 
-    # Leave this to False to avoid nose to use this abstract class to run
+    # Leave this to False to avoid pytest to use this abstract class to run
     # tests. Only derived, more specific classes (test_XXX.py) must have
     # this set to True.
     __test__ = False

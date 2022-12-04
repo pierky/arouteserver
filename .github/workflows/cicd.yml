@@ -46,21 +46,21 @@ jobs:
         run: ./tests/cli
 
       - name: Static tests
-        run: nosetests -vs -x --tests=tests/static/
+        run: pytest -vs -x tests/static/
         env:
           TRAVIS: 1
           SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
 
       - name: Config build tests
         if: ${{ matrix.python-version != '3.9' }}
-        run: BUILD_ONLY=1 nosetests -vs -x --tests=tests/live_tests/
+        run: BUILD_ONLY=1 pytest -vs -x tests/live_tests/
         env:
           TRAVIS: 1
           SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
 
       - name: Test external resources
         if: ${{ matrix.python-version == '3.9' }}
-        run: nosetests -vs --tests=tests/external_resources/
+        run: pytest -vs tests/external_resources/
         env:
           TRAVIS: 1
           SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
@@ -81,7 +81,7 @@ jobs:
 
       - name: Integration tests
         if: ${{ matrix.python-version == '3.9' }}
-        run: nosetests -vs -x --tests=tests/live_tests/
+        run: pytest -vs -x tests/live_tests/
         env:
           TRAVIS: 1
           SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
@@ -111,14 +111,14 @@ jobs:
             -f docker/Dockerfile \
             .
 
-      - name: Run nosetests
+      - name: Run PyTest
         run: >
           docker run \
             -t \
             --rm \
             -e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
             pierky/arouteserver:${{ matrix.docker-image.target_image }} \
-              bash -c 'pip install -r requirements-dev.txt && nosetests -vsx tests/static'
+              bash -c 'pip install -r requirements-dev.txt && pytest -vsx tests/static'
         env:
           SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
 

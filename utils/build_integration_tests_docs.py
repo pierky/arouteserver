@@ -73,14 +73,17 @@ for line in last_ci_output.split("\n"):
     rest = ":".join(fields)
     # control communities, don't announce to any ... ok
 
-    if " ... SKIP" in rest:
-        test = rest.split(" ... SKIP")[0].strip()
+    if " SKIPPED" in rest:
+        test = rest.split(" SKIPPED")[0].strip()
         test_result = None
-    elif " ... ok" in rest:
-        test = rest.split(" ... ok")[0].strip()
+    elif " PASSED" in rest:
+        test = rest.split(" PASSED")[0].strip()
         test_result = True
+    elif " FAILED" in rest:
+        test = rest.split(" FAILED")[0].strip()
+        test_result = False
     else:
-        test = rest.split(" ...")[0].strip()
+        test = test.strip()
         test_result = False
 
     if bgp_speaker not in stats_per_bgp_speaker:

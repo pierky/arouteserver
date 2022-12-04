@@ -123,7 +123,7 @@ function join_last_results() {
 function build() {
 	IXP_ID="$1"
 	DAEMON="$2"
-	nosetests -vs $TESTS_DIR/test_${IXP_ID}.py -m "test_${DAEMON}.*_010_build" 2>&1 | tee $LAST_RESULTS_DIR/test_${IXP_ID}.py.build.$DAEMON
+	pytest -vs $TESTS_DIR/test_${IXP_ID}.py -k "test_${DAEMON}.*_010_build" 2>&1 | tee $LAST_RESULTS_DIR/test_${IXP_ID}.py.build.$DAEMON
 }
 
 function load() {
@@ -132,7 +132,7 @@ function load() {
 	if [ -n "$3" ]; then
 		echo "Using remote host $3"
 	fi
-	REMOTE_IP="$3" nosetests -vs $TESTS_DIR/test_${IXP_ID}.py -m "test_${DAEMON}.*_020_load" 2>&1 | tee $LAST_RESULTS_DIR/test_${IXP_ID}.py.load.$DAEMON
+	REMOTE_IP="$3" pytest -vs $TESTS_DIR/test_${IXP_ID}.py -k "test_${DAEMON}.*_020_load" 2>&1 | tee $LAST_RESULTS_DIR/test_${IXP_ID}.py.load.$DAEMON
 }
 
 function vultr_get_sshkeyid() {

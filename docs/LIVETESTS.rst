@@ -128,12 +128,12 @@ How to run built-in live tests
 
 To run built-in live tests, the full repository must be cloned locally and the environment must be configured as reported above.
 
-To test both the BIRD- and OpenBGPD-based route servers, run the Python unittest using ``nose``:
+To test both the BIRD- and OpenBGPD-based route servers, run the Python unittest using ``pytest``:
 
    .. code:: bash
 
       # from within the repository's root
-      nosetests -vs tests/live_tests/
+      pytest -vs tests/live_tests/
 
 How it works
 ------------
@@ -261,7 +261,7 @@ To configure the route server and its clients, please consider that the Docker n
 
       class SkeletonScenario_BIRDIPv4(SkeletonScenario):
 
-          # Leave this to True in order to allow nose to use this class
+          # Leave this to True in order to allow pytest to use this class
           # to run tests.
           __test__ = True
 
@@ -286,11 +286,11 @@ To configure the route server and its clients, please consider that the Docker n
 
    .. literalinclude:: ../pierky/arouteserver/tests/live_tests/skeleton/AS2.j2
 
-7. Run the tests using ``nose``:
+7. Run the tests using ``pytest``:
 
    .. code:: bash
 
-      nosetests -vs ~/ars_scenarios/myscenario
+      pytest -vs ~/ars_scenarios/myscenario
 
 Details about the code behind the live tests can be found in the :doc:`LIVETESTS_CODEDOC` section.
 
@@ -299,14 +299,14 @@ Debugging live tests scenarios
 
 To debug custom scenarios some utilities are provided:
 
-- the ``REUSE_INSTANCES`` environment variable can be set when executing nose to avoid Docker instances to be torn down at the end of a run.
+- the ``REUSE_INSTANCES`` environment variable can be set when executing pytest to avoid Docker instances to be torn down at the end of a run.
   When this environment variable is set, BGP speaker instances are started only the first time tests are executed, then are left up and running to allow debugging. When tests are executed again, the BGP speakers' configuration is rebuilt and reloaded. **Be careful**: this mode can be used only when running tests of the same scenario, otherwise Bad Things (tm) may happen.
 
   Example:
 
   .. code:: bash
 
-        REUSE_INSTANCES=1 nosetests -vs tests/live_tests/scenarios/global/test_bird4.py
+        REUSE_INSTANCES=1 pytest -vs tests/live_tests/scenarios/global/test_bird4.py
 
 - once the BGP speaker instances are up (using the ``REUSE_INSTANCES`` environment variable seen above), they can be queried using standard Docker commands:
 
@@ -341,4 +341,4 @@ To debug custom scenarios some utilities are provided:
 
   .. code:: bash
 
-        BUILD_ONLY=1 nosetests -vs tests/live_tests/scenarios/global/test_bird4.py
+        BUILD_ONLY=1 pytest -vs tests/live_tests/scenarios/global/test_bird4.py

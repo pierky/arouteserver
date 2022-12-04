@@ -30,11 +30,11 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flake8 coveralls nose
+          pip install flake8 coveralls pytest
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Test external resources
-        run: nosetests -vs --tests=tests/external_resources/
+        run: pytest -vs tests=tests/external_resources/
         env:
           TRAVIS: 1
           SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}

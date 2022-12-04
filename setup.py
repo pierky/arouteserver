@@ -98,10 +98,10 @@ setup(
 
     install_requires=install_requires,
     tests_require=[
-        "nose",
+        "pytest",
         "mock",
     ],
-    test_suite="nose.collector",
+    test_suite="pytest",
 
     scripts=["scripts/arouteserver"],
 

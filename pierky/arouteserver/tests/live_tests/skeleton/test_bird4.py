@@ -34,7 +34,7 @@ class SkeletonScenario_BIRDIPv4(SkeletonScenario):
     of this scenario.
     """
 
-    # Leave this to True in order to allow nose to use this class
+    # Leave this to True in order to allow pytest to use this class
     # to run tests.
     __test__ = True
 

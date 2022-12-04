@@ -134,7 +134,7 @@ class LiveScenario(ARouteServerTestCase):
             self.rs = self._get_instance_by_name("rs")
 
     Set the ``__test__`` attribute of derived classes to False to avoid them
-    to be used directly by ``nose`` to run tests; only the specific IPv4/IPv6
+    to be used directly by ``pytest`` to run tests; only the specific IPv4/IPv6
     class (the one where the ``DATA`` dictionary is set) must have
     ``__test__`` == True.
     """
