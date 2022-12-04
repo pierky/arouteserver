@@ -8,7 +8,9 @@ Change log
 
 No new functionalities nor bug fixes here, just a change in the releases of Python which are supported and tested.
 
-- Tests are no longer performed for Python 3.6 (EoL); 3.10 and 3.11 tests are introduced.
+- Tests are no longer performed for Python 3.6 (EoL).
+
+- Tests for Python 3.10 and 3.11 are introduced: 3.11 is the release used to perform the integration tests.
 
 - Docker images are built on top of Python 3.11 and PyPy 3.9.
 
