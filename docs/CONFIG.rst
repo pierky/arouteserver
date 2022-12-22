@@ -202,11 +202,11 @@ Please refer to `ROAs sources`_ in order to configure the source that should be 
 Use ARIN Whois database to accept routes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. warning:: Please note that the ARIN Advisory Counsel recommended the ARIN Board of Trustees to deprecate the "ARIN AS Origins" feature in the ARIN WHOIS database. See https://www.arin.net/participate/policy/drafts/2021_8/ and also https://github.com/pierky/arouteserver/issues/116. Consequently, this feature will be removed in future releases of ARouteServer, and starting from v1.19.0 a warning message will be logged during the route server config generation process if it is enabled.
+
 Similarly to the previous option, ``filtering.irrdb.use_arin_bulk_whois_data`` allows to support IRR-based filters with additional data. Records from the ARIN Whois database are used to accept those routes whose origin ASN is authorized by the client's AS-SET but whose prefix has not a registered route object. In this case, a lookup into the ARIN Whois database is made on the basis of the origin ASN and if a covering entry is found the route is accepted.
 
 The ARIN Whois database can be obtained by signing an `agreement with ARIN <https://www.arin.net/resources/request/bulkwhois.html>`__. It must be then converted into the appropriate JSON format that ARouteServer expects to find; the `arin-whois-bulk-parser <https://github.com/NLNOG/arin-whois-bulk-parser>`__ script can be used for this purpose.
-
-A parsed version of the database dump is offered by `NLNOG <https://nlnog.net/>`__ at the following URL: http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2
 
 Further details can be found in `this message <https://mailman.nanog.org/pipermail/nanog/2017-December/093525.html>`__ appeared on the NANOG mailing list.
 

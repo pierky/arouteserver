@@ -27,8 +27,6 @@ cfg:
       use_rpki_roas_as_route_objects:
         enabled: True
         source: "ripe-rpki-validator-cache"
-      use_arin_bulk_whois_data:
-        enabled: True
     rpki_bgp_origin_validation:
       enabled: True
     max_prefix:

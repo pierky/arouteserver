@@ -21,6 +21,7 @@ function reset() {
   GENERAL="config.d/general.yml"
   CLIENTS="config.d/clients.yml"
   BOGONS="config.d/bogons.yml"
+  LOGGING_LEVEL="ERROR"
   TITLE=""
   SUB_TEST=""
 }
@@ -31,7 +32,7 @@ function build_cmd() {
   echo "#####################################################" >>${LOG_FILE}
   COMMAND="$1"
   shift
-  $AROUTESERVER $COMMAND --cfg $CFG_FILE --logging-level ERROR --general $GENERAL --clients $CLIENTS --bogons $BOGONS $@ 2>&1 | tee -a ${LOG_FILE}
+  $AROUTESERVER $COMMAND --cfg $CFG_FILE --logging-level $LOGGING_LEVEL --general $GENERAL --clients $CLIENTS --bogons $BOGONS $@ 2>&1 | tee -a ${LOG_FILE}
 }
 
 function run_cmd() {
@@ -196,6 +197,40 @@ build_cmd "openbgpd" \
   --target-ver "${OPENBGPD_LATEST_VER}" \
   --output "${OUTPUT_CFG}"
 validate_openbgpd "${OUTPUT_CFG}" "${OPENBGPD_LATEST_VER}"
+
+# ---------------------------------------------
+# ARIN OriginAS deprecation
+reset
+TITLE="ARIN OriginAS deprecation (missing source)"
+SUB_TEST="$LINENO"
+GENERAL="tests/var/general.yml"
+cat <<EOF >$GENERAL
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+  filtering:
+    irrdb:
+      use_arin_bulk_whois_data:
+        enabled: True
+EOF
+build_cmd "openbgpd" | must_contain "A source must be set when 'filtering.irrdb.use_arin_bulk_whois_data.enabled' is set to True"
+
+reset
+TITLE="ARIN OriginAS deprecation (warning)"
+SUB_TEST="$LINENO"
+GENERAL="tests/var/general.yml"
+LOGGING_LEVEL="WARNING"
+cat <<EOF >$GENERAL
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+  filtering:
+    irrdb:
+      use_arin_bulk_whois_data:
+        enabled: True
+        source: http://127.0.0.1/
+EOF
+build_cmd "openbgpd" | must_contain "Please note that the 'filtering.irrdb.use_arin_bulk_whois_data' feature is deprecated"
 
 # ---------------------------------------------
 # IPv6 link-local NEXT_HOP

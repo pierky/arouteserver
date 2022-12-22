@@ -166,8 +166,8 @@ class ConfigParserGeneral(ConfigParserBase):
         a = i["use_arin_bulk_whois_data"]
         a["enabled"] = ValidatorBool(default=False)
         a["source"] = ValidatorText(
-            mandatory=True,
-            default="http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
+            mandatory=False,
+            default=""
         )
 
         i["use_registrobr_bulk_whois_data"] = OrderedDict()
@@ -531,6 +531,26 @@ class ConfigParserGeneral(ConfigParserBase):
         self.rpki_roas_needed = \
             filtering["irrdb"]["use_rpki_roas_as_route_objects"]["enabled"] or \
             filtering["rpki_bgp_origin_validation"]["enabled"]
+
+        # Is the ARIN Origin AS feature used?
+        if filtering["irrdb"]["use_arin_bulk_whois_data"]["enabled"]:
+            logging.warning(
+                "Please note that the 'filtering.irrdb.use_arin_bulk_whois_data' "
+                "feature is deprecated, because ARIN will remove the 'OriginAS' "
+                "field from their WHOIS database. This feature will be dropped "
+                "in future releases of ARouteServer. "
+                "See https://www.arin.net/participate/policy/drafts/2021_8/ for "
+                "more details."
+            )
+
+            # If a source is missing, raise an error.
+            if not filtering["irrdb"]["use_arin_bulk_whois_data"]["source"]:
+                errors = True
+                logging.error(
+                    "A source must be set when "
+                    "'filtering.irrdb.use_arin_bulk_whois_data.enabled' "
+                    "is set to True"
+                )
 
         if errors:
             raise ConfigError()
