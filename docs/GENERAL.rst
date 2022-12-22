@@ -561,6 +561,17 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
   Set this to True to enable this feature.
 
 
+  Please note that the ARIN Advisory Counsel recommended the
+  ARIN Board of Trustees to deprecate the "ARIN AS Origins"
+  feature in the ARIN WHOIS database.
+  See https://www.arin.net/participate/policy/drafts/2021_8/ and
+  also https://github.com/pierky/arouteserver/issues/116.
+  Consequently, this feature will be removed in future releases of
+  ARouteServer, and starting from v1.19.0 a warning message will be
+  logged during the route server config generation process if it is
+  enabled.
+
+
   Default: **False**
 
   Example:
@@ -601,13 +612,13 @@ https://arouteserver.readthedocs.io/en/latest/CONFIG.html
   https://github.com/NLNOG/arin-whois-bulk-parser
 
 
-  Default: **URL of the dump parsed and published by NLNOG.**
+  Default: **none**
 
   Example:
 
   .. code:: yaml
 
-     source: "http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
+     source: ""
 
 
 
