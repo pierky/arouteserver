@@ -43,8 +43,6 @@ Also, the following ASNs are always included:
 * Announced prefixes validity is **enforced**. Routes whose prefix is not part of the client's AS-SET are rejected.
   Longer prefixes that are covered by one entry of the resulting route set are accepted.
 * Use **RPKI ROAs** to validate routes whose origin ASN is authorized by the client's AS-SET but whose prefix is not.
-* Use **ARIN Whois DB dump** to validate routes whose origin ASN is authorized by the client's AS-SET but whose prefix is not.
-* Database is fetched from <a href="http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2" rel="noopener">http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2</a>.
 * Route **validity state** is signalled to route server clients using the following **BGP communities**:
 
 

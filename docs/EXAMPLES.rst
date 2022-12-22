@@ -20,7 +20,7 @@ Configurations built using the files provided in the ``examples/rich`` directory
 - GTSM and ADD-PATH are enabled by default on the route server.
 - Next-hop filtering allows clients to set NEXT_HOP of any client in the same AS.
 - Local networks are filtered, and also transit-free ASNs, "never via route-servers" networks, invalid paths and prefixes/origin ASNs which are not authorized by clients' AS-SETs (which are fetched from PeeringDB).
-- Dataset used for prefix validation extended using ARIN and NIC.BR Whois DB dump and RPKI ROAs.
+- Dataset used for prefix validation extended using NIC.BR Whois DB dump and RPKI ROAs.
 - RPKI-based Origin Validation is enabled; INVALID routes are rejected.
 - A max-prefix limit is enforced on the basis of PeeringDB information.
 - Blackhole filtering is implemented with a rewrite-next-hop policy and can be triggered with BGP communities BLACKHOLE, 65534:0 and 999:666:0.
@@ -149,7 +149,6 @@ A list of BGP communities is also automatically built.
     - PeeringDB is used to fetch AS-SETs for those clients that are not explicitly
    configured.
     - RPKI ROAs are used as if they were route objects to further enrich IRR data.
-    - ARIN Whois database dump is fetched from NLNOG to further enrich IRR data.
     - NIC.BR Whois database dump is fetched from Registro.br to further enrich IRR
    data.
     - RPKI BGP Origin Validation is enabled. INVALID routes are rejected.

@@ -16,6 +16,7 @@ cfg:
                                 - "test"
                         use_arin_bulk_whois_data:
                                 enabled: True
+                                source: "from mock data"
         communities:
                 prefix_present_in_as_set:
                         std: "rs_as:64512"

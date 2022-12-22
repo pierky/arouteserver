@@ -60,14 +60,6 @@ class TestExternalResources(unittest.TestCase):
         self.assertTrue(len(net.networks) > 0)
         self.assertTrue({"asn": 2914} in net.networks)
 
-    def test_arin_db_dump(self):
-        """External resources: ARIN Whois database dump"""
-        cfg = ConfigParserGeneral()
-        url = cfg.get_schema()["cfg"]["filtering"]["irrdb"]["use_arin_bulk_whois_data"]["source"].default
-        db_dump = ARINWhoisDBDump(source=url, **cache_cfg)
-        db_dump.load_data()
-        self.assertTrue(len(db_dump.whois_records) > 0)
-
     def test_ixf_db(self):
         """External resources: PeeringDB IX list"""
         ixp_list = PeeringDBIXList()

@@ -238,17 +238,22 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._test_option(self.cfg["rpki_roas"], "source", ("ripe-rpki-validator-cache","rtr"))
         self._test_mandatory(self.cfg["rpki_roas"], "source", has_default=True)
 
-    def use_arin_whois_db_dump_enabled(self):
-        """{}: use_arin_whois_db_dump.enabled"""
-        self.assertEqual(self.cfg["filtering"]["irrdb"]["use_arin_whois_db_dump"]["enabled"], False)
-        self._test_bool_val(self.cfg["filtering"]["irrdb"]["use_arin_whois_db_dump"], "enabled")
-        self._test_mandatory(self.cfg["filtering"]["irrdb"]["use_arin_whois_db_dump"], "enabled", has_default=True)
+    def test_use_arin_bulk_whois_data_enabled(self):
+        """{}: use_arin_bulk_whois_data.enabled"""
+        self.cfg["filtering"]["irrdb"]["use_arin_bulk_whois_data"]["source"] = "whatever"
+        self.assertEqual(self.cfg["filtering"]["irrdb"]["use_arin_bulk_whois_data"]["enabled"], False)
+        self._test_bool_val(self.cfg["filtering"]["irrdb"]["use_arin_bulk_whois_data"], "enabled")
+        self._test_mandatory(self.cfg["filtering"]["irrdb"]["use_arin_bulk_whois_data"], "enabled", has_default=True)
 
-    def use_registrobr_whois_db_dump_enabled(self):
-        """{}: use_registrobr_whois_db_dump.enabled"""
-        self.assertEqual(self.cfg["filtering"]["irrdb"]["use_registrobr_whois_db_dump"]["enabled"], False)
-        self._test_bool_val(self.cfg["filtering"]["irrdb"]["use_registrobr_whois_db_dump"], "enabled")
-        self._test_mandatory(self.cfg["filtering"]["irrdb"]["use_registrobr_whois_db_dump"], "enabled", has_default=True)
+        self.cfg["filtering"]["irrdb"]["use_arin_bulk_whois_data"]["enabled"] = True
+        self.cfg["filtering"]["irrdb"]["use_arin_bulk_whois_data"]["source"] = ""
+        self._contains_err("A source must be set when 'filtering.irrdb.use_arin_bulk_whois_data.enabled' is set to True")
+
+    def test_use_registrobr_bulk_whois_data_enabled(self):
+        """{}: use_registrobr_bulk_whois_data.enabled"""
+        self.assertEqual(self.cfg["filtering"]["irrdb"]["use_registrobr_bulk_whois_data"]["enabled"], False)
+        self._test_bool_val(self.cfg["filtering"]["irrdb"]["use_registrobr_bulk_whois_data"], "enabled")
+        self._test_mandatory(self.cfg["filtering"]["irrdb"]["use_registrobr_bulk_whois_data"], "enabled", has_default=True)
 
     def test_rpki_enabled(self):
         """{}: rpki_bgp_origin_validation, enabled"""
@@ -1263,7 +1268,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     },
                     "use_arin_bulk_whois_data": {
                         "enabled": False,
-                        "source": "http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
+                        "source": None
                     },
                     "use_registrobr_bulk_whois_data": {
                         "enabled": False,
@@ -1386,7 +1391,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     },
                     "use_arin_bulk_whois_data": {
                         "enabled": False,
-                        "source": "http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
+                        "source": None
                     },
                     "use_registrobr_bulk_whois_data": {
                         "enabled": False,

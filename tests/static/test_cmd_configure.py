@@ -80,9 +80,6 @@ class TestConfigureCmd(ARouteServerTestCase):
                     "use_rpki_roas_as_route_objects": {
                         "enabled": True
                     },
-                    "use_arin_bulk_whois_data": {
-                        "enabled": True
-                    },
                     "use_registrobr_bulk_whois_data": {
                         "enabled": True
                     }
