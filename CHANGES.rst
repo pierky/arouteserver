@@ -3,6 +3,19 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+1.19.0
+------
+
+- Deprecation: the ARIN Whois OriginAS feature (config knob ``use_arin_bulk_whois_data``, documented in `Use ARIN Whois database to accept routes <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#use-arin-whois-database-to-accept-routes>`__) is being deprecated.
+
+  Per `Recommended Draft Policy ARIN-2021-8 <https://www.arin.net/participate/policy/drafts/2021_8/>`__, the "Autonomous System Originations" field is going to be removed from the ARIN database. Consequentially, this feature that is based on that is going to be deprecated as well and will be dropped in future releases of ARouteServer.
+
+  Operators that will run ARouteServer with ``use_arin_bulk_whois_data.enabled`` set to ``True`` will see a warning message being logged, about the deprecation.
+
+  The publicly available intermediate data relay which was running on the NLNOG infrastructure already removed the source file, which was used to fetch those records. So, operators willing to support this feature will need to provide their own version of the file.
+
+  See also `GitHub issue 111 <https://github.com/pierky/arouteserver/issues/116>`__.
+
 1.18.0
 ------
 
