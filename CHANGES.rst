@@ -14,7 +14,7 @@ Change log
 
   The publicly available intermediate data relay which was running on the NLNOG infrastructure already removed the source file, which was used to fetch those records. So, operators willing to support this feature will need to provide their own version of the file.
 
-  See also `GitHub issue 111 <https://github.com/pierky/arouteserver/issues/116>`__.
+  See also `GitHub issue 116 <https://github.com/pierky/arouteserver/issues/116>`__.
 
 1.18.0
 ------
