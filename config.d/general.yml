@@ -308,6 +308,16 @@ cfg:
 
         # Set this to True to enable this feature.
         #
+        # Please note that the ARIN Advisory Counsel recommended the
+        # ARIN Board of Trustees to deprecate the "ARIN AS Origins"
+        # feature in the ARIN WHOIS database.
+        # See https://www.arin.net/participate/policy/drafts/2021_8/ and
+        # also https://github.com/pierky/arouteserver/issues/116.
+        # Consequently, this feature will be removed in future releases of
+        # ARouteServer, and starting from v1.19.0 a warning message will be
+        # logged during the route server config generation process if it is
+        # enabled.
+        #
         # Default: False
         enabled: False
 
@@ -334,8 +344,8 @@ cfg:
         #
         # https://github.com/NLNOG/arin-whois-bulk-parser
         #
-        # Default: URL of the dump parsed and published by NLNOG.
-        source: "http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2"
+        # Default: none
+        #source: ""
 
       use_registrobr_bulk_whois_data:
         # Similarly to the 'use_arin_bulk_whois_data' option,

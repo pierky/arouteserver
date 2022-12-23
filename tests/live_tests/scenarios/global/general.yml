@@ -29,6 +29,7 @@ cfg:
                                 enabled: True
                         use_arin_bulk_whois_data:
                                 enabled: True
+                                source: "from mock data"
                         use_registrobr_bulk_whois_data:
                                 enabled: True
                 rpki_bgp_origin_validation:

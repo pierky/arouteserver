@@ -44,8 +44,6 @@ cfg:
       peering_db: true
       use_rpki_roas_as_route_objects:
         enabled: true
-      use_arin_bulk_whois_data:
-        enabled: true
       use_registrobr_bulk_whois_data:
         enabled: true
     rpki_bgp_origin_validation:

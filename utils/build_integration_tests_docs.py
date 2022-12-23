@@ -26,7 +26,7 @@ last_ci_output = open("tests/last", "r").read()
 
 tests_to_skip = [
     "setting instances up...",
-    "instances setup ...",
+    "instances setup",
     "dumping rs config...",
     "dumping routes...",
     "stopping instances...",

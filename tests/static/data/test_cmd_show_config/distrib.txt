@@ -31,7 +31,7 @@ configured            peering_db: False
 configured              enabled: False
                       use_arin_bulk_whois_data:
 configured              enabled: False
-configured              source: http://irrexplorer.nlnog.net/static/dumps/arin-whois-originas.json.bz2
+default                 source: None
                       use_registrobr_bulk_whois_data:
 configured              enabled: False
 configured              source: ftp://ftp.registro.br/pub/numeracao/origin/nicbr-asn-blk-latest.txt

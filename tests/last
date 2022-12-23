@@ -3,7 +3,7 @@ platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.
 cachedir: .pytest_cache
 rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
-collecting ... collected 247 items
+collecting ... collected 249 items
 
 ASNs config parser: invalid AS PASSED
 ASNs config parser: invalid AS-SET PASSED
@@ -124,6 +124,8 @@ General config parser: tag_as_set PASSED
 General config parser: transit free, action PASSED
 General config parser: transit free, ASNs list PASSED
 General config parser: unknown statement PASSED
+General config parser: use_arin_bulk_whois_data.enabled PASSED
+General config parser: use_registrobr_bulk_whois_data.enabled PASSED
 General config parser: use_rpki_roas_as_route_objects.enabled PASSED
 General config parser: rpki_roas.source PASSED
 General config parser: valid configuration PASSED
@@ -253,15 +255,14 @@ RTT getter parser: empty PASSED
 RTT getter parser: new line only PASSED
 RTT getter parser: none PASSED
 
-============================= 247 passed in 40.16s =============================
+============================= 249 passed in 41.00s =============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
 rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
-collecting ... collected 15 items
+collecting ... collected 14 items
 
-External resources: ARIN Whois database dump PASSED
 External resources: ASNs from AS-SET via bgpq3 PASSED
 External resources: ASNs from AS-SET via bgpq4 PASSED
 External resources: Euro-IX from clients build and validation PASSED
@@ -277,7 +278,7 @@ External resources: RPKI ROAs, rpki-client PASSED
 External resources: prefixes from AS-SET via bgpq3 PASSED
 External resources: prefixes from AS-SET via bgpq4 PASSED
 
-======================== 15 passed in 335.74s (0:05:35) ========================
+============================= 14 passed in 35.15s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -285,24 +286,28 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 4 items
 
-Live test, BIRD, hooks example, IPv4: instances setup ...
+Live test, BIRD, hooks example, IPv4: instances setup 
 Live test, BIRD, hooks example, IPv4: setting instances up...
 PASSED
 Live test, BIRD, hooks example, IPv4: log contains errors PASSED
 Live test, BIRD, hooks example, IPv4: dumping rs config...
+
 Live test, BIRD, hooks example, IPv4: dumping routes...
+
 Live test, BIRD, hooks example, IPv4: stopping instances...
 
-Live test, BIRD, hooks example, IPv6: instances setup ...
+Live test, BIRD, hooks example, IPv6: instances setup 
 Live test, BIRD, hooks example, IPv6: setting instances up...
 PASSED
 Live test, BIRD, hooks example, IPv6: log contains errors PASSED
 Live test, BIRD, hooks example, IPv6: dumping rs config...
+
 Live test, BIRD, hooks example, IPv6: dumping routes...
+
 Live test, BIRD, hooks example, IPv6: stopping instances...
 
 
-============================== 4 passed in 16.07s ==============================
+============================== 4 passed in 15.90s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -310,7 +315,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 26 items
 
-Live test, BIRD, BGP communities, IPv4: instances setup ...
+Live test, BIRD, BGP communities, IPv4: instances setup 
 Live test, BIRD, BGP communities, IPv4: setting instances up...
 PASSED
 Live test, BIRD, BGP communities, IPv4: sessions are up PASSED
@@ -326,10 +331,12 @@ Live test, BIRD, BGP communities, IPv4: custom BGP community scrubbed PASSED
 Live test, BIRD, BGP communities, IPv4: reconfigure PASSED
 Live test, BIRD, BGP communities, IPv4: log contains errors PASSED
 Live test, BIRD, BGP communities, IPv4: dumping rs config...
+
 Live test, BIRD, BGP communities, IPv4: dumping routes...
+
 Live test, BIRD, BGP communities, IPv4: stopping instances...
 
-Live test, BIRD, BGP communities, IPv6: instances setup ...
+Live test, BIRD, BGP communities, IPv6: instances setup 
 Live test, BIRD, BGP communities, IPv6: setting instances up...
 PASSED
 Live test, BIRD, BGP communities, IPv6: sessions are up PASSED
@@ -345,11 +352,13 @@ Live test, BIRD, BGP communities, IPv6: custom BGP community scrubbed PASSED
 Live test, BIRD, BGP communities, IPv6: reconfigure PASSED
 Live test, BIRD, BGP communities, IPv6: log contains errors PASSED
 Live test, BIRD, BGP communities, IPv6: dumping rs config...
+
 Live test, BIRD, BGP communities, IPv6: dumping routes...
+
 Live test, BIRD, BGP communities, IPv6: stopping instances...
 
 
-======================== 26 passed in 68.87s (0:01:08) =========================
+======================== 26 passed in 64.52s (0:01:04) =========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -357,24 +366,28 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 4 items
 
-Live test, BIRD, default config, IPv4: instances setup ...
+Live test, BIRD, default config, IPv4: instances setup 
 Live test, BIRD, default config, IPv4: setting instances up...
 PASSED
 Live test, BIRD, default config, IPv4: log contains errors PASSED
 Live test, BIRD, default config, IPv4: dumping rs config...
+
 Live test, BIRD, default config, IPv4: dumping routes...
+
 Live test, BIRD, default config, IPv4: stopping instances...
 
-Live test, BIRD, default config, IPv6: instances setup ...
+Live test, BIRD, default config, IPv6: instances setup 
 Live test, BIRD, default config, IPv6: setting instances up...
 PASSED
 Live test, BIRD, default config, IPv6: log contains errors PASSED
 Live test, BIRD, default config, IPv6: dumping rs config...
+
 Live test, BIRD, default config, IPv6: dumping routes...
+
 Live test, BIRD, default config, IPv6: stopping instances...
 
 
-============================== 4 passed in 15.76s ==============================
+============================== 4 passed in 14.88s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -382,7 +395,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 512 items
 
-Live test, BIRD, global scenario, IPv4: instances setup ...
+Live test, BIRD, global scenario, IPv4: instances setup 
 Live test, BIRD, global scenario, IPv4: setting instances up...
 PASSED
 Live test, BIRD, global scenario, IPv4: sessions are up PASSED
@@ -469,10 +482,12 @@ Live test, BIRD, global scenario, IPv4: prefixes received by clients: AS3 (with 
 Live test, BIRD, global scenario, IPv4: reconfigure PASSED
 Live test, BIRD, global scenario, IPv4: log contains errors PASSED
 Live test, BIRD, global scenario, IPv4: dumping rs config...
+
 Live test, BIRD, global scenario, IPv4: dumping routes...
+
 Live test, BIRD, global scenario, IPv4: stopping instances...
 
-Live test, BIRD, global scenario, IPv4, tag: instances setup ...
+Live test, BIRD, global scenario, IPv4, tag: instances setup 
 Live test, BIRD, global scenario, IPv4, tag: setting instances up...
 PASSED
 Live test, BIRD, global scenario, IPv4, tag: sessions are up PASSED
@@ -561,10 +576,12 @@ Live test, BIRD, global scenario, IPv4, tag: prefixes received by clients: AS3 (
 Live test, BIRD, global scenario, IPv4, tag: reconfigure PASSED
 Live test, BIRD, global scenario, IPv4, tag: log contains errors PASSED
 Live test, BIRD, global scenario, IPv4, tag: dumping rs config...
+
 Live test, BIRD, global scenario, IPv4, tag: dumping routes...
+
 Live test, BIRD, global scenario, IPv4, tag: stopping instances...
 
-Live test, BIRD, global scenario, IPv4, tag&reject: instances setup ...
+Live test, BIRD, global scenario, IPv4, tag&reject: instances setup 
 Live test, BIRD, global scenario, IPv4, tag&reject: setting instances up...
 PASSED
 Live test, BIRD, global scenario, IPv4, tag&reject: sessions are up PASSED
@@ -653,10 +670,12 @@ Live test, BIRD, global scenario, IPv4, tag&reject: prefixes received by clients
 Live test, BIRD, global scenario, IPv4, tag&reject: reconfigure PASSED
 Live test, BIRD, global scenario, IPv4, tag&reject: log contains errors PASSED
 Live test, BIRD, global scenario, IPv4, tag&reject: dumping rs config...
+
 Live test, BIRD, global scenario, IPv4, tag&reject: dumping routes...
+
 Live test, BIRD, global scenario, IPv4, tag&reject: stopping instances...
 
-Live test, BIRD, global scenario, IPv6: instances setup ...
+Live test, BIRD, global scenario, IPv6: instances setup 
 Live test, BIRD, global scenario, IPv6: setting instances up...
 PASSED
 Live test, BIRD, global scenario, IPv6: sessions are up PASSED
@@ -743,10 +762,12 @@ Live test, BIRD, global scenario, IPv6: prefixes received by clients: AS3 (with 
 Live test, BIRD, global scenario, IPv6: reconfigure PASSED
 Live test, BIRD, global scenario, IPv6: log contains errors PASSED
 Live test, BIRD, global scenario, IPv6: dumping rs config...
+
 Live test, BIRD, global scenario, IPv6: dumping routes...
+
 Live test, BIRD, global scenario, IPv6: stopping instances...
 
-Live test, BIRD, global scenario, IPv6, tag: instances setup ...
+Live test, BIRD, global scenario, IPv6, tag: instances setup 
 Live test, BIRD, global scenario, IPv6, tag: setting instances up...
 PASSED
 Live test, BIRD, global scenario, IPv6, tag: sessions are up PASSED
@@ -835,10 +856,12 @@ Live test, BIRD, global scenario, IPv6, tag: prefixes received by clients: AS3 (
 Live test, BIRD, global scenario, IPv6, tag: reconfigure PASSED
 Live test, BIRD, global scenario, IPv6, tag: log contains errors PASSED
 Live test, BIRD, global scenario, IPv6, tag: dumping rs config...
+
 Live test, BIRD, global scenario, IPv6, tag: dumping routes...
+
 Live test, BIRD, global scenario, IPv6, tag: stopping instances...
 
-Live test, BIRD, global scenario, IPv6, tag&reject: instances setup ...
+Live test, BIRD, global scenario, IPv6, tag&reject: instances setup 
 Live test, BIRD, global scenario, IPv6, tag&reject: setting instances up...
 PASSED
 Live test, BIRD, global scenario, IPv6, tag&reject: sessions are up PASSED
@@ -927,11 +950,13 @@ Live test, BIRD, global scenario, IPv6, tag&reject: prefixes received by clients
 Live test, BIRD, global scenario, IPv6, tag&reject: reconfigure PASSED
 Live test, BIRD, global scenario, IPv6, tag&reject: log contains errors PASSED
 Live test, BIRD, global scenario, IPv6, tag&reject: dumping rs config...
+
 Live test, BIRD, global scenario, IPv6, tag&reject: dumping routes...
+
 Live test, BIRD, global scenario, IPv6, tag&reject: stopping instances...
 
 
-================== 506 passed, 6 skipped in 553.55s (0:09:13) ==================
+================== 506 passed, 6 skipped in 553.94s (0:09:13) ==================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -939,7 +964,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 10 items
 
-Live test, BIRD, gshut, IPv4: instances setup ...
+Live test, BIRD, gshut, IPv4: instances setup 
 Live test, BIRD, gshut, IPv4: setting instances up...
 PASSED
 Live test, BIRD, gshut, IPv4: sessions are up PASSED
@@ -947,10 +972,12 @@ Live test, BIRD, gshut, IPv4: clients receive routes tagged with GRACEFUL_SHUTDO
 Live test, BIRD, gshut, IPv4: reconfigure PASSED
 Live test, BIRD, gshut, IPv4: log contains errors PASSED
 Live test, BIRD, gshut, IPv4: dumping rs config...
+
 Live test, BIRD, gshut, IPv4: dumping routes...
+
 Live test, BIRD, gshut, IPv4: stopping instances...
 
-Live test, BIRD, gshut, IPv6: instances setup ...
+Live test, BIRD, gshut, IPv6: instances setup 
 Live test, BIRD, gshut, IPv6: setting instances up...
 PASSED
 Live test, BIRD, gshut, IPv6: sessions are up PASSED
@@ -958,11 +985,13 @@ Live test, BIRD, gshut, IPv6: clients receive routes tagged with GRACEFUL_SHUTDO
 Live test, BIRD, gshut, IPv6: reconfigure PASSED
 Live test, BIRD, gshut, IPv6: log contains errors PASSED
 Live test, BIRD, gshut, IPv6: dumping rs config...
+
 Live test, BIRD, gshut, IPv6: dumping routes...
+
 Live test, BIRD, gshut, IPv6: stopping instances...
 
 
-============================= 10 passed in 46.60s ==============================
+============================= 10 passed in 46.94s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -970,7 +999,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 26 items
 
-Live test, BIRD, max-prefix, IPv4: instances setup ...
+Live test, BIRD, max-prefix, IPv4: instances setup 
 Live test, BIRD, max-prefix, IPv4: setting instances up...
 PASSED
 Live test, BIRD, max-prefix, IPv4: sessions are up PASSED
@@ -986,10 +1015,12 @@ Live test, BIRD, max-prefix, IPv4: number of prefixes received by rs from AS6 PA
 Live test, BIRD, max-prefix, IPv4: reconfigure PASSED
 Live test, BIRD, max-prefix, IPv4: log contains errors PASSED
 Live test, BIRD, max-prefix, IPv4: dumping rs config...
+
 Live test, BIRD, max-prefix, IPv4: dumping routes...
+
 Live test, BIRD, max-prefix, IPv4: stopping instances...
 
-Live test, BIRD, max-prefix, IPv6: instances setup ...
+Live test, BIRD, max-prefix, IPv6: instances setup 
 Live test, BIRD, max-prefix, IPv6: setting instances up...
 PASSED
 Live test, BIRD, max-prefix, IPv6: sessions are up PASSED
@@ -1005,11 +1036,13 @@ Live test, BIRD, max-prefix, IPv6: number of prefixes received by rs from AS6 PA
 Live test, BIRD, max-prefix, IPv6: reconfigure PASSED
 Live test, BIRD, max-prefix, IPv6: log contains errors PASSED
 Live test, BIRD, max-prefix, IPv6: dumping rs config...
+
 Live test, BIRD, max-prefix, IPv6: dumping routes...
+
 Live test, BIRD, max-prefix, IPv6: stopping instances...
 
 
-======================== 26 passed in 179.94s (0:02:59) ========================
+======================== 26 passed in 172.03s (0:02:52) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1017,7 +1050,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 38 items
 
-Live test, BIRD, path hiding, mitigation on, IPv4: instances setup ...
+Live test, BIRD, path hiding, mitigation on, IPv4: instances setup 
 Live test, BIRD, path hiding, mitigation on, IPv4: setting instances up...
 PASSED
 Live test, BIRD, path hiding, mitigation on, IPv4: sessions are up PASSED
@@ -1030,10 +1063,12 @@ Live test, BIRD, path hiding, mitigation on, IPv4: 2nd best is withdrawn and AS3
 Live test, BIRD, path hiding, mitigation on, IPv4: reconfigure PASSED
 Live test, BIRD, path hiding, mitigation on, IPv4: log contains errors PASSED
 Live test, BIRD, path hiding, mitigation on, IPv4: dumping rs config...
+
 Live test, BIRD, path hiding, mitigation on, IPv4: dumping routes...
+
 Live test, BIRD, path hiding, mitigation on, IPv4: stopping instances...
 
-Live test, BIRD, path hiding, mitigation off, IPv4: instances setup ...
+Live test, BIRD, path hiding, mitigation off, IPv4: instances setup 
 Live test, BIRD, path hiding, mitigation off, IPv4: setting instances up...
 PASSED
 Live test, BIRD, path hiding, mitigation off, IPv4: sessions are up PASSED
@@ -1045,10 +1080,12 @@ Live test, BIRD, path hiding, mitigation off, IPv4: AS4 receives the prefix via 
 Live test, BIRD, path hiding, mitigation off, IPv4: reconfigure PASSED
 Live test, BIRD, path hiding, mitigation off, IPv4: log contains errors PASSED
 Live test, BIRD, path hiding, mitigation off, IPv4: dumping rs config...
+
 Live test, BIRD, path hiding, mitigation off, IPv4: dumping routes...
+
 Live test, BIRD, path hiding, mitigation off, IPv4: stopping instances...
 
-Live test, BIRD, path hiding, mitigation on, IPv6: instances setup ...
+Live test, BIRD, path hiding, mitigation on, IPv6: instances setup 
 Live test, BIRD, path hiding, mitigation on, IPv6: setting instances up...
 PASSED
 Live test, BIRD, path hiding, mitigation on, IPv6: sessions are up PASSED
@@ -1061,10 +1098,12 @@ Live test, BIRD, path hiding, mitigation on, IPv6: 2nd best is withdrawn and AS3
 Live test, BIRD, path hiding, mitigation on, IPv6: reconfigure PASSED
 Live test, BIRD, path hiding, mitigation on, IPv6: log contains errors PASSED
 Live test, BIRD, path hiding, mitigation on, IPv6: dumping rs config...
+
 Live test, BIRD, path hiding, mitigation on, IPv6: dumping routes...
+
 Live test, BIRD, path hiding, mitigation on, IPv6: stopping instances...
 
-Live test, BIRD, path hiding, mitigation off, IPv6: instances setup ...
+Live test, BIRD, path hiding, mitigation off, IPv6: instances setup 
 Live test, BIRD, path hiding, mitigation off, IPv6: setting instances up...
 PASSED
 Live test, BIRD, path hiding, mitigation off, IPv6: sessions are up PASSED
@@ -1076,11 +1115,13 @@ Live test, BIRD, path hiding, mitigation off, IPv6: AS4 receives the prefix via 
 Live test, BIRD, path hiding, mitigation off, IPv6: reconfigure PASSED
 Live test, BIRD, path hiding, mitigation off, IPv6: log contains errors PASSED
 Live test, BIRD, path hiding, mitigation off, IPv6: dumping rs config...
+
 Live test, BIRD, path hiding, mitigation off, IPv6: dumping routes...
+
 Live test, BIRD, path hiding, mitigation off, IPv6: stopping instances...
 
 
-================== 36 passed, 2 skipped in 185.54s (0:03:05) ===================
+================== 36 passed, 2 skipped in 185.47s (0:03:05) ===================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1088,24 +1129,28 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 4 items
 
-Live test, BIRD, examples, rich config, IPv4: instances setup ...
+Live test, BIRD, examples, rich config, IPv4: instances setup 
 Live test, BIRD, examples, rich config, IPv4: setting instances up...
 PASSED
 Live test, BIRD, examples, rich config, IPv4: log contains errors PASSED
 Live test, BIRD, examples, rich config, IPv4: dumping rs config...
+
 Live test, BIRD, examples, rich config, IPv4: dumping routes...
+
 Live test, BIRD, examples, rich config, IPv4: stopping instances...
 
-Live test, BIRD, examples, rich config, IPv6: instances setup ...
+Live test, BIRD, examples, rich config, IPv6: instances setup 
 Live test, BIRD, examples, rich config, IPv6: setting instances up...
 PASSED
 Live test, BIRD, examples, rich config, IPv6: log contains errors PASSED
 Live test, BIRD, examples, rich config, IPv6: dumping rs config...
+
 Live test, BIRD, examples, rich config, IPv6: dumping routes...
+
 Live test, BIRD, examples, rich config, IPv6: stopping instances...
 
 
-============================== 4 passed in 18.98s ==============================
+============================== 4 passed in 15.22s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1113,7 +1158,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 28 items
 
-Live test, BIRD, RPKI INVALID tagging, IPv4: instances setup ...
+Live test, BIRD, RPKI INVALID tagging, IPv4: instances setup 
 Live test, BIRD, RPKI INVALID tagging, IPv4: setting instances up...
 PASSED
 Live test, BIRD, RPKI INVALID tagging, IPv4: sessions are up PASSED
@@ -1130,10 +1175,12 @@ Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS3 valid prefix, sub prefix 
 Live test, BIRD, RPKI INVALID tagging, IPv4: reconfigure PASSED
 Live test, BIRD, RPKI INVALID tagging, IPv4: log contains errors PASSED
 Live test, BIRD, RPKI INVALID tagging, IPv4: dumping rs config...
+
 Live test, BIRD, RPKI INVALID tagging, IPv4: dumping routes...
+
 Live test, BIRD, RPKI INVALID tagging, IPv4: stopping instances...
 
-Live test, BIRD, RPKI INVALID tagging, IPv6: instances setup ...
+Live test, BIRD, RPKI INVALID tagging, IPv6: instances setup 
 Live test, BIRD, RPKI INVALID tagging, IPv6: setting instances up...
 PASSED
 Live test, BIRD, RPKI INVALID tagging, IPv6: sessions are up PASSED
@@ -1150,11 +1197,13 @@ Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS3 valid prefix, sub prefix 
 Live test, BIRD, RPKI INVALID tagging, IPv6: reconfigure PASSED
 Live test, BIRD, RPKI INVALID tagging, IPv6: log contains errors PASSED
 Live test, BIRD, RPKI INVALID tagging, IPv6: dumping rs config...
+
 Live test, BIRD, RPKI INVALID tagging, IPv6: dumping routes...
+
 Live test, BIRD, RPKI INVALID tagging, IPv6: stopping instances...
 
 
-======================== 28 passed in 84.96s (0:01:24) =========================
+======================== 28 passed in 84.40s (0:01:24) =========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1162,7 +1211,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 12 items
 
-Live test, BIRD, BOV custom comms, IPv4: instances setup ...
+Live test, BIRD, BOV custom comms, IPv4: instances setup 
 Live test, BIRD, BOV custom comms, IPv4: setting instances up...
 PASSED
 Live test, BIRD, BOV custom comms, IPv4: sessions are up PASSED
@@ -1171,10 +1220,12 @@ Live test, BIRD, BOV custom comms, IPv4: RPKI, AS2 valid prefix, exact match PAS
 Live test, BIRD, BOV custom comms, IPv4: reconfigure PASSED
 Live test, BIRD, BOV custom comms, IPv4: log contains errors PASSED
 Live test, BIRD, BOV custom comms, IPv4: dumping rs config...
+
 Live test, BIRD, BOV custom comms, IPv4: dumping routes...
+
 Live test, BIRD, BOV custom comms, IPv4: stopping instances...
 
-Live test, BIRD, BOV custom comms, IPv6: instances setup ...
+Live test, BIRD, BOV custom comms, IPv6: instances setup 
 Live test, BIRD, BOV custom comms, IPv6: setting instances up...
 PASSED
 Live test, BIRD, BOV custom comms, IPv6: sessions are up PASSED
@@ -1183,11 +1234,13 @@ Live test, BIRD, BOV custom comms, IPv6: RPKI, AS2 valid prefix, exact match PAS
 Live test, BIRD, BOV custom comms, IPv6: reconfigure PASSED
 Live test, BIRD, BOV custom comms, IPv6: log contains errors PASSED
 Live test, BIRD, BOV custom comms, IPv6: dumping rs config...
+
 Live test, BIRD, BOV custom comms, IPv6: dumping routes...
+
 Live test, BIRD, BOV custom comms, IPv6: stopping instances...
 
 
-============================= 12 passed in 48.24s ==============================
+============================= 12 passed in 48.03s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1195,7 +1248,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 166 items
 
-Live test, BIRD, tag prefix/origin in AS-SET, IPv4: instances setup ...
+Live test, BIRD, tag prefix/origin in AS-SET, IPv4: instances setup 
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: setting instances up...
 PASSED
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: sessions are up PASSED
@@ -1244,10 +1297,12 @@ Live test, BIRD, tag prefix/origin in AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enf
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: reconfigure PASSED
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: log contains errors PASSED
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: dumping rs config...
+
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: dumping routes...
+
 Live test, BIRD, tag prefix/origin in AS-SET, IPv4: stopping instances...
 
-Live test, BIRD, tag prefix/origin in AS-SET, IPv6: instances setup ...
+Live test, BIRD, tag prefix/origin in AS-SET, IPv6: instances setup 
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: setting instances up...
 PASSED
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: sessions are up PASSED
@@ -1296,10 +1351,12 @@ Live test, BIRD, tag prefix/origin in AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enf
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: reconfigure PASSED
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: log contains errors PASSED
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: dumping rs config...
+
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: dumping routes...
+
 Live test, BIRD, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: instances setup ...
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: instances setup 
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: setting instances up...
 PASSED
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: sessions are up PASSED
@@ -1339,10 +1396,12 @@ Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: AS6 ROA + ARIN Whois DB: 
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: reconfigure PASSED
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: log contains errors PASSED
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: dumping rs config...
+
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: dumping routes...
+
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv4: stopping instances...
 
-Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: instances setup ...
+Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: instances setup 
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: setting instances up...
 PASSED
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: sessions are up PASSED
@@ -1382,11 +1441,13 @@ Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: AS6 ROA + ARIN Whois DB: 
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: reconfigure PASSED
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: log contains errors PASSED
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: dumping rs config...
+
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: dumping routes...
+
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 
-======================= 166 passed in 176.14s (0:02:56) ========================
+======================= 166 passed in 171.58s (0:02:51) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1394,7 +1455,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 44 items
 
-Live test, BIRD, 'tag' reject policy scenario, IPv4: instances setup ...
+Live test, BIRD, 'tag' reject policy scenario, IPv4: instances setup 
 Live test, BIRD, 'tag' reject policy scenario, IPv4: setting instances up...
 PASSED
 Live test, BIRD, 'tag' reject policy scenario, IPv4: sessions are up PASSED
@@ -1419,10 +1480,12 @@ Live test, BIRD, 'tag' reject policy scenario, IPv4: prefixes received by client
 Live test, BIRD, 'tag' reject policy scenario, IPv4: reconfigure PASSED
 Live test, BIRD, 'tag' reject policy scenario, IPv4: log contains errors PASSED
 Live test, BIRD, 'tag' reject policy scenario, IPv4: dumping rs config...
+
 Live test, BIRD, 'tag' reject policy scenario, IPv4: dumping routes...
+
 Live test, BIRD, 'tag' reject policy scenario, IPv4: stopping instances...
 
-Live test, BIRD, 'tag' reject policy scenario, IPv6: instances setup ...
+Live test, BIRD, 'tag' reject policy scenario, IPv6: instances setup 
 Live test, BIRD, 'tag' reject policy scenario, IPv6: setting instances up...
 PASSED
 Live test, BIRD, 'tag' reject policy scenario, IPv6: sessions are up PASSED
@@ -1447,11 +1510,13 @@ Live test, BIRD, 'tag' reject policy scenario, IPv6: prefixes received by client
 Live test, BIRD, 'tag' reject policy scenario, IPv6: reconfigure PASSED
 Live test, BIRD, 'tag' reject policy scenario, IPv6: log contains errors PASSED
 Live test, BIRD, 'tag' reject policy scenario, IPv6: dumping rs config...
+
 Live test, BIRD, 'tag' reject policy scenario, IPv6: dumping routes...
+
 Live test, BIRD, 'tag' reject policy scenario, IPv6: stopping instances...
 
 
-================== 43 passed, 1 skipped in 123.02s (0:02:03) ===================
+================== 43 passed, 1 skipped in 120.89s (0:02:00) ===================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1459,7 +1524,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 26 items
 
-Live test, BIRD v2, BGP communities, IPv4: instances setup ...
+Live test, BIRD v2, BGP communities, IPv4: instances setup 
 Live test, BIRD v2, BGP communities, IPv4: setting instances up...
 PASSED
 Live test, BIRD v2, BGP communities, IPv4: sessions are up PASSED
@@ -1475,10 +1540,12 @@ Live test, BIRD v2, BGP communities, IPv4: custom BGP community scrubbed PASSED
 Live test, BIRD v2, BGP communities, IPv4: reconfigure PASSED
 Live test, BIRD v2, BGP communities, IPv4: log contains errors PASSED
 Live test, BIRD v2, BGP communities, IPv4: dumping rs config...
+
 Live test, BIRD v2, BGP communities, IPv4: dumping routes...
+
 Live test, BIRD v2, BGP communities, IPv4: stopping instances...
 
-Live test, BIRD v2, BGP communities, IPv6: instances setup ...
+Live test, BIRD v2, BGP communities, IPv6: instances setup 
 Live test, BIRD v2, BGP communities, IPv6: setting instances up...
 PASSED
 Live test, BIRD v2, BGP communities, IPv6: sessions are up PASSED
@@ -1494,11 +1561,13 @@ Live test, BIRD v2, BGP communities, IPv6: custom BGP community scrubbed PASSED
 Live test, BIRD v2, BGP communities, IPv6: reconfigure PASSED
 Live test, BIRD v2, BGP communities, IPv6: log contains errors PASSED
 Live test, BIRD v2, BGP communities, IPv6: dumping rs config...
+
 Live test, BIRD v2, BGP communities, IPv6: dumping routes...
+
 Live test, BIRD v2, BGP communities, IPv6: stopping instances...
 
 
-======================== 26 passed in 67.69s (0:01:07) =========================
+======================== 26 passed in 65.10s (0:01:05) =========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1506,24 +1575,28 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 4 items
 
-Live test, BIRD v2, default config, IPv4: instances setup ...
+Live test, BIRD v2, default config, IPv4: instances setup 
 Live test, BIRD v2, default config, IPv4: setting instances up...
 PASSED
 Live test, BIRD v2, default config, IPv4: log contains errors PASSED
 Live test, BIRD v2, default config, IPv4: dumping rs config...
+
 Live test, BIRD v2, default config, IPv4: dumping routes...
+
 Live test, BIRD v2, default config, IPv4: stopping instances...
 
-Live test, BIRD v2, default config, IPv6: instances setup ...
+Live test, BIRD v2, default config, IPv6: instances setup 
 Live test, BIRD v2, default config, IPv6: setting instances up...
 PASSED
 Live test, BIRD v2, default config, IPv6: log contains errors PASSED
 Live test, BIRD v2, default config, IPv6: dumping rs config...
+
 Live test, BIRD v2, default config, IPv6: dumping routes...
+
 Live test, BIRD v2, default config, IPv6: stopping instances...
 
 
-============================== 4 passed in 15.00s ==============================
+============================== 4 passed in 14.80s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1531,7 +1604,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 512 items
 
-Live test, BIRD v2, global scenario, IPv4: instances setup ...
+Live test, BIRD v2, global scenario, IPv4: instances setup 
 Live test, BIRD v2, global scenario, IPv4: setting instances up...
 PASSED
 Live test, BIRD v2, global scenario, IPv4: sessions are up PASSED
@@ -1618,10 +1691,12 @@ Live test, BIRD v2, global scenario, IPv4: prefixes received by clients: AS3 (wi
 Live test, BIRD v2, global scenario, IPv4: reconfigure PASSED
 Live test, BIRD v2, global scenario, IPv4: log contains errors PASSED
 Live test, BIRD v2, global scenario, IPv4: dumping rs config...
+
 Live test, BIRD v2, global scenario, IPv4: dumping routes...
+
 Live test, BIRD v2, global scenario, IPv4: stopping instances...
 
-Live test, BIRD v2, global scenario, IPv4, tag: instances setup ...
+Live test, BIRD v2, global scenario, IPv4, tag: instances setup 
 Live test, BIRD v2, global scenario, IPv4, tag: setting instances up...
 PASSED
 Live test, BIRD v2, global scenario, IPv4, tag: sessions are up PASSED
@@ -1710,10 +1785,12 @@ Live test, BIRD v2, global scenario, IPv4, tag: prefixes received by clients: AS
 Live test, BIRD v2, global scenario, IPv4, tag: reconfigure PASSED
 Live test, BIRD v2, global scenario, IPv4, tag: log contains errors PASSED
 Live test, BIRD v2, global scenario, IPv4, tag: dumping rs config...
+
 Live test, BIRD v2, global scenario, IPv4, tag: dumping routes...
+
 Live test, BIRD v2, global scenario, IPv4, tag: stopping instances...
 
-Live test, BIRD v2, global scenario, IPv4, tag&reject: instances setup ...
+Live test, BIRD v2, global scenario, IPv4, tag&reject: instances setup 
 Live test, BIRD v2, global scenario, IPv4, tag&reject: setting instances up...
 PASSED
 Live test, BIRD v2, global scenario, IPv4, tag&reject: sessions are up PASSED
@@ -1802,10 +1879,12 @@ Live test, BIRD v2, global scenario, IPv4, tag&reject: prefixes received by clie
 Live test, BIRD v2, global scenario, IPv4, tag&reject: reconfigure PASSED
 Live test, BIRD v2, global scenario, IPv4, tag&reject: log contains errors PASSED
 Live test, BIRD v2, global scenario, IPv4, tag&reject: dumping rs config...
+
 Live test, BIRD v2, global scenario, IPv4, tag&reject: dumping routes...
+
 Live test, BIRD v2, global scenario, IPv4, tag&reject: stopping instances...
 
-Live test, BIRD v2, global scenario, IPv6: instances setup ...
+Live test, BIRD v2, global scenario, IPv6: instances setup 
 Live test, BIRD v2, global scenario, IPv6: setting instances up...
 PASSED
 Live test, BIRD v2, global scenario, IPv6: sessions are up PASSED
@@ -1892,10 +1971,12 @@ Live test, BIRD v2, global scenario, IPv6: prefixes received by clients: AS3 (wi
 Live test, BIRD v2, global scenario, IPv6: reconfigure PASSED
 Live test, BIRD v2, global scenario, IPv6: log contains errors PASSED
 Live test, BIRD v2, global scenario, IPv6: dumping rs config...
+
 Live test, BIRD v2, global scenario, IPv6: dumping routes...
+
 Live test, BIRD v2, global scenario, IPv6: stopping instances...
 
-Live test, BIRD v2, global scenario, IPv6, tag: instances setup ...
+Live test, BIRD v2, global scenario, IPv6, tag: instances setup 
 Live test, BIRD v2, global scenario, IPv6, tag: setting instances up...
 PASSED
 Live test, BIRD v2, global scenario, IPv6, tag: sessions are up PASSED
@@ -1984,10 +2065,12 @@ Live test, BIRD v2, global scenario, IPv6, tag: prefixes received by clients: AS
 Live test, BIRD v2, global scenario, IPv6, tag: reconfigure PASSED
 Live test, BIRD v2, global scenario, IPv6, tag: log contains errors PASSED
 Live test, BIRD v2, global scenario, IPv6, tag: dumping rs config...
+
 Live test, BIRD v2, global scenario, IPv6, tag: dumping routes...
+
 Live test, BIRD v2, global scenario, IPv6, tag: stopping instances...
 
-Live test, BIRD v2, global scenario, IPv6, tag&reject: instances setup ...
+Live test, BIRD v2, global scenario, IPv6, tag&reject: instances setup 
 Live test, BIRD v2, global scenario, IPv6, tag&reject: setting instances up...
 PASSED
 Live test, BIRD v2, global scenario, IPv6, tag&reject: sessions are up PASSED
@@ -2076,11 +2159,13 @@ Live test, BIRD v2, global scenario, IPv6, tag&reject: prefixes received by clie
 Live test, BIRD v2, global scenario, IPv6, tag&reject: reconfigure PASSED
 Live test, BIRD v2, global scenario, IPv6, tag&reject: log contains errors PASSED
 Live test, BIRD v2, global scenario, IPv6, tag&reject: dumping rs config...
+
 Live test, BIRD v2, global scenario, IPv6, tag&reject: dumping routes...
+
 Live test, BIRD v2, global scenario, IPv6, tag&reject: stopping instances...
 
 
-================== 506 passed, 6 skipped in 543.12s (0:09:03) ==================
+================== 506 passed, 6 skipped in 524.43s (0:08:44) ==================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2088,7 +2173,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 10 items
 
-Live test, BIRD v2, gshut, IPv4: instances setup ...
+Live test, BIRD v2, gshut, IPv4: instances setup 
 Live test, BIRD v2, gshut, IPv4: setting instances up...
 PASSED
 Live test, BIRD v2, gshut, IPv4: sessions are up PASSED
@@ -2096,10 +2181,12 @@ Live test, BIRD v2, gshut, IPv4: clients receive routes tagged with GRACEFUL_SHU
 Live test, BIRD v2, gshut, IPv4: reconfigure PASSED
 Live test, BIRD v2, gshut, IPv4: log contains errors PASSED
 Live test, BIRD v2, gshut, IPv4: dumping rs config...
+
 Live test, BIRD v2, gshut, IPv4: dumping routes...
+
 Live test, BIRD v2, gshut, IPv4: stopping instances...
 
-Live test, BIRD v2, gshut, IPv6: instances setup ...
+Live test, BIRD v2, gshut, IPv6: instances setup 
 Live test, BIRD v2, gshut, IPv6: setting instances up...
 PASSED
 Live test, BIRD v2, gshut, IPv6: sessions are up PASSED
@@ -2107,11 +2194,13 @@ Live test, BIRD v2, gshut, IPv6: clients receive routes tagged with GRACEFUL_SHU
 Live test, BIRD v2, gshut, IPv6: reconfigure PASSED
 Live test, BIRD v2, gshut, IPv6: log contains errors PASSED
 Live test, BIRD v2, gshut, IPv6: dumping rs config...
+
 Live test, BIRD v2, gshut, IPv6: dumping routes...
+
 Live test, BIRD v2, gshut, IPv6: stopping instances...
 
 
-============================= 10 passed in 46.29s ==============================
+============================= 10 passed in 46.52s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2119,7 +2208,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 26 items
 
-Live test, BIRD v2, max-prefix, IPv4: instances setup ...
+Live test, BIRD v2, max-prefix, IPv4: instances setup 
 Live test, BIRD v2, max-prefix, IPv4: setting instances up...
 PASSED
 Live test, BIRD v2, max-prefix, IPv4: sessions are up PASSED
@@ -2135,10 +2224,12 @@ Live test, BIRD v2, max-prefix, IPv4: number of prefixes received by rs from AS6
 Live test, BIRD v2, max-prefix, IPv4: reconfigure PASSED
 Live test, BIRD v2, max-prefix, IPv4: log contains errors PASSED
 Live test, BIRD v2, max-prefix, IPv4: dumping rs config...
+
 Live test, BIRD v2, max-prefix, IPv4: dumping routes...
+
 Live test, BIRD v2, max-prefix, IPv4: stopping instances...
 
-Live test, BIRD v2, max-prefix, IPv6: instances setup ...
+Live test, BIRD v2, max-prefix, IPv6: instances setup 
 Live test, BIRD v2, max-prefix, IPv6: setting instances up...
 PASSED
 Live test, BIRD v2, max-prefix, IPv6: sessions are up PASSED
@@ -2154,11 +2245,13 @@ Live test, BIRD v2, max-prefix, IPv6: number of prefixes received by rs from AS6
 Live test, BIRD v2, max-prefix, IPv6: reconfigure PASSED
 Live test, BIRD v2, max-prefix, IPv6: log contains errors PASSED
 Live test, BIRD v2, max-prefix, IPv6: dumping rs config...
+
 Live test, BIRD v2, max-prefix, IPv6: dumping routes...
+
 Live test, BIRD v2, max-prefix, IPv6: stopping instances...
 
 
-======================== 26 passed in 178.57s (0:02:58) ========================
+======================== 26 passed in 173.04s (0:02:53) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2166,7 +2259,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 38 items
 
-Live test, BIRD v2, path hiding, mitigation on, IPv4: instances setup ...
+Live test, BIRD v2, path hiding, mitigation on, IPv4: instances setup 
 Live test, BIRD v2, path hiding, mitigation on, IPv4: setting instances up...
 PASSED
 Live test, BIRD v2, path hiding, mitigation on, IPv4: sessions are up PASSED
@@ -2179,10 +2272,12 @@ Live test, BIRD v2, path hiding, mitigation on, IPv4: 2nd best is withdrawn and 
 Live test, BIRD v2, path hiding, mitigation on, IPv4: reconfigure PASSED
 Live test, BIRD v2, path hiding, mitigation on, IPv4: log contains errors PASSED
 Live test, BIRD v2, path hiding, mitigation on, IPv4: dumping rs config...
+
 Live test, BIRD v2, path hiding, mitigation on, IPv4: dumping routes...
+
 Live test, BIRD v2, path hiding, mitigation on, IPv4: stopping instances...
 
-Live test, BIRD v2, path hiding, mitigation off, IPv4: instances setup ...
+Live test, BIRD v2, path hiding, mitigation off, IPv4: instances setup 
 Live test, BIRD v2, path hiding, mitigation off, IPv4: setting instances up...
 PASSED
 Live test, BIRD v2, path hiding, mitigation off, IPv4: sessions are up PASSED
@@ -2194,10 +2289,12 @@ Live test, BIRD v2, path hiding, mitigation off, IPv4: AS4 receives the prefix v
 Live test, BIRD v2, path hiding, mitigation off, IPv4: reconfigure PASSED
 Live test, BIRD v2, path hiding, mitigation off, IPv4: log contains errors PASSED
 Live test, BIRD v2, path hiding, mitigation off, IPv4: dumping rs config...
+
 Live test, BIRD v2, path hiding, mitigation off, IPv4: dumping routes...
+
 Live test, BIRD v2, path hiding, mitigation off, IPv4: stopping instances...
 
-Live test, BIRD v2, path hiding, mitigation on, IPv6: instances setup ...
+Live test, BIRD v2, path hiding, mitigation on, IPv6: instances setup 
 Live test, BIRD v2, path hiding, mitigation on, IPv6: setting instances up...
 PASSED
 Live test, BIRD v2, path hiding, mitigation on, IPv6: sessions are up PASSED
@@ -2210,10 +2307,12 @@ Live test, BIRD v2, path hiding, mitigation on, IPv6: 2nd best is withdrawn and 
 Live test, BIRD v2, path hiding, mitigation on, IPv6: reconfigure PASSED
 Live test, BIRD v2, path hiding, mitigation on, IPv6: log contains errors PASSED
 Live test, BIRD v2, path hiding, mitigation on, IPv6: dumping rs config...
+
 Live test, BIRD v2, path hiding, mitigation on, IPv6: dumping routes...
+
 Live test, BIRD v2, path hiding, mitigation on, IPv6: stopping instances...
 
-Live test, BIRD v2, path hiding, mitigation off, IPv6: instances setup ...
+Live test, BIRD v2, path hiding, mitigation off, IPv6: instances setup 
 Live test, BIRD v2, path hiding, mitigation off, IPv6: setting instances up...
 PASSED
 Live test, BIRD v2, path hiding, mitigation off, IPv6: sessions are up PASSED
@@ -2225,11 +2324,13 @@ Live test, BIRD v2, path hiding, mitigation off, IPv6: AS4 receives the prefix v
 Live test, BIRD v2, path hiding, mitigation off, IPv6: reconfigure PASSED
 Live test, BIRD v2, path hiding, mitigation off, IPv6: log contains errors PASSED
 Live test, BIRD v2, path hiding, mitigation off, IPv6: dumping rs config...
+
 Live test, BIRD v2, path hiding, mitigation off, IPv6: dumping routes...
+
 Live test, BIRD v2, path hiding, mitigation off, IPv6: stopping instances...
 
 
-================== 36 passed, 2 skipped in 185.23s (0:03:05) ===================
+================== 36 passed, 2 skipped in 179.60s (0:02:59) ===================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2237,24 +2338,28 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 4 items
 
-Live test, BIRD v2, examples, rich config, IPv4: instances setup ...
+Live test, BIRD v2, examples, rich config, IPv4: instances setup 
 Live test, BIRD v2, examples, rich config, IPv4: setting instances up...
 PASSED
 Live test, BIRD v2, examples, rich config, IPv4: log contains errors PASSED
 Live test, BIRD v2, examples, rich config, IPv4: dumping rs config...
+
 Live test, BIRD v2, examples, rich config, IPv4: dumping routes...
+
 Live test, BIRD v2, examples, rich config, IPv4: stopping instances...
 
-Live test, BIRD v2, examples, rich config, IPv6: instances setup ...
+Live test, BIRD v2, examples, rich config, IPv6: instances setup 
 Live test, BIRD v2, examples, rich config, IPv6: setting instances up...
 PASSED
 Live test, BIRD v2, examples, rich config, IPv6: log contains errors PASSED
 Live test, BIRD v2, examples, rich config, IPv6: dumping rs config...
+
 Live test, BIRD v2, examples, rich config, IPv6: dumping routes...
+
 Live test, BIRD v2, examples, rich config, IPv6: stopping instances...
 
 
-============================== 4 passed in 19.09s ==============================
+============================== 4 passed in 15.40s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2262,7 +2367,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 28 items
 
-Live test, BIRD v2, RPKI INVALID tagging, IPv4: instances setup ...
+Live test, BIRD v2, RPKI INVALID tagging, IPv4: instances setup 
 Live test, BIRD v2, RPKI INVALID tagging, IPv4: setting instances up...
 PASSED
 Live test, BIRD v2, RPKI INVALID tagging, IPv4: sessions are up PASSED
@@ -2279,10 +2384,12 @@ Live test, BIRD v2, RPKI INVALID tagging, IPv4: RPKI, AS3 valid prefix, sub pref
 Live test, BIRD v2, RPKI INVALID tagging, IPv4: reconfigure PASSED
 Live test, BIRD v2, RPKI INVALID tagging, IPv4: log contains errors PASSED
 Live test, BIRD v2, RPKI INVALID tagging, IPv4: dumping rs config...
+
 Live test, BIRD v2, RPKI INVALID tagging, IPv4: dumping routes...
+
 Live test, BIRD v2, RPKI INVALID tagging, IPv4: stopping instances...
 
-Live test, BIRD v2, RPKI INVALID tagging, IPv6: instances setup ...
+Live test, BIRD v2, RPKI INVALID tagging, IPv6: instances setup 
 Live test, BIRD v2, RPKI INVALID tagging, IPv6: setting instances up...
 PASSED
 Live test, BIRD v2, RPKI INVALID tagging, IPv6: sessions are up PASSED
@@ -2299,11 +2406,13 @@ Live test, BIRD v2, RPKI INVALID tagging, IPv6: RPKI, AS3 valid prefix, sub pref
 Live test, BIRD v2, RPKI INVALID tagging, IPv6: reconfigure PASSED
 Live test, BIRD v2, RPKI INVALID tagging, IPv6: log contains errors PASSED
 Live test, BIRD v2, RPKI INVALID tagging, IPv6: dumping rs config...
+
 Live test, BIRD v2, RPKI INVALID tagging, IPv6: dumping routes...
+
 Live test, BIRD v2, RPKI INVALID tagging, IPv6: stopping instances...
 
 
-======================== 28 passed in 85.19s (0:01:25) =========================
+======================== 28 passed in 81.75s (0:01:21) =========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2311,7 +2420,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 12 items
 
-Live test, BIRD v2, BOV custom comms, IPv4: instances setup ...
+Live test, BIRD v2, BOV custom comms, IPv4: instances setup 
 Live test, BIRD v2, BOV custom comms, IPv4: setting instances up...
 PASSED
 Live test, BIRD v2, BOV custom comms, IPv4: sessions are up PASSED
@@ -2320,10 +2429,12 @@ Live test, BIRD v2, BOV custom comms, IPv4: RPKI, AS2 valid prefix, exact match 
 Live test, BIRD v2, BOV custom comms, IPv4: reconfigure PASSED
 Live test, BIRD v2, BOV custom comms, IPv4: log contains errors PASSED
 Live test, BIRD v2, BOV custom comms, IPv4: dumping rs config...
+
 Live test, BIRD v2, BOV custom comms, IPv4: dumping routes...
+
 Live test, BIRD v2, BOV custom comms, IPv4: stopping instances...
 
-Live test, BIRD v2, BOV custom comms, IPv6: instances setup ...
+Live test, BIRD v2, BOV custom comms, IPv6: instances setup 
 Live test, BIRD v2, BOV custom comms, IPv6: setting instances up...
 PASSED
 Live test, BIRD v2, BOV custom comms, IPv6: sessions are up PASSED
@@ -2332,11 +2443,13 @@ Live test, BIRD v2, BOV custom comms, IPv6: RPKI, AS2 valid prefix, exact match 
 Live test, BIRD v2, BOV custom comms, IPv6: reconfigure PASSED
 Live test, BIRD v2, BOV custom comms, IPv6: log contains errors PASSED
 Live test, BIRD v2, BOV custom comms, IPv6: dumping rs config...
+
 Live test, BIRD v2, BOV custom comms, IPv6: dumping routes...
+
 Live test, BIRD v2, BOV custom comms, IPv6: stopping instances...
 
 
-============================= 12 passed in 48.19s ==============================
+============================= 12 passed in 47.26s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2344,7 +2457,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 8 items
 
-Live test, BIRD v2, RTR protocol: instances setup ...
+Live test, BIRD v2, RTR protocol: instances setup 
 Live test, BIRD v2, RTR protocol: setting instances up...
 PASSED
 Live test, BIRD v2, RTR protocol: sessions are up PASSED
@@ -2355,11 +2468,13 @@ Live test, BIRD v2, RTR protocol: check the RTR session is up PASSED
 Live test, BIRD v2, RTR protocol: route dropped after spinning the validator up PASSED
 Live test, BIRD v2, RTR protocol: log contains errors PASSED
 Live test, BIRD v2, RTR protocol: dumping rs config...
+
 Live test, BIRD v2, RTR protocol: dumping routes...
+
 Live test, BIRD v2, RTR protocol: stopping instances...
 
 
-============================== 8 passed in 42.47s ==============================
+============================== 8 passed in 41.96s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2367,7 +2482,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 166 items
 
-Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: instances setup ...
+Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: instances setup 
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: setting instances up...
 PASSED
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: sessions are up PASSED
@@ -2416,10 +2531,12 @@ Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: AS6 ROA + ARIN Whois DB: 
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: reconfigure PASSED
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: log contains errors PASSED
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: dumping rs config...
+
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: dumping routes...
+
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: stopping instances...
 
-Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: instances setup ...
+Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: instances setup 
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: setting instances up...
 PASSED
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: sessions are up PASSED
@@ -2468,10 +2585,12 @@ Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: AS6 ROA + ARIN Whois DB: 
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: reconfigure PASSED
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: log contains errors PASSED
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: dumping rs config...
+
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: dumping routes...
+
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
-Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: instances setup ...
+Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: instances setup 
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: setting instances up...
 PASSED
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: sessions are up PASSED
@@ -2511,10 +2630,12 @@ Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: AS6 ROA + ARIN Whois D
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: reconfigure PASSED
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: log contains errors PASSED
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: dumping rs config...
+
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: dumping routes...
+
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: stopping instances...
 
-Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: instances setup ...
+Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: instances setup 
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: setting instances up...
 PASSED
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: sessions are up PASSED
@@ -2554,11 +2675,13 @@ Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: AS6 ROA + ARIN Whois D
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: reconfigure PASSED
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: log contains errors PASSED
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: dumping rs config...
+
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: dumping routes...
+
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 
-======================= 166 passed in 182.40s (0:03:02) ========================
+======================= 166 passed in 173.53s (0:02:53) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2566,7 +2689,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 44 items
 
-Live test, BIRD v2, 'tag' reject policy scenario, IPv4: instances setup ...
+Live test, BIRD v2, 'tag' reject policy scenario, IPv4: instances setup 
 Live test, BIRD v2, 'tag' reject policy scenario, IPv4: setting instances up...
 PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv4: sessions are up PASSED
@@ -2591,10 +2714,12 @@ Live test, BIRD v2, 'tag' reject policy scenario, IPv4: prefixes received by cli
 Live test, BIRD v2, 'tag' reject policy scenario, IPv4: reconfigure PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv4: log contains errors PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv4: dumping rs config...
+
 Live test, BIRD v2, 'tag' reject policy scenario, IPv4: dumping routes...
+
 Live test, BIRD v2, 'tag' reject policy scenario, IPv4: stopping instances...
 
-Live test, BIRD v2, 'tag' reject policy scenario, IPv6: instances setup ...
+Live test, BIRD v2, 'tag' reject policy scenario, IPv6: instances setup 
 Live test, BIRD v2, 'tag' reject policy scenario, IPv6: setting instances up...
 PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv6: sessions are up PASSED
@@ -2619,11 +2744,13 @@ Live test, BIRD v2, 'tag' reject policy scenario, IPv6: prefixes received by cli
 Live test, BIRD v2, 'tag' reject policy scenario, IPv6: reconfigure PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv6: log contains errors PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv6: dumping rs config...
+
 Live test, BIRD v2, 'tag' reject policy scenario, IPv6: dumping routes...
+
 Live test, BIRD v2, 'tag' reject policy scenario, IPv6: stopping instances...
 
 
-================== 43 passed, 1 skipped in 124.43s (0:02:04) ===================
+================== 43 passed, 1 skipped in 120.12s (0:02:00) ===================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2631,7 +2758,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 26 items
 
-Live test, OpenBGPD 7.7, BGP communities, IPv4: instances setup ...
+Live test, OpenBGPD 7.7, BGP communities, IPv4: instances setup 
 Live test, OpenBGPD 7.7, BGP communities, IPv4: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, BGP communities, IPv4: sessions are up PASSED
@@ -2647,10 +2774,12 @@ Live test, OpenBGPD 7.7, BGP communities, IPv4: custom BGP community scrubbed PA
 Live test, OpenBGPD 7.7, BGP communities, IPv4: reconfigure PASSED
 Live test, OpenBGPD 7.7, BGP communities, IPv4: log contains errors PASSED
 Live test, OpenBGPD 7.7, BGP communities, IPv4: dumping rs config...
+
 Live test, OpenBGPD 7.7, BGP communities, IPv4: dumping routes...
+
 Live test, OpenBGPD 7.7, BGP communities, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, BGP communities, IPv6: instances setup ...
+Live test, OpenBGPD 7.7, BGP communities, IPv6: instances setup 
 Live test, OpenBGPD 7.7, BGP communities, IPv6: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, BGP communities, IPv6: sessions are up PASSED
@@ -2666,11 +2795,13 @@ Live test, OpenBGPD 7.7, BGP communities, IPv6: custom BGP community scrubbed PA
 Live test, OpenBGPD 7.7, BGP communities, IPv6: reconfigure PASSED
 Live test, OpenBGPD 7.7, BGP communities, IPv6: log contains errors PASSED
 Live test, OpenBGPD 7.7, BGP communities, IPv6: dumping rs config...
+
 Live test, OpenBGPD 7.7, BGP communities, IPv6: dumping routes...
+
 Live test, OpenBGPD 7.7, BGP communities, IPv6: stopping instances...
 
 
-======================== 26 passed in 71.23s (0:01:11) =========================
+======================== 26 passed in 69.10s (0:01:09) =========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2678,24 +2809,28 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 4 items
 
-Live test, OpenBGPD 7.7, default config, IPv4: instances setup ...
+Live test, OpenBGPD 7.7, default config, IPv4: instances setup 
 Live test, OpenBGPD 7.7, default config, IPv4: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, default config, IPv4: log contains errors PASSED
 Live test, OpenBGPD 7.7, default config, IPv4: dumping rs config...
+
 Live test, OpenBGPD 7.7, default config, IPv4: dumping routes...
+
 Live test, OpenBGPD 7.7, default config, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, default config, IPv6: instances setup ...
+Live test, OpenBGPD 7.7, default config, IPv6: instances setup 
 Live test, OpenBGPD 7.7, default config, IPv6: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, default config, IPv6: log contains errors PASSED
 Live test, OpenBGPD 7.7, default config, IPv6: dumping rs config...
+
 Live test, OpenBGPD 7.7, default config, IPv6: dumping routes...
+
 Live test, OpenBGPD 7.7, default config, IPv6: stopping instances...
 
 
-============================== 4 passed in 12.28s ==============================
+============================== 4 passed in 11.89s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2703,7 +2838,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 344 items
 
-Live test, OpenBGPD 7.7, global scenario, IPv4: instances setup ...
+Live test, OpenBGPD 7.7, global scenario, IPv4: instances setup 
 Live test, OpenBGPD 7.7, global scenario, IPv4: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, global scenario, IPv4: sessions are up PASSED
@@ -2792,10 +2927,12 @@ Live test, OpenBGPD 7.7, global scenario, IPv4: prefixes received by clients: AS
 Live test, OpenBGPD 7.7, global scenario, IPv4: reconfigure PASSED
 Live test, OpenBGPD 7.7, global scenario, IPv4: log contains errors PASSED
 Live test, OpenBGPD 7.7, global scenario, IPv4: dumping rs config...
+
 Live test, OpenBGPD 7.7, global scenario, IPv4: dumping routes...
+
 Live test, OpenBGPD 7.7, global scenario, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, global scenario, IPv6: instances setup ...
+Live test, OpenBGPD 7.7, global scenario, IPv6: instances setup 
 Live test, OpenBGPD 7.7, global scenario, IPv6: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, global scenario, IPv6: sessions are up PASSED
@@ -2884,10 +3021,12 @@ Live test, OpenBGPD 7.7, global scenario, IPv6: prefixes received by clients: AS
 Live test, OpenBGPD 7.7, global scenario, IPv6: reconfigure PASSED
 Live test, OpenBGPD 7.7, global scenario, IPv6: log contains errors PASSED
 Live test, OpenBGPD 7.7, global scenario, IPv6: dumping rs config...
+
 Live test, OpenBGPD 7.7, global scenario, IPv6: dumping routes...
+
 Live test, OpenBGPD 7.7, global scenario, IPv6: stopping instances...
 
-Live test, OpenBGPD 7.6, global scenario, IPv4: instances setup ...
+Live test, OpenBGPD 7.6, global scenario, IPv4: instances setup 
 Live test, OpenBGPD 7.6, global scenario, IPv4: setting instances up...
 PASSED
 Live test, OpenBGPD 7.6, global scenario, IPv4: sessions are up PASSED
@@ -2976,10 +3115,12 @@ Live test, OpenBGPD 7.6, global scenario, IPv4: prefixes received by clients: AS
 Live test, OpenBGPD 7.6, global scenario, IPv4: reconfigure PASSED
 Live test, OpenBGPD 7.6, global scenario, IPv4: log contains errors PASSED
 Live test, OpenBGPD 7.6, global scenario, IPv4: dumping rs config...
+
 Live test, OpenBGPD 7.6, global scenario, IPv4: dumping routes...
+
 Live test, OpenBGPD 7.6, global scenario, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.6, global scenario, IPv6: instances setup ...
+Live test, OpenBGPD 7.6, global scenario, IPv6: instances setup 
 Live test, OpenBGPD 7.6, global scenario, IPv6: setting instances up...
 PASSED
 Live test, OpenBGPD 7.6, global scenario, IPv6: sessions are up PASSED
@@ -3068,11 +3209,13 @@ Live test, OpenBGPD 7.6, global scenario, IPv6: prefixes received by clients: AS
 Live test, OpenBGPD 7.6, global scenario, IPv6: reconfigure PASSED
 Live test, OpenBGPD 7.6, global scenario, IPv6: log contains errors PASSED
 Live test, OpenBGPD 7.6, global scenario, IPv6: dumping rs config...
+
 Live test, OpenBGPD 7.6, global scenario, IPv6: dumping routes...
+
 Live test, OpenBGPD 7.6, global scenario, IPv6: stopping instances...
 
 
-================== 340 passed, 4 skipped in 349.11s (0:05:49) ==================
+================== 340 passed, 4 skipped in 355.08s (0:05:55) ==================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3080,7 +3223,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 10 items
 
-Live test, OpenBGPD 7.7, gshut, IPv4: instances setup ...
+Live test, OpenBGPD 7.7, gshut, IPv4: instances setup 
 Live test, OpenBGPD 7.7, gshut, IPv4: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, gshut, IPv4: sessions are up PASSED
@@ -3088,10 +3231,12 @@ Live test, OpenBGPD 7.7, gshut, IPv4: clients receive routes tagged with GRACEFU
 Live test, OpenBGPD 7.7, gshut, IPv4: reconfigure PASSED
 Live test, OpenBGPD 7.7, gshut, IPv4: log contains errors PASSED
 Live test, OpenBGPD 7.7, gshut, IPv4: dumping rs config...
+
 Live test, OpenBGPD 7.7, gshut, IPv4: dumping routes...
+
 Live test, OpenBGPD 7.7, gshut, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, gshut, IPv6: instances setup ...
+Live test, OpenBGPD 7.7, gshut, IPv6: instances setup 
 Live test, OpenBGPD 7.7, gshut, IPv6: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, gshut, IPv6: sessions are up PASSED
@@ -3099,11 +3244,13 @@ Live test, OpenBGPD 7.7, gshut, IPv6: clients receive routes tagged with GRACEFU
 Live test, OpenBGPD 7.7, gshut, IPv6: reconfigure PASSED
 Live test, OpenBGPD 7.7, gshut, IPv6: log contains errors PASSED
 Live test, OpenBGPD 7.7, gshut, IPv6: dumping rs config...
+
 Live test, OpenBGPD 7.7, gshut, IPv6: dumping routes...
+
 Live test, OpenBGPD 7.7, gshut, IPv6: stopping instances...
 
 
-============================= 10 passed in 51.66s ==============================
+============================= 10 passed in 51.54s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3111,7 +3258,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 10 items
 
-Live test, OpenBGPD 7.7, max-prefix, IPv4: instances setup ...
+Live test, OpenBGPD 7.7, max-prefix, IPv4: instances setup 
 Live test, OpenBGPD 7.7, max-prefix, IPv4: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, max-prefix, IPv4: sessions are down PASSED
@@ -3119,10 +3266,12 @@ Live test, OpenBGPD 7.7, max-prefix, IPv4: clients log max-prefix notification P
 Live test, OpenBGPD 7.7, max-prefix, IPv4: reconfigure PASSED
 Live test, OpenBGPD 7.7, max-prefix, IPv4: log contains errors PASSED
 Live test, OpenBGPD 7.7, max-prefix, IPv4: dumping rs config...
+
 Live test, OpenBGPD 7.7, max-prefix, IPv4: dumping routes...
+
 Live test, OpenBGPD 7.7, max-prefix, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, max-prefix, IPv6: instances setup ...
+Live test, OpenBGPD 7.7, max-prefix, IPv6: instances setup 
 Live test, OpenBGPD 7.7, max-prefix, IPv6: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, max-prefix, IPv6: sessions are down PASSED
@@ -3130,11 +3279,13 @@ Live test, OpenBGPD 7.7, max-prefix, IPv6: clients log max-prefix notification P
 Live test, OpenBGPD 7.7, max-prefix, IPv6: reconfigure PASSED
 Live test, OpenBGPD 7.7, max-prefix, IPv6: log contains errors PASSED
 Live test, OpenBGPD 7.7, max-prefix, IPv6: dumping rs config...
+
 Live test, OpenBGPD 7.7, max-prefix, IPv6: dumping routes...
+
 Live test, OpenBGPD 7.7, max-prefix, IPv6: stopping instances...
 
 
-======================== 10 passed in 379.05s (0:06:19) ========================
+======================== 10 passed in 368.02s (0:06:08) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3142,7 +3293,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 38 items
 
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: instances setup ...
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: instances setup 
 Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: sessions are up PASSED
@@ -3160,7 +3311,7 @@ Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: dumping routes...
 
 Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: instances setup ...
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: instances setup 
 Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: sessions are up PASSED
@@ -3177,7 +3328,7 @@ Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: dumping routes...
 
 Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: instances setup ...
+Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: instances setup 
 Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: sessions are up PASSED
@@ -3195,7 +3346,7 @@ Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: dumping routes...
 
 Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: stopping instances...
 
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: instances setup ...
+Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: instances setup 
 Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: sessions are up PASSED
@@ -3213,7 +3364,7 @@ Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: dumping routes...
 Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: stopping instances...
 
 
-======================== 38 passed in 196.94s (0:03:16) ========================
+======================== 38 passed in 196.72s (0:03:16) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3221,7 +3372,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 4 items
 
-Live test, OpenBGPD 7.7, examples, rich config, IPv4: instances setup ...
+Live test, OpenBGPD 7.7, examples, rich config, IPv4: instances setup 
 Live test, OpenBGPD 7.7, examples, rich config, IPv4: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, examples, rich config, IPv4: log contains errors PASSED
@@ -3231,7 +3382,7 @@ Live test, OpenBGPD 7.7, examples, rich config, IPv4: dumping routes...
 
 Live test, OpenBGPD 7.7, examples, rich config, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, examples, rich config, IPv6: instances setup ...
+Live test, OpenBGPD 7.7, examples, rich config, IPv6: instances setup 
 Live test, OpenBGPD 7.7, examples, rich config, IPv6: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, examples, rich config, IPv6: log contains errors PASSED
@@ -3242,7 +3393,7 @@ Live test, OpenBGPD 7.7, examples, rich config, IPv6: dumping routes...
 Live test, OpenBGPD 7.7, examples, rich config, IPv6: stopping instances...
 
 
-============================== 4 passed in 15.48s ==============================
+============================== 4 passed in 11.92s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3250,7 +3401,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 8 items
 
-Live test, OpenBGPD 7.7, RTR protocol: instances setup ...
+Live test, OpenBGPD 7.7, RTR protocol: instances setup 
 Live test, OpenBGPD 7.7, RTR protocol: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, RTR protocol: sessions are up PASSED
@@ -3267,7 +3418,7 @@ Live test, OpenBGPD 7.7, RTR protocol: dumping routes...
 Live test, OpenBGPD 7.7, RTR protocol: stopping instances...
 
 
-============================== 8 passed in 44.24s ==============================
+============================== 8 passed in 44.43s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3275,7 +3426,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 166 items
 
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: instances setup ...
+Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: instances setup 
 Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: sessions are up PASSED
@@ -3329,7 +3480,7 @@ Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: dumping routes...
 
 Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: instances setup ...
+Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: instances setup 
 Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: sessions are up PASSED
@@ -3374,7 +3525,7 @@ Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: dumping routes...
 
 Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: instances setup ...
+Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: instances setup 
 Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: sessions are up PASSED
@@ -3428,7 +3579,7 @@ Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: dumping routes...
 
 Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: instances setup ...
+Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: instances setup 
 Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: sessions are up PASSED
@@ -3474,7 +3625,7 @@ Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: dumping routes...
 Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 
-======================= 166 passed in 185.92s (0:03:05) ========================
+======================= 166 passed in 180.22s (0:03:00) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3482,7 +3633,7 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 44 items
 
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: instances setup ...
+Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: instances setup 
 Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: sessions are up PASSED
@@ -3512,7 +3663,7 @@ Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: dumping routes...
 
 Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: instances setup ...
+Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: instances setup 
 Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: setting instances up...
 PASSED
 Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: sessions are up PASSED
@@ -3543,4 +3694,4 @@ Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: stopping instances...
 
 
-================== 43 passed, 1 skipped in 138.75s (0:02:18) ===================
+================== 43 passed, 1 skipped in 124.92s (0:02:04) ===================
