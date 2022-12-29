@@ -24,6 +24,7 @@ class BasicScenario_Data4(object):
         "AS2_1_IPAddress":          "192.0.2.21",
         "AS3_1_IPAddress":          "192.0.2.31",
         "AS4_1_IPAddress":          "192.0.2.41",
+        "AS151866_1_IPAddress":     "192.0.2.51",
         "AS101_IPAddress":          "192.0.2.101",
         "AS222_IPAddress":          "192.0.2.222",
         "RoutesCollector_IPAddress":"192.0.2.99",
@@ -72,6 +73,8 @@ class BasicScenario_Data4(object):
         "AS3_noexport_AS1":         "3.0.12.0/24",
         "AS3_rfc1997_noexp":        "3.0.13.0/24",
         "AS3_transitfree_2":        "3.0.14.0/24",
+        "AS3_prep2AS151866":        "3.0.15.0/24",
+        "AS3_noexpAS151866":        "3.0.16.0/24",
 
         "AS4_rtt_1":                "4.0.1.0/24",
         "AS4_rtt_2":                "4.0.2.0/24",
@@ -83,6 +86,7 @@ class BasicScenario_Data4(object):
         "AS4_rtt_8":                "4.0.8.0/24",
         "AS4_rtt_9":                "4.0.9.0/24",
         "AS4_rtt_10":               "4.0.10.0/24",
+        "AS151866_bogon_1":         "192.168.1.0/24",
 
         "AS101_allowed_prefixes":   "101.0.0.0/16",
         "AS101_good1":              "101.0.1.0/24",

@@ -1,10 +1,25 @@
 {% from 'macros.j2' import write_prefix_list %}
-{% from 'macros.j2' import del_communities %}
-{% from 'macros.j2' import match_communities %}
+{% from 'macros.j2' import del_communities with context %}
+{% from 'macros.j2' import match_communities with context %}
 {% from 'macros.j2' import add_communities %}
 {% from 'macros.j2' import match_rtt_communities %}
 # ---------------------------------------------------------
 # COMMON
+
+{% if asn3216_map %}
+# Get the 16bit value used to represent a peer with a 32bit ASN.
+# Return 0 if no mapping exists for the peer.
+function get_16bit_mapped_asn(int asn_32_bit) {
+	case asn_32_bit {
+{%		for asn in asn3216_map %}
+{%			if asn3216_map[asn] %}
+		{{ asn }}: return {{ asn3216_map[asn] }};
+{%			endif %}
+{%		endfor %}
+	}
+	return 0;
+}
+{% endif %}
 
 # This function returns True if 'net' is a bogon prefix
 # or falls within a bogon prefix.
@@ -112,7 +127,11 @@ function get_peer_rtt(ip client_ip) {
 # This function scrubs BGP communities used by the route server
 # for signaling purpose toward its clients. (RFC7454, Section 11)
 # It must be applied on routes entering the route server.
-function scrub_communities_in() {
+function scrub_communities_in()
+{% if asn3216_map %}
+int mapped_16bit_asn;
+{% endif %}
+{
 {% for name in cfg.communities|sort if cfg.communities[name].type == "outbound" %}
 {% if cfg.communities[name]|community_is_set %}
 	# {{ name }}
@@ -139,7 +158,11 @@ function scrub_communities_in() {
 # This function scrubs BGP communities used by clients to instruct
 # the route server to perform some actions.
 # It must be applied on routes leaving the route server.
-function scrub_communities_out() {
+function scrub_communities_out()
+{% if asn3216_map %}
+int mapped_16bit_asn;
+{% endif %}
+{
 {% for name in cfg.communities|sort if cfg.communities[name].type == "inbound" %}
 {% if cfg.communities[name]|community_is_set %}
 	# {{ name }}
@@ -159,7 +182,11 @@ function scrub_communities_out() {
 
 # This function verifies if the route is tagged with one of
 # the blackhole filtering communities.
-function is_blackhole_filtering_request() {
+function is_blackhole_filtering_request()
+{% if asn3216_map %}
+int mapped_16bit_asn;
+{% endif %}
+{
 {%	for this_ip_ver in list_ip_vers %}
 {%		if "2.0"|target_version_ge %}
 	if net.type = NET_IP{{ this_ip_ver }} then {
@@ -217,6 +244,9 @@ function apply_blackhole_filtering_policy() {
 # communities.
 function route_can_be_announced_to(int peer_as; ip client_ip; string client_id)
 int client_rtt;
+{% if asn3216_map %}
+int mapped_16bit_asn;
+{% endif %}
 {
 {% if "route_can_be_announced_to"|hook_is_set %}
 	return hook_route_can_be_announced_to(peer_as, client_ip, client_id);
@@ -277,6 +307,9 @@ function do_prepend(int times) {
 # control communities in charge of prepending client's ASN.
 function apply_prepend(int peer_as; ip client_ip)
 int client_rtt;
+{% if asn3216_map %}
+int mapped_16bit_asn;
+{% endif %}
 {
 {% for times in ["once", "twice", "thrice"] %}
 {%	set comm_name = "prepend_" ~ times ~ "_to_peer" %}
@@ -395,7 +428,11 @@ function announce_rpki_invalid_to_client(int client_asn; ip client_ip; string cl
 
 # This function adds NO_EXPORT and/or NO_ADVERTISE
 # well-known communities.
-function add_noexport_noadvertise(int peer_as) {
+function add_noexport_noadvertise(int peer_as)
+{% if asn3216_map %}
+int mapped_16bit_asn;
+{% endif %}
+{
 	{% if cfg.communities.add_noexport_to_any|community_is_set %}
 	# add_noexport_to_any
 	{{ match_communities(cfg.communities.add_noexport_to_any, "{ bgp_community.add((65535, 65281)); }") }}
@@ -417,6 +454,9 @@ function add_noexport_noadvertise(int peer_as) {
 {% if cfg.communities.reject_cause|community_is_set %}
 function tag_and_reject(int cause; int announcing_asn)
 int dyn_val;
+{% if asn3216_map %}
+int mapped_16bit_asn;
+{% endif %}
 {
 	# 0: the route must be treated as discarded
 	dyn_val = 0;
@@ -444,7 +484,24 @@ int dyn_val;
 {%	if cfg.communities.rejected_route_announced_by|community_is_set %}
 	# announcing_asn: the ASN of the peer that announced the route
 	dyn_val = announcing_asn;
-	{{ add_communities(cfg.communities.rejected_route_announced_by) }}
+
+	if announcing_asn <= 65535 then {
+		{{ add_communities(cfg.communities.rejected_route_announced_by) }}
+	} else {
+{%		if asn3216_map %}
+		mapped_16bit_asn = get_16bit_mapped_asn(announcing_asn);
+
+		if mapped_16bit_asn > 0 then {
+			{{ add_communities(cfg.communities.rejected_route_announced_by, tabs=3, replace_dyn_val_for_std="mapped_16bit_asn") }}
+		} else {
+			# Ignoring the std community for 32bit ASNs not present in the 32-to-16 map.
+			{{ add_communities(cfg.communities.rejected_route_announced_by, tabs=3, ignore_std=True) }}
+		}
+{%		else %}
+		# Ignoring the std community for 32bit ASNs not present in the 32-to-16 map.
+		{{ add_communities(cfg.communities.rejected_route_announced_by, tabs=2, ignore_std=True) }}
+{%		endif %}
+	}
 {%	endif %}
 
 	bgp_local_pref = 1;

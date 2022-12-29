@@ -136,6 +136,8 @@ Built to group as many tests as possible in a single scenario.
     AS3_rfc1997_noexp  3.0.13.0/24  NO_EXPORT         received by all with NO_EXPORT
     AS3_transitfree_2  3.0.14.0/24                    AS_PATH 3, 174, 33: rejected even if 3 is in
                                                       the transit-free ASN list
+    AS3_prep2AS151866  3.0.15.0/24  65522:64512       using the 16bit_mapped_asn
+    AS3_noexpAS151866  3.0.16.0/24  65509:64512       using the 16bit_mapped_asn
     Default_route      0.0.0.0/0                      rejected by rs
     =================  ============ ================= ============================================
 
@@ -182,6 +184,19 @@ Built to group as many tests as possible in a single scenario.
     AS4_rtt_10  4.0.10.0/24  rt:64537:10       Prepend 1x to > 10 ms, 2x to > 20 ms         AS1_1 & AS1_2 no prep,
                              rt:64538:20                                                    AS2 1x, AS3 2x
     ==========  ============ ================= ============================================ ========================
+
+- **AS151866**:
+
+  Used to verify that the control communities applied by other clients work fine towards 32bit ASN clients.
+
+  Originated prefixes:
+
+    =================     ==============    ======================================
+    Prefix ID             Prefix            Expected result
+    =================     ==============    ======================================
+    AS151866_bogon_1      192.168.1.0/24    Dropped (bogon), used to test that the
+                                            rejected_route_announced_by std comm
+                                            is properly set.
 
 - **AS222**:
 

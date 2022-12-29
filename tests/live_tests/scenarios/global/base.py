@@ -67,7 +67,8 @@ class BasicScenario(LiveScenario):
         "AS1_2_IPAddress": 5,
         "AS2_1_IPAddress": 17.3,
         "AS3_1_IPAddress": 123.8,
-        "AS4_1_IPAddress": 600
+        "AS4_1_IPAddress": 600,
+        "AS151866_1_IPAddress": 18
     }
 
     @classmethod
@@ -129,6 +130,16 @@ class BasicScenario(LiveScenario):
                 ],
             ),
             cls.CLIENT_INSTANCE_CLASS(
+                "AS151866",
+                cls.DATA["AS151866_1_IPAddress"],
+                [
+                    (
+                        cls.build_other_cfg("AS151866.j2"),
+                        "/etc/bird/bird.conf"
+                    )
+                ],
+            ),
+            cls.CLIENT_INSTANCE_CLASS(
                 "AS101",
                 cls.DATA["AS101_IPAddress"],
                 [
@@ -161,6 +172,7 @@ class BasicScenario(LiveScenario):
         # AS3 is passive, rs client configured with passive: False
         self.AS3 = self._get_instance_by_name("AS3")
         self.AS4 = self._get_instance_by_name("AS4")
+        self.AS151866 = self._get_instance_by_name("AS151866")
         self.AS101 = self._get_instance_by_name("AS101")
         self.AS222 = self._get_instance_by_name("AS222")
         self.rs = self._get_instance_by_name("rs")
@@ -176,6 +188,7 @@ class BasicScenario(LiveScenario):
         self.session_is_up(self.rs, self.AS2)
         self.session_is_up(self.rs, self.AS3)
         self.session_is_up(self.rs, self.AS4)
+        self.session_is_up(self.rs, self.AS151866)
         self.session_is_up(self.rs, self.AS222)
         self.session_is_up(self.AS101, self.AS1_1)
         self.session_is_up(self.AS101, self.AS1_2)
@@ -355,6 +368,12 @@ class BasicScenario(LiveScenario):
                            as_path="1", next_hop=self.AS1_1,
                            filtered=True, reject_reason=2)
         self.log_contains(self.rs, "prefix is bogon - REJECTING " + self.DATA["bogon1"])
+
+        self.receive_route(self.rs, self.DATA["AS151866_bogon_1"],
+                           self.AS151866,
+                           as_path="151866", next_hop=self.AS151866,
+                           filtered=True, reject_reason=2)
+        self.log_contains(self.rs, "prefix is bogon - REJECTING " + self.DATA["AS151866_bogon_1"])
 
     def test_040_bad_prefixes_received_by_rs_global_blacklist(self):
         """{}: bad prefixes received by rs: global blacklist"""
@@ -549,11 +568,11 @@ class BasicScenario(LiveScenario):
                        self.DATA["invalid_asn1"],
                        self.DATA["aspath_len1"],
                        self.DATA["AS2_nonclient_nexthop2"]):
-            for inst in (self.AS2, self.AS3, self.AS4):
+            for inst in (self.AS2, self.AS3, self.AS4, self.AS151866):
                 with self.assertRaisesRegex(AssertionError, "Routes not found."):
                     self.receive_route(inst, prefix)
 
-        # Among the clients, only AS3 is expected to not see the
+        # Among the clients, only AS3 and AS151866 are expected to not see the
         # following prefixes because AS1 and AS2
         # receive them on their session with AS101
         for prefix in (self.DATA["AS101_no_rset"],
@@ -562,6 +581,8 @@ class BasicScenario(LiveScenario):
                        self.DATA["AS101_roa_routeobj_4"]):
             with self.assertRaisesRegex(AssertionError, "Routes not found."):
                 self.receive_route(self.AS3, prefix)
+            with self.assertRaisesRegex(AssertionError, "Routes not found."):
+                self.receive_route(self.AS151866, prefix)
 
     def test_045_rpki_valid_prefix(self):
         """{}: RPKI, valid prefix received by rs"""
@@ -807,7 +828,7 @@ class BasicScenario(LiveScenario):
                            as_path="3", next_hop=self.AS3,
                            std_comms=[], lrg_comms=[])
 
-        for inst in (self.AS2, self.AS4):
+        for inst in (self.AS2, self.AS4, self.AS151866):
             with self.assertRaisesRegex(AssertionError, "Routes not found."):
                 self.receive_route(inst, self.DATA["AS3_cc_AS1only"])
         self.log_contains(self.rs, "route didn't pass control communities checks - NOT ANNOUNCING {} TO {{AS2}}".format(self.DATA["AS3_cc_AS1only"]), {"AS2": self.AS2})
@@ -815,7 +836,7 @@ class BasicScenario(LiveScenario):
     def test_080_control_communities_not_AS1(self):
         """{}: control communities, announce to all except AS1"""
 
-        for inst in (self.AS2, self.AS4):
+        for inst in (self.AS2, self.AS4, self.AS151866):
             self.receive_route(inst, self.DATA["AS3_cc_not_AS1"], self.rs,
                                as_path="3", next_hop=self.AS3,
                                std_comms=[], lrg_comms=[])
@@ -828,7 +849,7 @@ class BasicScenario(LiveScenario):
     def test_080_control_communities_none(self):
         """{}: control communities, don't announce to any"""
 
-        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4):
+        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4, self.AS151866):
             with self.assertRaisesRegex(AssertionError, "Routes not found."):
                 self.receive_route(inst, self.DATA["AS3_cc_none"])
             self.log_contains(self.rs, "route didn't pass control communities checks - NOT ANNOUNCING {} TO {{other_inst}}".format(self.DATA["AS3_cc_none"]), {"other_inst": inst})
@@ -836,21 +857,21 @@ class BasicScenario(LiveScenario):
     def test_081_control_communities_prepend1any(self):
         """{}: control communities, prepend once to any"""
 
-        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4):
+        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4, self.AS151866):
             self.receive_route(inst, self.DATA["AS3_prepend1any"], self.rs, as_path="3 3",
                                next_hop=self.AS3, std_comms=[], lrg_comms=[])
 
     def test_081_control_communities_prepend2any(self):
         """{}: control communities, prepend twice to any"""
 
-        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4):
+        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4, self.AS151866):
             self.receive_route(inst, self.DATA["AS3_prepend2any"], self.rs, as_path="3 3 3",
                                next_hop=self.AS3, std_comms=[], lrg_comms=[])
 
     def test_081_control_communities_prepend3any(self):
         """{}: control communities, prepend thrice to any"""
 
-        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4):
+        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4, self.AS151866):
             self.receive_route(inst, self.DATA["AS3_prepend3any"], self.rs, as_path="3 3 3 3",
                                next_hop=self.AS3, std_comms=[], lrg_comms=[])
 
@@ -860,7 +881,7 @@ class BasicScenario(LiveScenario):
         for inst in (self.AS1_1, self.AS1_2):
             self.receive_route(inst, self.DATA["AS3_prepend1_AS1"], self.rs, as_path="3 3",
                                next_hop=self.AS3, std_comms=[], lrg_comms=[])
-        for inst in (self.AS2, self.AS4):
+        for inst in (self.AS2, self.AS4, self.AS151866):
             self.receive_route(inst, self.DATA["AS3_prepend1_AS1"], self.rs, as_path="3",
                                next_hop=self.AS3, std_comms=[], lrg_comms=[])
 
@@ -869,8 +890,17 @@ class BasicScenario(LiveScenario):
 
         self.receive_route(self.AS2, self.DATA["AS3_prepend2_AS2"], self.rs, as_path="3 3 3",
                            next_hop=self.AS3, std_comms=[], lrg_comms=[])
-        for inst in (self.AS1_1, self.AS1_2, self.AS4):
+        for inst in (self.AS1_1, self.AS1_2, self.AS4, self.AS151866):
             self.receive_route(inst, self.DATA["AS3_prepend2_AS2"], self.rs, as_path="3",
+                               next_hop=self.AS3, std_comms=[], lrg_comms=[])
+
+    def test_082_control_communities_prepend2_AS151866(self):
+        """{}: control communities, prepend twice to AS151866"""
+
+        self.receive_route(self.AS151866, self.DATA["AS3_prep2AS151866"], self.rs, as_path="3 3 3",
+                           next_hop=self.AS3, std_comms=[], lrg_comms=[])
+        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4):
+            self.receive_route(inst, self.DATA["AS3_prep2AS151866"], self.rs, as_path="3",
                                next_hop=self.AS3, std_comms=[], lrg_comms=[])
 
     def test_082_control_communities_prepend3_AS1_1_others(self):
@@ -879,14 +909,14 @@ class BasicScenario(LiveScenario):
         for inst in (self.AS1_1, self.AS1_2):
             self.receive_route(inst, self.DATA["AS3_prep3AS1_1any"], self.rs, as_path="3 3 3 3",
                                next_hop=self.AS3, std_comms=[], lrg_comms=[])
-        for inst in (self.AS2, self.AS4):
+        for inst in (self.AS2, self.AS4, self.AS151866):
             self.receive_route(inst, self.DATA["AS3_prep3AS1_1any"], self.rs, as_path="3 3",
                                next_hop=self.AS3, std_comms=[], lrg_comms=[])
 
     def test_083_control_communities_AS3_noexport_to_any(self):
         """{}: control communities, NO_EXPORT to any"""
 
-        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4):
+        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4, self.AS151866):
             self.receive_route(inst, self.DATA["AS3_noexport_any"], self.rs,
                                as_path="3", next_hop=self.AS3,
                                std_comms=["65535:65281"],
@@ -909,11 +939,22 @@ class BasicScenario(LiveScenario):
         with self.assertRaisesRegex(AssertionError, "Routes not found."):
             self.receive_route(self.AS101, pref, as_path="1 3")
 
+    def test_083_control_communities_AS3_noexport_to_AS151866(self):
+        """{}: control communities, NO_EXPORT to AS151866"""
+
+        pref = self.DATA["AS3_noexpAS151866"]
+        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4):
+            self.receive_route(inst, pref, self.rs, as_path="3", next_hop=self.AS3,
+                               std_comms=[], lrg_comms=[], ext_comms=[])
+        self.receive_route(self.AS151866, pref, self.rs, as_path="3", next_hop=self.AS3,
+                           std_comms=["65535:65281"],
+                           lrg_comms=[], ext_comms=[])
+
     def test_083_control_communities_AS3_rfc1997_noexport(self):
         """{}: control communities, RFC1997 NO_EXPORT"""
 
         pref = self.DATA["AS3_rfc1997_noexp"]
-        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4):
+        for inst in (self.AS1_1, self.AS1_2, self.AS2, self.AS4, self.AS151866):
             self.receive_route(inst, pref, self.rs, as_path="3",
                                next_hop=self.AS3, std_comms=["65535:65281"],
                                lrg_comms=[], ext_comms=[])
@@ -924,7 +965,7 @@ class BasicScenario(LiveScenario):
         for inst in (self.AS1_1, self.AS1_2):
             self.receive_route(inst, pref, self.rs, as_path="4",
                                std_comms=[], lrg_comms=[], ext_comms=[])
-        for inst in (self.AS2, self.AS3):
+        for inst in (self.AS2, self.AS3, self.AS151866):
             with self.assertRaisesRegex(AssertionError, "Routes not found."):
                 self.receive_route(inst, pref)
 
@@ -1009,6 +1050,8 @@ class BasicScenario(LiveScenario):
                                std_comms=[], lrg_comms=[], ext_comms=[])
         self.receive_route(self.AS2, pref, self.rs, as_path="4 4 4",
                             std_comms=[], lrg_comms=[], ext_comms=[])
+        self.receive_route(self.AS151866, pref, self.rs, as_path="4 4 4",
+                            std_comms=[], lrg_comms=[], ext_comms=[])
         self.receive_route(self.AS3, pref, self.rs, as_path="999 4 4 4 4",
                             std_comms=[], lrg_comms=[], ext_comms=[])
 
@@ -1021,6 +1064,8 @@ class BasicScenario(LiveScenario):
             self.receive_route(inst, pref, self.rs, as_path="4 4 4 4",
                                std_comms=[], lrg_comms=[], ext_comms=[])
         self.receive_route(self.AS2, pref, self.rs, as_path="4 4 4",
+                            std_comms=[], lrg_comms=[], ext_comms=[])
+        self.receive_route(self.AS151866, pref, self.rs, as_path="4 4 4",
                             std_comms=[], lrg_comms=[], ext_comms=[])
         self.receive_route(self.AS3, pref, self.rs, as_path="999 4 4",
                             std_comms=[], lrg_comms=[], ext_comms=[])
@@ -1035,8 +1080,9 @@ class BasicScenario(LiveScenario):
         for inst in [self.AS1_1, self.AS1_2]:
             self.receive_route(inst, pref, self.rs, as_path="4",
                                std_comms=[], lrg_comms=[], ext_comms=[])
-        self.receive_route(self.AS2, pref, self.rs, as_path="4 4",
-                            std_comms=[], lrg_comms=[], ext_comms=[])
+        for inst in [self.AS2, self.AS151866]:
+            self.receive_route(inst, pref, self.rs, as_path="4 4",
+                                std_comms=[], lrg_comms=[], ext_comms=[])
         self.receive_route(self.AS3, pref, self.rs, as_path="999 4 4 4",
                             std_comms=[], lrg_comms=[], ext_comms=[])
 

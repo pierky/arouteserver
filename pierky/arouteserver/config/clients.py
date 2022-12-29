@@ -29,6 +29,7 @@ class ConfigParserClients(ConfigParserBase):
     def __init__(self, general_cfg=None):
         ConfigParserBase.__init__(self)
         self.general_cfg = general_cfg
+        self.asn3216_map = {}
 
     def parse(self):
 
@@ -54,6 +55,7 @@ class ConfigParserClients(ConfigParserBase):
             "ip": ValidatorIPAddr(),
             "description": ValidatorText(mandatory=False),
             "password": ValidatorText(mandatory=False),
+            "16bit_mapped_asn": ValidatorPrivateASN16bit(mandatory=False),
             "cfg": {
                 "prepend_rs_as": ValidatorBool(mandatory=False),
                 "passive": ValidatorBool(mandatory=False),
@@ -239,9 +241,58 @@ class ConfigParserClients(ConfigParserBase):
                                     ))
                     errors = True
 
+        # Build the asn3216_map and check 16bit_mapped_asn.
+        for client in self.cfg["clients"]:
+            client_descr = get_client_descr(client)
+
+            client_asn = int(client["asn"])
+            mapped_asn = client.get("16bit_mapped_asn")
+
+            if not mapped_asn:
+                continue
+
+            if client_asn <= 65535 and mapped_asn:
+                logging.error(
+                    "The '16bit_mapped_asn' option can be set only for "
+                    "32bit ASNs, but it was set for the 16bit ASN "
+                    "client {}".format(client_descr)
+                )
+                errors = True
+                continue
+
+            if client_asn in self.asn3216_map:
+                if self.asn3216_map[client_asn] != mapped_asn:
+                    logging.error(
+                        "The '16bit_mapped_asn' option of client {} was "
+                        "set to {}, but previously another 16bit ASN was "
+                        "already used for that ASN: {}".format(
+                            client_descr,
+                            mapped_asn,
+                            self.asn3216_map[client_asn]
+                        )
+                    )
+                    errors = True
+                    continue
+            else:
+                for other_32bit_asn, other_16bit_asn in self.asn3216_map.items():
+                    if other_16bit_asn == mapped_asn and other_32bit_asn != client_asn:
+                        logging.error(
+                            "The 16bit ASN {} was used for the "
+                            "'16bit_mapped_asn' option of client {}, but "
+                            "previously it was already used to map the 32bit "
+                            "ASN {} of another client".format(
+                                mapped_asn,
+                                client_descr,
+                                other_32bit_asn
+                            )
+                        )
+                        errors = True
+                        break
+                else:
+                    self.asn3216_map[client_asn] = mapped_asn
+
         if errors:
             raise ConfigError()
-
 
 def merge_clients(original, custom_file):
     try:

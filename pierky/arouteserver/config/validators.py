@@ -152,6 +152,17 @@ class ValidatorASN(ConfigParserValidator):
         except ConfigError:
             raise ConfigError("Invalid ASN: {}".format(v))
 
+class ValidatorPrivateASN16bit(ConfigParserValidator):
+
+    def _validate(self, v):
+        try:
+            asn = ValidatorUInt().validate(v)
+            if asn < 64512 or asn > 65534:
+                raise ConfigError()
+            return asn
+        except ConfigError:
+            raise ConfigError("Invalid private 16bit ASN: {}".format(v))
+
 class ValidatorASNList(ConfigParserValidator):
 
     def _validate(self, v):

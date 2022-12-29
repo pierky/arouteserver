@@ -531,3 +531,124 @@ class TestConfigParserClients(TestConfigParserBase):
             "only supported key is config_lines, a list of custom configuration "
             "lines specific to the BGP speaker."
         )
+
+    def test_16bit_mapped_asn(self):
+        """{}: 16bit_mapped_asn"""
+        self.assertEqual(self.cfg.asn3216_map, {65551: 64512})
+
+    def test_16bit_mapped_asn_not_a_32bit_asn(self):
+        """{}: 16bit_mapped_asn for a 16bit ASN"""
+        self.cfg[0]["16bit_mapped_asn"] = 64512
+        self._contains_err(
+            "The '16bit_mapped_asn' option can be set only for 32bit ASNs, "
+            "but it was set for the 16bit ASN client AS3333 192.0.2.11"
+        )
+
+    def test_16bit_mapped_asn_not_a_16bit_asn(self):
+        """{}: 16bit_mapped_asn not in valid range"""
+        self.cfg[3]["16bit_mapped_asn"] = 3
+        self._contains_err(
+            "Error parsing '16bit_mapped_asn' at 'clients' level - Invalid private 16bit ASN: 3."
+        )
+
+    def test_16bit_mapped_asn_reused_16bit(self):
+        """{}: 16bit_mapped_asn re-used for another ASN"""
+
+        general = ConfigParserGeneral()
+        general._load_from_yaml("\n".join([
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2"
+        ]))
+        general.parse()
+
+        self.cfg = ConfigParserClients(general_cfg=general)
+        self.cfg._load_from_yaml("\n".join([
+            "clients:",
+            "  - asn: 65550",
+            "    ip: 192.0.2.21",
+            "    16bit_mapped_asn: 64512",
+            "  - asn: 65551",
+            "    ip: 192.0.2.22",
+            "    16bit_mapped_asn: 64512",
+        ]))
+        self._contains_err(
+            "The 16bit ASN 64512 was used for the '16bit_mapped_asn' option "
+            "of client AS65551 192.0.2.22, but previously it was already used "
+            "to map the 32bit ASN 65550 of another client"
+        )
+
+    def test_16bit_mapped_asn_different_16bit_for_same_32bit(self):
+        """{}: 16bit_mapped_asn different 16bit for the same 32bit"""
+
+        general = ConfigParserGeneral()
+        general._load_from_yaml("\n".join([
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2"
+        ]))
+        general.parse()
+
+        self.cfg = ConfigParserClients(general_cfg=general)
+        self.cfg._load_from_yaml("\n".join([
+            "clients:",
+            "  - asn: 65550",
+            "    ip: 192.0.2.21",
+            "    16bit_mapped_asn: 64512",
+            "  - asn: 65550",
+            "    ip: 192.0.2.22",
+            "    16bit_mapped_asn: 65534",
+        ]))
+        self._contains_err(
+            "The '16bit_mapped_asn' option of client AS65550 192.0.2.22 "
+            "was set to 65534, but previously another 16bit ASN was "
+            "already used for that ASN: 64512"
+        )
+
+    def test_16bit_mapped_asn_combo(self):
+        """{}: 16bit_mapped_asn combo"""
+
+        general = ConfigParserGeneral()
+        general._load_from_yaml("\n".join([
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2"
+        ]))
+        general.parse()
+
+        self.cfg = ConfigParserClients(general_cfg=general)
+        self.cfg._load_from_yaml("\n".join([
+            "clients:",
+            "  - asn: 65550",
+            "    ip: 192.0.2.21",
+            "    16bit_mapped_asn: 64512",
+            "  - asn: 65551",
+            "    ip: 192.0.2.22",
+            "    16bit_mapped_asn: 65534",
+        ]))
+        self.cfg.parse()
+        self.assertEqual(self.cfg.asn3216_map, {65550: 64512, 65551: 65534})
+
+    def test_16bit_mapped_asn_same_as_multiple_client_definitions(self):
+        """{}: 16bit_mapped_asn same AS multiple clients"""
+
+        general = ConfigParserGeneral()
+        general._load_from_yaml("\n".join([
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2"
+        ]))
+        general.parse()
+
+        self.cfg = ConfigParserClients(general_cfg=general)
+        self.cfg._load_from_yaml("\n".join([
+            "clients:",
+            "  - asn: 65550",
+            "    ip: 192.0.2.21",
+            "    16bit_mapped_asn: 64512",
+            "  - asn: 65550",
+            "    ip: 192.0.2.22",
+            "    16bit_mapped_asn: 64512",
+        ]))
+        self.cfg.parse()
+        self.assertEqual(self.cfg.asn3216_map, {65550: 64512})

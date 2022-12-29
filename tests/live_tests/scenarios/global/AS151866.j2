@@ -1,0 +1,30 @@
+router id 192.0.2.51;
+
+log "/var/log/bird.log" all;
+log syslog all;
+debug protocols all;
+
+protocol device { }
+
+protocol static own_prefixes {
+    route {{ data.AS151866_bogon_1 }} reject;
+}
+
+filter to_rs {
+	accept;
+}
+
+filter from_rs {
+	accept;
+}
+
+protocol bgp the_rs {
+	local as 151866;
+	neighbor {{ data.rs_IPAddress }} as 999;
+	next hop self;
+	import filter from_rs;
+	export filter to_rs;
+	connect delay time 1;
+	connect retry time 1;
+	missing lladdr ignore;
+}
