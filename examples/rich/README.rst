@@ -11,6 +11,7 @@ Configurations built using the files provided in the ``examples/rich`` directory
 - A max-prefix limit is enforced on the basis of PeeringDB information.
 - Blackhole filtering is implemented with a rewrite-next-hop policy and can be triggered with BGP communities BLACKHOLE, 65534:0 and 999:666:0.
 - Control communities allow selective announcement control and prepending, also on the basis of peers RTT.
+- 32bit ASNs are mapped to 16bit ASNs for usage in standard BGP communities.
 - Graceful BGP session shutdown is enabled.
 - Client timers are configured using the custom, site-specific .local file.
 - Informational custom BGP communities are used to tag routes from European or American clients.

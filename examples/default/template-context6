@@ -753,7 +753,8 @@ bogons:
 clients
 -------
 clients:
-- asn: 3333
+- 16bit_mapped_asn: null
+  asn: 3333
   cfg:
     add_path: false
     attach_custom_communities: null
@@ -807,7 +808,8 @@ clients:
   id: AS3333_1
   ip: 192.0.2.11
   password: null
-- asn: 10745
+- 16bit_mapped_asn: null
+  asn: 10745
   cfg:
     add_path: false
     attach_custom_communities: null
@@ -857,7 +859,8 @@ clients:
   id: AS10745_1
   ip: 192.0.2.22
   password: null
-- asn: 10745
+- 16bit_mapped_asn: null
+  asn: 10745
   cfg:
     add_path: false
     attach_custom_communities: null
@@ -908,6 +911,57 @@ clients:
   description: null
   id: AS10745_2
   ip: 2001:db:1:1::22
+  password: null
+- 16bit_mapped_asn: 64512
+  asn: 65551
+  cfg:
+    add_path: false
+    attach_custom_communities: null
+    blackhole_filtering:
+      announce_to_client: true
+    custom_options: null
+    filtering:
+      black_list_pref: null
+      ipv4_pref_len: *id001
+      ipv6_pref_len: *id002
+      irrdb:
+        as_set_bundle_ids: !!set {}
+        as_sets: null
+        enforce_origin_in_as_set: true
+        enforce_prefix_in_as_set: true
+        white_list_asn: null
+        white_list_pref: null
+        white_list_route: null
+      max_as_path_len: 32
+      max_prefix:
+        action: null
+        count_rejected_routes: true
+        limit_ipv4: null
+        limit_ipv6: null
+        peering_db:
+          enabled: true
+          increment:
+            absolute: 100
+            relative: 15
+        restart_after: 15
+      next_hop:
+        authorized_addresses_list: null
+        policy: strict
+      reject_invalid_as_in_as_path: true
+      reject_policy:
+        policy: reject
+      rpki_bgp_origin_validation:
+        enabled: false
+        reject_invalid: true
+    graceful_shutdown:
+      enabled: false
+    gtsm: false
+    multihop: null
+    passive: true
+    prepend_rs_as: false
+  description: null
+  id: AS65551_1
+  ip: 192.0.2.33
   password: null
 
 

@@ -775,7 +775,8 @@ bogons:
 clients
 -------
 clients:
-- as_sets_from_pdb:
+- 16bit_mapped_asn: null
+  as_sets_from_pdb:
   - AS-RIPENCC
   asn: 3333
   cfg:
@@ -833,7 +834,8 @@ clients:
   ip: 192.0.2.11
   password: null
   rtt: 604.0
-- asn: 10745
+- 16bit_mapped_asn: null
+  asn: 10745
   cfg:
     add_path: true
     attach_custom_communities:
@@ -885,7 +887,8 @@ clients:
   ip: 192.0.2.22
   password: null
   rtt: 123.0
-- asn: 10745
+- 16bit_mapped_asn: null
+  asn: 10745
   cfg:
     add_path: true
     attach_custom_communities:
@@ -939,6 +942,114 @@ clients:
   ip: 2001:db8:1:1::22
   password: null
   rtt: 741.0
+- 16bit_mapped_asn: 64512
+  asn: 197000
+  cfg:
+    add_path: true
+    attach_custom_communities:
+    - from_europe
+    blackhole_filtering:
+      announce_to_client: true
+    custom_options: null
+    filtering:
+      black_list_pref: null
+      ipv4_pref_len: *id001
+      ipv6_pref_len: *id002
+      irrdb:
+        as_set_bundle_ids: !!set {}
+        as_sets: null
+        enforce_origin_in_as_set: true
+        enforce_prefix_in_as_set: true
+        white_list_asn: null
+        white_list_pref: null
+        white_list_route: null
+      max_as_path_len: 32
+      max_prefix:
+        action: restart
+        count_rejected_routes: true
+        limit_ipv4: 121
+        limit_ipv6: 121
+        peering_db:
+          enabled: true
+          increment:
+            absolute: 100
+            relative: 15
+        restart_after: 30
+      next_hop:
+        authorized_addresses_list: null
+        policy: same-as
+      reject_invalid_as_in_as_path: true
+      reject_policy:
+        policy: reject
+      rpki_bgp_origin_validation:
+        enabled: true
+        reject_invalid: true
+    graceful_shutdown:
+      enabled: true
+    gtsm: true
+    multihop: null
+    passive: true
+    prepend_rs_as: false
+  description: null
+  id: AS197000_1
+  ip: 192.0.2.33
+  password: null
+  rtt: 579.0
+- 16bit_mapped_asn: 64512
+  asn: 197000
+  cfg:
+    add_path: true
+    attach_custom_communities:
+    - from_europe
+    blackhole_filtering:
+      announce_to_client: true
+    custom_options: null
+    filtering:
+      black_list_pref: null
+      ipv4_pref_len: *id001
+      ipv6_pref_len: *id002
+      irrdb:
+        as_set_bundle_ids: !!set
+          ? 4e322fe0fb5e7fdf2b5f7014db96dbb977fcf4db835b55b652da320ab39e5cc97cc7611ceb0ad6eb7d35aff9e70093edc45a1ac2087df3bafec3215cf218f55f
+          : null
+        as_sets: null
+        enforce_origin_in_as_set: true
+        enforce_prefix_in_as_set: true
+        white_list_asn: null
+        white_list_pref: null
+        white_list_route: null
+      max_as_path_len: 32
+      max_prefix:
+        action: restart
+        count_rejected_routes: true
+        limit_ipv4: 121
+        limit_ipv6: 121
+        peering_db:
+          enabled: true
+          increment:
+            absolute: 100
+            relative: 15
+        restart_after: 30
+      next_hop:
+        authorized_addresses_list: null
+        policy: same-as
+      reject_invalid_as_in_as_path: true
+      reject_policy:
+        policy: reject
+      rpki_bgp_origin_validation:
+        enabled: true
+        reject_invalid: true
+    graceful_shutdown:
+      enabled: true
+    gtsm: true
+    multihop: null
+    passive: true
+    prepend_rs_as: false
+  description: null
+  id: AS197000_2
+  ip: 2001:db8:1:1::33
+  password: null
+  rtt: 58.0
 
 
 asns
@@ -948,6 +1059,20 @@ asns: {}
 
 irrdb_info
 ----------
+- asns:
+  - 197000
+  descr: AS197000
+  id: 4e322fe0fb5e7fdf2b5f7014db96dbb977fcf4db835b55b652da320ab39e5cc97cc7611ceb0ad6eb7d35aff9e70093edc45a1ac2087df3bafec3215cf218f55f
+  name: AS197000
+  prefixes:
+  - comment: null
+    exact: false
+    ge: null
+    le: 128
+    length: 48
+    max_length: 128
+    prefix: '2001:67c:e0::'
+  used_by: client AS197000_2
 - asns:
   - 10745
   descr: AS10745

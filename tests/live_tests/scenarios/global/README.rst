@@ -197,6 +197,7 @@ Built to group as many tests as possible in a single scenario.
     AS151866_bogon_1      192.168.1.0/24    Dropped (bogon), used to test that the
                                             rejected_route_announced_by std comm
                                             is properly set.
+    =================     ==============    ======================================
 
 - **AS222**:
 

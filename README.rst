@@ -99,12 +99,13 @@ Features
   - honor the **GRACEFUL_SHUTDOWN** BGP community received from clients (`draft-ietf-grow-bgp-gshut-11 <https://tools.ietf.org/html/draft-ietf-grow-bgp-gshut-11>`_);
   - allow to perform a graceful shutdown of the route server itself.
 
-- Control and informative communities:
+- Control and informative BGP communities:
 
   - prefix/origin ASN present/not present in **IRRDBs data**;
   - do (not) announce to any / **peer** / on **RTT basis**;
   - **prepend** to any / **peer** / on **RTT basis**;
   - add **NO_EXPORT** / **NO_ADVERTISE** to any / **peer**;
+  - **32bit ASNs mapping** to 16bit ASNs for announcement control BGP communities;
   - `Euro-IX large BGP communities <https://www.euro-ix.net/en/forixps/large-bgp-communities/>`__ to track reject reasons;
   - custom informational BGP communities.
 
