@@ -53,7 +53,8 @@
 # {{ asn3216_map[peer_as] }} is the 16bit_mapped_asn for {{ peer_as }}
 {{ left }} community {{ delete }}{{ comm.std|replace("peer_as", asn3216_map[peer_as]) }}{{ right_val }}
 {%-             else -%}
-# Warning: must skip {{ comm.std }} because peer_as > 65535 ({{ peer_as }})
+# Warning: must skip {{ comm.std }} because peer_as ({{ peer_as }}) > 65535 and
+# there isn't any 16bit mapped ASN for it.
 {%-             endif -%}
 {%-         elif "dyn_val" in comm.std -%}
 {%-             if dyn_val == "*" or dyn_val <= 65535 -%}
@@ -62,7 +63,8 @@
 # {{ asn3216_map[dyn_val] }} is the 16bit_mapped_asn for {{ dyn_val }}
 {{ left }} community {{ delete }}{{ comm.std|replace("dyn_val", asn3216_map[dyn_val]) }}{{ right_val }}
 {%-             else -%}
-# Warning: must skip {{ comm.std }} because dyn_val > 65535 ({{ dyn_val }})
+# Warning: must skip {{ comm.std }} because dyn_val ({{ dyn_val }}) > 65535 and
+# there isn't any 16bit mapped ASN for it.
 {%-             endif -%}
 {%-         else -%}
 {{ left }} community {{ delete }}{{ comm.std }}{{ right_val }}
