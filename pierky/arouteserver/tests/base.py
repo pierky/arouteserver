@@ -29,7 +29,7 @@ def setup_requests_mock():
         json={}
     )
     res.get(
-        "https://www.peeringdb.com/api/net?asn__in=3333,10745",
+        "https://www.peeringdb.com/api/net?asn__in=3333,10745,197000",
         json=json.load(open("tests/static/data/peeringdb_net_3333_10745.json"))
     )
     res.get(
