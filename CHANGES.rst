@@ -3,6 +3,17 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New: mapping of 32bit ASNs to 16bit private ASNs for announcement control standard BGP communities.
+
+  A new feature is added to allow 32bit ASN client to be mapped to 16bit ASNs in the standard BGP communities used for announcement control. This feature allows clients to use the 16bit mapped ASN as the ``peer_as`` value for standard BGP communities like *do not announce to $PEER*. In those communities, the 32bit ASN will be represented by the 16bit value which is mapped to it.
+
+  For details on how to configure this feature, see the documentation, `"BGP Communities" section <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#bgp-communities>`__.
+
+  See also `GitHub issue 101 <https://github.com/pierky/arouteserver/issues/101>`__.
+
 1.19.0
 ------
 
