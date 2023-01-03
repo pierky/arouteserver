@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2022 Pier Carlo Chiodi
+# Copyright (C) 2017-2023 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -880,7 +880,8 @@ class LiveScenario_TagRejectPolicy(object):
     When a scenario inherits this class, its route server is configured as
     if the ``reject_policy.policy`` is ``tag``, the ``65520:dyn_val``
     value is used for the ``reject_cause`` BGP community and the
-    ``rt:65520:dyn_val`` value for the ``rejected_route_announced_by`` one.
+    ``65524:dyn_val`` and ``rt:65524:dyn_val`` values for the
+    ``rejected_route_announced_by`` one.
     Additionally, using the ``reject_cause_map``, some reject codes are
     mapped to specific BGP communities in the ``rs_as:1101:*`` range.
 
@@ -902,7 +903,7 @@ class LiveScenario_TagRejectPolicy(object):
     """
 
     REJECT_CAUSE_COMMUNITY = r"^65520:(\d+)$"
-    REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY = r"^rt:65520:(\d+)$"
+    REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY = r"^rt:65524:(\d+)$"
     REJECT_POLICY = "tag"
 
     @classmethod
@@ -918,7 +919,10 @@ class LiveScenario_TagRejectPolicy(object):
         if "communities" not in cfg["cfg"]:
             cfg["cfg"]["communities"] = {}
         cfg["cfg"]["communities"]["reject_cause"] = {"std": "65520:dyn_val"}
-        cfg["cfg"]["communities"]["rejected_route_announced_by"] = {"ext": "rt:65520:dyn_val"}
+        cfg["cfg"]["communities"]["rejected_route_announced_by"] = {
+            "std": "65524:dyn_val",
+            "ext": "rt:65524:dyn_val"
+        }
         cfg["cfg"]["communities"]["reject_cause_map"] = {
             6: {
                 "lrg": "rs_as:1101:7"

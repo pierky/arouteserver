@@ -33,7 +33,7 @@
 {% endfor %}
 {% endmacro %}
 
-{%- macro write_community(left, comm, right, peer_as=None, dyn_val=None, is_delete=False) -%}
+{%- macro write_community(left, comm, right, peer_as=None, dyn_val=None, is_delete=False, dyn_val_is_peer_as=False) -%}
 {%- if is_delete -%}
 {%- set delete = "delete " -%}
 {%- else -%}
@@ -49,14 +49,22 @@
 {%-         if "peer_as" in comm.std -%}
 {%-             if peer_as == "*" or peer_as <= 65535 -%}
 {{ left }} community {{ delete }}{{ comm.std|replace("peer_as", peer_as) }}{{ right_val }}
+{%-             elif peer_as and peer_as > 65535 and peer_as in asn3216_map -%}
+# {{ asn3216_map[peer_as] }} is the 16bit_mapped_asn for {{ peer_as }}
+{{ left }} community {{ delete }}{{ comm.std|replace("peer_as", asn3216_map[peer_as]) }}{{ right_val }}
 {%-             else -%}
-# Warning: must skip {{ comm.std }} because peer_as > 65535 ({{ peer_as }})
+# Warning: must skip {{ comm.std }} because peer_as ({{ peer_as }}) > 65535 and
+# there isn't any 16bit mapped ASN for it.
 {%-             endif -%}
 {%-         elif "dyn_val" in comm.std -%}
 {%-             if dyn_val == "*" or dyn_val <= 65535 -%}
 {{ left }} community {{ delete }}{{ comm.std|replace("dyn_val", dyn_val) }}{{ right_val }}
+{%-             elif dyn_val and dyn_val > 65535 and dyn_val in asn3216_map and dyn_val_is_peer_as -%}
+# {{ asn3216_map[dyn_val] }} is the 16bit_mapped_asn for {{ dyn_val }}
+{{ left }} community {{ delete }}{{ comm.std|replace("dyn_val", asn3216_map[dyn_val]) }}{{ right_val }}
 {%-             else -%}
-# Warning: must skip {{ comm.std }} because dyn_val > 65535 ({{ dyn_val }})
+# Warning: must skip {{ comm.std }} because dyn_val ({{ dyn_val }}) > 65535 and
+# there isn't any 16bit mapped ASN for it.
 {%-             endif -%}
 {%-         else -%}
 {{ left }} community {{ delete }}{{ comm.std }}{{ right_val }}
@@ -91,21 +99,21 @@
 {{ write_community(left, comm, right, peer_as, dyn_val) }}
 {% endmacro %}
 
-{% macro add_communities(left, comm, dyn_val=None) %}
-{{ write_community(left ~ " set", comm, "", None, dyn_val) -}}
+{% macro add_communities(left, comm, dyn_val=None, dyn_val_is_peer_as=False) %}
+{{ write_community(left ~ " set", comm, "", None, dyn_val, dyn_val_is_peer_as=dyn_val_is_peer_as) -}}
 {% endmacro %}
 
 {%- macro ins_communities(comm, dyn_val=None) -%}
 {{- write_community("", comm, "", None, dyn_val) -}}
 {%- endmacro -%}
 
-{% macro del_communities(left, comm, replace_peer_as=False, replace_dyn_val=None) %}
+{% macro del_communities(left, comm, replace_peer_as=False, replace_dyn_val=None, dyn_val_is_peer_as=False) %}
 {% if replace_peer_as %}
 {%	set peer_as = "*" %}
 {% else %}
 {%	set peer_as = None %}
 {% endif %}
-{{ write_community(left ~ " set", comm, "", peer_as, replace_dyn_val, True) }}
+{{ write_community(left ~ " set", comm, "", peer_as, replace_dyn_val, True, dyn_val_is_peer_as=dyn_val_is_peer_as) }}
 {% endmacro %}
 
 {% macro delete_prepending_comm(comm, rtt_thresholds) %}

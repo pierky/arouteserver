@@ -277,6 +277,25 @@ Announcement control via BGP communities
 {{ write_communities_table_row(cfg.communities.add_noexport_to_peer, "Add NO_EXPORT to peer") -}}
 {{ write_communities_table_row(cfg.communities.add_noadvertise_to_peer, "Add NO_ADVERTISE to peer") }}
 
+
+{% if asn3216_map %}
+* The following 16bit ASNs can be used in standard BGP communities to implement announcement control for clients having a 32bit ASN. They can be used in place of the 32bit ASN to set the value of `peer_as` in the standard BGP communities listed above.
+
+| 32bit ASN | Client | 16bit mapped ASN |
+| --- | --- | --- |
+{%  for asn_32bit, asn_16bit in asn3216_map.items() %}
+{%    set ns = namespace(found=false) %}
+{%    for client in clients %}
+{%      if client.asn|int == asn_32bit|int and not ns.found %}
+{%        set ns.found = true %}
+| {{ asn_32bit }} | {{ client.description or "AS" ~ client.asn ~ " " ~ client.ip }} | {{ asn_16bit }} |
+{%      endif %}
+{%    endfor %}
+{%  endfor %}
+
+{% endif%}
+
+
 Reject reasons
 --------------
 

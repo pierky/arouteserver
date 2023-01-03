@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2022 Pier Carlo Chiodi
+# Copyright (C) 2017-2023 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -151,6 +151,17 @@ class ValidatorASN(ConfigParserValidator):
             return asn
         except ConfigError:
             raise ConfigError("Invalid ASN: {}".format(v))
+
+class ValidatorPrivateASN16bit(ConfigParserValidator):
+
+    def _validate(self, v):
+        try:
+            asn = ValidatorUInt().validate(v)
+            if asn < 64512 or asn > 65534:
+                raise ConfigError()
+            return asn
+        except ConfigError:
+            raise ConfigError("Invalid private 16bit ASN: {}".format(v))
 
 class ValidatorASNList(ConfigParserValidator):
 

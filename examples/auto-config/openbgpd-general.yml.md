@@ -193,6 +193,15 @@ Announcement control via BGP communities
 | Add NO_ADVERTISE to peer | 65282:peer_as | None | 64496:65282:peer_as |
 
 
+
+* The following 16bit ASNs can be used in standard BGP communities to implement announcement control for clients having a 32bit ASN. They can be used in place of the 32bit ASN to set the value of `peer_as` in the standard BGP communities listed above.
+
+| 32bit ASN | Client | 16bit mapped ASN |
+| --- | --- | --- |
+| 65551 | AS65551 192.0.2.33 | 64512 |
+
+
+
 Reject reasons
 --------------
 

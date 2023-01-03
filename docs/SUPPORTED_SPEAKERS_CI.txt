@@ -5,9 +5,9 @@ Total test cases per BGP speaker
 
 =============== ========= ============ ============ ===========  
 **BGP speaker** **Total** **Passed ✔** **Failed ✖** **Skipped** 
-BIRD            816       807          0            9           
-BIRD v2         820       811          0            9           
-OpenBGPD 7.7    442       439          0            3           
+BIRD            830       821          0            9           
+BIRD v2         834       825          0            9           
+OpenBGPD 7.7    448       445          0            3           
 =============== ========= ============ ============ ===========  
 
 Scenarios
@@ -16,56 +16,58 @@ Scenarios
 'tag' reject policy scenario, IPv4
 ++++++++++++++++++++++++++++++++++
 
-========================================== ======== =========== ================   
-**Test**                                   **BIRD** **BIRD v2** **OpenBGPD 7.7** 
-AS_PATH too long                           ✔        ✔           ✔                
-RPKI INVALID route                         ✔        ✔           ✔                
-bogon prefix                               ✔        ✔           ✔                
-bogon prefix, wrong announcing ASN         ✔        ✔           ✔                
-good routes not received                   ✔        ✔           ✔                
-invalid ASN in AS_PATH                     ✔        ✔           ✔                
-invalid NEXT_HOP                           ✔        ✔           ✔                
-invalid left-most ASN                      ✔        ✔           ✔                
-local black list                           ✔        ✔           ✔                
-log contains errors                        ✔        ✔           ✔                
-origin not in as-macro                     ✔        ✔           ✔                
-prefix in client's blacklist               ✔        ✔           ✔                
-prefix is not in IPv6 global unicast space skip     skip        skip             
-prefix length                              ✔        ✔           ✔                
-prefix not in as-macro                     ✔        ✔           ✔                
-prefixes received by clients: AS1_1        ✔        ✔           ✔                
-prefixes received by clients: AS1_2        ✔        ✔           ✔                
-prefixes received by clients: AS2          ✔        ✔           ✔                
-reconfigure                                ✔        ✔           ✔                
-transit-free ASN in AS_PATH                ✔        ✔           ✔                
-========================================== ======== =========== ================   
+============================================= ======== =========== ================   
+**Test**                                      **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+AS_PATH too long                              ✔        ✔           ✔                
+RPKI INVALID route                            ✔        ✔           ✔                
+announced by ASN derived via 16bit_mapped_asn ✔        ✔           ✔                
+bogon prefix                                  ✔        ✔           ✔                
+bogon prefix, wrong announcing ASN            ✔        ✔           ✔                
+good routes not received                      ✔        ✔           ✔                
+invalid ASN in AS_PATH                        ✔        ✔           ✔                
+invalid NEXT_HOP                              ✔        ✔           ✔                
+invalid left-most ASN                         ✔        ✔           ✔                
+local black list                              ✔        ✔           ✔                
+log contains errors                           ✔        ✔           ✔                
+origin not in as-macro                        ✔        ✔           ✔                
+prefix in client's blacklist                  ✔        ✔           ✔                
+prefix is not in IPv6 global unicast space    skip     skip        skip             
+prefix length                                 ✔        ✔           ✔                
+prefix not in as-macro                        ✔        ✔           ✔                
+prefixes received by clients: AS1_1           ✔        ✔           ✔                
+prefixes received by clients: AS1_2           ✔        ✔           ✔                
+prefixes received by clients: AS2             ✔        ✔           ✔                
+reconfigure                                   ✔        ✔           ✔                
+transit-free ASN in AS_PATH                   ✔        ✔           ✔                
+============================================= ======== =========== ================   
 
 'tag' reject policy scenario, IPv6
 ++++++++++++++++++++++++++++++++++
 
-========================================== ======== =========== ================   
-**Test**                                   **BIRD** **BIRD v2** **OpenBGPD 7.7** 
-AS_PATH too long                           ✔        ✔           ✔                
-RPKI INVALID route                         ✔        ✔           ✔                
-bogon prefix                               ✔        ✔           ✔                
-bogon prefix, wrong announcing ASN         ✔        ✔           ✔                
-good routes not received                   ✔        ✔           ✔                
-invalid ASN in AS_PATH                     ✔        ✔           ✔                
-invalid NEXT_HOP                           ✔        ✔           ✔                
-invalid left-most ASN                      ✔        ✔           ✔                
-local black list                           ✔        ✔           ✔                
-log contains errors                        ✔        ✔           ✔                
-origin not in as-macro                     ✔        ✔           ✔                
-prefix in client's blacklist               ✔        ✔           ✔                
-prefix is not in IPv6 global unicast space ✔        ✔           ✔                
-prefix length                              ✔        ✔           ✔                
-prefix not in as-macro                     ✔        ✔           ✔                
-prefixes received by clients: AS1_1        ✔        ✔           ✔                
-prefixes received by clients: AS1_2        ✔        ✔           ✔                
-prefixes received by clients: AS2          ✔        ✔           ✔                
-reconfigure                                ✔        ✔           ✔                
-transit-free ASN in AS_PATH                ✔        ✔           ✔                
-========================================== ======== =========== ================   
+============================================= ======== =========== ================   
+**Test**                                      **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+AS_PATH too long                              ✔        ✔           ✔                
+RPKI INVALID route                            ✔        ✔           ✔                
+announced by ASN derived via 16bit_mapped_asn ✔        ✔           ✔                
+bogon prefix                                  ✔        ✔           ✔                
+bogon prefix, wrong announcing ASN            ✔        ✔           ✔                
+good routes not received                      ✔        ✔           ✔                
+invalid ASN in AS_PATH                        ✔        ✔           ✔                
+invalid NEXT_HOP                              ✔        ✔           ✔                
+invalid left-most ASN                         ✔        ✔           ✔                
+local black list                              ✔        ✔           ✔                
+log contains errors                           ✔        ✔           ✔                
+origin not in as-macro                        ✔        ✔           ✔                
+prefix in client's blacklist                  ✔        ✔           ✔                
+prefix is not in IPv6 global unicast space    ✔        ✔           ✔                
+prefix length                                 ✔        ✔           ✔                
+prefix not in as-macro                        ✔        ✔           ✔                
+prefixes received by clients: AS1_1           ✔        ✔           ✔                
+prefixes received by clients: AS1_2           ✔        ✔           ✔                
+prefixes received by clients: AS2             ✔        ✔           ✔                
+reconfigure                                   ✔        ✔           ✔                
+transit-free ASN in AS_PATH                   ✔        ✔           ✔                
+============================================= ======== =========== ================   
 
 BGP communities, IPv4
 +++++++++++++++++++++
@@ -256,6 +258,7 @@ blackholed prefixes as seen by enabled clients (lrg_cust)                       
 blackholed prefixes as seen by enabled clients (std_cust)                       ✔        ✔           ✔                
 blackholed prefixes not seen by not enabled clients                             ✔        ✔           ✔                
 control communities, NO_EXPORT to AS1                                           ✔        ✔           ✔                
+control communities, NO_EXPORT to AS151866                                      ✔        ✔           ✔                
 control communities, NO_EXPORT to any                                           ✔        ✔           ✔                
 control communities, RFC1997 NO_EXPORT                                          ✔        ✔           ✔                
 control communities, RTT, blackhole, not peers > 20 ms                          ✔        ✔           ✔                
@@ -275,6 +278,7 @@ control communities, prepend once to AS1                                        
 control communities, prepend once to any                                        ✔        ✔           ✔                
 control communities, prepend thrice to AS1, once to others                      ✔        ✔           ✔                
 control communities, prepend thrice to any                                      ✔        ✔           ✔                
+control communities, prepend twice to AS151866                                  ✔        ✔           ✔                
 control communities, prepend twice to AS2                                       ✔        ✔           ✔                
 control communities, prepend twice to any                                       ✔        ✔           ✔                
 good prefixes because of use_arin_bulk_whois_data                               ✔        ✔           ✔                
@@ -347,6 +351,7 @@ blackholed prefixes as seen by enabled clients (lrg_cust)                       
 blackholed prefixes as seen by enabled clients (std_cust)                       ✔        ✔                            
 blackholed prefixes not seen by not enabled clients                             ✔        ✔                            
 control communities, NO_EXPORT to AS1                                           ✔        ✔                            
+control communities, NO_EXPORT to AS151866                                      ✔        ✔                            
 control communities, NO_EXPORT to any                                           ✔        ✔                            
 control communities, RFC1997 NO_EXPORT                                          ✔        ✔                            
 control communities, RTT, blackhole, not peers > 20 ms                          ✔        ✔                            
@@ -366,6 +371,7 @@ control communities, prepend once to AS1                                        
 control communities, prepend once to any                                        ✔        ✔                            
 control communities, prepend thrice to AS1, once to others                      ✔        ✔                            
 control communities, prepend thrice to any                                      ✔        ✔                            
+control communities, prepend twice to AS151866                                  ✔        ✔                            
 control communities, prepend twice to AS2                                       ✔        ✔                            
 control communities, prepend twice to any                                       ✔        ✔                            
 good prefixes because of use_arin_bulk_whois_data                               ✔        ✔                            
@@ -438,6 +444,7 @@ blackholed prefixes as seen by enabled clients (lrg_cust)                       
 blackholed prefixes as seen by enabled clients (std_cust)                       ✔        ✔                            
 blackholed prefixes not seen by not enabled clients                             ✔        ✔                            
 control communities, NO_EXPORT to AS1                                           ✔        ✔                            
+control communities, NO_EXPORT to AS151866                                      ✔        ✔                            
 control communities, NO_EXPORT to any                                           ✔        ✔                            
 control communities, RFC1997 NO_EXPORT                                          ✔        ✔                            
 control communities, RTT, blackhole, not peers > 20 ms                          ✔        ✔                            
@@ -457,6 +464,7 @@ control communities, prepend once to AS1                                        
 control communities, prepend once to any                                        ✔        ✔                            
 control communities, prepend thrice to AS1, once to others                      ✔        ✔                            
 control communities, prepend thrice to any                                      ✔        ✔                            
+control communities, prepend twice to AS151866                                  ✔        ✔                            
 control communities, prepend twice to AS2                                       ✔        ✔                            
 control communities, prepend twice to any                                       ✔        ✔                            
 good prefixes because of use_arin_bulk_whois_data                               ✔        ✔                            
@@ -529,6 +537,7 @@ blackholed prefixes as seen by enabled clients (lrg_cust)                       
 blackholed prefixes as seen by enabled clients (std_cust)                       ✔        ✔           ✔                
 blackholed prefixes not seen by not enabled clients                             ✔        ✔           ✔                
 control communities, NO_EXPORT to AS1                                           ✔        ✔           ✔                
+control communities, NO_EXPORT to AS151866                                      ✔        ✔           ✔                
 control communities, NO_EXPORT to any                                           ✔        ✔           ✔                
 control communities, RFC1997 NO_EXPORT                                          ✔        ✔           ✔                
 control communities, RTT, blackhole, not peers > 20 ms                          ✔        ✔           ✔                
@@ -548,6 +557,7 @@ control communities, prepend once to AS1                                        
 control communities, prepend once to any                                        ✔        ✔           ✔                
 control communities, prepend thrice to AS1, once to others                      ✔        ✔           ✔                
 control communities, prepend thrice to any                                      ✔        ✔           ✔                
+control communities, prepend twice to AS151866                                  ✔        ✔           ✔                
 control communities, prepend twice to AS2                                       ✔        ✔           ✔                
 control communities, prepend twice to any                                       ✔        ✔           ✔                
 good prefixes because of use_arin_bulk_whois_data                               ✔        ✔           ✔                
@@ -620,6 +630,7 @@ blackholed prefixes as seen by enabled clients (lrg_cust)                       
 blackholed prefixes as seen by enabled clients (std_cust)                       ✔        ✔                            
 blackholed prefixes not seen by not enabled clients                             ✔        ✔                            
 control communities, NO_EXPORT to AS1                                           ✔        ✔                            
+control communities, NO_EXPORT to AS151866                                      ✔        ✔                            
 control communities, NO_EXPORT to any                                           ✔        ✔                            
 control communities, RFC1997 NO_EXPORT                                          ✔        ✔                            
 control communities, RTT, blackhole, not peers > 20 ms                          ✔        ✔                            
@@ -639,6 +650,7 @@ control communities, prepend once to AS1                                        
 control communities, prepend once to any                                        ✔        ✔                            
 control communities, prepend thrice to AS1, once to others                      ✔        ✔                            
 control communities, prepend thrice to any                                      ✔        ✔                            
+control communities, prepend twice to AS151866                                  ✔        ✔                            
 control communities, prepend twice to AS2                                       ✔        ✔                            
 control communities, prepend twice to any                                       ✔        ✔                            
 good prefixes because of use_arin_bulk_whois_data                               ✔        ✔                            
@@ -711,6 +723,7 @@ blackholed prefixes as seen by enabled clients (lrg_cust)                       
 blackholed prefixes as seen by enabled clients (std_cust)                       ✔        ✔                            
 blackholed prefixes not seen by not enabled clients                             ✔        ✔                            
 control communities, NO_EXPORT to AS1                                           ✔        ✔                            
+control communities, NO_EXPORT to AS151866                                      ✔        ✔                            
 control communities, NO_EXPORT to any                                           ✔        ✔                            
 control communities, RFC1997 NO_EXPORT                                          ✔        ✔                            
 control communities, RTT, blackhole, not peers > 20 ms                          ✔        ✔                            
@@ -730,6 +743,7 @@ control communities, prepend once to AS1                                        
 control communities, prepend once to any                                        ✔        ✔                            
 control communities, prepend thrice to AS1, once to others                      ✔        ✔                            
 control communities, prepend thrice to any                                      ✔        ✔                            
+control communities, prepend twice to AS151866                                  ✔        ✔                            
 control communities, prepend twice to AS2                                       ✔        ✔                            
 control communities, prepend twice to any                                       ✔        ✔                            
 good prefixes because of use_arin_bulk_whois_data                               ✔        ✔                            

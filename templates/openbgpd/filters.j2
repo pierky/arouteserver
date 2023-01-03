@@ -1,9 +1,9 @@
 {% from 'macros.j2' import write_prefix_list %}
 {% from 'macros.j2' import write_prefix_list_entry %}
 {% from 'macros.j2' import write_prefixset_list %}
-{% from 'macros.j2' import match_communities %}
-{% from 'macros.j2' import add_communities %}
-{% from 'macros.j2' import del_communities %}
+{% from 'macros.j2' import match_communities with context %}
+{% from 'macros.j2' import add_communities with context %}
+{% from 'macros.j2' import del_communities with context %}
 {% from 'macros.j2' import ins_communities %}
 {% from 'macros.j2' import delete_prepending_comm %}
 # ---------------------------------------------------------
@@ -264,7 +264,7 @@ match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {
 # It will be removed later if the route is not invalid
 {%	for client in clients|sort(attribute="id") if client.ip is current_ipver %}
 {%		if client.cfg.filtering.reject_policy.policy == "tag" %}
-{{			add_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, dyn_val=client.asn) }}
+{{			add_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, dyn_val=client.asn, dyn_val_is_peer_as=True) }}
 {%		endif %}
 {%	endfor %}
 {% endif %}
@@ -520,7 +520,7 @@ match from {{ client.ip }} set community delete NO_ADVERTISE
 {% if ( client.ip|ipaddr_ver == 4 and cfg.blackhole_filtering.policy_ipv4 ) or
       ( client.ip|ipaddr_ver == 6 and cfg.blackhole_filtering.policy_ipv6 ) %}
 # Blackhole request?
-{{ del_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, replace_dyn_val=client.asn) }}
+{{ del_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, replace_dyn_val=client.asn, dyn_val_is_peer_as=True) }}
 # Remove internal communities before accepting the route
 match from {{ client.ip }} community BLACKHOLE set {
 	ext-community delete $INTCOMM_RPKI_INVALID
@@ -534,7 +534,7 @@ match from {{ client.ip }} community BLACKHOLE set {
 {%    endif %}
 allow quick from {{ client.ip }} community BLACKHOLE
 {{ match_communities("allow quick from " ~ client.ip, cfg.communities.blackholing, "") }}
-{{ add_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, dyn_val=client.asn) }}
+{{ add_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, dyn_val=client.asn, dyn_val_is_peer_as=True) }}
 {% endif %}
 
 {% if cfg.filtering.rpki_bgp_origin_validation.enabled and
@@ -569,7 +569,7 @@ match from {{ client.ip }} set {
 	{{ internal_communities_list() }}
 }
 
-{{ del_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, replace_dyn_val=client.asn) }}
+{{ del_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, replace_dyn_val=client.asn, dyn_val_is_peer_as=True) }}
 
 allow quick from {{ client.ip }}
 

@@ -52,6 +52,10 @@
 {%	if comm.std %}
 {%		if replace_peer_as %}
 {{ indent }}bgp_community.delete([{{ write_community(comm.std, "1..64511") }}]);
+{%			for asn_32, asn_16 in asn3216_map.items() %}
+{{ indent }}# {{ asn_16 }} is the 16bit_mapped_asn for {{ asn_32 }}
+{{ indent }}bgp_community.delete([{{ write_community(comm.std, asn_16) }}]);
+{%			endfor %}
 {%		elif replace_dyn_val %}
 {{ indent }}bgp_community.delete([{{ write_community(comm.std, replace_dyn_val=replace_dyn_val) }}]);
 {%		else %}
@@ -83,11 +87,11 @@
 {% endif %}
 {% endmacro %}
 
-{% macro add_communities(comm, tabs=2) %}
+{% macro add_communities(comm, tabs=2, ignore_std=False, replace_dyn_val_for_std=False) %}
 {% set indent = "" %}
 {% if comm %}
-{%	if comm.std %}
-{{ indent }}bgp_community.add({{ write_community(comm.std) }});
+{%	if comm.std and not ignore_std %}
+{{ indent }}bgp_community.add({{ write_community(comm.std, replace_dyn_val=replace_dyn_val_for_std) }});
 {%          set indent = "\t" * tabs %}
 {%	endif %}
 {%	if comm.lrg %}
@@ -110,6 +114,14 @@
 {{ indent }}if peer_as <= 65535 then {
 {{ indent }}	if {{ write_community(comm.std) }} ~ bgp_community then
 {{ indent }}		{{ if_match }}
+{%			if asn3216_map %}
+{{ indent }}} else {
+{{ indent }}	mapped_16bit_asn = get_16bit_mapped_asn(peer_as);
+{{ indent }}	if mapped_16bit_asn > 0 then {
+{{ indent }}		if {{ write_community(comm.std, replace_peer_as="mapped_16bit_asn") }} ~ bgp_community then
+{{ indent }}			{{ if_match }}
+{{ indent }}	}
+{%			endif %}
 {{ indent }}}
 {%		else %}
 {{ indent }}if {{ write_community(comm.std, replace_dyn_val=replace_dyn_val) }} ~ bgp_community then

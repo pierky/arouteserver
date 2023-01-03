@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2022 Pier Carlo Chiodi
+# Copyright (C) 2017-2023 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -427,6 +427,8 @@ class ConfigBuilder(object):
                                          "clients",
                                          general_cfg=self.cfg_general)
 
+        self.asn3216_map = self.cfg_clients.asn3216_map
+
         self.kwargs = kwargs
 
         # Initially None; is set to IRRDB() and finally populated by
@@ -507,6 +509,11 @@ class ConfigBuilder(object):
                         "One or more compatibility issues have been found."
                     )
 
+        # Check overlapping BGP communities again, this time after we know
+        # if there are 16bit private ASNs used to map 32bit ASN clients.
+        self.cfg_general.check_overlapping_communities(
+            mapped_16bit_asns=self.asn3216_map.values()
+        )
 
         if not self.validate_bgpspeaker_specific_configuration():
             raise CompatibilityIssuesError(
@@ -648,6 +655,7 @@ class ConfigBuilder(object):
         self.data["bogons"] = self.cfg_bogons
         self.data["clients"] = self.cfg_clients
         self.data["asns"] = self.cfg_asns
+        self.data["asn3216_map"] = self.asn3216_map
         self.data["irrdb_info"] = self.irrdb_info
         self.data["rpki_roas"] = sorted_rpki_roas()
         self.data["arin_whois_records"] = self.arin_whois_records
@@ -1201,7 +1209,9 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
 
         try:
             self.cfg_general.check_overlapping_communities(
-                allow_private_asns=False)
+                mapped_16bit_asns=self.asn3216_map.values(),
+                allow_private_asns=False
+            )
         except ConfigError as e:
             raise BuilderError(
                 "{}OpenBGPD doesn't allow to delete BGP "

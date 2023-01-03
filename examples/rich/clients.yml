@@ -11,3 +11,11 @@ clients:
     cfg:
       attach_custom_communities:
       - "from_usa"
+  - asn: 197000
+    ip:
+    - "192.0.2.33"
+    - "2001:db8:1:1::33"
+    16bit_mapped_asn: 64512
+    cfg:
+      attach_custom_communities:
+      - "from_europe"

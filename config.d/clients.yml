@@ -67,6 +67,16 @@ clients:
     # session (RFC2385).
     #password: ""
 
+    # Only for 32bit ASNs.
+    # Provides the 16bit ASN used to represent this client's ASN
+    # in the functionalities which are offered via Standard BGP
+    # communities.
+    # It must be an integer in the 64512-65534 range (dedicated
+    # to private use ASNs) and eventually the mapping must be
+    # unique (one private 16bit ASN can be used only for one
+    # 32bit ASN, and viceversa).
+    #16bit_mapped_asn:
+
     # The following configuration statements are optional.
     # Settings provided here override those provided in the
     # general configuration on a client-by-client basis.
@@ -253,3 +263,10 @@ clients:
     ip:
     - "192.0.2.22"
     - "2001:db:1:1::22"
+
+  - asn: 65551
+
+    ip:
+    - "192.0.2.33"
+
+    16bit_mapped_asn: 64512
