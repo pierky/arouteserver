@@ -26,7 +26,7 @@ group "clients" {
 		{{ "client"|include_local_file -}}
 		remote-as {{ client.asn }}
 
-{% if cfg.path_hiding and "6.9"|target_version_ge %}
+{% if cfg.path_hiding %}
 {%		if "7.5"|target_version_ge and "7.5"|target_version_le and client.cfg.add_path %}
 		# This is needed to avoid the bgpd error
 		#	"neighbors with add-path send cannot use 'rde evaluate all'"
@@ -38,9 +38,6 @@ group "clients" {
 {%		endif %}
 {% endif %}
 
-{%	if "6.1"|target_version_le %}
-		softreconfig in yes
-{%	endif %}
 {%	if client.description %}
 		descr "{{ client.description|replace("\"", "")|truncate(31, true, "...", 0) }}"
 {%	endif %}
@@ -82,9 +79,6 @@ group "clients" {
 {%	endif %}
 		enforce neighbor-as no
 
-{% if "6.3"|target_version_le %}
-		announce all
-{% endif %}
 		announce as-4byte yes
 {%	if client.ip|ipaddr_ver == 4 %}
 		announce IPv6 none

@@ -83,7 +83,7 @@
 {%-         endif -%}
 {%-         if left -%}{{ "\n" }}{%- endif -%}
 {%-     endif -%}
-{%-     if comm.lrg and "6.1"|target_version_ge -%}
+{%-     if comm.lrg -%}
 {%-         if "peer_as" in comm.lrg -%}
 {{ left }} large-community {{ delete }}{{ comm.lrg|replace("peer_as", peer_as) }}{{ right_val }}
 {%-         else -%}
@@ -124,7 +124,7 @@
 {%		if comm.ext %}
 {{			"	ext-community delete " ~ comm.ext|convert_ext_comm|replace("peer_as", "*")|replace("dyn_val", "*") }}
 {%		endif %}
-{%		if comm.lrg and "6.1"|target_version_ge %}
+{%		if comm.lrg %}
 {{			"	large-community delete " ~ comm.lrg|replace("peer_as", "*")|replace("dyn_val", "*") }}
 {%		endif %}
 {%	endif %}
@@ -147,7 +147,7 @@ match from group clients source-as {{ roa.asn }} prefix {{ roa.prefix }}
  maxlen {{ roa.max_len }}
 {%-        endif %}
  source-as {{ roa.asn }}
-{%-        if "7.2"|target_version_ge and "expires" in roa %}
+{%-        if "expires" in roa %}
  expires {{ roa.expires }}
 {%-        endif %}
 
