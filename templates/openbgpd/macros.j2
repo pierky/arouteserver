@@ -147,7 +147,7 @@ match from group clients source-as {{ roa.asn }} prefix {{ roa.prefix }}
  maxlen {{ roa.max_len }}
 {%-        endif %}
  source-as {{ roa.asn }}
-{%-        if "expires" in roa %}
+{%-        if "7.2"|target_version_ge and "expires" in roa %}
  expires {{ roa.expires }}
 {%-        endif %}
 
