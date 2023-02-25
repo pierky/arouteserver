@@ -271,167 +271,22 @@ class TestConfigureCmd(ARouteServerTestCase):
 
         self.verify_communities(dic["cfg"]["communities"])
 
-    def test_openbgpd60_simple(self):
-        """Configure command: OpenBGPD 6.0, simple"""
-        self.expected_config["cfg"]["path_hiding"] = False
-        self.expected_config["cfg"]["graceful_shutdown"]["enabled"] = False
+    def test_openbgpd_latest_simple(self):
+        """Configure command: OpenBGPD 7.0, simple"""
         self.expected_config["cfg"]["filtering"]["reject_policy"] = {
             "policy": "tag"
         }
+        latest_version = OpenBGPDConfigBuilder.AVAILABLE_VERSION[-1]
         self.mock_answers([
             "openbgpd",
-            "6.0",
+	    latest_version,
             "999",
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
         ])
         dic = self.configure_and_build(
             OpenBGPDConfigBuilder,
-            target_version="6.0"
-        )
-
-        self.verify_communities(
-            dic["cfg"]["communities"],
-            ext_expected=False,
-            lrg_expected=False
-        )
-
-    def test_openbgpd61_simple(self):
-        """Configure command: OpenBGPD 6.1, simple"""
-        self.expected_config["cfg"]["path_hiding"] = False
-        self.expected_config["cfg"]["graceful_shutdown"]["enabled"] = False
-        self.expected_config["cfg"]["filtering"]["reject_policy"] = {
-            "policy": "tag"
-        }
-        self.mock_answers([
-            "openbgpd",
-            "6.1",
-            "999",
-            "192.0.2.1",
-            "192.0.2.0/24,2001:db8::/32"
-        ])
-        dic = self.configure_and_build(
-            OpenBGPDConfigBuilder,
-            target_version="6.1"
-        )
-
-        self.verify_communities(
-            dic["cfg"]["communities"],
-            ext_expected=False
-        )
-
-    def test_openbgpd62_simple(self):
-        """Configure command: OpenBGPD 6.2, simple"""
-        self.expected_config["cfg"]["path_hiding"] = False
-        self.expected_config["cfg"]["filtering"]["reject_policy"] = {
-            "policy": "tag"
-        }
-        self.mock_answers([
-            "openbgpd",
-            "6.2",
-            "999",
-            "192.0.2.1",
-            "192.0.2.0/24,2001:db8::/32"
-        ])
-        dic = self.configure_and_build(
-            OpenBGPDConfigBuilder,
-            target_version="6.2"
-        )
-
-        self.verify_communities(
-            dic["cfg"]["communities"],
-            ext_expected=False
-        )
-
-    def test_openbgpd64_simple(self):
-        """Configure command: OpenBGPD 6.4, simple"""
-        self.expected_config["cfg"]["path_hiding"] = False
-        self.expected_config["cfg"]["filtering"]["reject_policy"] = {
-            "policy": "tag"
-        }
-        self.mock_answers([
-            "openbgpd",
-            "6.4",
-            "999",
-            "192.0.2.1",
-            "192.0.2.0/24,2001:db8::/32"
-        ])
-        dic = self.configure_and_build(
-            OpenBGPDConfigBuilder,
-            target_version="6.4"
-        )
-
-        self.verify_communities(
-            dic["cfg"]["communities"],
-            ext_expected=False
-        )
-
-    def test_openbgpd65_simple(self):
-        """Configure command: OpenBGPD 6.5, simple"""
-        self.expected_config["cfg"]["path_hiding"] = False
-        self.expected_config["cfg"]["filtering"]["reject_policy"] = {
-            "policy": "tag"
-        }
-        self.mock_answers([
-            "openbgpd",
-            "6.5",
-            "999",
-            "192.0.2.1",
-            "192.0.2.0/24,2001:db8::/32"
-        ])
-        dic = self.configure_and_build(
-            OpenBGPDConfigBuilder,
-            target_version="6.5"
-        )
-
-        self.verify_communities(
-            dic["cfg"]["communities"],
-            ext_expected=False
-        )
-
-    def test_openbgpd69_simple(self):
-        """Configure command: OpenBGPD 6.9, simple"""
-        self.expected_config["cfg"]["path_hiding"] = False
-        self.expected_config["cfg"]["filtering"]["reject_policy"] = {
-            "policy": "tag"
-        }
-        self.mock_answers([
-            "openbgpd",
-            "6.9",
-            "999",
-            "192.0.2.1",
-            "192.0.2.0/24,2001:db8::/32"
-        ])
-        dic = self.configure_and_build(
-            OpenBGPDConfigBuilder,
-            target_version="6.9"
-        )
-
-        self.verify_communities(
-            dic["cfg"]["communities"],
-            ext_expected=False
-        )
-
-    def test_openbgpd69_no_path_hiding(self):
-        """Configure command: OpenBGPD 6.9, path-hiding"""
-
-        # This is to be sure that for OpenBGPD 6.9 the
-        # path hiding mitigation is not automatically
-        # configured.
-        self.expected_config["cfg"]["path_hiding"] = False
-        self.expected_config["cfg"]["filtering"]["reject_policy"] = {
-            "policy": "tag"
-        }
-        self.mock_answers([
-            "openbgpd",
-            "6.9",
-            "999",
-            "192.0.2.1",
-            "192.0.2.0/24,2001:db8::/32"
-        ])
-        dic = self.configure_and_build(
-            OpenBGPDConfigBuilder,
-            target_version="6.9"
+            target_version=latest_version
         )
 
         self.verify_communities(
@@ -440,39 +295,29 @@ class TestConfigureCmd(ARouteServerTestCase):
         )
 
     def test_openbgpd_latest_path_hiding(self):
-        """Configure command: OpenBGPD > 6.9, path-hiding"""
+        """Configure command: OpenBGPD, path-hiding"""
 
         self.expected_config["cfg"]["filtering"]["reject_policy"] = {
             "policy": "tag"
         }
 
-        # This is to be sure that release > 6.9 of  OpenBGPD
-        # get path hiding mitigation automatically configured.
-        # > 6.9 is not released AToW, but hopefully the patches
-        # that are already out at the moment to mitigate the
-        # 'rde evaluate all' issues will be merged when the
-        # next release will be out.
-
         latest_version = OpenBGPDConfigBuilder.AVAILABLE_VERSION[-1]
 
-        if version.parse(latest_version) > version.parse("6.9"):
-            self.mock_answers([
-                "openbgpd",
-                latest_version,
-                "999",
-                "192.0.2.1",
-                "192.0.2.0/24,2001:db8::/32"
-            ])
-            dic = self.configure_and_build(
-                OpenBGPDConfigBuilder,
-                target_version=latest_version
-            )
-            self.verify_communities(
-                dic["cfg"]["communities"],
-                ext_expected=False
-            )
-        else:
-            self.skipTest("latest version <= 6.9")
+        self.mock_answers([
+            "openbgpd",
+            latest_version,
+            "999",
+            "192.0.2.1",
+            "192.0.2.0/24,2001:db8::/32"
+        ])
+        dic = self.configure_and_build(
+            OpenBGPDConfigBuilder,
+            target_version=latest_version
+        )
+        self.verify_communities(
+            dic["cfg"]["communities"],
+            ext_expected=False
+        )
 
     def test_32bit_asn(self):
         """Configure command: 32 bit route server ASN"""

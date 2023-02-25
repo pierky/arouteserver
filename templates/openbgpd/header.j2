@@ -10,7 +10,7 @@ log updates
 
 nexthop qualify via default
 
-{% if cfg.path_hiding and "6.9"|target_version_ge %}
+{% if cfg.path_hiding %}
 rde evaluate all
 {% endif %}
 
