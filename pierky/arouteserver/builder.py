@@ -57,7 +57,7 @@ class ConfigBuilder(object):
 
     DEFAULT_VERSION = None
 
-    IGNORABLE_ISSUES = ["ext-comms-32bit-asn"]
+    IGNORABLE_ISSUES = ["ext-comms-32bit-asn", "roles_not_available"]
 
     def validate_bgpspeaker_specific_configuration(self):
         """Check compatibility between config and target BGP speaker
@@ -736,6 +736,15 @@ class ConfigBuilder(object):
                 return False
             return True
 
+        def to_bgp_role(internal_role):
+            return {
+                "provider": "provider",
+                "rs": "rs_server",
+                "rs-client": "rs_client",
+                "customer": "customer",
+                "peer": "peer"
+            }[internal_role]
+
         env = Environment(
             loader=FileSystemLoader(self.template_dir),
             trim_blocks=True,
@@ -751,6 +760,7 @@ class ConfigBuilder(object):
         env.filters["target_version_ge"] = target_version_ge
         env.filters["target_version_le"] = target_version_le
         env.filters["get_normalized_rtt"] = get_normalized_rtt
+        env.filters["to_bgp_role"] = to_bgp_role
 
         self.enrich_j2_environment(env)
 
@@ -926,6 +936,26 @@ class BIRDConfigBuilder(ConfigBuilder):
                     for client in self.cfg_clients.cfg["clients"]:
                         client["cfg"]["filtering"]["max_prefix"]["count_rejected_routes"] = False
 
+        if version.parse(self.target_version) < version.parse("2.0.11"):
+            if self.cfg_general["filtering"]["roles"]["enabled"]:
+                if not self.process_compatibility_issue(
+                    "roles_not_available",
+                    "RFC9234 roles are not available in BIRD < 2.0.11, but "
+                    "they are enabled in the general.yml file."
+                ):
+                    res = False
+
+            for client in self.cfg_clients.cfg["clients"]:
+                if client["cfg"]["filtering"]["roles"]["enabled"]:
+                    if not self.process_compatibility_issue(
+                        "roles_not_available",
+                        "RFC9234 roles are not available in BIRD < 2.0.11, but "
+                        "they are enabled in the configuration of client {}".format(
+                            client["ip"]
+                        )
+                    ):
+                        res = False
+
         return res
 
     def _include_local_file(self, local_file_id):
@@ -1057,6 +1087,26 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                 )
             ):
                 res = False
+
+        if version.parse(self.target_version) < version.parse("7.5"):
+            if self.cfg_general["filtering"]["roles"]["enabled"]:
+                if not self.process_compatibility_issue(
+                    "roles_not_available",
+                    "RFC9234 roles are not available in OpenBGPD < 7.5, but "
+                    "they are enabled in the general.yml file."
+                ):
+                    res = False
+
+            for client in self.cfg_clients.cfg["clients"]:
+                if client["cfg"]["filtering"]["roles"]["enabled"]:
+                    if not self.process_compatibility_issue(
+                        "roles_not_available",
+                        "RFC9234 roles are not available in OpenBGPD < 7.5, but "
+                        "they are enabled in the configuration of client {}".format(
+                            client["ip"]
+                        )
+                    ):
+                        res = False
 
         peer_as_ext_comms = []
         for comm_name in ConfigParserGeneral.COMMUNITIES_SCHEMA:

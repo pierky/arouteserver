@@ -459,6 +459,19 @@ class ValidatorMaxASPathLen(ConfigParserValidator):
                 "between 1 and 64"
             )
 
+class ValidatorRole(ConfigParserValidator):
+
+    # To keep in sync with to_bgp_role in builder.py
+    VALID_ROLES = ("provider", "rs", "rs-client", "customer", "peer")
+
+    def _validate(self, v):
+        if v.lower() in self.VALID_ROLES:
+            return v.lower()
+        else:
+            raise ConfigError(
+                "Invalid role: {}. Must be one of " + ", ".join(self.VALID_ROLES)
+            )
+
 class ValidatorCommunity(ConfigParserValidator):
 
     EXPECTED_PARTS_CNT = None

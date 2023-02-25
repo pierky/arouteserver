@@ -113,8 +113,16 @@ function must_not_contain() {
   fi
 }
 
-BIRD2_LATEST_VER=2.0.9
-OPENBGPD_LATEST_VER=7.2
+BIRD2_LATEST_VER=$(cat << EOF | python -
+from pierky.arouteserver.builder import BIRDConfigBuilder
+print(BIRDConfigBuilder.AVAILABLE_VERSION[-1])
+EOF
+)
+OPENBGPD_LATEST_VER=$(cat << EOF | python -
+from pierky.arouteserver.builder import OpenBGPDConfigBuilder
+print(OpenBGPDConfigBuilder.AVAILABLE_VERSION[-1])
+EOF
+)
 
 # ---------------------------------------------
 # Build and validate configs
@@ -160,6 +168,55 @@ build_cmd "openbgpd" \
   --target-ver "${OPENBGPD_LATEST_VER}" \
   --output "${OUTPUT_CFG}"
 validate_openbgpd "${OUTPUT_CFG}" "${OPENBGPD_LATEST_VER}"
+
+# BGP roles
+reset
+GENERAL="tests/var/general.yml"
+cat <<EOF >$GENERAL
+cfg:
+  rs_as: 99999999
+  router_id: "192.0.2.2"
+  filtering:
+    roles:
+      enabled: True
+EOF
+CLIENTS="tests/var/clients.yml"
+EXP_ERR="RFC9234 roles are not available"
+TITLE="RFC9234 roles support"
+
+SUB_TEST="$LINENO"
+build_cmd "bird" \
+  --target-ver 1.6.8 \
+  --ip-ver 4 | must_contain "${EXP_ERR}"
+
+OUTPUT_CFG="$(mktemp)"
+SUB_TEST="$LINENO"
+build_cmd "bird" \
+  --target-ver 1.6.8 \
+  --ip-ver 4 \
+  --ignore-issues roles_not_available \
+  --output "${OUTPUT_CFG}" | must_not_contain "${EXP_ERR}"
+validate_bird "${OUTPUT_CFG}" 1.6.8
+
+SUB_TEST="$LINENO"
+build_cmd "bird" \
+  --target-ver ${BIRD2_LATEST_VER} | must_not_contain "${EXP_ERR}"
+
+SUB_TEST="$LINENO"
+build_cmd "openbgpd" \
+  --target-ver 7.4 | must_contain "${EXP_ERR}"
+
+OUTPUT_CFG="$(mktemp)"
+SUB_TEST="$LINENO"
+build_cmd "openbgpd" \
+  --target-ver 7.4 \
+  --ignore-issues roles_not_available \
+  --output "${OUTPUT_CFG}" | must_not_contain "${EXP_ERR}"
+validate_openbgpd "${OUTPUT_CFG}" 7.4
+
+SUB_TEST="$LINENO"
+build_cmd "bird" \
+  --target-ver ${OPENBGPD_LATEST_VER} | must_not_contain "${EXP_ERR}"
 
 # BGP Extended Communities and 32bit ASNs
 reset

@@ -423,6 +423,13 @@ protocol bgp {{ client.id }} {
 	neighbor {{ client.ip }} as {{ client.asn }};
 	rs client;
 
+	{% if client.cfg.filtering.roles.enabled and "2.0.11"|target_version_ge %}
+	local role {{ client.cfg.filtering.roles.get("local_role")|default("rs")|to_bgp_role }};
+	{% if client.cfg.filtering.roles.strict_mode %}
+	require roles on;
+	{% endif %}
+	{% endif %}
+
 	{% if client.password %}
 	password "{{ client.password }}";
 	{% endif -%}

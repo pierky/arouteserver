@@ -15,7 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys
 import re
 
 RE_COMMENT = re.compile("^\s+#\s+([^\s].*)")
@@ -331,6 +330,10 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
                 ]),
                 CfgStatement("general_limit_ipv4", pre_comment=True),
                 CfgStatement("general_limit_ipv6", group_with_previous="general_limit_ipv4")
+            ]),
+            CfgStatement("roles", t="RFC9234 roles", post_comment=True, sub=[
+                CfgStatement("enabled", pre_comment=True),
+                CfgStatement("strict_mode", pre_comment=True),
             ]),
             CfgStatement("reject_policy", t="Reject policy", sub=[
                 CfgStatement("policy", pre_comment=True)

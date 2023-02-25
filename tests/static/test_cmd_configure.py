@@ -94,6 +94,9 @@ class TestConfigureCmd(ARouteServerTestCase):
                         "enabled": True
                     }
                 },
+                "roles": {
+                    "enabled": True
+                }
             },
             "graceful_shutdown": {
                 "enabled": True
@@ -262,11 +265,36 @@ class TestConfigureCmd(ARouteServerTestCase):
         self.expected_config["cfg"]["filtering"]["reject_policy"] = {
             "policy": "tag_and_reject"
         }
+        del self.expected_config["cfg"]["filtering"]["roles"]
 
         dic = self.configure_and_build(
             BIRDConfigBuilder,
             ip_ver=4,
             target_version=BIRDConfigBuilder.DEFAULT_VERSION
+        )
+
+        self.verify_communities(dic["cfg"]["communities"])
+
+    def test_bird_latest_simple(self):
+        """Configure command: BIRD 2.0, latest, simple"""
+        target_version = BIRDConfigBuilder.AVAILABLE_VERSION[-1]
+
+        self.mock_answers([
+            "bird",
+            target_version,
+            "999",
+            "192.0.2.1",
+            "192.0.2.0/24,2001:db8::/32"
+        ])
+
+        self.expected_config["cfg"]["filtering"]["reject_policy"] = {
+            "policy": "tag_and_reject"
+        }
+
+        dic = self.configure_and_build(
+            BIRDConfigBuilder,
+            ip_ver=4,
+            target_version=target_version
         )
 
         self.verify_communities(dic["cfg"]["communities"])
@@ -324,6 +352,8 @@ class TestConfigureCmd(ARouteServerTestCase):
         self.expected_config["cfg"]["filtering"]["reject_policy"] = {
             "policy": "tag_and_reject"
         }
+        del self.expected_config["cfg"]["filtering"]["roles"]
+
         self.expected_config["cfg"]["rs_as"] = 999999
         self.mock_answers([
             "bird",
@@ -364,9 +394,11 @@ class TestConfigureCmd(ARouteServerTestCase):
 
     def test_bird2_simple(self):
         """Configure command: BIRD 2.0, simple"""
+        target_version = BIRDConfigBuilder.AVAILABLE_VERSION[-1]
+
         self.mock_answers([
             "bird",
-            "2.0.8",
+            target_version,
             "999",
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
@@ -377,7 +409,7 @@ class TestConfigureCmd(ARouteServerTestCase):
         }
         dic = self.configure_and_build(
             BIRDConfigBuilder,
-            target_version="2.0.8"
+            target_version=BIRDConfigBuilder.AVAILABLE_VERSION[-1]
         )
 
         self.assertEqual(

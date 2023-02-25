@@ -310,6 +310,26 @@ Route <strong>validity state</strong> is signalled to route server clients using
 
 
 
+{% if cfg.filtering.roles.enabled %}
+<h3>Route leak prevention and detection using roles (<a href="//tools.ietf.org/html/rfc9234">RFC9234</a>)</h3>
+
+<ul>
+<li>
+<p><b>BGP roles</b> are configured and <b>"Only to Customer" (OTC) routes are dropped</b>.</p>
+</li>
+
+<li>
+{% if cfg.filtering.roles.strict_mode %}
+<p>Sessions from clients that don't announce any role are <b>rejected</b> (strict mode).</p>
+{% else %}
+<p>Sessions from clients that don't announce any role are <b>accepted</b> and, in that case, the route leak prevention mechanism is not applied  (backward compatibile mode).</p>
+{% endif %}
+</li>
+
+</ul>
+{% endif %}
+
+
 {% if cfg.filtering.global_black_list_pref %}
 <h3>Rejected prefixes</h3>
 

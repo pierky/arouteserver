@@ -79,6 +79,23 @@ group "clients" {
 {%	endif %}
 		enforce neighbor-as no
 
+{% if client.cfg.filtering.roles.enabled %}
+{%    if "7.8"|target_version_ge %}
+		role {{ client.cfg.filtering.roles.get("local_role")|default("rs") }}
+{%        if client.cfg.filtering.roles.strict_mode %}
+		announce policy enforce
+{%        else %}
+		announce policy yes
+{%        endif %}
+{%    elif "7.5"|target_version_ge %}
+{%        if client.cfg.filtering.roles.strict_mode %}
+		announce policy {{ client.cfg.filtering.roles.get("local_role")|default("rs") }} enforce
+{%        else %}
+		announce policy {{ client.cfg.filtering.roles.get("local_role")|default("rs") }}
+{%        endif %}
+{%    endif %}
+{% endif %}
+
 		announce as-4byte yes
 {%	if client.ip|ipaddr_ver == 4 %}
 		announce IPv6 none

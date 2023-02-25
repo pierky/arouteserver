@@ -1306,6 +1306,10 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "general_limit_ipv4": 170000,
                     "general_limit_ipv6": 12000
                 },
+                "roles": {
+                    "enabled": False,
+                    "strict_mode": False
+                }
             },
             "rtt_thresholds": None,
             "rpki_roas": {
@@ -1429,6 +1433,10 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "general_limit_ipv4": 170000,
                     "general_limit_ipv6": 12000
                 },
+                "roles": {
+                    "enabled": False,
+                    "strict_mode": False
+                }
             },
             "rtt_thresholds": [5, 10, 15, 20, 30, 50, 100, 200, 500],
             "rpki_roas": {

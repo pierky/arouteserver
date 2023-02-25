@@ -186,6 +186,11 @@ class ConfigParserGeneral(ConfigParserBase):
         f["max_prefix"] = OrderedDict()
         m = f["max_prefix"]
 
+        f["roles"] = OrderedDict()
+        r = f["roles"]
+        r["enabled"] = ValidatorBool(default=False)
+        r["strict_mode"] = ValidatorBool(default=False)
+
         m["peering_db"] = OrderedDict()
         m["peering_db"]["enabled"] = ValidatorBool(default=True)
         m["peering_db"]["increment"] = OrderedDict()

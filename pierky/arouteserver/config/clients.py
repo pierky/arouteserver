@@ -114,6 +114,11 @@ class ConfigParserClients(ConfigParserBase):
                         "limit_ipv4": ValidatorUInt(mandatory=False),
                         "limit_ipv6": ValidatorUInt(mandatory=False),
                     },
+                    "roles": {
+                        "enabled": ValidatorBool(mandatory=False),
+                        "strict_mode": ValidatorBool(mandatory=False),
+                        "local_role": ValidatorRole(mandatory=True, default="rs"),
+                    },
                     "reject_policy": {
                         "policy": ValidatorOption("reject_policy",
                                                   ("reject", "tag", "tag_and_reject"),

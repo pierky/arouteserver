@@ -369,6 +369,22 @@ class ConfigureCommand(ARouteServerCommand):
             "PeeringDB is used to fetch networks prefix count."
         )
 
+        if (
+            (
+                self.answers["daemon"] == "bird" and \
+                version.parse(self.answers["version"]) >= version.parse("2.0.11")
+            ) or (
+                self.answers["daemon"] == "openbgpd" and \
+                version.parse(self.answers["version"]) >= version.parse("7.5")
+            )
+        ):
+            filtering["roles"] = {
+                "enabled": True
+            }
+            self.notes.append(
+                "Route leak prevention using roles (RFC9234) is enabled."
+            )
+
         if self.answers["daemon"] == "bird":
             filtering["reject_policy"] = {
                 "policy": "tag_and_reject"

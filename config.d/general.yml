@@ -484,6 +484,47 @@ cfg:
       #general_limit_ipv4: 170000
       #general_limit_ipv6:  12000
 
+    roles:
+      # Route leak prevention and detection using roles can be
+      # enabled here (https://www.rfc-editor.org/rfc/rfc9234).
+      # When enabled, the local role of BGP sessions will be
+      # set to "Route Server (RS)" and the role expected from
+      # client will be "Route Server Client (RS-Client)".
+      # Unless strict-mode will be enabled, clients that do
+      # not announce any role will be handled in backward
+      # compatibility mode and sessions will be established
+      # regularly.
+
+      # Enable the use of roles.
+      #
+      # Can be overwritten on a client-by-client basis.
+      #
+      # Also, the local role (route-server side) can be set on
+      # a client-by-client basis in the clients.yml file.
+      #
+      # OpenBGPD: this feature is available only from release 7.5.
+      # Please note: when a route tagged with the OTC (Only To
+      # Customer) attribute is received over a session handled
+      # in backward compatible mode (so, where the client does
+      # not announce any role), OpenBGPD (till 7.7) accepts it,
+      # even though this is a sub-optimal behaviour according to
+      # the RFC. Details on
+      # https://github.com/openbgpd-portable/openbgpd-portable/issues/51
+      #
+      # BIRD: this feature is available only from release 2.0.11.
+      enabled: False
+
+      # Configure RFC9234 "strict mode", in which the receipt
+      # of a BGP Role Capability from the client is required.
+      # When operating in the "strict mode", if the BGP Role
+      # Capability is sent but one is not received, the
+      # connection is rejected.
+      #
+      # Can be overwritten on a client-by-client basis.
+      #
+      # Default: False
+      strict_mode: False
+
     reject_policy:
       # The route server can be configured to immediately discard the
       # routes that are considered to be rejected or to keep them and

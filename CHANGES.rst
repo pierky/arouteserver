@@ -10,6 +10,8 @@ next release
 
   See `GitHub PR 117 <https://github.com/pierky/arouteserver/pull/117>`__.
 
+- New: add support for `BIRD 2.0.11 <https://bird.network.cz/pipermail/bird-users/2022-December/016431.html>`__, also added to the integration testing suite.
+
 - New: mapping of 32bit ASNs to 16bit private ASNs for announcement control standard BGP communities.
 
   A new feature is added to allow 32bit ASN client to be mapped to 16bit ASNs in the standard BGP communities used for announcement control. This feature allows clients to use the 16bit mapped ASN as the ``peer_as`` value for standard BGP communities like *do not announce to $PEER*. In those communities, the 32bit ASN will be represented by the 16bit value which is mapped to it.
@@ -17,6 +19,17 @@ next release
   For details on how to configure this feature, see the documentation, `"BGP Communities" section <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#bgp-communities>`__.
 
   See also `GitHub issue 101 <https://github.com/pierky/arouteserver/issues/101>`__.
+
+- New: add support for `RFC9234 Route Leak Prevention and Detection Using Roles <https://www.rfc-editor.org/rfc/rfc9234>`__.
+
+  A new configuration option is available in general.yml to enable RFC9234 roles (supported by BIRD >= 2.0.11 and OpenBGPD >= 7.5).
+  When that's set, BGP sessions on the route server are configured to announce the route-server role and routes received from clients and tagged with the OTC (Only To Customer) attribute are dropped.
+
+  This option can be enabled in backward compatibility mode in the general.yml file, and can also be tuned on a client-by-client basis via the clients.yml file.
+
+  Details can be found in the `documentation page of general.yml <https://arouteserver.readthedocs.io/en/latest/GENERAL.html#rfc9234-roles-roles>`__.
+
+Please note: starting with the next release, the default target version used to build BIRD configurations (when the ``--target-version`` argument is not given) will be the latest from the 2.x major version; until now it was 1.6.8. Operators will need to use the ``--target-version 1.6.8`` command line argument to build BIRD 1.x compatible configurations.
 
 1.19.0
 ------

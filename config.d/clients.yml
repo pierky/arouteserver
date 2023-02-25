@@ -243,6 +243,30 @@ clients:
           #limit_ipv4: 170000
           #limit_ipv6:  12000
 
+        roles:
+          # This section can be used to override the settings
+          # that are inherited from the general.yml file.
+          #
+          # If roles are disabled at the general.yml file level
+          # they can be enabled here, on a client-by-client
+          # basis. Similarly, if they are globally enabled,
+          # they can be disabled here.
+          # Also strict mode can be enabled or disabled on a
+          # client level.
+          # In addition, the specific role configured for
+          # the BGP session towards this client can be
+          # changed, by setting the 'local_role'
+          # (route-server side) value.
+          #
+          #enabled: False
+
+          #strict_mode: False
+
+          # Can be one of "provider", "rs", "rs-client",
+          # "customer", "peer".
+          #
+          #local_role: rs
+
         reject_policy:
           #policy: "reject"
 
