@@ -1,0 +1,57 @@
+{% if ":" in data.AS101_IPAddress %}
+{%    set ip_ver = "6" %}
+{% else %}
+{%    set ip_ver = "4" %}
+{% endif %}
+router id 192.0.2.101;
+
+log "/var/log/bird.log" all;
+log syslog all;
+debug protocols { states, routes, filters, interfaces, events };
+
+timeformat base         iso long;
+timeformat log          iso long;
+timeformat protocol     iso long;
+timeformat route        iso long;
+
+protocol device {};
+
+ipv4 table master4 sorted;
+ipv6 table master6 sorted;
+
+protocol static {
+	ipv{{ ip_ver }} { table master{{ ip_ver }}; };
+	route {{ data.AS101_to_AS1 }} unreachable;
+}
+
+filter to_AS1 {
+	if net = {{ data.AS101_to_AS1 }} then accept;
+	reject;
+}
+
+protocol bgp AS1 {
+	description "AS1 lateral peer";
+
+	local as 101;
+	neighbor {{ data.AS1_IPAddress }} as 1;
+
+	local role peer;
+
+	ttl security off;
+
+	ipv4 {
+		table master4;
+		import table on;
+		import keep filtered on;
+		import none;
+		export filter to_AS1;
+	};
+
+	ipv6 {
+		table master6;
+		import table on;
+		import keep filtered on;
+		import none;
+		export filter to_AS1;
+	};
+}

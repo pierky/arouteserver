@@ -213,6 +213,8 @@ class Route(object):
 
         localpref (int): local-pref.
 
+        otc (int): the OTC (Only To Customer) attribute, if present.
+
         reject_reasons (list): list of integers that identify the reasons
             for which the route is considered to be rejected.
     """
@@ -276,6 +278,9 @@ class Route(object):
         self.localpref = kwargs.get("localpref", None)
         if self.localpref:
             self.localpref = int(self.localpref)
+        self.otc = kwargs.get("otc", None)
+        if self.otc:
+            self.otc = int(self.otc)
         self.filtered = kwargs.get("filtered", False)
         self.best = kwargs.get("best", None)
         self.std_comms = self._parse_std_bgp_communities(kwargs.get("std_comms", None))
@@ -338,6 +343,7 @@ class Route(object):
             "as_path": self.as_path,
             "next_hop": self.next_hop,
             "localpref": self.localpref,
+            "otc": self.otc,
             "filtered": self.filtered,
             "reject_reasons": ", ".join(map(str, sorted(self.reject_reasons))),
             "best": self.best,
@@ -352,11 +358,19 @@ class Route(object):
             "  std comms: {std_comms}\n"
             "  ext comms: {ext_comms}\n"
             "  lrg comms: {lrg_comms}\n"
-            "  best: {best}, LOCAL_PREF: {localpref}\n"
+            "  best: {best}, LOCAL_PREF: {localpref}"
+        )
+
+        if self.otc is not None:
+            s += ", OTC: {}".format(self.otc)
+
+        s += (
+            "\n"
             "  filtered: {filtered} ({reject_reasons})\n".format(
                 **self.to_dict()
             )
         )
+
         for line in s.split("\n"):
             f.write(line.rstrip() + "\n")
 

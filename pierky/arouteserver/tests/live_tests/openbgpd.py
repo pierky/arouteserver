@@ -216,6 +216,8 @@ class OpenBGPDInstance(object):
                 route["ext_comms"] = line.split(": ")[1]
             elif line.startswith("Large Communities:"):
                 route["lrg_comms"] = line.split(": ")[1]
+            elif line.startswith("OTC:"):
+                route["otc"] = line.split(": ")[1]
             last_line_new_route = False
 
         if last_line_new_route:
@@ -238,7 +240,17 @@ class OpenBGPDInstance(object):
         out = self.run_cmd(
             "bgpctl -n show ip bgp detail"
         )
-        return self._parse_routes(out)
+        routes = self._parse_routes(out)
+
+        # Add rejected routes.
+        out = self.run_cmd(
+            "bgpctl -n show ip bgp detail error"
+        )
+        for rejected_route in self._parse_routes(out):
+            rejected_route.filtered = True
+            routes.append(rejected_route)
+
+        return routes
 
     def _get_routes_from_all_sources(self):
         self.routes = {

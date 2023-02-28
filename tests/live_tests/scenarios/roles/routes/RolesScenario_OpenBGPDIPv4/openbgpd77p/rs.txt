@@ -1,0 +1,21 @@
+{prefix}, AS_PATH: {as_path}, NEXT_HOP: {next_hop}, via {via}
+  std comms: {std_comms}
+  ext comms: {ext_comms}
+  lrg comms: {lrg_comms}
+  best: {best}, LOCAL_PREF: {localpref}
+  filtered: False ()
+
+{prefix}, AS_PATH: {as_path}, NEXT_HOP: {next_hop}, via {via}
+  std comms: {std_comms}
+  ext comms: {ext_comms}
+  lrg comms: {lrg_comms}
+  best: {best}, LOCAL_PREF: {localpref}, OTC: 101
+  filtered: False ()
+
+{prefix}, AS_PATH: {as_path}, NEXT_HOP: {next_hop}, via {via}
+  std comms: {std_comms}
+  ext comms: {ext_comms}
+  lrg comms: {lrg_comms}
+  best: {best}, LOCAL_PREF: {localpref}, OTC: 202
+  filtered: True ()
+

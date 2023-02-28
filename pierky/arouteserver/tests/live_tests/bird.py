@@ -251,6 +251,8 @@ class BIRDInstance(DockerInstance, BGPSpeakerInstance):
                         route["ext_comms"] = line.split(": ")[1].strip()
                     if "BGP.local_pref:" in line:
                         route["localpref"] = line.split(": ")[1].strip()
+                    if "BGP.otc:" in line:
+                        route["otc"] = int(line.split(": ")[1].strip())
             add_route(route)
             route = {}
 
