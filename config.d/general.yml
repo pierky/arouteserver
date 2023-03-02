@@ -502,13 +502,9 @@ cfg:
       # Also, the local role (route-server side) can be set on
       # a client-by-client basis in the clients.yml file.
       #
-      # OpenBGPD: this feature is available only from release 7.5.
-      # Please note: when a route tagged with the OTC (Only To
-      # Customer) attribute is received over a session handled
-      # in backward compatible mode (so, where the client does
-      # not announce any role), OpenBGPD (till 7.7) accepts it,
-      # even though this is a sub-optimal behaviour according to
-      # the RFC. Details on
+      # OpenBGPD: this feature is available only from release 7.5,
+      # but its usage is discouraged by developers until 7.8.
+      # Details on
       # https://github.com/openbgpd-portable/openbgpd-portable/issues/51
       #
       # BIRD: this feature is available only from release 2.0.11.

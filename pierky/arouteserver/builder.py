@@ -998,7 +998,8 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                         "add_path", "max_prefix_action",
                         "max_prefix_count_rejected_routes",
                         "extended_communities",
-                        "internal_communities"]
+                        "internal_communities",
+                        "roles_discouraged"]
 
     def _include_local_file(self, local_file_id):
         return 'include "{}"\n\n'.format(
@@ -1088,25 +1089,46 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             ):
                 res = False
 
-        if version.parse(self.target_version) < version.parse("7.5"):
-            if self.cfg_general["filtering"]["roles"]["enabled"]:
+        if self.cfg_general["filtering"]["roles"]["enabled"]:
+            if version.parse(self.target_version) < version.parse("7.5"):
                 if not self.process_compatibility_issue(
                     "roles_not_available",
                     "RFC9234 roles are not available in OpenBGPD < 7.5, but "
                     "they are enabled in the general.yml file."
                 ):
                     res = False
+            elif version.parse(self.target_version) <= version.parse("7.7"):
+                if not self.process_compatibility_issue(
+                    "roles_discouraged",
+                    "Implementation of RFC9234 roles in OpenBGPD <= 7.7 "
+                    "is discouraged by the developers "
+                    "(see https://github.com/openbgpd-portable/openbgpd-portable/issues/51) "
+                    "but they are enabled in the general.yml file."
+                ):
+                    res = False
 
             for client in self.cfg_clients.cfg["clients"]:
                 if client["cfg"]["filtering"]["roles"]["enabled"]:
-                    if not self.process_compatibility_issue(
-                        "roles_not_available",
-                        "RFC9234 roles are not available in OpenBGPD < 7.5, but "
-                        "they are enabled in the configuration of client {}".format(
-                            client["ip"]
-                        )
-                    ):
-                        res = False
+                    if version.parse(self.target_version) < version.parse("7.5"):
+                        if not self.process_compatibility_issue(
+                            "roles_not_available",
+                            "RFC9234 roles are not available in OpenBGPD < 7.5, but "
+                            "they are enabled in the configuration of client {}".format(
+                                client["ip"]
+                            )
+                        ):
+                            res = False
+                    elif version.parse(self.target_version) <= version.parse("7.7"):
+                        if not self.process_compatibility_issue(
+                            "roles_discouraged",
+                            "Implementation of RFC9234 roles in OpenBGPD <= 7.7 "
+                            "is discouraged by the developers "
+                            "(see https://github.com/openbgpd-portable/openbgpd-portable/issues/51) "
+                            "but they are enabled in the configuration of client {}".format(
+                                client["ip"]
+                            )
+                        ):
+                            res = False
 
         peer_as_ext_comms = []
         for comm_name in ConfigParserGeneral.COMMUNITIES_SCHEMA:

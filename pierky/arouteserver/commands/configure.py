@@ -375,7 +375,7 @@ class ConfigureCommand(ARouteServerCommand):
                 version.parse(self.answers["version"]) >= version.parse("2.0.11")
             ) or (
                 self.answers["daemon"] == "openbgpd" and \
-                version.parse(self.answers["version"]) >= version.parse("7.5")
+                version.parse(self.answers["version"]) >= version.parse("7.8")
             )
         ):
             filtering["roles"] = {

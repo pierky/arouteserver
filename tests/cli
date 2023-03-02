@@ -218,6 +218,16 @@ SUB_TEST="$LINENO"
 build_cmd "bird" \
   --target-ver ${OPENBGPD_LATEST_VER} | must_not_contain "${EXP_ERR}"
 
+EXP_ERR="Implementation of RFC9234 roles in OpenBGPD <= 7.7 is discouraged"
+SUB_TEST="$LINENO"
+build_cmd "openbgpd" \
+  --target-ver 7.5 | must_contain "${EXP_ERR}"
+
+# Remove this check when latest will be 7.8.
+SUB_TEST="$LINENO"
+build_cmd "openbgpd" \
+  --target-ver ${OPENBGPD_LATEST_VER} | must_contain "${EXP_ERR}"
+
 # BGP Extended Communities and 32bit ASNs
 reset
 GENERAL="tests/var/general.yml"

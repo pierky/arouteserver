@@ -22,7 +22,7 @@ next release
 
 - New: add support for `RFC9234 Route Leak Prevention and Detection Using Roles <https://www.rfc-editor.org/rfc/rfc9234>`__.
 
-  A new configuration option is available in general.yml to enable RFC9234 roles (supported by BIRD >= 2.0.11 and OpenBGPD >= 7.5).
+  A new configuration option is available in general.yml to enable RFC9234 roles (supported by BIRD >= 2.0.11 and OpenBGPD >= 7.5, even though `discouraged until 7.8 will be out <https://github.com/openbgpd-portable/openbgpd-portable/issues/51>`__).
   When that's set, BGP sessions on the route server are configured to announce the route-server role and routes received from clients and tagged with the OTC (Only To Customer) attribute are dropped.
 
   This option can be enabled in backward compatibility mode in the general.yml file, and can also be tuned on a client-by-client basis via the clients.yml file.

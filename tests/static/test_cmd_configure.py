@@ -17,7 +17,6 @@ import copy
 import os
 import shutil
 import tempfile
-from packaging import version
 try:
     import mock
 except ImportError:
@@ -299,15 +298,45 @@ class TestConfigureCmd(ARouteServerTestCase):
 
         self.verify_communities(dic["cfg"]["communities"])
 
+    def test_openbgpd_latest_simple_75(self):
+        """Configure command: OpenBGPD 7.5, simple"""
+        self.expected_config["cfg"]["filtering"]["reject_policy"] = {
+            "policy": "tag"
+        }
+
+        del self.expected_config["cfg"]["filtering"]["roles"]
+
+        latest_version = OpenBGPDConfigBuilder.AVAILABLE_VERSION[-1]
+        self.mock_answers([
+            "openbgpd",
+            "7.5",
+            "999",
+            "192.0.2.1",
+            "192.0.2.0/24,2001:db8::/32"
+        ])
+        dic = self.configure_and_build(
+            OpenBGPDConfigBuilder,
+            target_version=latest_version
+        )
+
+        self.verify_communities(
+            dic["cfg"]["communities"],
+            ext_expected=False
+        )
+
     def test_openbgpd_latest_simple(self):
         """Configure command: OpenBGPD 7.0, simple"""
         self.expected_config["cfg"]["filtering"]["reject_policy"] = {
             "policy": "tag"
         }
+
+        # To be removed when latest version will be 7.8
+        del self.expected_config["cfg"]["filtering"]["roles"]
+
         latest_version = OpenBGPDConfigBuilder.AVAILABLE_VERSION[-1]
         self.mock_answers([
             "openbgpd",
-	    latest_version,
+            latest_version,
             "999",
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"
@@ -328,6 +357,9 @@ class TestConfigureCmd(ARouteServerTestCase):
         self.expected_config["cfg"]["filtering"]["reject_policy"] = {
             "policy": "tag"
         }
+
+        # To be removed when latest version will be 7.8
+        del self.expected_config["cfg"]["filtering"]["roles"]
 
         latest_version = OpenBGPDConfigBuilder.AVAILABLE_VERSION[-1]
 
