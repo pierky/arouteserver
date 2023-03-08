@@ -1,14 +1,7 @@
-{prefix}, AS_PATH: {as_path}, NEXT_HOP: {next_hop}, via {via}
-  std comms: {std_comms}
-  ext comms: {ext_comms}
-  lrg comms: {lrg_comms}
-  best: {best}, LOCAL_PREF: {localpref}
-  filtered: False ()
-
-{prefix}, AS_PATH: {as_path}, NEXT_HOP: {next_hop}, via {via}
-  std comms: {std_comms}
-  ext comms: {ext_comms}
-  lrg comms: {lrg_comms}
-  best: {best}, LOCAL_PREF: {localpref}
+3001::/48, AS_PATH: 1, NEXT_HOP: 2001:db8:1:1::11, via 2001:db8:1:1::11
+  std comms:
+  ext comms:
+  lrg comms:
+  best: True, LOCAL_PREF: 100
   filtered: False ()
 

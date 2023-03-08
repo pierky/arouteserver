@@ -6,8 +6,8 @@ Total test cases per BGP speaker
 =============== ========= ============ ============ ===========  
 **BGP speaker** **Total** **Passed ✔** **Failed ✖** **Skipped** 
 BIRD            830       821          0            9           
-BIRD v2         834       825          0            9           
-OpenBGPD 7.7    448       445          0            3           
+BIRD v2         844       835          0            9           
+OpenBGPD 7.7    458       453          0            5           
 =============== ========= ============ ============ ===========  
 
 Scenarios
@@ -902,6 +902,30 @@ reconfigure                                              ✔        ✔         
 rs should have best toward AS1                           ✔        ✔           ✔                
 rs should receive prefix from both AS1 and AS2           ✔        ✔           ✔                
 ======================================================== ======== =========== ================   
+
+roles, IPv4
++++++++++++
+
+==================================== ======== =========== ================   
+**Test**                             **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+OTC is attached to routes without it          ✔           ✔                
+log contains errors                           ✔           ✔                
+routes expected on AS2                        ✔           ✔                
+routes with OTC from AS1                      ✔           skip             
+routes with OTC from AS2 are dropped          ✔           ✔                
+==================================== ======== =========== ================   
+
+roles, IPv6
++++++++++++
+
+==================================== ======== =========== ================   
+**Test**                             **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+OTC is attached to routes without it          ✔           ✔                
+log contains errors                           ✔           ✔                
+routes expected on AS2                        ✔           ✔                
+routes with OTC from AS1                      ✔           skip             
+routes with OTC from AS2 are dropped          ✔           ✔                
+==================================== ======== =========== ================   
 
 tag prefix/origin empty AS-SET, IPv4
 ++++++++++++++++++++++++++++++++++++

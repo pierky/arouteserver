@@ -358,11 +358,11 @@ class Route(object):
             "  std comms: {std_comms}\n"
             "  ext comms: {ext_comms}\n"
             "  lrg comms: {lrg_comms}\n"
-            "  best: {best}, LOCAL_PREF: {localpref}"
+            "  best: {best}, LOCAL_PREF: {localpref}".format(**self.to_dict())
         )
 
         if self.otc is not None:
-            s += ", OTC: {}".format(self.otc)
+            s += ", OTC: {otc}".format(**self.to_dict())
 
         s += (
             "\n"

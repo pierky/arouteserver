@@ -1,7 +1,7 @@
-{prefix}, AS_PATH: {as_path}, NEXT_HOP: {next_hop}, via {via}
-  std comms: {std_comms}
-  ext comms: {ext_comms}
-  lrg comms: {lrg_comms}
-  best: {best}, LOCAL_PREF: {localpref}, OTC: 101
+101.1.0.0/16, AS_PATH: 101, NEXT_HOP: 192.0.2.101, via 192.0.2.101
+  std comms:
+  ext comms:
+  lrg comms:
+  best: True, LOCAL_PREF: 100, OTC: 101
   filtered: False ()
 
