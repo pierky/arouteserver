@@ -900,6 +900,68 @@ specific client.
 
 
 
+RFC9234 roles: ``roles``
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Route leak prevention and detection using roles can be
+enabled here (https://www.rfc-editor.org/rfc/rfc9234).
+When enabled, the local role of BGP sessions will be
+set to "Route Server (RS)" and the role expected from
+client will be "Route Server Client (RS-Client)".
+Unless strict-mode will be enabled, clients that do
+not announce any role will be handled in backward
+compatibility mode and sessions will be established
+regularly.
+
+- ``enabled``:
+  Enable the use of roles.
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+  Also, the local role (route-server side) can be set on
+  a client-by-client basis in the clients.yml file.
+
+
+  OpenBGPD: this feature is available only from release 7.5,
+  but its usage is discouraged by developers until 7.8.
+  Details on
+  https://github.com/openbgpd-portable/openbgpd-portable/issues/51
+
+
+  BIRD: this feature is available only from release 2.0.11.
+
+  Example:
+
+  .. code:: yaml
+
+     enabled: False
+
+
+
+- ``strict_mode``:
+  Configure RFC9234 "strict mode", in which the receipt
+  of a BGP Role Capability from the client is required.
+  When operating in the "strict mode", if the BGP Role
+  Capability is sent but one is not received, the
+  connection is rejected.
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+  Default: **False**
+
+  Example:
+
+  .. code:: yaml
+
+     strict_mode: False
+
+
+
+
 Reject policy: ``reject_policy``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

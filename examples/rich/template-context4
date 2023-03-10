@@ -401,6 +401,9 @@ cfg:
     reject_invalid_as_in_as_path: true
     reject_policy:
       policy: reject
+    roles:
+      enabled: true
+      strict_mode: false
     rpki_bgp_origin_validation:
       enabled: true
       reject_invalid: true
@@ -824,6 +827,10 @@ clients:
       reject_invalid_as_in_as_path: true
       reject_policy:
         policy: reject
+      roles:
+        enabled: true
+        local_role: rs
+        strict_mode: false
       rpki_bgp_origin_validation:
         enabled: true
         reject_invalid: true
@@ -879,6 +886,10 @@ clients:
       reject_invalid_as_in_as_path: true
       reject_policy:
         policy: reject
+      roles:
+        enabled: true
+        local_role: rs
+        strict_mode: false
       rpki_bgp_origin_validation:
         enabled: true
         reject_invalid: true
@@ -932,6 +943,10 @@ clients:
       reject_invalid_as_in_as_path: true
       reject_policy:
         policy: reject
+      roles:
+        enabled: true
+        local_role: rs
+        strict_mode: false
       rpki_bgp_origin_validation:
         enabled: true
         reject_invalid: true
@@ -987,6 +1002,10 @@ clients:
       reject_invalid_as_in_as_path: true
       reject_policy:
         policy: reject
+      roles:
+        enabled: true
+        local_role: rs
+        strict_mode: false
       rpki_bgp_origin_validation:
         enabled: true
         reject_invalid: true
@@ -1040,6 +1059,10 @@ clients:
       reject_invalid_as_in_as_path: true
       reject_policy:
         policy: reject
+      roles:
+        enabled: true
+        local_role: rs
+        strict_mode: false
       rpki_bgp_origin_validation:
         enabled: true
         reject_invalid: true
@@ -1389,6 +1412,7 @@ never_via_route_servers_asns
 - 33983
 - 134022
 - 3754
+- 46887
 - 264424
 - 3630
 - 7862
@@ -1478,12 +1502,16 @@ never_via_route_servers_asns
 - 202351
 - 272174
 - 149587
+- 393731
+- 329210
+- 206003
 - 1273
 - 2119
 - 11260
 - 714
 - 36459
 - 202793
+- 135391
 - 26068
 - 135706
 - 132563

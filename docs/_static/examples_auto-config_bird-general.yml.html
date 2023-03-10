@@ -268,6 +268,20 @@ Route <strong>validity state</strong> is signalled to route server clients using
 
 
 
+<h3>Route leak prevention and detection using roles (<a href="//tools.ietf.org/html/rfc9234">RFC9234</a>)</h3>
+
+<ul>
+<li>
+<p><b>BGP roles</b> are configured and <b>"Only to Customer" (OTC) routes are dropped</b>.</p>
+</li>
+
+<li>
+<p>Sessions from clients that don't announce any role are <b>accepted</b> anyway (backward compatibility mode).</p>
+</li>
+
+</ul>
+
+
 <h3>Rejected prefixes</h3>
 
 <ul>

@@ -14,7 +14,7 @@ next release
 
 - New: mapping of 32bit ASNs to 16bit private ASNs for announcement control standard BGP communities.
 
-  A new feature is added to allow 32bit ASN client to be mapped to 16bit ASNs in the standard BGP communities used for announcement control. This feature allows clients to use the 16bit mapped ASN as the ``peer_as`` value for standard BGP communities like *do not announce to $PEER*. In those communities, the 32bit ASN will be represented by the 16bit value which is mapped to it.
+  A new feature is added to allow 32bit ASN clients to be mapped to 16bit ASNs in the standard BGP communities used for announcement control. This feature allows clients to use the 16bit mapped ASN as the ``peer_as`` value for standard BGP communities like *do not announce to $PEER*. In those communities, the 32bit ASN will be represented by the 16bit value which is mapped to it.
 
   For details on how to configure this feature, see the documentation, `"BGP Communities" section <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#bgp-communities>`__.
 

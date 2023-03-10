@@ -10,6 +10,7 @@
    LIVETESTS_SCENARIOS_max_prefix
    LIVETESTS_SCENARIOS_path_hiding
    LIVETESTS_SCENARIOS_rich_example
+   LIVETESTS_SCENARIOS_roles
    LIVETESTS_SCENARIOS_rpki
    LIVETESTS_SCENARIOS_rpki_bov_comms
    LIVETESTS_SCENARIOS_rpki_rtr_example
