@@ -187,7 +187,7 @@ Also, the following ASNs are always included:
 {% if cfg.filtering.roles.strict_mode %}
 * Sessions from clients that don't announce any role are **rejected** (strict mode).
 {% else %}
-* Sessions from clients that don't announce any role are **accepted** and, in that case, the route leak prevention mechanism is not applied (backward compatibile mode).
+* Sessions from clients that don't announce any role are **accepted** anyway (backward compatibility mode).
 {% endif %}
 
 {% endif %}
