@@ -1,5 +1,10 @@
 {% from 'macros.j2' import write_prefix_list %}
 {% from 'macros.j2' import write_communities_table_row %}
+{% macro anchor(id) %}
+<span class="ars-anchor"><a class="text-muted small" href="#{{id}}" id="{{id}}">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16"> <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/> <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/> </svg>
+</a></span>
+{% endmacro %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +14,9 @@
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://code.jquery.com/jquery.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    .ars-anchor a { text-decoration: none; color: @text-color; }
+  </style>
 </head>
 <body>
 <div class="container-fluid">
@@ -17,23 +25,23 @@
 
 <h1>Configuration of route server {{ cfg.router_id }} at AS{{ cfg.rs_as }}</h1>
 
-<h2>BGP sessions default configuration</h2>
+<h2>BGP sessions default configuration {{ anchor("bgp_sessions_default_configuration") }}</h2>
 
 <ul>
 <li><p><strong>{% if cfg.passive %}Passive{% else %}Active{% endif %}</strong> sessions are configured toward neighbors.</p></li>
 
-<li><p>GTSM (Generalized TTL Security Mechanism - <a href="//tools.ietf.org/html/rfc5082">RFC5082</a>) is <strong>{% if cfg.gtsm %}enabled{% else %}disabled{% endif %}</strong> on sessions toward the neighbors.</p></li>
+<li><p>GTSM (Generalized TTL Security Mechanism - <a href="https://tools.ietf.org/html/rfc5082">RFC5082</a>) is <strong>{% if cfg.gtsm %}enabled{% else %}disabled{% endif %}</strong> on sessions toward the neighbors.</p></li>
 
 {% if cfg.add_path %}
-<li><p><strong>ADD-PATH</strong> capability (<a href="//tools.ietf.org/html/rfc7911">RFC7911</a>) is negotiaded by default; the route server is configured as "able to send multiple paths to its peer".</p></li>
+<li><p><strong>ADD-PATH</strong> capability (<a href="https://tools.ietf.org/html/rfc7911">RFC7911</a>) is negotiaded by default; the route server is configured as "able to send multiple paths to its peer".</p></li>
 {% else %}
-<li><p><strong>ADD-PATH</strong> capability (<a href="//tools.ietf.org/html/rfc7911">RFC7911</a>) is <strong>not</strong> negotiated by default.</p></li>
+<li><p><strong>ADD-PATH</strong> capability (<a href="https://tools.ietf.org/html/rfc7911">RFC7911</a>) is <strong>not</strong> negotiated by default.</p></li>
 {% endif %}
 </ul>
 
 
 
-<h2>Route server general behaviours</h2>
+<h2>Route server general behaviours {{ anchor("route_server_general_behaviours") }}</h2>
 
 <ul>
 <li><p>Route server ASN is <strong>{% if not cfg.prepend_rs_as %}not {% endif %}prepended</strong> to the AS_PATH of routes announced to clients (<a href="https://tools.ietf.org/html/rfc7947#section-2.2.2.1">RFC7947 section 2.2.2.1</a>).</p></li>
@@ -43,11 +51,11 @@
 
 
 
-<h2>Default filtering policy</h2>
+<h2>Default filtering policy {{ anchor("default_filtering_policy") }}</h2>
 
 
 
-<h3>NEXT_HOP attribute</h3>
+<h3>NEXT_HOP attribute {{ anchor("next_hop_attribute") }}</h3>
 
 <ul>
 <li><p>The route server verifies that the NEXT_HOP attribute of routes received from a client matches the <strong>IP address of the client itself</strong>
@@ -62,7 +70,7 @@ or one of the <strong>IP addresses of other clients from the same AS</strong>. T
 
 
 
-<h3>AS_PATH attribute</h3>
+<h3>AS_PATH attribute {{ anchor("as_path_attribute") }}</h3>
 
 <ul>
 <li><p>Routes whose <strong>AS_PATH is longer than {{ cfg.filtering.max_as_path_len }}</strong> ASNs are rejected.</p></li>
@@ -70,7 +78,7 @@ or one of the <strong>IP addresses of other clients from the same AS</strong>. T
 <li><p>The <strong>left-most ASN</strong> in the AS_PATH of any route announced to the route server must be the ASN of the announcing client.</p></li>
 
 {% if cfg.filtering.reject_invalid_as_in_as_path %}
-<li><p>Routes whose AS_PATH contains <a href="http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html"><strong>private or invalid ASNs</strong></a> are rejected.</p></li>
+<li><p>Routes whose AS_PATH contains <strong>private or invalid ASNs</strong> are rejected.</p></li>
 {% endif %}
 
 {% if cfg.filtering.transit_free.action %}
@@ -116,7 +124,7 @@ Also, the following ASNs are always included:
 
 
 
-<h3>IRRDBs prefix/origin ASN enforcement</h3>
+<h3>IRRDBs prefix/origin ASN enforcement {{ anchor("irrdbs_prefix_origin_asn_enforcement") }}</h3>
 
 <ul>
 <li><p>
@@ -191,7 +199,7 @@ Route <strong>validity state</strong> is signalled to route server clients using
 
 
 
-<h3>RPKI BGP Prefix Origin Validation</h3>
+<h3>RPKI BGP Prefix Origin Validation {{ anchor("rpki_bgp_prefix_origin_validation") }}</h3>
 
 <ul>
 
@@ -258,7 +266,7 @@ Route <strong>validity state</strong> is signalled to route server clients using
 
 {% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled or
 	cfg.filtering.rpki_bgp_origin_validation.enabled %}
-<h3>RPKI ROAs</h3>
+<h3>RPKI ROAs {{ anchor("rpki_roas") }}</h3>
 
 <ul>
 
@@ -273,7 +281,7 @@ Route <strong>validity state</strong> is signalled to route server clients using
 
 
 {% if cfg.filtering.max_prefix.action %}
-<h3>Max-pref limit</h3>
+<h3>Max-pref limit {{ anchor("max_pref_limit") }}</h3>
 <ul>
 	<li><p>A <strong>max-prefix limit</strong> is enforced; when it triggers,
 	{%	if cfg.filtering.max_prefix.action == "shutdown" %}
@@ -296,7 +304,7 @@ Route <strong>validity state</strong> is signalled to route server clients using
 
 
 
-<h3>Min/max prefix length</h3>
+<h3>Min/max prefix length {{ anchor("min_max_prefix_length") }}</h3>
 
 <ul>
 <li>
@@ -311,7 +319,7 @@ Route <strong>validity state</strong> is signalled to route server clients using
 
 
 {% if cfg.filtering.roles.enabled %}
-<h3>Route leak prevention and detection using roles (<a href="//tools.ietf.org/html/rfc9234">RFC9234</a>)</h3>
+<h3>Route leak prevention and detection using roles (<a href="https://tools.ietf.org/html/rfc9234">RFC9234</a>) {{ anchor("bgp_roles") }}</h3>
 
 <ul>
 <li>
@@ -331,7 +339,7 @@ Route <strong>validity state</strong> is signalled to route server clients using
 
 
 {% if cfg.filtering.global_black_list_pref %}
-<h3>Rejected prefixes</h3>
+<h3>Rejected prefixes {{ anchor("rejected_prefixes") }}</h3>
 
 <ul>
 <li><p>The following prefixes are <strong>unconditionally rejected</strong>:
@@ -352,7 +360,7 @@ Route <strong>validity state</strong> is signalled to route server clients using
 
 
 {% if cfg.blackhole_filtering.policy_ipv4 or cfg.blackhole_filtering.policy_ipv6 %}
-<h2>Blackhole filtering</h2>
+<h2>Blackhole filtering {{ anchor("blackhole_filtering") }}</h2>
 
 <ul>
 <li><p>Blackhole filtering of more specific IP prefixes can be requested by tagging them with the following <strong>BGP communities</strong>:
@@ -401,7 +409,7 @@ The NO_EXPORT well-known community is also added.
 
 
 {% if cfg.graceful_shutdown.enabled %}
-<h2>Graceful BGP session shutdown</h2>
+<h2>Graceful BGP session shutdown {{ anchor("graceful_shutdown") }}</h2>
 
 <ul>
 <li><p>Routes tagged with the <strong>GRACEFUL_SHUTDOWN</strong> BGP community (65535:0) have their LOCAL_PREF attribute lowered to {{ cfg.graceful_shutdown.local_pref }}.</p></li>
@@ -410,7 +418,7 @@ The NO_EXPORT well-known community is also added.
 
 
 
-<h2>Announcement control via BGP communities</h2>
+<h2>Announcement control via BGP communities {{ anchor("announcement_control_bgp_communities") }}</h2>
 
 <ul>
 {% if cfg.rfc1997_wellknown_communities.policy == "strict" %}
@@ -501,7 +509,7 @@ The NO_EXPORT well-known community is also added.
 
 
 
-<h2>Reject reasons</h2>
+<h2>Reject reasons {{ anchor("reject_reasons") }}</h2>
 
 <ul>
 <li><p>The following values are used to identify the reason for which
