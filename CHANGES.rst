@@ -29,6 +29,18 @@ next release
 
   Details can be found in the `documentation page of general.yml <https://arouteserver.readthedocs.io/en/latest/GENERAL.html#rfc9234-roles-roles>`__.
 
+- New: anchors in HTML pages.
+
+  The route server policy textual representation HTML files generated via the ``html`` command now have anchors at the various headers and sub-headers, so when referring other parties to the policy they can be pointed directly to the relevant section.
+
+  See also `GitHub issue 119 <https://github.com/pierky/arouteserver/issues/119>`__.
+
+- Fix: minor issues with the HTML pages.
+
+  Wrong URL in some links and a misleading reference to a wrong mailing list post about private ASNs.
+
+  See also `GitHub issue 119 <https://github.com/pierky/arouteserver/issues/119>`__.
+
 Please note: starting with the next release, the default target version used to build BIRD configurations (when the ``--target-version`` argument is not given) will be the latest from the 2.x major version; until now it was 1.6.8. Operators will need to use the ``--target-version 1.6.8`` command line argument to build BIRD 1.x compatible configurations.
 
 1.19.0
