@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2022 Pier Carlo Chiodi
+# Copyright (C) 2017-2023 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -185,6 +185,11 @@ class ConfigParserGeneral(ConfigParserBase):
 
         f["max_prefix"] = OrderedDict()
         m = f["max_prefix"]
+
+        f["roles"] = OrderedDict()
+        r = f["roles"]
+        r["enabled"] = ValidatorBool(default=False)
+        r["strict_mode"] = ValidatorBool(default=False)
 
         m["peering_db"] = OrderedDict()
         m["peering_db"]["enabled"] = ValidatorBool(default=True)
@@ -555,11 +560,12 @@ class ConfigParserGeneral(ConfigParserBase):
         if errors:
             raise ConfigError()
 
-    def check_overlapping_communities(self, allow_private_asns=True):
+    def check_overlapping_communities(self, allow_private_asns=True, mapped_16bit_asns=[]):
         """Check if a 'dynamic' BGP community overlaps with others.
 
-        This function is also called from whitin the OpenBGPD builder
-        class. See remarks about 'allow_private_asns' below.
+        This function is also called from whitin the ConfigBuilder class and
+        from the OpenBGPD builder class. See remarks about 'allow_private_asns'
+        below.
 
         Remember: dynamic values are allowed only in the last part of a
         community's value.
@@ -641,9 +647,11 @@ class ConfigParserGeneral(ConfigParserBase):
         will be two "delete" statements: one for the 'peer_as' community and
         one for the other.
 
-        This function is called from the config parser class with
-        'allow_private_asns' set to True and also from OpenBGPD builder class
-        with 'allow_private_asns' set to False.
+        This function is called
+        - from the config parser class with 'allow_private_asns' set to True;
+        - from the base ConfigBuilder class, after we know if there are 16bit
+          private ASNs used to map 32bit ASN clients (mapped_16bit_asns);
+        - from OpenBGPD builder class with 'allow_private_asns' set to False.
         """
 
         def communities_overlap(comm1_tag, comm1, comm2_tag, comm2,
@@ -694,16 +702,24 @@ class ConfigParserGeneral(ConfigParserBase):
                                 continue
                             if not_peer_as == 0:
                                 continue
+                            if fmt == "std" and not_peer_as in mapped_16bit_asns:
+                                raise ConfigError(
+                                    "{} is used as a '16bit_mapped_asn' value "
+                                    "to map a 32bit ASN client to a 16bit ASN.".format(
+                                        not_peer_as
+                                    )
+                                )
                             if not private_asns_collide_with_peer_as:
                                 if 64512 <= not_peer_as <= 65534:
                                     continue
                                 if 4200000000 <= not_peer_as <= 4294967294:
                                     continue
                             raise ConfigError()
-                    except ConfigError:
+                    except ConfigError as e:
+                        extra_comment = (" " + str(e)) if str(e) else ""
                         raise ConfigError(err_msg.format(
                             comm1_tag=comm1_tag, comm2_tag=comm2_tag,
-                            comm1_val=comm1_val, comm2_val=comm2_val)
+                            comm1_val=comm1_val, comm2_val=comm2_val) + extra_comment
                         )
                     if comm1_part != comm2_part:
                         break

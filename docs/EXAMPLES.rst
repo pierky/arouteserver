@@ -22,9 +22,11 @@ Configurations built using the files provided in the ``examples/rich`` directory
 - Local networks are filtered, and also transit-free ASNs, "never via route-servers" networks, invalid paths and prefixes/origin ASNs which are not authorized by clients' AS-SETs (which are fetched from PeeringDB).
 - Dataset used for prefix validation extended using NIC.BR Whois DB dump and RPKI ROAs.
 - RPKI-based Origin Validation is enabled; INVALID routes are rejected.
+- RFC9234 route leak prevention using roles is configured.
 - A max-prefix limit is enforced on the basis of PeeringDB information.
 - Blackhole filtering is implemented with a rewrite-next-hop policy and can be triggered with BGP communities BLACKHOLE, 65534:0 and 999:666:0.
 - Control communities allow selective announcement control and prepending, also on the basis of peers RTT.
+- 32bit ASNs are mapped to 16bit ASNs for usage in standard BGP communities.
 - Graceful BGP session shutdown is enabled.
 - Client timers are configured using the custom, site-specific .local file.
 - Informational custom BGP communities are used to tag routes from European or American clients.
@@ -111,7 +113,7 @@ A list of BGP communities is also automatically built.
    limitations
    
    Which BGP daemon will be used? [bird/openbgpd] bird
-   Which version? [1.6.3/1.6.4/1.6.6/1.6.7/1.6.8/2.0.7/2.0.7+b962967e/2.0.8/2.0.9/2.0.10] 1.6.8
+   Which version? [1.6.3/1.6.4/1.6.6/1.6.7/1.6.8/2.0.7/2.0.7+b962967e/2.0.8/2.0.9/2.0.10/2.0.11] 2.0.11
    
    Router server's ASN
    ===================
@@ -153,6 +155,7 @@ A list of BGP communities is also automatically built.
    data.
     - RPKI BGP Origin Validation is enabled. INVALID routes are rejected.
     - PeeringDB is used to fetch networks prefix count.
+    - Route leak prevention using roles (RFC9234) is enabled.
     - Routes tagged with the GRACEFUL_SHUTDOWN well-known community (65535:0) are
    processed accordingly to draft-ietf-grow-bgp-gshut.
    

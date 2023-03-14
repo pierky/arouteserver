@@ -1,0 +1,14 @@
+1.0.0.0/16, AS_PATH: 1, NEXT_HOP: 192.0.2.11, via 192.0.2.2
+  std comms:
+  ext comms:
+  lrg comms:
+  best: True, LOCAL_PREF: 100, OTC: 999
+  filtered: False ()
+
+101.1.0.0/16, AS_PATH: 1 101, NEXT_HOP: 192.0.2.11, via 192.0.2.2
+  std comms:
+  ext comms:
+  lrg comms:
+  best: True, LOCAL_PREF: 100, OTC: 101
+  filtered: False ()
+

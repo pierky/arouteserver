@@ -273,6 +273,39 @@ BGP Communities
 BGP communities can be used for many features in the configurations built using ARouteServer: blackhole filtering, AS_PATH prepending, announcement control, various informative purposes (valid origin ASN, valid prefix, ...) and more. All these communities are referenced by *name* (or *tag*) in the configuration files and their real values are reported only once, in the ``communities`` section of the ``general.yml`` file.
 For each community, values can be set for any of the three *formats*: standard (`RFC1997 <https://tools.ietf.org/html/rfc1997>`_), extended (`RFC4360 <https://tools.ietf.org/html/rfc4360>`_/`RFC5668 <https://tools.ietf.org/html/rfc5668>`_) and large (`RFC8092 <https://tools.ietf.org/html/rfc8092>`_).
 
+Mapping of 32bit ASNs to 16bit ASNs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To allow clients to use announcement control standard BGP communities (like *do not announce to $PEER*) with 32bit ASN clients, it's possible to associate a private 16bit ASN to the 32bit ASN of the client. In this way the 32bit ASN client can be represented by the 16bit ASN from the mapping when those communities are used.
+
+Example:
+
+**general.yml**
+
+.. code:: yaml
+
+   cfg:
+     # ...
+    communities:
+      do_not_announce_to_peer:
+        std: "0:peer_as"
+
+**clients.yml**
+
+.. code:: yaml
+
+    clients:
+      - asn: 197000
+        ip:
+        - "192.0.2.33"
+        16bit_mapped_asn: 64512
+
+In the example above, the client with ASN 197000 (32 bit) is mapped to the private ASN 64512 via the ``16bit_mapped_asn`` option. The *do not announce to $PEER* standard BGP community ``0:64512`` can be used by other clients to suppress the announcements of their routes towards the client with ASN 197000.
+
+Please note that the 16bit ASN from ``16bit_mapped_asn`` can be used only in standard BGP communities and not in extended or large communities.
+
+Route server operators who generate their ``clients.yml`` file starting from the Euro-IX JSON file can use the ``--merge-from-custom-file`` option to keep track of the private ASN assigned to each client, and get it automatically added to the output file. See :ref:`Create clients.yml file from Euro-IX member list JSON file`.
+
 Custom BGP Communities
 ~~~~~~~~~~~~~~~~~~~~~~
 

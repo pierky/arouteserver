@@ -67,6 +67,16 @@ clients:
     # session (RFC2385).
     #password: ""
 
+    # Only for 32bit ASNs.
+    # Provides the 16bit ASN used to represent this client's ASN
+    # in the functionalities which are offered via Standard BGP
+    # communities.
+    # It must be an integer in the 64512-65534 range (dedicated
+    # to private use ASNs) and eventually the mapping must be
+    # unique (one private 16bit ASN can be used only for one
+    # 32bit ASN, and viceversa).
+    #16bit_mapped_asn:
+
     # The following configuration statements are optional.
     # Settings provided here override those provided in the
     # general configuration on a client-by-client basis.
@@ -233,6 +243,30 @@ clients:
           #limit_ipv4: 170000
           #limit_ipv6:  12000
 
+        roles:
+          # This section can be used to override the settings
+          # that are inherited from the general.yml file.
+          #
+          # If roles are disabled at the general.yml file level
+          # they can be enabled here, on a client-by-client
+          # basis. Similarly, if they are globally enabled,
+          # they can be disabled here.
+          # Also strict mode can be enabled or disabled on a
+          # client level.
+          # In addition, the specific role configured for
+          # the BGP session towards this client can be
+          # changed, by setting the 'local_role'
+          # (route-server side) value.
+          #
+          #enabled: False
+
+          #strict_mode: False
+
+          # Can be one of "provider", "rs", "rs-client",
+          # "customer", "peer".
+          #
+          #local_role: rs
+
         reject_policy:
           #policy: "reject"
 
@@ -253,3 +287,10 @@ clients:
     ip:
     - "192.0.2.22"
     - "2001:db:1:1::22"
+
+  - asn: 65551
+
+    ip:
+    - "192.0.2.33"
+
+    16bit_mapped_asn: 64512

@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2022 Pier Carlo Chiodi
+# Copyright (C) 2017-2023 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -766,6 +766,19 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.load_config(yaml="\n".join(yaml_lines))
         self._contains_err()
 
+        # Same as above, but with 65501 being used as a 16bit_mapped_asn value.
+        # Errors expected, because 65501 would be scrubbed outboud.
+        with self.assertRaises(ConfigError):
+            self.cfg.check_overlapping_communities(mapped_16bit_asns=[65501])
+        exp_err_msg_found = False
+        for line in self.logger_handler.msgs:
+            if "Community 'do_not_announce_to_peer' and 'prefix_not_present_in_as_set' overlap: 0:peer_as / 0:65501. 65501 is used as a '16bit_mapped_asn' value to map a 32bit ASN client to a 16bit ASN. Inbound communities and outbound communities can't have overlapping values, otherwise they might be scrubbed." in line:
+                exp_err_msg_found = True
+                break
+
+        if not exp_err_msg_found:
+            self.fail("Expected error message not found")
+
         # Testing with allow_private_asns=False...
         with self.assertRaises(ConfigError):
             self.cfg.check_overlapping_communities(allow_private_asns=False)
@@ -1293,6 +1306,10 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "general_limit_ipv4": 170000,
                     "general_limit_ipv6": 12000
                 },
+                "roles": {
+                    "enabled": False,
+                    "strict_mode": False
+                }
             },
             "rtt_thresholds": None,
             "rpki_roas": {
@@ -1416,6 +1433,10 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "general_limit_ipv4": 170000,
                     "general_limit_ipv6": 12000
                 },
+                "roles": {
+                    "enabled": False,
+                    "strict_mode": False
+                }
             },
             "rtt_thresholds": [5, 10, 15, 20, 30, 50, 100, 200, 500],
             "rpki_roas": {

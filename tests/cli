@@ -113,8 +113,16 @@ function must_not_contain() {
   fi
 }
 
-BIRD2_LATEST_VER=2.0.9
-OPENBGPD_LATEST_VER=7.2
+BIRD2_LATEST_VER=$(cat << EOF | python -
+from pierky.arouteserver.builder import BIRDConfigBuilder
+print(BIRDConfigBuilder.AVAILABLE_VERSION[-1])
+EOF
+)
+OPENBGPD_LATEST_VER=$(cat << EOF | python -
+from pierky.arouteserver.builder import OpenBGPDConfigBuilder
+print(OpenBGPDConfigBuilder.AVAILABLE_VERSION[-1])
+EOF
+)
 
 # ---------------------------------------------
 # Build and validate configs
@@ -160,6 +168,65 @@ build_cmd "openbgpd" \
   --target-ver "${OPENBGPD_LATEST_VER}" \
   --output "${OUTPUT_CFG}"
 validate_openbgpd "${OUTPUT_CFG}" "${OPENBGPD_LATEST_VER}"
+
+# BGP roles
+reset
+GENERAL="tests/var/general.yml"
+cat <<EOF >$GENERAL
+cfg:
+  rs_as: 99999999
+  router_id: "192.0.2.2"
+  filtering:
+    roles:
+      enabled: True
+EOF
+CLIENTS="tests/var/clients.yml"
+EXP_ERR="RFC9234 roles are not available"
+TITLE="RFC9234 roles support"
+
+SUB_TEST="$LINENO"
+build_cmd "bird" \
+  --target-ver 1.6.8 \
+  --ip-ver 4 | must_contain "${EXP_ERR}"
+
+OUTPUT_CFG="$(mktemp)"
+SUB_TEST="$LINENO"
+build_cmd "bird" \
+  --target-ver 1.6.8 \
+  --ip-ver 4 \
+  --ignore-issues roles_not_available \
+  --output "${OUTPUT_CFG}" | must_not_contain "${EXP_ERR}"
+validate_bird "${OUTPUT_CFG}" 1.6.8
+
+SUB_TEST="$LINENO"
+build_cmd "bird" \
+  --target-ver ${BIRD2_LATEST_VER} | must_not_contain "${EXP_ERR}"
+
+SUB_TEST="$LINENO"
+build_cmd "openbgpd" \
+  --target-ver 7.4 | must_contain "${EXP_ERR}"
+
+OUTPUT_CFG="$(mktemp)"
+SUB_TEST="$LINENO"
+build_cmd "openbgpd" \
+  --target-ver 7.4 \
+  --ignore-issues roles_not_available \
+  --output "${OUTPUT_CFG}" | must_not_contain "${EXP_ERR}"
+validate_openbgpd "${OUTPUT_CFG}" 7.4
+
+SUB_TEST="$LINENO"
+build_cmd "bird" \
+  --target-ver ${OPENBGPD_LATEST_VER} | must_not_contain "${EXP_ERR}"
+
+EXP_ERR="Implementation of RFC9234 roles in OpenBGPD <= 7.7 is discouraged"
+SUB_TEST="$LINENO"
+build_cmd "openbgpd" \
+  --target-ver 7.5 | must_contain "${EXP_ERR}"
+
+# Remove this check when latest will be 7.8.
+SUB_TEST="$LINENO"
+build_cmd "openbgpd" \
+  --target-ver ${OPENBGPD_LATEST_VER} | must_contain "${EXP_ERR}"
 
 # BGP Extended Communities and 32bit ASNs
 reset
@@ -343,25 +410,6 @@ GENERAL="$GENERAL_RS2"
 build_cmd "bird" --ip-ver 4 | must_contain "router id 192.0.2.2"
 
 # ---------------------------------------------
-# RPKI ROAs as route objects invalid source
-reset
-TITLE="RPKI ROAs as route objects invalid source"
-SUB_TEST="$LINENO"
-GENERAL="tests/var/general.yml"
-cat <<EOF >$GENERAL
-cfg:
-  rs_as: 999
-  router_id: "192.0.2.2"
-  filtering:
-    irrdb:
-      use_rpki_roas_as_route_objects:
-        enabled: true
-        source: "rtrlib"
-EOF
-build_cmd "openbgpd" --target-version 6.8 | must_contain "only the 'ripe-rpki-validator-cache' value"
-build_cmd "openbgpd" --target-version 6.9 | must_not_contain "only the 'ripe-rpki-validator-cache' value"
-
-# ---------------------------------------------
 # RFC1997 'pass' policy and bgp comms collision
 reset
 TITLE="RFC1997 'pass' policy and BGP comms collision"
@@ -402,19 +450,6 @@ build_cmd "openbgpd" | must_contain "A collision has been detected with the foll
 
 # ---------------------------------------------
 reset
-TITLE="OpenBGPD default config"
-SUB_TEST="$LINENO"
-build_cmd "openbgpd" --target-version 6.8 | must_contain "ERROR Compatibility issue ID 'path_hiding'"
-
-# ---------------------------------------------
-reset
-TITLE="OpenBGPD path-hiding 6.9"
-SUB_TEST="$LINENO"
-build_cmd "openbgpd" --target-version 6.9 | must_contain "ERROR Compatibility issue ID 'path_hiding_69'"
-build_cmd "openbgpd" --target-version 6.9 | must_not_contain "ERROR Compatibility issue ID 'path_hiding'"
-
-# ---------------------------------------------
-reset
 TITLE="OpenBGPD path-hiding latest"
 SUB_TEST="$LINENO"
 build_cmd "openbgpd" | must_not_contain "ERROR Compatibility issue ID 'path_hiding'"
@@ -438,68 +473,7 @@ SUB_TEST="$LINENO"
 build_cmd "openbgpd" | must_not_contain "$EXP_ERR"
 
 SUB_TEST="$LINENO"
-build_cmd "openbgpd" --target-version 6.0 | must_contain "$EXP_ERR"
-
-SUB_TEST="$LINENO"
-build_cmd "openbgpd" --target-version 6.1 | must_not_contain "ERROR Compatibility issue ID 'large_communities'"
-
-# ---------------------------------------------
-reset
-TITLE="OpenBGPD blackhole filtering rewrite next-hop IPv6"
-GENERAL="tests/var/general.yml"
-cat <<EOF >$GENERAL
-cfg:
-  rs_as: 999
-  router_id: "192.0.2.2"
-  blackhole_filtering:
-    policy_ipv6: 'rewrite-next-hop'
-    rewrite_next_hop_ipv6: '2001:db8:1:1::66'
-EOF
-
-EXP_ERR="Compatibility issue ID 'blackhole_filtering_rewrite_ipv6_nh'. On OpenBSD < 6.1"
-
-SUB_TEST="$LINENO"
-build_cmd "openbgpd" | must_not_contain "$EXP_ERR"
-
-SUB_TEST="$LINENO"
-build_cmd "openbgpd" --target-version 6.0 | must_contain "$EXP_ERR"
-
-SUB_TEST="$LINENO"
-build_cmd "openbgpd" --target-version 6.1 | must_not_contain "Compatibility issue ID 'blackhole_filtering_rewrite_ipv6_nh'"
-
-SUB_TEST="$LINENO"
 build_cmd "openbgpd" --ignore-issues "blackhole_filtering_rewrite_ipv6_nh" | must_not_contain "'do_not_announce_to_peer'"
-
-# ---------------------------------------------
-reset
-TITLE="OpenBGPD large comms"
-GENERAL="tests/var/general.yml"
-cat <<EOF >$GENERAL
-cfg:
-  rs_as: 999
-  router_id: "192.0.2.2"
-  communities:
-    do_not_announce_to_peer:
-      std: "0:peer_as"
-      lrg: "rs_as:0:peer_as"
-EOF
-
-EXP_ERR="'do_not_announce_to_peer' has been configured to be implemented using also the large community '999:0:peer_as';"
-
-SUB_TEST="$LINENO"
-build_cmd "openbgpd" | must_not_contain "$EXP_ERR"
-
-SUB_TEST="$LINENO"
-build_cmd "openbgpd" --target-version 6.0 | must_contain "$EXP_ERR"
-
-SUB_TEST="$LINENO"
-build_cmd "openbgpd" --target-version 6.1 | must_not_contain "'do_not_announce_to_peer'"
-
-SUB_TEST="$LINENO"
-build_cmd "openbgpd" --target-version 6.0 --ignore-issues "large_communities" | must_not_contain "'do_not_announce_to_peer'"
-
-SUB_TEST="$LINENO"
-build_cmd "openbgpd" --ignore-issues "large_communities" | must_not_contain "'do_not_announce_to_peer'"
 
 # ---------------------------------------------
 reset

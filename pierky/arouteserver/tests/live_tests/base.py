@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2022 Pier Carlo Chiodi
+# Copyright (C) 2017-2023 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -484,7 +484,7 @@ class LiveScenario(ARouteServerTestCase):
 
     def receive_route(self, inst, prefix, other_inst=None, as_path=None,
                       next_hop=None, std_comms=None, lrg_comms=None,
-                      ext_comms=None, local_pref=None, as_set=None,
+                      ext_comms=None, local_pref=None, as_set=None, otc=None,
                       filtered=None, only_best=None, reject_reason=None):
         """Test if the BGP speaker receives the expected route(s).
 
@@ -516,6 +516,10 @@ class LiveScenario(ARouteServerTestCase):
 
             as_set (str): if given, only routes with this AS_SET are
                 considered.
+
+            otc (int): if provided, only routes with the OTC attribute set
+                to this value are considered. Use '0' to match only routes
+                NOT having the OTC value set.
 
             filtered (bool): if given, only routes that have been (not)
                 filtered are considered.
@@ -587,6 +591,12 @@ class LiveScenario(ARouteServerTestCase):
             assert local_pref >= 0, \
                 "local_pref must be an integer >= 0"
 
+        if otc is not None:
+            assert isinstance(otc, int), \
+                "otc must be an integer"
+            assert otc >= 0, \
+                "otc must be an integer >= 0"
+
         if reject_reason is not None and not filtered:
             raise AssertionError(
                 "reject_reason can be set only if filtered is True"
@@ -638,6 +648,15 @@ class LiveScenario(ARouteServerTestCase):
                     err = True
                 if as_set is not None and route.as_set != as_set:
                     errors.append("{{inst}} receives {{prefix}} with AS_SET {as_set} and not with {{as_set}}.".format(as_set=route.as_set))
+                    err = True
+                if otc is not None and (
+                    (
+                        otc > 0 and route.otc != otc
+                    ) or (
+                        otc == 0 and route.otc is not None
+                    )
+                ):
+                    errors.append("{{inst}} receives {{prefix}} with otc {otc} and not with {{otc}}.".format(otc=route.otc))
                     err = True
                 if filtered is not None and route.filtered != filtered:
                     errors.append(
@@ -698,6 +717,8 @@ class LiveScenario(ARouteServerTestCase):
                 criteria.append("with local-pref {}".format(local_pref))
             if as_set:
                 criteria.append("with as_set {}".format(as_set))
+            if otc:
+                criteria.append("with OTC {}".format(otc))
             if filtered is True:
                 criteria.append("filtered")
             if reject_reasons:
@@ -729,6 +750,7 @@ class LiveScenario(ARouteServerTestCase):
                     lrg_comms=lrg_comms,
                     ext_comms=ext_comms,
                     local_pref=local_pref,
+                    otc=otc,
                     as_set=as_set,
                 ) for err_msg in errors
             ])
@@ -880,7 +902,8 @@ class LiveScenario_TagRejectPolicy(object):
     When a scenario inherits this class, its route server is configured as
     if the ``reject_policy.policy`` is ``tag``, the ``65520:dyn_val``
     value is used for the ``reject_cause`` BGP community and the
-    ``rt:65520:dyn_val`` value for the ``rejected_route_announced_by`` one.
+    ``65524:dyn_val`` and ``rt:65524:dyn_val`` values for the
+    ``rejected_route_announced_by`` one.
     Additionally, using the ``reject_cause_map``, some reject codes are
     mapped to specific BGP communities in the ``rs_as:1101:*`` range.
 
@@ -902,7 +925,7 @@ class LiveScenario_TagRejectPolicy(object):
     """
 
     REJECT_CAUSE_COMMUNITY = r"^65520:(\d+)$"
-    REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY = r"^rt:65520:(\d+)$"
+    REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY = r"^rt:65524:(\d+)$"
     REJECT_POLICY = "tag"
 
     @classmethod
@@ -918,7 +941,10 @@ class LiveScenario_TagRejectPolicy(object):
         if "communities" not in cfg["cfg"]:
             cfg["cfg"]["communities"] = {}
         cfg["cfg"]["communities"]["reject_cause"] = {"std": "65520:dyn_val"}
-        cfg["cfg"]["communities"]["rejected_route_announced_by"] = {"ext": "rt:65520:dyn_val"}
+        cfg["cfg"]["communities"]["rejected_route_announced_by"] = {
+            "std": "65524:dyn_val",
+            "ext": "rt:65524:dyn_val"
+        }
         cfg["cfg"]["communities"]["reject_cause_map"] = {
             6: {
                 "lrg": "rs_as:1101:7"

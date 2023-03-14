@@ -7,5 +7,6 @@ admin-c:  <to be set by the user>
 mnt-by:   <to be set by the user>
 members:  AS-RIPENCC
 members:  AS10745
+members:  AS197000
 members:  AS3333
 source:   <to be set by the user>

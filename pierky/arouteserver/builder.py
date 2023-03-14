@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2022 Pier Carlo Chiodi
+# Copyright (C) 2017-2023 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ class ConfigBuilder(object):
 
     DEFAULT_VERSION = None
 
-    IGNORABLE_ISSUES = ["ext-comms-32bit-asn"]
+    IGNORABLE_ISSUES = ["ext-comms-32bit-asn", "roles_not_available"]
 
     def validate_bgpspeaker_specific_configuration(self):
         """Check compatibility between config and target BGP speaker
@@ -427,6 +427,8 @@ class ConfigBuilder(object):
                                          "clients",
                                          general_cfg=self.cfg_general)
 
+        self.asn3216_map = self.cfg_clients.asn3216_map
+
         self.kwargs = kwargs
 
         # Initially None; is set to IRRDB() and finally populated by
@@ -507,6 +509,11 @@ class ConfigBuilder(object):
                         "One or more compatibility issues have been found."
                     )
 
+        # Check overlapping BGP communities again, this time after we know
+        # if there are 16bit private ASNs used to map 32bit ASN clients.
+        self.cfg_general.check_overlapping_communities(
+            mapped_16bit_asns=self.asn3216_map.values()
+        )
 
         if not self.validate_bgpspeaker_specific_configuration():
             raise CompatibilityIssuesError(
@@ -648,6 +655,7 @@ class ConfigBuilder(object):
         self.data["bogons"] = self.cfg_bogons
         self.data["clients"] = self.cfg_clients
         self.data["asns"] = self.cfg_asns
+        self.data["asn3216_map"] = self.asn3216_map
         self.data["irrdb_info"] = self.irrdb_info
         self.data["rpki_roas"] = sorted_rpki_roas()
         self.data["arin_whois_records"] = self.arin_whois_records
@@ -728,6 +736,15 @@ class ConfigBuilder(object):
                 return False
             return True
 
+        def to_bgp_role(internal_role):
+            return {
+                "provider": "provider",
+                "rs": "rs_server",
+                "rs-client": "rs_client",
+                "customer": "customer",
+                "peer": "peer"
+            }[internal_role]
+
         env = Environment(
             loader=FileSystemLoader(self.template_dir),
             trim_blocks=True,
@@ -743,6 +760,7 @@ class ConfigBuilder(object):
         env.filters["target_version_ge"] = target_version_ge
         env.filters["target_version_le"] = target_version_le
         env.filters["get_normalized_rtt"] = get_normalized_rtt
+        env.filters["to_bgp_role"] = to_bgp_role
 
         self.enrich_j2_environment(env)
 
@@ -798,7 +816,7 @@ class BIRDConfigBuilder(ConfigBuilder):
 
     AVAILABLE_VERSION = ["1.6.3", "1.6.4", "1.6.6", "1.6.7", "1.6.8",
                          "2.0.7", "2.0.7+b962967e", "2.0.8", "2.0.9",
-                         "2.0.10"]
+                         "2.0.10", "2.0.11"]
     DEFAULT_VERSION = "1.6.8"
 
     def validate_bgpspeaker_specific_configuration(self):
@@ -918,6 +936,26 @@ class BIRDConfigBuilder(ConfigBuilder):
                     for client in self.cfg_clients.cfg["clients"]:
                         client["cfg"]["filtering"]["max_prefix"]["count_rejected_routes"] = False
 
+        if version.parse(self.target_version) < version.parse("2.0.11"):
+            if self.cfg_general["filtering"]["roles"]["enabled"]:
+                if not self.process_compatibility_issue(
+                    "roles_not_available",
+                    "RFC9234 roles are not available in BIRD < 2.0.11, but "
+                    "they are enabled in the general.yml file."
+                ):
+                    res = False
+
+            for client in self.cfg_clients.cfg["clients"]:
+                if client["cfg"]["filtering"]["roles"]["enabled"]:
+                    if not self.process_compatibility_issue(
+                        "roles_not_available",
+                        "RFC9234 roles are not available in BIRD < 2.0.11, but "
+                        "they are enabled in the configuration of client {}".format(
+                            client["ip"]
+                        )
+                    ):
+                        res = False
+
         return res
 
     def _include_local_file(self, local_file_id):
@@ -952,20 +990,16 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                        "footer"]
     LOCAL_FILES_BASE_DIR = "/etc/bgpd"
 
-    AVAILABLE_VERSION = ["6.0", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7",
-                         "6.8", "6.9", "7.0", "7.1", "7.2", "7.3", "7.4", "7.5",
-                         "7.6", "7.7"]
+    AVAILABLE_VERSION = ["7.0", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7"]
     DEFAULT_VERSION = AVAILABLE_VERSION[-1]
 
     IGNORABLE_ISSUES = ConfigBuilder.IGNORABLE_ISSUES + \
-                        ["path_hiding", "transit_free_action",
+                        ["transit_free_action",
                         "add_path", "max_prefix_action",
                         "max_prefix_count_rejected_routes",
-                        "blackhole_filtering_rewrite_ipv6_nh",
-                        "large_communities", "extended_communities",
-                        "graceful_shutdown", "internal_communities",
-                        "rpki_roas_as_route_objects_source",
-                        "rpki_roas_source", "path_hiding_69"]
+                        "extended_communities",
+                        "internal_communities",
+                        "roles_discouraged"]
 
     def _include_local_file(self, local_file_id):
         return 'include "{}"\n\n'.format(
@@ -977,40 +1011,6 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
 
     def validate_bgpspeaker_specific_configuration(self):
         res = True
-
-        if self.cfg_general["path_hiding"] and \
-            version.parse(self.target_version) < version.parse("6.9"):
-            if not self.process_compatibility_issue(
-                "path_hiding",
-                "The 'path_hiding' general configuration parameter is "
-                "set to True, but the configuration generated by "
-                "ARouteServer for OpenBGPD < 6.9 does not support "
-                "path-hiding mitigation techniques."
-            ):
-                res = False
-
-        if self.cfg_general["path_hiding"] and \
-            version.parse(self.target_version) == version.parse("6.9"):
-            if not self.process_compatibility_issue(
-                "path_hiding_69",
-                "The 'path_hiding' general configuration parameter is "
-                "set to True, however, for version 6.9 of OpenBGPD, "
-                "some issues were observed that may affect the security "
-                "and stability of the BGP routing ecosystem: please see "
-                "the docs referenced below, and acknowledge this error "
-                "as reported at the end of this message only if you "
-                "applied the patches or if you strongly believe that "
-                "those issues will not affect your deployment and the "
-                "global stability of the Internet routing.\n"
-                "Information about those issues can be found here:\n"
-                "- 2nd best route not getting withdrawn when 'rde "
-                "evaluate all' is configured "
-                "(https://marc.info/?l=openbsd-tech&m=162011500326166&w=2)\n"
-                "- 2nd best route not advertised when 'rde evaluate all' "
-                "is added and the daemon reloaded "
-                "(https://marc.info/?l=openbsd-tech&m=162021735205669&w=2)"
-            ):
-                res = False
 
         transit_free_action = self.cfg_general["filtering"]["transit_free"]["action"]
         if transit_free_action and transit_free_action != "reject":
@@ -1089,35 +1089,50 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             ):
                 res = False
 
-        if self.cfg_general["blackhole_filtering"]["policy_ipv6"] == "rewrite-next-hop" and \
-            version.parse(self.target_version) < version.parse("6.1"):
-            if not self.process_compatibility_issue(
-                "blackhole_filtering_rewrite_ipv6_nh",
-                "On OpenBSD < 6.1 there is an issue related to next-hop rewriting "
-                "that impacts blackhole filtering policies when "
-                "'blackhole_filtering.policy_ipv6' is 'rewrite-next-hop': "
-                "https://github.com/pierky/arouteserver/issues/3 "
-                "If the release running on the route server includes the fix "
-                "for this issue, please consider to enable this feature by "
-                "setting the configuration target version to a value "
-                "greater than or equal to '6.1' (--target-version command "
-                "line argument)."
-            ):
-                res = False
+        if self.cfg_general["filtering"]["roles"]["enabled"]:
+            if version.parse(self.target_version) < version.parse("7.5"):
+                if not self.process_compatibility_issue(
+                    "roles_not_available",
+                    "RFC9234 roles are not available in OpenBGPD < 7.5, but "
+                    "they are enabled in the general.yml file."
+                ):
+                    res = False
+            elif version.parse(self.target_version) <= version.parse("7.7"):
+                if not self.process_compatibility_issue(
+                    "roles_discouraged",
+                    "Implementation of RFC9234 roles in OpenBGPD <= 7.7 "
+                    "is discouraged by the developers "
+                    "(see https://github.com/openbgpd-portable/openbgpd-portable/issues/51) "
+                    "but they are enabled in the general.yml file."
+                ):
+                    res = False
 
-        only_large_comms = []
-        large_comms_used = []
+            for client in self.cfg_clients.cfg["clients"]:
+                if client["cfg"]["filtering"]["roles"]["enabled"]:
+                    if version.parse(self.target_version) < version.parse("7.5"):
+                        if not self.process_compatibility_issue(
+                            "roles_not_available",
+                            "RFC9234 roles are not available in OpenBGPD < 7.5, but "
+                            "they are enabled in the configuration of client {}".format(
+                                client["ip"]
+                            )
+                        ):
+                            res = False
+                    elif version.parse(self.target_version) <= version.parse("7.7"):
+                        if not self.process_compatibility_issue(
+                            "roles_discouraged",
+                            "Implementation of RFC9234 roles in OpenBGPD <= 7.7 "
+                            "is discouraged by the developers "
+                            "(see https://github.com/openbgpd-portable/openbgpd-portable/issues/51) "
+                            "but they are enabled in the configuration of client {}".format(
+                                client["ip"]
+                            )
+                        ):
+                            res = False
+
         peer_as_ext_comms = []
         for comm_name in ConfigParserGeneral.COMMUNITIES_SCHEMA:
             comm = self.cfg_general["communities"][comm_name]
-
-            # large comms used
-            if comm["lrg"]:
-                large_comms_used.append((comm_name, comm["lrg"]))
-
-                # only large comms
-                if not comm["std"] and not comm["ext"]:
-                    only_large_comms.append((comm_name, comm["lrg"]))
 
             # peer_as ext communities not scrubbed
             comm_def = ConfigParserGeneral.COMMUNITIES_SCHEMA[comm_name]
@@ -1126,60 +1141,6 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
 
             if peer_as and direction == "inbound" and comm["ext"]:
                 peer_as_ext_comms.append((comm_name, comm["ext"]))
-
-        large_comms_advice = ("If large BGP communities are supported by the "
-                              "release of OpenBGPD running on the route "
-                              "server, enable them by setting the "
-                              "configuration target version to a value "
-                              "greater than or equal to '6.1' "
-                              "(--target-version command line argument).")
-
-        if only_large_comms and \
-            version.parse(self.target_version) < version.parse("6.1"):
-            comms = only_large_comms
-            if not self.process_compatibility_issue(
-                "large_communities",
-                "The communit{y_ies} '{names}' ha{s_ve} been configured to be "
-                "implemented using only the large communit{y_ies} "
-                "'{comms}'; large communities are not supported by "
-                "OpenBGPD previous to OpenBSD 6.1 so the function{s1} "
-                "{it_they} {is_are} used for will be not available. "
-                "{large_comms_advice}".format(
-                    y_ies="y" if len(comms) == 1 else "ies",
-                    names=", ".join([_[0] for _ in comms]),
-                    s_ve="s" if len(comms) == 1 else "ve",
-                    comms=", ".join([_[1] for _ in comms]),
-                    s1="" if len(comms) == 1 else "s",
-                    it_they="it" if len(comms) == 1 else "they",
-                    is_are="is" if len(comms) == 1 else "are",
-                    large_comms_advice=large_comms_advice
-                )
-            ):
-                res = False
-
-        if large_comms_used and \
-            version.parse(self.target_version) < version.parse("6.1"):
-            comms = large_comms_used
-            if not self.process_compatibility_issue(
-                "large_communities",
-                "The communit{y_ies} '{names}' ha{s_ve} been configured to be "
-                "implemented using also the large communit{y_ies} "
-                "'{comms}'; large communities are not supported by "
-                "OpenBGPD previous to OpenBSD 6.1 so the function{s1} "
-                "{it_they} {is_are} used for will be available via "
-                "standard/extended communities only. "
-                "{large_comms_advice}".format(
-                    y_ies="y" if len(comms) == 1 else "ies",
-                    names=", ".join([_[0] for _ in comms]),
-                    s_ve="s" if len(comms) == 1 else "ve",
-                    comms=", ".join([_[1] for _ in comms]),
-                    s1="" if len(comms) == 1 else "s",
-                    it_they="it" if len(comms) == 1 else "they",
-                    is_are="is" if len(comms) == 1 else "are",
-                    large_comms_advice=large_comms_advice
-                )
-            ):
-                res = False
 
         if peer_as_ext_comms:
             comms = peer_as_ext_comms
@@ -1201,7 +1162,9 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
 
         try:
             self.cfg_general.check_overlapping_communities(
-                allow_private_asns=False)
+                mapped_16bit_asns=self.asn3216_map.values(),
+                allow_private_asns=False
+            )
         except ConfigError as e:
             raise BuilderError(
                 "{}OpenBGPD doesn't allow to delete BGP "
@@ -1213,24 +1176,6 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                     str(e) + " " if str(e) else ""
                 )
             )
-
-        if (self.cfg_general["graceful_shutdown"]["enabled"] or \
-            self.perform_graceful_shutdown) and \
-            version.parse(self.target_version) <= version.parse("6.1"):
-            if not self.process_compatibility_issue(
-                "graceful_shutdown",
-                "GRACEFUL_SHUTDOWN BGP community is not implemented "
-                "on OpenBGPD versions prior to 6.2. By marking this issue "
-                "as ignored the graceful shutdown option will not be "
-                "considered and the feature will be not included into the "
-                "configuration. "
-                "If the release running on the route server is 6.2 or later "
-                "please consider to enable this feature by "
-                "setting the configuration target version to a value "
-                "greater than or equal to '6.2' (--target-version command "
-                "line argument)."
-            ):
-                res = False
 
         internal_communities_collistion = []
         for comm_name in ConfigParserGeneral.COMMUNITIES_SCHEMA:
@@ -1249,55 +1194,6 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                 )
             ):
                 res = False
-
-        # Kept for backward compatibility
-        use_rpki_roas_as_route_objects_cfg = \
-            self.cfg_general["filtering"]["irrdb"]["use_rpki_roas_as_route_objects"]
-        if use_rpki_roas_as_route_objects_cfg["enabled"]:
-            if self.cfg_general["rpki_roas"]["source"] != "ripe-rpki-validator-cache" and \
-               version.parse(self.target_version) < version.parse("6.9"):
-                if not self.process_compatibility_issue(
-                    "rpki_roas_as_route_objects_source",
-                    "For OpenBGPD < 6.9 only the 'ripe-rpki-validator-cache' "
-                    "value is allowed for the 'rpki_roas.source' option."
-                ):
-                    res = False
-
-        if self.cfg_general.rpki_roas_needed:
-            if self.cfg_general["rpki_roas"]["source"] != "ripe-rpki-validator-cache" and \
-               version.parse(self.target_version) < version.parse("6.9"):
-                if not self.process_compatibility_issue(
-                    "rpki_roas_source",
-                    "For OpenBGPD < 6.9 only the 'ripe-rpki-validator-cache' "
-                    "value is allowed for the 'rpki_roas.source' option."
-                ):
-                    res = False
-
-            if self.cfg_general["rpki_roas"]["source"] == "rtr" and \
-               version.parse(self.target_version) == version.parse("6.9"):
-                if not self.process_compatibility_issue(
-                    "rpki_roas_source",
-                    "The general configuration policy has 'rpki_roas.source' "
-                    "set to 'rtr', which means that ROAs will be retrieved "
-                    "using one or more RTR sessions directly configured on "
-                    "the route-server. "
-                    "However, for version 6.9 of OpenBGPD, some issues were "
-                    "observed that may affect the operations: please verify "
-                    "whether these issues are considered relevant for your "
-                    "deployment scenario, and if you believe they are not "
-                    "relevant, or if you patched the daemon to circumvent "
-                    "them, please ignore this error as reported at the end of "
-                    "this message.\n"
-                    "Information about those issues can be found here:\n"
-                    "- 'Invalid argument' error on RTR session establishment "
-                    "(OpenBGPD 6.9p0 portable edition, issue #23 on GitHub "
-                    "https://github.com/openbgpd-portable/openbgpd-portable/"
-                    "issues/23)\n"
-                    "- Blocking `connect()` call that may lead to the daemon "
-                    "to block until the connection times out "
-                    "(https://marc.info/?l=openbsd-tech&m=162005636502085&w=2)"
-                ):
-                    res = False
 
         return res
 
@@ -1319,14 +1215,10 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
         def community_is_set(comm):
             if not comm:
                 return False
-            # OpenBGPD <= 6.0 does not implement large BGP communities,
-            # so only standard and extended ones are considered.
-            if version.parse(self.target_version) < version.parse("6.1"):
-                if not comm["std"] and not comm["ext"]:
-                    return False
-            else:
-                if not comm["std"] and not comm["ext"] and not comm["lrg"]:
-                    return False
+
+            if not comm["std"] and not comm["ext"] and not comm["lrg"]:
+                return False
+
             return True
 
         def aggregated_roas_covered_space():

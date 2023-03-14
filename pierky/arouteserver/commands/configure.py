@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2022 Pier Carlo Chiodi
+# Copyright (C) 2017-2023 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -368,6 +368,22 @@ class ConfigureCommand(ARouteServerCommand):
         self.notes.append(
             "PeeringDB is used to fetch networks prefix count."
         )
+
+        if (
+            (
+                self.answers["daemon"] == "bird" and \
+                version.parse(self.answers["version"]) >= version.parse("2.0.11")
+            ) or (
+                self.answers["daemon"] == "openbgpd" and \
+                version.parse(self.answers["version"]) >= version.parse("7.8")
+            )
+        ):
+            filtering["roles"] = {
+                "enabled": True
+            }
+            self.notes.append(
+                "Route leak prevention using roles (RFC9234) is enabled."
+            )
 
         if self.answers["daemon"] == "bird":
             filtering["reject_policy"] = {

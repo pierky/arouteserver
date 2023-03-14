@@ -708,9 +708,6 @@ RPKI BGP Origin Validation: ``rpki_bgp_origin_validation``
   In any case, INVALID routes are not announced to clients.
 
 
-  OpenBGPD: RFC8097 BGP communities tagging available since 6.4.
-
-
   Can be overwritten on a client-by-client basis.
 
 
@@ -903,6 +900,68 @@ specific client.
 
 
 
+RFC9234 roles: ``roles``
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Route leak prevention and detection using roles can be
+enabled here (https://www.rfc-editor.org/rfc/rfc9234).
+When enabled, the local role of BGP sessions will be
+set to "Route Server (RS)" and the role expected from
+client will be "Route Server Client (RS-Client)".
+Unless strict-mode will be enabled, clients that do
+not announce any role will be handled in backward
+compatibility mode and sessions will be established
+regularly.
+
+- ``enabled``:
+  Enable the use of roles.
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+  Also, the local role (route-server side) can be set on
+  a client-by-client basis in the clients.yml file.
+
+
+  OpenBGPD: this feature is available only from release 7.5,
+  but its usage is discouraged by developers until 7.8.
+  Details on
+  https://github.com/openbgpd-portable/openbgpd-portable/issues/51
+
+
+  BIRD: this feature is available only from release 2.0.11.
+
+  Example:
+
+  .. code:: yaml
+
+     enabled: False
+
+
+
+- ``strict_mode``:
+  Configure RFC9234 "strict mode", in which the receipt
+  of a BGP Role Capability from the client is required.
+  When operating in the "strict mode", if the BGP Role
+  Capability is sent but one is not received, the
+  connection is rejected.
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+  Default: **False**
+
+  Example:
+
+  .. code:: yaml
+
+     strict_mode: False
+
+
+
+
 Reject policy: ``reject_policy``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -967,11 +1026,11 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
 
   - **rtr**: ROAs are loaded from an external RTR source.
     rtrllib (https://github.com/rtrlib/bird-rtrlib-cli) can be
-    used for BIRD 1.6.x; in BIRD v2 and OpenBGPD (starting with
-    version 6.9) there is built-in support for the RTR protocol.
+    used for BIRD 1.6.x; in BIRD v2 and OpenBGPD there is
+    built-in support for the RTR protocol.
     The name of the table where send the ROAs to is **RPKI** for
     BIRD 1.6.x and **RPKI4** and **RPKI6** for BIRD v2.
-    When the built-in implementation is used for OpenBGPD (> 6.9)
+    When the built-in implementation is used for OpenBGPD
     or BIRD v2, an external file **rpki_rtr_config.local** must be
     found within the same directory where the main configuration
     file is stored (/etc/bird or /etc/bgpd usually) and must
@@ -1129,11 +1188,6 @@ authorized to advertise."
     MAC address.
 
 
-  OpenBGPD: there is an issue that prevents the **rewrite-next-hop**
-  option to work for IPv6 on versions prior to OpenBSD 6.1.
-  https://github.com/pierky/arouteserver/issues/3
-
-
   Default: **none**
 
 
@@ -1214,10 +1268,6 @@ it lowers their LOCAL_PREF to the value set in **local_pref**.
   with the GRACEFUL_SHUTDOWN BGP community received from that
   client will be treated as if the gshut community was missing
   and the community stripped off.
-
-
-  OpenBGPD: GRACEFUL_SHUTDOWN BGP community is not implemented
-  on versions prior to 6.2.
   Can be overwritten on a client-by-client basis.
 
 
@@ -1354,14 +1404,6 @@ The **dyn_val** macro, where allowed, is replaced with a
 numeric value that is significant to the function the BGP
 community is responsible for.
 
-
-OpenBGPD: large communities are not supported on versions prior
-to OpenBSD 6.1, so they are not taken into account when
-building the configuration. If supported by the release of
-OpenBGPD running on the route server, enable them by setting
-the configuration target version to a value greater than or
-equal to "6.1" (--target-version command line argument).
-
 Prefix/origin AS present in client's AS-SET
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1423,9 +1465,6 @@ RPKI BGP Origin Validation communities
   These communities are not advertised to the clients, they are
   meant to be used only "internally" to the route server (for
   example for troubleshooting purposes or via looking glasses).
-
-
-  OpenBGPD: these communities are supported only on version >= 6.4.
 
 
   The following communities are scrubbed from inbound and outbound

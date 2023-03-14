@@ -7,6 +7,9 @@
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://code.jquery.com/jquery.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    .ars-anchor a { text-decoration: none; color: @text-color; }
+  </style>
 </head>
 <body>
 <div class="container-fluid">
@@ -15,19 +18,25 @@
 
 <h1>Configuration of route server 192.0.2.2 at AS999</h1>
 
-<h2>BGP sessions default configuration</h2>
+<h2>BGP sessions default configuration <span class="ars-anchor"><a class="text-muted small" href="#bgp_sessions_default_configuration" id="bgp_sessions_default_configuration">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16"> <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/> <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/> </svg>
+</a></span>
+</h2>
 
 <ul>
 <li><p><strong>Passive</strong> sessions are configured toward neighbors.</p></li>
 
-<li><p>GTSM (Generalized TTL Security Mechanism - <a href="//tools.ietf.org/html/rfc5082">RFC5082</a>) is <strong>disabled</strong> on sessions toward the neighbors.</p></li>
+<li><p>GTSM (Generalized TTL Security Mechanism - <a href="https://tools.ietf.org/html/rfc5082">RFC5082</a>) is <strong>disabled</strong> on sessions toward the neighbors.</p></li>
 
-<li><p><strong>ADD-PATH</strong> capability (<a href="//tools.ietf.org/html/rfc7911">RFC7911</a>) is <strong>not</strong> negotiated by default.</p></li>
+<li><p><strong>ADD-PATH</strong> capability (<a href="https://tools.ietf.org/html/rfc7911">RFC7911</a>) is <strong>not</strong> negotiated by default.</p></li>
 </ul>
 
 
 
-<h2>Route server general behaviours</h2>
+<h2>Route server general behaviours <span class="ars-anchor"><a class="text-muted small" href="#route_server_general_behaviours" id="route_server_general_behaviours">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16"> <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/> <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/> </svg>
+</a></span>
+</h2>
 
 <ul>
 <li><p>Route server ASN is <strong>not prepended</strong> to the AS_PATH of routes announced to clients (<a href="https://tools.ietf.org/html/rfc7947#section-2.2.2.1">RFC7947 section 2.2.2.1</a>).</p></li>
@@ -37,11 +46,17 @@
 
 
 
-<h2>Default filtering policy</h2>
+<h2>Default filtering policy <span class="ars-anchor"><a class="text-muted small" href="#default_filtering_policy" id="default_filtering_policy">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16"> <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/> <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/> </svg>
+</a></span>
+</h2>
 
 
 
-<h3>NEXT_HOP attribute</h3>
+<h3>NEXT_HOP attribute <span class="ars-anchor"><a class="text-muted small" href="#next_hop_attribute" id="next_hop_attribute">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16"> <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/> <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/> </svg>
+</a></span>
+</h3>
 
 <ul>
 <li><p>The route server verifies that the NEXT_HOP attribute of routes received from a client matches the <strong>IP address of the client itself</strong>
@@ -51,14 +66,17 @@
 
 
 
-<h3>AS_PATH attribute</h3>
+<h3>AS_PATH attribute <span class="ars-anchor"><a class="text-muted small" href="#as_path_attribute" id="as_path_attribute">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16"> <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/> <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/> </svg>
+</a></span>
+</h3>
 
 <ul>
 <li><p>Routes whose <strong>AS_PATH is longer than 32</strong> ASNs are rejected.</p></li>
 
 <li><p>The <strong>left-most ASN</strong> in the AS_PATH of any route announced to the route server must be the ASN of the announcing client.</p></li>
 
-<li><p>Routes whose AS_PATH contains <a href="http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html"><strong>private or invalid ASNs</strong></a> are rejected.</p></li>
+<li><p>Routes whose AS_PATH contains <strong>private or invalid ASNs</strong> are rejected.</p></li>
 
 
 <li><p>
@@ -72,7 +90,10 @@ List of "never via route-servers" networks' ASNs is generated from PeeringDB.
 
 
 
-<h3>IRRDBs prefix/origin ASN enforcement</h3>
+<h3>IRRDBs prefix/origin ASN enforcement <span class="ars-anchor"><a class="text-muted small" href="#irrdbs_prefix_origin_asn_enforcement" id="irrdbs_prefix_origin_asn_enforcement">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16"> <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/> <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/> </svg>
+</a></span>
+</h3>
 
 <ul>
 <li><p>
@@ -91,7 +112,10 @@ Origin ASN validity is
 
 
 
-<h3>RPKI BGP Prefix Origin Validation</h3>
+<h3>RPKI BGP Prefix Origin Validation <span class="ars-anchor"><a class="text-muted small" href="#rpki_bgp_prefix_origin_validation" id="rpki_bgp_prefix_origin_validation">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16"> <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/> <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/> </svg>
+</a></span>
+</h3>
 
 <ul>
 
@@ -110,7 +134,10 @@ Origin ASN validity is
 
 
 
-<h3>Min/max prefix length</h3>
+<h3>Min/max prefix length <span class="ars-anchor"><a class="text-muted small" href="#min_max_prefix_length" id="min_max_prefix_length">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16"> <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/> <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/> </svg>
+</a></span>
+</h3>
 
 <ul>
 <li>
@@ -127,6 +154,8 @@ Origin ASN validity is
 
 
 
+
+
 </ul>
 
 
@@ -134,7 +163,10 @@ Origin ASN validity is
 
 
 
-<h2>Announcement control via BGP communities</h2>
+<h2>Announcement control via BGP communities <span class="ars-anchor"><a class="text-muted small" href="#announcement_control_bgp_communities" id="announcement_control_bgp_communities">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16"> <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/> <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/> </svg>
+</a></span>
+</h2>
 
 <ul>
 <li><p>Routes tagged with the <b>NO_EXPORT</b> or <b>NO_ADVERTISE</b> communities received by the route server are propagated to other clients with those communities unaltered.</p></li>
@@ -175,9 +207,36 @@ Origin ASN validity is
   </tbody>
 </table>
 
+<ul>
+<li><p>The following <b>16bit ASNs</b> can be used in standard BGP communities to implement announcement control for clients having a 32bit ASN. They can be used in place of the 32bit ASN to set the value of <code>peer_as</code> in the standard BGP communities listed above.</p></li>
+</ul>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>32bit ASN</th>
+      <th>Client</th>
+      <th>16bit mapped ASN</th>
+    </tr>
+  </thead>
+  <tbody>
+   <tr>
+     <td>65551</td>
+     <td>
+     AS65551 192.0.2.33<br>
+     </td>
+     <td>64512</td>
+   </tr>
+  </tbody>
+</table>
 
 
-<h2>Reject reasons</h2>
+
+
+<h2>Reject reasons <span class="ars-anchor"><a class="text-muted small" href="#reject_reasons" id="reject_reasons">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16"> <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/> <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/> </svg>
+</a></span>
+</h2>
 
 <ul>
 <li><p>The following values are used to identify the reason for which

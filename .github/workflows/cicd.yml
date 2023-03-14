@@ -73,7 +73,7 @@ jobs:
         run: |
           echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
           docker pull pierky/bird:1.6.8
-          docker pull pierky/bird:2.0.10
+          docker pull pierky/bird:2.0.11
           docker pull pierky/openbgpd:7.6
           docker pull pierky/openbgpd:7.7
           docker pull pierky/exabgp:4.2.7
@@ -220,7 +220,7 @@ jobs:
             -e ROUTER_ID=192.0.2.124 \
             -e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
             -e DAEMON=openbgpd \
-            -e VERSION=6.7 \
+            -e VERSION=7.7 \
             -e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
             pierky/arouteserver:${{ matrix.docker-image.target_image }}
         env:
@@ -232,7 +232,7 @@ jobs:
             -t \
             --rm \
             -v ~/arouteserver_configs/openbgpd.cfg:/etc/bgpd/bgpd.conf \
-            pierky/openbgpd:6.7p0 \
+            pierky/openbgpd:7.7 \
             bgpd \
               -f /etc/bgpd/bgpd.conf \
               -d \
@@ -252,9 +252,8 @@ jobs:
             -v $(pwd)/config.d/clients.yml:/root/clients.yml:ro \
             -v $(pwd)/examples/auto-config/bird-general.yml:/etc/arouteserver/general.yml:ro \
             -v ~/arouteserver_configs:/root/arouteserver_configs \
-            -e IP_VER=4 \
             -e DAEMON=bird \
-            -e VERSION=1.6.8 \
+            -e VERSION=2.0.11 \
             -e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
             pierky/arouteserver:${{ matrix.docker-image.target_image }}
         env:
@@ -265,8 +264,8 @@ jobs:
           docker run \
             -t \
             --rm \
-            -v ~/arouteserver_configs/bird4.cfg:/etc/bird/bird.cfg \
-            pierky/bird:1.6.8 \
+            -v ~/arouteserver_configs/bird.cfg:/etc/bird/bird.cfg \
+            pierky/bird:2.0.11 \
             bird \
               -c /etc/bird/bird.cfg \
               -d \

@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2022 Pier Carlo Chiodi
+# Copyright (C) 2017-2023 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ class BasicScenario_Data6(object):
         "AS2_1_IPAddress":          "2001:db8:1:1::21",
         "AS3_1_IPAddress":          "2001:db8:1:1::31",
         "AS4_1_IPAddress":          "2001:db8:1:1::41",
+        "AS151866_1_IPAddress":     "2001:db8:1:1::51",
         "AS101_IPAddress":          "2001:db8:1:1::101",
         "AS222_IPAddress":          "2001:db8:1:1::222",
         "RoutesCollector_IPAddress":"2001:db8:1:1::999",
@@ -72,6 +73,8 @@ class BasicScenario_Data6(object):
         "AS3_noexport_AS1":         "2a03:0:c::/48",
         "AS3_rfc1997_noexp":        "2a03:0:d::/48",
         "AS3_transitfree_2":        "2a03:0:e::/48",
+        "AS3_prep2AS151866":        "2a03:0:f::/48",
+        "AS3_noexpAS151866":        "2a03:0:10::/48",
 
         "AS4_rtt_1":                "2a04:0:1::/48",
         "AS4_rtt_2":                "2a04:0:2::/48",
@@ -83,6 +86,8 @@ class BasicScenario_Data6(object):
         "AS4_rtt_8":                "2a04:0:8::/48",
         "AS4_rtt_9":                "2a04:0:9::/48",
         "AS4_rtt_10":               "2a04:0:a::/48",
+
+        "AS151866_bogon_1":         "2001:0:1::/48",
 
         "AS101_allowed_prefixes":   "3101::/32",
         "AS101_good1":              "3101:0:1::/48",

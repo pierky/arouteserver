@@ -43,7 +43,7 @@ How it works
 
 #. `Jinja2`_ built-in templates are used to render the final route server's configuration file.
 
-   Currently, **BIRD** (>= 1.6.3 up to 1.6.8), **BIRD v2** (starting from 2.0.7) and **OpenBGPD** (OpenBSD 6.1 up to 7.7 and also OpenBGPD Portable 6.5p1 up to 7.7) are supported, with almost `feature parity <https://arouteserver.readthedocs.io/en/latest/SUPPORTED_SPEAKERS.html#supported-features>`__ between them.
+   Currently, **BIRD** (>= 1.6.3 up to 1.6.8), **BIRD v2** (starting from 2.0.7) and **OpenBGPD** (OpenBSD >= 7.0 also OpenBGPD Portable >= 7.0) are supported, with almost `feature parity <https://arouteserver.readthedocs.io/en/latest/SUPPORTED_SPEAKERS.html#supported-features>`__ between them.
 
 **Validation** and testing of the configurations generated with this tool are performed using the built-in **live tests** framework: `Docker`_ instances are used to simulate several scenarios and to validate the behaviour of the route server after configuring it with ARouteServer. More details on the `Live tests <https://arouteserver.readthedocs.io/en/latest/LIVETESTS.html>`__ section.
 
@@ -99,12 +99,13 @@ Features
   - honor the **GRACEFUL_SHUTDOWN** BGP community received from clients (`draft-ietf-grow-bgp-gshut-11 <https://tools.ietf.org/html/draft-ietf-grow-bgp-gshut-11>`_);
   - allow to perform a graceful shutdown of the route server itself.
 
-- Control and informative communities:
+- Control and informative BGP communities:
 
   - prefix/origin ASN present/not present in **IRRDBs data**;
   - do (not) announce to any / **peer** / on **RTT basis**;
   - **prepend** to any / **peer** / on **RTT basis**;
   - add **NO_EXPORT** / **NO_ADVERTISE** to any / **peer**;
+  - **32bit ASNs mapping** to 16bit ASNs for announcement control BGP communities;
   - `Euro-IX large BGP communities <https://www.euro-ix.net/en/forixps/large-bgp-communities/>`__ to track reject reasons;
   - custom informational BGP communities.
 

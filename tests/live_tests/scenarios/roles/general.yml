@@ -1,0 +1,14 @@
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+  filtering:
+    irrdb:
+      enforce_origin_in_as_set: False
+      enforce_prefix_in_as_set: False
+    roles:
+      enabled: True
+    reject_policy:
+      policy: tag
+  communities:
+    reject_cause:
+      std: 65520:dyn_val

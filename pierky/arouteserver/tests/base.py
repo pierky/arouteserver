@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2022 Pier Carlo Chiodi
+# Copyright (C) 2017-2023 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ def setup_requests_mock():
         json={}
     )
     res.get(
-        "https://www.peeringdb.com/api/net?asn__in=3333,10745",
+        "https://www.peeringdb.com/api/net?asn__in=3333,10745,197000",
         json=json.load(open("tests/static/data/peeringdb_net_3333_10745.json"))
     )
     res.get(

@@ -96,6 +96,12 @@ clients:
                         irrdb:
                                 enforce_origin_in_as_set: False
                                 enforce_prefix_in_as_set: False
+        - asn: 151866
+          ip:
+          - "192.0.2.51"
+          - "2001:db8:1:1::51"
+          description: "151866 client"
+          16bit_mapped_asn: 64512
         - asn: 222
           ip:
           - "192.0.2.222"

@@ -1,0 +1,82 @@
+{% if ":" in data.AS1_IPAddress %}
+{%    set ip_ver = "6" %}
+{% else %}
+{%    set ip_ver = "4" %}
+{% endif %}
+router id 192.0.2.11;
+
+log "/var/log/bird.log" all;
+log syslog all;
+debug protocols { states, routes, filters, interfaces, events };
+
+timeformat base         iso long;
+timeformat log          iso long;
+timeformat protocol     iso long;
+timeformat route        iso long;
+
+protocol device {};
+
+ipv4 table master4 sorted;
+ipv6 table master6 sorted;
+
+protocol static {
+	ipv{{ ip_ver }} { table master{{ ip_ver }}; };
+	route {{ data.AS1_route1 }} unreachable;
+}
+
+protocol bgp AS101 {
+	description "AS101 lateral peer";
+
+	local as 1;
+	neighbor {{ data.AS101_IPAddress }} as 101;
+
+	local role peer;
+
+	ttl security off;
+
+	ipv4 {
+		table master4;
+		import table on;
+		import keep filtered on;
+		import all;
+		export none;
+	};
+
+	ipv6 {
+		table master6;
+		import table on;
+		import keep filtered on;
+		import all;
+		export none;
+	};
+}
+
+filter to_the_rs {
+	bgp_next_hop = {{ data.AS1_IPAddress }};
+	accept;
+}
+
+protocol bgp the_rs {
+	description "rs";
+
+	local as 1;
+	neighbor {{ data.rs_IPAddress }} as 999;
+
+	ttl security off;
+
+	ipv4 {
+		table master4;
+		import table on;
+		import keep filtered on;
+		import none;
+		export filter to_the_rs;
+	};
+
+	ipv6 {
+		table master6;
+		import table on;
+		import keep filtered on;
+		import none;
+		export filter to_the_rs;
+	};
+}

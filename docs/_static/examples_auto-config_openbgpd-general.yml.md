@@ -99,6 +99,10 @@ are **rejected**.
 	+ IPv6: 12-48
 
 
+
+
+
+
 ### Rejected prefixes
 
 
@@ -191,6 +195,15 @@ Announcement control via BGP communities
 | Prepend the announcing ASN thrice to any | 65503:64496 | None | 64496:103:0 |
 | Add NO_EXPORT to peer | 65281:peer_as | None | 64496:65281:peer_as |
 | Add NO_ADVERTISE to peer | 65282:peer_as | None | 64496:65282:peer_as |
+
+
+
+* The following 16bit ASNs can be used in standard BGP communities to implement announcement control for clients having a 32bit ASN. They can be used in place of the 32bit ASN to set the value of `peer_as` in the standard BGP communities listed above.
+
+| 32bit ASN | Client | 16bit mapped ASN |
+| --- | --- | --- |
+| 65551 | AS65551 192.0.2.33 | 64512 |
+
 
 
 Reject reasons

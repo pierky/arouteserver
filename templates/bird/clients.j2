@@ -351,7 +351,11 @@ filter receive_from_{{ client.id }} {
 	accept;
 }
 
-filter announce_to_{{ client.id }} {
+filter announce_to_{{ client.id }}
+{% if asn3216_map %}
+int mapped_16bit_asn;
+{% endif %}
+{
 	{% if "pre_announce_to_client"|hook_is_set %}
 	if !hook_pre_announce_to_client({{ client.asn }}, {{ client.ip }}, "{{ client.id }}") then
 		reject "hook_pre_announce_to_client returned false - NOT ANNOUNCING ", net, " TO {{ client.id}}";
@@ -418,6 +422,13 @@ protocol bgp {{ client.id }} {
 	local as {{ cfg.rs_as }};
 	neighbor {{ client.ip }} as {{ client.asn }};
 	rs client;
+
+	{% if client.cfg.filtering.roles.enabled and "2.0.11"|target_version_ge %}
+	local role {{ client.cfg.filtering.roles.get("local_role")|default("rs")|to_bgp_role }};
+	{% if client.cfg.filtering.roles.strict_mode %}
+	require roles on;
+	{% endif %}
+	{% endif %}
 
 	{% if client.password %}
 	password "{{ client.password }}";

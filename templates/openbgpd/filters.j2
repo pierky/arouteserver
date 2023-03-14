@@ -1,9 +1,9 @@
 {% from 'macros.j2' import write_prefix_list %}
 {% from 'macros.j2' import write_prefix_list_entry %}
 {% from 'macros.j2' import write_prefixset_list %}
-{% from 'macros.j2' import match_communities %}
-{% from 'macros.j2' import add_communities %}
-{% from 'macros.j2' import del_communities %}
+{% from 'macros.j2' import match_communities with context %}
+{% from 'macros.j2' import add_communities with context %}
+{% from 'macros.j2' import del_communities with context %}
 {% from 'macros.j2' import ins_communities %}
 {% from 'macros.j2' import delete_prepending_comm %}
 # ---------------------------------------------------------
@@ -45,7 +45,7 @@ ext-community delete $INTCOMM_PREF_OK_ROA
 {%      set reject_cause_map_comm_name = "reject_cause_map_" ~ cause_code %}
 {%      if cfg.communities[reject_cause_map_comm_name]|community_is_set %}
 # community from reject_cause_map
-{%        if "6.4"|target_version_ge %}allow{% else %}match{% endif %} quick {{ condition }} set {
+allow quick {{ condition }} set {
 	localpref 1
 	{{ ins_communities(cfg.communities.reject_cause, dyn_val=0).strip() }}
 	{{ ins_communities(cfg.communities.reject_cause, dyn_val=cause_code).strip() }}
@@ -54,7 +54,7 @@ ext-community delete $INTCOMM_PREF_OK_ROA
 	{{ internal_communities_list(all=true) }}
 }
 {%      else %}
-{%        if "6.4"|target_version_ge %}allow{% else %}match{% endif %} quick {{ condition }} set {
+allow quick {{ condition }} set {
 	localpref 1
 	{{ ins_communities(cfg.communities.reject_cause, dyn_val=0).strip() }}
 	{{ ins_communities(cfg.communities.reject_cause, dyn_val=cause_code).strip() }}
@@ -63,7 +63,7 @@ ext-community delete $INTCOMM_PREF_OK_ROA
 }
 {%      endif %}
 {%    else %}
-{%      if "6.4"|target_version_ge %}allow{% else %}match{% endif %} quick {{ condition }} set {
+allow quick {{ condition }} set {
 	localpref 1
 	{{ ins_communities(cfg.communities.reject_cause, dyn_val=0).strip() }}
 	{{ ins_communities(cfg.communities.reject_cause, dyn_val=cause_code).strip() }}
@@ -86,31 +86,16 @@ match from {{ client.ip  }} set ext-community {{ int_comm_ko }}
 {%			set as_set_bundle = irrdb_info[as_set_bundle_id] %}
 {%			set as_set_data = as_set_bundle[objects] %}
 {%			if as_set_data %}
-{%				if "6.4"|target_version_ge %}
-{%					if objects == "asns" %}
-{%						set matching_element = "source-as as-set" %}
-{%					else %}
-{%						set matching_element = "prefix-set" %}
-{%					endif %}
-{%					set condition = matching_element + " AS_SET_" ~ as_set_bundle.name ~ "_" ~ objects %}
-match from {{ client.ip }} {{ condition }} set {
-	ext-community delete {{ int_comm_ko }}
-	ext-community {{ int_comm_ok }}
-} # {{ as_set_bundle.name }}
+{%				if objects == "asns" %}
+{%					set matching_element = "source-as as-set" %}
 {%				else %}
-{%					if objects == "asns" %}
-{%						set matching_element = "source-as" %}
-{%					else %}
-{%						set matching_element = "prefix" %}
-{%					endif %}
-{%					for subset in as_set_data|batch(50) %}
-{%						set condition = matching_element + " $AS_SET_" ~ as_set_bundle.name ~ "_" ~ objects ~ loop.index %}
+{%					set matching_element = "prefix-set" %}
+{%				endif %}
+{%				set condition = matching_element + " AS_SET_" ~ as_set_bundle.name ~ "_" ~ objects %}
 match from {{ client.ip }} {{ condition }} set {
 	ext-community delete {{ int_comm_ko }}
 	ext-community {{ int_comm_ok }}
 } # {{ as_set_bundle.name }}
-{%					endfor %}
-{%				endif %}
 {%			else %}
 # AS-SET {{ as_set_bundle.name }} referenced but empty.
 {%                      endif %}
@@ -129,24 +114,16 @@ match from {{ client.ip }} {{ condition }} set {
 {% endmacro %}
 
 {% if cfg.filtering.global_black_list_pref %}
-{%	if "6.4"|target_version_ge %}
 prefix-set "global_black_list_pref" {
 {{		write_prefixset_list(cfg.filtering.global_black_list_pref) }}
 }
-{%	else %}
-global_black_list_pref="{ {{ write_prefix_list(cfg.filtering.global_black_list_pref) }} }"
-{%	endif %}
 {% endif %}
 
-{% if "6.4"|target_version_ge %}
 prefix-set "bogons" {
 {{	write_prefixset_list(bogons) }}
 }
-{% else %}
-bogons="{ {{ write_prefix_list(bogons) }} }"
-{% endif %}
 
-{% if never_via_route_servers_asns and "6.4"|target_version_ge %}
+{% if never_via_route_servers_asns %}
 # never via route-servers ASNs
 as-set "neverviarouteserver" {
 	{{ never_via_route_servers_asns|sort|join(", ") }}
@@ -211,22 +188,14 @@ match from group clients community NO_ADVERTISE set { ext-community $INTCOMM_NO_
 # It will be used later during IRRDB validation in
 # case the origin ASN is authorized by a client's
 # AS-SET but the prefix is not.
-{%	if "6.4"|target_version_ge %}
 origin-set "ARINDB" {
-{%		for origin_asn in arin_whois_records|sort %}
-{%			for prefix in arin_whois_records[origin_asn].prefixes|sort(attribute="prefix") %}
+{%	for origin_asn in arin_whois_records|sort %}
+{%		for prefix in arin_whois_records[origin_asn].prefixes|sort(attribute="prefix") %}
 {{ write_prefix_list_entry(prefix) }} source-as {{ origin_asn|replace("AS", "") }}
-{%        		endfor %}
-{%		endfor %}
+{%    		endfor %}
+{%	endfor %}
 }
 match from group clients origin-set ARINDB set ext-community $INTCOMM_PREF_OK_ARINDB
-{%	else %}
-{%		for origin_asn in arin_whois_records|sort %}
-{%			for prefixes in arin_whois_records[origin_asn].prefixes|sort(attribute="prefix")|batch(50) %}
-match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {{ write_prefix_list(prefixes) }} } set ext-community $INTCOMM_PREF_OK_ARINDB
-{%			endfor %}
-{%		endfor %}
-{%	endif %}
 {% endif %}
 
 {% if cfg.filtering.irrdb.use_registrobr_bulk_whois_data.enabled and
@@ -239,22 +208,14 @@ match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {
 # It will be used later during IRRDB validation in
 # case the origin ASN is authorized by a client's
 # AS-SET but the prefix is not.
-{%	if "6.4"|target_version_ge %}
 origin-set "REGISTROBRDB" {
-{%		for origin_asn in registrobr_whois_records|sort %}
-{%        		for prefix in registrobr_whois_records[origin_asn].prefixes|sort(attribute="prefix") %}
+{%	for origin_asn in registrobr_whois_records|sort %}
+{%		for prefix in registrobr_whois_records[origin_asn].prefixes|sort(attribute="prefix") %}
 {{ write_prefix_list_entry(prefix) }} source-as {{ origin_asn|replace("AS", "") }}
-{%        		endfor %}
-{%    		endfor %}
+{%		endfor %}
+{%	endfor %}
 }
 match from group clients origin-set REGISTROBRDB set ext-community $INTCOMM_PREF_OK_REGISTROBRDB
-{%	else %}
-{%		for origin_asn in registrobr_whois_records|sort %}
-{%			for prefixes in registrobr_whois_records[origin_asn].prefixes|sort(attribute="prefix")|batch(50) %}
-match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {{ write_prefix_list(prefixes) }} } set ext-community $INTCOMM_PREF_OK_REGISTROBRDB
-{%			endfor %}
-{%		endfor %}
-{%	endif %}
 {% endif %}
 
 
@@ -264,7 +225,7 @@ match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {
 # It will be removed later if the route is not invalid
 {%	for client in clients|sort(attribute="id") if client.ip is current_ipver %}
 {%		if client.cfg.filtering.reject_policy.policy == "tag" %}
-{{			add_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, dyn_val=client.asn) }}
+{{			add_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, dyn_val=client.asn, dyn_val_is_peer_as=True) }}
 {%		endif %}
 {%	endfor %}
 {% endif %}
@@ -276,11 +237,7 @@ match from group clients source-as {{ origin_asn|replace("AS", "") }} prefix { {
 
 {% if cfg.filtering.global_black_list_pref %}
 # Prefix: global blacklist
-{%	if "6.4"|target_version_ge %}
 {{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients prefix-set global_black_list_pref", 3) }}
-{%	else %}
-{{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients prefix $global_black_list_pref", 3) }}
-{%	endif %}
 {% endif %}
 
 # Prefix: only IPv6 Global Unicast space allowed
@@ -289,11 +246,7 @@ match from group clients prefix 2000::/3 or-longer set community delete NO_ADVER
 {{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients community NO_ADVERTISE", 10) }}
 
 # Prefix: bogon
-{% if "6.4"|target_version_ge %}
 {{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients prefix-set bogons", 2) }}
-{% else %}
-{{ deny_inbound_route(at_least_one_client_uses_tag_reject_policy, "from group clients prefix $bogons", 2) }}
-{% endif %}
 
 
 
@@ -340,9 +293,6 @@ match from {{ client.ip }} nexthop {{ same_as_client.ip }} set community delete 
 
 {% if client.cfg.filtering.reject_invalid_as_in_as_path %}
 # AS_PATH: invalid ASNs
-{%   if "6.3"|target_version_le %}
-{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 0", 7) }}
-{%   endif %}
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 23456", 7) }}
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 64496 - 131071", 7) }}
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS 4200000000 - 4294967295", 7) }}
@@ -356,11 +306,7 @@ match from {{ client.ip }} nexthop {{ same_as_client.ip }} set community delete 
 
 {% if never_via_route_servers_asns %}
 # AS_PATH: never via route-servers ASNs
-{%	 if "6.4"|target_version_ge %}
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS as-set neverviarouteserver", 15) }}
-{%   else %}
-{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " AS { " ~ never_via_route_servers_asns|sort|join(", ") ~ " }", 15) }}
-{%   endif %}
 {% endif %}
 
 {% if client.cfg.filtering.irrdb.white_list_route %}
@@ -392,15 +338,10 @@ match from {{ client.ip }} set ext-community $INTCOMM_IRR_REJECT
 {% if client.cfg.filtering.black_list_pref %}
 # Prefix: client's blacklist
 {%	set pref_list_name = "client_" ~ client.id ~ "_black_list_pref_ipv" ~ client.ip|ipaddr_ver %}
-{%	if "6.4"|target_version_ge %}
 prefix-set "{{ pref_list_name }}" {
 {{ write_prefixset_list(client.cfg.filtering.black_list_pref, client.ip|ipaddr_ver) }}
 }
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " prefix-set " ~ pref_list_name, 11) }}
-{%	else %}
-{{ pref_list_name }} = "{ {{ write_prefix_list(client.cfg.filtering.black_list_pref, client.ip|ipaddr_ver) }} }"
-{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " prefix $" ~ pref_list_name, 11) }}
-{%	endif %}
 {% endif %}
 
 {% if client.cfg.filtering.irrdb.enforce_prefix_in_as_set or cfg.filtering.irrdb.tag_as_set %}
@@ -413,114 +354,56 @@ prefix-set "{{ pref_list_name }}" {
 
 {% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled %}
 # routes tagged with $INTCOMM_PREF_OK_ROA community have the prefix validated by a ROA; origin ASN previously validated ($INTCOMM_ORIGIN_OK)
-{%	if "6.4"|target_version_le %}
-# NO_ADVERTISE here means $INTCOMM_ORIGIN_OK
-# (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)
-match from {{ client.ip }} ext-community $INTCOMM_ORIGIN_OK set community NO_ADVERTISE
-{%		set when = "match from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_PREF_OK_ROA" %}
-{%	else %}
-{%		set when = "match from " ~ client.ip ~ " ext-community $INTCOMM_ORIGIN_OK ext-community $INTCOMM_PREF_OK_ROA" %}
-{%	endif %}
+{%	set when = "match from " ~ client.ip ~ " ext-community $INTCOMM_ORIGIN_OK ext-community $INTCOMM_PREF_OK_ROA" %}
 {%	if cfg.filtering.irrdb.tag_as_set %}
 {{		add_communities(when, cfg.communities.prefix_validated_via_rpki_roas) }}
 {%	endif %}
 {{ when }} set ext-community delete $INTCOMM_IRR_REJECT
-{%	if "6.4"|target_version_le %}
-match from {{ client.ip }} set community delete NO_ADVERTISE
-{%	endif %}
 {% endif %}
 
 {% if cfg.filtering.irrdb.use_arin_bulk_whois_data.enabled and arin_whois_records %}
 # routes tagged with $INTCOMM_PREF_OK_ARINDB community have the prefix validated by an ARIN Whois record; origin ASN previously validated ($INTCOMM_ORIGIN_OK)
-{%	if "6.4"|target_version_le %}
-# NO_ADVERTISE here means $INTCOMM_ORIGIN_OK
-# (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)
-match from {{ client.ip }} ext-community $INTCOMM_ORIGIN_OK set community NO_ADVERTISE
-{%		set when = "match from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_PREF_OK_ARINDB" %}
-{%	else %}
-{%		set when = "match from " ~ client.ip ~ " ext-community $INTCOMM_ORIGIN_OK ext-community $INTCOMM_PREF_OK_ARINDB" %}
-{%	endif %}
+{%	set when = "match from " ~ client.ip ~ " ext-community $INTCOMM_ORIGIN_OK ext-community $INTCOMM_PREF_OK_ARINDB" %}
 {%	if cfg.filtering.irrdb.tag_as_set %}
 {{		add_communities(when, cfg.communities.prefix_validated_via_arin_whois_db_dump) }}
 {%	endif %}
 {{ when }} set ext-community delete $INTCOMM_IRR_REJECT
-{%	if "6.4"|target_version_le %}
-match from {{ client.ip }} set community delete NO_ADVERTISE
-{%	endif %}
 {% endif %}
 
 {% if cfg.filtering.irrdb.use_registrobr_bulk_whois_data.enabled and registrobr_whois_records %}
 # routes tagged with $INTCOMM_PREF_OK_REGISTROBRDB community have the prefix validated by a NICBR Whois record; origin ASN previously validated ($INTCOMM_ORIGIN_OK)
-{%	if "6.4"|target_version_le %}
-# NO_ADVERTISE here means $INTCOMM_ORIGIN_OK
-# (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)
-match from {{ client.ip }} ext-community $INTCOMM_ORIGIN_OK set community NO_ADVERTISE
-{%		set when = "match from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_PREF_OK_REGISTROBRDB" %}
-{%	else %}
-{%		set when = "match from " ~ client.ip ~ " ext-community $INTCOMM_ORIGIN_OK ext-community $INTCOMM_PREF_OK_REGISTROBRDB" %}
-{%	endif %}
+{%	set when = "match from " ~ client.ip ~ " ext-community $INTCOMM_ORIGIN_OK ext-community $INTCOMM_PREF_OK_REGISTROBRDB" %}
 {%	if cfg.filtering.irrdb.tag_as_set %}
 {{		add_communities(when, cfg.communities.prefix_validated_via_registrobr_whois_db_dump) }}
 {%	endif %}
 {{ when }} set ext-community delete $INTCOMM_IRR_REJECT
-{%	if "6.4"|target_version_le %}
-match from {{ client.ip }} set community delete NO_ADVERTISE
-{%	endif %}
 {% endif %}
 
 {% if client.cfg.filtering.irrdb.white_list_route %}
 # route authorized by a client's white list?
-{%	if "6.4"|target_version_le %}
-# NO_ADVERTISE here means $INTCOMM_IRR_REJECT
-# (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)
-match from {{ client.ip }} ext-community $INTCOMM_IRR_REJECT set community NO_ADVERTISE
-{%		set when = "match from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_ROUTE_OK_WL" %}
-{%	else %}
-{%		set when = "match from " ~ client.ip ~ " ext-community $INTCOMM_IRR_REJECT ext-community $INTCOMM_ROUTE_OK_WL" %}
-{%	endif %}
+{%	set when = "match from " ~ client.ip ~ " ext-community $INTCOMM_IRR_REJECT ext-community $INTCOMM_ROUTE_OK_WL" %}
 {%      if cfg.filtering.irrdb.tag_as_set %}
 {{              add_communities(when, cfg.communities.route_validated_via_white_list) }}
 {%	endif %}
 {{ when }} set ext-community delete $INTCOMM_IRR_REJECT
-{%	if "6.4"|target_version_le %}
-match from {{ client.ip }} set community delete NO_ADVERTISE
-{%	endif %}
 {% endif %}
 
 {% if client.cfg.filtering.irrdb.enforce_origin_in_as_set %}
 # enforcing: origin ASN
-{%	if "6.4"|target_version_le %}
-# NO_ADVERTISE here means $INTCOMM_IRR_REJECT
-# (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)
-match from {{ client.ip }} ext-community $INTCOMM_IRR_REJECT set community NO_ADVERTISE
-{{ deny_inbound_route(client.cfg.filtering.reject_policy.policy == "tag",
-		      "from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_ORIGIN_KO", 9) }}
-match from {{ client.ip }} set community delete NO_ADVERTISE
-{%	else %}
 {{ deny_inbound_route(client.cfg.filtering.reject_policy.policy == "tag",
 		      "from " ~ client.ip ~ " ext-community $INTCOMM_IRR_REJECT ext-community $INTCOMM_ORIGIN_KO", 9) }}
-{%	endif %}
 {% endif %}
 {% if client.cfg.filtering.irrdb.enforce_prefix_in_as_set %}
 # enforcing: prefix
-{%	if "6.4"|target_version_le %}
-# NO_ADVERTISE here means $INTCOMM_IRR_REJECT
-# (OpenBGPD does not allow matching multiple ext comms at once, so a std comm and an ext comm are used)
-match from {{ client.ip }} ext-community $INTCOMM_IRR_REJECT set community NO_ADVERTISE
-{{ deny_inbound_route(client.cfg.filtering.reject_policy.policy == "tag",
-		      "from " ~ client.ip ~ " community NO_ADVERTISE ext-community $INTCOMM_PREFIX_KO", 12) }}
-match from {{ client.ip }} set community delete NO_ADVERTISE
-{%	else %}
 {{ deny_inbound_route(client.cfg.filtering.reject_policy.policy == "tag",
 		      "from " ~ client.ip ~ " ext-community $INTCOMM_IRR_REJECT ext-community $INTCOMM_PREFIX_KO", 12) }}
-{%	endif %}
 {% endif %}
 {% endif %}
 
 {% if ( client.ip|ipaddr_ver == 4 and cfg.blackhole_filtering.policy_ipv4 ) or
       ( client.ip|ipaddr_ver == 6 and cfg.blackhole_filtering.policy_ipv6 ) %}
 # Blackhole request?
-{{ del_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, replace_dyn_val=client.asn) }}
+{{ del_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, replace_dyn_val=client.asn, dyn_val_is_peer_as=True) }}
 # Remove internal communities before accepting the route
 match from {{ client.ip }} community BLACKHOLE set {
 	ext-community delete $INTCOMM_RPKI_INVALID
@@ -534,7 +417,7 @@ match from {{ client.ip }} community BLACKHOLE set {
 {%    endif %}
 allow quick from {{ client.ip }} community BLACKHOLE
 {{ match_communities("allow quick from " ~ client.ip, cfg.communities.blackholing, "") }}
-{{ add_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, dyn_val=client.asn) }}
+{{ add_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, dyn_val=client.asn, dyn_val_is_peer_as=True) }}
 {% endif %}
 
 {% if cfg.filtering.rpki_bgp_origin_validation.enabled and
@@ -555,7 +438,7 @@ allow quick from {{ client.ip }} community BLACKHOLE
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " prefix ::/0 prefixlen " ~ min_pref_len ~ " >< " ~ max_pref_len, 13) }}
 {% endif %}
 
-{% if cfg.graceful_shutdown.enabled and "6.2"|target_version_ge %}
+{% if cfg.graceful_shutdown.enabled %}
 # Graceful shutdown
 {%	if client.cfg.graceful_shutdown.enabled %}
 match from {{ client.ip }} community GRACEFUL_SHUTDOWN set localpref {{ cfg.graceful_shutdown.local_pref }}
@@ -569,7 +452,7 @@ match from {{ client.ip }} set {
 	{{ internal_communities_list() }}
 }
 
-{{ del_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, replace_dyn_val=client.asn) }}
+{{ del_communities("match from " ~ client.ip, cfg.communities.rejected_route_announced_by, replace_dyn_val=client.asn, dyn_val_is_peer_as=True) }}
 
 allow quick from {{ client.ip }}
 
@@ -751,7 +634,7 @@ match to group clients set {
 }
 {% endfor %}
 
-{% if perform_graceful_shutdown and "6.2"|target_version_ge %}
+{% if perform_graceful_shutdown %}
 match to group clients set community GRACEFUL_SHUTDOWN
 {% endif %}
 

@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2022 Pier Carlo Chiodi
+# Copyright (C) 2017-2023 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -251,6 +251,8 @@ class BIRDInstance(DockerInstance, BGPSpeakerInstance):
                         route["ext_comms"] = line.split(": ")[1].strip()
                     if "BGP.local_pref:" in line:
                         route["localpref"] = line.split(": ")[1].strip()
+                    if "BGP.otc:" in line:
+                        route["otc"] = int(line.split(": ")[1].strip())
             add_route(route)
             route = {}
 
@@ -327,11 +329,11 @@ class BIRDInstanceIPv6(BIRDInstance):
 
 class BIRD2Instance(BIRDInstance):
 
-    DOCKER_IMAGE = "pierky/bird:2.0.10"
+    DOCKER_IMAGE = "pierky/bird:2.0.11"
 
     TAG = "bird2"
 
-    TARGET_VERSION = "2.0.10"
+    TARGET_VERSION = "2.0.11"
 
     def _get_start_cmd(self):
         return "bird -c /etc/bird/bird.conf -d"

@@ -66,19 +66,14 @@ if [ -n "$1" ]; then
 	shift
 fi
 
-BIRD_DEFAULT_VERSION=$(cat << EOF | python -
-from pierky.arouteserver.builder import BIRDConfigBuilder
-print(BIRDConfigBuilder.DEFAULT_VERSION)
-EOF
-)
-BIRD2_DEFAULT_VERSION=$(cat << EOF | python -
+BIRD2_LATEST_VERSION=$(cat << EOF | python -
 from pierky.arouteserver.builder import BIRDConfigBuilder
 print(BIRDConfigBuilder.AVAILABLE_VERSION[-1])
 EOF
 )
-OPENBGPD_DEFAULT_VERSION=$(cat << EOF | python -
+OPENBGPD_LATEST_VERSION=$(cat << EOF | python -
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder
-print(OpenBGPDConfigBuilder.DEFAULT_VERSION)
+print(OpenBGPDConfigBuilder.AVAILABLE_VERSION[-1])
 EOF
 )
 
@@ -130,9 +125,9 @@ function RenderExample() {
 		BIRD_VER="$1" ; shift
 		if [ "$BIRD_VER" == "1" ]; then
 			IP_VER="$1" ; shift
-			$CMD --ip-ver $IP_VER -o examples/$DST/bird$IP_VER.conf $@
+			$CMD --ip-ver $IP_VER -o examples/$DST/bird$IP_VER.conf --ignore-issues \* $@
 		else
-			$CMD --target-version ${BIRD2_DEFAULT_VERSION} --ignore-issues \* -o examples/$DST/bird_v2.conf $@
+			$CMD --target-version ${BIRD2_LATEST_VERSION} --ignore-issues \* -o examples/$DST/bird_v2.conf $@
 		fi
 	elif [ "$COMMAND" == "openbgpd" ]; then
 		$CMD -o examples/$DST/openbgpd.conf --ignore-issues \*
@@ -227,14 +222,14 @@ EOF
 
 G="bird-general.yml"
 RenderConfigureExample "bird" $G \
-	"daemon=bird version=${BIRD_DEFAULT_VERSION} asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" | \
+	"daemon=bird version=${BIRD2_LATEST_VERSION} asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" | \
 		sed 's/^/   /' >> $D
-./scripts/arouteserver bird $OPTS --ip-ver 4 --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
+./scripts/arouteserver bird $OPTS --target-ver ${BIRD2_LATEST_VERSION} --ip-ver 4 --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
 
 G="openbgpd-general.yml"
 RenderConfigureExample "openbgpd" $G \
-	"daemon=openbgpd version=${OPENBGPD_DEFAULT_VERSION} asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" &>/dev/null
-./scripts/arouteserver openbgpd $OPTS --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
+	"daemon=openbgpd version=${OPENBGPD_LATEST_VERSION} asn=64496 router_id=192.0.2.1 black_list=192.0.2.0/24,2001:db8::/32" &>/dev/null
+./scripts/arouteserver openbgpd $OPTS --target-ver ${OPENBGPD_LATEST_VERSION} --general examples/auto-config/$G --clients config.d/clients.yml --test-only -o /dev/null
 
 echo "The textual description (HTML and Markdown) generated on the basis of the *general.yml* files produced by this command is also reported here." >> $D
 
@@ -312,12 +307,12 @@ RenderExample "rpki_rtr" "bird" "$G" "$C" "config.d/bogons.yml" 2
 title "Building example: auto-config via 'configure', BIRD"
 C="config.d/clients.yml"
 G="examples/auto-config/bird-general.yml"
-RenderExample "auto-config" "bird" "$G" "$C" "config.d/bogons.yml" 1 4
+RenderExample "auto-config" "bird" "$G" "$C" "config.d/bogons.yml" 1 4 --target-ver ${BIRD2_LATEST_VERSION}
 
 title "Building example: auto-config via 'configure', OpenBGPD"
 C="config.d/clients.yml"
 G="examples/auto-config/openbgpd-general.yml"
-RenderExample "auto-config" "openbgpd" "$G" "$C" "config.d/bogons.yml"
+RenderExample "auto-config" "openbgpd" "$G" "$C" "config.d/bogons.yml" --target-ver ${OPENBGPD_LATEST_VERSION}
 
 title "Build clients from Euro-IX files? [yes/NO] "
 read YES_NO

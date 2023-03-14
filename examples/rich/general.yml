@@ -69,6 +69,9 @@ cfg:
       restart_after: 30
       peering_db: True
 
+    roles:
+      enabled: True
+
   rpki_roas:
       source: "ripe-rpki-validator-cache"
       ripe_rpki_validator_url: "examples/rich/ripe-rpki-cache.json"
