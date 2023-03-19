@@ -100,6 +100,12 @@ are **rejected**.
 
 
 
+### Route leak prevention and detection using roles [RFC9234](https://tools.ietf.org/html/rfc9234)
+
+* **BGP roles** are configured and **"Only to Customer" (OTC) routes are dropped**.
+
+* Sessions from clients that don't announce any role are **accepted** anyway (backward compatibility mode).
+
 
 
 

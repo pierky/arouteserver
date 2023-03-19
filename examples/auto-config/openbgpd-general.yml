@@ -53,6 +53,8 @@ cfg:
       action: shutdown
       peering_db:
         enabled: true
+    roles:
+      enabled: true
     reject_policy:
       policy: tag
   graceful_shutdown:

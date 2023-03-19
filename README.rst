@@ -86,7 +86,9 @@ Features
 
   - **RPKI**-based filtering (BGP Prefix Origin Validation);
 
-    - ROAs can be retrieved from publicly available JSON files or from a local validating cache.
+    - ROAs can be retrieved from publicly available JSON files or from a local validating cache;
+
+  - Route Leak Prevention and Detection Using **BGP Roles** (`RFC9234`_).
 
 - **Blackhole filtering** support:
 
@@ -135,6 +137,7 @@ More feature are already planned: see the `Future work <https://arouteserver.rea
 
 .. _RFC7947: https://tools.ietf.org/html/rfc7947
 .. _RFC7948: https://tools.ietf.org/html/rfc7948
+.. _RFC9234: https://tools.ietf.org/html/rfc9234
 .. _RFC5082: https://tools.ietf.org/html/rfc5082
 .. _RFC7911: https://tools.ietf.org/html/rfc7911
 
