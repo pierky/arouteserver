@@ -7,7 +7,7 @@ Total test cases per BGP speaker
 **BGP speaker** **Total** **Passed ✔** **Failed ✖** **Skipped** 
 BIRD            830       821          0            9           
 BIRD v2         844       835          0            9           
-OpenBGPD 7.7    458       453          0            5           
+OpenBGPD 7.8    458       455          0            3           
 =============== ========= ============ ============ ===========  
 
 Scenarios
@@ -17,7 +17,7 @@ Scenarios
 ++++++++++++++++++++++++++++++++++
 
 ============================================= ======== =========== ================   
-**Test**                                      **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                      **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 AS_PATH too long                              ✔        ✔           ✔                
 RPKI INVALID route                            ✔        ✔           ✔                
 announced by ASN derived via 16bit_mapped_asn ✔        ✔           ✔                
@@ -45,7 +45,7 @@ transit-free ASN in AS_PATH                   ✔        ✔           ✔
 ++++++++++++++++++++++++++++++++++
 
 ============================================= ======== =========== ================   
-**Test**                                      **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                      **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 AS_PATH too long                              ✔        ✔           ✔                
 RPKI INVALID route                            ✔        ✔           ✔                
 announced by ASN derived via 16bit_mapped_asn ✔        ✔           ✔                
@@ -73,7 +73,7 @@ BGP communities, IPv4
 +++++++++++++++++++++
 
 =============================== ======== =========== ================   
-**Test**                        **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                        **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 announce to AS1 only (ext)      ✔        ✔           ✔                
 announce to AS1 only (lrg)      ✔        ✔           ✔                
 announce to AS1 only (std)      ✔        ✔           ✔                
@@ -91,7 +91,7 @@ BGP communities, IPv6
 +++++++++++++++++++++
 
 =============================== ======== =========== ================   
-**Test**                        **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                        **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 announce to AS1 only (ext)      ✔        ✔           ✔                
 announce to AS1 only (lrg)      ✔        ✔           ✔                
 announce to AS1 only (std)      ✔        ✔           ✔                
@@ -109,7 +109,7 @@ BOV custom comms, IPv4
 ++++++++++++++++++++++
 
 =================================== ======== =========== ================   
-**Test**                            **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                            **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 RPKI, AS2 invalid prefix, bad ASN   ✔        ✔                            
 RPKI, AS2 valid prefix, exact match ✔        ✔                            
 log contains errors                 ✔        ✔                            
@@ -120,7 +120,7 @@ BOV custom comms, IPv6
 ++++++++++++++++++++++
 
 =================================== ======== =========== ================   
-**Test**                            **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                            **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 RPKI, AS2 invalid prefix, bad ASN   ✔        ✔                            
 RPKI, AS2 valid prefix, exact match ✔        ✔                            
 log contains errors                 ✔        ✔                            
@@ -131,7 +131,7 @@ RPKI INVALID tagging, IPv4
 ++++++++++++++++++++++++++
 
 ==================================== ======== =========== ================   
-**Test**                             **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                             **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 RPKI, AS2 invalid prefix, bad ASN    ✔        ✔                            
 RPKI, AS2 invalid prefix, bad length ✔        ✔                            
 RPKI, AS2 unknown prefix             ✔        ✔                            
@@ -150,7 +150,7 @@ RPKI INVALID tagging, IPv6
 ++++++++++++++++++++++++++
 
 ==================================== ======== =========== ================   
-**Test**                             **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                             **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 RPKI, AS2 invalid prefix, bad ASN    ✔        ✔                            
 RPKI, AS2 invalid prefix, bad length ✔        ✔                            
 RPKI, AS2 unknown prefix             ✔        ✔                            
@@ -169,7 +169,7 @@ RTR protocol
 ++++++++++++
 
 ================================================================== ======== =========== ================   
-**Test**                                                           **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                                           **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 check the RTR session is up                                                 ✔           ✔                
 log contains errors                                                         ✔           ✔                
 restart OpenBGPD to speed up RTR session establishment                                  ✔                
@@ -183,7 +183,7 @@ default config, IPv4
 ++++++++++++++++++++
 
 =================== ======== =========== ================   
-**Test**            **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**            **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 log contains errors ✔        ✔           ✔                
 =================== ======== =========== ================   
 
@@ -191,7 +191,7 @@ default config, IPv6
 ++++++++++++++++++++
 
 =================== ======== =========== ================   
-**Test**            **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**            **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 log contains errors ✔        ✔           ✔                
 =================== ======== =========== ================   
 
@@ -199,7 +199,7 @@ examples, rich config, IPv4
 +++++++++++++++++++++++++++
 
 =================== ======== =========== ================   
-**Test**            **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**            **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 log contains errors ✔        ✔           ✔                
 =================== ======== =========== ================   
 
@@ -207,7 +207,7 @@ examples, rich config, IPv6
 +++++++++++++++++++++++++++
 
 =================== ======== =========== ================   
-**Test**            **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**            **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 log contains errors ✔        ✔           ✔                
 =================== ======== =========== ================   
 
@@ -215,7 +215,7 @@ global scenario, IPv4
 +++++++++++++++++++++
 
 =============================================================================== ======== =========== ================   
-**Test**                                                                        **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                                                        **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 RPKI, blackhole request for a covered prefix                                    ✔        ✔           ✔                
 RPKI, invalid prefix (bad ASN) not propagated to clients                        ✔        ✔           ✔                
 RPKI, invalid prefix (bad ASN) received by rs                                   ✔        ✔           ✔                
@@ -308,7 +308,7 @@ global scenario, IPv4, tag
 ++++++++++++++++++++++++++
 
 =============================================================================== ======== =========== ================   
-**Test**                                                                        **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                                                        **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 RPKI, blackhole request for a covered prefix                                    ✔        ✔                            
 RPKI, invalid prefix (bad ASN) not propagated to clients                        ✔        ✔                            
 RPKI, invalid prefix (bad ASN) received by rs                                   ✔        ✔                            
@@ -401,7 +401,7 @@ global scenario, IPv4, tag&reject
 +++++++++++++++++++++++++++++++++
 
 =============================================================================== ======== =========== ================   
-**Test**                                                                        **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                                                        **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 RPKI, blackhole request for a covered prefix                                    ✔        ✔                            
 RPKI, invalid prefix (bad ASN) not propagated to clients                        ✔        ✔                            
 RPKI, invalid prefix (bad ASN) received by rs                                   ✔        ✔                            
@@ -494,7 +494,7 @@ global scenario, IPv6
 +++++++++++++++++++++
 
 =============================================================================== ======== =========== ================   
-**Test**                                                                        **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                                                        **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 RPKI, blackhole request for a covered prefix                                    ✔        ✔           ✔                
 RPKI, invalid prefix (bad ASN) not propagated to clients                        ✔        ✔           ✔                
 RPKI, invalid prefix (bad ASN) received by rs                                   ✔        ✔           ✔                
@@ -587,7 +587,7 @@ global scenario, IPv6, tag
 ++++++++++++++++++++++++++
 
 =============================================================================== ======== =========== ================   
-**Test**                                                                        **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                                                        **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 RPKI, blackhole request for a covered prefix                                    ✔        ✔                            
 RPKI, invalid prefix (bad ASN) not propagated to clients                        ✔        ✔                            
 RPKI, invalid prefix (bad ASN) received by rs                                   ✔        ✔                            
@@ -680,7 +680,7 @@ global scenario, IPv6, tag&reject
 +++++++++++++++++++++++++++++++++
 
 =============================================================================== ======== =========== ================   
-**Test**                                                                        **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                                                        **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 RPKI, blackhole request for a covered prefix                                    ✔        ✔                            
 RPKI, invalid prefix (bad ASN) not propagated to clients                        ✔        ✔                            
 RPKI, invalid prefix (bad ASN) received by rs                                   ✔        ✔                            
@@ -773,7 +773,7 @@ gshut, IPv4
 +++++++++++
 
 ==================================================== ======== =========== ================   
-**Test**                                             **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                             **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 clients receive routes tagged with GRACEFUL_SHUTDOWN ✔        ✔           ✔                
 log contains errors                                  ✔        ✔           ✔                
 reconfigure                                          ✔        ✔           ✔                
@@ -783,7 +783,7 @@ gshut, IPv6
 +++++++++++
 
 ==================================================== ======== =========== ================   
-**Test**                                             **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                             **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 clients receive routes tagged with GRACEFUL_SHUTDOWN ✔        ✔           ✔                
 log contains errors                                  ✔        ✔           ✔                
 reconfigure                                          ✔        ✔           ✔                
@@ -793,7 +793,7 @@ hooks example, IPv4
 +++++++++++++++++++
 
 =================== ======== =========== ================   
-**Test**            **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**            **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 log contains errors ✔                                     
 =================== ======== =========== ================   
 
@@ -801,7 +801,7 @@ hooks example, IPv6
 +++++++++++++++++++
 
 =================== ======== =========== ================   
-**Test**            **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**            **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 log contains errors ✔                                     
 =================== ======== =========== ================   
 
@@ -809,7 +809,7 @@ max-prefix, IPv4
 ++++++++++++++++
 
 ================================================================ ======== =========== ================   
-**Test**                                                         **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                                         **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 AS5 session is down (max-prefix hit, action == shutdown)         ✔        ✔                            
 clients log max-prefix notification                                                   ✔                
 log contains errors                                              ✔        ✔           ✔                
@@ -829,7 +829,7 @@ max-prefix, IPv6
 ++++++++++++++++
 
 ================================================================ ======== =========== ================   
-**Test**                                                         **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                                         **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 AS5 session is down (max-prefix hit, action == shutdown)         ✔        ✔                            
 clients log max-prefix notification                                                   ✔                
 log contains errors                                              ✔        ✔           ✔                
@@ -849,7 +849,7 @@ path hiding, mitigation off, IPv4
 +++++++++++++++++++++++++++++++++
 
 =================================================== ======== =========== ================   
-**Test**                                            **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                            **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 AS1 wants rs to not announce to AS3 and AS4         ✔        ✔           ✔                
 AS3 does not receive prefix at all                  ✔        ✔           ✔                
 AS4 receives the prefix via AS2 because of ADD-PATH ✔        ✔           ✔                
@@ -863,7 +863,7 @@ path hiding, mitigation off, IPv6
 +++++++++++++++++++++++++++++++++
 
 =================================================== ======== =========== ================   
-**Test**                                            **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                            **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 AS1 wants rs to not announce to AS3 and AS4         ✔        ✔           ✔                
 AS3 does not receive prefix at all                  ✔        ✔           ✔                
 AS4 receives the prefix via AS2 because of ADD-PATH ✔        ✔           ✔                
@@ -877,7 +877,7 @@ path hiding, mitigation on, IPv4
 ++++++++++++++++++++++++++++++++
 
 ======================================================== ======== =========== ================   
-**Test**                                                 **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                                 **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 2nd best is withdrawn and AS3 should not see it anymore  skip     skip        ✔                
 AS1 wants rs to not announce to AS3 and AS4              ✔        ✔           ✔                
 AS3 and AS4 don't receive prefix via AS1                 ✔        ✔           ✔                
@@ -892,7 +892,7 @@ path hiding, mitigation on, IPv6
 ++++++++++++++++++++++++++++++++
 
 ======================================================== ======== =========== ================   
-**Test**                                                 **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                                 **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 2nd best is withdrawn and AS3 should not see it anymore  skip     skip        ✔                
 AS1 wants rs to not announce to AS3 and AS4              ✔        ✔           ✔                
 AS3 and AS4 don't receive prefix via AS1                 ✔        ✔           ✔                
@@ -907,11 +907,11 @@ roles, IPv4
 +++++++++++
 
 ==================================== ======== =========== ================   
-**Test**                             **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                             **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 OTC is attached to routes without it          ✔           ✔                
 log contains errors                           ✔           ✔                
 routes expected on AS2                        ✔           ✔                
-routes with OTC from AS1                      ✔           skip             
+routes with OTC from AS1                      ✔           ✔                
 routes with OTC from AS2 are dropped          ✔           ✔                
 ==================================== ======== =========== ================   
 
@@ -919,11 +919,11 @@ roles, IPv6
 +++++++++++
 
 ==================================== ======== =========== ================   
-**Test**                             **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                             **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 OTC is attached to routes without it          ✔           ✔                
 log contains errors                           ✔           ✔                
 routes expected on AS2                        ✔           ✔                
-routes with OTC from AS1                      ✔           skip             
+routes with OTC from AS1                      ✔           ✔                
 routes with OTC from AS2 are dropped          ✔           ✔                
 ==================================== ======== =========== ================   
 
@@ -931,7 +931,7 @@ tag prefix/origin empty AS-SET, IPv4
 ++++++++++++++++++++++++++++++++++++
 
 ====================================================================================== ======== =========== ================   
-**Test**                                                                               **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                                                               **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump)              ✔        ✔           ✔                
 AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas])          ✔        ✔           ✔                
 AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas)          ✔        ✔           ✔                
@@ -973,7 +973,7 @@ tag prefix/origin empty AS-SET, IPv6
 ++++++++++++++++++++++++++++++++++++
 
 ====================================================================================== ======== =========== ================   
-**Test**                                                                               **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                                                               **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump)              ✔        ✔           ✔                
 AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas])          ✔        ✔           ✔                
 AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas)          ✔        ✔           ✔                
@@ -1015,7 +1015,7 @@ tag prefix/origin in AS-SET, IPv4
 +++++++++++++++++++++++++++++++++
 
 ======================================================================================== ======== =========== ================   
-**Test**                                                                                 **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                                                                 **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump)                 ✔        ✔           ✔                
 AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas])             ✔        ✔           ✔                
 AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas)             ✔        ✔           ✔                
@@ -1066,7 +1066,7 @@ tag prefix/origin in AS-SET, IPv6
 +++++++++++++++++++++++++++++++++
 
 ======================================================================================== ======== =========== ================   
-**Test**                                                                                 **BIRD** **BIRD v2** **OpenBGPD 7.7** 
+**Test**                                                                                 **BIRD** **BIRD v2** **OpenBGPD 7.8** 
 AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump)                 ✔        ✔           ✔                
 AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas])             ✔        ✔           ✔                
 AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas)             ✔        ✔           ✔                

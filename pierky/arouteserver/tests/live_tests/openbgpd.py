@@ -208,6 +208,8 @@ class OpenBGPDInstance(object):
             elif line.startswith("Origin"):
                 route["best"] = "best" in line
 
+                route["filtered"] = ", valid" not in line
+
                 match = re.search("localpref ([0-9]+)", line)
                 route["localpref"] = int(match.group(1))
             elif line.startswith("Communities:"):
@@ -639,5 +641,15 @@ class OpenBGPD77PortableInstance(OpenBGPDPortableInstance):
     TARGET_VERSION = "7.7"
 
 
-OpenBGPDPortablePreviousInstance = OpenBGPD76PortableInstance
-OpenBGPDPortableLatestInstance = OpenBGPD77PortableInstance
+class OpenBGPD78PortableInstance(OpenBGPDPortableInstance):
+
+    DOCKER_IMAGE = "pierky/openbgpd:7.8"
+
+    TAG = "openbgpd78p"
+
+    BGP_SPEAKER_VERSION = "7.8"
+    TARGET_VERSION = "7.8"
+
+
+OpenBGPDPortablePreviousInstance = OpenBGPD77PortableInstance
+OpenBGPDPortableLatestInstance = OpenBGPD78PortableInstance

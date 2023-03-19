@@ -330,9 +330,6 @@ class TestConfigureCmd(ARouteServerTestCase):
             "policy": "tag"
         }
 
-        # To be removed when latest version will be 7.8
-        del self.expected_config["cfg"]["filtering"]["roles"]
-
         latest_version = OpenBGPDConfigBuilder.AVAILABLE_VERSION[-1]
         self.mock_answers([
             "openbgpd",
@@ -357,9 +354,6 @@ class TestConfigureCmd(ARouteServerTestCase):
         self.expected_config["cfg"]["filtering"]["reject_policy"] = {
             "policy": "tag"
         }
-
-        # To be removed when latest version will be 7.8
-        del self.expected_config["cfg"]["filtering"]["roles"]
 
         latest_version = OpenBGPDConfigBuilder.AVAILABLE_VERSION[-1]
 

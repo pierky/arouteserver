@@ -30,9 +30,6 @@ class RolesScenario(LiveScenario):
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
 
-    # Populated on the BGP-speaker-specific classes.
-    AS2_EXPECTED_ROUTES = []
-
     @classmethod
     def _setup_rs_instance(cls):
         raise NotImplementedError()
@@ -210,16 +207,18 @@ class RolesScenario(LiveScenario):
     def test_040_expected_routes_as2(self):
         """{}: routes expected on AS2"""
 
+        AS2_EXPECTED_ROUTES = ["AS1_route1"]
+
         expected_routes = [
             prefix
             for prefix_id, prefix in self.DATA.items()
-            if prefix_id in self.AS2_EXPECTED_ROUTES
+            if prefix_id in AS2_EXPECTED_ROUTES
         ]
 
         not_expected_routes = [
             prefix
             for prefix_id, prefix in self.DATA.items()
-            if prefix_id not in self.AS2_EXPECTED_ROUTES
+            if prefix_id not in AS2_EXPECTED_ROUTES
         ]
 
         for prefix in expected_routes:
@@ -235,8 +234,6 @@ class RolesScenarioBIRD(RolesScenario):
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
     IP_VER = None
-
-    AS2_EXPECTED_ROUTES = ["AS1_route1"]
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -258,16 +255,6 @@ class RolesScenarioOpenBGPD(RolesScenario):
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
     IP_VER = None
-
-    # The reason why this attribute contains one extra prefix for OpenBGPD
-    # can be found inside the comments of test_030_route_with_otc_from_as1 and
-    # test_030_route_with_otc_from_as2.
-    AS2_EXPECTED_ROUTES = [
-        "AS1_route1",
-
-        # To be removed when OpenBGPD will fix the issue https://github.com/openbgpd-portable/openbgpd-portable/issues/50
-        "AS101_to_AS1"
-    ]
 
     @classmethod
     def _setup_rs_instance(cls):

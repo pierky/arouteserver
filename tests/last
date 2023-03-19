@@ -258,7 +258,7 @@ RTT getter parser: empty PASSED
 RTT getter parser: new line only PASSED
 RTT getter parser: none PASSED
 
-============================= 252 passed in 46.99s =============================
+============================= 252 passed in 41.66s =============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -281,7 +281,7 @@ External resources: RPKI ROAs, rpki-client PASSED
 External resources: prefixes from AS-SET via bgpq3 PASSED
 External resources: prefixes from AS-SET via bgpq4 PASSED
 
-============================= 14 passed in 41.15s ==============================
+============================= 14 passed in 36.32s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -310,7 +310,7 @@ Live test, BIRD, hooks example, IPv6: dumping routes...
 Live test, BIRD, hooks example, IPv6: stopping instances...
 
 
-============================== 4 passed in 16.59s ==============================
+============================== 4 passed in 16.26s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -361,7 +361,7 @@ Live test, BIRD, BGP communities, IPv6: dumping routes...
 Live test, BIRD, BGP communities, IPv6: stopping instances...
 
 
-======================== 26 passed in 71.24s (0:01:11) =========================
+======================== 26 passed in 69.84s (0:01:09) =========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -390,7 +390,7 @@ Live test, BIRD, default config, IPv6: dumping routes...
 Live test, BIRD, default config, IPv6: stopping instances...
 
 
-============================== 4 passed in 17.01s ==============================
+============================== 4 passed in 14.90s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -971,7 +971,7 @@ Live test, BIRD, global scenario, IPv6, tag&reject: dumping routes...
 Live test, BIRD, global scenario, IPv6, tag&reject: stopping instances...
 
 
-================== 518 passed, 6 skipped in 655.47s (0:10:55) ==================
+================== 518 passed, 6 skipped in 629.12s (0:10:29) ==================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1006,7 +1006,7 @@ Live test, BIRD, gshut, IPv6: dumping routes...
 Live test, BIRD, gshut, IPv6: stopping instances...
 
 
-============================= 10 passed in 50.28s ==============================
+============================= 10 passed in 44.89s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1057,7 +1057,7 @@ Live test, BIRD, max-prefix, IPv6: dumping routes...
 Live test, BIRD, max-prefix, IPv6: stopping instances...
 
 
-======================== 26 passed in 173.69s (0:02:53) ========================
+======================== 26 passed in 174.29s (0:02:54) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1136,7 +1136,7 @@ Live test, BIRD, path hiding, mitigation off, IPv6: dumping routes...
 Live test, BIRD, path hiding, mitigation off, IPv6: stopping instances...
 
 
-================== 36 passed, 2 skipped in 174.78s (0:02:54) ===================
+================== 36 passed, 2 skipped in 179.09s (0:02:59) ===================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1165,7 +1165,7 @@ Live test, BIRD, examples, rich config, IPv6: dumping routes...
 Live test, BIRD, examples, rich config, IPv6: stopping instances...
 
 
-============================== 4 passed in 15.40s ==============================
+============================== 4 passed in 14.63s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1218,7 +1218,7 @@ Live test, BIRD, RPKI INVALID tagging, IPv6: dumping routes...
 Live test, BIRD, RPKI INVALID tagging, IPv6: stopping instances...
 
 
-======================== 28 passed in 85.60s (0:01:25) =========================
+======================== 28 passed in 79.63s (0:01:19) =========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1255,7 +1255,7 @@ Live test, BIRD, BOV custom comms, IPv6: dumping routes...
 Live test, BIRD, BOV custom comms, IPv6: stopping instances...
 
 
-============================= 12 passed in 47.28s ==============================
+============================= 12 passed in 45.55s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1462,7 +1462,7 @@ Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: dumping routes...
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 
-======================= 166 passed in 169.06s (0:02:49) ========================
+======================= 166 passed in 167.25s (0:02:47) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1533,7 +1533,7 @@ Live test, BIRD, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, BIRD, 'tag' reject policy scenario, IPv6: stopping instances...
 
 
-================== 45 passed, 1 skipped in 145.53s (0:02:25) ===================
+================== 45 passed, 1 skipped in 129.94s (0:02:09) ===================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1584,7 +1584,7 @@ Live test, BIRD v2, BGP communities, IPv6: dumping routes...
 Live test, BIRD v2, BGP communities, IPv6: stopping instances...
 
 
-======================== 26 passed in 68.24s (0:01:08) =========================
+======================== 26 passed in 64.25s (0:01:04) =========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1613,7 +1613,7 @@ Live test, BIRD v2, default config, IPv6: dumping routes...
 Live test, BIRD v2, default config, IPv6: stopping instances...
 
 
-============================== 4 passed in 15.47s ==============================
+============================== 4 passed in 52.99s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2194,7 +2194,7 @@ Live test, BIRD v2, global scenario, IPv6, tag&reject: dumping routes...
 Live test, BIRD v2, global scenario, IPv6, tag&reject: stopping instances...
 
 
-================== 518 passed, 6 skipped in 633.38s (0:10:33) ==================
+================== 518 passed, 6 skipped in 600.09s (0:10:00) ==================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2229,7 +2229,7 @@ Live test, BIRD v2, gshut, IPv6: dumping routes...
 Live test, BIRD v2, gshut, IPv6: stopping instances...
 
 
-============================= 10 passed in 46.64s ==============================
+============================= 10 passed in 44.71s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2280,7 +2280,7 @@ Live test, BIRD v2, max-prefix, IPv6: dumping routes...
 Live test, BIRD v2, max-prefix, IPv6: stopping instances...
 
 
-======================== 26 passed in 173.59s (0:02:53) ========================
+======================== 26 passed in 169.76s (0:02:49) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2359,7 +2359,7 @@ Live test, BIRD v2, path hiding, mitigation off, IPv6: dumping routes...
 Live test, BIRD v2, path hiding, mitigation off, IPv6: stopping instances...
 
 
-================== 36 passed, 2 skipped in 182.20s (0:03:02) ===================
+================== 36 passed, 2 skipped in 175.94s (0:02:55) ===================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2388,7 +2388,7 @@ Live test, BIRD v2, examples, rich config, IPv6: dumping routes...
 Live test, BIRD v2, examples, rich config, IPv6: stopping instances...
 
 
-============================== 4 passed in 14.70s ==============================
+============================== 4 passed in 14.65s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2427,7 +2427,7 @@ Live test, BIRD v2, roles, IPv6: dumping routes...
 Live test, BIRD v2, roles, IPv6: stopping instances...
 
 
-======================== 14 passed in 68.86s (0:01:08) =========================
+======================== 14 passed in 68.81s (0:01:08) =========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2480,7 +2480,7 @@ Live test, BIRD v2, RPKI INVALID tagging, IPv6: dumping routes...
 Live test, BIRD v2, RPKI INVALID tagging, IPv6: stopping instances...
 
 
-======================== 28 passed in 83.66s (0:01:23) =========================
+======================== 28 passed in 79.50s (0:01:19) =========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2517,7 +2517,7 @@ Live test, BIRD v2, BOV custom comms, IPv6: dumping routes...
 Live test, BIRD v2, BOV custom comms, IPv6: stopping instances...
 
 
-============================= 12 passed in 46.93s ==============================
+============================= 12 passed in 45.64s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2542,7 +2542,7 @@ Live test, BIRD v2, RTR protocol: dumping routes...
 Live test, BIRD v2, RTR protocol: stopping instances...
 
 
-============================== 8 passed in 42.59s ==============================
+============================== 8 passed in 41.19s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2749,7 +2749,7 @@ Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: dumping routes...
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 
-======================= 166 passed in 172.08s (0:02:52) ========================
+======================= 166 passed in 167.45s (0:02:47) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2820,7 +2820,7 @@ Live test, BIRD v2, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, BIRD v2, 'tag' reject policy scenario, IPv6: stopping instances...
 
 
-================== 45 passed, 1 skipped in 134.68s (0:02:14) ===================
+================== 45 passed, 1 skipped in 130.57s (0:02:10) ===================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2828,50 +2828,50 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 26 items
 
-Live test, OpenBGPD 7.7, BGP communities, IPv4: instances setup 
-Live test, OpenBGPD 7.7, BGP communities, IPv4: setting instances up...
+Live test, OpenBGPD 7.8, BGP communities, IPv4: instances setup 
+Live test, OpenBGPD 7.8, BGP communities, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv4: sessions are up PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv4: announce to AS1 only (ext) PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv4: announce to AS1 only (lrg) PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv4: announce to AS1 only (std) PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv4: announce to AS131073 only (ext) PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv4: announce to AS131073 only (lrg) PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv4: custom BGP community (ext) PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv4: custom BGP community (lrg) PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv4: custom BGP community (std) PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv4: custom BGP community scrubbed PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv4: reconfigure PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv4: log contains errors PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv4: dumping rs config...
+Live test, OpenBGPD 7.8, BGP communities, IPv4: sessions are up PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv4: announce to AS1 only (ext) PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv4: announce to AS1 only (lrg) PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv4: announce to AS1 only (std) PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv4: announce to AS131073 only (ext) PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv4: announce to AS131073 only (lrg) PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv4: custom BGP community (ext) PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv4: custom BGP community (lrg) PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv4: custom BGP community (std) PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv4: custom BGP community scrubbed PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv4: reconfigure PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv4: log contains errors PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv4: dumping rs config...
 
-Live test, OpenBGPD 7.7, BGP communities, IPv4: dumping routes...
+Live test, OpenBGPD 7.8, BGP communities, IPv4: dumping routes...
 
-Live test, OpenBGPD 7.7, BGP communities, IPv4: stopping instances...
+Live test, OpenBGPD 7.8, BGP communities, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, BGP communities, IPv6: instances setup 
-Live test, OpenBGPD 7.7, BGP communities, IPv6: setting instances up...
+Live test, OpenBGPD 7.8, BGP communities, IPv6: instances setup 
+Live test, OpenBGPD 7.8, BGP communities, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv6: sessions are up PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv6: announce to AS1 only (ext) PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv6: announce to AS1 only (lrg) PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv6: announce to AS1 only (std) PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv6: announce to AS131073 only (ext) PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv6: announce to AS131073 only (lrg) PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv6: custom BGP community (ext) PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv6: custom BGP community (lrg) PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv6: custom BGP community (std) PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv6: custom BGP community scrubbed PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv6: reconfigure PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv6: log contains errors PASSED
-Live test, OpenBGPD 7.7, BGP communities, IPv6: dumping rs config...
+Live test, OpenBGPD 7.8, BGP communities, IPv6: sessions are up PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv6: announce to AS1 only (ext) PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv6: announce to AS1 only (lrg) PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv6: announce to AS1 only (std) PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv6: announce to AS131073 only (ext) PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv6: announce to AS131073 only (lrg) PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv6: custom BGP community (ext) PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv6: custom BGP community (lrg) PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv6: custom BGP community (std) PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv6: custom BGP community scrubbed PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv6: reconfigure PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv6: log contains errors PASSED
+Live test, OpenBGPD 7.8, BGP communities, IPv6: dumping rs config...
 
-Live test, OpenBGPD 7.7, BGP communities, IPv6: dumping routes...
+Live test, OpenBGPD 7.8, BGP communities, IPv6: dumping routes...
 
-Live test, OpenBGPD 7.7, BGP communities, IPv6: stopping instances...
+Live test, OpenBGPD 7.8, BGP communities, IPv6: stopping instances...
 
 
-======================== 26 passed in 70.89s (0:01:10) =========================
+======================== 26 passed in 69.00s (0:01:08) =========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2879,34 +2879,226 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 4 items
 
-Live test, OpenBGPD 7.7, default config, IPv4: instances setup 
-Live test, OpenBGPD 7.7, default config, IPv4: setting instances up...
+Live test, OpenBGPD 7.8, default config, IPv4: instances setup 
+Live test, OpenBGPD 7.8, default config, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, default config, IPv4: log contains errors PASSED
-Live test, OpenBGPD 7.7, default config, IPv4: dumping rs config...
+Live test, OpenBGPD 7.8, default config, IPv4: log contains errors PASSED
+Live test, OpenBGPD 7.8, default config, IPv4: dumping rs config...
 
-Live test, OpenBGPD 7.7, default config, IPv4: dumping routes...
+Live test, OpenBGPD 7.8, default config, IPv4: dumping routes...
 
-Live test, OpenBGPD 7.7, default config, IPv4: stopping instances...
+Live test, OpenBGPD 7.8, default config, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, default config, IPv6: instances setup 
-Live test, OpenBGPD 7.7, default config, IPv6: setting instances up...
+Live test, OpenBGPD 7.8, default config, IPv6: instances setup 
+Live test, OpenBGPD 7.8, default config, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, default config, IPv6: log contains errors PASSED
-Live test, OpenBGPD 7.7, default config, IPv6: dumping rs config...
+Live test, OpenBGPD 7.8, default config, IPv6: log contains errors PASSED
+Live test, OpenBGPD 7.8, default config, IPv6: dumping rs config...
 
-Live test, OpenBGPD 7.7, default config, IPv6: dumping routes...
+Live test, OpenBGPD 7.8, default config, IPv6: dumping routes...
 
-Live test, OpenBGPD 7.7, default config, IPv6: stopping instances...
+Live test, OpenBGPD 7.8, default config, IPv6: stopping instances...
 
 
-============================== 4 passed in 12.96s ==============================
+============================== 4 passed in 12.53s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
 rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 352 items
+
+Live test, OpenBGPD 7.8, global scenario, IPv4: instances setup 
+Live test, OpenBGPD 7.8, global scenario, IPv4: setting instances up...
+PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: sessions are up PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: session configured via local include files PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: good prefixes because of use_arin_bulk_whois_data PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: good prefixes received by rs: IRRdb white-list PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: good prefixes because of use_registrobr_bulk_whois_data PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: exact PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: covering PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: good prefixes received by rs PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: good prefixes received by rs: non-client NEXT_HOP PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: not IPv6 global unicast space PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: IRRdb white-list PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: IRR check for AS_SET origin, BIRD SKIPPED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: AS_PATH len PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: bogon PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: client blacklist PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: global blacklist PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: invalid ASN in AS-PATH PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: invalid NEXT_HOP PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: left-most ASN PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: origin not in AS-SET PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: prefix not in AS-SET PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: invalid prefix-len PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: unknown NEXT_HOP PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: RPKI ROAs as route objects failed PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: default route PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes not received by clients PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: bogon (wrong tag) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad prefixes received by rs: global blacklist (wrong tag) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: RPKI, blackhole request for a covered prefix PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: RPKI, invalid prefix (bad ASN) received by rs PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: RPKI, invalid prefix (bad length) received by rs PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: RPKI, valid prefix received by rs PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: RPKI, valid prefix propagated to clients PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: prefixes from AS101 received by its upstreams PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: prefixes from AS101 received by rs PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad communities as seen by AS101 upstreams PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad communities scrubbed by rs (lrg) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: bad communities scrubbed by rs (std) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: other communities not scrubbed by rs (lrg) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: other communities not scrubbed by rs (std) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: blackhole filtering requests as seen by rs (BLACKHOLE) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: blackhole filtering requests as seen by rs (lrg cust) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: blackhole filtering requests as seen by rs (std cust) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: blackholed prefixes as seen by enabled clients (BLACKHOLE) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: blackholed prefixes as seen by enabled clients (lrg_cust) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: blackholed prefixes as seen by enabled clients (std_cust) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: blackholed prefixes not seen by not enabled clients PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: gshut by an enabled client PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: gshut by a not enabled client PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, announce to AS1 only PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, don't announce to any PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, announce to all except AS1 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, prepend once to any PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, prepend twice to any PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, prepend thrice to any PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, prepend once to AS1 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, prepend twice to AS151866 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, prepend twice to AS2 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, prepend thrice to AS1, once to others PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, NO_EXPORT to AS1 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, NO_EXPORT to AS151866 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, NO_EXPORT to any PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, RFC1997 NO_EXPORT PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, RTT, blackhole, not peers > 20 ms PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, RTT, not peers > 15 ms PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, RTT, not peers > 5 ms PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, RTT, not peers > 5 ms + AS3 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, RTT, not peers <= 5 and > 100 ms PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, RTT, only peers <= 15 ms PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, RTT, only peers <= 5 ms PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: prefixes received by clients: AS1_1 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: prefixes received by clients: AS1_2 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: prefixes received by clients: AS2 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: prefixes received by clients: AS3 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: prefixes received by clients: AS3 (with ADD-PATH) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: reconfigure PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: log contains errors PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv4: dumping rs config...
+
+Live test, OpenBGPD 7.8, global scenario, IPv4: dumping routes...
+
+Live test, OpenBGPD 7.8, global scenario, IPv4: stopping instances...
+
+Live test, OpenBGPD 7.8, global scenario, IPv6: instances setup 
+Live test, OpenBGPD 7.8, global scenario, IPv6: setting instances up...
+PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: sessions are up PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: session configured via local include files PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: good prefixes because of use_arin_bulk_whois_data PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: good prefixes received by rs: IRRdb white-list PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: good prefixes because of use_registrobr_bulk_whois_data PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: exact PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: covering PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: good prefixes received by rs PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: good prefixes received by rs: non-client NEXT_HOP PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: not IPv6 global unicast space PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: IRRdb white-list PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: IRR check for AS_SET origin, BIRD SKIPPED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: AS_PATH len PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: bogon PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: client blacklist PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: global blacklist PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: invalid ASN in AS-PATH PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: invalid NEXT_HOP PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: left-most ASN PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: origin not in AS-SET PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: prefix not in AS-SET PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: invalid prefix-len PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: unknown NEXT_HOP PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: RPKI ROAs as route objects failed PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: default route PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes not received by clients PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: bogon (wrong tag) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad prefixes received by rs: global blacklist (wrong tag) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: RPKI, blackhole request for a covered prefix PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: RPKI, invalid prefix (bad ASN) received by rs PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: RPKI, invalid prefix (bad length) received by rs PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: RPKI, valid prefix received by rs PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: RPKI, valid prefix propagated to clients PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: prefixes from AS101 received by its upstreams PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: prefixes from AS101 received by rs PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad communities as seen by AS101 upstreams PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad communities scrubbed by rs (lrg) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: bad communities scrubbed by rs (std) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: other communities not scrubbed by rs (lrg) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: other communities not scrubbed by rs (std) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: blackhole filtering requests as seen by rs (BLACKHOLE) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: blackhole filtering requests as seen by rs (lrg cust) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: blackhole filtering requests as seen by rs (std cust) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: blackholed prefixes as seen by enabled clients (BLACKHOLE) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: blackholed prefixes as seen by enabled clients (lrg_cust) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: blackholed prefixes as seen by enabled clients (std_cust) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: blackholed prefixes not seen by not enabled clients PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: gshut by an enabled client PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: gshut by a not enabled client PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, announce to AS1 only PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, don't announce to any PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, announce to all except AS1 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, prepend once to any PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, prepend twice to any PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, prepend thrice to any PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, prepend once to AS1 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, prepend twice to AS151866 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, prepend twice to AS2 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, prepend thrice to AS1, once to others PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, NO_EXPORT to AS1 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, NO_EXPORT to AS151866 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, NO_EXPORT to any PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, RFC1997 NO_EXPORT PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, RTT, blackhole, not peers > 20 ms PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, RTT, not peers > 15 ms PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, RTT, not peers > 5 ms PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, RTT, not peers > 5 ms + AS3 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, RTT, not peers <= 5 and > 100 ms PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, RTT, only peers <= 15 ms PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, RTT, only peers <= 5 ms PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: prefixes received by clients: AS1_1 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: prefixes received by clients: AS1_2 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: prefixes received by clients: AS2 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: prefixes received by clients: AS3 PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: prefixes received by clients: AS3 (with ADD-PATH) PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: reconfigure PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: log contains errors PASSED
+Live test, OpenBGPD 7.8, global scenario, IPv6: dumping rs config...
+
+Live test, OpenBGPD 7.8, global scenario, IPv6: dumping routes...
+
+Live test, OpenBGPD 7.8, global scenario, IPv6: stopping instances...
 
 Live test, OpenBGPD 7.7, global scenario, IPv4: instances setup 
 Live test, OpenBGPD 7.7, global scenario, IPv4: setting instances up...
@@ -3100,200 +3292,8 @@ Live test, OpenBGPD 7.7, global scenario, IPv6: dumping routes...
 
 Live test, OpenBGPD 7.7, global scenario, IPv6: stopping instances...
 
-Live test, OpenBGPD 7.6, global scenario, IPv4: instances setup 
-Live test, OpenBGPD 7.6, global scenario, IPv4: setting instances up...
-PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: sessions are up PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: session configured via local include files PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: good prefixes because of use_arin_bulk_whois_data PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: good prefixes received by rs: IRRdb white-list PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: good prefixes because of use_registrobr_bulk_whois_data PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: exact PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: covering PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: good prefixes received by rs PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: good prefixes received by rs: non-client NEXT_HOP PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: not IPv6 global unicast space PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: IRRdb white-list PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: IRR check for AS_SET origin, BIRD SKIPPED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: AS_PATH len PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: bogon PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: client blacklist PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: global blacklist PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: invalid ASN in AS-PATH PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: invalid NEXT_HOP PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: left-most ASN PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: origin not in AS-SET PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: prefix not in AS-SET PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: invalid prefix-len PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: unknown NEXT_HOP PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: RPKI ROAs as route objects failed PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: default route PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes not received by clients PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: bogon (wrong tag) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad prefixes received by rs: global blacklist (wrong tag) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: RPKI, blackhole request for a covered prefix PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: RPKI, invalid prefix (bad ASN) received by rs PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: RPKI, invalid prefix (bad length) received by rs PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: RPKI, valid prefix received by rs PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: RPKI, valid prefix propagated to clients PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: prefixes from AS101 received by its upstreams PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: prefixes from AS101 received by rs PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad communities as seen by AS101 upstreams PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad communities scrubbed by rs (lrg) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: bad communities scrubbed by rs (std) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: other communities not scrubbed by rs (lrg) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: other communities not scrubbed by rs (std) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: blackhole filtering requests as seen by rs (BLACKHOLE) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: blackhole filtering requests as seen by rs (lrg cust) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: blackhole filtering requests as seen by rs (std cust) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: blackholed prefixes as seen by enabled clients (BLACKHOLE) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: blackholed prefixes as seen by enabled clients (lrg_cust) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: blackholed prefixes as seen by enabled clients (std_cust) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: blackholed prefixes not seen by not enabled clients PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: gshut by an enabled client PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: gshut by a not enabled client PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, announce to AS1 only PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, don't announce to any PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, announce to all except AS1 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, prepend once to any PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, prepend twice to any PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, prepend thrice to any PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, prepend once to AS1 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, prepend twice to AS151866 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, prepend twice to AS2 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, prepend thrice to AS1, once to others PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, NO_EXPORT to AS1 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, NO_EXPORT to AS151866 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, NO_EXPORT to any PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, RFC1997 NO_EXPORT PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, RTT, blackhole, not peers > 20 ms PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, RTT, not peers > 15 ms PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, RTT, not peers > 5 ms PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, RTT, not peers > 5 ms + AS3 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, RTT, not peers <= 5 and > 100 ms PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, RTT, only peers <= 15 ms PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, RTT, only peers <= 5 ms PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: prefixes received by clients: AS1_1 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: prefixes received by clients: AS1_2 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: prefixes received by clients: AS2 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: prefixes received by clients: AS3 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: prefixes received by clients: AS3 (with ADD-PATH) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: reconfigure PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: log contains errors PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv4: dumping rs config...
 
-Live test, OpenBGPD 7.6, global scenario, IPv4: dumping routes...
-
-Live test, OpenBGPD 7.6, global scenario, IPv4: stopping instances...
-
-Live test, OpenBGPD 7.6, global scenario, IPv6: instances setup 
-Live test, OpenBGPD 7.6, global scenario, IPv6: setting instances up...
-PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: sessions are up PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: session configured via local include files PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: good prefixes because of use_arin_bulk_whois_data PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: good prefixes received by rs: IRRdb white-list PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: good prefixes because of use_registrobr_bulk_whois_data PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: exact PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: covering PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: good prefixes received by rs PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: good prefixes received by rs: non-client NEXT_HOP PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: not IPv6 global unicast space PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: IRRdb white-list PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: IRR check for AS_SET origin, BIRD SKIPPED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: AS_PATH len PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: bogon PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: client blacklist PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: global blacklist PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: invalid ASN in AS-PATH PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: invalid NEXT_HOP PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: left-most ASN PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: origin not in AS-SET PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: prefix not in AS-SET PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: invalid prefix-len PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: unknown NEXT_HOP PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: RPKI ROAs as route objects failed PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: default route PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes not received by clients PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: bogon (wrong tag) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad prefixes received by rs: global blacklist (wrong tag) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: RPKI, blackhole request for a covered prefix PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: RPKI, invalid prefix (bad ASN) received by rs PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: RPKI, invalid prefix (bad length) received by rs PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: RPKI, valid prefix received by rs PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: RPKI, valid prefix propagated to clients PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: prefixes from AS101 received by its upstreams PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: prefixes from AS101 received by rs PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad communities as seen by AS101 upstreams PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad communities scrubbed by rs (lrg) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: bad communities scrubbed by rs (std) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: other communities not scrubbed by rs (lrg) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: other communities not scrubbed by rs (std) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: blackhole filtering requests as seen by rs (BLACKHOLE) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: blackhole filtering requests as seen by rs (lrg cust) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: blackhole filtering requests as seen by rs (std cust) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: blackholed prefixes as seen by enabled clients (BLACKHOLE) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: blackholed prefixes as seen by enabled clients (lrg_cust) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: blackholed prefixes as seen by enabled clients (std_cust) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: blackholed prefixes not seen by not enabled clients PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: gshut by an enabled client PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: gshut by a not enabled client PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, announce to AS1 only PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, don't announce to any PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, announce to all except AS1 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, prepend once to any PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, prepend twice to any PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, prepend thrice to any PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, prepend once to AS1 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, prepend twice to AS151866 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, prepend twice to AS2 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, prepend thrice to AS1, once to others PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, NO_EXPORT to AS1 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, NO_EXPORT to AS151866 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, NO_EXPORT to any PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, RFC1997 NO_EXPORT PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, RTT, blackhole, not peers > 20 ms PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, RTT, not peers > 15 ms PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, RTT, not peers > 5 ms PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, RTT, not peers > 5 ms + AS3 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, RTT, not peers <= 5 and > 100 ms PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, RTT, only peers <= 15 ms PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, RTT, only peers <= 5 ms PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: prefixes received by clients: AS1_1 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: prefixes received by clients: AS1_2 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: prefixes received by clients: AS2 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: prefixes received by clients: AS3 PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: prefixes received by clients: AS3 (with ADD-PATH) PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: reconfigure PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: log contains errors PASSED
-Live test, OpenBGPD 7.6, global scenario, IPv6: dumping rs config...
-
-Live test, OpenBGPD 7.6, global scenario, IPv6: dumping routes...
-
-Live test, OpenBGPD 7.6, global scenario, IPv6: stopping instances...
-
-
-================== 348 passed, 4 skipped in 414.46s (0:06:54) ==================
+================== 348 passed, 4 skipped in 396.75s (0:06:36) ==================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3301,34 +3301,34 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 10 items
 
-Live test, OpenBGPD 7.7, gshut, IPv4: instances setup 
-Live test, OpenBGPD 7.7, gshut, IPv4: setting instances up...
+Live test, OpenBGPD 7.8, gshut, IPv4: instances setup 
+Live test, OpenBGPD 7.8, gshut, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, gshut, IPv4: sessions are up PASSED
-Live test, OpenBGPD 7.7, gshut, IPv4: clients receive routes tagged with GRACEFUL_SHUTDOWN PASSED
-Live test, OpenBGPD 7.7, gshut, IPv4: reconfigure PASSED
-Live test, OpenBGPD 7.7, gshut, IPv4: log contains errors PASSED
-Live test, OpenBGPD 7.7, gshut, IPv4: dumping rs config...
+Live test, OpenBGPD 7.8, gshut, IPv4: sessions are up PASSED
+Live test, OpenBGPD 7.8, gshut, IPv4: clients receive routes tagged with GRACEFUL_SHUTDOWN PASSED
+Live test, OpenBGPD 7.8, gshut, IPv4: reconfigure PASSED
+Live test, OpenBGPD 7.8, gshut, IPv4: log contains errors PASSED
+Live test, OpenBGPD 7.8, gshut, IPv4: dumping rs config...
 
-Live test, OpenBGPD 7.7, gshut, IPv4: dumping routes...
+Live test, OpenBGPD 7.8, gshut, IPv4: dumping routes...
 
-Live test, OpenBGPD 7.7, gshut, IPv4: stopping instances...
+Live test, OpenBGPD 7.8, gshut, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, gshut, IPv6: instances setup 
-Live test, OpenBGPD 7.7, gshut, IPv6: setting instances up...
+Live test, OpenBGPD 7.8, gshut, IPv6: instances setup 
+Live test, OpenBGPD 7.8, gshut, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, gshut, IPv6: sessions are up PASSED
-Live test, OpenBGPD 7.7, gshut, IPv6: clients receive routes tagged with GRACEFUL_SHUTDOWN PASSED
-Live test, OpenBGPD 7.7, gshut, IPv6: reconfigure PASSED
-Live test, OpenBGPD 7.7, gshut, IPv6: log contains errors PASSED
-Live test, OpenBGPD 7.7, gshut, IPv6: dumping rs config...
+Live test, OpenBGPD 7.8, gshut, IPv6: sessions are up PASSED
+Live test, OpenBGPD 7.8, gshut, IPv6: clients receive routes tagged with GRACEFUL_SHUTDOWN PASSED
+Live test, OpenBGPD 7.8, gshut, IPv6: reconfigure PASSED
+Live test, OpenBGPD 7.8, gshut, IPv6: log contains errors PASSED
+Live test, OpenBGPD 7.8, gshut, IPv6: dumping rs config...
 
-Live test, OpenBGPD 7.7, gshut, IPv6: dumping routes...
+Live test, OpenBGPD 7.8, gshut, IPv6: dumping routes...
 
-Live test, OpenBGPD 7.7, gshut, IPv6: stopping instances...
+Live test, OpenBGPD 7.8, gshut, IPv6: stopping instances...
 
 
-============================= 10 passed in 52.08s ==============================
+============================= 10 passed in 50.95s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3336,34 +3336,34 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 10 items
 
-Live test, OpenBGPD 7.7, max-prefix, IPv4: instances setup 
-Live test, OpenBGPD 7.7, max-prefix, IPv4: setting instances up...
+Live test, OpenBGPD 7.8, max-prefix, IPv4: instances setup 
+Live test, OpenBGPD 7.8, max-prefix, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, max-prefix, IPv4: sessions are down PASSED
-Live test, OpenBGPD 7.7, max-prefix, IPv4: clients log max-prefix notification PASSED
-Live test, OpenBGPD 7.7, max-prefix, IPv4: reconfigure PASSED
-Live test, OpenBGPD 7.7, max-prefix, IPv4: log contains errors PASSED
-Live test, OpenBGPD 7.7, max-prefix, IPv4: dumping rs config...
+Live test, OpenBGPD 7.8, max-prefix, IPv4: sessions are down PASSED
+Live test, OpenBGPD 7.8, max-prefix, IPv4: clients log max-prefix notification PASSED
+Live test, OpenBGPD 7.8, max-prefix, IPv4: reconfigure PASSED
+Live test, OpenBGPD 7.8, max-prefix, IPv4: log contains errors PASSED
+Live test, OpenBGPD 7.8, max-prefix, IPv4: dumping rs config...
 
-Live test, OpenBGPD 7.7, max-prefix, IPv4: dumping routes...
+Live test, OpenBGPD 7.8, max-prefix, IPv4: dumping routes...
 
-Live test, OpenBGPD 7.7, max-prefix, IPv4: stopping instances...
+Live test, OpenBGPD 7.8, max-prefix, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, max-prefix, IPv6: instances setup 
-Live test, OpenBGPD 7.7, max-prefix, IPv6: setting instances up...
+Live test, OpenBGPD 7.8, max-prefix, IPv6: instances setup 
+Live test, OpenBGPD 7.8, max-prefix, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, max-prefix, IPv6: sessions are down PASSED
-Live test, OpenBGPD 7.7, max-prefix, IPv6: clients log max-prefix notification PASSED
-Live test, OpenBGPD 7.7, max-prefix, IPv6: reconfigure PASSED
-Live test, OpenBGPD 7.7, max-prefix, IPv6: log contains errors PASSED
-Live test, OpenBGPD 7.7, max-prefix, IPv6: dumping rs config...
+Live test, OpenBGPD 7.8, max-prefix, IPv6: sessions are down PASSED
+Live test, OpenBGPD 7.8, max-prefix, IPv6: clients log max-prefix notification PASSED
+Live test, OpenBGPD 7.8, max-prefix, IPv6: reconfigure PASSED
+Live test, OpenBGPD 7.8, max-prefix, IPv6: log contains errors PASSED
+Live test, OpenBGPD 7.8, max-prefix, IPv6: dumping rs config...
 
-Live test, OpenBGPD 7.7, max-prefix, IPv6: dumping routes...
+Live test, OpenBGPD 7.8, max-prefix, IPv6: dumping routes...
 
-Live test, OpenBGPD 7.7, max-prefix, IPv6: stopping instances...
+Live test, OpenBGPD 7.8, max-prefix, IPv6: stopping instances...
 
 
-======================== 10 passed in 371.03s (0:06:11) ========================
+======================== 10 passed in 364.25s (0:06:04) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3371,78 +3371,78 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 38 items
 
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: instances setup 
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: setting instances up...
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv4: instances setup 
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: sessions are up PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: rs should receive prefix from both AS1 and AS2 PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: rs should have best toward AS1 PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: AS1 wants rs to not announce to AS3 and AS4 PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: AS3 and AS4 receive prefix with sub-optimal path via AS2 PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: AS3 and AS4 don't receive prefix via AS1 PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: 2nd best is withdrawn and AS3 should not see it anymore PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: reconfigure PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: log contains errors PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: dumping rs config...
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv4: sessions are up PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv4: rs should receive prefix from both AS1 and AS2 PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv4: rs should have best toward AS1 PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv4: AS1 wants rs to not announce to AS3 and AS4 PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv4: AS3 and AS4 receive prefix with sub-optimal path via AS2 PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv4: AS3 and AS4 don't receive prefix via AS1 PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv4: 2nd best is withdrawn and AS3 should not see it anymore PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv4: reconfigure PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv4: log contains errors PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv4: dumping rs config...
 
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: dumping routes...
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv4: dumping routes...
 
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv4: stopping instances...
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: instances setup 
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: setting instances up...
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv4: instances setup 
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: sessions are up PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: rs should receive prefix from both AS1 and AS2 PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: rs should have best toward AS1 PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: AS1 wants rs to not announce to AS3 and AS4 PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: AS3 does not receive prefix at all PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: AS4 receives the prefix via AS2 because of ADD-PATH PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: reconfigure PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: log contains errors PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: dumping rs config...
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv4: sessions are up PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv4: rs should receive prefix from both AS1 and AS2 PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv4: rs should have best toward AS1 PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv4: AS1 wants rs to not announce to AS3 and AS4 PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv4: AS3 does not receive prefix at all PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv4: AS4 receives the prefix via AS2 because of ADD-PATH PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv4: reconfigure PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv4: log contains errors PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv4: dumping rs config...
 
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: dumping routes...
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv4: dumping routes...
 
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv4: stopping instances...
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: instances setup 
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: setting instances up...
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv6: instances setup 
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: sessions are up PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: rs should receive prefix from both AS1 and AS2 PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: rs should have best toward AS1 PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: AS1 wants rs to not announce to AS3 and AS4 PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: AS3 and AS4 receive prefix with sub-optimal path via AS2 PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: AS3 and AS4 don't receive prefix via AS1 PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: 2nd best is withdrawn and AS3 should not see it anymore PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: reconfigure PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: log contains errors PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: dumping rs config...
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv6: sessions are up PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv6: rs should receive prefix from both AS1 and AS2 PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv6: rs should have best toward AS1 PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv6: AS1 wants rs to not announce to AS3 and AS4 PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv6: AS3 and AS4 receive prefix with sub-optimal path via AS2 PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv6: AS3 and AS4 don't receive prefix via AS1 PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv6: 2nd best is withdrawn and AS3 should not see it anymore PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv6: reconfigure PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv6: log contains errors PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv6: dumping rs config...
 
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: dumping routes...
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv6: dumping routes...
 
-Live test, OpenBGPD 7.7, path hiding, mitigation on, IPv6: stopping instances...
+Live test, OpenBGPD 7.8, path hiding, mitigation on, IPv6: stopping instances...
 
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: instances setup 
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: setting instances up...
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv6: instances setup 
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: sessions are up PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: rs should receive prefix from both AS1 and AS2 PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: rs should have best toward AS1 PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: AS1 wants rs to not announce to AS3 and AS4 PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: AS3 does not receive prefix at all PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: AS4 receives the prefix via AS2 because of ADD-PATH PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: reconfigure PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: log contains errors PASSED
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: dumping rs config...
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv6: sessions are up PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv6: rs should receive prefix from both AS1 and AS2 PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv6: rs should have best toward AS1 PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv6: AS1 wants rs to not announce to AS3 and AS4 PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv6: AS3 does not receive prefix at all PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv6: AS4 receives the prefix via AS2 because of ADD-PATH PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv6: reconfigure PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv6: log contains errors PASSED
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv6: dumping rs config...
 
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: dumping routes...
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv6: dumping routes...
 
-Live test, OpenBGPD 7.7, path hiding, mitigation off, IPv6: stopping instances...
+Live test, OpenBGPD 7.8, path hiding, mitigation off, IPv6: stopping instances...
 
 
-======================== 38 passed in 202.13s (0:03:22) ========================
+======================== 38 passed in 195.65s (0:03:15) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3450,28 +3450,28 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 4 items
 
-Live test, OpenBGPD 7.7, examples, rich config, IPv4: instances setup 
-Live test, OpenBGPD 7.7, examples, rich config, IPv4: setting instances up...
+Live test, OpenBGPD 7.8, examples, rich config, IPv4: instances setup 
+Live test, OpenBGPD 7.8, examples, rich config, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, examples, rich config, IPv4: log contains errors PASSED
-Live test, OpenBGPD 7.7, examples, rich config, IPv4: dumping rs config...
+Live test, OpenBGPD 7.8, examples, rich config, IPv4: log contains errors PASSED
+Live test, OpenBGPD 7.8, examples, rich config, IPv4: dumping rs config...
 
-Live test, OpenBGPD 7.7, examples, rich config, IPv4: dumping routes...
+Live test, OpenBGPD 7.8, examples, rich config, IPv4: dumping routes...
 
-Live test, OpenBGPD 7.7, examples, rich config, IPv4: stopping instances...
+Live test, OpenBGPD 7.8, examples, rich config, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, examples, rich config, IPv6: instances setup 
-Live test, OpenBGPD 7.7, examples, rich config, IPv6: setting instances up...
+Live test, OpenBGPD 7.8, examples, rich config, IPv6: instances setup 
+Live test, OpenBGPD 7.8, examples, rich config, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, examples, rich config, IPv6: log contains errors PASSED
-Live test, OpenBGPD 7.7, examples, rich config, IPv6: dumping rs config...
+Live test, OpenBGPD 7.8, examples, rich config, IPv6: log contains errors PASSED
+Live test, OpenBGPD 7.8, examples, rich config, IPv6: dumping rs config...
 
-Live test, OpenBGPD 7.7, examples, rich config, IPv6: dumping routes...
+Live test, OpenBGPD 7.8, examples, rich config, IPv6: dumping routes...
 
-Live test, OpenBGPD 7.7, examples, rich config, IPv6: stopping instances...
+Live test, OpenBGPD 7.8, examples, rich config, IPv6: stopping instances...
 
 
-============================== 4 passed in 12.64s ==============================
+============================== 4 passed in 12.67s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3479,38 +3479,38 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 14 items
 
-Live test, OpenBGPD 7.7, roles, IPv4: instances setup 
-Live test, OpenBGPD 7.7, roles, IPv4: setting instances up...
+Live test, OpenBGPD 7.8, roles, IPv4: instances setup 
+Live test, OpenBGPD 7.8, roles, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, roles, IPv4: sessions are up PASSED
-Live test, OpenBGPD 7.7, roles, IPv4: OTC is attached to routes without it PASSED
-Live test, OpenBGPD 7.7, roles, IPv4: routes with OTC from AS1 SKIPPED
-Live test, OpenBGPD 7.7, roles, IPv4: routes with OTC from AS2 are dropped PASSED
-Live test, OpenBGPD 7.7, roles, IPv4: routes expected on AS2 PASSED
-Live test, OpenBGPD 7.7, roles, IPv4: log contains errors PASSED
-Live test, OpenBGPD 7.7, roles, IPv4: dumping rs config...
+Live test, OpenBGPD 7.8, roles, IPv4: sessions are up PASSED
+Live test, OpenBGPD 7.8, roles, IPv4: OTC is attached to routes without it PASSED
+Live test, OpenBGPD 7.8, roles, IPv4: routes with OTC from AS1 PASSED
+Live test, OpenBGPD 7.8, roles, IPv4: routes with OTC from AS2 are dropped PASSED
+Live test, OpenBGPD 7.8, roles, IPv4: routes expected on AS2 PASSED
+Live test, OpenBGPD 7.8, roles, IPv4: log contains errors PASSED
+Live test, OpenBGPD 7.8, roles, IPv4: dumping rs config...
 
-Live test, OpenBGPD 7.7, roles, IPv4: dumping routes...
+Live test, OpenBGPD 7.8, roles, IPv4: dumping routes...
 
-Live test, OpenBGPD 7.7, roles, IPv4: stopping instances...
+Live test, OpenBGPD 7.8, roles, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, roles, IPv6: instances setup 
-Live test, OpenBGPD 7.7, roles, IPv6: setting instances up...
+Live test, OpenBGPD 7.8, roles, IPv6: instances setup 
+Live test, OpenBGPD 7.8, roles, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, roles, IPv6: sessions are up PASSED
-Live test, OpenBGPD 7.7, roles, IPv6: OTC is attached to routes without it PASSED
-Live test, OpenBGPD 7.7, roles, IPv6: routes with OTC from AS1 SKIPPED
-Live test, OpenBGPD 7.7, roles, IPv6: routes with OTC from AS2 are dropped PASSED
-Live test, OpenBGPD 7.7, roles, IPv6: routes expected on AS2 PASSED
-Live test, OpenBGPD 7.7, roles, IPv6: log contains errors PASSED
-Live test, OpenBGPD 7.7, roles, IPv6: dumping rs config...
+Live test, OpenBGPD 7.8, roles, IPv6: sessions are up PASSED
+Live test, OpenBGPD 7.8, roles, IPv6: OTC is attached to routes without it PASSED
+Live test, OpenBGPD 7.8, roles, IPv6: routes with OTC from AS1 PASSED
+Live test, OpenBGPD 7.8, roles, IPv6: routes with OTC from AS2 are dropped PASSED
+Live test, OpenBGPD 7.8, roles, IPv6: routes expected on AS2 PASSED
+Live test, OpenBGPD 7.8, roles, IPv6: log contains errors PASSED
+Live test, OpenBGPD 7.8, roles, IPv6: dumping rs config...
 
-Live test, OpenBGPD 7.7, roles, IPv6: dumping routes...
+Live test, OpenBGPD 7.8, roles, IPv6: dumping routes...
 
-Live test, OpenBGPD 7.7, roles, IPv6: stopping instances...
+Live test, OpenBGPD 7.8, roles, IPv6: stopping instances...
 
 
-=================== 12 passed, 2 skipped in 68.79s (0:01:08) ===================
+======================== 14 passed in 63.68s (0:01:03) =========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3518,24 +3518,24 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 8 items
 
-Live test, OpenBGPD 7.7, RTR protocol: instances setup 
-Live test, OpenBGPD 7.7, RTR protocol: setting instances up...
+Live test, OpenBGPD 7.8, RTR protocol: instances setup 
+Live test, OpenBGPD 7.8, RTR protocol: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, RTR protocol: sessions are up PASSED
-Live test, OpenBGPD 7.7, RTR protocol: route accepted because validator not running PASSED
-Live test, OpenBGPD 7.7, RTR protocol: spin up the validator PASSED
-Live test, OpenBGPD 7.7, RTR protocol: restart OpenBGPD to speed up RTR session establishment PASSED
-Live test, OpenBGPD 7.7, RTR protocol: check the RTR session is up PASSED
-Live test, OpenBGPD 7.7, RTR protocol: route dropped after spinning the validator up PASSED
-Live test, OpenBGPD 7.7, RTR protocol: log contains errors PASSED
-Live test, OpenBGPD 7.7, RTR protocol: dumping rs config...
+Live test, OpenBGPD 7.8, RTR protocol: sessions are up PASSED
+Live test, OpenBGPD 7.8, RTR protocol: route accepted because validator not running PASSED
+Live test, OpenBGPD 7.8, RTR protocol: spin up the validator PASSED
+Live test, OpenBGPD 7.8, RTR protocol: restart OpenBGPD to speed up RTR session establishment PASSED
+Live test, OpenBGPD 7.8, RTR protocol: check the RTR session is up PASSED
+Live test, OpenBGPD 7.8, RTR protocol: route dropped after spinning the validator up PASSED
+Live test, OpenBGPD 7.8, RTR protocol: log contains errors PASSED
+Live test, OpenBGPD 7.8, RTR protocol: dumping rs config...
 
-Live test, OpenBGPD 7.7, RTR protocol: dumping routes...
+Live test, OpenBGPD 7.8, RTR protocol: dumping routes...
 
-Live test, OpenBGPD 7.7, RTR protocol: stopping instances...
+Live test, OpenBGPD 7.8, RTR protocol: stopping instances...
 
 
-============================== 8 passed in 45.05s ==============================
+============================== 8 passed in 44.73s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3543,206 +3543,206 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 166 items
 
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: instances setup 
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: setting instances up...
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: instances setup 
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: sessions are up PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS2 prefix ko origin ko PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS2 prefix ko origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok origin ko PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS4 route filtered (origin ko) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS4 prefix ko origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS4 prefix ok origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS4 route filtered (prefix ko, origin ko) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS5 route filtered (prefix ko, origin ko) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS5 route filtered (prefix ko) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS5 prefix ok origin ko PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS5 prefix ok origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (exact) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS4 route white list, reject (more spec) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (more spec) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS4 route white list, reject (origin KO) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (origin any) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS6 ARIN Whois DB: ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: reconfigure PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: log contains errors PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: dumping rs config...
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: sessions are up PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS2 prefix ko origin ko PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS2 prefix ko origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok origin ko PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS4 route filtered (origin ko) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS4 prefix ko origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS4 prefix ok origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS4 route filtered (prefix ko, origin ko) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS5 route filtered (prefix ko, origin ko) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS5 route filtered (prefix ko) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS5 prefix ok origin ko PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS5 prefix ok origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (exact) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS4 route white list, reject (more spec) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (more spec) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS4 route white list, reject (origin KO) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (origin any) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS6 ARIN Whois DB: ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: reconfigure PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: log contains errors PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: dumping rs config...
 
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: dumping routes...
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: dumping routes...
 
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv4: stopping instances...
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: instances setup 
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: setting instances up...
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: instances setup 
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: sessions are up PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS2 no enforcement, prefix and origin not in AS-SET PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS4 origin enforcement PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS4 prefix enforcement PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (exact) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (more spec) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (more spec) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (origin KO) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (origin any) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: ko PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS6 ARIN Whois DB: ok (solely because of route white list) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas]) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS6 prefix ok, origin ok, ROA + ARIN: rejected PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforced (rejected) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: reconfigure PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: log contains errors PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: dumping rs config...
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: sessions are up PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS2 no enforcement, prefix and origin not in AS-SET PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS4 origin enforcement PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS4 prefix enforcement PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (exact) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (more spec) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (more spec) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (origin KO) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (origin any) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: ko PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS6 ARIN Whois DB: ok (solely because of route white list) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas]) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS6 prefix ok, origin ok, ROA + ARIN: rejected PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforced (rejected) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: reconfigure PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: log contains errors PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: dumping rs config...
 
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: dumping routes...
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: dumping routes...
 
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv4: stopping instances...
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: instances setup 
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: setting instances up...
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: instances setup 
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: sessions are up PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS2 prefix ko origin ko PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS2 prefix ko origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok origin ko PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS4 route filtered (origin ko) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS4 prefix ko origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS4 prefix ok origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS4 route filtered (prefix ko, origin ko) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (prefix ko, origin ko) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (prefix ko) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ko PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (exact) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS4 route white list, reject (more spec) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (more spec) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS4 route white list, reject (origin KO) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (origin any) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS6 ARIN Whois DB: ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: reconfigure PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: log contains errors PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: dumping rs config...
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: sessions are up PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS2 prefix ko origin ko PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS2 prefix ko origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok origin ko PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS4 route filtered (origin ko) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS4 prefix ko origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS4 prefix ok origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS4 route filtered (prefix ko, origin ko) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (prefix ko, origin ko) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (prefix ko) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ko PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (exact) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS4 route white list, reject (more spec) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (more spec) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS4 route white list, reject (origin KO) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (origin any) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS6 ARIN Whois DB: ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: reconfigure PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: log contains errors PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: dumping rs config...
 
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: dumping routes...
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: dumping routes...
 
-Live test, OpenBGPD 7.7, tag prefix/origin in AS-SET, IPv6: stopping instances...
+Live test, OpenBGPD 7.8, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: instances setup 
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: setting instances up...
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: instances setup 
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: sessions are up PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS2 no enforcement, prefix and origin not in AS-SET PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS4 origin enforcement PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS4 prefix enforcement PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (exact) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (more spec) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (more spec) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (origin KO) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (origin any) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: ko PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS6 ARIN Whois DB: ok (solely because of route white list) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas]) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS6 prefix ok, origin ok, ROA + ARIN: rejected PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforced (rejected) PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: reconfigure PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: log contains errors PASSED
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: dumping rs config...
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: sessions are up PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS2 no enforcement, prefix and origin not in AS-SET PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS4 origin enforcement PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS4 prefix enforcement PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (exact) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (more spec) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (more spec) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (origin KO) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (origin any) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: ko PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS6 ARIN Whois DB: ok (solely because of route white list) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas]) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS6 prefix ok, origin ok, ROA + ARIN: rejected PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforced (rejected) PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: reconfigure PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: log contains errors PASSED
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: dumping rs config...
 
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: dumping routes...
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: dumping routes...
 
-Live test, OpenBGPD 7.7, tag prefix/origin empty AS-SET, IPv6: stopping instances...
+Live test, OpenBGPD 7.8, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 
-======================= 166 passed in 188.16s (0:03:08) ========================
+======================= 166 passed in 179.08s (0:02:59) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3750,67 +3750,67 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 46 items
 
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: instances setup 
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: setting instances up...
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: instances setup 
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: sessions are up PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: announced by ASN derived via 16bit_mapped_asn PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: AS_PATH too long PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: bogon prefix PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: bogon prefix, wrong announcing ASN PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: prefix in client's blacklist PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: invalid ASN in AS_PATH PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: invalid NEXT_HOP PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: local black list PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: prefix is not in IPv6 global unicast space SKIPPED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: origin not in as-macro PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: invalid left-most ASN PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: prefix length PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: prefix not in as-macro PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: RPKI INVALID route PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: transit-free ASN in AS_PATH PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: good routes not received PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS1_1 PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS1_2 PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS2 PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: reconfigure PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: log contains errors PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: dumping rs config...
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: sessions are up PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: announced by ASN derived via 16bit_mapped_asn PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: AS_PATH too long PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: bogon prefix PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: bogon prefix, wrong announcing ASN PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: prefix in client's blacklist PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: invalid ASN in AS_PATH PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: invalid NEXT_HOP PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: local black list PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: prefix is not in IPv6 global unicast space SKIPPED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: origin not in as-macro PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: invalid left-most ASN PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: prefix length PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: prefix not in as-macro PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: RPKI INVALID route PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: transit-free ASN in AS_PATH PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: good routes not received PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS1_1 PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS1_2 PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS2 PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: reconfigure PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: log contains errors PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: dumping rs config...
 
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: dumping routes...
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: dumping routes...
 
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv4: stopping instances...
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv4: stopping instances...
 
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: instances setup 
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: setting instances up...
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: instances setup 
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: sessions are up PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: announced by ASN derived via 16bit_mapped_asn PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: AS_PATH too long PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: bogon prefix PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: bogon prefix, wrong announcing ASN PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: prefix in client's blacklist PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: invalid ASN in AS_PATH PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: invalid NEXT_HOP PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: local black list PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: prefix is not in IPv6 global unicast space PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: origin not in as-macro PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: invalid left-most ASN PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: prefix length PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: prefix not in as-macro PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: RPKI INVALID route PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: transit-free ASN in AS_PATH PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: good routes not received PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS1_1 PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS1_2 PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS2 PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: reconfigure PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: log contains errors PASSED
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: dumping rs config...
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: sessions are up PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: announced by ASN derived via 16bit_mapped_asn PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: AS_PATH too long PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: bogon prefix PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: bogon prefix, wrong announcing ASN PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: prefix in client's blacklist PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: invalid ASN in AS_PATH PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: invalid NEXT_HOP PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: local black list PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: prefix is not in IPv6 global unicast space PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: origin not in as-macro PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: invalid left-most ASN PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: prefix length PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: prefix not in as-macro PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: RPKI INVALID route PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: transit-free ASN in AS_PATH PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: good routes not received PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS1_1 PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS1_2 PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS2 PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: reconfigure PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: log contains errors PASSED
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: dumping rs config...
 
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: dumping routes...
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: dumping routes...
 
-Live test, OpenBGPD 7.7, 'tag' reject policy scenario, IPv6: stopping instances...
+Live test, OpenBGPD 7.8, 'tag' reject policy scenario, IPv6: stopping instances...
 
 
-================== 45 passed, 1 skipped in 139.33s (0:02:19) ===================
+================== 45 passed, 1 skipped in 139.10s (0:02:19) ===================
