@@ -208,6 +208,8 @@ class OpenBGPDInstance(object):
             elif line.startswith("Origin"):
                 route["best"] = "best" in line
 
+                route["filtered"] = ", valid" not in line
+
                 match = re.search("localpref ([0-9]+)", line)
                 route["localpref"] = int(match.group(1))
             elif line.startswith("Communities:"):
