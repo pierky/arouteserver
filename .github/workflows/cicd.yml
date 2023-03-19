@@ -220,7 +220,7 @@ jobs:
             -e ROUTER_ID=192.0.2.124 \
             -e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
             -e DAEMON=openbgpd \
-            -e VERSION=7.7 \
+            -e VERSION=7.8 \
             -e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
             pierky/arouteserver:${{ matrix.docker-image.target_image }}
         env:
@@ -232,7 +232,7 @@ jobs:
             -t \
             --rm \
             -v ~/arouteserver_configs/openbgpd.cfg:/etc/bgpd/bgpd.conf \
-            pierky/openbgpd:7.7 \
+            pierky/openbgpd:7.8 \
             bgpd \
               -f /etc/bgpd/bgpd.conf \
               -d \
