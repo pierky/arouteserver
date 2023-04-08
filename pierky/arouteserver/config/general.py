@@ -107,6 +107,8 @@ class ConfigParserGeneral(ConfigParserBase):
 
         c["rs_as"] = ValidatorASN()
         c["router_id"] = ValidatorIPv4Addr(mandatory=True)
+        c["rs_listen_v4"] = ValidatorIPv4Addr(mandatory=False)
+        c["rs_listen_v6"] = ValidatorIPv6Addr(mandatory=False)
         c["prepend_rs_as"] = ValidatorBool(default=False)
         c["path_hiding"] = ValidatorBool(default=True)
         c["passive"] = ValidatorBool(default=True)
