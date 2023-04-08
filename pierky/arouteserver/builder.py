@@ -20,6 +20,7 @@ from packaging import version
 import sys
 import time
 import yaml
+import copy
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
@@ -645,6 +646,49 @@ class ConfigBuilder(object):
                     res.append(roa)
             return res
 
+        def get_output_file_for_router_id(router_id):
+            if (
+                output_file is sys.stdout or \
+                output_file.name == "<stdout>" or \
+                output_file.fileno() == 1
+            ):
+                output_file.write("\n\n# Configuration for router_id {} follows\n\n".format(router_id))
+                return output_file
+
+            output_file_path = output_file.name
+            output_file_name = os.path.basename(output_file_path)
+            output_file_dir = os.path.dirname(output_file_path)
+
+            if "." in output_file_name:
+                output_file_ext = "." + output_file_name.split(".")[-1]
+                output_file_name_no_ext = ".".join(output_file_name.split(".")[0:-1])
+            else:
+                output_file_ext = ""
+                output_file_name_no_ext = output_file_name
+
+            return open(
+                os.path.join(
+                    output_file_dir,
+                    output_file_name_no_ext + "-" + router_id + output_file_ext
+                ), "w"
+            )
+
+        router_ids = copy.deepcopy(self.cfg_general["router_id"])
+
+        if not isinstance(router_ids, list):
+            router_ids = [router_ids]
+
+        multiple_router_ids = len(router_ids) > 1
+
+        if multiple_router_ids and not output_file:
+            raise RuntimeError(
+                "When multiple router IDs are configured, render_template "
+                "must be called with output_file set. If it's used as a library "
+                "and the route server configuration is expected to be returned "
+                "as a string, then multiple calls must be made, one for each "
+                "route server."
+            )
+
         self.data = {}
         self.data["ip_ver"] = self.ip_ver
         if self.ip_ver is None:
@@ -770,12 +814,27 @@ class ConfigBuilder(object):
 
         logging.info("Started template rendering "
                      "for {}".format(self.template_path))
+
         try:
-            if output_file:
-                for buf in tpl.generate(self.data):
-                    output_file.write(buf)
-            else:
-                return tpl.render(self.data)
+            for router_id in router_ids:
+                self.data["cfg"]["router_id"] = router_id
+
+                if output_file and not multiple_router_ids:
+                    for buf in tpl.generate(self.data):
+                        output_file.write(buf)
+
+                elif output_file and multiple_router_ids:
+                    output_file_router_id = get_output_file_for_router_id(router_id)
+                    output_file.write(
+                        "Configuration for router_id {}: {}\n".format(
+                            router_id, output_file_router_id.name
+                        )
+                    )
+                    for buf in tpl.generate(self.data):
+                        output_file_router_id.write(buf)
+
+                else:
+                    return tpl.render(self.data)
         except Exception as e:
             _, _, traceback = sys.exc_info()
             raise TemplateRenderingError(

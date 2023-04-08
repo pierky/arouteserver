@@ -38,7 +38,15 @@ class TemplateRenderingCommands(ARouteServerCommand):
         parser.add_argument(
             "-o", "--output",
             type=argparse.FileType('w'),
-            help="Output file. Default: stdout.",
+            help="Output file. Default: stdout. "
+                 "When multiple router IDs are configured, this file will "
+                 "just contain a textual reference to the actual configuration "
+                 "files, which will be created appending the router ID to the "
+                 "base name of the file provided here. "
+                 "Example: -o /var/rs/my_rs.cfg will build "
+                 "/var/rs/my_rs-192.0.2.1.cfg and /var/rs/my_rs-192.0.2.2.cfg "
+                 "If just one router ID is set, then the file provided here "
+                 "will contain the actual configuration of the route server.",
             default=sys.stdout,
             dest="output_file")
 
