@@ -46,7 +46,10 @@ jobs:
         run: flake8
 
       - name: Test CLI
+        if: ${{ matrix.python-version == '3.11' }}
         run: ./tests/cli
+        env:
+          SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
 
       - name: Static tests
         run: pytest -vs -x tests/static/
