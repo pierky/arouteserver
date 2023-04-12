@@ -135,6 +135,7 @@ jobs:
             --rm \
             -e DO_NOT_PERFORM_VALIDATION=1 \
             -e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
+            -v $(pwd)/utils/fake_rtt_getter.sh:/arouteserver/utils/fake_rtt_getter.sh:ro \
             pierky/arouteserver:${{ matrix.docker-image.target_image }} \
               ./tests/cli
         env:
