@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New: support to build configurations for multiple route servers at once.
+
+  Providing a list of values in the ``router_id`` setting of the ``general.yml`` file allows ARouteServer to build configurations for multiple route servers during the same execution.
+
+  For more details see `Building configurations for multiple route servers <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#building-configurations-for-multiple-route-servers>`__ on the doc web site.
+
 1.20.1
 ------
 
