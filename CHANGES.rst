@@ -12,6 +12,8 @@ next release
 
   For more details see `Building configurations for multiple route servers <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#building-configurations-for-multiple-route-servers>`__ on the doc web site.
 
+- New: add support for `BIRD 2.13 <https://www.mail-archive.com/bird-users@network.cz/msg07305.html>`__, also added to the integration testing suite.
+
 1.20.1
 ------
 
