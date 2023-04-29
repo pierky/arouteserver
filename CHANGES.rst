@@ -6,6 +6,10 @@ Change log
 next release
 ------------
 
+This release **breaks backward compatibility** (BIRD configs only): the default target version used to build BIRD configurations (when the ``--target-version`` argument is not given) is now the latest from the version 2 of BIRD (2.13 at the moment); previously it was 1.6.8. Use the ``--target-version 1.6.8`` command line argument to build 1.6 compatible configurations.
+
+Please note: `BIRD 1 will reach end of life at the end of the year 2023 <https://www.mail-archive.com/bird-users@network.cz/msg07316.html>`__.
+
 - New: support to build configurations for multiple route servers at once.
 
   Providing a list of values in the ``router_id`` setting of the ``general.yml`` file allows ARouteServer to build configurations for multiple route servers during the same execution.

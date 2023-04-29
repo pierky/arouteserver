@@ -293,6 +293,15 @@ build_cmd "bird" \
   --ip-ver 4 \
   --ignore-issues ext-comms-32bit-asn \
   --output "${OUTPUT_CFG}"
+validate_bird "${OUTPUT_CFG}" "${BIRD2_LATEST_VER}"
+SUB_TEST="$LINENO"
+TITLE="Validate BIRD BGP Extended Communities and 32bit ASNs (1.6.8)"
+OUTPUT_CFG="$(mktemp)"
+build_cmd "bird" \
+  --target-ver 1.6.8 \
+  --ip-ver 4 \
+  --ignore-issues ext-comms-32bit-asn \
+  --output "${OUTPUT_CFG}"
 validate_bird "${OUTPUT_CFG}" 1.6.8
 
 SUB_TEST="$LINENO"

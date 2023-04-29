@@ -264,7 +264,6 @@ class TestConfigureCmd(ARouteServerTestCase):
         self.expected_config["cfg"]["filtering"]["reject_policy"] = {
             "policy": "tag_and_reject"
         }
-        del self.expected_config["cfg"]["filtering"]["roles"]
 
         dic = self.configure_and_build(
             BIRDConfigBuilder,
@@ -378,7 +377,6 @@ class TestConfigureCmd(ARouteServerTestCase):
         self.expected_config["cfg"]["filtering"]["reject_policy"] = {
             "policy": "tag_and_reject"
         }
-        del self.expected_config["cfg"]["filtering"]["roles"]
 
         self.expected_config["cfg"]["rs_as"] = 999999
         self.mock_answers([
