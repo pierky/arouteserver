@@ -116,7 +116,10 @@ class IXFMemberListFromClientsCommand(ARouteServerCommand):
 
             ipv4_ipv6 = "ipv6" if ":" in client["ip"] else "ipv4"
 
-            vlan_obj[ipv4_ipv6] = {"address": client["ip"]}
+            vlan_obj[ipv4_ipv6] = {
+                "address": client["ip"],
+                "routeserver": True
+            }
 
             max_pref = client["cfg"]["filtering"]["max_prefix"][
                 "limit_{}".format(ipv4_ipv6)]
