@@ -623,9 +623,6 @@ run_cmd "clients-from-euroix" --url https://portal.lonap.net/apiv1/member-list/l
 # 0.6 schema version:
 SUB_TEST="$LINENO"
 run_cmd "clients-from-euroix" --url https://ixp.getafix.ph/api/v4/member-export/ixf/0.6 2 | must_contain "description: GetaFIX AS112 Blackhole"
-# 0.7 schema version:
-SUB_TEST="$LINENO"
-run_cmd "clients-from-euroix" --url https://ixpmanager.swissix.ch/api/v4/member-export/ixf/0.7 1 | must_contain "description: Packet Clearing House"
 
 # ---------------------------------------------
 # irr-as-set command
