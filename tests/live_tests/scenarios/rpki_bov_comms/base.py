@@ -139,6 +139,10 @@ class RPKICustomBOVCommunitiesScenario_BIRD2(RPKICustomBOVCommunitiesScenario):
     __test__ = False
 
 
+class RPKICustomBOVCommunitiesScenario_BIRD3(RPKICustomBOVCommunitiesScenario):
+    __test__ = False
+
+
 class RPKICustomBOVCommunitiesScenario_OpenBGPDLatest(RPKICustomBOVCommunitiesScenario):
     __test__ = False
 

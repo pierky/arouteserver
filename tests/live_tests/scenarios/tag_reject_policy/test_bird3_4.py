@@ -13,15 +13,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .base import RPKIINVALIDScenario2
-from .data4 import DATA_4
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, BIRD2Instance
+from .base import TagRejectPolicyScenarioBIRD3
+from .data4 import BasicScenario_Data4
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, BIRD3Instance
 
-class RPKIINVALIDRoutesScenario_BIRD2IPv4(RPKIINVALIDScenario2):
+class TagRejectPolicyScenario_BIRD3IPv4(BasicScenario_Data4, TagRejectPolicyScenarioBIRD3):
+
     __test__ = True
 
-    SHORT_DESCR = "Live test, BIRD v2, RPKI INVALID tagging, IPv4"
-    RS_INSTANCE_CLASS = BIRD2Instance
+    SHORT_DESCR = "Live test, BIRD v3, 'tag' reject policy scenario, IPv4"
+    RS_INSTANCE_CLASS = BIRD3Instance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
 
-    DATA = DATA_4
+    ALLOWED_LOG_ERRORS = [
+        "Invalid NEXT_HOP attribute - neighbor address 192.0.2.11",
+        "Invalid route 1.0.3.0/24 withdrawn"
+    ]

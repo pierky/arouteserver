@@ -106,6 +106,9 @@ class GShutScenarioBIRD(GShutScenario):
 class GShutScenarioBIRD2(GShutScenarioBIRD):
     __test__ = False
 
+class GShutScenarioBIRD3(GShutScenarioBIRD):
+    __test__ = False
+
 class GShutScenarioOpenBGPD(GShutScenario):
     __test__ = False
 

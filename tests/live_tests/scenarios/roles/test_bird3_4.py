@@ -13,15 +13,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .base import RPKIINVALIDScenario2
+from .base import RolesScenarioBIRD
 from .data4 import DATA_4
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, BIRD2Instance
+from pierky.arouteserver.tests.live_tests.bird import BIRD3Instance
 
-class RPKIINVALIDRoutesScenario_BIRD2IPv4(RPKIINVALIDScenario2):
+import pytest
+
+@pytest.mark.skip(reason="Not ready in BIRD v3 alpha")
+class RolesScenario_BIRDIPv4(RolesScenarioBIRD):
     __test__ = True
 
-    SHORT_DESCR = "Live test, BIRD v2, RPKI INVALID tagging, IPv4"
-    RS_INSTANCE_CLASS = BIRD2Instance
-    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv4
+    SHORT_DESCR = "Live test, BIRD v3, roles, IPv4"
+    RS_INSTANCE_CLASS = BIRD3Instance
 
     DATA = DATA_4

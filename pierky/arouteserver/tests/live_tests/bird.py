@@ -165,9 +165,11 @@ class BIRDInstance(DockerInstance, BGPSpeakerInstance):
 
         self._get_protocols_status()
 
-        is_bird2 = "BIRD 2." in self._birdcl("show status")
+        show_status_output = self._birdcl("show status")
+        is_bird2 = "BIRD 2." in show_status_output
+        is_bird3 = "BIRD 3." in show_status_output
 
-        if is_bird2:
+        if is_bird2 or is_bird3:
             # unicast [AS1_1 15:53:50.281] * (100) [AS1i]
             route_beginning_re = (
                 r"[ ]+unicast "
@@ -222,7 +224,7 @@ class BIRDInstance(DockerInstance, BGPSpeakerInstance):
                     route["best"] = (option == "" and " * " in line)
                     route["filtered"] = option == "filtered"
                 else:
-                    if "BGP.as_path:" in line:
+                    if "BGP.as_path:" in line or "bgp_path:" in line:
                         raw_as_path = line.split(": ")[1].strip()
                         if "{" in raw_as_path:
                             # Stripping as_set in strings like this:
@@ -234,7 +236,7 @@ class BIRDInstance(DockerInstance, BGPSpeakerInstance):
                             as_set = None
                         route["as_path"] = as_path
                         route["as_set"] = as_set
-                    if "BGP.next_hop:" in line:
+                    if "BGP.next_hop:" in line or "bgp_next_hop:" in line:
                         route["next_hop"] = ""
                         next_hops = line.split(": ")[1].strip().split()
                         for next_hop in next_hops:
@@ -243,13 +245,13 @@ class BIRDInstance(DockerInstance, BGPSpeakerInstance):
                             if route["next_hop"]:
                                 route["next_hop"] += ", "
                             route["next_hop"] += next_hop
-                    if "BGP.community:" in line:
+                    if "BGP.community:" in line or "bgp_community:" in line:
                         route["std_comms"] = line.split(": ")[1].strip()
-                    if "BGP.large_community:" in line:
+                    if "BGP.large_community:" in line or "bgp_large_community:" in line:
                         route["lrg_comms"] = line.split(": ")[1].strip()
-                    if "BGP.ext_community:" in line:
+                    if "BGP.ext_community:" in line or "bgp_ext_community:" in line:
                         route["ext_comms"] = line.split(": ")[1].strip()
-                    if "BGP.local_pref:" in line:
+                    if "BGP.local_pref:" in line or "bgp_local_pref:" in line:
                         route["localpref"] = line.split(": ")[1].strip()
                     if "BGP.otc:" in line:
                         route["otc"] = int(line.split(": ")[1].strip())
@@ -334,6 +336,20 @@ class BIRD2Instance(BIRDInstance):
     TAG = "bird2"
 
     TARGET_VERSION = "2.13"
+
+    def _get_start_cmd(self):
+        return "bird -c /etc/bird/bird.conf -d"
+
+    def _birdcl(self, cmd):
+        return self.run_cmd("birdcl {}".format(cmd))
+
+class BIRD3Instance(BIRDInstance):
+
+    DOCKER_IMAGE = "pierky/bird:3.0-alpha1"
+
+    TAG = "bird3"
+
+    TARGET_VERSION = "3.0"
 
     def _get_start_cmd(self):
         return "bird -c /etc/bird/bird.conf -d"
