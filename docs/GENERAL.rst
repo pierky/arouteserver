@@ -20,6 +20,23 @@ General options: ``cfg``
 - ``router_id``:
   The route server's router ID.
 
+
+  This can be set using a single router ID or a list
+  of multiple router IDs. If multiple values are provided,
+  then a single execution of ARouteServer will generate
+  multiple configurations, one for each router ID, all
+  having the same characteristics, but just a different
+  value for the "router ID" setting of the target BGP
+  daemon.
+
+
+  More details on the Configuration page on ReadTheDocs:
+  https://arouteserver.readthedocs.io/en/latest/CONFIG.html
+
+
+  Example of how to configure multiple values:
+  router_id: ["192.0.2.2", "192.0.2.3"]
+
   Example:
 
   .. code:: yaml
