@@ -3,6 +3,25 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+This release **breaks backward compatibility** (BIRD configs only): the default target version used to build BIRD configurations (when the ``--target-version`` argument is not given) is now the latest from the version 2 of BIRD (2.13 at the moment); previously it was 1.6.8. Use the ``--target-version 1.6.8`` command line argument to build 1.6 compatible configurations.
+
+Please note: `BIRD 1 will reach end of life at the end of the year 2023 <https://www.mail-archive.com/bird-users@network.cz/msg07316.html>`__.
+
+- New: add support for `BIRD 2.13 <https://www.mail-archive.com/bird-users@network.cz/msg07305.html>`__, also added to the integration testing suite.
+
+- New: support to build configurations for multiple route servers at once.
+
+  Providing a list of values in the ``router_id`` setting of the ``general.yml`` file allows ARouteServer to build configurations for multiple route servers during the same execution.
+
+  For more details see `Building configurations for multiple route servers <https://arouteserver.readthedocs.io/en/latest/CONFIG.html#building-configurations-for-multiple-route-servers>`__ on the doc web site.
+
+- Fix: ``ixf-member-export`` (to build an Euro-IX JSON export file from clients.yml) now sets the ``routeserver`` flag of members to ``True``.
+
+  See also `GitHub issue 120 <https://github.com/pierky/arouteserver/issues/120>`__.
+
 1.20.1
 ------
 

@@ -13,5 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-__version__ = "1.21.0-alpha1" # pragma: no cover
-COPYRIGHT_YEAR = 2023 # pragma: no cover
+from .base import BIRDHooksExampleScenario
+from .data6 import BIRDHooksExampleScenario_Data6
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6, BIRD2Instance
+
+class BIRD2HooksExampleScenario_IPv6(BIRDHooksExampleScenario_Data6,
+                                     BIRDHooksExampleScenario):
+    __test__ = True
+
+    SHORT_DESCR = "Live test, BIRD v2, hooks example, IPv6"
+    RS_INSTANCE_CLASS = BIRD2Instance
+    CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
+    IP_VER = 6

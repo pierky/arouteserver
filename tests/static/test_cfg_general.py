@@ -60,7 +60,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
 
     def test_router_id(self):
         """{}: router_id"""
-        self.assertEqual(self.cfg["router_id"], "192.0.2.2")
+        self.assertEqual(self.cfg["router_id"], ["192.0.2.2"])
         for v in ("1.0.0.1", "10.0.0.1"):
             self.cfg["router_id"] = v
             self._contains_err()
@@ -68,6 +68,11 @@ class TestConfigParserGeneral(TestConfigParserBase):
             self.cfg["router_id"] = v
             self._contains_err("Error parsing 'router_id' at 'cfg' level - Invalid IPv4 address: {}.".format(v))
         self._test_mandatory(self.cfg, "router_id")
+
+    def test_router_id_multiple(self):
+        """{}: multiple router IDs"""
+        self.cfg["router_id"] = ["192.0.2.1", "192.0.2.2"]
+        self._contains_err()
 
     def test_prepend_rs_as(self):
         """{}: prepend_rs_as"""
@@ -1237,7 +1242,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
 
         exp_res = {
             "rs_as": 999,
-            "router_id": "192.0.2.2",
+            "router_id": ["192.0.2.2"],
             "prepend_rs_as": False,
             "path_hiding": True,
             "passive": True,
@@ -1364,7 +1369,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
 
         exp_res = {
             "rs_as": 999,
-            "router_id": "192.0.2.2",
+            "router_id": ["192.0.2.2"],
             "prepend_rs_as": False,
             "path_hiding": True,
             "passive": True,
@@ -1614,7 +1619,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.cfg.parse()
         self._contains_err()
 
-        self.assertEqual(self.cfg["router_id"], "192.0.2.1")
+        self.assertEqual(self.cfg["router_id"], ["192.0.2.1"])
 
     @mock.patch.dict(os.environ, {"ROUTER_ID": "192.0.2.1"})
     def test_env_vars_missing(self):
@@ -1630,7 +1635,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.cfg.parse()
         self._contains_err()
 
-        self.assertEqual(self.cfg["router_id"], "192.0.2.1")
+        self.assertEqual(self.cfg["router_id"], ["192.0.2.1"])
         self.assertEqual(self.cfg["filtering"]["global_black_list_pref"], None)
 
     @mock.patch.dict(os.environ, {"ROUTER_ID": "192.0.2.1"})
@@ -1658,5 +1663,5 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.cfg.parse()
         self._contains_err()
 
-        self.assertEqual(self.cfg["router_id"], "192.0.2.1")
+        self.assertEqual(self.cfg["router_id"], ["192.0.2.1"])
         self.assertEqual(self.cfg["filtering"]["global_black_list_pref"], None)

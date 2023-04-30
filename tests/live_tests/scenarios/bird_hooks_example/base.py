@@ -46,7 +46,7 @@ class BIRDHooksExampleScenario(LiveScenario):
 
     def set_instance_variables(self):
         self.rs = self._get_instance_by_name("rs")
-        
+
     def test_010_setup(self):
         """{}: instances setup"""
         pass
@@ -59,6 +59,7 @@ class BIRDHooksExampleScenario(LiveScenario):
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
+                                     target_version=cls.RS_INSTANCE_CLASS.TARGET_VERSION,
                                      hooks=["pre_receive_from_client",
                                             "post_receive_from_client",
                                             "pre_announce_to_client",
@@ -74,6 +75,12 @@ class BIRDHooksExampleScenario(LiveScenario):
                 (
                     cls.use_static_file("header.local"),
                     "/etc/bird/header.local"
+                ),
+
+                # Only needed by BIRD2.
+                (
+                    cls.use_static_file("rpki_rtr_config.local"),
+                    "/etc/bird/rpki_rtr_config.local"
                 )
             ]
         )

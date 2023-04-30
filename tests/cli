@@ -127,6 +127,46 @@ EOF
 # ---------------------------------------------
 # Build and validate configs
 
+# Multiple router_id
+reset
+GENERAL="tests/var/general.yml"
+cat examples/rich/general.yml | sed 's/  router_id:.*/  router_id: ["192.0.2.2", "192.0.2.3"]/' >$GENERAL
+CLIENTS="examples/rich/clients.yml"
+
+TITLE="Multiple router_id, BIRD"
+OUTPUT_CFG="$(mktemp)"
+SUB_TEST="$LINENO"
+build_cmd "bird" \
+  --target-ver ${BIRD2_LATEST_VER} \
+  --output ${OUTPUT_CFG} \
+  --ip-ver 4
+file_192_0_2_2=$(cat ${OUTPUT_CFG} | grep "192.0.2.2" | cut -d ':' -f 2)
+file_192_0_2_3=$(cat ${OUTPUT_CFG} | grep "192.0.2.3" | cut -d ':' -f 2)
+diff="$(diff ${file_192_0_2_2} ${file_192_0_2_3})"
+diff_len=$(echo "${diff}" | wc -l)
+if [ ${diff_len} != 4 ]; then
+  error "diff_len is not 4 but ${diff_len}\n\nDiff follows: ${diff}"
+fi
+cat ${file_192_0_2_2} | must_contain "router id 192.0.2.2;"
+cat ${file_192_0_2_3} | must_contain "router id 192.0.2.3;"
+
+TITLE="Multiple router_id, OpenBGPD"
+OUTPUT_CFG="$(mktemp)"
+SUB_TEST="$LINENO"
+build_cmd "openbgpd" \
+  --target-ver ${OPENBGPD_LATEST_VER} \
+  --output ${OUTPUT_CFG} \
+  --ignore-issues extended_communities
+file_192_0_2_2=$(cat ${OUTPUT_CFG} | grep "192.0.2.2" | cut -d ':' -f 2)
+file_192_0_2_3=$(cat ${OUTPUT_CFG} | grep "192.0.2.3" | cut -d ':' -f 2)
+diff="$(diff ${file_192_0_2_2} ${file_192_0_2_3})"
+diff_len=$(echo "${diff}" | wc -l)
+if [ ${diff_len} != 4 ]; then
+  error "diff_len is not 4 but ${diff_len}\n\nDiff follows: ${diff}"
+fi
+cat ${file_192_0_2_2} | must_contain "router-id 192.0.2.2"
+cat ${file_192_0_2_3} | must_contain "router-id 192.0.2.3"
+
 # Custom options
 reset
 CLIENTS="tests/var/clients.yml"
@@ -250,6 +290,15 @@ SUB_TEST="$LINENO"
 TITLE="Validate BIRD BGP Extended Communities and 32bit ASNs"
 OUTPUT_CFG="$(mktemp)"
 build_cmd "bird" \
+  --ip-ver 4 \
+  --ignore-issues ext-comms-32bit-asn \
+  --output "${OUTPUT_CFG}"
+validate_bird "${OUTPUT_CFG}" "${BIRD2_LATEST_VER}"
+SUB_TEST="$LINENO"
+TITLE="Validate BIRD BGP Extended Communities and 32bit ASNs (1.6.8)"
+OUTPUT_CFG="$(mktemp)"
+build_cmd "bird" \
+  --target-ver 1.6.8 \
   --ip-ver 4 \
   --ignore-issues ext-comms-32bit-asn \
   --output "${OUTPUT_CFG}"
@@ -583,9 +632,6 @@ run_cmd "clients-from-euroix" --url https://portal.lonap.net/apiv1/member-list/l
 # 0.6 schema version:
 SUB_TEST="$LINENO"
 run_cmd "clients-from-euroix" --url https://ixp.getafix.ph/api/v4/member-export/ixf/0.6 2 | must_contain "description: GetaFIX AS112 Blackhole"
-# 0.7 schema version:
-SUB_TEST="$LINENO"
-run_cmd "clients-from-euroix" --url https://ixpmanager.swissix.ch/api/v4/member-export/ixf/0.7 1 | must_contain "description: Packet Clearing House"
 
 # ---------------------------------------------
 # irr-as-set command

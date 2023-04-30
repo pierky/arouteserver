@@ -76,7 +76,10 @@ class TestIXFMemberListFromClientsCommand(ARouteServerTestCase):
                   "connection_list": [
                       { "ixp_id": 1, "vlan_list": [
                             { "vlan_id": 1,
-                              "ipv4": { "address": "192.0.2.1" }
+                              "ipv4": {
+                                  "address": "192.0.2.1",
+                                  "routeserver": True
+                              }
                             }
                         ] }
                     ] }
@@ -96,7 +99,10 @@ class TestIXFMemberListFromClientsCommand(ARouteServerTestCase):
                   "connection_list": [
                       { "ixp_id": 1, "vlan_list": [
                             { "vlan_id": 1,
-                              "ipv4": { "address": "192.0.2.1" }
+                              "ipv4": {
+                                  "address": "192.0.2.1",
+                                  "routeserver": True
+                              }
                             }
                         ] }
                     ] }
@@ -121,7 +127,8 @@ class TestIXFMemberListFromClientsCommand(ARouteServerTestCase):
                       { "ixp_id": 1, "vlan_list": [
                             { "vlan_id": 1,
                               "ipv4": { "address": "192.0.2.1",
-                                        "as_macro": "AS-ONE" }
+                                        "as_macro": "AS-ONE",
+                                        "routeserver": True }
                             }
                         ] }
                     ] }
@@ -147,7 +154,8 @@ class TestIXFMemberListFromClientsCommand(ARouteServerTestCase):
                       { "ixp_id": 1, "vlan_list": [
                             { "vlan_id": 1,
                               "ipv4": { "address": "192.0.2.1",
-                                        "as_macro": "AS-ONE" }
+                                        "as_macro": "AS-ONE",
+                                        "routeserver": True }
                             }
                         ] }
                     ] }
@@ -178,7 +186,8 @@ class TestIXFMemberListFromClientsCommand(ARouteServerTestCase):
                       { "ixp_id": 1, "vlan_list": [
                             { "vlan_id": 1,
                               "ipv4": { "address": "192.0.2.1",
-                                        "as_macro": "AS-ONE" }
+                                        "as_macro": "AS-ONE",
+                                        "routeserver": True }
                             }
                         ] }
                     ] }
@@ -212,19 +221,23 @@ class TestIXFMemberListFromClientsCommand(ARouteServerTestCase):
                       { "ixp_id": 1, "vlan_list": [
                             { "vlan_id": 1,
                               "ipv4": { "address": "192.0.2.1",
-                                        "as_macro": "AS-ONE", "max_prefix": 4 }
+                                        "as_macro": "AS-ONE", "max_prefix": 4,
+                                        "routeserver": True }
                             },
                             { "vlan_id": 1,
                               "ipv4": { "address": "192.0.2.2",
-                                        "as_macro": "AS-ONE", "max_prefix": 4 }
+                                        "as_macro": "AS-ONE", "max_prefix": 4,
+                                        "routeserver": True }
                             },
                             { "vlan_id": 1,
                               "ipv6": { "address": "2001:db8::1",
-                                        "as_macro": "AS-ONE", "max_prefix": 6 }
+                                        "as_macro": "AS-ONE", "max_prefix": 6,
+                                        "routeserver": True }
                             },
                             { "vlan_id": 1,
                               "ipv6": { "address": "2001:db8::2",
-                                        "as_macro": "AS-ONE", "max_prefix": 6 }
+                                        "as_macro": "AS-ONE", "max_prefix": 6,
+                                        "routeserver": True }
                             }
                         ] }
                     ] }

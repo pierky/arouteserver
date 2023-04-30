@@ -218,11 +218,15 @@ class ValidatorListOf(ConfigParserValidator):
 
     def __init__(self, cls, *args, **kwargs):
         ConfigParserValidator.__init__(self, *args, **kwargs)
+        self._allow_single_item = bool(kwargs.get("allow_single_item", False))
         self.cls = cls
 
     def _validate(self, lst):
         if not isinstance(lst, list):
-            raise ConfigError("Invalid format: must be a list")
+            if not self._allow_single_item:
+                raise ConfigError("Invalid format: must be a list")
+            else:
+                lst = [lst]
 
         for v in lst:
             validator = self.cls()
