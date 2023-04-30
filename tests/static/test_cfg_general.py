@@ -70,6 +70,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._test_mandatory(self.cfg, "router_id")
 
     def test_router_id_multiple(self):
+        """{}: multiple router IDs"""
         self.cfg["router_id"] = ["192.0.2.1", "192.0.2.2"]
         self._contains_err()
 
