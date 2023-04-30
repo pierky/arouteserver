@@ -3,8 +3,8 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
-next release
-------------
+1.21.0
+------
 
 This release **breaks backward compatibility** (BIRD configs only): the default target version used to build BIRD configurations (when the ``--target-version`` argument is not given) is now the latest from the version 2 of BIRD (2.13 at the moment); previously it was 1.6.8. Use the ``--target-version 1.6.8`` command line argument to build 1.6 compatible configurations.
 
