@@ -20,7 +20,7 @@ Legend:
 
 - N/A = feature not available in the BGP speaker.
 
-.. warning:: **Please note**: support for BIRD v2 is in very early stages: before moving any production platform to instances of BIRD v2 configured with this tool, please review the configurations carefully and run some simulations.
+.. warning:: **Please note**: support for BIRD v3 is in very early stages, and BIRD v3 itself is only in alpha version, testing release only.
 
 .. include:: SUPPORTED_SPEAKERS_FEATURES.txt
 
