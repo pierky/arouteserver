@@ -5,19 +5,35 @@ rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 14 items
 
-Live test, BIRD v3, roles, IPv4: instances setup SKIPPED (Not ready ...)
-Live test, BIRD v3, roles, IPv4: sessions are up SKIPPED (Not ready ...)
-Live test, BIRD v3, roles, IPv4: OTC is attached to routes without it SKIPPED
-Live test, BIRD v3, roles, IPv4: routes with OTC from AS1 SKIPPED (N...)
-Live test, BIRD v3, roles, IPv4: routes with OTC from AS2 are dropped SKIPPED
-Live test, BIRD v3, roles, IPv4: routes expected on AS2 SKIPPED (Not...)
-Live test, BIRD v3, roles, IPv4: log contains errors SKIPPED (Not re...)
-Live test, BIRD v3, roles, IPv6: instances setup SKIPPED (Not ready ...)
-Live test, BIRD v3, roles, IPv6: sessions are up SKIPPED (Not ready ...)
-Live test, BIRD v3, roles, IPv6: OTC is attached to routes without it SKIPPED
-Live test, BIRD v3, roles, IPv6: routes with OTC from AS1 SKIPPED (N...)
-Live test, BIRD v3, roles, IPv6: routes with OTC from AS2 are dropped SKIPPED
-Live test, BIRD v3, roles, IPv6: routes expected on AS2 SKIPPED (Not...)
-Live test, BIRD v3, roles, IPv6: log contains errors SKIPPED (Not re...)
+Live test, BIRD v3, roles, IPv4: instances setup 
+Live test, BIRD v3, roles, IPv4: setting instances up...
+PASSED
+Live test, BIRD v3, roles, IPv4: sessions are up PASSED
+Live test, BIRD v3, roles, IPv4: OTC is attached to routes without it PASSED
+Live test, BIRD v3, roles, IPv4: routes with OTC from AS1 PASSED
+Live test, BIRD v3, roles, IPv4: routes with OTC from AS2 are dropped PASSED
+Live test, BIRD v3, roles, IPv4: routes expected on AS2 PASSED
+Live test, BIRD v3, roles, IPv4: log contains errors PASSED
+Live test, BIRD v3, roles, IPv4: dumping rs config...
 
-============================= 14 skipped in 0.18s ==============================
+Live test, BIRD v3, roles, IPv4: dumping routes...
+
+Live test, BIRD v3, roles, IPv4: stopping instances...
+
+Live test, BIRD v3, roles, IPv6: instances setup 
+Live test, BIRD v3, roles, IPv6: setting instances up...
+PASSED
+Live test, BIRD v3, roles, IPv6: sessions are up PASSED
+Live test, BIRD v3, roles, IPv6: OTC is attached to routes without it PASSED
+Live test, BIRD v3, roles, IPv6: routes with OTC from AS1 PASSED
+Live test, BIRD v3, roles, IPv6: routes with OTC from AS2 are dropped PASSED
+Live test, BIRD v3, roles, IPv6: routes expected on AS2 PASSED
+Live test, BIRD v3, roles, IPv6: log contains errors PASSED
+Live test, BIRD v3, roles, IPv6: dumping rs config...
+
+Live test, BIRD v3, roles, IPv6: dumping routes...
+
+Live test, BIRD v3, roles, IPv6: stopping instances...
+
+
+======================== 14 passed in 75.69s (0:01:15) =========================

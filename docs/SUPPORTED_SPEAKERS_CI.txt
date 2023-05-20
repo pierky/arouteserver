@@ -7,7 +7,7 @@ Total test cases per BGP speaker
 **BGP speaker** **Total** **Passed ✔** **Failed ✖** **Skipped** 
 BIRD            830       821          0            9           
 BIRD v2         846       837          0            9           
-BIRD v3         846       827          0            19          
+BIRD v3         846       837          0            9           
 OpenBGPD 8.0    458       455          0            3           
 =============== ========= ============ ============ ===========  
 
@@ -909,11 +909,11 @@ roles, IPv4
 
 ==================================== ======== =========== =========== ================  
 **Test**                             **BIRD** **BIRD v2** **BIRD v3** **OpenBGPD 8.0** 
-OTC is attached to routes without it          ✔           skip        ✔                
-log contains errors                           ✔           skip        ✔                
-routes expected on AS2                        ✔           skip        ✔                
-routes with OTC from AS1                      ✔           skip        ✔                
-routes with OTC from AS2 are dropped          ✔           skip        ✔                
+OTC is attached to routes without it          ✔           ✔           ✔                
+log contains errors                           ✔           ✔           ✔                
+routes expected on AS2                        ✔           ✔           ✔                
+routes with OTC from AS1                      ✔           ✔           ✔                
+routes with OTC from AS2 are dropped          ✔           ✔           ✔                
 ==================================== ======== =========== =========== ================  
 
 roles, IPv6
@@ -921,11 +921,11 @@ roles, IPv6
 
 ==================================== ======== =========== =========== ================  
 **Test**                             **BIRD** **BIRD v2** **BIRD v3** **OpenBGPD 8.0** 
-OTC is attached to routes without it          ✔           skip        ✔                
-log contains errors                           ✔           skip        ✔                
-routes expected on AS2                        ✔           skip        ✔                
-routes with OTC from AS1                      ✔           skip        ✔                
-routes with OTC from AS2 are dropped          ✔           skip        ✔                
+OTC is attached to routes without it          ✔           ✔           ✔                
+log contains errors                           ✔           ✔           ✔                
+routes expected on AS2                        ✔           ✔           ✔                
+routes with OTC from AS1                      ✔           ✔           ✔                
+routes with OTC from AS2 are dropped          ✔           ✔           ✔                
 ==================================== ======== =========== =========== ================  
 
 tag prefix/origin empty AS-SET, IPv4
