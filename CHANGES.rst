@@ -8,7 +8,7 @@ Change log
 
 - New: add support for `OpenBGPD 8.0 <https://undeadly.org/cgi?action=article;sid=20230505054214>`__, also added to the integration testing suite.
 
-- New: add early support for BIRD v3 (current release `3.0alpha2 <https://bird.network.cz/pipermail/bird-users/2023-May/016913.html>__`), for testing purposes only.
+- New: add early support for BIRD v3 (current release `3.0alpha2 <https://bird.network.cz/pipermail/bird-users/2023-May/016913.html>`__), for testing purposes only.
 
 1.21.0
 ------
