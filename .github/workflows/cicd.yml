@@ -78,8 +78,8 @@ jobs:
           docker pull pierky/bird:1.6.8
           docker pull pierky/bird:2.13
           docker pull pierky/bird:3.0-alpha1
-          docker pull pierky/openbgpd:7.7
           docker pull pierky/openbgpd:7.8
+          docker pull pierky/openbgpd:8.0
           docker pull pierky/exabgp:4.2.7
           docker pull nlnetlabs/routinator:v0.8.3
         env:
@@ -225,7 +225,7 @@ jobs:
             -e ROUTER_ID=192.0.2.124 \
             -e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
             -e DAEMON=openbgpd \
-            -e VERSION=7.8 \
+            -e VERSION=8.0 \
             -e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
             pierky/arouteserver:${{ matrix.docker-image.target_image }}
         env:
@@ -237,7 +237,7 @@ jobs:
             -t \
             --rm \
             -v ~/arouteserver_configs/openbgpd.cfg:/etc/bgpd/bgpd.conf \
-            pierky/openbgpd:7.8 \
+            pierky/openbgpd:8.0 \
             bgpd \
               -f /etc/bgpd/bgpd.conf \
               -d \

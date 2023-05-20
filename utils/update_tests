@@ -112,8 +112,8 @@ echo "Pulling Docker images needed for the tests..."
 docker pull pierky/bird:1.6.8
 docker pull pierky/bird:2.13
 docker pull pierky/bird:3.0-alpha1
-docker pull pierky/openbgpd:7.7
 docker pull pierky/openbgpd:7.8
+docker pull pierky/openbgpd:8.0
 docker pull pierky/exabgp:4.2.7
 docker pull nlnetlabs/routinator:v0.8.3
 
