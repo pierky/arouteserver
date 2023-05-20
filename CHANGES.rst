@@ -3,6 +3,13 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+1.21.1
+------
+
+- New: add support for `OpenBGPD 8.0 <https://undeadly.org/cgi?action=article;sid=20230505054214>`__, also added to the integration testing suite.
+
+- New: add early support for BIRD v3 (current release `3.0alpha2 <https://bird.network.cz/pipermail/bird-users/2023-May/016913.html>__`), for testing purposes only.
+
 1.21.0
 ------
 
