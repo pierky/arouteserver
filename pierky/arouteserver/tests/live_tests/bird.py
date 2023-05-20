@@ -345,7 +345,7 @@ class BIRD2Instance(BIRDInstance):
 
 class BIRD3Instance(BIRDInstance):
 
-    DOCKER_IMAGE = "pierky/bird:3.0-alpha1"
+    DOCKER_IMAGE = "pierky/bird:3.0-alpha2"
 
     TAG = "bird3"
 
