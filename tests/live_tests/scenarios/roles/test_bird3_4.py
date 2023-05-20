@@ -17,9 +17,7 @@ from .base import RolesScenarioBIRD
 from .data4 import DATA_4
 from pierky.arouteserver.tests.live_tests.bird import BIRD3Instance
 
-import pytest
 
-@pytest.mark.skip(reason="Not ready in BIRD v3 alpha")
 class RolesScenario_BIRDIPv4(RolesScenarioBIRD):
     __test__ = True
 

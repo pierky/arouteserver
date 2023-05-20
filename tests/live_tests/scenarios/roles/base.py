@@ -17,7 +17,7 @@ from packaging import version
 
 from pierky.arouteserver.builder import BIRDConfigBuilder, OpenBGPDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
-from pierky.arouteserver.tests.live_tests.bird import BIRD2Instance
+from pierky.arouteserver.tests.live_tests.bird import BIRDInstance, BIRD2Instance
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
 
 
@@ -116,7 +116,7 @@ class RolesScenario(LiveScenario):
 
         prefix = self.DATA["AS101_to_AS1"]
 
-        if isinstance(self.rs, BIRD2Instance):
+        if isinstance(self.rs, BIRDInstance):
             for msg in (
                 "{AS1}: Route leak detected - OTC attribute from downstream",
                 "{AS1}: Invalid route " + prefix + " withdrawn"
@@ -163,7 +163,7 @@ class RolesScenario(LiveScenario):
 
         # BIRD does not keep track of the route even though it's configured
         # in 'reject_policy.policy: tag' mode.
-        if isinstance(self.rs, BIRD2Instance):
+        if isinstance(self.rs, BIRDInstance):
             with self.assertRaisesRegex(AssertionError, "Routes not found."):
                 self.receive_route(self.rs, prefix)
         else:
