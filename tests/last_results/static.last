@@ -1,0 +1,262 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
+cachedir: .pytest_cache
+rootdir: /Users/pchiodi/github/public/arouteserver
+plugins: requests-mock-1.9.3
+collecting ... collected 253 items
+
+ASNs config parser: invalid AS PASSED
+ASNs config parser: invalid AS-SET PASSED
+ASNs config parser: valid AS-SET PASSED
+ASNs config parser: valid configuration PASSED
+Bogons config parser: invalid IPv4 prefix ID PASSED
+Bogons config parser: invalid IPv6 prefix ID PASSED
+Bogons config parser: invalid IPv4 prefix len PASSED
+Bogons config parser: invalid IPv6 prefix len PASSED
+Bogons config parser: missing statement PASSED
+Bogons config parser: unknown statement PASSED
+Bogons config parser: valid configuration PASSED
+Clients config parser: 16bit_mapped_asn PASSED
+Clients config parser: 16bit_mapped_asn combo PASSED
+Clients config parser: 16bit_mapped_asn different 16bit for the same 32bit PASSED
+Clients config parser: 16bit_mapped_asn not in valid range PASSED
+Clients config parser: 16bit_mapped_asn for a 16bit ASN PASSED
+Clients config parser: 16bit_mapped_asn re-used for another ASN PASSED
+Clients config parser: 16bit_mapped_asn same AS multiple clients PASSED
+Clients config parser: AS number PASSED
+Clients config parser: inherit from general cfg - blackhole filtering PASSED
+Clients config parser: custom BGP communities PASSED
+Clients config parser: custom_options - bad AF format PASSED
+Clients config parser: custom_options - bad AF PASSED
+Clients config parser: custom_options - bad BGP speaker PASSED
+Clients config parser: custom_options - bad BGP speaker format PASSED
+Clients config parser: custom_options - bad format PASSED
+Clients config parser: custom_options - bad option PASSED
+Clients config parser: custom_options - bad section PASSED
+Clients config parser: custom_options - missing options PASSED
+Clients config parser: custom_options - missing section PASSED
+Clients config parser: custom_options PASSED
+Clients config parser: duplicate IP addresses PASSED
+Clients config parser: global only option PASSED
+Clients config parser: inherit from general cfg PASSED
+Clients config parser: IP address PASSED
+Clients config parser: clients with multiple IP addresses PASSED
+Clients config parser: next_hop.policy authorized_addresses, empty list PASSED
+Clients config parser: next_hop.policy authorized_addresses, invalid list PASSED
+Clients config parser: next_hop.policy authorized_addresses, invalid IP addr PASSED
+Clients config parser: next_hop.policy authorized_addresses, ok PASSED
+Clients config parser: next_hop.policy and next_hop_policy PASSED
+Clients config parser: next_hop.policy != authorized_addresses, list given PASSED
+Clients config parser: no IP addresses PASSED
+Clients config parser: unknown statement PASSED
+Clients config parser: valid configuration PASSED
+General config parser: add_path PASSED
+General config parser: allow_longer_prefixes PASSED
+General config parser: blackhole_filtering, announce_to_client PASSED
+General config parser: blackhole_filtering, rewrite_next_hop, ipv4 PASSED
+General config parser: blackhole_filtering, rewrite_next_hop, ipv6 PASSED
+General config parser: blackhole_filtering, policy_ipv4 PASSED
+General config parser: blackhole_filtering, policy_ipv6 PASSED
+General config parser: extended BGP communities PASSED
+General config parser: large BGP communities PASSED
+General config parser: reject_cause_map invalid format PASSED
+General config parser: reject_cause_map invalid reject code PASSED
+General config parser: reject_cause_map invalid community PASSED
+General config parser: reject_cause_map unknown reject code PASSED
+General config parser: reject_cause_map overlapping community PASSED
+General config parser: reject_cause_map valid configuration (code is int) PASSED
+General config parser: reject_cause_map valid configuration (same comm used twice) PASSED
+General config parser: reject_cause_map valid configuration (code is str) PASSED
+General config parser: standard BGP communities PASSED
+General config parser: custom communities: invalid PASSED
+General config parser: custom communities: reserved name PASSED
+General config parser: custom communities: valid PASSED
+General config parser: minimal config PASSED
+General config parser: deprecated syntax, RPKI ROAs cache - multiple URLs PASSED
+General config parser: deprecated syntax, RPKI ROAs source PASSED
+General config parser: deprecated syntax, RPKI ROAs source: rtrlib PASSED
+General config parser: deprecated syntax, RPKI Origin Validation PASSED
+General config parser: distributed config PASSED
+General config parser: duplicate communities PASSED
+General config parser: dyn_val macro usage in communities PASSED
+General config parser: enforce_origin_in_as_set PASSED
+General config parser: enforce_prefix_in_as_set PASSED
+General config parser: environment variables: ok (bad escape) PASSED
+General config parser: environment variables: corrupted PASSED
+General config parser: environment variables: ok PASSED
+General config parser: environment variables: ok PASSED
+General config parser: global_black_list_pref PASSED
+General config parser: graceful shutdown PASSED
+General config parser: gtsm PASSED
+General config parser: ipv4_pref_len PASSED
+General config parser: ipv6_pref_len PASSED
+General config parser: communities that need dyn_val macro PASSED
+General config parser: communities that need peer_as macro PASSED
+General config parser: max_as_path_len PASSED
+General config parser: max_prefix action PASSED
+General config parser: max_prefix general_limit_ipv4 PASSED
+General config parser: max_prefix general_limit_ipv6 PASSED
+General config parser: max_prefix PeeringDB PASSED
+General config parser: max_prefix PeeringDB (pre v0.13.0 format) PASSED
+General config parser: never via route-servers, asns PASSED
+General config parser: never via route-servers, peering_db PASSED
+General config parser: next_hop.policy PASSED
+General config parser: next_hop_policy (pre v0.6.0 format) PASSED
+General config parser: overlapping communities, inbound/custom PASSED
+General config parser: overlapping communities, inbound/inbound PASSED
+General config parser: overlapping communities, inbound/inbound (dyn_val) PASSED
+General config parser: overlapping communities, internal PASSED
+General config parser: overlapping communities, outbound/inbound PASSED
+General config parser: overlapping communities, outbound/inbound (dyn_val) PASSED
+General config parser: passive PASSED
+General config parser: path_hiding PASSED
+General config parser: peer_as macro usage in communities PASSED
+General config parser: prepend_rs_as PASSED
+General config parser: reject_cause can be set only with 'tag' reject_policy PASSED
+General config parser: reject_invalid_as_in_as_path PASSED
+General config parser: reject_policy PASSED
+General config parser: rejected_route_announced_by can be set only with 'tag' reject_policy PASSED
+General config parser: RFC1997 well-known communities PASSED
+General config parser: router_id PASSED
+General config parser: multiple router IDs PASSED
+General config parser: rpki_bgp_origin_validation, enabled PASSED
+General config parser: rpki_bgp_origin_validation, reject_invalid PASSED
+General config parser: rs_as PASSED
+General config parser: RTT-based communities without RTT thresholds PASSED
+General config parser: RTT thresholds, empty PASSED
+General config parser: RTT thresholds as list of int PASSED
+General config parser: RTT thresholds, invalid values PASSED
+General config parser: RTT thresholds, out of order PASSED
+General config parser: RTT thresholds as comma separated string PASSED
+General config parser: tag_as_set PASSED
+General config parser: transit free, action PASSED
+General config parser: transit free, ASNs list PASSED
+General config parser: unknown statement PASSED
+General config parser: use_arin_bulk_whois_data.enabled PASSED
+General config parser: use_registrobr_bulk_whois_data.enabled PASSED
+General config parser: use_rpki_roas_as_route_objects.enabled PASSED
+General config parser: rpki_roas.source PASSED
+General config parser: valid configuration PASSED
+YAML !include: general config, 1 !include statement PASSED
+YAML !include: general config, 2 !include statements PASSED
+YAML !include: general config, 3 !include statements, 2 levels PASSED
+Prefix list parser: bad 'le' and 'ge' PASSED
+Prefix list parser: bad prefix list entries PASSED
+Prefix list parser: valid prefix list entries PASSED
+Program config: load distributed configuration file PASSED
+Program config: load from temporary directory PASSED
+Program config: setup PASSED
+Program config: setup, then setup again PASSED
+Program config: setup, then change a template file PASSED
+Program config: setup, change a template file then fix it PASSED
+Program config: setup, then remove templates PASSED
+Program config: setup, remove templates then fix it PASSED
+Clients from Euro-IX: IXP-Manager workaround PASSED
+Clients from Euro-IX: merge local custom clients, add missing client PASSED
+Clients from Euro-IX: merge local custom clients, add/change settings PASSED
+Clients from Euro-IX: merge local custom clients, broken custom file 1 PASSED
+Clients from Euro-IX: merge local custom clients, broken custom file 2 PASSED
+Clients from Euro-IX: merge local custom clients, broken custom file 3 PASSED
+Clients from Euro-IX: official basic example PASSED
+Clients from Euro-IX: official more complex example PASSED
+Clients from Euro-IX: --routeserver-only filter PASSED
+Clients from Euro-IX: route server classification, 0.6 PASSED
+Clients from Euro-IX: route server classification, 0.7 PASSED
+Clients from Euro-IX: route server classification, 1.0 PASSED
+Configure command: 32 bit route server ASN PASSED
+Configure command: BIRD 2.0, simple PASSED
+Configure command: BIRD 2.0, latest, simple PASSED
+Configure command: BIRD, simple PASSED
+Configure command: OpenBGPD, path-hiding PASSED
+Configure command: OpenBGPD 7.0, simple PASSED
+Configure command: OpenBGPD 7.5, simple PASSED
+IRR AS-SET command: AS1 with AS-AS1 and AS2 PASSED
+IRR AS-SET command: explicit AS-SETs from config, no PeeringDB record PASSED
+IRR AS-SET command: AS-SET from asns PASSED
+IRR AS-SET command: IPv6 clients only PASSED
+IRR AS-SET command: whitelist and PeeringDB PASSED
+IX-F Member Export from clients command: simple PASSED
+IX-F Member Export from clients command: with description PASSED
+IX-F Member Export from clients command: with AS-SET PASSED
+IX-F Member Export from clients command: with 2 AS-SETs PASSED
+IX-F Member Export from clients command: AS-SET from asns PASSED
+IX-F Member Export from clients command: more than one IP PASSED
+IX-F Member Export from clients command: ams-ix.yml PASSED
+IX-F Member Export from clients command: bcix.yml PASSED
+IX-F Member Export from clients command: gr_ix.yml PASSED
+IX-F Member Export from clients command: inex.yml PASSED
+IX-F Member Export from clients command: lonap.yml PASSED
+IX-F Member Export from clients command: six.yml PASSED
+IX-F Member Export from clients command: sthix.yml PASSED
+IX-F Member Export from clients command: swissix.yml PASSED
+Show config command: distributed config PASSED
+Show config command: empty config PASSED
+Copyright: is current year PASSED
+IRRDB enricher: autnum + 2 AS-SETs PASSED
+IRRDB enricher: autnum + AS-SET PASSED
+IRRDB enricher: autnum + AS-SET + ASN white list PASSED
+IRRDB enricher: autnum + AS-SET + prefix white list PASSED
+IRRDB enricher: autnum + AS-SET + prefix/ASN white list PASSED
+IRRDB enricher: autnum + AS-SET + prefix/ASN white list + empty AS-SET PASSED
+IRRDB enricher: autnum only PASSED
+IRRDB enricher: IPv4 white list for IPv6 configs PASSED
+IRRDB enricher: empty autnum + empty AS-SET PASSED
+Max-prefix from PeeringDB: increment PASSED
+IRR queries fail-over: single timeout PASSED
+IRR queries fail-over: single failure PASSED
+IRR queries fail-over: all timeout PASSED
+IRR queries fail-over: all failure PASSED
+IRRDB info: base, AS_SET bundle info (1) PASSED
+IRRDB info: base, AS_SET bundle info (3) PASSED
+IRRDB info: base, AS_SET bundle info (4) PASSED
+IRRDB info: base, AS_SET bundle info (5 with RIPE::) PASSED
+IRRDB info: base, AS_SET bundle info (5 with RIPE:: and ARIN::) PASSED
+IRRDB info: base, AS_SET bundle info (5 with ARIN:: and RIPE::) PASSED
+IRRDB info: base, AS_SET bundle info (2 with RIPE:: and ARIN::) PASSED
+IRRDB info: base, AS_SET names longer than 64 characters PASSED
+IRRDB info: base, simple PASSED
+IRRDB info: base, no external data available PASSED
+IRRDB info: base, cache expired PASSED
+IRRDB info: base, corrupted cache file PASSED
+IRRDB info: ASNs, simple PASSED
+IRRDB info: ASNs, from cache PASSED
+IRRDB info: ASNs, cache expired PASSED
+IRRDB info: RSets, simple PASSED
+IRRDB info: RSets, from cache PASSED
+IRRDB info: RSets, cache expired PASSED
+PeeringDB network: get data PASSED
+PeeringDB network: missing data PASSED
+PeeringDB: AS-SETs parsing PASSED
+PeeringDB API key: 429 error handling PASSED
+PeeringDB API key: empty PASSED
+PeeringDB API key: env var wins over file PASSED
+PeeringDB API key: via env var PASSED
+PeeringDB API key: via file PASSED
+PeeringDB API: 429 error handling PASSED
+PeeringDB bulk query cache: hit PASSED
+PeeringDB bulk query cache: hit missed PASSED
+PeeringDB bulk query cache: hit with no data PASSED
+RPKI ROAs: RIPE Validator TAs PASSED
+RPKI ROAs: NTT TAs PASSED
+RPKI ROAs: rpki-client TAs PASSED
+RPKI ROAs: different formats PASSED
+RPKI ROAs: rpki-client expired file PASSED
+RPKI ROAs: rpki-client expired ROAs PASSED
+RPKI ROAs: OctoRPKI expired file PASSED
+RPKI ROAs: OctoRPKI out of validity PASSED
+RPKI ROAs: OctoRPKI valid file PASSED
+RTT getter parser: 0 PASSED
+RTT getter parser: 0.1 PASSED
+RTT getter parser: 1 PASSED
+RTT getter parser: 123.456 PASSED
+RTT getter parser: 123.456.789 PASSED
+RTT getter parser: 123,456 PASSED
+RTT getter parser: 1.0 PASSED
+RTT getter parser: None PASSED
+RTT getter parser: None\n1 PASSED
+RTT getter parser: blanks only PASSED
+RTT getter parser: empty PASSED
+RTT getter parser: new line only PASSED
+RTT getter parser: none PASSED
+
+============================= 253 passed in 38.49s =============================
