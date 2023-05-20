@@ -20,4 +20,4 @@ Live test, BIRD v3, roles, IPv6: routes with OTC from AS2 are dropped SKIPPED
 Live test, BIRD v3, roles, IPv6: routes expected on AS2 SKIPPED (Not...)
 Live test, BIRD v3, roles, IPv6: log contains errors SKIPPED (Not re...)
 
-============================= 14 skipped in 0.16s ==============================
+============================= 14 skipped in 0.18s ==============================
