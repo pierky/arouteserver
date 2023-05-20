@@ -1,0 +1,39 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
+cachedir: .pytest_cache
+rootdir: /Users/pchiodi/github/public/arouteserver
+plugins: requests-mock-1.9.3
+collecting ... collected 14 items
+
+Live test, OpenBGPD 8.0, roles, IPv4: instances setup 
+Live test, OpenBGPD 8.0, roles, IPv4: setting instances up...
+PASSED
+Live test, OpenBGPD 8.0, roles, IPv4: sessions are up PASSED
+Live test, OpenBGPD 8.0, roles, IPv4: OTC is attached to routes without it PASSED
+Live test, OpenBGPD 8.0, roles, IPv4: routes with OTC from AS1 PASSED
+Live test, OpenBGPD 8.0, roles, IPv4: routes with OTC from AS2 are dropped PASSED
+Live test, OpenBGPD 8.0, roles, IPv4: routes expected on AS2 PASSED
+Live test, OpenBGPD 8.0, roles, IPv4: log contains errors PASSED
+Live test, OpenBGPD 8.0, roles, IPv4: dumping rs config...
+
+Live test, OpenBGPD 8.0, roles, IPv4: dumping routes...
+
+Live test, OpenBGPD 8.0, roles, IPv4: stopping instances...
+
+Live test, OpenBGPD 8.0, roles, IPv6: instances setup 
+Live test, OpenBGPD 8.0, roles, IPv6: setting instances up...
+PASSED
+Live test, OpenBGPD 8.0, roles, IPv6: sessions are up PASSED
+Live test, OpenBGPD 8.0, roles, IPv6: OTC is attached to routes without it PASSED
+Live test, OpenBGPD 8.0, roles, IPv6: routes with OTC from AS1 PASSED
+Live test, OpenBGPD 8.0, roles, IPv6: routes with OTC from AS2 are dropped PASSED
+Live test, OpenBGPD 8.0, roles, IPv6: routes expected on AS2 PASSED
+Live test, OpenBGPD 8.0, roles, IPv6: log contains errors PASSED
+Live test, OpenBGPD 8.0, roles, IPv6: dumping rs config...
+
+Live test, OpenBGPD 8.0, roles, IPv6: dumping routes...
+
+Live test, OpenBGPD 8.0, roles, IPv6: stopping instances...
+
+
+======================== 14 passed in 65.02s (0:01:05) =========================

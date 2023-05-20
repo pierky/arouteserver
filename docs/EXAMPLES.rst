@@ -113,7 +113,7 @@ A list of BGP communities is also automatically built.
    limitations
    
    Which BGP daemon will be used? [bird/openbgpd] bird
-   Which version? [1.6.3/1.6.4/1.6.6/1.6.7/1.6.8/2.0.7/2.0.7+b962967e/2.0.8/2.0.9/2.0.10/2.0.11/2.13] 2.13
+   Which version? [1.6.3/1.6.4/1.6.6/1.6.7/1.6.8/2.0.7/2.0.7+b962967e/2.0.8/2.0.9/2.0.10/2.0.11/2.13/3.0] 2.13
    
    Router server's ASN
    ===================
@@ -174,18 +174,18 @@ The files reported within this directory were generated using the ``ixf-member-e
 
 https://github.com/pierky/arouteserver/blob/master/examples/ixf-member-export
 
-BIRD v2 and OpenBGPD RPKI RTR configuration
--------------------------------------------
+BIRD v2/v3 and OpenBGPD RPKI RTR configuration
+----------------------------------------------
 
-This is an example of how to use BIRD v2 or OpenBGPD with an external source for RPKI ROAs based on the RTR protocol.
+This is an example of how to use BIRD v2/v3 or OpenBGPD with an external source for RPKI ROAs based on the RTR protocol.
 
-BIRD v2 and OpenBGPD (starting with release 6.9) have built-in support for the RTR protocol, that allows to connect the BGP daemon directly to a local cache (a "validator").
+BIRD v2/v3 and OpenBGPD (starting with release 6.9) have built-in support for the RTR protocol, that allows to connect the BGP daemon directly to a local cache (a "validator").
 
 To configure the daemons with ARouteServer in order to fetch ROAs using RTR, the ``rpki_roas.source`` option must be set to ``rtr`` and a local *rpki_rtr_config.local* file must be placed inside the same directory where the main configuration file is created (*/etc/bird* or */etc/bgpd* by default, or a custom one set using the ``--local-files-dir`` command line argument of ARouteServer).
 
 The *rpki_rtr_config.local* file is expected to contain the snippet of BIRD or OpenBGPD config needed to setup one or more RTR sessions:
 
-- BIRD v2: https://bird.network.cz/?get_doc&v=20&f=bird-6.html#ss6.13
+- BIRD v2/v3: https://bird.network.cz/?get_doc&v=20&f=bird-6.html#ss6.13
 
   **Please note:** the names of the tables where ROAs will be injected into must be ``RPKI4`` and ``RPKI6``.
 

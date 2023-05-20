@@ -77,7 +77,7 @@ class BIRDHooksExampleScenario(LiveScenario):
                     "/etc/bird/header.local"
                 ),
 
-                # Only needed by BIRD2.
+                # Only needed by BIRD2 and BIRD3.
                 (
                     cls.use_static_file("rpki_rtr_config.local"),
                     "/etc/bird/rpki_rtr_config.local"

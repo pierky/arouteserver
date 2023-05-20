@@ -1,0 +1,25 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
+cachedir: .pytest_cache
+rootdir: /Users/pchiodi/github/public/arouteserver
+plugins: requests-mock-1.9.3
+collecting ... collected 8 items
+
+Live test, OpenBGPD 8.0, RTR protocol: instances setup 
+Live test, OpenBGPD 8.0, RTR protocol: setting instances up...
+PASSED
+Live test, OpenBGPD 8.0, RTR protocol: sessions are up PASSED
+Live test, OpenBGPD 8.0, RTR protocol: route accepted because validator not running PASSED
+Live test, OpenBGPD 8.0, RTR protocol: spin up the validator PASSED
+Live test, OpenBGPD 8.0, RTR protocol: restart OpenBGPD to speed up RTR session establishment PASSED
+Live test, OpenBGPD 8.0, RTR protocol: check the RTR session is up PASSED
+Live test, OpenBGPD 8.0, RTR protocol: route dropped after spinning the validator up PASSED
+Live test, OpenBGPD 8.0, RTR protocol: log contains errors PASSED
+Live test, OpenBGPD 8.0, RTR protocol: dumping rs config...
+
+Live test, OpenBGPD 8.0, RTR protocol: dumping routes...
+
+Live test, OpenBGPD 8.0, RTR protocol: stopping instances...
+
+
+============================== 8 passed in 45.03s ==============================

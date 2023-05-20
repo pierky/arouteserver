@@ -291,12 +291,12 @@ A couple of methods can be used to acquire RPKI data (ROAs):
 
   - BIRD 1.6.x: the `rtrlib <http://rpki.realmv6.org/>`_ suite: `rtrlib <https://github.com/rtrlib>`__ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`__.
 
-  - BIRD v2: the `built-in RTR protocol <https://bird.network.cz/?get_doc&v=20&f=bird-6.html#ss6.13>`_ implementation.
+  - BIRD v2/v3: the `built-in RTR protocol <https://bird.network.cz/?get_doc&v=20&f=bird-6.html#ss6.13>`_ implementation.
 
   - OpenBGPD >= 6.9: the `built-in RTR protocol <https://man.openbsd.org/bgpd.conf#rtr>`_ implementation.
 
   One or more trusted local validating caches should be used to get and validate ROAs before pushing them to BIRD or OpenBGPD. Extensive information on RPKI and how to setup validating caches can be found on `https://rpki.readthedocs.io/ <https://rpki.readthedocs.io/>`__.
-  For BIRD v2 and OpenBGPD, an example of how to configure the RTR protocol and use it with ARouteServer can be found in the ``examples/rpki_rtr`` directory (`also on GitHub <https://github.com/pierky/arouteserver/tree/master/examples/rpki_rtr>`_).
+  For BIRD v2/v3 and OpenBGPD, an example of how to configure the RTR protocol and use it with ARouteServer can be found in the ``examples/rpki_rtr`` directory (`also on GitHub <https://github.com/pierky/arouteserver/tree/master/examples/rpki_rtr>`_).
 
 The configuration of ROAs source can be done within the ``rpki_roas`` section of the ``general.yml`` file.
 

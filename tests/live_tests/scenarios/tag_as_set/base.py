@@ -702,6 +702,9 @@ class TagASSetScenarioBIRD(TagASSetScenario):
 class TagASSetScenarioBIRD2(TagASSetScenarioBIRD):
     __test__ = False
 
+class TagASSetScenarioBIRD3(TagASSetScenarioBIRD):
+    __test__ = False
+
 class TagASSetScenarioOpenBGPD(LiveScenario_TagRejectPolicy, TagASSetScenario):
     __test__ = False
 

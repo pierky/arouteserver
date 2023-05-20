@@ -115,7 +115,7 @@ function must_not_contain() {
 
 BIRD2_LATEST_VER=$(cat << EOF | python -
 from pierky.arouteserver.builder import BIRDConfigBuilder
-print(BIRDConfigBuilder.AVAILABLE_VERSION[-1])
+print([_ for _ in BIRDConfigBuilder.AVAILABLE_VERSION if _.startswith("2")][-1])
 EOF
 )
 OPENBGPD_LATEST_VER=$(cat << EOF | python -

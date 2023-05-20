@@ -166,6 +166,9 @@ class PathHidingScenarioBIRD(PathHidingScenario):
 class PathHidingScenarioBIRD2(PathHidingScenarioBIRD):
     __test__ = False
 
+class PathHidingScenarioBIRD3(PathHidingScenarioBIRD):
+    __test__ = False
+
 class PathHidingScenarioOpenBGPD(LiveScenario_TagRejectPolicy, PathHidingScenario):
     __test__ = False
 

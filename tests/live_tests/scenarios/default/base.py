@@ -16,9 +16,6 @@
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPreviousInstance, \
-                                                          OpenBGPDLatestInstance
 
 class DefaultConfigScenario(LiveScenario):
     __test__ = False
@@ -76,6 +73,10 @@ class DefaultConfigScenarioBIRD(DefaultConfigScenario):
         )
 
 class DefaultConfigScenarioBIRD2(DefaultConfigScenarioBIRD):
+
+    __test__ = False
+
+class DefaultConfigScenarioBIRD3(DefaultConfigScenarioBIRD):
 
     __test__ = False
 

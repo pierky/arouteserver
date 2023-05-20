@@ -1,0 +1,29 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
+cachedir: .pytest_cache
+rootdir: /Users/pchiodi/github/public/arouteserver
+plugins: requests-mock-1.9.3
+collecting ... collected 4 items
+
+Live test, BIRD v2, hooks example, IPv4: instances setup 
+Live test, BIRD v2, hooks example, IPv4: setting instances up...
+PASSED
+Live test, BIRD v2, hooks example, IPv4: log contains errors PASSED
+Live test, BIRD v2, hooks example, IPv4: dumping rs config...
+
+Live test, BIRD v2, hooks example, IPv4: dumping routes...
+
+Live test, BIRD v2, hooks example, IPv4: stopping instances...
+
+Live test, BIRD v2, hooks example, IPv6: instances setup 
+Live test, BIRD v2, hooks example, IPv6: setting instances up...
+PASSED
+Live test, BIRD v2, hooks example, IPv6: log contains errors PASSED
+Live test, BIRD v2, hooks example, IPv6: dumping rs config...
+
+Live test, BIRD v2, hooks example, IPv6: dumping routes...
+
+Live test, BIRD v2, hooks example, IPv6: stopping instances...
+
+
+============================== 4 passed in 15.36s ==============================

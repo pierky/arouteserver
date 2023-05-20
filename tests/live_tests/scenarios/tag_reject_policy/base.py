@@ -379,6 +379,13 @@ class TagRejectPolicyScenarioBIRD2(TagRejectPolicyScenarioBIRD):
     def _get_local_file_name(cls):
         return "bird2_local_file"
 
+class TagRejectPolicyScenarioBIRD3(TagRejectPolicyScenarioBIRD):
+    __test__ = False
+
+    @classmethod
+    def _get_local_file_name(cls):
+        return "bird2_local_file"
+
 class TagRejectPolicyScenarioOpenBGPDPrevious(LiveScenario_TagRejectPolicy, TagRejectPolicyScenario):
     __test__ = False
 

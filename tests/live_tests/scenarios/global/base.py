@@ -1267,6 +1267,13 @@ class BasicScenarioBIRD2(BasicScenarioBIRD):
     def _get_local_file_name(cls):
         return "bird2_local_file"
 
+class BasicScenarioBIRD3(BasicScenarioBIRD):
+    __test__ = False
+
+    @classmethod
+    def _get_local_file_name(cls):
+        return "bird2_local_file"
+
 class BasicScenarioOpenBGPD(BasicScenario_TagRejectPolicy, BasicScenario):
     __test__ = False
 

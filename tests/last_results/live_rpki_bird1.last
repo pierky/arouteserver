@@ -1,0 +1,53 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
+cachedir: .pytest_cache
+rootdir: /Users/pchiodi/github/public/arouteserver
+plugins: requests-mock-1.9.3
+collecting ... collected 28 items
+
+Live test, BIRD, RPKI INVALID tagging, IPv4: instances setup 
+Live test, BIRD, RPKI INVALID tagging, IPv4: setting instances up...
+PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv4: sessions are up PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS2 invalid prefix, bad ASN PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS2 invalid prefix, bad length PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS2 unknown prefix PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS2 valid prefix, exact match PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS2 valid prefix, sub prefix PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS3 invalid prefix, bad ASN PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS3 invalid prefix, bad length PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS3 unknown prefix PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS3 valid prefix, exact match PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv4: RPKI, AS3 valid prefix, sub prefix PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv4: reconfigure PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv4: log contains errors PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv4: dumping rs config...
+
+Live test, BIRD, RPKI INVALID tagging, IPv4: dumping routes...
+
+Live test, BIRD, RPKI INVALID tagging, IPv4: stopping instances...
+
+Live test, BIRD, RPKI INVALID tagging, IPv6: instances setup 
+Live test, BIRD, RPKI INVALID tagging, IPv6: setting instances up...
+PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv6: sessions are up PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS2 invalid prefix, bad ASN PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS2 invalid prefix, bad length PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS2 unknown prefix PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS2 valid prefix, exact match PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS2 valid prefix, sub prefix PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS3 invalid prefix, bad ASN PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS3 invalid prefix, bad length PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS3 unknown prefix PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS3 valid prefix, exact match PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv6: RPKI, AS3 valid prefix, sub prefix PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv6: reconfigure PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv6: log contains errors PASSED
+Live test, BIRD, RPKI INVALID tagging, IPv6: dumping rs config...
+
+Live test, BIRD, RPKI INVALID tagging, IPv6: dumping routes...
+
+Live test, BIRD, RPKI INVALID tagging, IPv6: stopping instances...
+
+
+======================== 28 passed in 81.34s (0:01:21) =========================
