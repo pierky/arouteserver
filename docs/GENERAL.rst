@@ -1043,12 +1043,12 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
 
   - **rtr**: ROAs are loaded from an external RTR source.
     rtrllib (https://github.com/rtrlib/bird-rtrlib-cli) can be
-    used for BIRD 1.6.x; in BIRD v2 and OpenBGPD there is
+    used for BIRD 1.6.x; in BIRD v2, v3 and OpenBGPD there is
     built-in support for the RTR protocol.
     The name of the table where send the ROAs to is **RPKI** for
-    BIRD 1.6.x and **RPKI4** and **RPKI6** for BIRD v2.
+    BIRD 1.6.x and **RPKI4** and **RPKI6** for BIRD v2 and v3.
     When the built-in implementation is used for OpenBGPD
-    or BIRD v2, an external file **rpki_rtr_config.local** must be
+    or BIRD v2/v3, an external file **rpki_rtr_config.local** must be
     found within the same directory where the main configuration
     file is stored (/etc/bird or /etc/bgpd usually) and must
     contain the configuration of the RTR sessions specific for

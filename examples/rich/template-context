@@ -1200,6 +1200,13 @@ irrdb_info
     le: 128
     length: 48
     max_length: 128
+    prefix: '2001:500:30::'
+  - comment: null
+    exact: false
+    ge: null
+    le: 128
+    length: 48
+    max_length: 128
     prefix: '2001:500:110::'
   used_by: client AS10745_1, client AS10745_2
 - asns:
@@ -1665,9 +1672,7 @@ never_via_route_servers_asns
 - 149663
 - 23961
 - 149826
-- 210715
 - 206275
-- 47584
 - 52990
 - 60449
 - 149391

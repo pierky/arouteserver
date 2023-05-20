@@ -25,7 +25,7 @@ ROOT="`pwd`"
 TESTS_DIR="tests"
 LAST_RESULTS_DIR="$TESTS_DIR/last_results"
 
-ALL_BGPSPEAKERS="bird1 bird2 openbgpd_portable"
+ALL_BGPSPEAKERS="bird1 bird2 bird3 openbgpd_portable"
 BGPSPEAKERS="$ALL_BGPSPEAKERS"
 LIVE_TEST_IDS="`find $TESTS_DIR/live_tests/scenarios/* -maxdepth 0 -type d | cut -d '/' -f 4`"
 
@@ -111,6 +111,7 @@ echo "Pulling Docker images needed for the tests..."
 # To be kept in sync with .github/workflows/cicd.yml
 docker pull pierky/bird:1.6.8
 docker pull pierky/bird:2.13
+docker pull pierky/bird:3.0-alpha1
 docker pull pierky/openbgpd:7.7
 docker pull pierky/openbgpd:7.8
 docker pull pierky/exabgp:4.2.7

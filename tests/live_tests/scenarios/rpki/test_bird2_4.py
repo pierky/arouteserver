@@ -13,7 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from tests.live_tests.scenarios.rpki.data4 import DATA_4
 from .base import RPKIINVALIDScenario2
 from .data4 import DATA_4
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, BIRD2Instance

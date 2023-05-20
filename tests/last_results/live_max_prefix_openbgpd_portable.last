@@ -1,0 +1,35 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
+cachedir: .pytest_cache
+rootdir: /Users/pchiodi/github/public/arouteserver
+plugins: requests-mock-1.9.3
+collecting ... collected 10 items
+
+Live test, OpenBGPD 7.8, max-prefix, IPv4: instances setup 
+Live test, OpenBGPD 7.8, max-prefix, IPv4: setting instances up...
+PASSED
+Live test, OpenBGPD 7.8, max-prefix, IPv4: sessions are down PASSED
+Live test, OpenBGPD 7.8, max-prefix, IPv4: clients log max-prefix notification PASSED
+Live test, OpenBGPD 7.8, max-prefix, IPv4: reconfigure PASSED
+Live test, OpenBGPD 7.8, max-prefix, IPv4: log contains errors PASSED
+Live test, OpenBGPD 7.8, max-prefix, IPv4: dumping rs config...
+
+Live test, OpenBGPD 7.8, max-prefix, IPv4: dumping routes...
+
+Live test, OpenBGPD 7.8, max-prefix, IPv4: stopping instances...
+
+Live test, OpenBGPD 7.8, max-prefix, IPv6: instances setup 
+Live test, OpenBGPD 7.8, max-prefix, IPv6: setting instances up...
+PASSED
+Live test, OpenBGPD 7.8, max-prefix, IPv6: sessions are down PASSED
+Live test, OpenBGPD 7.8, max-prefix, IPv6: clients log max-prefix notification PASSED
+Live test, OpenBGPD 7.8, max-prefix, IPv6: reconfigure PASSED
+Live test, OpenBGPD 7.8, max-prefix, IPv6: log contains errors PASSED
+Live test, OpenBGPD 7.8, max-prefix, IPv6: dumping rs config...
+
+Live test, OpenBGPD 7.8, max-prefix, IPv6: dumping routes...
+
+Live test, OpenBGPD 7.8, max-prefix, IPv6: stopping instances...
+
+
+======================== 10 passed in 364.82s (0:06:04) ========================

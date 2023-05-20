@@ -189,8 +189,8 @@ class RPKIINVALIDScenario(LiveScenario):
                           "RPKI, route is INVALID - REJECTING {}".format(
                               prefix))
         for inst in (self.AS1, self.AS4):
-                with self.assertRaisesRegex(AssertionError, "Routes not found."):
-                    self.receive_route(inst, prefix, self.rs)
+            with self.assertRaisesRegex(AssertionError, "Routes not found."):
+                self.receive_route(inst, prefix, self.rs)
 
     def test_060_rpki_AS3_valid_1(self):
         """{}: RPKI, AS3 valid prefix, exact match"""
@@ -222,6 +222,24 @@ class RPKIINVALIDScenario(LiveScenario):
         self.test_020_sessions_up()
 
 class RPKIINVALIDScenario2(RPKIINVALIDScenario):
+    __test__ = False
+
+    @classmethod
+    def _get_local_files(cls):
+        return [
+            "header"
+        ]
+
+    @classmethod
+    def _get_local_file_names(cls):
+        return [
+            (
+                cls.use_static_file("bird2_header.local"),
+                "/etc/bird/header.local"
+            )
+        ]
+
+class RPKIINVALIDScenario3(RPKIINVALIDScenario):
     __test__ = False
 
     @classmethod

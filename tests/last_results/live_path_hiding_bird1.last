@@ -1,0 +1,79 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
+cachedir: .pytest_cache
+rootdir: /Users/pchiodi/github/public/arouteserver
+plugins: requests-mock-1.9.3
+collecting ... collected 38 items
+
+Live test, BIRD, path hiding, mitigation on, IPv4: instances setup 
+Live test, BIRD, path hiding, mitigation on, IPv4: setting instances up...
+PASSED
+Live test, BIRD, path hiding, mitigation on, IPv4: sessions are up PASSED
+Live test, BIRD, path hiding, mitigation on, IPv4: rs should receive prefix from both AS1 and AS2 PASSED
+Live test, BIRD, path hiding, mitigation on, IPv4: rs should have best toward AS1 PASSED
+Live test, BIRD, path hiding, mitigation on, IPv4: AS1 wants rs to not announce to AS3 and AS4 PASSED
+Live test, BIRD, path hiding, mitigation on, IPv4: AS3 and AS4 receive prefix with sub-optimal path via AS2 PASSED
+Live test, BIRD, path hiding, mitigation on, IPv4: AS3 and AS4 don't receive prefix via AS1 PASSED
+Live test, BIRD, path hiding, mitigation on, IPv4: 2nd best is withdrawn and AS3 should not see it anymore SKIPPED
+Live test, BIRD, path hiding, mitigation on, IPv4: reconfigure PASSED
+Live test, BIRD, path hiding, mitigation on, IPv4: log contains errors PASSED
+Live test, BIRD, path hiding, mitigation on, IPv4: dumping rs config...
+
+Live test, BIRD, path hiding, mitigation on, IPv4: dumping routes...
+
+Live test, BIRD, path hiding, mitigation on, IPv4: stopping instances...
+
+Live test, BIRD, path hiding, mitigation off, IPv4: instances setup 
+Live test, BIRD, path hiding, mitigation off, IPv4: setting instances up...
+PASSED
+Live test, BIRD, path hiding, mitigation off, IPv4: sessions are up PASSED
+Live test, BIRD, path hiding, mitigation off, IPv4: rs should receive prefix from both AS1 and AS2 PASSED
+Live test, BIRD, path hiding, mitigation off, IPv4: rs should have best toward AS1 PASSED
+Live test, BIRD, path hiding, mitigation off, IPv4: AS1 wants rs to not announce to AS3 and AS4 PASSED
+Live test, BIRD, path hiding, mitigation off, IPv4: AS3 does not receive prefix at all PASSED
+Live test, BIRD, path hiding, mitigation off, IPv4: AS4 receives the prefix via AS2 because of ADD-PATH PASSED
+Live test, BIRD, path hiding, mitigation off, IPv4: reconfigure PASSED
+Live test, BIRD, path hiding, mitigation off, IPv4: log contains errors PASSED
+Live test, BIRD, path hiding, mitigation off, IPv4: dumping rs config...
+
+Live test, BIRD, path hiding, mitigation off, IPv4: dumping routes...
+
+Live test, BIRD, path hiding, mitigation off, IPv4: stopping instances...
+
+Live test, BIRD, path hiding, mitigation on, IPv6: instances setup 
+Live test, BIRD, path hiding, mitigation on, IPv6: setting instances up...
+PASSED
+Live test, BIRD, path hiding, mitigation on, IPv6: sessions are up PASSED
+Live test, BIRD, path hiding, mitigation on, IPv6: rs should receive prefix from both AS1 and AS2 PASSED
+Live test, BIRD, path hiding, mitigation on, IPv6: rs should have best toward AS1 PASSED
+Live test, BIRD, path hiding, mitigation on, IPv6: AS1 wants rs to not announce to AS3 and AS4 PASSED
+Live test, BIRD, path hiding, mitigation on, IPv6: AS3 and AS4 receive prefix with sub-optimal path via AS2 PASSED
+Live test, BIRD, path hiding, mitigation on, IPv6: AS3 and AS4 don't receive prefix via AS1 PASSED
+Live test, BIRD, path hiding, mitigation on, IPv6: 2nd best is withdrawn and AS3 should not see it anymore SKIPPED
+Live test, BIRD, path hiding, mitigation on, IPv6: reconfigure PASSED
+Live test, BIRD, path hiding, mitigation on, IPv6: log contains errors PASSED
+Live test, BIRD, path hiding, mitigation on, IPv6: dumping rs config...
+
+Live test, BIRD, path hiding, mitigation on, IPv6: dumping routes...
+
+Live test, BIRD, path hiding, mitigation on, IPv6: stopping instances...
+
+Live test, BIRD, path hiding, mitigation off, IPv6: instances setup 
+Live test, BIRD, path hiding, mitigation off, IPv6: setting instances up...
+PASSED
+Live test, BIRD, path hiding, mitigation off, IPv6: sessions are up PASSED
+Live test, BIRD, path hiding, mitigation off, IPv6: rs should receive prefix from both AS1 and AS2 PASSED
+Live test, BIRD, path hiding, mitigation off, IPv6: rs should have best toward AS1 PASSED
+Live test, BIRD, path hiding, mitigation off, IPv6: AS1 wants rs to not announce to AS3 and AS4 PASSED
+Live test, BIRD, path hiding, mitigation off, IPv6: AS3 does not receive prefix at all PASSED
+Live test, BIRD, path hiding, mitigation off, IPv6: AS4 receives the prefix via AS2 because of ADD-PATH PASSED
+Live test, BIRD, path hiding, mitigation off, IPv6: reconfigure PASSED
+Live test, BIRD, path hiding, mitigation off, IPv6: log contains errors PASSED
+Live test, BIRD, path hiding, mitigation off, IPv6: dumping rs config...
+
+Live test, BIRD, path hiding, mitigation off, IPv6: dumping routes...
+
+Live test, BIRD, path hiding, mitigation off, IPv6: stopping instances...
+
+
+================== 36 passed, 2 skipped in 180.82s (0:03:00) ===================

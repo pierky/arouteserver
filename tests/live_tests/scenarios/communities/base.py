@@ -16,10 +16,6 @@
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
-                                                          OpenBGPDPreviousInstance, \
-                                                          OpenBGPDLatestInstance
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class BGPCommunitiesScenario(LiveScenario):
     __test__ = False
@@ -212,6 +208,9 @@ class BGPCommunitiesScenarioBIRD(BGPCommunitiesScenario):
         )
 
 class BGPCommunitiesScenarioBIRD2(BGPCommunitiesScenarioBIRD):
+    __test__ = False
+
+class BGPCommunitiesScenarioBIRD3(BGPCommunitiesScenarioBIRD):
     __test__ = False
 
 class BGPCommunitiesScenarioOpenBGPD(LiveScenario_TagRejectPolicy,

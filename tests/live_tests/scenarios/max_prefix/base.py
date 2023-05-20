@@ -96,6 +96,9 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
 
     EXPECTED_LOG_MSG = "receive"
 
+    def _get_expected_log_msg(self, limit, action):
+        return "Protocol {{inst}} hits route receive limit ({limit}), action: {action}".format(limit=limit, action=action)
+
     @classmethod
     def _setup_instances(cls):
         super(MaxPrefixScenarioBIRD, cls)._setup_instances()
@@ -161,24 +164,23 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
 
     def test_030_blocked_sessions(self):
         """{}: log is populated: receive limit, routes blocked"""
-        log_tpl = "Protocol {{inst}} hits route {expected_log_msg} limit ({limit}), action: block"
 
-        log = log_tpl.format(limit=4, expected_log_msg=self.EXPECTED_LOG_MSG)
+        log = self._get_expected_log_msg(limit=4, action="block")
         self.log_contains(self.rs, log, {"inst": self.AS1})
 
-        log = log_tpl.format(limit=3, expected_log_msg=self.EXPECTED_LOG_MSG)
+        log = self._get_expected_log_msg(limit=3, action="block")
         self.log_contains(self.rs, log, {"inst": self.AS2})
 
-        log = log_tpl.format(limit=2, expected_log_msg=self.EXPECTED_LOG_MSG)
+        log = self._get_expected_log_msg(limit=2, action="block")
         self.log_contains(self.rs, log, {"inst": self.AS3})
 
-        log = log_tpl.format(limit=6, expected_log_msg=self.EXPECTED_LOG_MSG)
+        log = self._get_expected_log_msg(limit=6, action="block")
         self.log_contains(self.rs, log, {"inst": self.AS4})
 
     def test_030_blocked_sessions_AS5(self):
         """{}: log is populated: receive limit, session shutdown (AS5)"""
-        log_tpl = "Protocol {{inst}} hits route {expected_log_msg} limit ({limit}), action: disable"
-        log = log_tpl.format(limit=3, expected_log_msg=self.EXPECTED_LOG_MSG)
+
+        log = self._get_expected_log_msg(limit=3, action="disable")
         self.log_contains(self.rs, log, {"inst": self.AS5})
 
     def test_030_blocked_sessions_AS6(self):
@@ -245,6 +247,15 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
 
 class MaxPrefixScenarioBIRD2(MaxPrefixScenarioBIRD):
     __test__ = False
+
+class MaxPrefixScenarioBIRD3(MaxPrefixScenarioBIRD):
+
+    __test__ = False
+
+    def _get_expected_log_msg(self, limit, action):
+        ip_ver = 6 if ":" in self.DATA["rs_IPAddress"] else 4
+
+        return "Channel {{inst}}.ipv{ip_ver} hits route receive limit ({limit}), action: {action}".format(limit=limit, action=action, ip_ver=ip_ver)
 
 class MaxPrefixScenarioOpenBGPD(LiveScenario_TagRejectPolicy, MaxPrefixScenario):
     __test__ = False

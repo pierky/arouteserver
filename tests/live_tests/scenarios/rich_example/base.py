@@ -102,6 +102,13 @@ class RichConfigExampleScenarioBIRD2(RichConfigExampleScenarioBIRD):
     def _get_local_file(cls):
         return "bird2.client.local"
 
+class RichConfigExampleScenarioBIRD3(RichConfigExampleScenarioBIRD):
+    __test__ = False
+
+    @classmethod
+    def _get_local_file(cls):
+        return "bird2.client.local"
+
 class RichConfigExampleScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
                                         RichConfigExampleScenario):
     __test__ = False

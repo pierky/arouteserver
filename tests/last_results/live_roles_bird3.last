@@ -1,0 +1,23 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
+cachedir: .pytest_cache
+rootdir: /Users/pchiodi/github/public/arouteserver
+plugins: requests-mock-1.9.3
+collecting ... collected 14 items
+
+Live test, BIRD v3, roles, IPv4: instances setup SKIPPED (Not ready ...)
+Live test, BIRD v3, roles, IPv4: sessions are up SKIPPED (Not ready ...)
+Live test, BIRD v3, roles, IPv4: OTC is attached to routes without it SKIPPED
+Live test, BIRD v3, roles, IPv4: routes with OTC from AS1 SKIPPED (N...)
+Live test, BIRD v3, roles, IPv4: routes with OTC from AS2 are dropped SKIPPED
+Live test, BIRD v3, roles, IPv4: routes expected on AS2 SKIPPED (Not...)
+Live test, BIRD v3, roles, IPv4: log contains errors SKIPPED (Not re...)
+Live test, BIRD v3, roles, IPv6: instances setup SKIPPED (Not ready ...)
+Live test, BIRD v3, roles, IPv6: sessions are up SKIPPED (Not ready ...)
+Live test, BIRD v3, roles, IPv6: OTC is attached to routes without it SKIPPED
+Live test, BIRD v3, roles, IPv6: routes with OTC from AS1 SKIPPED (N...)
+Live test, BIRD v3, roles, IPv6: routes with OTC from AS2 are dropped SKIPPED
+Live test, BIRD v3, roles, IPv6: routes expected on AS2 SKIPPED (Not...)
+Live test, BIRD v3, roles, IPv6: log contains errors SKIPPED (Not re...)
+
+============================= 14 skipped in 0.16s ==============================
