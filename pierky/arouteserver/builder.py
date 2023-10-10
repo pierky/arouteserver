@@ -764,6 +764,11 @@ class ConfigBuilder(object):
                 return version.parse(self.target_version) <= version.parse(v)
             return False
 
+        def target_version_lt(v):
+            if self.target_version:
+                return version.parse(self.target_version) < version.parse(v)
+            return False
+
         def get_normalized_rtt(v):
             if not v:
                 return 0
@@ -803,6 +808,7 @@ class ConfigBuilder(object):
         env.filters["include_local_file"] = include_local_file
         env.filters["target_version_ge"] = target_version_ge
         env.filters["target_version_le"] = target_version_le
+        env.filters["target_version_lt"] = target_version_lt
         env.filters["get_normalized_rtt"] = get_normalized_rtt
         env.filters["to_bgp_role"] = to_bgp_role
 
@@ -875,9 +881,9 @@ class BIRDConfigBuilder(ConfigBuilder):
 
     AVAILABLE_VERSION = ["1.6.3", "1.6.4", "1.6.6", "1.6.7", "1.6.8",
                          "2.0.7", "2.0.7+b962967e", "2.0.8", "2.0.9",
-                         "2.0.10", "2.0.11", "2.13",
+                         "2.0.10", "2.0.11", "2.13", "2.14",
                          "3.0"]
-    DEFAULT_VERSION = "2.13"
+    DEFAULT_VERSION = "2.14"
 
     def validate_bgpspeaker_specific_configuration(self):
         res = True
@@ -1051,7 +1057,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
     LOCAL_FILES_BASE_DIR = "/etc/bgpd"
 
     AVAILABLE_VERSION = ["7.0", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7",
-                         "7.8", "8.0"]
+                         "7.8", "8.0", "8.2"]
     DEFAULT_VERSION = AVAILABLE_VERSION[-1]
 
     IGNORABLE_ISSUES = ConfigBuilder.IGNORABLE_ISSUES + \

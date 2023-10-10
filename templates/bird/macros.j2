@@ -1,3 +1,7 @@
+{% macro bird_fnc_type(return_type) %}
+{% if "2.14"|target_version_ge and "3.0.0"|target_version_lt  %} -> {{ return_type }}{% endif %}
+{% endmacro %}
+
 {% macro write_prefix_list_entry(entry) %}
 {{	entry.prefix }}/{{ entry.length -}}
 {%-	if not entry.exact -%}

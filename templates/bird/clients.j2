@@ -2,6 +2,7 @@
 {% from 'macros.j2' import write_prefix_list_entry %}
 {% from 'macros.j2' import add_communities %}
 {% from 'macros.j2' import match_communities %}
+{% from 'macros.j2' import bird_fnc_type %}
 
 {%- macro write_max_pref_action(action) -%}
 {% if action == "shutdown" %}disable;
@@ -39,7 +40,7 @@ reject {{ err_msg }};
 {% for client in clients|sort(attribute="id") if client.ip is current_ipver %}
 
 # AS-SET for {{ client.id }}
-function origin_as_is_in_{{ client.id }}_as_set() {
+function origin_as_is_in_{{ client.id }}_as_set(){{ bird_fnc_type("bool") }} {
 {% if client.cfg.filtering.irrdb.as_set_bundle_ids %}
 {%	for as_set_bundle_id in client.cfg.filtering.irrdb.as_set_bundle_ids|sort %}
 {%		if irrdb_info[as_set_bundle_id].asns %}
@@ -54,7 +55,7 @@ function origin_as_is_in_{{ client.id }}_as_set() {
 }
 
 # R-SET for {{ client.id }}
-function prefix_is_in_{{ client.id }}_as_set() {
+function prefix_is_in_{{ client.id }}_as_set(){{ bird_fnc_type("bool") }} {
 {% if client.cfg.filtering.irrdb.as_set_bundle_ids %}
 {%	for as_set_bundle_id in client.cfg.filtering.irrdb.as_set_bundle_ids|sort %}
 {%    set this_ip_ver = client.ip|ipaddr_ver %}
@@ -76,7 +77,7 @@ function prefix_is_in_{{ client.id }}_as_set() {
     return false;
 }
 
-function next_hop_is_valid_for_{{ client.id }}()
+function next_hop_is_valid_for_{{ client.id }}(){{ bird_fnc_type("bool") }}
 {
 	# Checks if NEXT_HOP is one of those allowed for routes announced by {{ client.id }}
 {%	if client.ip|ipaddr_ver == 6 and (client.ip|lower).startswith("fe80::") %}
@@ -102,7 +103,7 @@ function next_hop_is_valid_for_{{ client.id }}()
 }
 
 {% if client.cfg.filtering.black_list_pref %}
-function prefix_is_in_{{ client.id }}_blacklist()
+function prefix_is_in_{{ client.id }}_blacklist(){{ bird_fnc_type("bool") }}
 prefix set {{ client.id }}_blacklist;
 {
 	{{ client.id }}_blacklist = [

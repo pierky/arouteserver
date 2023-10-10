@@ -3,13 +3,14 @@
 {% from 'macros.j2' import match_communities with context %}
 {% from 'macros.j2' import add_communities %}
 {% from 'macros.j2' import match_rtt_communities %}
+{% from 'macros.j2' import bird_fnc_type %}
 # ---------------------------------------------------------
 # COMMON
 
 {% if asn3216_map %}
 # Get the 16bit value used to represent a peer with a 32bit ASN.
 # Return 0 if no mapping exists for the peer.
-function get_16bit_mapped_asn(int asn_32_bit) {
+function get_16bit_mapped_asn(int asn_32_bit){{ bird_fnc_type("int") }} {
 	case asn_32_bit {
 {%		for asn in asn3216_map %}
 {%			if asn3216_map[asn] %}
@@ -23,7 +24,7 @@ function get_16bit_mapped_asn(int asn_32_bit) {
 
 # This function returns True if 'net' is a bogon prefix
 # or falls within a bogon prefix.
-function prefix_is_bogon()
+function prefix_is_bogon(){{ bird_fnc_type("bool") }}
 {% for this_ip_ver in list_ip_vers %}
 prefix set bogons_{{ this_ip_ver }};
 {% endfor %}
@@ -48,7 +49,7 @@ prefix set bogons_{{ this_ip_ver }};
 # This function returns True if 'net' falls within a
 # prefix contained in the global blacklist (for example,
 # local networks)
-function prefix_is_in_global_blacklist()
+function prefix_is_in_global_blacklist(){{ bird_fnc_type("bool") }}
 {% for this_ip_ver in list_ip_vers %}
 {%   set prefixes = cfg.filtering.global_black_list_pref|selectattr("prefix", "is_ipver", this_ip_ver )|list %}
 {%   if prefixes|length > 0 %}
@@ -79,7 +80,7 @@ prefix set global_blacklist_{{ this_ip_ver }};
 
 # This function returns True if the length of 'net' prefix
 # falls within the range 'min'-'max' (included).
-function prefix_len_is_valid (int pref_len_min; int pref_len_max) {
+function prefix_len_is_valid (int pref_len_min; int pref_len_max){{ bird_fnc_type("bool") }} {
 	if net.len < pref_len_min then return false;
 	if net.len > pref_len_max then return false;
 	return true;
@@ -87,7 +88,7 @@ function prefix_len_is_valid (int pref_len_min; int pref_len_max) {
 
 # This function returns True if the AS_PATH contains one or
 # more private/reserved ASN.
-function as_path_contains_invalid_asn()
+function as_path_contains_invalid_asn(){{ bird_fnc_type("bool") }}
 int set invalid_asns;
 {
 	# http://www.iana.org/assignments/as-numbers/as-numbers.xhtml
@@ -111,7 +112,7 @@ int set invalid_asns;
 {% if rtt_based_functions_are_used %}
 # This function returns the RTT measured for the peer given in client_ip.
 # If the RTT is not available it returns 0.
-function get_peer_rtt(ip client_ip) {
+function get_peer_rtt(ip client_ip){{ bird_fnc_type("int") }} {
 	case client_ip {
 {%	for client in clients|sort(attribute="ip") if client.ip is current_ipver %}
 {%		if "rtt" in client and client["rtt"]|get_normalized_rtt %}
@@ -182,7 +183,7 @@ int mapped_16bit_asn;
 
 # This function verifies if the route is tagged with one of
 # the blackhole filtering communities.
-function is_blackhole_filtering_request()
+function is_blackhole_filtering_request(){{ bird_fnc_type("bool") }}
 {% if asn3216_map %}
 int mapped_16bit_asn;
 {% endif %}
@@ -242,7 +243,7 @@ function apply_blackhole_filtering_policy() {
 # This function verifies if the current route can be announced to
 # the given client on the basis of the attached control BGP
 # communities.
-function route_can_be_announced_to(int peer_as; ip client_ip; string client_id)
+function route_can_be_announced_to(int peer_as; ip client_ip; string client_id){{ bird_fnc_type("bool") }}
 int client_rtt;
 {% if asn3216_map %}
 int mapped_16bit_asn;
@@ -305,7 +306,7 @@ function do_prepend(int times) {
 
 # This function verifies if the current route matches one of the
 # control communities in charge of prepending client's ASN.
-function apply_prepend(int peer_as; ip client_ip)
+function apply_prepend(int peer_as; ip client_ip){{ bird_fnc_type("bool") }}
 int client_rtt;
 {% if asn3216_map %}
 int mapped_16bit_asn;
@@ -411,13 +412,13 @@ function perform_rpki_validation () {
 }
 
 # This function returns True if the route is INVALID.
-function route_is_rpki_invalid () {
+function route_is_rpki_invalid (){{ bird_fnc_type("bool") }} {
 	return (unknown 0x4300, 0, 2) ~ bgp_ext_community;
 }
 
 # This function returns True if RPKI INVALID routes
 # should be announced to clients.
-function announce_rpki_invalid_to_client(int client_asn; ip client_ip; string client_id) {
+function announce_rpki_invalid_to_client(int client_asn; ip client_ip; string client_id){{ bird_fnc_type("bool") }} {
 	{% if "announce_rpki_invalid_to_client"|hook_is_set %}
 	return hook_announce_rpki_invalid_to_client(client_asn, client_ip, client_id);
 	{% else %}
@@ -531,7 +532,7 @@ function perform_graceful_shutdown() {
 {% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled %}
 # This function verifies if there is such a ROA for the
 # current route's origin ASN to validate the announced prefix.
-function prefix_in_rpki_roas_as_route_objects() {
+function prefix_in_rpki_roas_as_route_objects(){{ bird_fnc_type("bool") }} {
 {% if "2.0.0"|target_version_le %}
 	case roa_check(RPKI) {
 		ROA_VALID: return true;
@@ -556,7 +557,7 @@ function prefix_in_rpki_roas_as_route_objects() {
 # Whois DB: if there is such an entry for the current route's
 # origin ASN to validate the announced prefix the function
 # returns True, otherwise False.
-function prefix_in_arin_whois_db() {
+function prefix_in_arin_whois_db(){{ bird_fnc_type("bool") }} {
 {%	for this_ip_ver in list_ip_vers %}
 {%		if "2.0"|target_version_ge %}
 	if net.type = NET_IP{{ this_ip_ver }} then {
@@ -582,7 +583,7 @@ function prefix_in_arin_whois_db() {
 # Whois DB: if there is such an entry for the current route's
 # origin ASN to validate the announced prefix the function
 # returns True, otherwise False.
-function prefix_in_registrobr_whois_db() {
+function prefix_in_registrobr_whois_db(){{ bird_fnc_type("bool") }} {
 {%	for this_ip_ver in list_ip_vers %}
 {%		if "2.0"|target_version_ge %}
 	if net.type = NET_IP{{ this_ip_ver }} then {
