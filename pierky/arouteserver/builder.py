@@ -1057,7 +1057,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
     LOCAL_FILES_BASE_DIR = "/etc/bgpd"
 
     AVAILABLE_VERSION = ["7.0", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7",
-                         "7.8", "8.0", "8.2"]
+                         "7.8", "8.0", "8.3"]
     DEFAULT_VERSION = AVAILABLE_VERSION[-1]
 
     IGNORABLE_ISSUES = ConfigBuilder.IGNORABLE_ISSUES + \
