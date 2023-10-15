@@ -3,6 +3,11 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+1.21.2
+------
+
+- New: add support for `BIRD 2.14 <http://trubka.network.cz/pipermail/bird-users/2023-October/017161.html>`__ and `OpenBGPD 8.3 <https://www.mail-archive.com/tech@openbsd.org/msg76545.html>`__, also added to the integration testing suite.
+
 1.21.1
 ------
 
