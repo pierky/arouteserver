@@ -370,7 +370,7 @@ jobs:
   push_to_pypi:
     name: Push to PyPi
 
-    needs: tests
+    needs: [tests, docker-image-tests]
 
     runs-on: ubuntu-latest
 
