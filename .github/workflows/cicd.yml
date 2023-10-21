@@ -374,6 +374,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    permissions:
+      id-token: write
+
     if: startsWith(github.ref, 'refs/tags/v')
 
     steps:
@@ -397,15 +400,12 @@ jobs:
       - name: Publish distribution to Test PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-          repository_url: https://test.pypi.org/legacy/
+          repository-url: https://test.pypi.org/legacy/
 
       # Only non-alpha releases go to the official PyPi
       - name: Publish distribution to PyPI (official release)
         if: contains(github.ref, 'alpha') != true
         uses: pypa/gh-action-pypi-publish@master
-        with:
-          password: ${{ secrets.PYPI_API_TOKEN }}
 
   push_to_registry:
     name: Push Docker image to Docker Hub
