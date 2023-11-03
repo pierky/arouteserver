@@ -16,6 +16,8 @@
 from copy import deepcopy
 import logging
 import yaml
+import collections.abc
+
 
 from .base import ConfigParserBase, convert_deprecated
 from .validators import *
@@ -300,6 +302,15 @@ class ConfigParserClients(ConfigParserBase):
             raise ConfigError()
 
 def merge_clients(original, custom_file):
+
+    def update_dict_recursively(d, u):
+        for k, v in u.items():
+            if isinstance(v, collections.abc.Mapping):
+                d[k] = update_dict_recursively(d.get(k, {}), v)
+            else:
+                d[k] = v
+        return d
+
     try:
         new = yaml.safe_load(custom_file)
     except Exception as e:
@@ -364,7 +375,7 @@ def merge_clients(original, custom_file):
                 # A client having the same IP is present in the
                 # list of original clients. It's the one to update
                 # with the settings from the custom one.
-                original_client.update(client)
+                update_dict_recursively(original_client, client)
                 break
             else:
                 # No clients to update were found.
