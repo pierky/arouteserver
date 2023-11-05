@@ -187,6 +187,7 @@ class TestClientsFromEuroIX(unittest.TestCase):
         ip = "195.69.147.250"
         client = [client for client in clients["clients"] if client["ip"] == ip][0]
         assert client["cfg"]["filtering"]["irrdb"]["as_sets"] == ["AS-NFLX-V4"]
+        assert client["cfg"]["filtering"]["max_prefix"]["limit_ipv4"] == 42
 
         ip = "2001:7f8:1::a500:2906:1"
         client = [client for client in clients["clients"] if client["ip"] == ip][0]
@@ -213,6 +214,7 @@ class TestClientsFromEuroIX(unittest.TestCase):
         ip = "195.69.147.250"
         client = [client for client in clients["clients"] if client["ip"] == ip][0]
         assert client["cfg"]["filtering"]["irrdb"]["as_sets"] == ["AS-TWO"]
+        assert client["cfg"]["filtering"]["max_prefix"]["limit_ipv4"] == 42
 
         # In custom_clients_2.yml, the client is reported with
         # an uppercase IPv6 address, while the one that comes
