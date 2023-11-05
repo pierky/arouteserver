@@ -405,7 +405,7 @@ jobs:
       # Only non-alpha releases go to the official PyPi
       - name: Publish distribution to PyPI (official release)
         if: contains(github.ref, 'alpha') != true
-        uses: pypa/gh-action-pypi-publish@master
+        uses: pypa/gh-action-pypi-publish@release/v1
 
   push_to_registry:
     name: Push Docker image to Docker Hub
