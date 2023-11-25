@@ -3,6 +3,19 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+1.21.4
+------
+
+- Fix: ``irr-as-set`` command, omit AS-SETs having a source different from the target registry.
+
+  The list of members used to build the IRR object no longer includes client's AS-SETs if their origin does not match the registry for which the object is being created.
+
+  See also `GitHub issue 126 <https://github.com/pierky/arouteserver/issues/126>`__.
+
+- Improvement: ``irr-as-set`` command, ``--include-members`` and ``--exclude-members`` options.
+
+  Add options to the command that allow the operator to include/exclude AS-SETs from the members list of the object being generated.
+
 1.21.3
 ------
 
