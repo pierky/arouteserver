@@ -650,6 +650,21 @@ EOF
 SUB_TEST="$LINENO"
 build_cmd "irr-as-set" --template-file-name plain_rpsl.j2 | must_contain "members:  AS-RIPENCC"
 
+reset
+TITLE="irr-as-set-include-members"
+GENERAL="tests/var/general.yml"
+cat <<EOF >$GENERAL
+cfg:
+  rs_as: 999
+  router_id: "192.0.2.2"
+  filtering:
+    irrdb:
+      peering_db: True
+EOF
+
+SUB_TEST="$LINENO"
+build_cmd "irr-as-set" --template-file-name plain_rpsl.j2 --include-members "AS-ASTEST1" | must_contain "members:  AS-ASTEST1"
+
 # ---------------------------------------------
 # check-config command
 reset

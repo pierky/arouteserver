@@ -366,6 +366,10 @@ Output example:
 .. literalinclude:: _static/examples_rich_irr-as-set.txt
    :language: none
 
+To avoid ambiguity with the output list of members, the tool does not include any as-set whose source is specified and different from the registry set in the ``source:`` of the template. For example, if ``source:  ARIN`` is set in the template, an as-set in the format ``RADB::AS-ACME`` would not be included, and a warning log message would be generated.
+
+In order to customise that list and forcedly include or exclude members, the ``--include-members`` and ``--exclude-members`` options can be used.
+
 Live tests, development and customization
 -----------------------------------------
 

@@ -43,16 +43,26 @@ class TestIRRASSetCommand(unittest.TestCase):
         ]
     }
 
-    def setup_builder(self, general, clients, ip_ver=4):
+    def setup_builder(self, general, clients, ip_ver=4, template_path=None,
+                      include_members=None, exclude_members=None):
+        if template_path:
+            template_dir = os.path.dirname(template_path)
+            template_name = os.path.basename(template_path)
+        else:
+            template_dir = "templates/irr-as-set/"
+            template_name = "plain_rpsl.j2"
+
         self.builder = IRRASSetBuilder(
-            template_dir="templates/irr-as-set/",
-            template_name="plain_rpsl.j2",
+            template_dir=template_dir,
+            template_name=template_name,
             cfg_general=self.write_file("general.yml", general),
             cfg_clients=self.write_file("clients.yml", clients),
             cfg_bogons="config.d/bogons.yml",
             cache_dir=self.temp_dir,
             cache_expiry=120,
-            ip_ver=ip_ver
+            ip_ver=ip_ver,
+            include_members=include_members,
+            exclude_members=exclude_members
         )
 
     def setUp(self, *patches):
@@ -63,10 +73,13 @@ class TestIRRASSetCommand(unittest.TestCase):
         MockedEnv.stopall()
         shutil.rmtree(self.temp_dir, ignore_errors=True)
 
-    def write_file(self, name, dic):
+    def write_file(self, name, content):
         path = os.path.join(self.temp_dir, name)
         with open(path, "w") as f:
-            yaml.dump(dic, f, default_flow_style=False)
+            if isinstance(content, str):
+                f.write(content)
+            else:
+                yaml.dump(content, f, default_flow_style=False)
         return path
 
     def test_010_as1_as2(self, *patches):
@@ -156,4 +169,75 @@ class TestIRRASSetCommand(unittest.TestCase):
         self.assertEqual(
             sorted(self.builder.data["as_sets_rpsl_objects"]),
             sorted(["AS2"])
+        )
+
+    def test_010_get_as_set_info_1(self):
+        """IRR AS-SET command: normalise ipv4:RADB::AS-ONE"""
+        self.assertEqual(
+            IRRASSetBuilder._get_as_set_info("ipv4:RADB::AS-ONE"),
+            ("RADB", "AS-ONE")
+        )
+
+    def test_010_get_as_set_info_2(self):
+        """IRR AS-SET command: normalise RADB::AS-ONE"""
+        self.assertEqual(
+            IRRASSetBuilder._get_as_set_info("RADB::AS-ONE"),
+            ("RADB", "AS-ONE")
+        )
+
+    def test_010_get_as_set_info_3(self):
+        """IRR AS-SET command: normalise AS-ONE@RADB"""
+        self.assertEqual(
+            IRRASSetBuilder._get_as_set_info("AS-ONE@RADB"),
+            ("RADB", "AS-ONE")
+        )
+
+    def test_010_get_as_set_info_4(self):
+        """IRR AS-SET command: normalise RADB:AS-ONE"""
+        self.assertEqual(
+            IRRASSetBuilder._get_as_set_info("RADB:AS-ONE"),
+            ("RADB", "AS-ONE")
+        )
+
+    def test_010_get_as_set_info_no_source(self):
+        """IRR AS-SET command: normalise AS-ONE"""
+        self.assertEqual(
+            IRRASSetBuilder._get_as_set_info("AS-ONE"),
+            (None, "AS-ONE")
+        )
+
+    def test_010_get_valid_as_sets(self):
+        """IRR AS-SET command: filter AS-SETs on the basis of source"""
+        TEMPLATE = "\n".join([
+            "aa: 1",
+            "bb: 2",
+            "source: RADB"
+        ])
+
+        self.setup_builder(self.GENERAL_SIMPLE, self.CLIENTS_SIMPLE,
+                           template_path=self.write_file("template.txt", TEMPLATE))
+        self.assertEqual(
+            self.builder._get_valid_as_sets([
+                "AS-ONE",
+                "RADB::AS-TWO",
+                "ARIN::AS-THREE",
+                "AS-FOUR@RADB",
+                "APNIC:AS-FIVE"
+            ]),
+            ["AS-ONE", "AS-TWO", "AS-FOUR"]
+        )
+
+    def test_010_get_valid_as_sets_include(self):
+        """IRR AS-SET command: include-members"""
+
+        # Same as test_010_as1_as2, but with include/exclude members.
+
+        self.setup_builder(self.GENERAL_SIMPLE, self.CLIENTS_SIMPLE,
+                           include_members="ARIN::AS-THREE,APNIC:AS-FIVE",
+                           exclude_members="AS-AS1")
+        self.builder.render_template()
+
+        self.assertEqual(
+            sorted(self.builder.data["as_sets_rpsl_objects"]),
+            sorted(["AS1", "AS2", "ARIN::AS-THREE", "APNIC:AS-FIVE"])
         )
