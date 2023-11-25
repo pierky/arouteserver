@@ -21,6 +21,7 @@ import sys
 import time
 import yaml
 import copy
+import re
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
@@ -1327,6 +1328,68 @@ class TemplateContextDumper(ConfigBuilder):
 
 class IRRASSetBuilder(ConfigBuilder):
 
+    @staticmethod
+    def _get_source_from_template_file(path):
+        with open(path, "r") as f:
+            for line in f.readlines():
+                if not line.strip():
+                    continue
+
+                if line.strip().startswith(("source:", "- source:")):
+                    return line.strip().split(":")[1].strip()
+
+        return None
+
+    @staticmethod
+    def _get_as_set_info(as_set):
+        v = as_set.strip()
+
+        # Removing "ipv4:" and "ipv6:".
+        pattern = re.compile("^(?:ipv4|ipv6):", flags=re.IGNORECASE)
+        v, number_of_subs_made = pattern.subn("", v)
+        if number_of_subs_made > 0:
+            v = v.strip()
+
+        # Converting stuff like AS-FOO@SOURCE in SOURCE::AS-FOO
+        pattern = re.compile("^([^@]+)@(.+)$", flags=re.IGNORECASE)
+        v, _ = pattern.subn("\\2::\\1", v)
+
+        # Converting "SOURCE:AS-FOO" format (single colon) to "SOURCE::AS-FOO"
+        pattern = re.compile("^([^:]+):([^:].+)$", flags=re.IGNORECASE)
+        v, _ = pattern.subn("\\1::\\2", v)
+
+        if "::" in v:
+            source_asset = re.match("^([A-Za-z]+)::(.+)$", v.strip())
+            return source_asset.group(1), source_asset.group(2)
+        else:
+            return None, v
+
+    def _get_valid_as_sets(self, original_list):
+        res = []
+        for raw_as_set in original_list:
+            source, as_set = self._get_as_set_info(raw_as_set)
+
+            if source:
+                if source == self._source:
+                    res.append(as_set)
+                else:
+                    logging.warning(
+                        f"AS-SET {raw_as_set} omitted because its source "
+                        f"({source}) does not match the source used in "
+                        f"the template ({self._source})"
+                    )
+            else:
+                res.append(as_set)
+
+        return res
+
+    def __init__(self, *args, **kwargs):
+        super(IRRASSetBuilder, self).__init__(*args, **kwargs)
+
+        self._source = self._get_source_from_template_file(self.template_path)
+        self._include_members = kwargs.get("include_members")
+        self._exclude_members = kwargs.get("exclude_members")
+
     def enrich_j2_environment(self, env):
 
         if self.ip_ver is None:
@@ -1359,7 +1422,7 @@ class IRRASSetBuilder(ConfigBuilder):
             # The client has its own list of AS-SETs.
             # Use it and move to the next client.
             if client_irrdb["as_sets"]:
-                members.update(client_irrdb["as_sets"])
+                members.update(self._get_valid_as_sets(client_irrdb["as_sets"]))
                 continue
 
             # If we're here, it means that the client
@@ -1373,7 +1436,7 @@ class IRRASSetBuilder(ConfigBuilder):
                 # The client ASN is configured in the 'asns'
                 # section of the clients.yml file and there
                 # are AS-SETs set on it. Let's use them.
-                members.update(self.cfg_asns.cfg["asns"][asn]["as_sets"])
+                members.update(self._get_valid_as_sets(self.cfg_asns.cfg["asns"][asn]["as_sets"]))
                 continue
 
             # Let's check if AS-SETs were found on PeeringDB.
@@ -1386,7 +1449,7 @@ class IRRASSetBuilder(ConfigBuilder):
                                     client["id"], client["asn"],
                                     ", ".join(as_sets_from_pdb)
                                 ))
-                members.update(as_sets_from_pdb)
+                members.update(self._get_valid_as_sets(as_sets_from_pdb))
                 continue
 
             # No other AS-SETs found for the client.
@@ -1394,5 +1457,15 @@ class IRRASSetBuilder(ConfigBuilder):
                             "Only AS{} will be expanded.".format(
                                 client["id"], client["asn"]
                             ))
+
+        if self._include_members:
+            for member in self._include_members.split(","):
+                members.add(member.strip())
+
+        if self._exclude_members:
+            for member in self._exclude_members.split(","):
+                member = member.strip()
+                if member in members:
+                    members.remove(member)
 
         self.data["as_sets_rpsl_objects"] = sorted(members)
