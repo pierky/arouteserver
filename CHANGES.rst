@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+1.21.5
+------
+
+- Fix: ``irr-as-set`` command, the parser considers hierarchical AS-SET names.
+
+  Names in the format ``AS<n>:<s>`` were considered as in the format ``source:name``.
+
+  See also `GitHub issue 126 <https://github.com/pierky/arouteserver/issues/126>`__.
+
 1.21.4
 ------
 
