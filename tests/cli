@@ -630,8 +630,9 @@ run_cmd "clients-from-euroix" --url https://my.ams-ix.net/api/v1/members.json 2 
 SUB_TEST="$LINENO"
 run_cmd "clients-from-euroix" --url https://portal.lonap.net/apiv1/member-list/list 1 | must_contain "AS-APPLE"
 # 0.6 schema version:
-SUB_TEST="$LINENO"
-run_cmd "clients-from-euroix" --url https://ixp.getafix.ph/api/v4/member-export/ixf/0.6 2 | must_contain "description: GetaFIX AS112 Blackhole"
+# TODO: skip due to TSL cert issues on Dec 13th 2023
+# SUB_TEST="$LINENO"
+# run_cmd "clients-from-euroix" --url https://ixp.getafix.ph/api/v4/member-export/ixf/0.6 2 | must_contain "description: GetaFIX AS112 Blackhole"
 
 # ---------------------------------------------
 # irr-as-set command
