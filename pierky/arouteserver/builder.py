@@ -1350,19 +1350,30 @@ class IRRASSetBuilder(ConfigBuilder):
         if number_of_subs_made > 0:
             v = v.strip()
 
-        # Converting stuff like AS-FOO@SOURCE in SOURCE::AS-FOO
+        # Catching AS-FOO@SOURCE
         pattern = re.compile("^([^@]+)@(.+)$", flags=re.IGNORECASE)
-        v, _ = pattern.subn("\\2::\\1", v)
+        match = pattern.match(v)
+        if match:
+            return match.group(2), match.group(1)
 
-        # Converting "SOURCE:AS-FOO" format (single colon) to "SOURCE::AS-FOO"
-        pattern = re.compile("^([^:]+):([^:].+)$", flags=re.IGNORECASE)
-        v, _ = pattern.subn("\\1::\\2", v)
-
-        if "::" in v:
-            source_asset = re.match("^([A-Za-z]+)::(.+)$", v.strip())
-            return source_asset.group(1), source_asset.group(2)
-        else:
+        # Catching ASxxx:AS-FOO.
+        pattern = re.compile("^AS\\d+:[^:].+$", flags=re.IGNORECASE)
+        if pattern.match(v):
             return None, v
+
+        # Catching "SOURCE:AS-FOO" (single colon)
+        pattern = re.compile("^([^:]+):([^:].+)$", flags=re.IGNORECASE)
+        match = pattern.match(v)
+        if match:
+            return match.group(1), match.group(2)
+
+        # Catching "SOURCE::AS-FOO" (double colon)
+        pattern = re.compile("^([^:]+)::([^:]?.+)$", flags=re.IGNORECASE)
+        match = pattern.match(v)
+        if match:
+            return match.group(1), match.group(2)
+
+        return None, v
 
     def _get_valid_as_sets(self, original_list):
         res = []

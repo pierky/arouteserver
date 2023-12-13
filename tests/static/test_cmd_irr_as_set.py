@@ -199,6 +199,27 @@ class TestIRRASSetCommand(unittest.TestCase):
             ("RADB", "AS-ONE")
         )
 
+    def test_010_get_as_set_info_5(self):
+        """IRR AS-SET command: normalise AS123:AS-ONE"""
+        self.assertEqual(
+            IRRASSetBuilder._get_as_set_info("AS123:AS-ONE"),
+            (None, "AS123:AS-ONE")
+        )
+
+    def test_010_get_as_set_info_6(self):
+        """IRR AS-SET command: normalise RADB::AS123:AS-ONE"""
+        self.assertEqual(
+            IRRASSetBuilder._get_as_set_info("RADB::AS123:AS-ONE"),
+            ("RADB", "AS123:AS-ONE")
+        )
+
+    def test_010_get_as_set_info_7(self):
+        """IRR AS-SET command: normalise RADB:AS123:AS-ONE"""
+        self.assertEqual(
+            IRRASSetBuilder._get_as_set_info("RADB:AS123:AS-ONE"),
+            ("RADB", "AS123:AS-ONE")
+        )
+
     def test_010_get_as_set_info_no_source(self):
         """IRR AS-SET command: normalise AS-ONE"""
         self.assertEqual(
@@ -222,9 +243,12 @@ class TestIRRASSetCommand(unittest.TestCase):
                 "RADB::AS-TWO",
                 "ARIN::AS-THREE",
                 "AS-FOUR@RADB",
-                "APNIC:AS-FIVE"
+                "APNIC:AS-FIVE",
+                "AS123:AS-FOO",
+                "RADB::AS456:AS-FOO",
+                "ARIN::AS789:AS-FOO"
             ]),
-            ["AS-ONE", "AS-TWO", "AS-FOUR"]
+            ["AS-ONE", "AS-TWO", "AS-FOUR", "AS123:AS-FOO", "AS456:AS-FOO"]
         )
 
     def test_010_get_valid_as_sets_include(self):
