@@ -204,7 +204,7 @@ Who is using ARouteServer?
 
 - `RO-CIX <https://roix.net/>`__, OpenBGPD.
 
-- `SFMIX <https://sfmix.org/>`__, SFMIX.
+- `SFMIX <https://sfmix.org/>`__, BIRD and OpenBGPD.
 
 - `SwissIX <https://www.swissix.ch/>`__, OpenBGPD.
 
