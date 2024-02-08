@@ -204,6 +204,8 @@ Who is using ARouteServer?
 
 - `RO-CIX <https://roix.net/>`__, OpenBGPD.
 
+- `SFMIX <https://sfmix.org/>`__, SFMIX.
+
 - `SwissIX <https://www.swissix.ch/>`__, OpenBGPD.
 
 - `Unmetered.Exchange <https://unmetered.exchange/>`__, BIRD.
