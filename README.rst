@@ -214,7 +214,7 @@ Who is using ARouteServer?
 
 - `YEGIX <https://yegix.ca>`__, OpenBGPD.
 
-- `YXEIX <http://yxeix.ca/>`__, BIRD.
+- `YXEIX <http://yxeix.ca/>`__, OpenBGPD.
 
 - `YYCIX <https://yycix.ca>`__, OpenBGPD.
 
