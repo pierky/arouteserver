@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+1.21.6
+------
+
+- Fix: fetching Registro.br dataset via HTTPS.
+
+  A *"Can't decode Registro.br Whois DB raw file"* error was raised when trying to fetch the dataset from Registro.br using HTTPS.
+
+  See also `GitHub PR 128 <https://github.com/pierky/arouteserver/issues/128>`__.
+
 1.21.5
 ------
 
