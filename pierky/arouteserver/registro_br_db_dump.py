@@ -106,7 +106,7 @@ class RegistroBRWhoisDBDump(CachedObject):
             url = self.source
             try:
                 response = requests.get(url)
-                raw_data = response.text
+                raw_data = response.raw.read()
             except Exception as e:
                 raise RegistroBRWhoisDBDumpError(
                     "Error while retrieving Registro.br Whois DB dump "
