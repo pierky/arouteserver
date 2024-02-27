@@ -1065,6 +1065,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                         ["transit_free_action",
                         "add_path", "max_prefix_action",
                         "max_prefix_count_rejected_routes",
+                        "rfc8950",
                         "extended_communities",
                         "internal_communities",
                         "roles_discouraged"]
@@ -1100,6 +1101,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
         add_path_clients = []
         max_prefix_action_clients = []
         max_prefix_count_rejected_routes_clients = []
+        rfc8950_clients = []
         for client in self.cfg_clients.cfg["clients"]:
             if client["cfg"]["add_path"]:
                 add_path_clients.append(client["ip"])
@@ -1112,6 +1114,9 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             max_prefix_count_rejected_routes = client["cfg"]["filtering"]["max_prefix"]["count_rejected_routes"]
             if not max_prefix_count_rejected_routes:
                 max_prefix_count_rejected_routes_clients.append(client["ip"])
+
+            if client["cfg"]["rfc8950"]:
+                rfc8950_clients.append(client["ip"])
 
         if add_path_clients and \
             version.parse(self.target_version) < version.parse("7.5"):
@@ -1151,6 +1156,19 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                 "the following clients: {}{}; in OpenBGPD, the "
                 "only available behaviour is to have the "
                 "rejected routes counted towards the limit.".format(
+                    ", ".join(clients[:3]),
+                    "" if cnt <= 3 else " and {} more".format(cnt - 3)
+                )
+            ):
+                res = False
+
+        if rfc8950_clients:
+            clients = rfc8950_clients
+            cnt = len(clients)
+            if not self.process_compatibility_issue(
+                "rfc8950",
+                "RFC8950 not supported by OpenBGPD but "
+                "enabled for the following clients: {}{}.".format(
                     ", ".join(clients[:3]),
                     "" if cnt <= 3 else " and {} more".format(cnt - 3)
                 )

@@ -64,6 +64,7 @@ class ConfigParserClients(ConfigParserBase):
                 "gtsm": ValidatorBool(mandatory=False),
                 "multihop": ValidatorUInt(mandatory=False),
                 "add_path": ValidatorBool(mandatory=False),
+                "rfc8950": ValidatorBool(mandatory=False),
                 "filtering": {
                     "next_hop": {
                         "policy": ValidatorOption("policy",
