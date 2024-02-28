@@ -103,6 +103,12 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._test_bool_val(self.cfg, "add_path")
         self._test_mandatory(self.cfg, "add_path", has_default=True)
 
+    def test_rfc8950(self):
+        """{}: rfc8950"""
+        self.assertEqual(self.cfg["rfc8950"], False)
+        self._test_bool_val(self.cfg, "rfc8950")
+        self._test_mandatory(self.cfg, "rfc8950", has_default=True)
+
     def test_next_hop_policy(self):
         """{}: next_hop.policy"""
         self.assertEqual(self.cfg["filtering"]["next_hop"]["policy"], "strict")
@@ -1249,6 +1255,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "multihop": None,
             "gtsm": False,
             "add_path": False,
+            "rfc8950": False,
             "filtering": {
                 "next_hop": {
                     "policy": "strict"
@@ -1376,6 +1383,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "multihop": None,
             "gtsm": False,
             "add_path": False,
+            "rfc8950": False,
             "filtering": {
                 "next_hop": {
                     "policy": "strict"
