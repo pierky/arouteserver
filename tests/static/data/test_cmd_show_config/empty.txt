@@ -7,6 +7,7 @@ default           passive: True
 default           multihop: None
 default           gtsm: False
 default           add_path: False
+default           rfc8950: False
                   filtering:
                     next_hop:
 default               policy: strict

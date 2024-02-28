@@ -7,6 +7,7 @@ configured        passive: True
 default           multihop: None
 configured        gtsm: False
 configured        add_path: False
+configured        rfc8950: False
                   filtering:
                     next_hop:
 configured            policy: strict

@@ -94,7 +94,7 @@ cfg:
   # Default: False
   add_path: False
 
-  # Support IPv6 next-hop for IPv4 NLRI (RFC8950)
+  # Support IPv6 next-hop for IPv4 NLRI (RFC8950).
   # Will only be enabled for IPv6 BGP sessions.
   # https://tools.ietf.org/html/rfc8950
   #
