@@ -58,7 +58,7 @@ function origin_as_is_in_{{ client.id }}_as_set(){{ bird_fnc_type("bool") }} {
 function prefix_is_in_{{ client.id }}_as_set(){{ bird_fnc_type("bool") }} {
 {% if client.cfg.filtering.irrdb.as_set_bundle_ids %}
 {%     for as_set_bundle_id in client.cfg.filtering.irrdb.as_set_bundle_ids|sort %}
-{%         if "2.0"|target_version_ge and client.cfg.rfc8950 %}
+{%         if "2.0"|target_version_ge and client.cfg.rfc8950 and client.ip|ipaddr_ver == 6 %}
 {%             set afis = [4, 6] %}
 {%         else %}
 {%             set afis = [ client.ip|ipaddr_ver ] %}
@@ -196,7 +196,7 @@ bool validated;
 
 {%	if client.cfg.filtering.irrdb.white_list_route %}
 	# Client's white list
-{%          if "2.0"|target_version_ge and client.cfg.rfc8950 %}
+{%          if "2.0"|target_version_ge and client.cfg.rfc8950 and client.ip|ipaddr_ver == 6 %}
 {%              set routes = client.cfg.filtering.irrdb.white_list_route|sort(attribute="prefix") %}
 {%          else %}
 {%              set routes = client.cfg.filtering.irrdb.white_list_route|selectattr("prefix", "is_ipver", client.ip|ipaddr_ver)|sort(attribute="prefix") %}
