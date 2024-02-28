@@ -127,6 +127,28 @@ EOF
 # ---------------------------------------------
 # Build and validate configs
 
+# RFC8950
+reset
+GENERAL="tests/var/general.yml"
+cat <<EOF >$GENERAL
+cfg:
+  rs_as: 99999999
+  router_id: "192.0.2.2"
+  rfc8950: True
+EOF
+TITLE="RFC8950 support, BIRD 1.x (must fail)"
+EXP_ERR="RFC8950 is not supported on BIRD 1.x"
+
+SUB_TEST="$LINENO"
+build_cmd "bird" \
+  --target-ver 1.6.8 \
+  --ip-ver 4 | must_contain "${EXP_ERR}"
+
+TITLE="RFC8950 support, BIRD 2.x (must succeed)"
+SUB_TEST="$LINENO"
+build_cmd "bird" \
+  --target-ver ${BIRD2_LATEST_VER} | must_not_contain "${EXP_ERR}"
+
 # Multiple router_id
 reset
 GENERAL="tests/var/general.yml"
