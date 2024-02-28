@@ -198,8 +198,8 @@ bool validated;
 	# Client's white list
 {%          if "2.0"|target_version_ge and client.cfg.rfc8950 %}
 {%              set routes = client.cfg.filtering.irrdb.white_list_route|sort(attribute="prefix") %}
-{%          else
-{%              set routes = client.cfg.filtering.irrdb.white_list_route|selectattr("prefix", "is_ipver", client.ip|ipaddr_ver)|sort(attribute="prefix") if route.prefix|ipaddr_ver == client.ip|ipaddr_ver %}
+{%          else %}
+{%              set routes = client.cfg.filtering.irrdb.white_list_route|selectattr("prefix", "is_ipver", client.ip|ipaddr_ver)|sort(attribute="prefix") %}
 {%          endif %}
 {%		for route in routes %}
 	if !validated && net ~ [ {{ write_prefix_list_entry(route) }} ] then {
@@ -476,13 +476,13 @@ protocol bgp {{ client.id }} {
 	interpret communities off;
 	{% endif %}
 
-	{% if "2.0.0"|target_version_ge %}
-	{% if client.cfg.rfc8950 and client.ip|ipaddr_ver == 6 %}
+	{% if "2.0.0"|target_version_ge and client.cfg.rfc8950 and client.ip|ipaddr_ver == 6 %}
 	{%     set afis = [4, 6] %}
 	{% else %}
 	{%     set afis = [ client.ip|ipaddr_ver ] %}
 	{% endif %}
 	{% for current_afi in afis %}
+	{% if "2.0.0"|target_version_ge %}
 	# ---------------------------------------
 	ipv{{ current_afi }} {
 	table master{{ current_afi }};
@@ -530,8 +530,8 @@ protocol bgp {{ client.id }} {
 	{{- write_custom_config_lines(client, "any", "channel")|indent("	") }}
 	# ---------------------------------------
 	};
-	{% endfor %}
 	{% endif %}
+	{% endfor %}
 
 	{{- write_custom_config_lines(client, "ipv" ~ client.ip, "protocol")|indent("	") }}
 	{{- write_custom_config_lines(client, "any", "protocol")|indent("	") }}
