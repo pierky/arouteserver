@@ -15,6 +15,7 @@
 
 from packaging import version
 import unittest
+import yaml
 
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.ipaddresses import IPNetwork
@@ -1266,6 +1267,33 @@ class BasicScenarioBIRD2(BasicScenarioBIRD):
     @classmethod
     def _get_local_file_name(cls):
         return "bird2_local_file"
+
+class BasicScenarioBIRD2RFC8950(BasicScenarioBIRD):
+    __test__ = False
+
+    IP_VER = None  # Both IPv4 and IPv6.
+
+    @classmethod
+    def _get_local_file_name(cls):
+        return "bird2_local_file"
+
+    @classmethod
+    def _get_cfg_general(cls, orig_file="general.yml"):
+        """Override the general.yml file to enable RFC 8950."""
+
+        orig_path = "{}/{}".format(cls._get_module_dir(), orig_file)
+        dest_rel_path = "var/general.yml"
+        dest_path = "{}/{}".format(cls._get_module_dir(), dest_rel_path)
+
+        with open(orig_path, "r") as f:
+            cfg = yaml.safe_load(f.read())
+
+        cfg["cfg"]["rfc8950"] = True
+
+        with open(dest_path, "w") as f:
+            yaml.safe_dump(cfg, f, default_flow_style=False)
+
+        return dest_rel_path
 
 class BasicScenarioBIRD3(BasicScenarioBIRD):
     __test__ = False
