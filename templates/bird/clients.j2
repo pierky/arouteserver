@@ -99,8 +99,15 @@ function next_hop_is_valid_for_{{ client.id }}(){{ bird_fnc_type("bool") }}
 {%			endfor %}
 {%		else %}
 {%			for asn, same_as_clients in clients|groupby("asn") if asn == client.asn %}
-{%				for same_as_client in same_as_clients|sort(attribute="ip") if same_as_client.ip|ipaddr_ver == client.ip|ipaddr_ver %}
+{%				for same_as_client in same_as_clients|sort(attribute="ip") %}
+{%					if (
+						"2.0"|target_version_ge and
+						client.cfg.rfc8950
+					) or (
+						same_as_client.ip|ipaddr_ver == client.ip|ipaddr_ver
+					) %}
 	if bgp_next_hop = {{ same_as_client.ip }} then return true;	# {{ same_as_client.id }}
+{%					endif %}
 {%				endfor %}
 {%			endfor %}
 {%		endif %}
@@ -110,16 +117,28 @@ function next_hop_is_valid_for_{{ client.id }}(){{ bird_fnc_type("bool") }}
 
 {% if client.cfg.filtering.black_list_pref %}
 function prefix_is_in_{{ client.id }}_blacklist(){{ bird_fnc_type("bool") }}
-prefix set {{ client.id }}_blacklist;
+{% for this_ip_ver in list_ip_vers %}
+{%   set prefixes = client.cfg.filtering.black_list_pref|selectattr("prefix", "is_ipver", this_ip_ver )|list %}
+{%   if prefixes|length > 0 %}
+prefix set {{ client.id }}_blacklist_{{ this_ip_ver }};
+{%   endif %}
+{% endfor %}
 {
-	{{ client.id }}_blacklist = [
-{%     if "2.0"|target_version_ge and client.cfg.rfc8950 %}
-{{ write_prefix_list(client.cfg.filtering.black_list_pref) }}
+{% for this_ip_ver in list_ip_vers %}
+{%   set prefixes = client.cfg.filtering.black_list_pref|selectattr("prefix", "is_ipver", this_ip_ver )|list %}
+{%   if prefixes|length > 0 %}
+    {{ client.id }}_blacklist_{{ this_ip_ver }} = [
+{{ write_prefix_list(prefixes) }}
+    ];
+{%     if "2.0"|target_version_ge %}
+    if net.type = NET_IP{{ this_ip_ver }} then
+        if net ~ {{ client.id }}_blacklist_{{ this_ip_ver }} then return true;
 {%     else %}
-{{ write_prefix_list(client.cfg.filtering.black_list_pref|selectattr("prefix", "is_ipver", client.ip|ipaddr_ver)) }}
+    if net ~ {{ client.id }}_blacklist_{{ this_ip_ver }} then return true;
 {%     endif %}
-	];
-	return net ~ {{ client.id }}_blacklist;
+{%   endif %}
+{% endfor %}
+	return false;
 }
 {% endif %}
 
