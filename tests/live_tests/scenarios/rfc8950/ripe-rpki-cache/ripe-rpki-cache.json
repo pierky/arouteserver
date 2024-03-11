@@ -1,0 +1,6 @@
+{"roas": [
+  {"prefix": "1.1.5.0/24", "maxLength": 24, "asn": "AS0", "ta": "test", "expires": 4102444799},
+  {"prefix": "1.1.6.0/24", "maxLength": 24, "asn": "AS1", "ta": "test", "expires": 4102444799},
+  {"prefix": "1.1.7.0/24", "maxLength": 24, "asn": "AS1000", "ta": "test", "expires": 4102444799}
+]}
+

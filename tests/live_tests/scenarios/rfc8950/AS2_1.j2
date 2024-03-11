@@ -1,0 +1,43 @@
+router id 192.0.2.21;
+
+log "/var/log/bird.log" all;
+log syslog all;
+debug protocols { states, routes, filters, interfaces, events };
+
+timeformat base         iso long;
+timeformat log          iso long;
+timeformat protocol     iso long;
+timeformat route        iso long;
+
+protocol device {};
+
+ipv4 table master4 sorted;
+
+protocol static {
+	ipv4 { table master4; };
+	route {{ data.AS2_v4_route12 }} unreachable;
+}
+
+filter to_the_rs {
+	if net = {{ data.AS2_v4_route12 }} then
+		bgp_next_hop = {{ data.AS2_1_authorized_nexthop }};
+
+	accept;
+}
+
+protocol bgp the_rs {
+	local as 2;
+	neighbor {{ data.rs_IPAddress }} as 999;
+
+	connect delay time 1;
+	connect retry time 1;
+
+	ipv4 {
+		table master4;
+		import table on;
+		import keep filtered on;
+		import none;
+		export filter to_the_rs;
+		extended next hop on;
+	};
+}

@@ -1,0 +1,98 @@
+1.1.1.0/24, AS_PATH: 1, NEXT_HOP: 2001:db8:1:1::11, via 2001:db8:1:1::11
+  std comms:
+  ext comms: rfc8097-not-found
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+1.1.3.0/24, AS_PATH: 1, NEXT_HOP: 2001:db8:1:1::12, via 2001:db8:1:1::11
+  std comms: 65524:1
+  ext comms:
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: True (5)
+
+1.1.4.0/24, AS_PATH: 1, NEXT_HOP: 2001:db8:1:1::11, via 2001:db8:1:1::12
+  std comms:
+  ext comms: rfc8097-not-found
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+1.1.5.0/24, AS_PATH: 1, NEXT_HOP: 2001:db8:1:1::11, via 2001:db8:1:1::11
+  std comms: 65524:1
+  ext comms: rfc8097-invalid
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: True (14)
+
+1.1.6.0/24, AS_PATH: 1, NEXT_HOP: 2001:db8:1:1::11, via 2001:db8:1:1::11
+  std comms:
+  ext comms: rfc8097-valid
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+1.1.7.0/24, AS_PATH: 1, NEXT_HOP: 2001:db8:1:1::11, via 2001:db8:1:1::11
+  std comms: 65524:1
+  ext comms: rfc8097-invalid
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: True (14)
+
+104.0.0.0/24, AS_PATH: 1, NEXT_HOP: 2001:db8:1:1::11, via 2001:db8:1:1::11
+  std comms:
+  ext comms: rfc8097-not-found
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+104.1.1.0/24, AS_PATH: 1, NEXT_HOP: 2001:db8:1:1::11, via 2001:db8:1:1::11
+  std comms:
+  ext comms: rfc8097-not-found
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+11.1.0.0/16, AS_PATH: 1, NEXT_HOP: 2001:db8:1:1::11, via 2001:db8:1:1::11
+  std comms:
+  ext comms: rfc8097-not-found
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+11.3.0.0/16, AS_PATH: 1, NEXT_HOP: 2001:db8:1:1::11, via 2001:db8:1:1::11
+  std comms:
+  ext comms: rfc8097-not-found
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+2.2.1.0/24, AS_PATH: 2, NEXT_HOP: 2001:db8:1:1::22, via 2001:db8:1:1::21
+  std comms:
+  ext comms: rfc8097-not-found
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+2.2.2.0/24, AS_PATH: 1, NEXT_HOP: 2001:db8:1:1::11, via 2001:db8:1:1::11
+  std comms: 65524:1
+  ext comms:
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: True (12)
+
+2a02:0:1::/48, AS_PATH: 1, NEXT_HOP: 2001:db8:1:1::11, via 2001:db8:1:1::11
+  std comms:
+  ext comms: rfc8097-not-found
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+2aff:0:1::/48, AS_PATH: 1, NEXT_HOP: 2001:db8:1:1::11, via 2001:db8:1:1::11
+  std comms: 65524:1
+  ext comms:
+  lrg comms:
+  best: False, LOCAL_PREF: 1
+  filtered: True (12)
+

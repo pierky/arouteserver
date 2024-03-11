@@ -1,0 +1,33 @@
+cfg:
+        rs_as: 999
+        router_id: "192.0.2.2"
+        gtsm: False
+        path_hiding: True
+        rfc8950: true
+        filtering:
+                never_via_route_servers:
+                        peering_db: False
+                next_hop_policy: "strict"
+                global_black_list_pref:
+                        - prefix: "192.0.2.0"
+                          length: 24
+                          comment: "Local network"
+                        - prefix: "2001:db8::"
+                          length: 32
+                          comment: "Local network"
+                irrdb:
+                        enforce_prefix_in_as_set: True
+                        allow_longer_prefixes: True
+                        use_rpki_roas_as_route_objects:
+                                enabled: True
+                        use_arin_bulk_whois_data:
+                                enabled: True
+                                source: "from mock data"
+                        use_registrobr_bulk_whois_data:
+                                enabled: True
+                rpki_bgp_origin_validation:
+                        enabled: True
+        rpki_roas:
+                source: "ripe-rpki-validator-cache"
+                allowed_trust_anchors:
+                        - "test"
