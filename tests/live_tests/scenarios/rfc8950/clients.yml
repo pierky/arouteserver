@@ -1,0 +1,43 @@
+clients:
+  - asn: 1
+    ip:
+      - "2001:db8:1:1::11"
+    description: "AS1_1 client"
+    cfg:
+      filtering:
+        irrdb:
+          as_sets:
+            - "AS-AS1"
+          white_list_pref:
+            - prefix: "11.1.0.0"
+              length: 16
+              le: 32
+          white_list_route:
+            - prefix: "11.3.0.0"
+              length: 16
+  - asn: 1
+    ip:
+      - "2001:db8:1:1::12"
+    description: "AS1_2 client"
+    cfg:
+      filtering:
+        next_hop_policy: "same-as"
+        irrdb:
+          as_sets:
+            - "AS-AS1"
+  - asn: 2
+    ip:
+      - "2001:db8:1:1::21"
+    description: "AS2_1 client"
+    cfg:
+      filtering:
+        next_hop:
+          policy: "authorized_addresses"
+          authorized_addresses_list:
+            - "2001:db8:1:1::21"
+            - "2001:db8:1:1::22"
+        irrdb:
+          as_sets:
+            - "AS-AS2"
+      graceful_shutdown:
+        enabled: False
