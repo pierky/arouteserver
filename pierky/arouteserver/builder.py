@@ -882,9 +882,9 @@ class BIRDConfigBuilder(ConfigBuilder):
 
     AVAILABLE_VERSION = ["1.6.3", "1.6.4", "1.6.6", "1.6.7", "1.6.8",
                          "2.0.7", "2.0.7+b962967e", "2.0.8", "2.0.9",
-                         "2.0.10", "2.0.11", "2.13", "2.14",
+                         "2.0.10", "2.0.11", "2.13", "2.14", "2.15",
                          "3.0"]
-    DEFAULT_VERSION = "2.14"
+    DEFAULT_VERSION = "2.15"
 
     def validate_bgpspeaker_specific_configuration(self):
         res = True
