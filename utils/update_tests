@@ -113,7 +113,7 @@ docker pull pierky/bird:1.6.8
 docker pull pierky/bird:2.15
 docker pull pierky/bird:3.0-alpha2
 docker pull pierky/openbgpd:8.0
-docker pull pierky/openbgpd:8.3
+docker pull pierky/openbgpd:8.4
 docker pull pierky/exabgp:4.2.7
 docker pull nlnetlabs/routinator:v0.8.3
 
