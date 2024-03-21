@@ -18,7 +18,7 @@ from .docker import DockerInstance
 
 class RoutinatorInstance(DockerInstance):
 
-    DOCKER_IMAGE = "nlnetlabs/routinator:v0.8.3"
+    DOCKER_IMAGE = "nlnetlabs/routinator:v0.13.2"
 
     TAG = "routinator"
 
@@ -29,4 +29,4 @@ class RoutinatorInstance(DockerInstance):
         raise NotImplementedError()
 
     def _get_start_cmd(self):
-        return "--exceptions /tmp/routinator_local_exceptions.json server --rtr 192.0.2.10:3323"
+        return "--exceptions /tmp/routinator_local_exceptions.json --disable-rsync --disable-rrdp server --rtr 192.0.2.10:3323"

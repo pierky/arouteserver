@@ -115,7 +115,7 @@ docker pull pierky/bird:3.0-alpha2
 docker pull pierky/openbgpd:8.0
 docker pull pierky/openbgpd:8.4
 docker pull pierky/exabgp:4.2.7
-docker pull nlnetlabs/routinator:v0.8.3
+docker pull nlnetlabs/routinator:v0.13.2
 
 # Check for codetags
 echo "Verifying codetags..."
