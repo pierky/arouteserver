@@ -171,6 +171,31 @@ General options: ``cfg``
 
 
 
+- ``rfc8950``:
+  Support IPv6 next-hop for IPv4 NLRI (RFC8950).
+  Will only be enabled for IPv6 BGP sessions.
+  https://tools.ietf.org/html/rfc8950
+
+
+  BIRD: enables extended next-hop (available since 2.0)
+
+
+  OpenBGPD: not yet supported
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+  Default: **False**
+
+  Example:
+
+  .. code:: yaml
+
+     rfc8950: False
+
+
+
 Filtering: ``filtering``
 +++++++++++++++++++++++++
 
