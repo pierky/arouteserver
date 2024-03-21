@@ -272,6 +272,7 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
         CfgStatement("multihop", pre_comment=True),
         CfgStatement("gtsm", pre_comment=True),
         CfgStatement("add_path", pre_comment=True),
+        CfgStatement("rfc8950", pre_comment=True),
         CfgStatement("filtering", t="Filtering", sub=[
             CfgStatement("next_hop", t="NEXT_HOP", pre_comment=True, sub=[
                 CfgStatement("policy", pre_comment=True)
