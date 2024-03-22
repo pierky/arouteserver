@@ -1,9 +1,9 @@
 ============================= test session starts ==============================
-platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
+platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
 rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
-collecting ... collected 253 items
+collecting ... collected 264 items
 
 ASNs config parser: invalid AS PASSED
 ASNs config parser: invalid AS-SET PASSED
@@ -117,6 +117,7 @@ General config parser: reject_invalid_as_in_as_path PASSED
 General config parser: reject_policy PASSED
 General config parser: rejected_route_announced_by can be set only with 'tag' reject_policy PASSED
 General config parser: RFC1997 well-known communities PASSED
+General config parser: rfc8950 PASSED
 General config parser: router_id PASSED
 General config parser: multiple router IDs PASSED
 General config parser: rpki_bgp_origin_validation, enabled PASSED
@@ -173,6 +174,16 @@ Configure command: OpenBGPD 7.5, simple PASSED
 IRR AS-SET command: AS1 with AS-AS1 and AS2 PASSED
 IRR AS-SET command: explicit AS-SETs from config, no PeeringDB record PASSED
 IRR AS-SET command: AS-SET from asns PASSED
+IRR AS-SET command: normalise ipv4:RADB::AS-ONE PASSED
+IRR AS-SET command: normalise RADB::AS-ONE PASSED
+IRR AS-SET command: normalise AS-ONE@RADB PASSED
+IRR AS-SET command: normalise RADB:AS-ONE PASSED
+IRR AS-SET command: normalise AS123:AS-ONE PASSED
+IRR AS-SET command: normalise RADB::AS123:AS-ONE PASSED
+IRR AS-SET command: normalise RADB:AS123:AS-ONE PASSED
+IRR AS-SET command: normalise AS-ONE PASSED
+IRR AS-SET command: filter AS-SETs on the basis of source PASSED
+IRR AS-SET command: include-members PASSED
 IRR AS-SET command: IPv6 clients only PASSED
 IRR AS-SET command: whitelist and PeeringDB PASSED
 IX-F Member Export from clients command: simple PASSED
@@ -259,4 +270,4 @@ RTT getter parser: empty PASSED
 RTT getter parser: new line only PASSED
 RTT getter parser: none PASSED
 
-============================= 253 passed in 39.56s =============================
+============================= 264 passed in 40.33s =============================

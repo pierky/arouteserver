@@ -1,35 +1,35 @@
 ============================= test session starts ==============================
-platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
+platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
 rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
 collecting ... collected 10 items
 
-Live test, OpenBGPD 8.3, gshut, IPv4: instances setup 
-Live test, OpenBGPD 8.3, gshut, IPv4: setting instances up...
+Live test, OpenBGPD 8.4, gshut, IPv4: instances setup 
+Live test, OpenBGPD 8.4, gshut, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 8.3, gshut, IPv4: sessions are up PASSED
-Live test, OpenBGPD 8.3, gshut, IPv4: clients receive routes tagged with GRACEFUL_SHUTDOWN PASSED
-Live test, OpenBGPD 8.3, gshut, IPv4: reconfigure PASSED
-Live test, OpenBGPD 8.3, gshut, IPv4: log contains errors PASSED
-Live test, OpenBGPD 8.3, gshut, IPv4: dumping rs config...
+Live test, OpenBGPD 8.4, gshut, IPv4: sessions are up PASSED
+Live test, OpenBGPD 8.4, gshut, IPv4: clients receive routes tagged with GRACEFUL_SHUTDOWN PASSED
+Live test, OpenBGPD 8.4, gshut, IPv4: reconfigure PASSED
+Live test, OpenBGPD 8.4, gshut, IPv4: log contains errors PASSED
+Live test, OpenBGPD 8.4, gshut, IPv4: dumping rs config...
 
-Live test, OpenBGPD 8.3, gshut, IPv4: dumping routes...
+Live test, OpenBGPD 8.4, gshut, IPv4: dumping routes...
 
-Live test, OpenBGPD 8.3, gshut, IPv4: stopping instances...
+Live test, OpenBGPD 8.4, gshut, IPv4: stopping instances...
 
-Live test, OpenBGPD 8.3, gshut, IPv6: instances setup 
-Live test, OpenBGPD 8.3, gshut, IPv6: setting instances up...
+Live test, OpenBGPD 8.4, gshut, IPv6: instances setup 
+Live test, OpenBGPD 8.4, gshut, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 8.3, gshut, IPv6: sessions are up PASSED
-Live test, OpenBGPD 8.3, gshut, IPv6: clients receive routes tagged with GRACEFUL_SHUTDOWN PASSED
-Live test, OpenBGPD 8.3, gshut, IPv6: reconfigure PASSED
-Live test, OpenBGPD 8.3, gshut, IPv6: log contains errors PASSED
-Live test, OpenBGPD 8.3, gshut, IPv6: dumping rs config...
+Live test, OpenBGPD 8.4, gshut, IPv6: sessions are up PASSED
+Live test, OpenBGPD 8.4, gshut, IPv6: clients receive routes tagged with GRACEFUL_SHUTDOWN PASSED
+Live test, OpenBGPD 8.4, gshut, IPv6: reconfigure PASSED
+Live test, OpenBGPD 8.4, gshut, IPv6: log contains errors PASSED
+Live test, OpenBGPD 8.4, gshut, IPv6: dumping rs config...
 
-Live test, OpenBGPD 8.3, gshut, IPv6: dumping routes...
+Live test, OpenBGPD 8.4, gshut, IPv6: dumping routes...
 
-Live test, OpenBGPD 8.3, gshut, IPv6: stopping instances...
+Live test, OpenBGPD 8.4, gshut, IPv6: stopping instances...
 
 
-============================= 10 passed in 38.79s ==============================
+============================= 10 passed in 38.57s ==============================

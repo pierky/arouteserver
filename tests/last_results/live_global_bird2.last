@@ -1,9 +1,9 @@
 ============================= test session starts ==============================
-platform darwin -- Python 3.11.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
+platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
 rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
-collecting ... collected 524 items
+collecting ... collected 610 items
 
 Live test, BIRD v2, global scenario, IPv4: instances setup 
 Live test, BIRD v2, global scenario, IPv4: setting instances up...
@@ -577,5 +577,99 @@ Live test, BIRD v2, global scenario, IPv6, tag&reject: dumping routes...
 
 Live test, BIRD v2, global scenario, IPv6, tag&reject: stopping instances...
 
+Live test, BIRD v2, global scenario, RFC8950: instances setup 
+Live test, BIRD v2, global scenario, RFC8950: setting instances up...
+PASSED
+Live test, BIRD v2, global scenario, RFC8950: sessions are up PASSED
+Live test, BIRD v2, global scenario, RFC8950: session configured via local include files PASSED
+Live test, BIRD v2, global scenario, RFC8950: good prefixes because of use_arin_bulk_whois_data PASSED
+Live test, BIRD v2, global scenario, RFC8950: good prefixes received by rs: IRRdb white-list PASSED
+Live test, BIRD v2, global scenario, RFC8950: good prefixes because of use_registrobr_bulk_whois_data PASSED
+Live test, BIRD v2, global scenario, RFC8950: good prefixes because of use_rpki_roas_as_route_objects: exact PASSED
+Live test, BIRD v2, global scenario, RFC8950: good prefixes because of use_rpki_roas_as_route_objects: covering PASSED
+Live test, BIRD v2, global scenario, RFC8950: good prefixes received by rs PASSED
+Live test, BIRD v2, global scenario, RFC8950: good prefixes received by rs: non-client NEXT_HOP PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: not IPv6 global unicast space PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: IRRdb white-list PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: IRR check for AS_SET origin, BIRD PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD SKIPPED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: AS_PATH len PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: bogon PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: client blacklist PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: global blacklist PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: invalid ASN in AS-PATH PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: invalid NEXT_HOP PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: left-most ASN PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: origin not in AS-SET PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: prefix not in AS-SET PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: invalid prefix-len PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: transit-free ASN in AS-PATH PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: unknown NEXT_HOP PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: RPKI ROAs as route objects failed PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: default route PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes not received by clients PASSED
+Live test, BIRD v2, global scenario, RFC8950: RPKI, blackhole request for a covered prefix PASSED
+Live test, BIRD v2, global scenario, RFC8950: RPKI, invalid prefix (bad ASN) received by rs PASSED
+Live test, BIRD v2, global scenario, RFC8950: RPKI, invalid prefix (bad length) received by rs PASSED
+Live test, BIRD v2, global scenario, RFC8950: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
+Live test, BIRD v2, global scenario, RFC8950: RPKI, valid prefix received by rs PASSED
+Live test, BIRD v2, global scenario, RFC8950: RPKI, valid prefix propagated to clients PASSED
+Live test, BIRD v2, global scenario, RFC8950: prefixes from AS101 received by its upstreams PASSED
+Live test, BIRD v2, global scenario, RFC8950: prefixes from AS101 received by rs PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad communities as seen by AS101 upstreams PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad communities scrubbed by rs (lrg) PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad communities scrubbed by rs (std) PASSED
+Live test, BIRD v2, global scenario, RFC8950: other communities not scrubbed by rs (lrg) PASSED
+Live test, BIRD v2, global scenario, RFC8950: other communities not scrubbed by rs (std) PASSED
+Live test, BIRD v2, global scenario, RFC8950: blackhole filtering requests as seen by rs (BLACKHOLE) PASSED
+Live test, BIRD v2, global scenario, RFC8950: blackhole filtering requests as seen by rs (lrg cust) PASSED
+Live test, BIRD v2, global scenario, RFC8950: blackhole filtering requests as seen by rs (std cust) PASSED
+Live test, BIRD v2, global scenario, RFC8950: blackholed prefixes as seen by enabled clients (BLACKHOLE) PASSED
+Live test, BIRD v2, global scenario, RFC8950: blackholed prefixes as seen by enabled clients (lrg_cust) PASSED
+Live test, BIRD v2, global scenario, RFC8950: blackholed prefixes as seen by enabled clients (std_cust) PASSED
+Live test, BIRD v2, global scenario, RFC8950: blackholed prefixes not seen by not enabled clients PASSED
+Live test, BIRD v2, global scenario, RFC8950: gshut by an enabled client PASSED
+Live test, BIRD v2, global scenario, RFC8950: gshut by a not enabled client PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, announce to AS1 only PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, don't announce to any PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, announce to all except AS1 PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, prepend once to any PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, prepend twice to any PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, prepend thrice to any PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, prepend once to AS1 PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, prepend twice to AS151866 PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, prepend twice to AS2 PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, prepend thrice to AS1, once to others PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, NO_EXPORT to AS1 PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, NO_EXPORT to AS151866 PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, NO_EXPORT to any PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, RFC1997 NO_EXPORT PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, RTT, blackhole, not peers > 20 ms PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, RTT, not peers > 15 ms PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, RTT, not peers > 5 ms PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, RTT, not peers > 5 ms + AS3 PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, RTT, not peers <= 5 and > 100 ms PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, RTT, only peers <= 15 ms PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, RTT, only peers <= 5 ms PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms PASSED
+Live test, BIRD v2, global scenario, RFC8950: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any PASSED
+Live test, BIRD v2, global scenario, RFC8950: prefixes received by clients: AS1_1 PASSED
+Live test, BIRD v2, global scenario, RFC8950: prefixes received by clients: AS1_2 PASSED
+Live test, BIRD v2, global scenario, RFC8950: prefixes received by clients: AS2 PASSED
+Live test, BIRD v2, global scenario, RFC8950: prefixes received by clients: AS3 PASSED
+Live test, BIRD v2, global scenario, RFC8950: prefixes received by clients: AS3 (with ADD-PATH) PASSED
+Live test, BIRD v2, global scenario, RFC8950: reconfigure PASSED
+Live test, BIRD v2, global scenario, RFC8950: log contains errors PASSED
+Live test, BIRD v2, global scenario, RFC8950: dumping rs config...
 
-================== 518 passed, 6 skipped in 365.77s (0:06:05) ==================
+Live test, BIRD v2, global scenario, RFC8950: dumping routes...
+
+Live test, BIRD v2, global scenario, RFC8950: stopping instances...
+
+
+================== 603 passed, 7 skipped in 459.10s (0:07:39) ==================
