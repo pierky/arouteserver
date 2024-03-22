@@ -298,12 +298,12 @@ add_feature("ADD_PATH capability (RFC7911)", {
     "openbgpd": True,
     "openbgpd_portable": True,
 })
-add_feature("ADD_PATH capability (RFC7911)", {
-    "bird": True,
+add_feature("IPv6 NEXT_HOP for IPv4 routes (RFC8950)", {
+    "bird": False,
     "bird2": True,
     "bird3": True,
-    "openbgpd": True,
-    "openbgpd_portable": True,
+    "openbgpd": False,
+    "openbgpd_portable": False,
 })
 
 

@@ -1,8 +1,10 @@
-# RFC8950 scenario
+RFC8950 scenario
+****************
 
 A scenario to test announcements of IPv4 routes with an IPv6 NEXT_HOP, over an IPv6 session.
 
-## AS1_1
+AS1_1
+-----
 
 - `AS1_v4_route1`: accepted.
 - `AS1_v4_route2`: rejected, not in IRR data.
@@ -15,10 +17,12 @@ A scenario to test announcements of IPv4 routes with an IPv6 NEXT_HOP, over an I
 - `AS1_v4_route10`: accepted (RPKI BOV VALID).
 - `AS1_v4_route11`: rejected (RPKI BOC INVALID).
 
-## AS1_2
+AS1_2
+-----
 
 - `AS1_v4_route6`: announced with AS1_1 NEXT_HOP: accepted (same-as).
 
-## AS2_1
+AS2_1
+-----
 
 - `AS2_v4_route12`: accepted (NEXT_HOP authorized-next-hop)
