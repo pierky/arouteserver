@@ -164,6 +164,7 @@ class TestConfigParserClients(TestConfigParserBase):
             "      passive: False",
             "      prepend_rs_as: True",
             "      add_path: True",
+            "      rfc8950: True",
             "      filtering:",
             "        irrdb:",
             "          enforce_origin_in_as_set: False",
@@ -224,6 +225,7 @@ class TestConfigParserClients(TestConfigParserBase):
         client = self.cfg[0]
         self.assertEqual(client["cfg"]["passive"], True)
         self.assertEqual(client["cfg"]["add_path"], False)
+        self.assertEqual(client["cfg"]["rfc8950"], False)
         self.assertEqual(client["cfg"]["prepend_rs_as"], False)
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_origin_in_as_set"], True)
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_prefix_in_as_set"], True)
@@ -246,6 +248,7 @@ class TestConfigParserClients(TestConfigParserBase):
         client = self.cfg[1]
         self.assertEqual(client["cfg"]["passive"], False)
         self.assertEqual(client["cfg"]["add_path"], True)
+        self.assertEqual(client["cfg"]["rfc8950"], True)
         self.assertEqual(client["cfg"]["prepend_rs_as"], True)
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_origin_in_as_set"], False)
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["enforce_prefix_in_as_set"], False)

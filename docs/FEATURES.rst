@@ -107,6 +107,7 @@ Features
   - active sessions;
   - **GTSM** (Generalized TTL Security Mechanism - `RFC5082`_);
   - **ADD-PATH** capability (`RFC7911`_).
+  - `RFC8950`_ **IPv6 NEXT_HOP for IPv4 routes**.
 
 - Automatic building of clients list:
 
@@ -130,3 +131,4 @@ More feature are already planned: see the `Future work <https://arouteserver.rea
 .. _RFC9234: https://tools.ietf.org/html/rfc9234
 .. _RFC5082: https://tools.ietf.org/html/rfc5082
 .. _RFC7911: https://tools.ietf.org/html/rfc7911
+.. _RFC8950: https://tools.ietf.org/html/rfc8950

@@ -542,6 +542,13 @@ class ConfigBuilder(object):
                 return True
         return False
 
+    def _get_rfc8950_clients(self):
+        res = []
+        for client in self.cfg_clients.cfg["clients"]:
+            if client["cfg"]["rfc8950"]:
+                res.append(client["ip"])
+        return res
+
     def enrich_config(self):
         # Unique ASNs from clients list.
         clients_asns = {}
@@ -1023,6 +1030,18 @@ class BIRDConfigBuilder(ConfigBuilder):
                     ):
                         res = False
 
+        if version.parse(self.target_version) < version.parse("2.0"):
+            rfc8950_clients = self._get_rfc8950_clients()
+            cnt = len(rfc8950_clients)
+            if rfc8950_clients:
+                raise BuilderError(
+                    "RFC8950 is not supported on BIRD 1.x, but it is "
+                    "enabled for the following clients: {}{}.".format(
+                        ", ".join(rfc8950_clients[:3]),
+                        "" if cnt <= 3 else " and {} more".format(cnt - 3)
+                    )
+                )
+
         return res
 
     def _include_local_file(self, local_file_id):
@@ -1065,6 +1084,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                         ["transit_free_action",
                         "add_path", "max_prefix_action",
                         "max_prefix_count_rejected_routes",
+                        "rfc8950",
                         "extended_communities",
                         "internal_communities",
                         "roles_discouraged"]
@@ -1152,6 +1172,19 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                 "only available behaviour is to have the "
                 "rejected routes counted towards the limit.".format(
                     ", ".join(clients[:3]),
+                    "" if cnt <= 3 else " and {} more".format(cnt - 3)
+                )
+            ):
+                res = False
+
+        rfc8950_clients = self._get_rfc8950_clients()
+        if rfc8950_clients:
+            cnt = len(rfc8950_clients)
+            if not self.process_compatibility_issue(
+                "rfc8950",
+                "RFC8950 not supported by OpenBGPD but "
+                "enabled for the following clients: {}{}.".format(
+                    ", ".join(rfc8950_clients[:3]),
                     "" if cnt <= 3 else " and {} more".format(cnt - 3)
                 )
             ):

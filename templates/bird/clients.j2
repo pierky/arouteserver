@@ -57,22 +57,28 @@ function origin_as_is_in_{{ client.id }}_as_set(){{ bird_fnc_type("bool") }} {
 # R-SET for {{ client.id }}
 function prefix_is_in_{{ client.id }}_as_set(){{ bird_fnc_type("bool") }} {
 {% if client.cfg.filtering.irrdb.as_set_bundle_ids %}
-{%	for as_set_bundle_id in client.cfg.filtering.irrdb.as_set_bundle_ids|sort %}
-{%    set this_ip_ver = client.ip|ipaddr_ver %}
-{%    set prefixes = irrdb_info[as_set_bundle_id].prefixes|selectattr("prefix", "is_ipver", this_ip_ver)|list %}
-{%    if prefixes %}
-{%      if "2.0"|target_version_ge %}
+{%     for as_set_bundle_id in client.cfg.filtering.irrdb.as_set_bundle_ids|sort %}
+{%         if "2.0"|target_version_ge and client.cfg.rfc8950 and client.ip|ipaddr_ver == 6 %}
+{%             set afis = [4, 6] %}
+{%         else %}
+{%             set afis = [ client.ip|ipaddr_ver ] %}
+{%         endif %}
+{%         for this_ip_ver in afis %}
+{%             set prefixes = irrdb_info[as_set_bundle_id].prefixes|selectattr("prefix", "is_ipver", this_ip_ver)|list %}
+{%             if prefixes %}
+{%                 if "2.0"|target_version_ge %}
     if net.type = NET_IP{{ this_ip_ver }} then
         if net ~ AS_SET_{{ irrdb_info[as_set_bundle_id].name }}_prefixes_{{ this_ip_ver }} then
             return true;
-{%      else %}
+{%                 else %}
     if net ~ AS_SET_{{ irrdb_info[as_set_bundle_id].name }}_prefixes_{{ this_ip_ver }} then
         return true;
-{%      endif %}
-{%    else %}
+{%                 endif %}
+{%             else %}
 	# AS-SET {{ irrdb_info[as_set_bundle_id].name }} referenced but empty.
-{%    endif %}
-{%	endfor %}
+{%             endif %}
+{%	   endfor %}
+{%     endfor %}
 {% endif %}
     return false;
 }
@@ -93,8 +99,15 @@ function next_hop_is_valid_for_{{ client.id }}(){{ bird_fnc_type("bool") }}
 {%			endfor %}
 {%		else %}
 {%			for asn, same_as_clients in clients|groupby("asn") if asn == client.asn %}
-{%				for same_as_client in same_as_clients|sort(attribute="ip") if same_as_client.ip|ipaddr_ver == client.ip|ipaddr_ver %}
+{%				for same_as_client in same_as_clients|sort(attribute="ip") %}
+{%					if (
+						"2.0"|target_version_ge and
+						client.cfg.rfc8950
+					) or (
+						same_as_client.ip|ipaddr_ver == client.ip|ipaddr_ver
+					) %}
 	if bgp_next_hop = {{ same_as_client.ip }} then return true;	# {{ same_as_client.id }}
+{%					endif %}
 {%				endfor %}
 {%			endfor %}
 {%		endif %}
@@ -104,12 +117,28 @@ function next_hop_is_valid_for_{{ client.id }}(){{ bird_fnc_type("bool") }}
 
 {% if client.cfg.filtering.black_list_pref %}
 function prefix_is_in_{{ client.id }}_blacklist(){{ bird_fnc_type("bool") }}
-prefix set {{ client.id }}_blacklist;
+{% for this_ip_ver in list_ip_vers %}
+{%   set prefixes = client.cfg.filtering.black_list_pref|selectattr("prefix", "is_ipver", this_ip_ver )|list %}
+{%   if prefixes|length > 0 %}
+prefix set {{ client.id }}_blacklist_{{ this_ip_ver }};
+{%   endif %}
+{% endfor %}
 {
-	{{ client.id }}_blacklist = [
-{{ write_prefix_list(client.cfg.filtering.black_list_pref|selectattr("prefix", "is_ipver", client.ip|ipaddr_ver)) }}
-	];
-	return net ~ {{ client.id }}_blacklist;
+{% for this_ip_ver in list_ip_vers %}
+{%   set prefixes = client.cfg.filtering.black_list_pref|selectattr("prefix", "is_ipver", this_ip_ver )|list %}
+{%   if prefixes|length > 0 %}
+    {{ client.id }}_blacklist_{{ this_ip_ver }} = [
+{{ write_prefix_list(prefixes) }}
+    ];
+{%     if "2.0"|target_version_ge %}
+    if net.type = NET_IP{{ this_ip_ver }} then
+        if net ~ {{ client.id }}_blacklist_{{ this_ip_ver }} then return true;
+{%     else %}
+    if net ~ {{ client.id }}_blacklist_{{ this_ip_ver }} then return true;
+{%     endif %}
+{%   endif %}
+{% endfor %}
+	return false;
 }
 {% endif %}
 
@@ -186,7 +215,12 @@ bool validated;
 
 {%	if client.cfg.filtering.irrdb.white_list_route %}
 	# Client's white list
-{%		for route in client.cfg.filtering.irrdb.white_list_route|selectattr("prefix", "is_ipver", client.ip|ipaddr_ver)|sort(attribute="prefix") if route.prefix|ipaddr_ver == client.ip|ipaddr_ver %}
+{%          if "2.0"|target_version_ge and client.cfg.rfc8950 and client.ip|ipaddr_ver == 6 %}
+{%              set routes = client.cfg.filtering.irrdb.white_list_route|sort(attribute="prefix") %}
+{%          else %}
+{%              set routes = client.cfg.filtering.irrdb.white_list_route|selectattr("prefix", "is_ipver", client.ip|ipaddr_ver)|sort(attribute="prefix") %}
+{%          endif %}
+{%		for route in routes %}
 	if !validated && net ~ [ {{ write_prefix_list_entry(route) }} ] then {
 {%			if route.asn %}
 		if bgp_path.last = {{ route.asn }} then {
@@ -223,7 +257,11 @@ filter receive_from_{{ client.id }} {
 		{{ reject(client, 65535, '"source != RTS_BGP - REJECTING ", net') }}
 
 	{% if "2.0"|target_version_ge %}
+	{%     if client.cfg.rfc8950 and client.ip|ipaddr_ver == 6%}
+	if !(net.type = NET_IP6 || net.type = NET_IP4) then
+	{%     else %}
 	if !(net.type = NET_IP{{ client.ip|ipaddr_ver }}) then
+	{%     endif %}
 		{{ reject(client, 65535, '"AFI not enabled for this peer - REJECTING ", net') }}
 	{% endif %}
 
@@ -279,8 +317,13 @@ filter receive_from_{{ client.id }} {
 
 	{% if client.ip|ipaddr_ver == 6 %}
 	# Prefix: only IPv6 Global Unicast space allowed
+	{%   if "2.0"|target_version_ge %}
+	if net.type = NET_IP6 && !(net ~ [2000::/3+]) then
+		{{ reject(client, 10, '"prefix is not in IPv6 Global Unicast space - REJECTING ", net') }}
+	{%   else %}
 	if !(net ~ [2000::/3+]) then
 		{{ reject(client, 10, '"prefix is not in IPv6 Global Unicast space - REJECTING ", net') }}
+	{%   endif %}
 	{% endif %}
 
 	# Prefix: global blacklist
@@ -457,24 +500,33 @@ protocol bgp {{ client.id }} {
 	interpret communities off;
 	{% endif %}
 
+	{% if "2.0.0"|target_version_ge and client.cfg.rfc8950 and client.ip|ipaddr_ver == 6 %}
+	{%     set afis = [4, 6] %}
+	{% else %}
+	{%     set afis = [ client.ip|ipaddr_ver ] %}
+	{% endif %}
+	{% for current_afi in afis %}
 	{% if "2.0.0"|target_version_ge %}
 	# ---------------------------------------
-	ipv{{ client.ip|ipaddr_ver }} {
-	table master{{ client.ip|ipaddr_ver }};
+	ipv{{ current_afi }} {
+	table master{{ current_afi }};
 	{% endif %}
 
 	{% if client.cfg.add_path %}
 	add paths tx;
 	{% endif %}
 
+	{% if client.cfg.rfc8950 and client.ip|ipaddr_ver == 6 and current_afi == 4 %}
+	extended next hop on;
+	{% endif %}
 	{% if cfg.path_hiding %}
 	secondary;
 	{% endif %}
 
 	{% if client.cfg.filtering.max_prefix.action %}
-	{%	if client.ip|ipaddr_ver == 4 and client.cfg.filtering.max_prefix.limit_ipv4 %}
+	{%	if current_afi == 4 and client.cfg.filtering.max_prefix.limit_ipv4 %}
 	{%		set max_pref_limit = client.cfg.filtering.max_prefix.limit_ipv4 %}
-	{% 	elif client.ip|ipaddr_ver == 6 and client.cfg.filtering.max_prefix.limit_ipv6 %}
+	{% 	elif current_afi == 6 and client.cfg.filtering.max_prefix.limit_ipv6 %}
 	{%      	set max_pref_limit = client.cfg.filtering.max_prefix.limit_ipv6 %}
 	{% 	else %}
 	{%		set max_pref_limit = 0 %}
@@ -498,11 +550,12 @@ protocol bgp {{ client.id }} {
 	export filter announce_to_{{ client.id }};
 
 	{%- if "2.0.0"|target_version_ge %}
-	{{- write_custom_config_lines(client, "ipv" ~ client.ip|ipaddr_ver, "channel")|indent("	") }}
+	{{- write_custom_config_lines(client, "ipv" ~ current_afi, "channel")|indent("	") }}
 	{{- write_custom_config_lines(client, "any", "channel")|indent("	") }}
 	# ---------------------------------------
 	};
 	{% endif %}
+	{% endfor %}
 
 	{{- write_custom_config_lines(client, "ipv" ~ client.ip, "protocol")|indent("	") }}
 	{{- write_custom_config_lines(client, "any", "protocol")|indent("	") }}

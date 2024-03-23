@@ -1,0 +1,67 @@
+router id 192.0.2.11;
+
+log "/var/log/bird.log" all;
+log syslog all;
+debug protocols { states, routes, filters, interfaces, events };
+
+timeformat base         iso long;
+timeformat log          iso long;
+timeformat protocol     iso long;
+timeformat route        iso long;
+
+protocol device {};
+
+ipv4 table master4 sorted;
+ipv6 table master6 sorted;
+
+protocol static {
+	ipv4 { table master4; };
+	route {{ data.AS1_v4_route1 }} unreachable;
+	route {{ data.AS1_v4_route2 }} unreachable;
+	route {{ data.AS1_v4_route3 }} unreachable;
+	route {{ data.AS1_v4_route4 }} unreachable;
+	route {{ data.AS1_v4_route5 }} unreachable;
+	route {{ data.AS1_v4_route7 }} unreachable;
+	route {{ data.AS1_v4_route8 }} unreachable;
+	route {{ data.AS1_v4_route9 }} unreachable;
+	route {{ data.AS1_v4_route10 }} unreachable;
+	route {{ data.AS1_v4_route11 }} unreachable;
+}
+protocol static {
+	ipv6 { table master6; };
+	route {{ data.AS1_v6_route1 }} unreachable;
+	route {{ data.AS1_v6_route2 }} unreachable;
+}
+
+filter to_the_rs {
+	if net = {{ data.AS1_v4_route3 }} then
+		bgp_next_hop = {{ data.AS1_2_IPAddress }};
+
+	accept;
+}
+
+protocol bgp the_rs {
+	local as 1;
+	neighbor {{ data.rs_IPAddress }} as 999;
+
+	connect delay time 1;
+	connect retry time 1;
+
+	ipv4 {
+		table master4;
+		import table on;
+		import keep filtered on;
+		import none;
+		export filter to_the_rs;
+		extended next hop on;
+	};
+
+	ipv6 {
+		table master6;
+		import table on;
+		import keep filtered on;
+		import none;
+		export filter to_the_rs;
+		extended next hop on;
+	};
+}

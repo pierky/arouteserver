@@ -115,6 +115,7 @@ class ConfigParserGeneral(ConfigParserBase):
         c["multihop"] = ValidatorUInt(mandatory=False)
         c["gtsm"] = ValidatorBool(default=False)
         c["add_path"] = ValidatorBool(default=False)
+        c["rfc8950"] = ValidatorBool(default=False)
 
         c["filtering"] = OrderedDict()
         f = c["filtering"]
