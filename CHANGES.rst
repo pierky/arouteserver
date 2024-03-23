@@ -3,6 +3,13 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+1.22.0
+------
+
+- New: add support of IPv6 NEXT_HOP for IPv4 routes (`RFC8950 <https://tools.ietf.org/html/rfc8950>`__).
+
+  Only available for BIRD 2.x.
+
 1.21.7
 ------
 
