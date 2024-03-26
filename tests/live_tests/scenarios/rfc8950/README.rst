@@ -16,6 +16,8 @@ AS1_1
 - `AS1_v4_route9`: rejected (RPKI BOV AS0).
 - `AS1_v4_route10`: accepted (RPKI BOV VALID).
 - `AS1_v4_route11`: rejected (RPKI BOC INVALID).
+- `AS1_v4_route13`: accepted (/8, within the ``ipv4_pref_len`` range).
+- `AS1_v4_route14`: reject (/25, outise the ``ipv4_pref_len`` range).
 
 AS1_2
 -----
