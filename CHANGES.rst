@@ -3,6 +3,15 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+1.22.1
+------
+
+- Fix: IPv4 prefix length verification when RFC8950 is enabled.
+
+  When a peer is configured for RFC8950 support, the prefix length is checked for the IPv6 limits only. This will permit too long IPv4 (up to /48) prefixes and will reject short IPv4 (< /12) prefixes.
+
+  See also `GitHub issue 130 <https://github.com/pierky/arouteserver/issues/130>`__.
+
 1.22.0
 ------
 
