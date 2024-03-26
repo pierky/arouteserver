@@ -368,24 +368,19 @@ filter receive_from_{{ client.id }} {
 		{% endif %}
 
 		# Prefix: length
-		{% if client.ip|ipaddr_ver == 4 %}
-		{% set min_pref_len = client.cfg.filtering.ipv4_pref_len.min %}
-		{% set max_pref_len = client.cfg.filtering.ipv4_pref_len.max %}
+		{% if "2.0.0"|target_version_ge and client.cfg.rfc8950 and client.ip|ipaddr_ver == 6 %}
+		{%     set afis = [4, 6] %}
 		{% else %}
-		{% set min_pref_len = client.cfg.filtering.ipv6_pref_len.min %}
-		{% set max_pref_len = client.cfg.filtering.ipv6_pref_len.max %}
+		{%     set afis = [ client.ip|ipaddr_ver ] %}
 		{% endif %}
-		{% if "2.0.0"|target_version_ge and client.cfg.rfc8950 and client.ip|ipaddr_ver == 6 %}
-		if net.type = NET_IP6 then {
-		{% endif %}
-		if !prefix_len_is_valid({{ min_pref_len }}, {{ max_pref_len }}) then
-			{{ reject(client, 13, '"prefix len [", net.len, "] not in ' ~ min_pref_len ~ '-' ~ max_pref_len ~ ' - REJECTING ", net') }}
-		{% if "2.0.0"|target_version_ge and client.cfg.rfc8950 and client.ip|ipaddr_ver == 6 %}
-		} else {
-		if !prefix_len_is_valid({{ client.cfg.filtering.ipv4_pref_len.min }}, {{ client.cfg.filtering.ipv4_pref_len.max }}) then
-			{{ reject(client, 13, '"prefix len [", net.len, "] not in ' ~ client.cfg.filtering.ipv4_pref_len.min ~ '-' ~ client.cfg.filtering.ipv4_pref_len.max ~ ' - REJECTING ", net') }}
+		{% for current_afi in afis %}
+		{%	 set min_pref_len = client.cfg.filtering["ipv" ~ current_afi ~ "_pref_len"].min %}
+		{%   set max_pref_len = client.cfg.filtering["ipv" ~ current_afi ~ "_pref_len"].max %}
+		if net.type = NET_IP{{ current_afi }} then {
+			if !prefix_len_is_valid({{ min_pref_len }}, {{ max_pref_len }}) then
+				{{ reject(client, 13, '"prefix len [", net.len, "] not in ' ~ min_pref_len ~ '-' ~ max_pref_len ~ ' - REJECTING ", net') }}
 		}
-		{% endif %}
+		{% endfor %}
 
 		{% if cfg.graceful_shutdown.enabled %}
 		{%	if client.cfg.graceful_shutdown.enabled %}

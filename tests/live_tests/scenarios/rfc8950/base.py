@@ -218,3 +218,4 @@ class RFC8950Scenario(LiveScenario_TagAndRejectRejectPolicy, LiveScenario):
         """{}: IPv4 prefix length within ipv6_pref_len but outside ipv4_pref_len"""
         for prefix in (self.DATA["AS1_v4_route14"],):
             self.receive_route(self.rs, prefix, filtered=True, reject_reason=13)
+            self.log_contains(self.rs, "prefix len [25] not in 8-24 - REJECTING " + prefix)
