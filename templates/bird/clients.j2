@@ -376,10 +376,9 @@ filter receive_from_{{ client.id }} {
 		{% for current_afi in afis %}
 		{%	 set min_pref_len = client.cfg.filtering["ipv" ~ current_afi ~ "_pref_len"].min %}
 		{%   set max_pref_len = client.cfg.filtering["ipv" ~ current_afi ~ "_pref_len"].max %}
-		if net.type = NET_IP{{ current_afi }} then {
-			if !prefix_len_is_valid({{ min_pref_len }}, {{ max_pref_len }}) then
-				{{ reject(client, 13, '"prefix len [", net.len, "] not in ' ~ min_pref_len ~ '-' ~ max_pref_len ~ ' - REJECTING ", net') }}
-		}
+		if {%- if "2.0"|target_version_ge %} net.type = NET_IP{{ current_afi }} && {% else %} {% endif -%}
+			!prefix_len_is_valid({{ min_pref_len }}, {{ max_pref_len }}) then
+			{{ reject(client, 13, '"prefix len [", net.len, "] not in ' ~ min_pref_len ~ '-' ~ max_pref_len ~ ' - REJECTING ", net') }}
 		{% endfor %}
 
 		{% if cfg.graceful_shutdown.enabled %}
