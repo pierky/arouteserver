@@ -5,6 +5,12 @@ cfg:
         path_hiding: True
         rfc8950: true
         filtering:
+                ipv4_pref_len:
+                        min: 8
+                        max: 24
+                ipv6_pref_len:
+                        min: 12
+                        max: 48
                 never_via_route_servers:
                         peering_db: False
                 next_hop_policy: "strict"

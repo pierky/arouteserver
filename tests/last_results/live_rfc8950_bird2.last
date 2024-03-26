@@ -3,13 +3,14 @@ platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.
 cachedir: .pytest_cache
 rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
-collecting ... collected 11 items
+collecting ... collected 12 items
 
 Live test, BIRD v2, RFC8950: instances setup 
 Live test, BIRD v2, RFC8950: setting instances up...
 PASSED
 Live test, BIRD v2, RFC8950: sessions are up PASSED
 Live test, BIRD v2, RFC8950: accepted routes PASSED
+Live test, BIRD v2, RFC8950: IPv4 prefix length within ipv6_pref_len but outside ipv4_pref_len PASSED
 Live test, BIRD v2, RFC8950: next hop authorized address AS2_1 PASSED
 Live test, BIRD v2, RFC8950: next hop same-as AS1_2 PASSED
 Live test, BIRD v2, RFC8950: next hop strict mode on AS1_1 PASSED
@@ -25,4 +26,4 @@ Live test, BIRD v2, RFC8950: dumping routes...
 Live test, BIRD v2, RFC8950: stopping instances...
 
 
-============================= 11 passed in 20.56s ==============================
+============================= 12 passed in 20.35s ==============================

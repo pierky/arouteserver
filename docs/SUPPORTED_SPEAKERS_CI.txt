@@ -6,7 +6,7 @@ Total test cases per BGP speaker
 =============== ========= ============ ============ ===========  
 **BGP speaker** **Total** **Passed ✔** **Failed ✖** **Skipped** 
 BIRD            830       821          0            9           
-BIRD v2         939       929          0            10          
+BIRD v2         940       930          0            10          
 BIRD v3         846       837          0            9           
 OpenBGPD 8.4    458       455          0            3           
 =============== ========= ============ ============ ===========  
@@ -131,18 +131,19 @@ reconfigure                         ✔        ✔           ✔
 RFC8950
 +++++++
 
-================================= ======== =========== =========== ================  
-**Test**                          **BIRD** **BIRD v2** **BIRD v3** **OpenBGPD 8.4** 
-RPKI VALID routes                          ✔                                        
-RPKI rejected routes, AS0                  ✔                                        
-RPKI rejected routes, INVALID              ✔                                        
-accepted routes                            ✔                                        
-dropped routes, not in r_set               ✔                                        
-log contains errors                        ✔                                        
-next hop authorized address AS2_1          ✔                                        
-next hop same-as AS1_2                     ✔                                        
-next hop strict mode on AS1_1              ✔                                        
-================================= ======== =========== =========== ================  
+================================================================= ======== =========== =========== ================  
+**Test**                                                          **BIRD** **BIRD v2** **BIRD v3** **OpenBGPD 8.4** 
+IPv4 prefix length within ipv6_pref_len but outside ipv4_pref_len          ✔                                        
+RPKI VALID routes                                                          ✔                                        
+RPKI rejected routes, AS0                                                  ✔                                        
+RPKI rejected routes, INVALID                                              ✔                                        
+accepted routes                                                            ✔                                        
+dropped routes, not in r_set                                               ✔                                        
+log contains errors                                                        ✔                                        
+next hop authorized address AS2_1                                          ✔                                        
+next hop same-as AS1_2                                                     ✔                                        
+next hop strict mode on AS1_1                                              ✔                                        
+================================================================= ======== =========== =========== ================  
 
 RPKI INVALID tagging, IPv4
 ++++++++++++++++++++++++++

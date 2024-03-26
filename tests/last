@@ -270,7 +270,7 @@ RTT getter parser: empty PASSED
 RTT getter parser: new line only PASSED
 RTT getter parser: none PASSED
 
-============================= 264 passed in 40.33s =============================
+============================= 264 passed in 40.31s =============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -293,7 +293,7 @@ External resources: RPKI ROAs, rpki-client PASSED
 External resources: prefixes from AS-SET via bgpq3 PASSED
 External resources: prefixes from AS-SET via bgpq4 PASSED
 
-============================= 14 passed in 40.65s ==============================
+============================= 14 passed in 43.68s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -322,7 +322,7 @@ Live test, BIRD, hooks example, IPv6: dumping routes...
 Live test, BIRD, hooks example, IPv6: stopping instances...
 
 
-============================== 4 passed in 10.57s ==============================
+============================== 4 passed in 10.54s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -373,7 +373,7 @@ Live test, BIRD, BGP communities, IPv6: dumping routes...
 Live test, BIRD, BGP communities, IPv6: stopping instances...
 
 
-============================= 26 passed in 42.07s ==============================
+============================= 26 passed in 42.33s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -402,7 +402,7 @@ Live test, BIRD, default config, IPv6: dumping routes...
 Live test, BIRD, default config, IPv6: stopping instances...
 
 
-============================== 4 passed in 10.19s ==============================
+============================== 4 passed in 10.37s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -983,7 +983,7 @@ Live test, BIRD, global scenario, IPv6, tag&reject: dumping routes...
 Live test, BIRD, global scenario, IPv6, tag&reject: stopping instances...
 
 
-================== 518 passed, 6 skipped in 354.22s (0:05:54) ==================
+================== 518 passed, 6 skipped in 375.56s (0:06:15) ==================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1018,7 +1018,7 @@ Live test, BIRD, gshut, IPv6: dumping routes...
 Live test, BIRD, gshut, IPv6: stopping instances...
 
 
-============================= 10 passed in 30.05s ==============================
+============================= 10 passed in 32.76s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1069,7 +1069,7 @@ Live test, BIRD, max-prefix, IPv6: dumping routes...
 Live test, BIRD, max-prefix, IPv6: stopping instances...
 
 
-======================== 26 passed in 133.27s (0:02:13) ========================
+======================== 26 passed in 132.96s (0:02:12) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1148,7 +1148,7 @@ Live test, BIRD, path hiding, mitigation off, IPv6: dumping routes...
 Live test, BIRD, path hiding, mitigation off, IPv6: stopping instances...
 
 
-================== 36 passed, 2 skipped in 127.79s (0:02:07) ===================
+================== 36 passed, 2 skipped in 128.79s (0:02:08) ===================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1177,7 +1177,7 @@ Live test, BIRD, examples, rich config, IPv6: dumping routes...
 Live test, BIRD, examples, rich config, IPv6: stopping instances...
 
 
-============================== 4 passed in 10.94s ==============================
+============================== 4 passed in 11.52s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1230,7 +1230,7 @@ Live test, BIRD, RPKI INVALID tagging, IPv6: dumping routes...
 Live test, BIRD, RPKI INVALID tagging, IPv6: stopping instances...
 
 
-============================= 28 passed in 56.34s ==============================
+============================= 28 passed in 59.30s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1267,7 +1267,7 @@ Live test, BIRD, BOV custom comms, IPv6: dumping routes...
 Live test, BIRD, BOV custom comms, IPv6: stopping instances...
 
 
-============================= 12 passed in 33.05s ==============================
+============================= 12 passed in 33.61s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1474,7 +1474,7 @@ Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: dumping routes...
 Live test, BIRD, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 
-======================= 166 passed in 122.15s (0:02:02) ========================
+======================= 166 passed in 122.78s (0:02:02) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1545,7 +1545,7 @@ Live test, BIRD, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, BIRD, 'tag' reject policy scenario, IPv6: stopping instances...
 
 
-=================== 45 passed, 1 skipped in 91.99s (0:01:31) ===================
+=================== 45 passed, 1 skipped in 93.61s (0:01:33) ===================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1574,7 +1574,7 @@ Live test, BIRD v2, hooks example, IPv6: dumping routes...
 Live test, BIRD v2, hooks example, IPv6: stopping instances...
 
 
-============================== 4 passed in 11.37s ==============================
+============================== 4 passed in 11.02s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1625,7 +1625,7 @@ Live test, BIRD v2, BGP communities, IPv6: dumping routes...
 Live test, BIRD v2, BGP communities, IPv6: stopping instances...
 
 
-============================= 26 passed in 45.11s ==============================
+============================= 26 passed in 45.10s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -1654,7 +1654,7 @@ Live test, BIRD v2, default config, IPv6: dumping routes...
 Live test, BIRD v2, default config, IPv6: stopping instances...
 
 
-============================== 4 passed in 10.94s ==============================
+============================== 4 passed in 10.85s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2329,7 +2329,7 @@ Live test, BIRD v2, global scenario, RFC8950: dumping routes...
 Live test, BIRD v2, global scenario, RFC8950: stopping instances...
 
 
-================== 603 passed, 7 skipped in 459.10s (0:07:39) ==================
+================== 603 passed, 7 skipped in 464.33s (0:07:44) ==================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2364,7 +2364,7 @@ Live test, BIRD v2, gshut, IPv6: dumping routes...
 Live test, BIRD v2, gshut, IPv6: stopping instances...
 
 
-============================= 10 passed in 32.00s ==============================
+============================= 10 passed in 32.19s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2415,7 +2415,7 @@ Live test, BIRD v2, max-prefix, IPv6: dumping routes...
 Live test, BIRD v2, max-prefix, IPv6: stopping instances...
 
 
-======================== 26 passed in 134.66s (0:02:14) ========================
+======================== 26 passed in 128.76s (0:02:08) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2494,19 +2494,20 @@ Live test, BIRD v2, path hiding, mitigation off, IPv6: dumping routes...
 Live test, BIRD v2, path hiding, mitigation off, IPv6: stopping instances...
 
 
-================== 36 passed, 2 skipped in 128.88s (0:02:08) ===================
+================== 36 passed, 2 skipped in 127.45s (0:02:07) ===================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
 rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
-collecting ... collected 11 items
+collecting ... collected 12 items
 
 Live test, BIRD v2, RFC8950: instances setup 
 Live test, BIRD v2, RFC8950: setting instances up...
 PASSED
 Live test, BIRD v2, RFC8950: sessions are up PASSED
 Live test, BIRD v2, RFC8950: accepted routes PASSED
+Live test, BIRD v2, RFC8950: IPv4 prefix length within ipv6_pref_len but outside ipv4_pref_len PASSED
 Live test, BIRD v2, RFC8950: next hop authorized address AS2_1 PASSED
 Live test, BIRD v2, RFC8950: next hop same-as AS1_2 PASSED
 Live test, BIRD v2, RFC8950: next hop strict mode on AS1_1 PASSED
@@ -2522,7 +2523,7 @@ Live test, BIRD v2, RFC8950: dumping routes...
 Live test, BIRD v2, RFC8950: stopping instances...
 
 
-============================= 11 passed in 20.56s ==============================
+============================= 12 passed in 20.35s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2551,7 +2552,7 @@ Live test, BIRD v2, examples, rich config, IPv6: dumping routes...
 Live test, BIRD v2, examples, rich config, IPv6: stopping instances...
 
 
-============================== 4 passed in 11.18s ==============================
+============================== 4 passed in 11.20s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2590,7 +2591,7 @@ Live test, BIRD v2, roles, IPv6: dumping routes...
 Live test, BIRD v2, roles, IPv6: stopping instances...
 
 
-============================= 14 passed in 45.42s ==============================
+============================= 14 passed in 44.48s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2643,7 +2644,7 @@ Live test, BIRD v2, RPKI INVALID tagging, IPv6: dumping routes...
 Live test, BIRD v2, RPKI INVALID tagging, IPv6: stopping instances...
 
 
-============================= 28 passed in 57.70s ==============================
+============================= 28 passed in 58.82s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2680,7 +2681,7 @@ Live test, BIRD v2, BOV custom comms, IPv6: dumping routes...
 Live test, BIRD v2, BOV custom comms, IPv6: stopping instances...
 
 
-============================= 12 passed in 32.91s ==============================
+============================= 12 passed in 34.20s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2705,7 +2706,7 @@ Live test, BIRD v2, RTR protocol: dumping routes...
 Live test, BIRD v2, RTR protocol: stopping instances...
 
 
-============================== 8 passed in 35.37s ==============================
+============================== 8 passed in 37.25s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2912,7 +2913,7 @@ Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: dumping routes...
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 
-======================= 166 passed in 122.48s (0:02:02) ========================
+======================= 166 passed in 114.22s (0:01:54) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -2983,7 +2984,7 @@ Live test, BIRD v2, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, BIRD v2, 'tag' reject policy scenario, IPv6: stopping instances...
 
 
-=================== 45 passed, 1 skipped in 91.36s (0:01:31) ===================
+=================== 45 passed, 1 skipped in 84.36s (0:01:24) ===================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3012,7 +3013,7 @@ Live test, BIRD v3, hooks example, IPv6: dumping routes...
 Live test, BIRD v3, hooks example, IPv6: stopping instances...
 
 
-============================== 4 passed in 11.44s ==============================
+============================== 4 passed in 10.09s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3063,7 +3064,7 @@ Live test, BIRD v3, BGP communities, IPv6: dumping routes...
 Live test, BIRD v3, BGP communities, IPv6: stopping instances...
 
 
-============================= 26 passed in 46.39s ==============================
+============================= 26 passed in 41.56s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3092,7 +3093,7 @@ Live test, BIRD v3, default config, IPv6: dumping routes...
 Live test, BIRD v3, default config, IPv6: stopping instances...
 
 
-============================== 4 passed in 11.22s ==============================
+============================== 4 passed in 10.26s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3673,7 +3674,7 @@ Live test, BIRD v3, global scenario, IPv6, tag&reject: dumping routes...
 Live test, BIRD v3, global scenario, IPv6, tag&reject: stopping instances...
 
 
-================== 518 passed, 6 skipped in 395.82s (0:06:35) ==================
+================== 518 passed, 6 skipped in 364.99s (0:06:04) ==================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3708,7 +3709,7 @@ Live test, BIRD v3, gshut, IPv6: dumping routes...
 Live test, BIRD v3, gshut, IPv6: stopping instances...
 
 
-============================= 10 passed in 32.65s ==============================
+============================= 10 passed in 32.47s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3759,7 +3760,7 @@ Live test, BIRD v3, max-prefix, IPv6: dumping routes...
 Live test, BIRD v3, max-prefix, IPv6: stopping instances...
 
 
-======================== 26 passed in 132.16s (0:02:12) ========================
+======================== 26 passed in 130.34s (0:02:10) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3838,7 +3839,7 @@ Live test, BIRD v3, path hiding, mitigation off, IPv6: dumping routes...
 Live test, BIRD v3, path hiding, mitigation off, IPv6: stopping instances...
 
 
-================== 36 passed, 2 skipped in 125.90s (0:02:05) ===================
+================== 36 passed, 2 skipped in 130.88s (0:02:10) ===================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3867,7 +3868,7 @@ Live test, BIRD v3, examples, rich config, IPv6: dumping routes...
 Live test, BIRD v3, examples, rich config, IPv6: stopping instances...
 
 
-============================== 4 passed in 11.79s ==============================
+============================== 4 passed in 11.10s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3906,7 +3907,7 @@ Live test, BIRD v3, roles, IPv6: dumping routes...
 Live test, BIRD v3, roles, IPv6: stopping instances...
 
 
-============================= 14 passed in 50.58s ==============================
+============================= 14 passed in 46.41s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3959,7 +3960,7 @@ Live test, BIRD v3, RPKI INVALID tagging, IPv6: dumping routes...
 Live test, BIRD v3, RPKI INVALID tagging, IPv6: stopping instances...
 
 
-============================= 28 passed in 57.15s ==============================
+============================= 28 passed in 56.98s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -3996,7 +3997,7 @@ Live test, BIRD v3, BOV custom comms, IPv6: dumping routes...
 Live test, BIRD v3, BOV custom comms, IPv6: stopping instances...
 
 
-============================= 12 passed in 32.58s ==============================
+============================= 12 passed in 33.02s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -4021,7 +4022,7 @@ Live test, BIRD v3, RTR protocol: dumping routes...
 Live test, BIRD v3, RTR protocol: stopping instances...
 
 
-============================== 8 passed in 35.44s ==============================
+============================== 8 passed in 35.67s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -4228,7 +4229,7 @@ Live test, BIRD v3, tag prefix/origin empty AS-SET, IPv6: dumping routes...
 Live test, BIRD v3, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 
-======================= 166 passed in 124.61s (0:02:04) ========================
+======================= 166 passed in 128.66s (0:02:08) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -4299,7 +4300,7 @@ Live test, BIRD v3, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, BIRD v3, 'tag' reject policy scenario, IPv6: stopping instances...
 
 
-=================== 45 passed, 1 skipped in 92.24s (0:01:32) ===================
+=================== 45 passed, 1 skipped in 92.49s (0:01:32) ===================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -4350,7 +4351,7 @@ Live test, OpenBGPD 8.4, BGP communities, IPv6: dumping routes...
 Live test, OpenBGPD 8.4, BGP communities, IPv6: stopping instances...
 
 
-============================= 26 passed in 51.94s ==============================
+============================= 26 passed in 52.02s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -4379,7 +4380,7 @@ Live test, OpenBGPD 8.4, default config, IPv6: dumping routes...
 Live test, OpenBGPD 8.4, default config, IPv6: stopping instances...
 
 
-============================== 4 passed in 9.59s ===============================
+============================== 4 passed in 9.83s ===============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -4772,7 +4773,7 @@ Live test, OpenBGPD 8.0, global scenario, IPv6: dumping routes...
 Live test, OpenBGPD 8.0, global scenario, IPv6: stopping instances...
 
 
-================== 348 passed, 4 skipped in 251.25s (0:04:11) ==================
+================== 348 passed, 4 skipped in 276.12s (0:04:36) ==================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -4807,7 +4808,7 @@ Live test, OpenBGPD 8.4, gshut, IPv6: dumping routes...
 Live test, OpenBGPD 8.4, gshut, IPv6: stopping instances...
 
 
-============================= 10 passed in 38.57s ==============================
+============================= 10 passed in 40.17s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -4842,7 +4843,7 @@ Live test, OpenBGPD 8.4, max-prefix, IPv6: dumping routes...
 Live test, OpenBGPD 8.4, max-prefix, IPv6: stopping instances...
 
 
-======================== 10 passed in 296.23s (0:04:56) ========================
+======================== 10 passed in 302.00s (0:05:02) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -4921,7 +4922,7 @@ Live test, OpenBGPD 8.4, path hiding, mitigation off, IPv6: dumping routes...
 Live test, OpenBGPD 8.4, path hiding, mitigation off, IPv6: stopping instances...
 
 
-======================== 38 passed in 138.70s (0:02:18) ========================
+======================== 38 passed in 140.71s (0:02:20) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -4950,7 +4951,7 @@ Live test, OpenBGPD 8.4, examples, rich config, IPv6: dumping routes...
 Live test, OpenBGPD 8.4, examples, rich config, IPv6: stopping instances...
 
 
-============================== 4 passed in 9.61s ===============================
+============================== 4 passed in 9.36s ===============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -4989,7 +4990,7 @@ Live test, OpenBGPD 8.4, roles, IPv6: dumping routes...
 Live test, OpenBGPD 8.4, roles, IPv6: stopping instances...
 
 
-============================= 14 passed in 44.54s ==============================
+============================= 14 passed in 39.49s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -5014,7 +5015,7 @@ Live test, OpenBGPD 8.4, RTR protocol: dumping routes...
 Live test, OpenBGPD 8.4, RTR protocol: stopping instances...
 
 
-============================== 8 passed in 37.95s ==============================
+============================== 8 passed in 37.78s ==============================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -5221,7 +5222,7 @@ Live test, OpenBGPD 8.4, tag prefix/origin empty AS-SET, IPv6: dumping routes...
 Live test, OpenBGPD 8.4, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 
-======================= 166 passed in 132.21s (0:02:12) ========================
+======================= 166 passed in 133.31s (0:02:13) ========================
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
@@ -5292,4 +5293,4 @@ Live test, OpenBGPD 8.4, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, OpenBGPD 8.4, 'tag' reject policy scenario, IPv6: stopping instances...
 
 
-=================== 45 passed, 1 skipped in 92.96s (0:01:32) ===================
+================== 45 passed, 1 skipped in 104.99s (0:01:44) ===================
