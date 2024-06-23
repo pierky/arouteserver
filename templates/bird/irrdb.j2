@@ -55,7 +55,7 @@ define ARIN_Whois_db_{{ origin_asn }}_{{ this_ip_ver }} = [
 {%    for this_ip_ver in list_ip_vers %}
 {%      set this_ip_ver_prefixes = registrobr_whois_records[origin_asn].prefixes|selectattr("prefix", "is_ipver", this_ip_ver)|list %}
 {%      if this_ip_ver_prefixes|length == 0 %}
-# no IPv{{ this_ip_ver }} prefixes found in the Registro.br Whois database for AS{{ origin_asn }}
+# no IPv{{ this_ip_ver }} prefixes found in the Registro.br Whois database for {{ origin_asn }}
 {%      else %}
 define RegistroBR_Whois_db_{{ origin_asn }}_{{ this_ip_ver }} = [
 {{ write_prefix_list(this_ip_ver_prefixes, True) }}
