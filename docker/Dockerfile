@@ -1,4 +1,4 @@
-ARG base_image="python:3.11"
+ARG base_image="python:3.12"
 
 FROM ${base_image}
 
@@ -8,7 +8,7 @@ WORKDIR /arouteserver
 RUN mkdir /bgpq4 && \
     cd /bgpq4 && \
     git clone https://github.com/bgp/bgpq4.git ./ && \
-    git checkout tags/1.4 && \
+    git checkout tags/1.12 && \
     ./bootstrap && \
     ./configure && \
     make && \
