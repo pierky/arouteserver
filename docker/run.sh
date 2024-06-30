@@ -28,6 +28,8 @@ LOCAL_PREFIXES="${LOCAL_PREFIXES}"
 IP_VER="${IP_VER}"
 LOCAL_FILES="${LOCAL_FILES}"
 LOCAL_FILES_DIR="${LOCAL_FILES_DIR}"
+EURO_IX_URL="${EURO_IX_URL}"
+EURO_IX_IXP_ID="${EURO_IX_IXP_ID}"
 
 CLIENTS_FILE_PATH="/root/clients.yml"
 OUTPUT_DIR="/root/arouteserver_configs"
@@ -81,6 +83,14 @@ fi
 
 if [[ -z "${VERSION}" ]]; then
     error_envvar_not_set "VERSION"
+fi
+
+if [[ -n "${EURO_IX_URL}" ]]; then
+
+    echo ""
+    echo "Generating clients.yaml from EURO IX-F"
+    echo ""
+    arouteserver clients-from-euroix -o "${CLIENTS_FILE_PATH}" --url "${EURO_IX_URL}" "${EURO_IX_IXP_ID}"
 fi
 
 if [[ ! -e "${CLIENTS_FILE_PATH}" ]]; then
