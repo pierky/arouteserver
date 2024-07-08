@@ -208,6 +208,8 @@ Who is using ARouteServer?
 
 - `SFMIX <https://sfmix.org/>`__, BIRD and OpenBGPD.
 
+- `SONIX <https://sonix.network/>`__, BIRD v2.
+
 - `SwissIX <https://www.swissix.ch/>`__, OpenBGPD.
 
 - `Unmetered.Exchange <https://unmetered.exchange/>`__, BIRD.
