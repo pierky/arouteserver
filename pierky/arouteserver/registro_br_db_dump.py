@@ -81,11 +81,11 @@ class RegistroBRWhoisDBDump(CachedObject):
                 except ValueError as e:
                     logging.warning(
                         "invalid record '{}': {}".format(
-                            str(raw), str(e)
+                            str(row), str(e)
                         )
                     )
                     continue
-        except ValueError as e:
+        except Exception as e:
             msg = (
                 "An error occurred while processing the Registro.br Whois "
                 "database dump: {}".format(str(e))
