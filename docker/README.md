@@ -47,6 +47,7 @@ docker run \
     -e IP_VER=4 \
     -e DAEMON=bird \
     -e VERSION=1.6.8 \
+    -e SECRET_PEERINGDB_API_KEY="your secret PeeringDB API key" \
     pierky/arouteserver:latest
 ```
 
