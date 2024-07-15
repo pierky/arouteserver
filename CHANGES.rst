@@ -41,7 +41,11 @@ Change log
 
   A new environment variable is introduced (``TEMPLATES_DIR``) to instruct the Docker container to use custom templates for the configuration generation.
 
-- Docker images are built on top of Python 3.12 and use ``bgpq4`` version 1.12.
+- Tests are no longer performed for Python 3.7 (EoL).
+
+- Tests for Python 3.12 are introduced: that's the release used to perform the integration tests.
+
+- Docker images are built on top of Python 3.12 and PyPy 3.10, and use ``bgpq4`` version 1.12.
 
 1.22.1
 ------
