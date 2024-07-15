@@ -47,13 +47,15 @@ class RegistroBRWhoisDBDump(CachedObject):
             for row in raw.splitlines():
                 if not row.strip():
                     continue
-                if "|" not in row:
-                    raise ValueError(
-                        "unknown record format, missing field separator ('|')"
-                    )
                 try:
+                    if "|" not in row:
+                        raise ValueError(
+                            "unknown record format, missing field separator ('|')"
+                        )
                     fields = row.split("|")
                     if len(fields) < 3:
+                        if fields[1] == "--whois err--":
+                            continue
                         raise ValueError(
                             "unknown record format, less than 3 fields found"
                         )
@@ -77,12 +79,13 @@ class RegistroBRWhoisDBDump(CachedObject):
                             "prefix": prefix
                         })
                 except ValueError as e:
-                    raise ValueError(
+                    logging.warning(
                         "invalid record '{}': {}".format(
-                            str(raw), str(e)
+                            str(row), str(e)
                         )
                     )
-        except ValueError as e:
+                    continue
+        except Exception as e:
             msg = (
                 "An error occurred while processing the Registro.br Whois "
                 "database dump: {}".format(str(e))
