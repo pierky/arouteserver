@@ -87,6 +87,17 @@ docker run \
     pierky/arouteserver:latest
 ```
 
+In case custom templates are used to generate the final configurations, it's possible to pass the `TEMPLATES_DIR` environment variable to the container and set it to a custom path (on the container side) where the local directory containing the customized files is mounted:
+
+```bash
+docker run \
+    ...
+    -e TEMPLATES_DIR="/custom_templates" \
+    -v /path/to/local/templates/directory:/custom_templates:ro
+```
+
+The local directory (*/path/to/local/templates/directory* in the example above) must have the same structure of the official *templates* directory (so, with sub-directories like *bird*, *openbgpd*, *html*, *md*, ...).
+
 ### Textual representation
 
 A [textual representation](https://arouteserver.readthedocs.io/en/latest/USAGE.html#textual-representation) of the route server's options and policies will be generated automatically before the route server configuration is generated if the directory `/root/arouteserver_html` exists on the container.
