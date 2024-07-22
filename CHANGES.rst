@@ -31,6 +31,10 @@ Change log
 
   See also `GitHub issue 139 <https://github.com/pierky/arouteserver/issues/139>`__.
 
+- Improvement: avoid warnings when ``bgpq4`` prints ``Invalid AS number:`` errors.
+
+  When ``Invalid AS number:`` lines are printed by ``bgpq4``, avoid generating the ``bgpq4 succeeded but an error was printed`` warnings.
+
 - Improvement (Docker image): allow generation of clients.yml from Euro-IX files.
 
   A new environment variable is introduced (``EURO_IX_URL``) to instruct the Docker container to build the clients.yml file from the Euro-IX JSON export file.
