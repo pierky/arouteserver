@@ -395,6 +395,7 @@ jobs:
 
       - name: Build and push the release
         run: >-
+          pip install --upgrade packaging
           python setup.py sdist
 
       # All the tags go to PyPI test
