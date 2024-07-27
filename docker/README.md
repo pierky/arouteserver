@@ -47,6 +47,7 @@ docker run \
     -e IP_VER=4 \
     -e DAEMON=bird \
     -e VERSION=1.6.8 \
+    -e SECRET_PEERINGDB_API_KEY="your secret PeeringDB API key" \
     pierky/arouteserver:latest
 ```
 
@@ -85,6 +86,17 @@ docker run \
     -e LOCAL_FILES_DIR=/var/pierky/test \
     pierky/arouteserver:latest
 ```
+
+In case custom templates are used to generate the final configurations, it's possible to pass the `TEMPLATES_DIR` environment variable to the container and set it to a custom path (on the container side) where the local directory containing the customized files is mounted:
+
+```bash
+docker run \
+    ...
+    -e TEMPLATES_DIR="/custom_templates" \
+    -v /path/to/local/templates/directory:/custom_templates:ro
+```
+
+The local directory (*/path/to/local/templates/directory* in the example above) must have the same structure of the official *templates* directory (so, with sub-directories like *bird*, *openbgpd*, *html*, *md*, ...).
 
 ### Textual representation
 

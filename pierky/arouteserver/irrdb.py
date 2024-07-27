@@ -162,18 +162,33 @@ class IRRDBInfo(CachedObject, AS_SET_Bundle):
             proc.communicate()
             raise
 
+        if err is not None:
+            err = err.decode("utf-8").strip()
+
         if proc.returncode != 0:
             err_msg = "{} exit code is {}".format(self.bgpq, proc.returncode)
-            if err is not None and err.strip():
+            if err:
                 err_msg += ", stderr: {}".format(err)
             raise ValueError(err_msg)
 
-        if err is not None and err.strip():
-            logging.warning("{} succeeded but an error was "
-                            "printed when executing '{}': {}".format(
-                                self.bgpq,
-                                " ".join(cmd), err.strip()
-                            ))
+        if err:
+            # If an error was returned, remove any line containing
+            # "Invalid AS number:". This is printed to stderr when
+            # private ASNs are found in the output, but it's just
+            # confusing and not useful for the user.
+            err_lines = err.split("\n")
+            err = "\n".join([
+                line
+                for line in err_lines
+                if "Invalid AS number:" not in line
+            ])
+
+            if err:
+                logging.warning("{} succeeded but an error was "
+                                "printed when executing '{}': {}".format(
+                                    self.bgpq,
+                                    " ".join(cmd), err
+                                ))
 
         return out
 

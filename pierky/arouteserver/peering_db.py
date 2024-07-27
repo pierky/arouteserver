@@ -18,6 +18,7 @@ import json
 import re
 import os
 import threading
+import time
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -62,7 +63,14 @@ def _get_request_session():
 
     retry_strategy = Retry(
         total=3,
-        backoff_factor=2,
+
+        # Using 10 to increase chances of not hitting the limit in case of a
+        # 429. The limit is 40/minute per API key:
+        # "Authenticated queries limited to 40/minute per user or organization
+        #  (when an organizational API key is used)"
+        # https://docs.peeringdb.com/howto/work_within_peeringdbs_query_limits/
+        backoff_factor=10,
+
         status_forcelist=[413, 429, 500, 502, 503, 504],
         allowed_methods=["HEAD", "GET", "POST", "OPTIONS"],
 
@@ -427,10 +435,24 @@ def clients_from_peeringdb(netixlanid, cache_dir):
 
     asns = {}
 
+    # "Authenticated queries limited to 40/minute per user or organization
+    #  (when an organizational API key is used)"
+    # https://docs.peeringdb.com/howto/work_within_peeringdbs_query_limits/
+    # Poor's man rate-limiting workaround. Wait X seconds every 35 API calls.
+    api_calls_per_minute = 40 - 5  # 5 is a safety margin
+    api_calls_bucket_start = 0
+    api_calls_bucket_cnt = 0
+
     for client in clients:
+
         asn = client["asn"]
         net = PeeringDBNet(asn, cache_dir=cache_dir)
         net.load_data()
+
+        if not net.from_cache:
+            api_calls_bucket_cnt += 1
+            if not api_calls_bucket_start:
+                api_calls_bucket_start = time.time()
 
         if not net.irr_as_sets:
             continue
@@ -445,6 +467,18 @@ def clients_from_peeringdb(netixlanid, cache_dir):
             irr_as_set = irr_as_set.strip()
             if irr_as_set not in asns[key]["as_sets"]:
                 asns[key]["as_sets"].append(irr_as_set.encode("ascii", "ignore").decode("utf-8"))
+
+        # Poor's man rate-limiting workaround. Wait X seconds every 35 API calls.
+        if api_calls_bucket_start and api_calls_bucket_cnt >= api_calls_per_minute:
+            wait_time = 60 - (time.time() - api_calls_bucket_start)
+            logging.debug(
+                "PeeringDB API calls bucket is full: "
+                f"waiting for {wait_time} seconds to avoid rate-limiting "
+                "(https://docs.peeringdb.com/howto/work_within_peeringdbs_query_limits/)"
+            )
+            time.sleep(wait_time)
+            api_calls_bucket_start = 0
+            api_calls_bucket_cnt = 0
 
     data = {
         "asns": asns,

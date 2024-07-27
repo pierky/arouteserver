@@ -3,6 +3,54 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+1.23
+----
+
+- Fix: Remove second double string 'AS'.
+
+  Cosmetic: remove the double 'AS' prefix from the comments in AS-SET names in BIRD configurations.
+
+  See also `GitHub issue 132 <https://github.com/pierky/arouteserver/issues/132>`__.
+
+- Fix: parse Registro.br records gracefully.
+
+  In case of parsing issues in the records exported by the Registro.br dataset, the tool now logs a warning message and skips the record.
+  The configuration generation no longer fails in this case.
+
+  See also `GitHub PR 135 <https://github.com/pierky/arouteserver/pull/135>`__, `GitHub issue 138 <https://github.com/pierky/arouteserver/issues/138>`__.
+
+- Fix: just log failed Registro.br record content in case of issues.
+
+  When a parsing error occurs in the Registro.br dataset, the tool now logs the content of the record that caused the issue, instead of the whole file.
+
+  See also `GitHub issue 138 <https://github.com/pierky/arouteserver/issues/138>`__.
+
+- Fix: ``clients-from-peeringdb``, reduce the number of PeeringDB API queries per minute.
+
+  To avoid hitting the PeeringDB API rate limit, a delay is introduced between the queries performed to fetch clients' details when the ``clients-from-peeringdb`` command is used.
+
+  See also `GitHub issue 139 <https://github.com/pierky/arouteserver/issues/139>`__.
+
+- Improvement: avoid warnings when ``bgpq4`` prints ``Invalid AS number:`` errors.
+
+  When ``Invalid AS number:`` lines are printed by ``bgpq4``, avoid generating the ``bgpq4 succeeded but an error was printed`` warnings.
+
+- Improvement (Docker image): allow generation of clients.yml from Euro-IX files.
+
+  A new environment variable is introduced (``EURO_IX_URL``) to instruct the Docker container to build the clients.yml file from the Euro-IX JSON export file.
+
+  See also `GitHub PR 136 <https://github.com/pierky/arouteserver/pull/136>`__.
+
+- Improvement (Docker image): allow use of custom templates.
+
+  A new environment variable is introduced (``TEMPLATES_DIR``) to instruct the Docker container to use custom templates for the configuration generation.
+
+- Tests are no longer performed for Python 3.7 (EoL).
+
+- Tests for Python 3.12 are introduced: that's the release used to perform the integration tests.
+
+- Docker images are built on top of Python 3.12 and PyPy 3.10, and use ``bgpq4`` version 1.12.
+
 1.22.1
 ------
 

@@ -32,7 +32,7 @@ Strongly suggested: setup a `Virtualenv <https://virtualenv.pypa.io/>`_.
 .. code:: bash
 
    # on Debian/Ubuntu:
-   sudo apt-get install python-pip python-virtualenv
+   sudo apt-get install python3-pip python3-virtualenv
 
    # on CentOS:
    sudo yum install epel-release
@@ -48,7 +48,7 @@ Strongly suggested: setup a `Virtualenv <https://virtualenv.pypa.io/>`_.
    source ~/.virtualenvs/arouteserver/bin/activate
 
    # install the program
-   pip install arouteserver
+   pip3 install arouteserver
 
 More: ``virtualenv`` `installation <https://virtualenv.pypa.io/en/latest/installation.html>`_ and `usage <https://virtualenv.pypa.io/en/latest/userguide.html>`_.
 
