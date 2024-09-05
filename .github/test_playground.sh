@@ -10,7 +10,7 @@ function pr_bold() {
 
 function run_on() {
     set +e
-    docker-compose exec -T $1 bash -c "$2"
+    docker compose exec -T $1 bash -c "$2"
 
     if [ $? -eq 0 ]; then
         res="OK"
@@ -24,7 +24,7 @@ function run_on() {
     pr_bold "$1: $2 $res"
 }
 
-docker-compose version
+docker compose version
 
 cd tools/playground
 
@@ -32,9 +32,9 @@ if [ "$CI" == "true" ]; then
     export INSTALL_FROM_SRC=1
 fi
 
-docker-compose build
+docker compose build
 
-docker-compose up -d
+docker compose up -d
 
 # Let run.sh configure ARouteServer...
 echo -n "Waiting a bit till run.sh configures everything... "
