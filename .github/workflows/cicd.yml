@@ -394,7 +394,7 @@ jobs:
           pip install --upgrade setuptools
 
       - name: Build and push the release
-        run: >-
+        run: |
           pip install --upgrade packaging
           python setup.py sdist
 
