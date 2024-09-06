@@ -193,11 +193,16 @@ class EuroIXMemberList(object):
         def attach_custom_bgp_community(client, prefix, name):
             community_tag = normalize_bgp_community(name)
 
-            self.mk_parents_and_set(client, "cfg.attach_custom_communities", [])
+            if "cfg" not in client:
+                client["cfg"] = {}
+            if "attach_custom_communities" not in client["cfg"]:
+                client["cfg"]["attach_custom_communities"] = []
 
-            if community_tag not in client["cfg"]["attach_custom_communities"]:
+            community_value = "{}_{}".format(prefix, community_tag)
+
+            if community_value not in client["cfg"]["attach_custom_communities"]:
                 client["cfg"]["attach_custom_communities"].append(
-                    "{}_{}".format(prefix, community_tag)
+                    community_value
                 )
 
         def enrich_with_custom_bgp_communities(clients, connection):
