@@ -176,6 +176,8 @@ Who is using ARouteServer?
 
 - `CNX <http://cnx.net.kh/>`__, BIRD v2.
 
+- `DD-IX <https://dd-ix.net/>`__, BIRD v2.
+
 - `DO-IX <https://www.do-ix.net/>`__, BIRD.
 
 - `EVIX <https://evix.org/>`__, BIRD.
