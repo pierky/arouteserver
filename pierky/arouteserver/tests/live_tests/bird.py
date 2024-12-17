@@ -331,11 +331,11 @@ class BIRDInstanceIPv6(BIRDInstance):
 
 class BIRD2Instance(BIRDInstance):
 
-    DOCKER_IMAGE = "pierky/bird:2.15"
+    DOCKER_IMAGE = "pierky/bird:2.16"
 
     TAG = "bird2"
 
-    TARGET_VERSION = "2.15"
+    TARGET_VERSION = "2.16"
 
     def _get_start_cmd(self):
         return "bird -c /etc/bird/bird.conf -d"

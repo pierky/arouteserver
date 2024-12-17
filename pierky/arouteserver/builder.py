@@ -890,8 +890,9 @@ class BIRDConfigBuilder(ConfigBuilder):
     AVAILABLE_VERSION = ["1.6.3", "1.6.4", "1.6.6", "1.6.7", "1.6.8",
                          "2.0.7", "2.0.7+b962967e", "2.0.8", "2.0.9",
                          "2.0.10", "2.0.11", "2.13", "2.14", "2.15",
+                         "2.16",
                          "3.0"]
-    DEFAULT_VERSION = "2.15"
+    DEFAULT_VERSION = "2.16"
 
     def validate_bgpspeaker_specific_configuration(self):
         res = True
@@ -1077,7 +1078,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
     LOCAL_FILES_BASE_DIR = "/etc/bgpd"
 
     AVAILABLE_VERSION = ["7.0", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7",
-                         "7.8", "8.0", "8.3", "8.4"]
+                         "7.8", "8.0", "8.3", "8.4", "8.7"]
     DEFAULT_VERSION = AVAILABLE_VERSION[-1]
 
     IGNORABLE_ISSUES = ConfigBuilder.IGNORABLE_ISSUES + \
