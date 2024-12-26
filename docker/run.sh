@@ -118,11 +118,19 @@ if [[ "${DAEMON}" == "bird" ]]; then
     if [[ ${IP_VER_REQUIRED} -eq 0 ]]; then
         if [[ -z "${IP_VER}" ]]; then
             error_envvar_not_set "IP_VER" "When BIRD 1.x is used, IP_VER must be set."
-        else
-            IP_VER_ARG="--ip-ver ${IP_VER}"
-            OUTPUT_FILE="${DAEMON}${IP_VER}.cfg"
         fi
     fi
+fi
+
+if [[ -n "${IP_VER}" ]]; then
+    # Accept only 4 or 6
+    if [[ "${IP_VER}" != "4" && "${IP_VER}" != "6" ]]; then
+        error "Invalid value for IP_VER: ${IP_VER}\n
+               The value must be either 4 or 6."
+    fi
+
+    IP_VER_ARG="--ip-ver ${IP_VER}"
+    OUTPUT_FILE="${DAEMON}${IP_VER}.cfg"
 fi
 
 if [[ ! -e /etc/arouteserver/general.yml ]]; then
