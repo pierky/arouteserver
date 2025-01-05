@@ -105,7 +105,7 @@ group "clients" {
 		announce IPv4 none
 {%	endif %}
 {%	if "7.5"|target_version_ge and client.cfg.add_path %}
-		announce add-path send best plus 5
+		announce add-path send all
 {%	endif %}
 
 		set nexthop no-modify

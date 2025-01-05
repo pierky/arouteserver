@@ -33,6 +33,11 @@ function update_file() {
 function do_file() {
 	F="$1"
 
+	# skip this file if it's a symlink
+	if [ -L "$F" ]; then
+		return
+	fi
+
 	head -n 1 "$F" | grep "Copyright" | grep "Pier Carlo Chiodi" &>/dev/null
 
 	if [ $? -eq 0 ]; then
@@ -42,8 +47,7 @@ function do_file() {
 		head -n 1 "$F" | grep "$FIRST_LINE" &>/dev/null
 
 		if [ $? -eq 0 ]; then
-#			echo "$F - ok"
-true
+			echo "$F - ok"
 		else
 			# copyright statement outdated
 			update_file "$F"

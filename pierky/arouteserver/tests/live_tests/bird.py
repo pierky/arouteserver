@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2024 Pier Carlo Chiodi
+# Copyright (C) 2017-2025 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -331,11 +331,11 @@ class BIRDInstanceIPv6(BIRDInstance):
 
 class BIRD2Instance(BIRDInstance):
 
-    DOCKER_IMAGE = "pierky/bird:2.15"
+    DOCKER_IMAGE = "pierky/bird:2.16"
 
     TAG = "bird2"
 
-    TARGET_VERSION = "2.15"
+    TARGET_VERSION = "2.16"
 
     def _get_start_cmd(self):
         return "bird -c /etc/bird/bird.conf -d"
