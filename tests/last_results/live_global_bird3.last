@@ -1,5 +1,5 @@
 ============================= test session starts ==============================
-platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
+platform darwin -- Python 3.11.9, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
 rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
@@ -578,4 +578,4 @@ Live test, BIRD v3, global scenario, IPv6, tag&reject: dumping routes...
 Live test, BIRD v3, global scenario, IPv6, tag&reject: stopping instances...
 
 
-================== 518 passed, 6 skipped in 364.99s (0:06:04) ==================
+================== 518 passed, 6 skipped in 402.37s (0:06:42) ==================

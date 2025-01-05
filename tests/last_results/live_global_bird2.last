@@ -1,5 +1,5 @@
 ============================= test session starts ==============================
-platform darwin -- Python 3.11.7, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
+platform darwin -- Python 3.11.9, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
 cachedir: .pytest_cache
 rootdir: /Users/pchiodi/github/public/arouteserver
 plugins: requests-mock-1.9.3
@@ -672,4 +672,4 @@ Live test, BIRD v2, global scenario, RFC8950: dumping routes...
 Live test, BIRD v2, global scenario, RFC8950: stopping instances...
 
 
-================== 603 passed, 7 skipped in 464.33s (0:07:44) ==================
+================== 603 passed, 7 skipped in 483.17s (0:08:03) ==================
