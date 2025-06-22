@@ -345,11 +345,11 @@ class BIRD2Instance(BIRDInstance):
 
 class BIRD3Instance(BIRDInstance):
 
-    DOCKER_IMAGE = "pierky/bird:3.0-alpha2"
+    DOCKER_IMAGE = "pierky/bird:3.1.2"
 
     TAG = "bird3"
 
-    TARGET_VERSION = "3.0"
+    TARGET_VERSION = "3.1.2"
 
     def _get_start_cmd(self):
         return "bird -c /etc/bird/bird.conf -d"

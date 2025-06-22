@@ -8,6 +8,8 @@ next release
 
 - New: add support for `BIRD 2.17.1 <https://bird.nic.cz/news/2025-05-05-new-release-2.17.1/>`__.
 
+- New: add support for `BIRD 3.1.2 <https://www.mail-archive.com/bird-users@network.cz/msg08674.html>`__.
+
 1.23.2
 ------
 
