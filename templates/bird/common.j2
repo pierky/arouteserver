@@ -298,9 +298,9 @@ int mapped_16bit_asn;
 # This function prepends the left-most ASN <times> times.
 function do_prepend(int times) {
 	case times {
-		1: bgp_path.prepend(bgp_path.first);
-		2: bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first);
-		3: bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first);
+		1: {% if "3.0"|target_version_ge %}{{ "{" }}{% endif %} bgp_path.prepend(bgp_path.first); {% if "3.0"|target_version_ge %}{{ "}\n" }}{% else %}{{ "\n" }}{% endif %}
+		2: {% if "3.0"|target_version_ge %}{{ "{" }}{% endif %} bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); {% if "3.0"|target_version_ge %}{{ "}\n" }}{% else %}{{ "\n" }}{% endif %}
+		3: {% if "3.0"|target_version_ge %}{{ "{" }}{% endif %} bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); bgp_path.prepend(bgp_path.first); {% if "3.0"|target_version_ge %}{{ "}\n" }}{% else %}{{ "\n" }}{% endif %}
 	}
 }
 
@@ -476,7 +476,7 @@ int mapped_16bit_asn;
 		{% 	 set reject_cause_map_comm_name = "reject_cause_map_" ~ reject_code %}
 		{% 	 if cfg.communities[reject_cause_map_comm_name]|community_is_set %}
 		# {{ reject_code }} = {{ reject_reasons[reject_code] }}
-		{{ reject_code }} : {{ add_communities(cfg.communities[reject_cause_map_comm_name], tabs=0)|replace(";\n", "; ")|trim }}
+		{{ reject_code }} : {% if "3.0"|target_version_ge %}{{ "{" }}{% endif %} {{ add_communities(cfg.communities[reject_cause_map_comm_name], tabs=0)|replace(";\n", "; ")|trim }} {% if "3.0"|target_version_ge %}{{ "}\n" }}{% else %}{{ "\n" }}{% endif %}
 		{% 	 endif %}
 		{% endfor %}
 	}
