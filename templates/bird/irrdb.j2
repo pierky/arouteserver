@@ -14,7 +14,7 @@ define AS_SET_{{ as_set_bundle.name }}_asns = [
 {%	for asn in as_set_bundle.asns|sort %}
 {{-		asn -}}
 {%		if not loop.last %}, {% endif %}
-{%		if loop.index % 5 == 0 %}{{ "\n\t" }}{% endif %}
+{%		if loop.index % 1 == 0 %}{{ "\n\t" }}{% endif %}
 {%	endfor %}
 
 ];
