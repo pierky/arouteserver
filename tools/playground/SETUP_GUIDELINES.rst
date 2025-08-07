@@ -52,7 +52,7 @@ We can either manually edit the *general.yml* file (``vim /etc/arouteserver/gene
 **Please note**: in order to configure the BIRD instance in a way that will work smoothly with the other actors of this playground, please use the following values to answer the ``configure`` command questions:
 
 - Daemon: BIRD
-- Version: 1.6.8
+- Version: 2.17.1
 - ASN of the route server: 64500
 - Router-ID of the route server: 10.0.0.2
 - Local networks: 10.0.0.0/24

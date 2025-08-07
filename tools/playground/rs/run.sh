@@ -54,7 +54,7 @@ if [ ${SETUP_AND_CONFIGURE_AROUTESERVER} -eq 1 ]; then
     arouteserver \
         configure --preset-answer \
             daemon=bird \
-            version=1.6.8 \
+            version=2.17.1 \
             asn=64500 \
             router_id=10.0.0.2 \
             black_list=10.0.0.0/24

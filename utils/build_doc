@@ -71,6 +71,11 @@ from pierky.arouteserver.builder import BIRDConfigBuilder
 print([_ for _ in BIRDConfigBuilder.AVAILABLE_VERSION if _.startswith("2")][-1])
 EOF
 )
+BIRD3_LATEST_VERSION=$(cat << EOF | python -
+from pierky.arouteserver.builder import BIRDConfigBuilder
+print([_ for _ in BIRDConfigBuilder.AVAILABLE_VERSION if _.startswith("3")][-1])
+EOF
+)
 OPENBGPD_LATEST_VERSION=$(cat << EOF | python -
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder
 print(OpenBGPDConfigBuilder.AVAILABLE_VERSION[-1])
@@ -126,8 +131,13 @@ function RenderExample() {
 		if [ "$BIRD_VER" == "1" ]; then
 			IP_VER="$1" ; shift
 			$CMD --ip-ver $IP_VER -o examples/$DST/bird$IP_VER.conf --ignore-issues \* $@
-		else
+		elif [ "$BIRD_VER" == "2" ]; then
 			$CMD --target-version ${BIRD2_LATEST_VERSION} --ignore-issues \* -o examples/$DST/bird_v2.conf $@
+		elif [ "$BIRD_VER" == "3" ]; then
+			$CMD --target-version ${BIRD3_LATEST_VERSION} --ignore-issues \* -o examples/$DST/bird_v3.conf $@
+		else
+			echo "BIRD version unknown: $BIRD_VER"
+			exit 1
 		fi
 	elif [ "$COMMAND" == "openbgpd" ]; then
 		$CMD -o examples/$DST/openbgpd.conf --ignore-issues \*
@@ -251,6 +261,9 @@ RenderExample "default" "bird" "$G" "$C" "config.d/bogons.yml" 1 6
 title "Building example: default, BIRD v2"
 RenderExample "default" "bird" "$G" "$C" "config.d/bogons.yml" 2
 
+title "Building example: default, BIRD v3"
+RenderExample "default" "bird" "$G" "$C" "config.d/bogons.yml" 3
+
 title "Building example: default, OpenBGPD, IPv4 + IPv6"
 RenderExample "default" "openbgpd" "$G" "$C" "config.d/bogons.yml"
 
@@ -276,6 +289,9 @@ RenderExample "rich" "bird" "$G" "$C" "config.d/bogons.yml" 1 6
 
 title "Building example: rich, BIRD v2"
 RenderExample "rich" "bird" "$G" "$C" "config.d/bogons.yml" 2
+
+title "Building example: rich, BIRD v3"
+RenderExample "rich" "bird" "$G" "$C" "config.d/bogons.yml" 3
 
 title "Building example: rich, OpenBGPD, IPv4 + IPv6"
 RenderExample "rich" "openbgpd" "$G" "$C" "config.d/bogons.yml"

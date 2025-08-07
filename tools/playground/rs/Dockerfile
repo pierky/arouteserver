@@ -1,4 +1,4 @@
-FROM pierky/bird:1.6.8
+FROM pierky/bird:2.17.1
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
@@ -10,6 +10,7 @@ RUN apt-get update && \
             build-essential \
             python3-pip \
             python3-dev \
+            python3-venv \
             libtool && \
     rm -rf /var/lib/apt/lists/*
 
@@ -44,7 +45,8 @@ RUN mkdir /bgpq4 && \
 
 ARG INSTALL_FROM_GITHUB_SHA
 
-RUN pip3 install --upgrade pip setuptools wheel
+RUN python3 -m venv .venv && \
+    .venv/bin/pip install --upgrade pip setuptools wheel
 
 # INSTALL_FROM_GITHUB_SHA is used by the
 # test suite to perform the installation of
@@ -52,10 +54,14 @@ RUN pip3 install --upgrade pip setuptools wheel
 # for the regular use of this playground.
 RUN if [ -z "$INSTALL_FROM_GITHUB_SHA" ]; \
     then \
-        pip3 install arouteserver; \
+        .venv/bin/pip install arouteserver; \
     else \
-        pip3 install git+https://github.com/pierky/arouteserver.git@$INSTALL_FROM_GITHUB_SHA; \
+        .venv/bin/pip install git+https://github.com/pierky/arouteserver.git@$INSTALL_FROM_GITHUB_SHA; \
     fi;
+
+# Make the 'arouteserver' command from the virtualenv
+# globally available.
+RUN ln -s /root/.venv/bin/arouteserver /usr/local/bin/arouteserver
 
 # Environment setup
 # -----------------
