@@ -48,7 +48,7 @@ The return value determines whether the route is announced (``true``) or not (``
 
 - return value: ``true`` or ``false``
 
-This function is called within the filter that handles routes leaving the route server toward its clients, more precisely when BGP control communities are processed to determine whether the route can be announced to a specific client.
+This function is called within the filter that handles routes leaving the route server toward its clients, more precisely when BGP control communities are processed to determine whether the route can be announced to a specific client. Using this hook will replace the default community processing.
 The return value determines whether the route is announced (``true``) or not (``false``) by the route server to the client identified by the arguments.
 
 ``announce_rpki_invalid_to_client``
