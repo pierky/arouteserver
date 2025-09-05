@@ -174,7 +174,7 @@ Who is using ARouteServer?
 
 - `CHIX <https://chix.ch/>`__, BIRD and OpenBGPD.
 
-- `CNX <http://cnx.net.kh/>`__, BIRD v2.
+- `CNX <https://cnx.net.kh/>`__, BIRD v2.
 
 - `DD-IX <https://dd-ix.net/>`__, BIRD v2.
 
