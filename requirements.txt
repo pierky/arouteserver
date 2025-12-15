@@ -4,3 +4,4 @@ PyYAML>=6.0, <7.0
 requests>=2.18.4, <3.0
 packaging~=24.0
 urllib3>=1.26.0
+py-radix @ git+https://github.com/mjschultz/py-radix.git@v1.1.0
