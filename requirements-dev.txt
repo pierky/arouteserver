@@ -1,4 +1,4 @@
-pytest==7.2.0
+pytest==9.0.3
 flake8==5.0.4
 coveralls
 requests-mock==1.9.3
