@@ -181,10 +181,29 @@ class LiveScenario(ARouteServerTestCase):
         raise Exception("Instance not found: {}.".format(name))
 
     @classmethod
+    def _get_var_dir(cls):
+        # Rendered configuration files are written here and then
+        # bind-mounted into the BGP speaker containers. Normally this
+        # is a "var" subdir of the scenario's own directory, but when
+        # the container engine runs in a separate VM/mount namespace
+        # from the repository (e.g. Podman Desktop's WSL2 machine, which
+        # can't see paths outside the Windows drives) that path is not
+        # visible to it. Setting ARS_LIVE_TESTS_VAR_DIR to a host path
+        # the container engine *can* see (e.g. one under /mnt/c on WSL2)
+        # redirects rendered files there instead, mirroring the
+        # scenario's own path to avoid collisions between scenarios.
+        override_root = os.environ.get("ARS_LIVE_TESTS_VAR_DIR")
+        if override_root:
+            return os.path.join(
+                override_root, cls._get_module_dir().lstrip("/"), "var"
+            )
+        return "{}/var".format(cls._get_module_dir())
+
+    @classmethod
     def _create_var_dir(cls):
-        var_dir = "{}/var".format(cls._get_module_dir())
+        var_dir = cls._get_var_dir()
         if not os.path.exists(var_dir):
-            os.mkdir(var_dir)
+            os.makedirs(var_dir)
         return var_dir
 
     @classmethod
@@ -271,12 +290,15 @@ class LiveScenario(ARouteServerTestCase):
 
         var_dir = cls._create_var_dir()
 
+        _cfg_general = cfg_general or cls._get_cfg_general()
+        if not os.path.isabs(_cfg_general):
+            _cfg_general = "{}/{}".format(cls._get_module_dir(), _cfg_general)
+
         builder = cls.CONFIG_BUILDER_CLASS(
             template_dir="{}/{}".format(cls._get_module_dir(), tpl_dir_name),
             template_name=tpl_name,
             cache_dir=var_dir,
-            cfg_general="{}/{}".format(cls._get_module_dir(),
-                                       cfg_general or cls._get_cfg_general()),
+            cfg_general=_cfg_general,
             cfg_bogons="{}/{}".format(cls._get_module_dir(), cfg_bogons),
             cfg_clients="{}/{}".format(cls._get_module_dir(), cfg_clients),
             ip_ver=ip_ver,
@@ -351,7 +373,7 @@ class LiveScenario(ARouteServerTestCase):
 
         try:
             for instance in cls.INSTANCES:
-                instance.set_var_dir("{}/var".format(cls._get_module_dir()))
+                instance.set_var_dir(cls._get_var_dir())
 
                 if cls._do_not_stop_instances() and instance.is_running():
                     cls.debug("Instance '{}' already running, reloading config".format(instance.name))
@@ -931,8 +953,7 @@ class LiveScenario_TagRejectPolicy(object):
     @classmethod
     def _get_cfg_general(cls, orig_file="general.yml"):
         orig_path = "{}/{}".format(cls._get_module_dir(), orig_file)
-        dest_rel_path = "var/general.yml"
-        dest_path = "{}/{}".format(cls._get_module_dir(), dest_rel_path)
+        dest_path = os.path.join(cls._create_var_dir(), "general.yml")
 
         with open(orig_path, "r") as f:
             cfg = yaml.safe_load(f.read())
@@ -954,7 +975,7 @@ class LiveScenario_TagRejectPolicy(object):
         with open(dest_path, "w") as f:
             yaml.safe_dump(cfg, f, default_flow_style=False)
 
-        return dest_rel_path
+        return dest_path
 
 class LiveScenario_TagAndRejectRejectPolicy(LiveScenario_TagRejectPolicy):
     """Same as LiveScenario_TagRejectPolicy, but with 'tag_and_reject' reject policy."""

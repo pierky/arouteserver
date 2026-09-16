@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from packaging import version
+import os
 import unittest
 import yaml
 
@@ -1282,8 +1283,7 @@ class BasicScenarioBIRD2RFC8950(BasicScenarioBIRD):
         """Override the general.yml file to enable RFC 8950."""
 
         orig_path = "{}/{}".format(cls._get_module_dir(), orig_file)
-        dest_rel_path = "var/general.yml"
-        dest_path = "{}/{}".format(cls._get_module_dir(), dest_rel_path)
+        dest_path = os.path.join(cls._create_var_dir(), "general.yml")
 
         with open(orig_path, "r") as f:
             cfg = yaml.safe_load(f.read())
@@ -1293,7 +1293,7 @@ class BasicScenarioBIRD2RFC8950(BasicScenarioBIRD):
         with open(dest_path, "w") as f:
             yaml.safe_dump(cfg, f, default_flow_style=False)
 
-        return dest_rel_path
+        return dest_path
 
 class BasicScenarioBIRD3(BasicScenarioBIRD):
     __test__ = False

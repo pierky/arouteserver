@@ -78,7 +78,7 @@ class RPKIRTRScenario(LiveScenario):
                 )
             ]
         )
-        routinator.set_var_dir("{}/var".format(self._get_module_dir()))
+        routinator.set_var_dir(self._get_var_dir())
         self.INSTANCES.append(routinator)
         routinator.start()
 
