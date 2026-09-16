@@ -97,6 +97,7 @@ setup(
     maintainer_email="pierky@pierky.com",
 
     install_requires=install_requires,
+    python_requires=">=3.10",
     tests_require=[
         "pytest",
         "mock",
@@ -123,12 +124,11 @@ setup(
 
         # To be kept in sync with .github/workflows/cicd.yml
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
 
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: System :: Networking",
