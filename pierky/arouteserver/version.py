@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2025 Pier Carlo Chiodi
+# Copyright (C) 2017-2026 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,4 +14,4 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 __version__ = "1.23.2" # pragma: no cover
-COPYRIGHT_YEAR = 2025 # pragma: no cover
+COPYRIGHT_YEAR = 2026 # pragma: no cover
