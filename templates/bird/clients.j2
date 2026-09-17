@@ -470,6 +470,15 @@ protocol bgp {{ client.id }} {
 	neighbor {{ client.ip }} as {{ client.asn }};
 	rs client;
 
+	{% if "2.0"|target_version_ge %}
+	# Some BIRD releases reject AS_PATH attributes containing AS_SET
+	# segments as malformed by default (RFC 6472); since ARouteServer's
+	# own filters (RPKI/IRR origin validation, RFC6907) are meant to be
+	# the ones evaluating and rejecting/tagging such routes, AS_SET
+	# segments must be allowed through to them.
+	allow as sets on;
+	{% endif %}
+
 	{% if client.cfg.filtering.roles.enabled and "2.0.11"|target_version_ge %}
 	local role {{ client.cfg.filtering.roles.get("local_role")|default("rs")|to_bgp_role }};
 	{% if client.cfg.filtering.roles.strict_mode %}

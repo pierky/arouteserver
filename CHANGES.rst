@@ -3,6 +3,17 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New: add support for `BIRD 2.19.2 <https://bird.network.cz/?news>`__, which also becomes the new default version for BIRD-based configurations.
+
+- New: add support for `BIRD 3.2.3 and 3.3.2 <https://bird.network.cz/?news>`__, tested as two separate release lines.
+
+- Fix (BIRD v3): the ``do_prepend()`` function and the ``reject_cause_map`` filter block used ``case`` labels with more than one statement and no enclosing braces; BIRD v3's filter-language parser rejects that syntax (BIRD v1/v2 output is unaffected).
+
+- Change: BIRD 1.x integration testing has been removed from the built-in live tests suite, to reduce testing overhead now that BIRD v2 and v3 are both mature. BIRD 1.x remains a supported ``--target-version``.
+
 1.23.2
 ------
 

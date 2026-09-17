@@ -331,11 +331,11 @@ class BIRDInstanceIPv6(BIRDInstance):
 
 class BIRD2Instance(BIRDInstance):
 
-    DOCKER_IMAGE = "pierky/bird:2.16"
+    DOCKER_IMAGE = "pierky/bird:2.19.2"
 
     TAG = "bird2"
 
-    TARGET_VERSION = "2.16"
+    TARGET_VERSION = "2.19.2"
 
     def _get_start_cmd(self):
         return "bird -c /etc/bird/bird.conf -d"
@@ -343,13 +343,27 @@ class BIRD2Instance(BIRDInstance):
     def _birdcl(self, cmd):
         return self.run_cmd("birdcl {}".format(cmd))
 
-class BIRD3Instance(BIRDInstance):
+class BIRD32Instance(BIRDInstance):
 
-    DOCKER_IMAGE = "pierky/bird:3.0-alpha2"
+    DOCKER_IMAGE = "pierky/bird:3.2.3"
 
-    TAG = "bird3"
+    TAG = "bird32"
 
-    TARGET_VERSION = "3.0"
+    TARGET_VERSION = "3.2.3"
+
+    def _get_start_cmd(self):
+        return "bird -c /etc/bird/bird.conf -d"
+
+    def _birdcl(self, cmd):
+        return self.run_cmd("birdcl {}".format(cmd))
+
+class BIRD33Instance(BIRDInstance):
+
+    DOCKER_IMAGE = "pierky/bird:3.3.2"
+
+    TAG = "bird33"
+
+    TARGET_VERSION = "3.3.2"
 
     def _get_start_cmd(self):
         return "bird -c /etc/bird/bird.conf -d"

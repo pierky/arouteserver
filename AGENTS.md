@@ -3,8 +3,8 @@
 ## What this project is
 
 ARouteServer is a Python CLI tool that generates (and tests) configuration
-files for BGP route servers (currently BIRD 1.6.x, BIRD 2.x, BIRD 3.x
-pre-release, and OpenBGPD/OpenBGPD Portable) from two YAML input files
+files for BGP route servers (currently BIRD 1.6.x, BIRD 2.x, BIRD 3.x, and
+OpenBGPD/OpenBGPD Portable) from two YAML input files
 (`general.yml` for policies, `clients.yml` for the route server's clients).
 It enriches that input with data pulled from IRRDBs (via `bgpq3`/`bgpq4`),
 PeeringDB, RPKI ROAs/RTR, etc., then renders the final config through Jinja2
@@ -77,11 +77,13 @@ they're missing, they may already be in place):
    `pierky/arouteserver/tests/live_tests/docker.py`) — you normally don't
    need to create it by hand. Check with `docker network ls` /
    `docker network inspect arouteserver`.
-3. The container images the scenarios reference, at minimum
-   `pierky/bird:1.6.8` for the built-in BIRD 1 scenarios (also
-   `pierky/bird:2.16`, `pierky/bird:3.0-alpha2`,
+3. The container images the scenarios reference: `pierky/bird:1.6.8` (used
+   as the generic client/peer simulator in *every* scenario, regardless of
+   which BIRD version the route server itself targets — see the "BGP
+   speaker versions" section below), `pierky/bird:2.19.2`,
+   `pierky/bird:3.2.3`, `pierky/bird:3.3.2` for the route-server side, plus
    `pierky/openbgpd:8.4`/`8.7` etc. for the other speaker versions — see
-   `.github/workflows/cicd.yml` for the full list CI pulls). Check with
+   `.github/workflows/cicd.yml` for the full list CI pulls. Check with
    `docker images`; pull from Docker Hub or build from
    `github.com/pierky/dockerfiles` (see `docs/LIVETESTS.rst`) if missing.
 
@@ -89,7 +91,7 @@ Run a single scenario file:
 
 ```bash
 source .venv/bin/activate
-python -m pytest tests/live_tests/scenarios/default/test_bird1_4.py
+python -m pytest tests/live_tests/scenarios/default/test_bird2_4.py
 ```
 
 Or the whole live-tests suite: `pytest tests/live_tests/`.
@@ -137,6 +139,86 @@ out from under the other, "instance is not running" errors on scenarios
 that never touched, etc. Before starting a live-test run, check `docker ps -a`
 for containers you didn't start; if something unrelated is already
 running, wait rather than launching another suite in parallel. 
+
+## BGP speaker versions (adding/bumping a target release)
+
+Version support has two independent halves — both need updating together
+when bumping a version, but neither implies the other:
+
+1. **What the CLI can render for** ("target support"):
+   `BIRDConfigBuilder.AVAILABLE_VERSION`/`DEFAULT_VERSION` and
+   `OpenBGPDConfigBuilder.AVAILABLE_VERSION`/`DEFAULT_VERSION` in
+   `pierky/arouteserver/builder.py`. These drive the `--target-version`
+   CLI choices/default (`commands/configure.py`, `commands/tpl_rendering.py`).
+   Templates gate version-specific behaviour via the Jinja filters
+   `target_version_ge`/`_le`/`_lt` (defined in `builder.py`, backed by
+   `packaging.version`) — range comparisons, not exact-match, so a new
+   patch/minor release usually renders correctly with zero template
+   changes unless the daemon itself changed syntax (see below).
+2. **What the live-tests suite actually exercises**: one class per tested
+   release in `pierky/arouteserver/tests/live_tests/bird.py`
+   (`BIRD2Instance`, `BIRD32Instance`, `BIRD33Instance`, …, each pinning
+   `DOCKER_IMAGE`/`TAG`/`TARGET_VERSION`) and `openbgpd.py` (same pattern,
+   one class per exact OpenBGPD release). `TAG` must be unique per class —
+   it names the per-instance rendered-config/route-dump files
+   (`LiveScenario.get_instance_tag()` in `tests/live_tests/base.py`).
+   Scenario test files (`tests/live_tests/scenarios/*/test_bird*.py`) only
+   ever set `RS_INSTANCE_CLASS` (+ `SHORT_DESCR`) to one of these classes —
+   the shared scenario logic in each dir's `base.py` is version-agnostic
+   and does not need touching for a version bump.
+
+**Gotcha**: `BIRDInstance`/`BIRDInstanceIPv4`/`BIRDInstanceIPv6` (the base
+class, pinned at `pierky/bird:1.6.8`) are reused everywhere as the generic
+"dumb" client/peer simulator (AS1/AS2/etc.), even inside BIRD2/BIRD3-target
+scenarios. Don't touch these, and don't drop `pierky/bird:1.6.8` from
+CI/tooling pulls, when retiring or changing a *route-server* target — it's
+unrelated infrastructure. As of the BIRD 2.19.2/3.2.3/3.3.2 update, BIRD
+1.x live-test *scenarios* (`test_bird1_*.py`) were removed for CI-cost
+reasons, but BIRD 1.x remains a valid `--target-version`.
+
+Live-test files for a tested BIRD3.x line are named `test_bird3<minor>_*.py`
+(e.g. `test_bird32_4.py`, `test_bird33_6.py`) — no dots, mirroring the
+pre-existing `test_bird2_*.py` convention.
+
+Sanity-check a template change against a real daemon without the full
+live-tests framework: render with the CLI
+(`./scripts/arouteserver bird --cfg var/arouteserver.yml --target-version
+X.Y.Z ... -o /path/to/bird.conf`) then
+`docker run --rm -v /path/to/bird.conf:/etc/bird/bird.conf pierky/bird:X.Y.Z bird -c /etc/bird/bird.conf -d -p`
+(`-p` = parse-only, no daemon start). 
+
+## Doc/example regeneration (`utils/build_doc`)
+
+`README.rst`, `docs/EXAMPLES.rst`, `docs/SUPPORTED_SPEAKERS_CI.txt`/
+`SUPPORTED_SPEAKERS_FEATURES.txt`, and the `examples/*` configs are all
+auto-generated by `utils/build_doc` — never hand-edit them directly.
+`README.rst` itself is a concatenation of `docs/README_header.txt` +
+`docs/FEATURES.rst` + `docs/README_fulldocs.txt` + `docs/STATUS.txt` +
+`docs/README_footer.txt`, so prose changes (e.g. the supported-BIRD-versions
+sentence) belong in `docs/FEATURES.rst`, not `README.rst`.
+
+Requirements to actually run it:
+- `SECRET_PEERINGDB_API_KEY` env var (a real PeeringDB API key — it hits
+  live PeeringDB/RIPE-RPKI services).
+- `var/build_doc.yml` (a program config file — `var/` is gitignored; if
+  missing, copy `var/arouteserver.yml` if one already exists, or generate
+  one with `arouteserver setup`).
+- It ends with two interactive `[yes/NO]` prompts (Euro-IX/IX-F export) —
+  safe to answer "no" for a routine doc regen.
+- The very last step shells out to `rst2html.py` to validate the PyPI long
+  description; that binary may not be on `PATH` even with `docutils`
+  installed (its console-script name varies by version) — this failure
+  aborts the script (via `set -e`) *after* all the doc/example files are
+  already regenerated, so it's usually harmless to a doc-only run, but
+  verify with `python3 -c "from docutils.core import publish_string; ..."`
+  if in doubt rather than assuming success.
+- `BIRDConfigBuilder.AVAILABLE_VERSION`'s newest `"2.*"` entry drives the
+  example BIRD v2 config/CLI transcript automatically
+  (`BIRD2_LATEST_VERSION` in the script); there is deliberately no BIRD v3
+  example-rendering step today.
+- Bumping the default BIRD version regenerates the `never_via_route_servers`
+  ASN list examples with a large, unrelated-looking diff — that's just
+  live PeeringDB data drift, not a regression.
 
 ## Local Environment
 
