@@ -13,16 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-import unittest
-
 from .base import SkeletonScenario
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv6
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPortableLatestInstance
 
-@unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
 class SkeletonScenario_OpenBGPDIPv6(LiveScenario_TagRejectPolicy,
                                     SkeletonScenario):
     """BGP speaker specific and IP version specific derived class.
@@ -31,11 +27,12 @@ class SkeletonScenario_OpenBGPDIPv6(LiveScenario_TagRejectPolicy,
     """
 
     __test__ = True
-    SKIP_ON_TRAVIS = True
 
-    SHORT_DESCR = "Live test, OpenBGPD 6.0, skeleton, IPv6"
+    SHORT_DESCR = "Live test, OpenBGPD {}, skeleton, IPv6".format(
+        OpenBGPDPortableLatestInstance.BGP_SPEAKER_VERSION
+    )
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
-    RS_INSTANCE_CLASS = OpenBGPD60Instance
+    RS_INSTANCE_CLASS = OpenBGPDPortableLatestInstance
     CLIENT_INSTANCE_CLASS = BIRDInstanceIPv6
     IP_VER = 6
 

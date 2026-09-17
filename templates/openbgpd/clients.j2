@@ -109,6 +109,10 @@ group "clients" {
 {%	if client.ip|ipaddr_ver == 4 %}
 		announce IPv6 none
 		announce IPv4 unicast
+{%	elif "8.8"|target_version_ge and client.cfg.rfc8950 %}
+		announce IPv6 unicast
+		announce IPv4 unicast
+		announce extended nexthop yes
 {%	else %}
 		announce IPv6 unicast
 		announce IPv4 none

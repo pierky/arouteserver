@@ -24,7 +24,3 @@ class TestRealConfigs_STHIX(object):
 class TestRealConfigs_STHIX_BIRD(TestRealConfigs_STHIX,
                                  TestRealConfigs_BIRD):
     __test__ = True
-
-class TestRealConfigs_STHIX_OpenBGPD64(TestRealConfigs_STHIX,
-                                       TestRealConfigs_OpenBGPD64):
-    __test__ = True

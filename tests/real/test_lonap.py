@@ -24,7 +24,3 @@ class TestRealConfigs_LONAP(object):
 class TestRealConfigs_LONAP_BIRD(TestRealConfigs_LONAP,
                                  TestRealConfigs_BIRD):
     __test__ = True
-
-class TestRealConfigs_LONAP_OpenBGPD64(TestRealConfigs_LONAP,
-                                       TestRealConfigs_OpenBGPD64):
-    __test__ = True

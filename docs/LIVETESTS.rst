@@ -3,7 +3,7 @@ Live tests
 
 Live tests are used to validate configurations built by ARouteServer and to test compliance between expected and real results.
 
-A mix of Python unittest and Docker (and KVM too for OpenBGPD tests) allows to create scenarios where some instances of BGP speakers (the clients) connect to a route server whose configuration has been generated using this tool.
+A mix of Python unittest and Docker allows to create scenarios where some instances of BGP speakers (the clients) connect to a route server whose configuration has been generated using this tool.
 
 Some built-in tests are included within the project and have been used during the development of the tool; new :ref:`custom scenarios <LiveTestsCustomScenarios>` can be easily built by users and IXP managers to test their own policies.
 
@@ -17,9 +17,8 @@ Example: in a configuration where blackhole filtering is enabled, an instance of
                          next_hop="192.0.2.66",
                          std_comms=["65535:666"], lrg_comms=[])
 
-`GitHub Actions log file <https://github.com/pierky/arouteserver/actions/workflows/cicd.yml>`_ contains the latest built-in live tests results.
-Since (AFAIK) OpenBGPD can't be run on GitHub Actions platform, the full live tests results, including those run on OpenBGPD, can be found on `this file <https://github.com/pierky/arouteserver/blob/master/tests/last>`_.
-Starting with version 6.5, the Portable edition of OpenBGPD has been used to run some tests on GitHub Actions too.
+`GitHub Actions log file <https://github.com/pierky/arouteserver/actions/workflows/cicd.yml>`_ contains the latest built-in live tests results, including those for the OpenBGPD Portable edition, which is the only OpenBGPD edition used by the live tests suite.
+The full live tests results can also be found on `this file <https://github.com/pierky/arouteserver/blob/master/tests/last>`_.
 
 A summary of the integration testing results and the BGP speakers which are tested can be found on the :ref:`Integration testing coverage` section of this documentation.
 
@@ -35,7 +34,7 @@ Setting up the environment to run live tests
 
      docker network create --ipv6 --subnet=192.0.2.0/24 --subnet=2001:db8:1:1::/64 arouteserver
 
-3. Route server client instances used in live tests are based on BIRD 1.6.8, regardless of which version is used for the BIRD-based route server itself; the ``pierky/bird:1.6.8`` image is expected to be found on the local Docker repository. The BIRD-based route server is tested against ``pierky/bird:2.19.2``, ``pierky/bird:3.2.3`` and ``pierky/bird:3.3.2``, which must also be present locally. Also, for OpenBGPD Portable edition tests, ``pierky/openbgpd:6.6p0`` must be there.
+3. Route server client instances used in live tests are based on BIRD 1.6.8, regardless of which version is used for the BIRD-based route server itself; the ``pierky/bird:1.6.8`` image is expected to be found on the local Docker repository. The BIRD-based route server is tested against ``pierky/bird:2.19.2``, ``pierky/bird:3.2.3`` and ``pierky/bird:3.3.2``, which must also be present locally. The OpenBGPD-based route server is tested against the Portable edition only, using the ``pierky/openbgpd:8.7`` and ``pierky/openbgpd:9.2`` images, which must also be present locally.
    Build the Docker image (or pull it from `Dockerhub <https://hub.docker.com/r/pierky/bird/>`_):
 
    .. code:: bash
@@ -46,82 +45,11 @@ Setting up the environment to run live tests
       cd ~/dockerfiles
       curl -o Dockerfile.bird -L https://raw.githubusercontent.com/pierky/dockerfiles/master/bird/1.6.8/Dockerfile
       docker build -t pierky/bird:1.6.8 -f Dockerfile.bird .
-      curl -o Dockerfile.openbgpd -L https://raw.githubusercontent.com/pierky/dockerfiles/master/openbgpd/6.6p0/Dockerfile
-      docker build -t pierky/openbgpd:6.6p0 -f Dockerfile.openbgpd .
 
       # or pull it from Dockerhub
       docker pull pierky/bird:1.6.8
-      docker pull pierky/openbgpd:6.6p0
-
-If there is no plan to run tests on the OpenBGPD-based version of the route server, no further settings are needed.
-To run tests on the OpenBGPD-based version too, the following steps must be done as well.
-
-OpenBGPD live-tests environment
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-1. To run an instance of OpenBGPD, KVM is needed. Some info about its installation can be found on the :ref:`External programs` installation section.
-
-2. Setup and install a KVM virtual-machine running one of the supported versions of OpenBSD. This VM will be started and stopped many times during tests: don't use a production VM.
-
-   - By default, the VM name must be ``arouteserver_openbgpd60`` or ``arouteserver_openbgpd61`` or ``arouteserver_openbgpd62``; this can be changed by setting the ``VIRSH_DOMAINNAME`` environment variable before running the tests.
-
-   - The VM must be connected to the same Docker network created above: the commands ``ip link show`` and ``ifconfig`` can be used to determine the local network name needed when creating the VM:
-
-   .. code-block:: console
-
-      $ ifconfig
-      br-2d2956ce4b64 Link encap:Ethernet  HWaddr 02:42:57:82:bc:91
-        inet addr:192.0.2.1  Bcast:0.0.0.0  Mask:255.255.255.0
-        inet6 addr: fe80::42:57ff:fe82:bc91/64 Scope:Link
-        inet6 addr: 2001:db8:1:1::1/64 Scope:Global
-        inet6 addr: fe80::1/64 Scope:Link
-        UP BROADCAST MULTICAST  MTU:1500  Metric:1
-        ...
-
-   - In order to run built-in live test scenarios, the VM must be reachable at 192.0.2.2/24 and 2001:db8:1:1::2/64.
-
-   On the following example, the virtual disk will be stored in ~/vms, the VM will be reachable by connecting to any IP address of the host via VNC, the installation disk image is expected to be found in the install60.iso file and the network name used is **br-2d2956ce4b64**:
-
-   .. code:: bash
-
-      sudo virsh pool-define-as --name vms_pool --type dir --target ~/vms
-      sudo virsh pool-start vms_pool
-      sudo virt-install \
-        -n arouteserver_openbgpd66 \
-        -r 512 \
-        --vcpus=1 \
-        --os-variant=openbsd4.2 \
-        --accelerate \
-        -v -c install66.iso \
-        -w bridge:br-2d2956ce4b64 \
-        --graphics vnc,listen=0.0.0.0 \
-        --disk path=~/vms/arouteserver_openbgpd66.qcow2,size=5,format=qcow2
-
-   Finally, add the current user to the libvirtd group to allow management of the VM:
-
-   .. code:: bash
-
-      sudo adduser `id -un` libvirtd
-
-3. To interact with this VM, the live tests framework will use SSH; by default, the connection will be established using the ``root`` username and the local key file ``~/.ssh/arouteserver``, so the VM must be configured to accept SSH connections using SSH keys:
-
-   .. code:: bash
-
-      mkdir /root/.ssh
-      cat << EOF > .ssh/authorized_keys
-      ssh-rsa [public_key_here] arouteserver
-      EOF
-
-   The ``StrictHostKeyChecking`` option is disabled via command line argument in order to allow to connect to multiple different VMs with the same IP address.
-
-   The SSH username and key file path can be changed by setting the ``SSH_USERNAME`` and ``SSH_KEY_PATH`` environment variables before running the tests.
-
-   Be sure that the ``bgpd`` daemon will startup automatically at boot and that the ``bgpctl`` tool can be executed correctly on the OpenBSD VM:
-
-   .. code:: bash
-
-      echo "bgpd_flags=" >> /etc/rc.conf.local
-      chmod 0555 /var/www/bin/bgpctl
+      docker pull pierky/openbgpd:8.7
+      docker pull pierky/openbgpd:9.2
 
 How to run built-in live tests
 ------------------------------

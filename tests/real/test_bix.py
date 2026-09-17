@@ -26,10 +26,6 @@ class TestRealConfigs_BIX_IPv4_BIRD(TestRealConfigs_BIX_IPv4,
                                     TestRealConfigs_BIRD):
     __test__ = True
 
-class TestRealConfigs_BIX_IPv4_OpenBGPD64(TestRealConfigs_BIX_IPv4,
-                                          TestRealConfigs_OpenBGPD64):
-    __test__ = True
-
 
 class TestRealConfigs_BIX_IPv6(object):
 
@@ -39,8 +35,4 @@ class TestRealConfigs_BIX_IPv6(object):
 
 class TestRealConfigs_BIX_IPv6_BIRD(TestRealConfigs_BIX_IPv6,
                                     TestRealConfigs_BIRD):
-    __test__ = True
-
-class TestRealConfigs_BIX_IPv6_OpenBGPD64(TestRealConfigs_BIX_IPv6,
-                                          TestRealConfigs_OpenBGPD64):
     __test__ = True

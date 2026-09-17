@@ -302,8 +302,8 @@ add_feature("IPv6 NEXT_HOP for IPv4 routes (RFC8950)", {
     "bird": False,
     "bird2": True,
     "bird3": True,
-    "openbgpd": False,
-    "openbgpd_portable": False,
+    "openbgpd": True,
+    "openbgpd_portable": True,
 })
 
 

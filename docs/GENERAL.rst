@@ -180,7 +180,7 @@ General options: ``cfg``
   BIRD: enables extended next-hop (available since 2.0)
 
 
-  OpenBGPD: not yet supported
+  OpenBGPD: enables extended nexthop (available since 8.8)
 
 
   Can be overwritten on a client-by-client basis.

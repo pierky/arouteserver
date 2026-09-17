@@ -25,7 +25,3 @@ class TestRealConfigs_BCIX(object):
 class TestRealConfigs_BCIX_BIRD(TestRealConfigs_BCIX,
                                 TestRealConfigs_BIRD):
     __test__ = True
-
-class TestRealConfigs_BCIX_OpenBGPD64(TestRealConfigs_BCIX,
-                                      TestRealConfigs_OpenBGPD64):
-    __test__ = True

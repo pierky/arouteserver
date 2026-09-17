@@ -78,11 +78,10 @@ class BGPSpeakerInstance(BaseInstance):
 
     Currently, the ``start``, ``stop``, ``is_running`` and
     ``run_cmd`` methods inherited from  BaseInstance are implemented by the
-    :class:`DockerInstance` and :class:`KVMInstance` derived classes,
-    while the ``restart``, ``reload_config``, ``get_bgp_session``,
-    ``get_routes`` and ``log_contains`` methods by the
-    [Docker|KVM]Instance-derived :class:`BIRDInstance` and
-    :class:`OpenBGPDInstance` classes.
+    :class:`DockerInstance` derived classes, while the ``restart``,
+    ``reload_config``, ``get_bgp_session``, ``get_routes`` and
+    ``log_contains`` methods by the DockerInstance-derived
+    :class:`BIRDInstance` and :class:`OpenBGPDInstance` classes.
     """
 
     MESSAGE_LOGGING_SUPPORT = True

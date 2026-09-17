@@ -18,6 +18,12 @@ next release
 
   Recent BIRD (>= 2.18) and OpenBGPD (>= 8.8) releases reject such routes by default at the protocol level, before ARouteServer's own IRR/RPKI-based filters ever see them; older releases still default to accepting them. This option makes the behaviour explicit and consistent across every supported daemon and version, instead of silently depending on whichever default the underlying daemon release happens to ship with.
 
+- New: add support for `OpenBGPD 9.2 <https://undeadly.org/cgi?action=article&sid=20260807061435>`__, which also becomes the new default version for OpenBGPD-based configurations, also added to the integration testing suite.
+
+- New: add support for RFC8950 (IPv6 next-hop for IPv4 NLRI) on OpenBGPD, available since OpenBGPD 8.8. As with BIRD, it is only enabled for IPv6 BGP sessions.
+
+- Change: the KVM/real-OpenBSD-VM integration testing path for OpenBGPD (as opposed to the Docker-based OpenBGPD Portable edition, which is unaffected) has been removed from the built-in live tests suite; OpenBGPD live tests now run exclusively against the Portable edition, matching every other supported daemon.
+
 1.23.2
 ------
 

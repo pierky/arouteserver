@@ -18,7 +18,7 @@ import time
 from pierky.arouteserver.builder import BIRDConfigBuilder, OpenBGPDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, OpenBGPDLatestInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
 from pierky.arouteserver.tests.live_tests.routinator import RoutinatorInstance
 from pierky.arouteserver.tests.live_tests.instances import Route
 

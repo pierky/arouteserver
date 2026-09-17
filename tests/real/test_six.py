@@ -24,7 +24,3 @@ class TestRealConfigs_SIX(object):
 class TestRealConfigs_SIX_BIRD(TestRealConfigs_SIX,
                                TestRealConfigs_BIRD):
     __test__ = True
-
-class TestRealConfigs_SIX_OpenBGPD64(TestRealConfigs_SIX,
-                                     TestRealConfigs_OpenBGPD64):
-    __test__ = True

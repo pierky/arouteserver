@@ -24,7 +24,3 @@ class TestRealConfigs_AMS_IX(object):
 class TestRealConfigs_AMS_IX_BIRD(TestRealConfigs_AMS_IX,
                                   TestRealConfigs_BIRD):
     __test__ = True
-
-class TestRealConfigs_AMS_IX_OpenBGPD64(TestRealConfigs_AMS_IX,
-                                        TestRealConfigs_OpenBGPD64):
-    __test__ = True

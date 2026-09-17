@@ -113,8 +113,8 @@ docker pull pierky/bird:1.6.8
 docker pull pierky/bird:2.19.2
 docker pull pierky/bird:3.2.3
 docker pull pierky/bird:3.3.2
-docker pull pierky/openbgpd:8.4
 docker pull pierky/openbgpd:8.7
+docker pull pierky/openbgpd:9.2
 docker pull pierky/exabgp:4.2.7
 docker pull nlnetlabs/routinator:v0.13.2
 
@@ -141,12 +141,6 @@ if [ "`docker ps | grep -v "CONTAINER ID" | wc -l | awk '{print $1}'`" != "0" ];
 	echo "One or more Docker instances are already running"
 	exit
 fi
-
-# echo "Verifying no VMs are running..."
-# if [ "`virsh list --name --state-running | wc -w`" != "0" ]; then
-# 	echo "One or more VMs are already running"
-# 	exit
-# fi
 
 if [ ! -d $LAST_RESULTS_DIR ]; then
 	mkdir -p $LAST_RESULTS_DIR
@@ -182,33 +176,11 @@ for bgpspeaker in $BGPSPEAKERS; do
 				if [[ `find $d/test_${bgpspeaker}*.py 2>/dev/null | wc -l` -gt 0 ]]; then
 					echo " - live test: $LIVE_TEST_NAME, $bgpspeaker"
 					TARGET_FILE="live_${LIVE_TEST_NAME}_${bgpspeaker}.last"
-					REUSE_KVM_INSTANCES=1 pytest -vs -x $d/test_${bgpspeaker}*.py 2>&1 | tee $LAST_RESULTS_DIR/$TARGET_FILE
+					pytest -vs -x $d/test_${bgpspeaker}*.py 2>&1 | tee $LAST_RESULTS_DIR/$TARGET_FILE
 				fi
 			fi
 		fi
 	done
-	if [ "${bgpspeaker}" == "openbgpd_latest" -o "${bgpspeaker}" == "openbgpd_previous" ]; then
-		if [ `virsh list --name --state-running | egrep -v "^$" | wc -l` -gt 0 ]; then
-			echo "Shutting down rs KVM instance..."
-			./utils/run rs 'shutdown -p now'
-
-			attempts=1
-			vm_up=1
-			while [[ $attempts -le 15 && $vm_up -eq 1 ]]
-			do
-				sleep 1
-
-				set +e
-				virsh list --name --state-running | egrep "^.+$" &>/dev/null
-				if [ $? -ne 0 ]; then
-					vm_up=0
-				fi
-				set -e
-
-				attempts=`expr $attempts + 1`
-			done
-		fi
-	fi
 done
 
 join_last_results

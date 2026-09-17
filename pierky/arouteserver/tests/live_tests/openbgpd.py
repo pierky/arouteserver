@@ -16,7 +16,6 @@
 import re
 import time
 
-from .kvm import KVMInstance
 from .docker import DockerInstance
 from .instances import Route, BGPSpeakerInstance, InstanceNotRunning
 
@@ -96,8 +95,8 @@ class OpenBGPDInstance(object):
     the underlying OS are offloaded to the other classes.
 
     This class is supposed to be used in conjunction with
-    KVMInstance or DockerInstance since it uses some of
-    their methods and properties.
+    DockerInstance since it uses some of its methods and
+    properties.
     """
 
     MESSAGE_LOGGING_SUPPORT = False
@@ -304,90 +303,12 @@ class OpenBGPDInstance(object):
             return False, ""
         return False
 
-class OpenBGPDClassicInstance(OpenBGPDInstance, KVMInstance):
-    """This class implements OpenBGPD-specific methods.
-
-    This class is derived from :class:`KVMInstance`, that implements
-    some kvm-specific methods to start/stop the instance and to run
-    commands on it.
-
-    The VIRSH_DOMAINNAME attribute must be set by derived classes on the
-    basis of the specific version of OpenBSD they represent.
-    """
-
-    VIRSH_DOMAINNAME = None
-
-    def __init__(self, *args, **kwargs):
-        OpenBGPDInstance.__init__(self)
-        KVMInstance.__init__(self, *args, **kwargs)
-
-    def _graceful_shutdown(self):
-        self.run_cmd("shutdown -h -p now")
-        return True
-
-    def restart(self):
-        """Restart OpenBGPD.
-
-        Updates the configuration files, then executes '/etc/rc.d/bgpd stop'
-        and then '/etc/rc.d/bgpd -f start'.
-        """
-        if not self.is_running():
-            raise InstanceNotRunning(self.name)
-
-        try:
-            self.run_cmd("mkdir /etc/bgpd")
-        except:
-            pass
-
-        self._mount_files()
-
-        self.run_cmd("chmod 0600 /etc/bgpd.conf")
-        self.run_cmd("touch /etc/bgpd/placeholder")
-        self.run_cmd("chmod 0600 /etc/bgpd/*")
-
-        self.run_cmd("/etc/rc.d/bgpd stop")
-        time.sleep(5)
-        self.run_cmd("ndp -c | true")
-        self.run_cmd("bgpd -dn")
-        self.run_cmd("/etc/rc.d/bgpd -f start")
-        time.sleep(5)
-
-        return True
-
-    def reload_config(self):
-        """Reload OpenBGPD configuration.
-
-        Updates the configuration files, then executes '/etc/rc.d/bgpd reload'.
-        """
-        if not self.is_running():
-            raise InstanceNotRunning(self.name)
-
-        self._mount_files()
-
-        self.run_cmd("bgpd -dn")
-        self.run_cmd("/etc/rc.d/bgpd reload")
-        self.run_cmd("ndp -c | true")
-        time.sleep(5)
-
-        return True
-
-    def log_contains(self, s):
-        return True
-
-    def log_contains_errors(self, allowed_errors=[], list_errors=False):
-        if list_errors:
-            return False, ""
-        return False
-
 class OpenBGPDPortableInstance(OpenBGPDInstance, DockerInstance, BGPSpeakerInstance):
     """This class implements OpenBGPD-specific methods for the Portable edition.
 
     This class is derived from :class:`DockerInstance`, that implements
     some docker-specific methods to start/stop the instance and to run
     commands on it.
-
-    The VIRSH_DOMAINNAME attribute must be set by derived classes on the
-    basis of the specific version of OpenBSD they represent.
     """
 
     def __init__(self, *args, **kwargs):
@@ -432,93 +353,6 @@ class OpenBGPDPortableInstance(OpenBGPDInstance, DockerInstance, BGPSpeakerInsta
 
     def _get_start_cmd(self):
         return "bgpd -f /etc/bgpd.conf -d"
-
-class OpenBGPD60Instance(OpenBGPDClassicInstance):
-
-    VIRSH_DOMAINNAME = "arouteserver_openbgpd60"
-
-    TAG = "openbgpd60"
-
-class OpenBGPD61Instance(OpenBGPDClassicInstance):
-
-    VIRSH_DOMAINNAME = "arouteserver_openbgpd61"
-
-    TAG = "openbgpd61"
-
-class OpenBGPD62Instance(OpenBGPDClassicInstance):
-
-    VIRSH_DOMAINNAME = "arouteserver_openbgpd62"
-
-    TAG = "openbgpd62"
-
-class OpenBGPD63Instance(OpenBGPDClassicInstance):
-
-    VIRSH_DOMAINNAME = "arouteserver_openbgpd63"
-
-    TAG = "openbgpd63"
-
-class OpenBGPD64Instance(OpenBGPDClassicInstance):
-
-    VIRSH_DOMAINNAME = "arouteserver_openbgpd64"
-
-    TAG = "openbgpd64"
-
-class OpenBGPD65Instance(OpenBGPDClassicInstance):
-
-    VIRSH_DOMAINNAME = "arouteserver_openbgpd65"
-
-    TAG = "openbgpd65"
-
-    BGP_SPEAKER_VERSION = "6.5"
-    TARGET_VERSION = "6.5"
-
-class OpenBGPD66Instance(OpenBGPDClassicInstance):
-
-    VIRSH_DOMAINNAME = "arouteserver_openbgpd66"
-
-    TAG = "openbgpd66"
-
-    BGP_SPEAKER_VERSION = "6.6"
-    TARGET_VERSION = "6.6"
-
-class OpenBGPD67Instance(OpenBGPDClassicInstance):
-
-    VIRSH_DOMAINNAME = "arouteserver_openbgpd67"
-
-    TAG = "openbgpd67"
-
-    BGP_SPEAKER_VERSION = "6.7"
-    TARGET_VERSION = "6.7"
-
-class OpenBGPD68Instance(OpenBGPDClassicInstance):
-
-    VIRSH_DOMAINNAME = "arouteserver_openbgpd68"
-
-    TAG = "openbgpd68"
-
-    BGP_SPEAKER_VERSION = "6.8"
-    TARGET_VERSION = "6.8"
-
-class OpenBGPD69Instance(OpenBGPDClassicInstance):
-
-    VIRSH_DOMAINNAME = "arouteserver_openbgpd69"
-
-    TAG = "openbgpd69"
-
-    BGP_SPEAKER_VERSION = "6.9"
-    TARGET_VERSION = "6.9"
-
-class OpenBGPD70Instance(OpenBGPDClassicInstance):
-
-    VIRSH_DOMAINNAME = "arouteserver_openbgpd70"
-
-    TAG = "openbgpd70"
-
-    BGP_SPEAKER_VERSION = "7.0"
-    TARGET_VERSION = "7.0"
-
-OpenBGPDPreviousInstance = OpenBGPD68Instance
-OpenBGPDLatestInstance = OpenBGPD70Instance
 
 class OpenBGPD65PortableInstance(OpenBGPDPortableInstance):
 
@@ -691,5 +525,15 @@ class OpenBGPD87PortableInstance(OpenBGPDPortableInstance):
     TARGET_VERSION = "8.7"
 
 
-OpenBGPDPortablePreviousInstance = OpenBGPD84PortableInstance
-OpenBGPDPortableLatestInstance = OpenBGPD87PortableInstance
+class OpenBGPD92PortableInstance(OpenBGPDPortableInstance):
+
+    DOCKER_IMAGE = "pierky/openbgpd:9.2"
+
+    TAG = "openbgpd92p"
+
+    BGP_SPEAKER_VERSION = "9.2"
+    TARGET_VERSION = "9.2"
+
+
+OpenBGPDPortablePreviousInstance = OpenBGPD87PortableInstance
+OpenBGPDPortableLatestInstance = OpenBGPD92PortableInstance

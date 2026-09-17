@@ -24,7 +24,3 @@ class TestRealConfigs_SwissIX(object):
 class TestRealConfigs_SwissIX_BIRD(TestRealConfigs_SwissIX,
                                    TestRealConfigs_BIRD):
     __test__ = True
-
-class TestRealConfigs_SwissIX_OpenBGPD64(TestRealConfigs_SwissIX,
-                                         TestRealConfigs_OpenBGPD64):
-    __test__ = True

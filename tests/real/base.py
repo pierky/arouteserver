@@ -19,11 +19,8 @@ from logging.config import fileConfig
 import os
 import subprocess
 import time
-import unittest
 
 from pierky.arouteserver.tests.base import ARouteServerTestCase
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD63Instance, \
-                                                          OpenBGPD64Instance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, \
                                                       BIRDInstanceIPv6
 
@@ -36,8 +33,8 @@ class TestRealConfigs(ARouteServerTestCase):
 
     # Set to True for those tests that don't run locally on my machine,
     # because of lack of resources!!! If True, the REMOTE_IP env var is
-    # used to get the IP address of a remote host where OpenBGPD is
-    # running.
+    # used to get the IP address of a remote host where the BGP speaker
+    # is running.
     # If REMOTE_IP_NEEDED is True and no remote IP can be found, the
     # test is skipped.
     REMOTE_IP_NEEDED = False
@@ -96,7 +93,7 @@ class TestRealConfigs(ARouteServerTestCase):
     def build_config(self, bgp_speaker, target_ver, ip_ver):
         cwd = os.path.dirname(__file__)
 
-        if bgp_speaker not in ("bird", "openbgpd"):
+        if bgp_speaker not in ("bird",):
             raise ValueError("Unknown bgp_speaker: {}".format(bgp_speaker))
 
         rs_config_file_path = self.get_rs_config_file_path(
@@ -139,13 +136,6 @@ class TestRealConfigs(ARouteServerTestCase):
                 inst_class = BIRDInstanceIPv6
             else:
                 raise ValueError("Unknown ip_ver: {}".format(ip_ver))
-        elif bgp_speaker == "openbgpd":
-            if target_ver == "6.3":
-                inst_class = OpenBGPD63Instance
-            elif target_ver == "6.4":
-                inst_class = OpenBGPD64Instance
-            else:
-                raise ValueError("Unknown target_ver: {}".format(target_ver))
 
         rs_config_file_path = self.get_rs_config_file_path(
             bgp_speaker, target_ver, ip_ver)
@@ -158,9 +148,7 @@ class TestRealConfigs(ARouteServerTestCase):
 
         inst = inst_class(
             "rs", "2001:db8:1:1::2" if ip_ver == 6 else "192.0.2.2",
-            [(rs_config_file_path,
-              "/etc/bird/bird.conf" if bgp_speaker == "bird"
-                                    else "/etc/bgpd.conf")],
+            [(rs_config_file_path, "/etc/bird/bird.conf")],
             remote_ip=remote_ip
         )
         inst.set_var_dir(self.rs_config_dir)
@@ -211,35 +199,3 @@ class TestRealConfigs_BIRD(TestRealConfigs):
         if "BUILD_ONLY" in os.environ:
             self.skipTest("Build only")
         self.load_config("bird", None, 6)
-
-class TestRealConfigs_OpenBGPD63(TestRealConfigs):
-    __test__ = False
-
-    REMOTE_IP_NEEDED = False
-
-    def test_openbgpd63_any_010_build(self):
-        """OpenBGPD 6.3, build"""
-        self.build_config("openbgpd", "6.3", None)
-
-    @unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
-    def test_openbgpd63_any_020_load(self):
-        """OpenBGPD 6.3, load"""
-        if "BUILD_ONLY" in os.environ:
-            self.skipTest("Build only")
-        self.load_config("openbgpd", "6.3", None)
-
-class TestRealConfigs_OpenBGPD64(TestRealConfigs):
-    __test__ = False
-
-    REMOTE_IP_NEEDED = False
-
-    def test_openbgpd64_any_010_build(self):
-        """OpenBGPD 6.4, build"""
-        self.build_config("openbgpd", "6.4", None)
-
-    @unittest.skipIf("TRAVIS" in os.environ, "not supported on Travis CI")
-    def test_openbgpd64_any_020_load(self):
-        """OpenBGPD 6.4, load"""
-        if "BUILD_ONLY" in os.environ:
-            self.skipTest("Build only")
-        self.load_config("openbgpd", "6.4", None)

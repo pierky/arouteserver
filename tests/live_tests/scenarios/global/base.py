@@ -1352,3 +1352,30 @@ class BasicScenarioOpenBGPDPrevious(BasicScenarioOpenBGPD):
 
 class BasicScenarioOpenBGPDLatest(BasicScenarioOpenBGPD):
     __test__ = False
+
+class BasicScenarioOpenBGPDRFC8950(BasicScenarioOpenBGPD):
+    __test__ = False
+
+    @classmethod
+    def _get_cfg_general(cls, orig_file="general.yml"):
+        """Enable RFC 8950 on top of the tag-reject-policy general.yml.
+
+        BasicScenarioOpenBGPD relies on BasicScenario_TagRejectPolicy's
+        (LiveScenario_TagRejectPolicy's) _get_cfg_general() override to set
+        up the 'tag' reject_policy and its communities: building the file
+        from orig_file here directly, instead of layering on top of that
+        result, would silently drop that setup and revert reject_policy to
+        its default.
+        """
+
+        dest_path = super(BasicScenarioOpenBGPDRFC8950, cls)._get_cfg_general(orig_file)
+
+        with open(dest_path, "r") as f:
+            cfg = yaml.safe_load(f.read())
+
+        cfg["cfg"]["rfc8950"] = True
+
+        with open(dest_path, "w") as f:
+            yaml.safe_dump(cfg, f, default_flow_style=False)
+
+        return dest_path

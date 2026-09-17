@@ -24,7 +24,3 @@ class TestRealConfigs_INEX(object):
 class TestRealConfigs_INEX_BIRD(TestRealConfigs_INEX,
                                 TestRealConfigs_BIRD):
     __test__ = True
-
-class TestRealConfigs_INEX_OpenBGPD64(TestRealConfigs_INEX,
-                                      TestRealConfigs_OpenBGPD64):
-    __test__ = True

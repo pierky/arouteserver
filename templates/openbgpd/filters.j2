@@ -436,6 +436,11 @@ allow quick from {{ client.ip }} community BLACKHOLE
 {% set min_pref_len = client.cfg.filtering.ipv6_pref_len.min %}
 {% set max_pref_len = client.cfg.filtering.ipv6_pref_len.max %}
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " prefix ::/0 prefixlen " ~ min_pref_len ~ " >< " ~ max_pref_len, 13) }}
+{%	if "8.8"|target_version_ge and client.cfg.rfc8950 %}
+{%	set min_pref_len = client.cfg.filtering.ipv4_pref_len.min %}
+{%	set max_pref_len = client.cfg.filtering.ipv4_pref_len.max %}
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " prefix 0.0.0.0/0 prefixlen " ~ min_pref_len ~ " >< " ~ max_pref_len, 13) }}
+{%	endif %}
 {% endif %}
 
 {% if cfg.graceful_shutdown.enabled %}

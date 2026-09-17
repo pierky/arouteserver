@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, LiveScenario_TagAndRejectRejectPolicy
-from pierky.arouteserver.builder import BIRDConfigBuilder
+from pierky.arouteserver.builder import BIRDConfigBuilder, OpenBGPDConfigBuilder
 
 class RFC8950Scenario(LiveScenario_TagAndRejectRejectPolicy, LiveScenario):
     __test__ = False
@@ -219,3 +219,26 @@ class RFC8950Scenario(LiveScenario_TagAndRejectRejectPolicy, LiveScenario):
         for prefix in (self.DATA["AS1_v4_route14"],):
             self.receive_route(self.rs, prefix, filtered=True, reject_reason=13)
             self.log_contains(self.rs, "prefix len [25] not in 8-24 - REJECTING " + prefix)
+
+class RFC8950ScenarioOpenBGPD(RFC8950Scenario):
+    __test__ = False
+
+    # OpenBGPD does not support the 'tag_and_reject' reject policy used by
+    # the BIRD-based variants of this scenario; fall back to plain 'tag'.
+    REJECT_POLICY = "tag"
+
+    CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
+
+    @classmethod
+    def _setup_rs_instance(cls):
+        return cls.RS_INSTANCE_CLASS(
+            "rs",
+            cls.DATA["rs_IPAddress"],
+            [
+                (
+                    cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
+                                     target_version=cls.TARGET_VERSION or cls.RS_INSTANCE_CLASS.TARGET_VERSION),
+                    "/etc/bgpd.conf"
+                )
+            ]
+        )

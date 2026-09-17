@@ -1078,7 +1078,7 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
     LOCAL_FILES_BASE_DIR = "/etc/bgpd"
 
     AVAILABLE_VERSION = ["7.0", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7",
-                         "7.8", "8.0", "8.3", "8.4", "8.7"]
+                         "7.8", "8.0", "8.3", "8.4", "8.7", "9.2"]
     DEFAULT_VERSION = AVAILABLE_VERSION[-1]
 
     IGNORABLE_ISSUES = ConfigBuilder.IGNORABLE_ISSUES + \
@@ -1178,18 +1178,19 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
             ):
                 res = False
 
-        rfc8950_clients = self._get_rfc8950_clients()
-        if rfc8950_clients:
-            cnt = len(rfc8950_clients)
-            if not self.process_compatibility_issue(
-                "rfc8950",
-                "RFC8950 not supported by OpenBGPD but "
-                "enabled for the following clients: {}{}.".format(
-                    ", ".join(rfc8950_clients[:3]),
-                    "" if cnt <= 3 else " and {} more".format(cnt - 3)
-                )
-            ):
-                res = False
+        if version.parse(self.target_version) < version.parse("8.8"):
+            rfc8950_clients = self._get_rfc8950_clients()
+            if rfc8950_clients:
+                cnt = len(rfc8950_clients)
+                if not self.process_compatibility_issue(
+                    "rfc8950",
+                    "RFC8950 not supported by OpenBGPD < 8.8 but "
+                    "enabled for the following clients: {}{}.".format(
+                        ", ".join(rfc8950_clients[:3]),
+                        "" if cnt <= 3 else " and {} more".format(cnt - 3)
+                    )
+                ):
+                    res = False
 
         if self.cfg_general["filtering"]["roles"]["enabled"]:
             if version.parse(self.target_version) < version.parse("7.5"):

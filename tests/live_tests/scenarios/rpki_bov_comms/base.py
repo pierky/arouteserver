@@ -15,9 +15,7 @@
 
 from pierky.arouteserver.builder import BIRDConfigBuilder, OpenBGPDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
-                                                          OpenBGPDPreviousInstance, \
-                                                          OpenBGPDLatestInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
 
 class RPKICustomBOVCommunitiesScenario(LiveScenario):
     __test__ = False
