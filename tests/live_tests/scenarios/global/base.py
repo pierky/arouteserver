@@ -164,6 +164,20 @@ class BasicScenario(LiveScenario):
                         "/etc/exabgp/exabgp.env"
                     )
                 ],
+            ),
+            ExaBGPInstance(
+                "AS223",
+                cls.DATA["AS223_IPAddress"],
+                [
+                    (
+                        cls.build_other_cfg("AS223.j2"),
+                        "/etc/exabgp/exabgp.conf"
+                    ),
+                    (
+                        cls.use_static_file("exabgp.env"),
+                        "/etc/exabgp/exabgp.env"
+                    )
+                ],
             )
         ]
 
@@ -177,6 +191,7 @@ class BasicScenario(LiveScenario):
         self.AS151866 = self._get_instance_by_name("AS151866")
         self.AS101 = self._get_instance_by_name("AS101")
         self.AS222 = self._get_instance_by_name("AS222")
+        self.AS223 = self._get_instance_by_name("AS223")
         self.rs = self._get_instance_by_name("rs")
 
     def test_010_setup(self):
@@ -192,6 +207,7 @@ class BasicScenario(LiveScenario):
         self.session_is_up(self.rs, self.AS4)
         self.session_is_up(self.rs, self.AS151866)
         self.session_is_up(self.rs, self.AS222)
+        self.session_is_up(self.rs, self.AS223)
         self.session_is_up(self.AS101, self.AS1_1)
         self.session_is_up(self.AS101, self.AS1_2)
         self.session_is_up(self.AS101, self.AS2)
@@ -312,57 +328,57 @@ class BasicScenario(LiveScenario):
         self.receive_route(self.rs, self.DATA["AS1_whitel_4"], as_path="1 1011")
         self.receive_route(self.rs, self.DATA["AS1_whitel_5"], as_path="1 1000")
 
-    def test_040_bad_prefixes_received_by_rs_aggregate1(self):
-        """{}: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9"""
+    def test_040_bad_prefixes_received_by_rs_as_set_default(self):
+        """{}: bad prefixes received by rs: AS_SET in AS_PATH, default (not accepted)"""
 
-        # Route that is allowed by an explicit 'white_list_route' that matches
-        # the prefix but that doesn't enforce the origin ASN (so that the IRR
-        # origin validation check is passed), but that later on is rejected by
-        # the RPKI BOV check.
+        # AS222 announces routes whose AS_PATH ends with an AS_SET segment
+        # (a deprecated BGP construct, RFC 6472) and has no per-client
+        # 'allow_as_set' override, so it stays at the general default
+        # (False). Both BIRD and OpenBGPD are configured by ARouteServer to
+        # reject such routes at the BGP session level, before they ever
+        # reach any of the IRR/RPKI-based filters below - so the route
+        # must never be usable/accepted.
+        #
+        # BIRD drops the malformed AS_PATH entirely: the route isn't
+        # visible at all, not even in the filtered/rejected table.
+        # OpenBGPD instead keeps a diagnostic entry for it ('bgpctl show
+        # ... detail error') - still not accepted, but distinguishable
+        # from a route rejected by one of ARouteServer's own
+        # reject-reason communities, which this route never reaches.
+        #
+        # See also test_040_bad_prefixes_received_by_rs_as_set_override,
+        # which uses the 'allow_as_set' override on AS223 to demonstrate
+        # that, once let through, these same filters still apply exactly
+        # as they did before this default was introduced.
         #
         # Details on https://github.com/pierky/arouteserver/pull/56
 
-        self.receive_route(self.rs, self.DATA["AS222_aggregate1"],
-                           as_path="222 333", as_set="333 333",
+        for prefix in (self.DATA["AS222_aggregate1"], self.DATA["AS222_aggregate2"]):
+            with self.assertRaisesRegex(AssertionError, "Routes not found."):
+                self.receive_route(self.rs, prefix, filtered=False)
+
+            if isinstance(self.rs, BIRDInstance):
+                with self.assertRaisesRegex(AssertionError, "Routes not found."):
+                    self.receive_route(self.rs, prefix, filtered=True)
+            else:
+                route = self.receive_route(self.rs, prefix, filtered=True)
+                self.assertEqual(route.reject_reasons, [])
+
+    def test_040_bad_prefixes_received_by_rs_as_set_override(self):
+        """{}: bad prefixes received by rs: AS_SET in AS_PATH, 'allow_as_set' override"""
+
+        # AS223 announces a route shaped exactly like AS222's, but with the
+        # per-client 'allow_as_set' override set to True (clients.yml).
+        # The route is let through to Adj-RIB-In, where it's evaluated (and
+        # rejected) by ARouteServer's own RPKI BOV filter, exactly as
+        # AS222's route used to be before BIRD/OpenBGPD started rejecting
+        # AS_SET-carrying AS_PATHs by default.
+        #
+        # Details on https://github.com/pierky/arouteserver/pull/56
+
+        self.receive_route(self.rs, self.DATA["AS223_aggregate1"],
+                           as_path="223 333", as_set="333 333",
                            filtered=True, reject_reason=14)
-
-    def test_040_bad_prefixes_received_by_rs_aggregate2(self):
-        """{}: bad prefixes received by rs: IRR check for AS_SET origin, BIRD"""
-
-        if isinstance(self.rs, OpenBGPDInstance):
-            raise unittest.SkipTest("BIRD specific")
-
-        # Route that is rejected by the IRR-based origin validation check.
-        #
-        # This test case is specific for BIRD, it's used to verify that
-        # bgp_path.last would not match any ASN in the right-most AS_SET
-        # used to originate this route nor the last non aggregated ASN,
-        # regardless of the fact that they are all 333 (which is included
-        # in the IRR as-set for this client).
-        #
-        # Details on https://github.com/pierky/arouteserver/pull/56
-
-        self.receive_route(self.rs, self.DATA["AS222_aggregate2"],
-                           as_path="222 333", as_set="333 333",
-                           filtered=True, reject_reason=9)
-
-    def test_040_bad_prefixes_received_by_rs_aggregate3(self):
-        """{}: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD"""
-
-        if isinstance(self.rs, BIRDInstance):
-            raise unittest.SkipTest("OpenBGPD specific")
-
-        # Route that is accepted by OpenBGPD.
-        #
-        # This test covers the behaviour of OpenBGPD, that matches the
-        # last non aggregated ASN in the AS_PATH. 333 is the ASN included
-        # in the IRR as-set for this client.
-        #
-        # Details on https://github.com/pierky/arouteserver/pull/56
-
-        self.receive_route(self.rs, self.DATA["AS222_aggregate3"],
-                           as_path="222 333", as_set="444 555",
-                           filtered=False)
 
     def test_040_bad_prefixes_received_by_rs_bogon(self):
         """{}: bad prefixes received by rs: bogon"""

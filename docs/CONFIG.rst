@@ -687,7 +687,11 @@ Caveats and limitations
 Not all features offered by ARouteServer are supported by both BIRD and OpenBGPD.
 The following list of limitations is based on the currently supported versions of BIRD and OpenBGPD.
 
-- IRR filtering of routes whose AS_PATH ends with an AS_SET
+- Routes whose AS_PATH contains an AS_SET segment
+
+  AS_SET segments in AS_PATH are deprecated (`RFC 6472 <https://www.rfc-editor.org/info/rfc6472>`__). By default (``filtering.allow_as_set: False``, the default), both BIRD and OpenBGPD reject such routes at the BGP session level, before they can reach any IRR/RPKI-based filter configured by ARouteServer.
+
+  Setting ``filtering.allow_as_set`` to True (globally in ``general.yml``, or on a client-by-client basis in ``clients.yml``) makes the daemon accept the route into its RIB again, at which point ARouteServer's own IRR-based origin validation filters apply, with different outcomes depending on the BGP speaker:
 
   - BIRD: routes are rejected by the IRR filters.
   - OpenBGPD: if the last non-aggregated AS in the AS_PATH is included in the list of ASNs generated from the IRR records, the routes pass the IRR filters.

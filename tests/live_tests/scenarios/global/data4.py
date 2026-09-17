@@ -27,6 +27,7 @@ class BasicScenario_Data4(object):
         "AS151866_1_IPAddress":     "192.0.2.51",
         "AS101_IPAddress":          "192.0.2.101",
         "AS222_IPAddress":          "192.0.2.222",
+        "AS223_IPAddress":          "192.0.2.223",
         "RoutesCollector_IPAddress":"192.0.2.99",
 
         "AS1_allowed_prefixes":     "1.0.0.0/8",
@@ -121,7 +122,8 @@ class BasicScenario_Data4(object):
         "AS222_allowed_prefixes":   "222.0.0.0/8",
         "AS222_aggregate1":         "222.1.1.0/24",
         "AS222_aggregate2":         "222.2.2.0/24",
-        "AS222_aggregate3":         "222.3.3.0/24",
+
+        "AS223_aggregate1":         "223.1.1.0/24",
 
         "Default_route":            "0.0.0.0/0",
     }

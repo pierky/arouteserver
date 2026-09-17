@@ -23,10 +23,5 @@ neighbor {{ data.rs_IPAddress }} {
             as-path [222,333,[333 333]];
             aggregator 333:192.0.2.223;
         }
-        route {{ data.AS222_aggregate3 }} {
-            next-hop {{ data.AS222_IPAddress }};
-            as-path [222,333,[444 555]];
-            aggregator 333:192.0.2.223;
-        }
     }
 }

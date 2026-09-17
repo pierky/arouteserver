@@ -143,6 +143,8 @@ clients:
 
         #reject_invalid_as_in_as_path: True
 
+        #allow_as_set: False
+
         irrdb:
 
           # Client's AS-SET(s) can be set here.

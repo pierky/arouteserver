@@ -27,6 +27,7 @@ class BasicScenario_Data6(object):
         "AS151866_1_IPAddress":     "2001:db8:1:1::51",
         "AS101_IPAddress":          "2001:db8:1:1::101",
         "AS222_IPAddress":          "2001:db8:1:1::222",
+        "AS223_IPAddress":          "2001:db8:1:1::223",
         "RoutesCollector_IPAddress":"2001:db8:1:1::999",
 
         "AS1_allowed_prefixes":     "2a01::/32",
@@ -124,7 +125,8 @@ class BasicScenario_Data6(object):
         "AS222_allowed_prefixes":   "3222::/32",
         "AS222_aggregate1":         "3222:0:1::/48",
         "AS222_aggregate2":         "3222:0:2::/48",
-        "AS222_aggregate3":         "3222:0:3::/48",
+
+        "AS223_aggregate1":         "3223:0:1::/48",
 
         "Default_route":            "::/0",
     }

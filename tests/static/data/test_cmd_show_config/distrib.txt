@@ -16,6 +16,7 @@ configured          ipv6_pref_len: max: 48, min: 12
 configured          global_black_list_pref: None
 configured          max_as_path_len: 32
 configured          reject_invalid_as_in_as_path: True
+configured          allow_as_set: False
                     transit_free:
 default               action: None
 configured            asns: 174, 701, 1299, 2914, 3257, 3320, 3356, 5511, 6453, 6461, 6762, 6830, 7018, 12956

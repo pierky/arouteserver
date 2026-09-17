@@ -213,6 +213,12 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self._test_bool_val(self.cfg["filtering"], "reject_invalid_as_in_as_path")
         self._test_mandatory(self.cfg["filtering"], "reject_invalid_as_in_as_path", has_default=True)
 
+    def test_allow_as_set(self):
+        """{}: allow_as_set"""
+        self.assertEqual(self.cfg["filtering"]["allow_as_set"], False)
+        self._test_bool_val(self.cfg["filtering"], "allow_as_set")
+        self._test_mandatory(self.cfg["filtering"], "allow_as_set", has_default=True)
+
     def test_tag_as_set(self):
         """{}: tag_as_set"""
         self.assertEqual(self.cfg["filtering"]["irrdb"]["tag_as_set"], True)
@@ -1271,6 +1277,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 },
                 "max_as_path_len": 32,
                 "reject_invalid_as_in_as_path": True,
+                "allow_as_set": False,
                 "reject_policy": {
                     "policy": "reject"
                 },
@@ -1399,6 +1406,7 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 },
                 "max_as_path_len": 32,
                 "reject_invalid_as_in_as_path": True,
+                "allow_as_set": False,
                 "reject_policy": {
                     "policy": "reject"
                 },

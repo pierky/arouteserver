@@ -55,6 +55,15 @@ group "clients" {
 {%	else %}
 		ttl-security no
 {%	endif %}
+{#	AS_SET segments in AS_PATH are deprecated (RFC 6472); OpenBGPD can
+	reject them outright before this route ever reaches the filters
+	below. Controlled by the 'allow_as_set' knob (general.yml /
+	clients.yml), default off. #}
+{%	if client.cfg.filtering.allow_as_set %}
+		reject as-set no
+{%	else %}
+		reject as-set yes
+{%	endif %}
 {%	if client.cfg.filtering.max_prefix.action == "shutdown" or
 	   client.cfg.filtering.max_prefix.action == "restart" %}
 {%      	if client.ip|ipaddr_ver == 4 and client.cfg.filtering.max_prefix.limit_ipv4 %}

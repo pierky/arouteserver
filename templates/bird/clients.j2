@@ -471,12 +471,15 @@ protocol bgp {{ client.id }} {
 	rs client;
 
 	{% if "2.0"|target_version_ge %}
-	# Some BIRD releases reject AS_PATH attributes containing AS_SET
-	# segments as malformed by default (RFC 6472); since ARouteServer's
-	# own filters (RPKI/IRR origin validation, RFC6907) are meant to be
-	# the ones evaluating and rejecting/tagging such routes, AS_SET
-	# segments must be allowed through to them.
+	# AS_SET segments in AS_PATH are deprecated (RFC 6472); some BIRD
+	# releases reject them as malformed by default, before this route
+	# ever reaches the filters below. Controlled by the 'allow_as_set'
+	# knob (general.yml / clients.yml), default off.
+	{% if client.cfg.filtering.allow_as_set %}
 	allow as sets on;
+	{% else %}
+	allow as sets off;
+	{% endif %}
 	{% endif %}
 
 	{% if client.cfg.filtering.roles.enabled and "2.0.11"|target_version_ge %}

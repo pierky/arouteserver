@@ -120,3 +120,22 @@ clients:
                                 - prefix: "3222:0:1::"
                                   length: 48
                                   exact: True
+        - asn: 223
+          ip:
+          - "192.0.2.223"
+          - "2001:db8:1:1::223"
+          description: "AS223_1 client"
+          cfg:
+                passive: False
+                filtering:
+                        allow_as_set: True
+                        irrdb:
+                                as_sets:
+                                - "AS-AS222"
+                                white_list_route:
+                                - prefix: "223.1.1.0"
+                                  length: 24
+                                  exact: True
+                                - prefix: "3223:0:1::"
+                                  length: 48
+                                  exact: True

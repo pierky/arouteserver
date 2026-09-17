@@ -14,6 +14,10 @@ next release
 
 - Change: BIRD 1.x integration testing has been removed from the built-in live tests suite, to reduce testing overhead now that BIRD v2 and v3 are both mature. BIRD 1.x remains a supported ``--target-version``.
 
+- New: add a ``filtering.allow_as_set`` option (default False, overridable on a client-by-client basis) to explicitly control whether routes carrying a deprecated AS_SET segment in their AS_PATH (`RFC 6472 <https://www.rfc-editor.org/info/rfc6472>`__) are accepted at the BGP session level.
+
+  Recent BIRD (>= 2.18) and OpenBGPD (>= 8.8) releases reject such routes by default at the protocol level, before ARouteServer's own IRR/RPKI-based filters ever see them; older releases still default to accepting them. This option makes the behaviour explicit and consistent across every supported daemon and version, instead of silently depending on whichever default the underlying daemon release happens to ship with.
+
 1.23.2
 ------
 

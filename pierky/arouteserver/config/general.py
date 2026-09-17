@@ -137,6 +137,7 @@ class ConfigParserGeneral(ConfigParserBase):
         )
         f["max_as_path_len"] = ValidatorMaxASPathLen(default=32)
         f["reject_invalid_as_in_as_path"] = ValidatorBool(default=True)
+        f["allow_as_set"] = ValidatorBool(default=False)
         f["transit_free"] = OrderedDict()
         f["transit_free"]["action"] = ValidatorOption(
             "action", ("reject", "warning"), mandatory=False, default="reject"

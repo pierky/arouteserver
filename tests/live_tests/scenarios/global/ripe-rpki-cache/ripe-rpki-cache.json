@@ -14,6 +14,9 @@
   {"prefix": "3101:3::/32", "maxLength": 48, "asn": "AS105", "ta": "test", "expires": 4102444799},
 
   {"prefix": "222.1.1.0/24", "maxLength": 24, "asn": "AS333", "ta": "test", "expires": 4102444799},
-  {"prefix": "3222:0:1::/48", "maxLength": 48, "asn": "AS333", "ta": "test", "expires": 4102444799}
+  {"prefix": "3222:0:1::/48", "maxLength": 48, "asn": "AS333", "ta": "test", "expires": 4102444799},
+
+  {"prefix": "223.1.1.0/24", "maxLength": 24, "asn": "AS333", "ta": "test", "expires": 4102444799},
+  {"prefix": "3223:0:1::/48", "maxLength": 48, "asn": "AS333", "ta": "test", "expires": 4102444799}
 ]}
 

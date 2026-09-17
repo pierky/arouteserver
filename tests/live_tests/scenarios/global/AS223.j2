@@ -1,0 +1,22 @@
+neighbor {{ data.rs_IPAddress }} {
+    peer-as 999;
+    local-address {{ data.AS223_IPAddress }};
+    local-as 223;
+    description "the_rs";
+
+    hold-time 30;
+    router-id 192.0.2.223;
+
+    family {
+        ipv4 unicast;
+        ipv6 unicast;
+    }
+
+    static {
+        route {{ data.AS223_aggregate1 }} {
+            next-hop {{ data.AS223_IPAddress }};
+            as-path [223,333,[333 333]];
+            aggregator 333:192.0.2.223;
+        }
+    }
+}
