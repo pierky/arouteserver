@@ -470,11 +470,12 @@ protocol bgp {{ client.id }} {
 	neighbor {{ client.ip }} as {{ client.asn }};
 	rs client;
 
-	{% if "2.0"|target_version_ge %}
+	{% if "2.0.8"|target_version_ge %}
 	# AS_SET segments in AS_PATH are deprecated (RFC 6472); some BIRD
 	# releases reject them as malformed by default, before this route
 	# ever reaches the filters below. Controlled by the 'allow_as_set'
-	# knob (general.yml / clients.yml), default off.
+	# knob (general.yml / clients.yml), default off. The 'allow as sets'
+	# option is not available before BIRD 2.0.8.
 	{% if client.cfg.filtering.allow_as_set %}
 	allow as sets on;
 	{% else %}
