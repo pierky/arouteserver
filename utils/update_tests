@@ -77,6 +77,7 @@ function usage() {
 	echo " - cli"
 	echo " - static"
 	echo " - build_only"
+	echo " - docker_images"
 	echo " - extres"
 	echo " - all"
 	for id in $LIVE_TEST_IDS; do
@@ -164,6 +165,11 @@ fi
 if [[ -z "$1" || `echo "$1" | grep  "\bbuild_only\b"` ]]; then
 	echo "Testing live scenarios with BUILD_ONLY=1..."
 	BUILD_ONLY=1 pytest -vs -x $TESTS_DIR/live_tests/scenarios/*/test_*.py -k test_010_setup
+fi
+
+if [[ -z "$1" || `echo "$1" | grep  "\bdocker_images\b"` ]]; then
+	echo "Testing Docker images..."
+	./utils/test_docker_images 2>&1
 fi
 
 echo "Running live tests..."

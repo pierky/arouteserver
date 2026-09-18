@@ -1,5 +1,7 @@
+.env
 .git/
 .github/
+.venv*/
 arouteserver.egg-info/
 dist/
 tools/

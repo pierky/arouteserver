@@ -1,0 +1,350 @@
+#!/bin/bash
+
+# Runs locally the steps of the "docker-image-tests" job of
+# .github/workflows/cicd.yml, once for each entry of the job's matrix (the
+# checkout step is skipped).
+#
+# To be kept in sync with .github/workflows/cicd.yml.
+#
+# The files that the workflow mounts from the repository, and the directories
+# where the configurations are saved, are created in a temporary directory
+# (mktemp): set TMPDIR to move it somewhere the container engine can see.
+
+set -o pipefail
+
+if [ ! -e "setup.py" ]; then
+	echo "The script must be executed from within the repository's root directory."
+	exit 1
+fi
+
+if [ -z "${SECRET_PEERINGDB_API_KEY}" ]; then
+	echo "SECRET_PEERINGDB_API_KEY must be set, but it is not."
+	exit 1
+fi
+
+# "<base_image> <target_image>"
+MATRIX=(
+	"python:3.14 latest"
+	"pypy:3.10 latest-pypy3"
+)
+
+function step() {
+	# $1: name of the step (the same used in the workflow)
+	# $2...: command to run
+	# When the command fails, the step name is saved and the current matrix
+	# entry is interrupted.
+	STEP_NAME="$1"
+	shift
+
+	echo ""
+	echo "===== [${TARGET_IMAGE}] ${STEP_NAME}"
+
+	"$@"
+
+	if [ $? -ne 0 ]; then
+		echo "===== [${TARGET_IMAGE}] FAILED: ${STEP_NAME}"
+		echo "${STEP_NAME}" >"${WORK_DIR}/failed_step"
+		exit 1
+	fi
+}
+
+function stage_files() {
+	# Not a step of the workflow, which mounts these files from the
+	# repository. They are copied to the work directory because the
+	# container engine may not be able to see the repository's path.
+	cp \
+		config.d/clients.yml \
+		examples/auto-config/bird-general.yml \
+		tests/var/general-env-vars-and-reject-reasons.yml \
+		utils/fake_rtt_getter.sh \
+		"${WORK_DIR}/"
+}
+
+function prep_environment() {
+	mkdir "${CONFIGS_DIR}" "${HTML_DIR}"
+}
+
+function build_config() {
+	# The arguments (environment variables, additional mounts) are passed
+	# to 'docker run'.
+	docker run \
+		-t \
+		--rm \
+		-v "${WORK_DIR}/clients.yml":/root/clients.yml:ro \
+		-v "${CONFIGS_DIR}":/root/arouteserver_configs \
+		-e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
+		"$@" \
+		"${ARS_IMAGE}"
+}
+
+function validate_bird() {
+	# $1: BIRD version
+	# $2: path of the configuration file
+	docker run \
+		-t \
+		--rm \
+		-v "$2":/etc/bird/bird.cfg \
+		pierky/bird:"$1" \
+		bird \
+			-c /etc/bird/bird.cfg \
+			-d \
+			-p
+}
+
+function validate_openbgpd() {
+	# $1: OpenBGPD version
+	# $2: path of the configuration file
+	docker run \
+		-t \
+		--rm \
+		-v "$2":/etc/bgpd/bgpd.conf \
+		pierky/openbgpd:"$1" \
+		bgpd \
+			-f /etc/bgpd/bgpd.conf \
+			-d \
+			-n
+}
+
+function get_latest_bird_version() {
+	LATEST_BIRD_VERSION="$(docker run --rm "${ARS_IMAGE}" python -c 'from pierky.arouteserver.builder import BIRDConfigBuilder; print(BIRDConfigBuilder.AVAILABLE_VERSION[-1])')" || return 1
+
+	echo "Latest BIRD release supported: ${LATEST_BIRD_VERSION}"
+
+	[ -n "${LATEST_BIRD_VERSION}" ]
+}
+
+function validate_env_vars_and_reject_reasons_config() {
+	validate_bird 1.6.8 "${CONFIGS_DIR}/bird4.cfg" || return 1
+
+	cat "${CONFIGS_DIR}/bird4.cfg" | grep 'router id 192.0.2.200'
+}
+
+function verify_local_files_includes() {
+	cat "${CONFIGS_DIR}/bird4.cfg" | \
+		grep include | \
+		grep /var/pierky/test | \
+		grep -E 'header.local|footer.local' | \
+		wc -l | \
+		grep 2
+}
+
+function verify_16bit_placeholder_asn() {
+	cat "${CONFIGS_DIR}/bird4.cfg" | \
+		grep "if (65333, peer_as) ~ bgp_community then"
+}
+
+function remove_work_dir() {
+	# $1: work directory
+	# $2: target image
+	# The configurations are written by root from within the container, so
+	# they are removed from there: the current user may not be able to do it.
+	docker run \
+		--rm \
+		-v "$1":/work \
+		"pierky/arouteserver:$2" \
+		rm -rf /work/arouteserver_configs /work/arouteserver_html &>/dev/null
+
+	rm -rf "$1"
+}
+
+# Runs in a subshell: a failing step interrupts only the current matrix entry.
+function run_matrix_entry() (
+	BASE_IMAGE="$1"
+	TARGET_IMAGE="$2"
+	WORK_DIR="$3"
+
+	ARS_IMAGE="pierky/arouteserver:${TARGET_IMAGE}"
+	CONFIGS_DIR="${WORK_DIR}/arouteserver_configs"
+	HTML_DIR="${WORK_DIR}/arouteserver_html"
+
+	step "Stage the files mounted into the containers" \
+		stage_files
+
+	step "Build the image" \
+		docker build \
+			--build-arg base_image="${BASE_IMAGE}" \
+			-t "${ARS_IMAGE}" \
+			-f docker/Dockerfile \
+			.
+
+	step "Run PyTest" \
+		docker run \
+			-t \
+			--rm \
+			-e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
+			"${ARS_IMAGE}" \
+				bash -c 'pip install -r requirements-dev.txt && pytest -vsx tests/static'
+
+	step "Run CLI tests" \
+		docker run \
+			-t \
+			--rm \
+			-e DO_NOT_PERFORM_VALIDATION=1 \
+			-e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
+			-v "${WORK_DIR}/fake_rtt_getter.sh":/arouteserver/utils/fake_rtt_getter.sh:ro \
+			"${ARS_IMAGE}" \
+				./tests/cli
+
+	step "Prep environment for configuration building tests" \
+		prep_environment
+
+	step "Build configuration for BIRD 1.x" \
+		build_config \
+			-e RS_ASN=65500 \
+			-e ROUTER_ID=192.0.2.123 \
+			-e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
+			-e IP_VER=4 \
+			-e DAEMON=bird \
+			-e VERSION=1.6.8
+
+	step "Validate BIRD 1.x configuration" \
+		validate_bird 1.6.8 "${CONFIGS_DIR}/bird4.cfg"
+
+	step "Build configuration for BIRD 2 (+ HTML representation)" \
+		build_config \
+			-v "${HTML_DIR}":/root/arouteserver_html \
+			-e RS_ASN=65500 \
+			-e ROUTER_ID=192.0.2.123 \
+			-e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
+			-e DAEMON=bird \
+			-e VERSION=2.0.7
+
+	step "Validate BIRD 2 configuration" \
+		validate_bird 2.0.7 "${CONFIGS_DIR}/bird.cfg"
+
+	step "Validate HTML representation" \
+		grep -q 'Configuration of route server 192.0.2.123 at AS65500' "${HTML_DIR}/bird.html"
+
+	step "Build configuration for BIRD 3.2.x" \
+		build_config \
+			-e RS_ASN=65500 \
+			-e ROUTER_ID=192.0.2.123 \
+			-e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
+			-e DAEMON=bird \
+			-e VERSION=3.2.3
+
+	step "Validate BIRD 3.2.x configuration" \
+		validate_bird 3.2.3 "${CONFIGS_DIR}/bird.cfg"
+
+	step "Build configuration for BIRD 3.3.x" \
+		build_config \
+			-e RS_ASN=65500 \
+			-e ROUTER_ID=192.0.2.123 \
+			-e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
+			-e DAEMON=bird \
+			-e VERSION=3.3.2
+
+	step "Validate BIRD 3.3.x configuration" \
+		validate_bird 3.3.2 "${CONFIGS_DIR}/bird.cfg"
+
+	step "Get the latest BIRD release supported" \
+		get_latest_bird_version
+
+	step "Build configuration for the latest BIRD release supported" \
+		build_config \
+			-e RS_ASN=65500 \
+			-e ROUTER_ID=192.0.2.123 \
+			-e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
+			-e DAEMON=bird \
+			-e VERSION="${LATEST_BIRD_VERSION}"
+
+	step "Validate the configuration for the latest BIRD release supported" \
+		validate_bird "${LATEST_BIRD_VERSION}" "${CONFIGS_DIR}/bird.cfg"
+
+	step "Build configuration for OpenBGPD (+ HTML representation)" \
+		build_config \
+			-v "${HTML_DIR}":/root/arouteserver_html \
+			-e RS_ASN=65500 \
+			-e ROUTER_ID=192.0.2.124 \
+			-e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
+			-e DAEMON=openbgpd \
+			-e VERSION=9.2
+
+	step "Validate OpenBGPD configuration" \
+		validate_openbgpd 9.2 "${CONFIGS_DIR}/openbgpd.cfg"
+
+	step "Validate HTML representation" \
+		grep -q 'Configuration of route server 192.0.2.124 at AS65500' "${HTML_DIR}/openbgpd.html"
+
+	step "Build configuration using custom general.yml file" \
+		build_config \
+			-v "${WORK_DIR}/bird-general.yml":/etc/arouteserver/general.yml:ro \
+			-e DAEMON=bird \
+			-e VERSION=2.19.2
+
+	step "Validate configuration built using custom general.yml file" \
+		validate_bird 2.19.2 "${CONFIGS_DIR}/bird.cfg"
+
+	step "Build configuration using custom general.yml file with env vars and reject reasons communities" \
+		build_config \
+			-v "${WORK_DIR}/general-env-vars-and-reject-reasons.yml":/etc/arouteserver/general.yml:ro \
+			-v "${HTML_DIR}":/root/arouteserver_html \
+			-e IP_VER=4 \
+			-e DAEMON=bird \
+			-e VERSION=1.6.8 \
+			-e RS_ASN=9999 \
+			-e ROUTER_ID=192.0.2.200
+
+	step "Validate configuration built using custom general.yml file with env vars and reject reasons communities" \
+		validate_env_vars_and_reject_reasons_config
+
+	step "Validate HTML representation" \
+		grep -q 'Configuration of route server 192.0.2.200 at AS9999' "${HTML_DIR}/bird.html"
+
+	step "Build configuration using local files" \
+		build_config \
+			-e RS_ASN=65500 \
+			-e ROUTER_ID=192.0.2.123 \
+			-e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
+			-e IP_VER=4 \
+			-e DAEMON=bird \
+			-e VERSION=1.6.8 \
+			-e LOCAL_FILES="header footer" \
+			-e LOCAL_FILES_DIR=/var/pierky/test
+
+	step "Verify that include statements are there" \
+		verify_local_files_includes
+
+	step "Build configuration for 32bit ASN route-servers" \
+		build_config \
+			-e RS_ASN=99999999 \
+			-e PLACEHOLDER_16BIT_ASN=65333 \
+			-e ROUTER_ID=192.0.2.123 \
+			-e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
+			-e IP_VER=4 \
+			-e DAEMON=bird \
+			-e VERSION=1.6.8
+
+	step "Verify that the desired 16bit placeholder ASN is used" \
+		verify_16bit_placeholder_asn
+)
+
+FAILED=0
+SUMMARY=()
+
+for entry in "${MATRIX[@]}"; do
+	read -r base_image target_image <<< "${entry}"
+
+	echo ""
+	echo "##### ${base_image} -> pierky/arouteserver:${target_image}"
+
+	work_dir="$(mktemp -d)" || exit 1
+
+	run_matrix_entry "${base_image}" "${target_image}" "${work_dir}"
+
+	if [ $? -eq 0 ]; then
+		SUMMARY+=("PASSED  ${base_image} -> pierky/arouteserver:${target_image}")
+		remove_work_dir "${work_dir}" "${target_image}"
+	else
+		FAILED=1
+		SUMMARY+=("FAILED  ${base_image} -> pierky/arouteserver:${target_image}: $(cat "${work_dir}/failed_step" 2>/dev/null) (work directory kept: ${work_dir})")
+	fi
+done
+
+echo ""
+echo "##### Summary"
+for line in "${SUMMARY[@]}"; do
+	echo "${line}"
+done
+
+exit ${FAILED}

@@ -46,7 +46,9 @@ document the live-tests framework in detail.
   `utils/docker_stopall` (force-remove all `ars_*` containers),
   `utils/build_doc` (regenerates `README.rst` — it's auto-generated, do
   not hand-edit it), `utils/test_config` (run a standalone config file
-  through a throwaway BIRD/OpenBGPD container).
+  through a throwaway BIRD/OpenBGPD container), `utils/test_docker_images`
+  (runs locally the "docker-image-tests" job of `cicd.yml` for each entry of
+  its matrix; also run by `utils/update_tests`).
 - `tools/playground` — a separate Docker-based sandbox to experiment with
   a full virtual IXP.
 - `.github/workflows/cicd.yml` — canonical reference for how tests are run

@@ -272,6 +272,45 @@ jobs:
               -d \
               -p
 
+      # The release is not hard-coded: it always follows the last one listed
+      # in BIRDConfigBuilder.AVAILABLE_VERSION.
+      - name: Get the latest BIRD release supported
+        id: latest_bird
+        run: |
+          VERSION="$(docker run --rm pierky/arouteserver:${{ matrix.docker-image.target_image }} python -c 'from pierky.arouteserver.builder import BIRDConfigBuilder; print(BIRDConfigBuilder.AVAILABLE_VERSION[-1])')"
+          echo "Latest BIRD release supported: ${VERSION}"
+          test -n "${VERSION}"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Build configuration for the latest BIRD release supported
+        run: >
+          docker run \
+            -t \
+            --rm \
+            -v $(pwd)/config.d/clients.yml:/root/clients.yml:ro \
+            -v ~/arouteserver_configs:/root/arouteserver_configs \
+            -e RS_ASN=65500 \
+            -e ROUTER_ID=192.0.2.123 \
+            -e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
+            -e DAEMON=bird \
+            -e VERSION=${{ steps.latest_bird.outputs.version }} \
+            -e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
+            pierky/arouteserver:${{ matrix.docker-image.target_image }}
+        env:
+          SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
+
+      - name: Validate the configuration for the latest BIRD release supported
+        run: >
+          docker run \
+            -t \
+            --rm \
+            -v ~/arouteserver_configs/bird.cfg:/etc/bird/bird.cfg \
+            pierky/bird:${{ steps.latest_bird.outputs.version }} \
+            bird \
+              -c /etc/bird/bird.cfg \
+              -d \
+              -p
+
       - name: Build configuration for OpenBGPD (+ HTML representation)
         run: >
           docker run \
