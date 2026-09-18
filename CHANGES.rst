@@ -3,8 +3,8 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
-next release
-------------
+1.24
+----
 
 - New: add support for `BIRD 2.19.2 <https://bird.network.cz/?news>`__, which also becomes the new default version for BIRD-based configurations.
 
@@ -23,6 +23,8 @@ next release
 - New: add support for RFC8950 (IPv6 next-hop for IPv4 NLRI) on OpenBGPD, available since OpenBGPD 8.8. As with BIRD, it is only enabled for IPv6 BGP sessions.
 
 - Change: the KVM/real-OpenBSD-VM integration testing path for OpenBGPD (as opposed to the Docker-based OpenBGPD Portable edition, which is unaffected) has been removed from the built-in live tests suite; OpenBGPD live tests now run exclusively against the Portable edition, matching every other supported daemon.
+
+- Change: deprecate support for Python <3.10, which is now EoL. Add support for Python 3.13 and 3.14 (used for the tests).
 
 1.23.2
 ------

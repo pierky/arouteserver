@@ -17,7 +17,7 @@ New release procedure
 - edit CHANGES.rst
 
 - verify RST syntax is ok
-    python setup.py --long-description | rst2html.py --strict --syntax-highlight=none
+    python setup.py --long-description | rst2html --strict --syntax-highlight=none
 
 - build and verify docs
     cd docs ; make html ; python3 -m http.server -b 127.0.0.1 8000 ; cd ..
