@@ -1,29 +1,13 @@
 ============================= test session starts ==============================
-platform darwin -- Python 3.11.9, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
+platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
-rootdir: /Users/pchiodi/github/public/arouteserver
-plugins: requests-mock-1.9.3
+rootdir: /home/pierky/src/ars
+plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
-Live test, OpenBGPD 8.7, examples, rich config, IPv4: instances setup 
-Live test, OpenBGPD 8.7, examples, rich config, IPv4: setting instances up...
-PASSED
-Live test, OpenBGPD 8.7, examples, rich config, IPv4: log contains errors PASSED
-Live test, OpenBGPD 8.7, examples, rich config, IPv4: dumping rs config...
+Live test, OpenBGPD 9.2, examples, rich config, IPv4: instances setup PASSED
+Live test, OpenBGPD 9.2, examples, rich config, IPv4: log contains errors PASSED
+Live test, OpenBGPD 9.2, examples, rich config, IPv6: instances setup PASSED
+Live test, OpenBGPD 9.2, examples, rich config, IPv6: log contains errors PASSED
 
-Live test, OpenBGPD 8.7, examples, rich config, IPv4: dumping routes...
-
-Live test, OpenBGPD 8.7, examples, rich config, IPv4: stopping instances...
-
-Live test, OpenBGPD 8.7, examples, rich config, IPv6: instances setup 
-Live test, OpenBGPD 8.7, examples, rich config, IPv6: setting instances up...
-PASSED
-Live test, OpenBGPD 8.7, examples, rich config, IPv6: log contains errors PASSED
-Live test, OpenBGPD 8.7, examples, rich config, IPv6: dumping rs config...
-
-Live test, OpenBGPD 8.7, examples, rich config, IPv6: dumping routes...
-
-Live test, OpenBGPD 8.7, examples, rich config, IPv6: stopping instances...
-
-
-============================== 4 passed in 9.78s ===============================
+============================== 4 passed in 0.10s ===============================

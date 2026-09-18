@@ -180,7 +180,7 @@ General options: ``cfg``
   BIRD: enables extended next-hop (available since 2.0)
 
 
-  OpenBGPD: enables extended nexthop (available since 8.8)
+  OpenBGPD: enables extended next-hop (available since 8.8)
 
 
   Can be overwritten on a client-by-client basis.
@@ -330,6 +330,36 @@ Example:
 .. code:: yaml
 
    reject_invalid_as_in_as_path: True
+
+
+Allow AS_SET: ``allow_as_set``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+AS_SET segments within the AS_PATH attribute are deprecated
+(RFC 6472) and, on the daemons/versions where support for them
+has been removed, routes carrying one are rejected outright by
+the BGP session itself, before they can reach any of the checks
+configured here (RPKI/IRR origin validation, RFC6907, etc.).
+
+
+When set to False, ARouteServer makes this rejection explicit and
+consistent across every supported daemon/version (BIRD's own
+'allow as sets' default changed from on to off starting with the
+2.18.x branch; OpenBGPD's own 'reject as-set' default changed to
+yes starting with release 8.8) instead of relying on whatever
+the underlying daemon currently defaults to.
+
+
+Can be overwritten on a client-by-client basis.
+
+
+Default: **False**
+
+Example:
+
+.. code:: yaml
+
+   allow_as_set: False
 
 
 Transit-free networks: ``transit_free``

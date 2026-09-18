@@ -1,13 +1,11 @@
 ============================= test session starts ==============================
-platform darwin -- Python 3.11.9, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
+platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
-rootdir: /Users/pchiodi/github/public/arouteserver
-plugins: requests-mock-1.9.3
+rootdir: /home/pierky/src/ars
+plugins: requests-mock-1.12.1
 collecting ... collected 46 items
 
-Live test, BIRD v2, 'tag' reject policy scenario, IPv4: instances setup 
-Live test, BIRD v2, 'tag' reject policy scenario, IPv4: setting instances up...
-PASSED
+Live test, BIRD v2, 'tag' reject policy scenario, IPv4: instances setup PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv4: sessions are up PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv4: announced by ASN derived via 16bit_mapped_asn PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv4: AS_PATH too long PASSED
@@ -17,7 +15,7 @@ Live test, BIRD v2, 'tag' reject policy scenario, IPv4: prefix in client's black
 Live test, BIRD v2, 'tag' reject policy scenario, IPv4: invalid ASN in AS_PATH PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv4: invalid NEXT_HOP PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv4: local black list PASSED
-Live test, BIRD v2, 'tag' reject policy scenario, IPv4: prefix is not in IPv6 global unicast space SKIPPED
+Live test, BIRD v2, 'tag' reject policy scenario, IPv4: prefix is not in IPv6 global unicast space PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv4: origin not in as-macro PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv4: invalid left-most ASN PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv4: prefix length PASSED
@@ -30,15 +28,7 @@ Live test, BIRD v2, 'tag' reject policy scenario, IPv4: prefixes received by cli
 Live test, BIRD v2, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS2 PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv4: reconfigure PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv4: log contains errors PASSED
-Live test, BIRD v2, 'tag' reject policy scenario, IPv4: dumping rs config...
-
-Live test, BIRD v2, 'tag' reject policy scenario, IPv4: dumping routes...
-
-Live test, BIRD v2, 'tag' reject policy scenario, IPv4: stopping instances...
-
-Live test, BIRD v2, 'tag' reject policy scenario, IPv6: instances setup 
-Live test, BIRD v2, 'tag' reject policy scenario, IPv6: setting instances up...
-PASSED
+Live test, BIRD v2, 'tag' reject policy scenario, IPv6: instances setup PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv6: sessions are up PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv6: announced by ASN derived via 16bit_mapped_asn PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv6: AS_PATH too long PASSED
@@ -61,11 +51,5 @@ Live test, BIRD v2, 'tag' reject policy scenario, IPv6: prefixes received by cli
 Live test, BIRD v2, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS2 PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv6: reconfigure PASSED
 Live test, BIRD v2, 'tag' reject policy scenario, IPv6: log contains errors PASSED
-Live test, BIRD v2, 'tag' reject policy scenario, IPv6: dumping rs config...
 
-Live test, BIRD v2, 'tag' reject policy scenario, IPv6: dumping routes...
-
-Live test, BIRD v2, 'tag' reject policy scenario, IPv6: stopping instances...
-
-
-=================== 45 passed, 1 skipped in 94.10s (0:01:34) ===================
+============================== 46 passed in 0.16s ==============================

@@ -17,9 +17,9 @@
 
 import re
 
-RE_COMMENT = re.compile("^\s+#\s+([^\s].*)")
-RE_COMMENT_EMPTY_LINE = re.compile("^\s+#\s*$")
-RE_GENERIC_STATEMENT = re.compile("^\s+(#?)(\w+):\s*(.*)$")
+RE_COMMENT = re.compile(r"^\s+#\s+([^\s].*)")
+RE_COMMENT_EMPTY_LINE = re.compile(r"^\s+#\s*$")
+RE_GENERIC_STATEMENT = re.compile(r"^\s+(#?)(\w+):\s*(.*)$")
 
 class CfgStatement(object):
 
@@ -48,7 +48,7 @@ class CfgStatement(object):
 
         self.statement_pattern = re.compile(
             kwargs.get("statement_pattern",
-                       "^\s+(#?)({}):\s*(.*)$".format(self.name))
+                       r"^\s+(#?)({}):\s*(.*)$".format(self.name))
         )
 
         self._last_file_position_before_current_line = None
@@ -188,8 +188,8 @@ class CfgStatement(object):
 
     def add_body_line(self, comment_raw):
         comment = comment_raw
-        comment = re.sub("'([^\s]+)'", "**\\1**", comment)
-        comment = re.sub("^Default: (.+)$", "Default: **\\1**", comment)
+        comment = re.sub(r"'([^\s]+)'", r"**\1**", comment)
+        comment = re.sub(r"^Default: (.+)$", r"Default: **\1**", comment)
 
         if not comment.strip() and self.bullet_list:
             self.body += "\n\n"
@@ -288,6 +288,7 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
             CfgStatement("global_black_list_pref", t="Filtered prefixes", pre_comment=True),
             CfgStatement("max_as_path_len", t="Max AS_PATH length", pre_comment=True),
             CfgStatement("reject_invalid_as_in_as_path", t="Invalid ASNs in AS_PATH", pre_comment=True),
+            CfgStatement("allow_as_set", t="Allow AS_SET", pre_comment=True),
             CfgStatement("transit_free", t="Transit-free networks", post_comment=True, sub=[
                 CfgStatement("action", pre_comment=True),
                 CfgStatement("asns", pre_comment=True)

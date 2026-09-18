@@ -838,23 +838,9 @@
   best: False, LOCAL_PREF: 100
   filtered: True ()
 
-3222:0:1::/48, AS_PATH: 222 333, NEXT_HOP: 2001:db8:1:1::222, via 2001:db8:1:1::222
+3223:0:1::/48, AS_PATH: 223 333, NEXT_HOP: 2001:db8:1:1::223, via 2001:db8:1:1::223
   std comms:
   ext comms: rfc8097-invalid
-  lrg comms:
-  best: False, LOCAL_PREF: 100
-  filtered: True ()
-
-3222:0:2::/48, AS_PATH: 222 333, NEXT_HOP: 2001:db8:1:1::222, via 2001:db8:1:1::222
-  std comms:
-  ext comms:
-  lrg comms:
-  best: False, LOCAL_PREF: 100
-  filtered: True ()
-
-3222:0:3::/48, AS_PATH: 222 333, NEXT_HOP: 2001:db8:1:1::222, via 2001:db8:1:1::222
-  std comms:
-  ext comms:
   lrg comms:
   best: False, LOCAL_PREF: 100
   filtered: True ()

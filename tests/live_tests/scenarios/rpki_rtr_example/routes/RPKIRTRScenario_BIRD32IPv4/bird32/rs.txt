@@ -1,0 +1,7 @@
+193.0.0.0/24, AS_PATH: 1, NEXT_HOP: 192.0.2.111, via 192.0.2.111
+  std comms:
+  ext comms: rfc8097-invalid
+  lrg comms:
+  best: False, LOCAL_PREF: 100
+  filtered: True ()
+

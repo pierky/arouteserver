@@ -1,13 +1,11 @@
 ============================= test session starts ==============================
-platform darwin -- Python 3.11.9, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
+platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
-rootdir: /Users/pchiodi/github/public/arouteserver
-plugins: requests-mock-1.9.3
-collecting ... collected 610 items
+rootdir: /home/pierky/src/ars
+plugins: requests-mock-1.12.1
+collecting ... collected 603 items
 
-Live test, BIRD v2, global scenario, IPv4: instances setup 
-Live test, BIRD v2, global scenario, IPv4: setting instances up...
-PASSED
+Live test, BIRD v2, global scenario, IPv4: instances setup PASSED
 Live test, BIRD v2, global scenario, IPv4: sessions are up PASSED
 Live test, BIRD v2, global scenario, IPv4: session configured via local include files PASSED
 Live test, BIRD v2, global scenario, IPv4: good prefixes because of use_arin_bulk_whois_data PASSED
@@ -19,9 +17,8 @@ Live test, BIRD v2, global scenario, IPv4: good prefixes received by rs PASSED
 Live test, BIRD v2, global scenario, IPv4: good prefixes received by rs: non-client NEXT_HOP PASSED
 Live test, BIRD v2, global scenario, IPv4: bad prefixes received by rs: not IPv6 global unicast space PASSED
 Live test, BIRD v2, global scenario, IPv4: bad prefixes received by rs: IRRdb white-list PASSED
-Live test, BIRD v2, global scenario, IPv4: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 PASSED
-Live test, BIRD v2, global scenario, IPv4: bad prefixes received by rs: IRR check for AS_SET origin, BIRD PASSED
-Live test, BIRD v2, global scenario, IPv4: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD SKIPPED
+Live test, BIRD v2, global scenario, IPv4: bad prefixes received by rs: AS_SET in AS_PATH, default (not accepted) PASSED
+Live test, BIRD v2, global scenario, IPv4: bad prefixes received by rs: AS_SET in AS_PATH, 'allow_as_set' override PASSED
 Live test, BIRD v2, global scenario, IPv4: bad prefixes received by rs: AS_PATH len PASSED
 Live test, BIRD v2, global scenario, IPv4: bad prefixes received by rs: bogon PASSED
 Live test, BIRD v2, global scenario, IPv4: bad prefixes received by rs: client blacklist PASSED
@@ -93,15 +90,7 @@ Live test, BIRD v2, global scenario, IPv4: prefixes received by clients: AS3 PAS
 Live test, BIRD v2, global scenario, IPv4: prefixes received by clients: AS3 (with ADD-PATH) PASSED
 Live test, BIRD v2, global scenario, IPv4: reconfigure PASSED
 Live test, BIRD v2, global scenario, IPv4: log contains errors PASSED
-Live test, BIRD v2, global scenario, IPv4: dumping rs config...
-
-Live test, BIRD v2, global scenario, IPv4: dumping routes...
-
-Live test, BIRD v2, global scenario, IPv4: stopping instances...
-
-Live test, BIRD v2, global scenario, IPv4, tag: instances setup 
-Live test, BIRD v2, global scenario, IPv4, tag: setting instances up...
-PASSED
+Live test, BIRD v2, global scenario, IPv4, tag: instances setup PASSED
 Live test, BIRD v2, global scenario, IPv4, tag: sessions are up PASSED
 Live test, BIRD v2, global scenario, IPv4, tag: session configured via local include files PASSED
 Live test, BIRD v2, global scenario, IPv4, tag: good prefixes because of use_arin_bulk_whois_data PASSED
@@ -113,9 +102,8 @@ Live test, BIRD v2, global scenario, IPv4, tag: good prefixes received by rs PAS
 Live test, BIRD v2, global scenario, IPv4, tag: good prefixes received by rs: non-client NEXT_HOP PASSED
 Live test, BIRD v2, global scenario, IPv4, tag: bad prefixes received by rs: not IPv6 global unicast space PASSED
 Live test, BIRD v2, global scenario, IPv4, tag: bad prefixes received by rs: IRRdb white-list PASSED
-Live test, BIRD v2, global scenario, IPv4, tag: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 PASSED
-Live test, BIRD v2, global scenario, IPv4, tag: bad prefixes received by rs: IRR check for AS_SET origin, BIRD PASSED
-Live test, BIRD v2, global scenario, IPv4, tag: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD SKIPPED
+Live test, BIRD v2, global scenario, IPv4, tag: bad prefixes received by rs: AS_SET in AS_PATH, default (not accepted) PASSED
+Live test, BIRD v2, global scenario, IPv4, tag: bad prefixes received by rs: AS_SET in AS_PATH, 'allow_as_set' override PASSED
 Live test, BIRD v2, global scenario, IPv4, tag: bad prefixes received by rs: AS_PATH len PASSED
 Live test, BIRD v2, global scenario, IPv4, tag: bad prefixes received by rs: bogon PASSED
 Live test, BIRD v2, global scenario, IPv4, tag: bad prefixes received by rs: client blacklist PASSED
@@ -189,15 +177,7 @@ Live test, BIRD v2, global scenario, IPv4, tag: prefixes received by clients: AS
 Live test, BIRD v2, global scenario, IPv4, tag: prefixes received by clients: AS3 (with ADD-PATH) PASSED
 Live test, BIRD v2, global scenario, IPv4, tag: reconfigure PASSED
 Live test, BIRD v2, global scenario, IPv4, tag: log contains errors PASSED
-Live test, BIRD v2, global scenario, IPv4, tag: dumping rs config...
-
-Live test, BIRD v2, global scenario, IPv4, tag: dumping routes...
-
-Live test, BIRD v2, global scenario, IPv4, tag: stopping instances...
-
-Live test, BIRD v2, global scenario, IPv4, tag&reject: instances setup 
-Live test, BIRD v2, global scenario, IPv4, tag&reject: setting instances up...
-PASSED
+Live test, BIRD v2, global scenario, IPv4, tag&reject: instances setup PASSED
 Live test, BIRD v2, global scenario, IPv4, tag&reject: sessions are up PASSED
 Live test, BIRD v2, global scenario, IPv4, tag&reject: session configured via local include files PASSED
 Live test, BIRD v2, global scenario, IPv4, tag&reject: good prefixes because of use_arin_bulk_whois_data PASSED
@@ -209,9 +189,8 @@ Live test, BIRD v2, global scenario, IPv4, tag&reject: good prefixes received by
 Live test, BIRD v2, global scenario, IPv4, tag&reject: good prefixes received by rs: non-client NEXT_HOP PASSED
 Live test, BIRD v2, global scenario, IPv4, tag&reject: bad prefixes received by rs: not IPv6 global unicast space PASSED
 Live test, BIRD v2, global scenario, IPv4, tag&reject: bad prefixes received by rs: IRRdb white-list PASSED
-Live test, BIRD v2, global scenario, IPv4, tag&reject: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 PASSED
-Live test, BIRD v2, global scenario, IPv4, tag&reject: bad prefixes received by rs: IRR check for AS_SET origin, BIRD PASSED
-Live test, BIRD v2, global scenario, IPv4, tag&reject: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD SKIPPED
+Live test, BIRD v2, global scenario, IPv4, tag&reject: bad prefixes received by rs: AS_SET in AS_PATH, default (not accepted) PASSED
+Live test, BIRD v2, global scenario, IPv4, tag&reject: bad prefixes received by rs: AS_SET in AS_PATH, 'allow_as_set' override PASSED
 Live test, BIRD v2, global scenario, IPv4, tag&reject: bad prefixes received by rs: AS_PATH len PASSED
 Live test, BIRD v2, global scenario, IPv4, tag&reject: bad prefixes received by rs: bogon PASSED
 Live test, BIRD v2, global scenario, IPv4, tag&reject: bad prefixes received by rs: client blacklist PASSED
@@ -285,15 +264,7 @@ Live test, BIRD v2, global scenario, IPv4, tag&reject: prefixes received by clie
 Live test, BIRD v2, global scenario, IPv4, tag&reject: prefixes received by clients: AS3 (with ADD-PATH) PASSED
 Live test, BIRD v2, global scenario, IPv4, tag&reject: reconfigure PASSED
 Live test, BIRD v2, global scenario, IPv4, tag&reject: log contains errors PASSED
-Live test, BIRD v2, global scenario, IPv4, tag&reject: dumping rs config...
-
-Live test, BIRD v2, global scenario, IPv4, tag&reject: dumping routes...
-
-Live test, BIRD v2, global scenario, IPv4, tag&reject: stopping instances...
-
-Live test, BIRD v2, global scenario, IPv6: instances setup 
-Live test, BIRD v2, global scenario, IPv6: setting instances up...
-PASSED
+Live test, BIRD v2, global scenario, IPv6: instances setup PASSED
 Live test, BIRD v2, global scenario, IPv6: sessions are up PASSED
 Live test, BIRD v2, global scenario, IPv6: session configured via local include files PASSED
 Live test, BIRD v2, global scenario, IPv6: good prefixes because of use_arin_bulk_whois_data PASSED
@@ -305,9 +276,8 @@ Live test, BIRD v2, global scenario, IPv6: good prefixes received by rs PASSED
 Live test, BIRD v2, global scenario, IPv6: good prefixes received by rs: non-client NEXT_HOP PASSED
 Live test, BIRD v2, global scenario, IPv6: bad prefixes received by rs: not IPv6 global unicast space PASSED
 Live test, BIRD v2, global scenario, IPv6: bad prefixes received by rs: IRRdb white-list PASSED
-Live test, BIRD v2, global scenario, IPv6: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 PASSED
-Live test, BIRD v2, global scenario, IPv6: bad prefixes received by rs: IRR check for AS_SET origin, BIRD PASSED
-Live test, BIRD v2, global scenario, IPv6: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD SKIPPED
+Live test, BIRD v2, global scenario, IPv6: bad prefixes received by rs: AS_SET in AS_PATH, default (not accepted) PASSED
+Live test, BIRD v2, global scenario, IPv6: bad prefixes received by rs: AS_SET in AS_PATH, 'allow_as_set' override PASSED
 Live test, BIRD v2, global scenario, IPv6: bad prefixes received by rs: AS_PATH len PASSED
 Live test, BIRD v2, global scenario, IPv6: bad prefixes received by rs: bogon PASSED
 Live test, BIRD v2, global scenario, IPv6: bad prefixes received by rs: client blacklist PASSED
@@ -379,15 +349,7 @@ Live test, BIRD v2, global scenario, IPv6: prefixes received by clients: AS3 PAS
 Live test, BIRD v2, global scenario, IPv6: prefixes received by clients: AS3 (with ADD-PATH) PASSED
 Live test, BIRD v2, global scenario, IPv6: reconfigure PASSED
 Live test, BIRD v2, global scenario, IPv6: log contains errors PASSED
-Live test, BIRD v2, global scenario, IPv6: dumping rs config...
-
-Live test, BIRD v2, global scenario, IPv6: dumping routes...
-
-Live test, BIRD v2, global scenario, IPv6: stopping instances...
-
-Live test, BIRD v2, global scenario, IPv6, tag: instances setup 
-Live test, BIRD v2, global scenario, IPv6, tag: setting instances up...
-PASSED
+Live test, BIRD v2, global scenario, IPv6, tag: instances setup PASSED
 Live test, BIRD v2, global scenario, IPv6, tag: sessions are up PASSED
 Live test, BIRD v2, global scenario, IPv6, tag: session configured via local include files PASSED
 Live test, BIRD v2, global scenario, IPv6, tag: good prefixes because of use_arin_bulk_whois_data PASSED
@@ -399,9 +361,8 @@ Live test, BIRD v2, global scenario, IPv6, tag: good prefixes received by rs PAS
 Live test, BIRD v2, global scenario, IPv6, tag: good prefixes received by rs: non-client NEXT_HOP PASSED
 Live test, BIRD v2, global scenario, IPv6, tag: bad prefixes received by rs: not IPv6 global unicast space PASSED
 Live test, BIRD v2, global scenario, IPv6, tag: bad prefixes received by rs: IRRdb white-list PASSED
-Live test, BIRD v2, global scenario, IPv6, tag: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 PASSED
-Live test, BIRD v2, global scenario, IPv6, tag: bad prefixes received by rs: IRR check for AS_SET origin, BIRD PASSED
-Live test, BIRD v2, global scenario, IPv6, tag: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD SKIPPED
+Live test, BIRD v2, global scenario, IPv6, tag: bad prefixes received by rs: AS_SET in AS_PATH, default (not accepted) PASSED
+Live test, BIRD v2, global scenario, IPv6, tag: bad prefixes received by rs: AS_SET in AS_PATH, 'allow_as_set' override PASSED
 Live test, BIRD v2, global scenario, IPv6, tag: bad prefixes received by rs: AS_PATH len PASSED
 Live test, BIRD v2, global scenario, IPv6, tag: bad prefixes received by rs: bogon PASSED
 Live test, BIRD v2, global scenario, IPv6, tag: bad prefixes received by rs: client blacklist PASSED
@@ -475,15 +436,7 @@ Live test, BIRD v2, global scenario, IPv6, tag: prefixes received by clients: AS
 Live test, BIRD v2, global scenario, IPv6, tag: prefixes received by clients: AS3 (with ADD-PATH) PASSED
 Live test, BIRD v2, global scenario, IPv6, tag: reconfigure PASSED
 Live test, BIRD v2, global scenario, IPv6, tag: log contains errors PASSED
-Live test, BIRD v2, global scenario, IPv6, tag: dumping rs config...
-
-Live test, BIRD v2, global scenario, IPv6, tag: dumping routes...
-
-Live test, BIRD v2, global scenario, IPv6, tag: stopping instances...
-
-Live test, BIRD v2, global scenario, IPv6, tag&reject: instances setup 
-Live test, BIRD v2, global scenario, IPv6, tag&reject: setting instances up...
-PASSED
+Live test, BIRD v2, global scenario, IPv6, tag&reject: instances setup PASSED
 Live test, BIRD v2, global scenario, IPv6, tag&reject: sessions are up PASSED
 Live test, BIRD v2, global scenario, IPv6, tag&reject: session configured via local include files PASSED
 Live test, BIRD v2, global scenario, IPv6, tag&reject: good prefixes because of use_arin_bulk_whois_data PASSED
@@ -495,9 +448,8 @@ Live test, BIRD v2, global scenario, IPv6, tag&reject: good prefixes received by
 Live test, BIRD v2, global scenario, IPv6, tag&reject: good prefixes received by rs: non-client NEXT_HOP PASSED
 Live test, BIRD v2, global scenario, IPv6, tag&reject: bad prefixes received by rs: not IPv6 global unicast space PASSED
 Live test, BIRD v2, global scenario, IPv6, tag&reject: bad prefixes received by rs: IRRdb white-list PASSED
-Live test, BIRD v2, global scenario, IPv6, tag&reject: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 PASSED
-Live test, BIRD v2, global scenario, IPv6, tag&reject: bad prefixes received by rs: IRR check for AS_SET origin, BIRD PASSED
-Live test, BIRD v2, global scenario, IPv6, tag&reject: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD SKIPPED
+Live test, BIRD v2, global scenario, IPv6, tag&reject: bad prefixes received by rs: AS_SET in AS_PATH, default (not accepted) PASSED
+Live test, BIRD v2, global scenario, IPv6, tag&reject: bad prefixes received by rs: AS_SET in AS_PATH, 'allow_as_set' override PASSED
 Live test, BIRD v2, global scenario, IPv6, tag&reject: bad prefixes received by rs: AS_PATH len PASSED
 Live test, BIRD v2, global scenario, IPv6, tag&reject: bad prefixes received by rs: bogon PASSED
 Live test, BIRD v2, global scenario, IPv6, tag&reject: bad prefixes received by rs: client blacklist PASSED
@@ -571,15 +523,7 @@ Live test, BIRD v2, global scenario, IPv6, tag&reject: prefixes received by clie
 Live test, BIRD v2, global scenario, IPv6, tag&reject: prefixes received by clients: AS3 (with ADD-PATH) PASSED
 Live test, BIRD v2, global scenario, IPv6, tag&reject: reconfigure PASSED
 Live test, BIRD v2, global scenario, IPv6, tag&reject: log contains errors PASSED
-Live test, BIRD v2, global scenario, IPv6, tag&reject: dumping rs config...
-
-Live test, BIRD v2, global scenario, IPv6, tag&reject: dumping routes...
-
-Live test, BIRD v2, global scenario, IPv6, tag&reject: stopping instances...
-
-Live test, BIRD v2, global scenario, RFC8950: instances setup 
-Live test, BIRD v2, global scenario, RFC8950: setting instances up...
-PASSED
+Live test, BIRD v2, global scenario, RFC8950: instances setup PASSED
 Live test, BIRD v2, global scenario, RFC8950: sessions are up PASSED
 Live test, BIRD v2, global scenario, RFC8950: session configured via local include files PASSED
 Live test, BIRD v2, global scenario, RFC8950: good prefixes because of use_arin_bulk_whois_data PASSED
@@ -591,9 +535,8 @@ Live test, BIRD v2, global scenario, RFC8950: good prefixes received by rs PASSE
 Live test, BIRD v2, global scenario, RFC8950: good prefixes received by rs: non-client NEXT_HOP PASSED
 Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: not IPv6 global unicast space PASSED
 Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: IRRdb white-list PASSED
-Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9 PASSED
-Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: IRR check for AS_SET origin, BIRD PASSED
-Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD SKIPPED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: AS_SET in AS_PATH, default (not accepted) PASSED
+Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: AS_SET in AS_PATH, 'allow_as_set' override PASSED
 Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: AS_PATH len PASSED
 Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: bogon PASSED
 Live test, BIRD v2, global scenario, RFC8950: bad prefixes received by rs: client blacklist PASSED
@@ -665,11 +608,5 @@ Live test, BIRD v2, global scenario, RFC8950: prefixes received by clients: AS3 
 Live test, BIRD v2, global scenario, RFC8950: prefixes received by clients: AS3 (with ADD-PATH) PASSED
 Live test, BIRD v2, global scenario, RFC8950: reconfigure PASSED
 Live test, BIRD v2, global scenario, RFC8950: log contains errors PASSED
-Live test, BIRD v2, global scenario, RFC8950: dumping rs config...
 
-Live test, BIRD v2, global scenario, RFC8950: dumping routes...
-
-Live test, BIRD v2, global scenario, RFC8950: stopping instances...
-
-
-================== 603 passed, 7 skipped in 483.17s (0:08:03) ==================
+============================= 603 passed in 0.67s ==============================

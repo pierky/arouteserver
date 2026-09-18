@@ -1,13 +1,11 @@
 ============================= test session starts ==============================
-platform darwin -- Python 3.11.9, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
+platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
-rootdir: /Users/pchiodi/github/public/arouteserver
-plugins: requests-mock-1.9.3
+rootdir: /home/pierky/src/ars
+plugins: requests-mock-1.12.1
 collecting ... collected 166 items
 
-Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: instances setup 
-Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: setting instances up...
-PASSED
+Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: instances setup PASSED
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: sessions are up PASSED
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: AS2 prefix ko origin ko PASSED
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: AS2 prefix ko origin ok PASSED
@@ -53,15 +51,7 @@ Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: AS6 prefix ok, origin ok,
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: reconfigure PASSED
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: log contains errors PASSED
-Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: dumping rs config...
-
-Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: dumping routes...
-
-Live test, BIRD v2, tag prefix/origin in AS-SET, IPv4: stopping instances...
-
-Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: instances setup 
-Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: setting instances up...
-PASSED
+Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: instances setup PASSED
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: sessions are up PASSED
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: AS2 prefix ko origin ko PASSED
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: AS2 prefix ko origin ok PASSED
@@ -107,15 +97,7 @@ Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: AS6 prefix ok, origin ok,
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: reconfigure PASSED
 Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: log contains errors PASSED
-Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: dumping rs config...
-
-Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: dumping routes...
-
-Live test, BIRD v2, tag prefix/origin in AS-SET, IPv6: stopping instances...
-
-Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: instances setup 
-Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: setting instances up...
-PASSED
+Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: instances setup PASSED
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: sessions are up PASSED
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: AS2 no enforcement, prefix and origin not in AS-SET PASSED
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: AS4 origin enforcement PASSED
@@ -152,15 +134,7 @@ Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: AS6 prefix ok, origin 
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforced (rejected) PASSED
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: reconfigure PASSED
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: log contains errors PASSED
-Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: dumping rs config...
-
-Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: dumping routes...
-
-Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv4: stopping instances...
-
-Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: instances setup 
-Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: setting instances up...
-PASSED
+Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: instances setup PASSED
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: sessions are up PASSED
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: AS2 no enforcement, prefix and origin not in AS-SET PASSED
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: AS4 origin enforcement PASSED
@@ -197,11 +171,5 @@ Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: AS6 prefix ok, origin 
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforced (rejected) PASSED
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: reconfigure PASSED
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: log contains errors PASSED
-Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: dumping rs config...
 
-Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: dumping routes...
-
-Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: stopping instances...
-
-
-======================= 166 passed in 125.13s (0:02:05) ========================
+============================= 166 passed in 0.29s ==============================

@@ -7,6 +7,12 @@ fi
 
 export PYTHONPATH="$(pwd)"
 
+# If ARS_CLI_TESTS_TMP_DIR is set, use it as the temporary directory root.
+if [ -n "${ARS_CLI_TESTS_TMP_DIR}" ]; then
+  echo "Using ARS_CLI_TESTS_TMP_DIR=${ARS_CLI_TESTS_TMP_DIR} as the temporary directory root."
+  export TMPDIR="${ARS_CLI_TESTS_TMP_DIR}"
+fi
+
 mkdir -p var/cache &>/dev/null
 
 RES_FILE=$(mktemp)

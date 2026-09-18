@@ -442,7 +442,7 @@ cat $DOCS_DIR/README_footer.txt >> $DST_FILE
 
 title "Testing package long description..."
 
-python setup.py --long-description | rst2html.py - /dev/null --strict --syntax-highlight=none
+python setup.py --long-description | rst2html - /dev/null --strict --syntax-highlight=none
 
 # ----------------------------------------------------
 

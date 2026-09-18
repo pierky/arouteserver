@@ -1,0 +1,35 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
+cachedir: .pytest_cache
+rootdir: /home/pierky/src/ars
+plugins: requests-mock-1.12.1
+collecting ... collected 26 items
+
+Live test, BIRD v3.2, BGP communities, IPv4: instances setup PASSED
+Live test, BIRD v3.2, BGP communities, IPv4: sessions are up PASSED
+Live test, BIRD v3.2, BGP communities, IPv4: announce to AS1 only (ext) PASSED
+Live test, BIRD v3.2, BGP communities, IPv4: announce to AS1 only (lrg) PASSED
+Live test, BIRD v3.2, BGP communities, IPv4: announce to AS1 only (std) PASSED
+Live test, BIRD v3.2, BGP communities, IPv4: announce to AS131073 only (ext) PASSED
+Live test, BIRD v3.2, BGP communities, IPv4: announce to AS131073 only (lrg) PASSED
+Live test, BIRD v3.2, BGP communities, IPv4: custom BGP community (ext) PASSED
+Live test, BIRD v3.2, BGP communities, IPv4: custom BGP community (lrg) PASSED
+Live test, BIRD v3.2, BGP communities, IPv4: custom BGP community (std) PASSED
+Live test, BIRD v3.2, BGP communities, IPv4: custom BGP community scrubbed PASSED
+Live test, BIRD v3.2, BGP communities, IPv4: reconfigure PASSED
+Live test, BIRD v3.2, BGP communities, IPv4: log contains errors PASSED
+Live test, BIRD v3.2, BGP communities, IPv6: instances setup PASSED
+Live test, BIRD v3.2, BGP communities, IPv6: sessions are up PASSED
+Live test, BIRD v3.2, BGP communities, IPv6: announce to AS1 only (ext) PASSED
+Live test, BIRD v3.2, BGP communities, IPv6: announce to AS1 only (lrg) PASSED
+Live test, BIRD v3.2, BGP communities, IPv6: announce to AS1 only (std) PASSED
+Live test, BIRD v3.2, BGP communities, IPv6: announce to AS131073 only (ext) PASSED
+Live test, BIRD v3.2, BGP communities, IPv6: announce to AS131073 only (lrg) PASSED
+Live test, BIRD v3.2, BGP communities, IPv6: custom BGP community (ext) PASSED
+Live test, BIRD v3.2, BGP communities, IPv6: custom BGP community (lrg) PASSED
+Live test, BIRD v3.2, BGP communities, IPv6: custom BGP community (std) PASSED
+Live test, BIRD v3.2, BGP communities, IPv6: custom BGP community scrubbed PASSED
+Live test, BIRD v3.2, BGP communities, IPv6: reconfigure PASSED
+Live test, BIRD v3.2, BGP communities, IPv6: log contains errors PASSED
+
+============================== 26 passed in 0.12s ==============================

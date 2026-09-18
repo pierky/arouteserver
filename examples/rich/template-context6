@@ -344,6 +344,7 @@ cfg:
       lrg: 999:65534:2
       std: '65534:2'
   filtering:
+    allow_as_set: false
     global_black_list_pref:
     - comment: Local network
       exact: false
@@ -791,6 +792,7 @@ clients:
       announce_to_client: true
     custom_options: null
     filtering:
+      allow_as_set: false
       black_list_pref: null
       ipv4_pref_len: &id001
         max: 24
@@ -853,6 +855,7 @@ clients:
       announce_to_client: true
     custom_options: null
     filtering:
+      allow_as_set: false
       black_list_pref: null
       ipv4_pref_len: *id001
       ipv6_pref_len: *id002
@@ -911,6 +914,7 @@ clients:
       announce_to_client: true
     custom_options: null
     filtering:
+      allow_as_set: false
       black_list_pref: null
       ipv4_pref_len: *id001
       ipv6_pref_len: *id002
@@ -971,6 +975,7 @@ clients:
       announce_to_client: true
     custom_options: null
     filtering:
+      allow_as_set: false
       black_list_pref: null
       ipv4_pref_len: *id001
       ipv6_pref_len: *id002
@@ -1029,6 +1034,7 @@ clients:
       announce_to_client: true
     custom_options: null
     filtering:
+      allow_as_set: false
       black_list_pref: null
       ipv4_pref_len: *id001
       ipv6_pref_len: *id002
@@ -1390,6 +1396,7 @@ never_via_route_servers_asns
 - 219255
 - 61576
 - 219175
+- 153889
 - 1273
 - 2119
 - 1257

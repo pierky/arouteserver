@@ -1,8 +1,8 @@
 ============================= test session starts ==============================
-platform darwin -- Python 3.11.9, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
+platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
-rootdir: /Users/pchiodi/github/public/arouteserver
-plugins: requests-mock-1.9.3
+rootdir: /home/pierky/src/ars
+plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
 External resources: ASNs from AS-SET via bgpq3 PASSED
@@ -20,4 +20,24 @@ External resources: RPKI ROAs, rpki-client PASSED
 External resources: prefixes from AS-SET via bgpq3 PASSED
 External resources: prefixes from AS-SET via bgpq4 PASSED
 
-============================= 14 passed in 51.82s ==============================
+=============================== warnings summary ===============================
+External resources: Euro-IX from clients build and validation
+External resources: Euro-IX from clients build and validation (using merge-file)
+  /home/pierky/src/ars/pierky/arouteserver/commands/ixf_member_list_from_clients.py:192: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    res["timestamp"] = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+
+External resources: RPKI ROAs, NTT
+External resources: RPKI ROAs, NTT
+External resources: RPKI ROAs, RIPE
+External resources: RPKI ROAs, RIPE
+External resources: RPKI ROAs, rpki-client
+External resources: RPKI ROAs, rpki-client
+  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:59: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    return datetime.datetime.utcnow()
+
+External resources: RPKI ROAs, RIPE
+  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:137: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
+    buildtime_dt_utc = datetime.datetime.utcfromtimestamp(int(generated))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================== 14 passed, 9 warnings in 91.48s (0:01:31) ===================

@@ -1,9 +1,9 @@
 ============================= test session starts ==============================
-platform darwin -- Python 3.11.9, pytest-7.2.0, pluggy-1.0.0 -- /Users/pchiodi/.virtualenvs/arouteserver/bin/python3.11
+platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
-rootdir: /Users/pchiodi/github/public/arouteserver
-plugins: requests-mock-1.9.3
-collecting ... collected 264 items
+rootdir: /home/pierky/src/ars
+plugins: requests-mock-1.12.1
+collecting ... collected 265 items
 
 ASNs config parser: invalid AS PASSED
 ASNs config parser: invalid AS-SET PASSED
@@ -51,6 +51,7 @@ Clients config parser: no IP addresses PASSED
 Clients config parser: unknown statement PASSED
 Clients config parser: valid configuration PASSED
 General config parser: add_path PASSED
+General config parser: allow_as_set PASSED
 General config parser: allow_longer_prefixes PASSED
 General config parser: blackhole_filtering, announce_to_client PASSED
 General config parser: blackhole_filtering, rewrite_next_hop, ipv4 PASSED
@@ -270,4 +271,40 @@ RTT getter parser: empty PASSED
 RTT getter parser: new line only PASSED
 RTT getter parser: none PASSED
 
-======================== 264 passed in 90.70s (0:01:30) ========================
+=============================== warnings summary ===============================
+IX-F Member Export from clients command: simple: 1 warning
+IX-F Member Export from clients command: with description: 1 warning
+IX-F Member Export from clients command: with AS-SET: 1 warning
+IX-F Member Export from clients command: with 2 AS-SETs: 1 warning
+IX-F Member Export from clients command: AS-SET from asns: 1 warning
+IX-F Member Export from clients command: more than one IP: 1 warning
+IX-F Member Export from clients command: ams-ix.yml: 1 warning
+IX-F Member Export from clients command: bcix.yml: 1 warning
+IX-F Member Export from clients command: gr_ix.yml: 1 warning
+IX-F Member Export from clients command: inex.yml: 1 warning
+IX-F Member Export from clients command: lonap.yml: 1 warning
+IX-F Member Export from clients command: six.yml: 1 warning
+IX-F Member Export from clients command: sthix.yml: 1 warning
+IX-F Member Export from clients command: swissix.yml: 1 warning
+  /home/pierky/src/ars/pierky/arouteserver/commands/ixf_member_list_from_clients.py:192: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    res["timestamp"] = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+
+RPKI ROAs: RIPE Validator TAs
+RPKI ROAs: NTT TAs
+RPKI ROAs: different formats
+  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:59: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    return datetime.datetime.utcnow()
+
+RPKI ROAs: OctoRPKI expired file
+RPKI ROAs: OctoRPKI out of validity
+RPKI ROAs: OctoRPKI valid file
+  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:137: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
+    buildtime_dt_utc = datetime.datetime.utcfromtimestamp(int(generated))
+
+RPKI ROAs: OctoRPKI out of validity
+RPKI ROAs: OctoRPKI valid file
+  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:168: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
+    valid_dt_utc = datetime.datetime.utcfromtimestamp(int(valid))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================= 265 passed, 22 warnings in 93.25s (0:01:33) ==================
