@@ -490,17 +490,16 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install --upgrade setuptools
-
-      - name: Build and push the release
-        run: |
           pip install --upgrade packaging
-          python setup.py sdist
 
       # All the tags go to PyPI test
       - name: Publish distribution to Test PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
+
+      - name: Clean previous builds  
+        run: rm -rf dist/*
 
       # Only non-alpha releases go to the official PyPi
       - name: Publish distribution to PyPI (official release)
