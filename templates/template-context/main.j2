@@ -26,6 +26,10 @@ rpki_roas
 ---------
 {{ rpki_roas|to_yaml }}
 
+rpki_aspas
+----------
+{{ rpki_aspas|to_yaml }}
+
 arin_whois_db_records
 ---------------------
 {{ arin_whois_records|parse_generic_irr_whois_records|to_yaml }}

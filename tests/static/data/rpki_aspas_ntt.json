@@ -1,0 +1,10 @@
+{
+  "roas": [
+    { "asn": 3333, "prefix": "193.0.0.0/21", "maxLength": 21, "ta": "ripe" }
+  ],
+  "aspas": [
+    { "customer_asid": 43, "expires": 4102444799, "providers": [ 293 ] },
+    { "customer_asid": 3333, "expires": 4102444799, "providers": [ 1103, 25152 ] },
+    { "customer_asid": 666, "expires": 1000000000, "providers": [ 1 ] }
+  ]
+}

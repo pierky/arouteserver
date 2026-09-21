@@ -308,6 +308,31 @@ RFC8097 BGP extended communities are used to mark routes on the basis of their v
 Depending on the ``reject_invalid`` configuration, INVALID routes can be rejected before entering the route server or accepted for further processing by external tools or functions provided within :ref:`.local files <site-specific-custom-config>`.
 INVALID routes are not propagated to clients.
 
+ASPA verification
+~~~~~~~~~~~~~~~~~
+
+`ASPA verification <https://datatracker.ietf.org/doc/draft-ietf-sidrops-aspa-verification/>`__ of the AS_PATH of the routes received from the clients can be configured using the general ``filtering.rpki_aspa_verification`` section, to detect and discard route leaks. It's available on BIRD >= 2.16 (but not on the 3.0 alpha release) and on OpenBGPD >= 7.8.
+
+Since the route server and its clients are lateral peers, the stricter "Algorithm for Upstream Paths" is used.
+
+Differently from what happens for the BGP Origin Validation, there is no equivalent of the RFC8097 BGP extended communities for ASPA, so the only way to keep track of the verification state of a route is to configure the ``rpki_aspa_verification_valid``, ``rpki_aspa_verification_unknown`` and ``rpki_aspa_verification_invalid`` BGP communities.
+Depending on the ``reject_invalid`` configuration, INVALID routes can be rejected before entering the route server or accepted for further processing; in any case, they are not propagated to clients, unless the ``announce_aspa_invalid_to_client`` :ref:`hook <site-specific-custom-config>` says otherwise (BIRD only).
+
+**On OpenBGPD, RFC9234 roles must be enabled too** (``filtering.roles``): the ASPA Validation State is set only for those sessions for which a role is configured, so without them no verification would actually be performed. ARouteServer raises an error when ASPA verification is enabled and roles are not.
+
+ASPAs sources
+~~~~~~~~~~~~~
+
+The configuration of the ASPAs source can be done within the ``rpki_aspas`` section of the ``general.yml`` file. Two methods are available:
+
+- ``json``: ASPAs are read from the ``aspas`` element of the very same `RIPE RPKI Validator format <https://rpki-validator.ripe.net>`__ JSON files that are used for the ROAs. When the same URL is configured in ``rpki_roas.ripe_rpki_validator_url`` and in ``rpki_aspas.json_url``, the file is downloaded only once.
+
+  Please note: only the original RIPE NCC RPKI Validator format includes the trust anchor (``ta``) of each ASPA; the rpki-client, NTT and OctoRPKI formats do not, so for those sources the ``allowed_trust_anchors`` option can't be enforced and every ASPA is used. A warning is logged when that happens.
+
+- ``rtr``: the built-in RTR protocol implementation of BIRD v2/v3 and OpenBGPD is used, in the same way it's done for the ROAs, using the ``rpki_rtr_config.local`` file. On BIRD, the name of the table where ASPAs must be injected into is ``ASPA``.
+
+  **ASPA payloads only exist in version 2 of the RTR protocol**, so the RTR session must be configured to negotiate it (``min version 2;`` on BIRD, ``min-version 2`` on OpenBGPD), and the validator in use must be configured to produce ASPAs.
+
 BGP Communities
 ***************
 

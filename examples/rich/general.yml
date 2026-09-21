@@ -64,6 +64,10 @@ cfg:
       enabled: True
       reject_invalid: True
 
+    rpki_aspa_verification:
+      enabled: True
+      reject_invalid: True
+
     max_prefix:
       action: "restart"
       restart_after: 30
@@ -75,6 +79,11 @@ cfg:
   rpki_roas:
       source: "ripe-rpki-validator-cache"
       ripe_rpki_validator_url: "examples/rich/ripe-rpki-cache.json"
+
+  rpki_aspas:
+      # Same file used for the ROAs above: it's fetched only once.
+      source: "json"
+      json_url: "examples/rich/ripe-rpki-cache.json"
 
   blackhole_filtering:
     policy_ipv4: "rewrite-next-hop"

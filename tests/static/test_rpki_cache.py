@@ -205,3 +205,115 @@ class TestRPKICache(unittest.TestCase):
             open("tests/static/data/rpki_roas_octorpki.json").read()
         )
         self.assertEqual(len(roas), 39680)
+
+    def _setup_aspas_obj(self, raw_content, need_roas=True):
+        self.obj = RIPE_RPKI_ROAs(
+            cache_dir=self.temp_dir,
+            urls=[self._get_file_path(raw_content)],
+            need_roas=need_roas,
+            need_aspas=True
+        )
+        self.obj.load_data()
+        return self.obj.aspas
+
+    def test_300(self):
+        """RPKI ASPAs: RIPE Validator format"""
+
+        aspas = self._setup_aspas_obj(
+            open("tests/static/data/rpki_aspas_ripe.json").read()
+        )
+
+        self.assertEqual(aspas, [
+            {"customer": "AS43", "providers": ["AS293"], "ta": "arin"},
+            {"customer": "AS3333", "providers": ["AS1103", "AS25152"],
+             "ta": "ripe"},
+            # Both the plain string and the integer forms of an ASN
+            # are normalized into the 'AS<n>' one.
+            {"customer": "AS3334", "providers": ["AS1103"], "ta": "ripe"},
+            # An ASPA with no providers at all is legal.
+            {"customer": "AS3335", "providers": [], "ta": "ripe"}
+        ])
+
+    def test_310(self):
+        """RPKI ASPAs: NTT / rpki-client format"""
+
+        aspas = self._setup_aspas_obj(
+            open("tests/static/data/rpki_aspas_ntt.json").read()
+        )
+
+        # No 'ta' is reported by these sources.
+        # The AS666 record is dropped because it's expired.
+        self.assertEqual(aspas, [
+            {"customer": "AS43", "providers": ["AS293"],
+             "expires": 4102444799},
+            {"customer": "AS3333", "providers": ["AS1103", "AS25152"],
+             "expires": 4102444799}
+        ])
+
+    def test_320(self):
+        """RPKI ASPAs: invalid records are skipped"""
+
+        aspas = self._setup_aspas_obj(
+            open("tests/static/data/rpki_aspas_invalid.json").read()
+        )
+
+        self.assertEqual(aspas, [
+            {"customer": "AS43", "providers": ["AS293"], "ta": "ripe"}
+        ])
+
+    def test_330(self):
+        """RPKI ASPAs: too many invalid records"""
+
+        aspas = [
+            '{"customer": "nope", "providers": ["AS1"]}'
+        ] * 11
+        raw = '{"roas": [], "aspas": [' + ",".join(aspas) + ']}'
+
+        with self.assertRaisesRegex(RPKIValidatorCacheError,
+                                    r"More than 10 invalid ASPAs"):
+            self._setup_aspas_obj(raw)
+
+    def test_340(self):
+        """RPKI ASPAs: missing 'aspas' root element"""
+
+        with self.assertRaisesRegex(RPKIValidatorCacheError,
+                                    r"missing 'aspas' root element"):
+            self._setup_aspas_obj('{"roas": []}')
+
+    def test_350(self):
+        """RPKI ASPAs: ASPAs only, no ROAs needed"""
+
+        aspas = self._setup_aspas_obj(
+            open("tests/static/data/rpki_aspas_ripe.json").read(),
+            need_roas=False
+        )
+
+        self.assertEqual(len(aspas), 4)
+        self.assertNotIn("roas", self.obj.raw_data)
+
+    def test_360(self):
+        """RPKI ASPAs: cache built without ASPAs is refreshed"""
+
+        import json
+
+        file_path = self._get_file_path(
+            open("tests/static/data/rpki_aspas_ripe.json").read()
+        )
+
+        # Simulate the cache file left behind by a release that was
+        # not gathering ASPAs: it must not be used as is.
+        cache_file_path = os.path.join(self.temp_dir, "cache.json")
+        with open(cache_file_path, "w") as f:
+            json.dump({"ts": int(datetime.datetime.now().timestamp()),
+                       "data": {"roas": []}}, f)
+
+        obj = RIPE_RPKI_ROAs(
+            cache_dir=self.temp_dir,
+            urls=[file_path],
+            need_aspas=True,
+            object_filename="cache.json"
+        )
+        obj.load_data()
+
+        self.assertEqual(len(obj.aspas), 4)
+        self.assertEqual(len(obj.roas["roas"]), 1)

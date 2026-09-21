@@ -183,6 +183,9 @@ class TestConfigParserClients(TestConfigParserBase):
             "        rpki_bgp_origin_validation:",
             "          enabled: True",
             "          reject_invalid: False",
+            "        rpki_aspa_verification:",
+            "          enabled: True",
+            "          reject_invalid: False",
             "        reject_invalid_as_in_as_path: False",
             "        max_as_path_len: 64",
             "        ipv4_pref_len:",
@@ -233,6 +236,8 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_asn"], None)
         self.assertEqual(client["cfg"]["filtering"]["rpki_bgp_origin_validation"]["enabled"], False)
         self.assertEqual(client["cfg"]["filtering"]["rpki_bgp_origin_validation"]["reject_invalid"], True)
+        self.assertEqual(client["cfg"]["filtering"]["rpki_aspa_verification"]["enabled"], False)
+        self.assertEqual(client["cfg"]["filtering"]["rpki_aspa_verification"]["reject_invalid"], True)
         self.assertEqual(client["cfg"]["filtering"]["reject_invalid_as_in_as_path"], True)
         self.assertEqual(client["cfg"]["filtering"]["max_as_path_len"], 32)
         self.assertEqual(client["cfg"]["filtering"]["ipv4_pref_len"]["min"], 8)
@@ -261,6 +266,8 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertEqual(client["cfg"]["filtering"]["irrdb"]["white_list_route"][0]["asn"], 65534)
         self.assertEqual(client["cfg"]["filtering"]["rpki_bgp_origin_validation"]["enabled"], True)
         self.assertEqual(client["cfg"]["filtering"]["rpki_bgp_origin_validation"]["reject_invalid"], False)
+        self.assertEqual(client["cfg"]["filtering"]["rpki_aspa_verification"]["enabled"], True)
+        self.assertEqual(client["cfg"]["filtering"]["rpki_aspa_verification"]["reject_invalid"], False)
         self.assertEqual(client["cfg"]["filtering"]["reject_invalid_as_in_as_path"], False)
         self.assertEqual(client["cfg"]["filtering"]["max_as_path_len"], 64)
         self.assertEqual(client["cfg"]["filtering"]["ipv4_pref_len"]["min"], 1)

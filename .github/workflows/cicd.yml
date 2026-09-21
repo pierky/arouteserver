@@ -82,7 +82,7 @@ jobs:
           docker pull pierky/openbgpd:8.7
           docker pull pierky/openbgpd:9.2
           docker pull pierky/exabgp:4.2.7
-          docker pull nlnetlabs/routinator:v0.13.2
+          docker pull nlnetlabs/rtrtr:v0.3.3
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}

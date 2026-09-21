@@ -78,6 +78,10 @@ Features
 
     - ROAs can be retrieved from publicly available JSON files or from a local validating cache;
 
+  - **ASPA**-based route leak detection (`ASPA verification <https://datatracker.ietf.org/doc/draft-ietf-sidrops-aspa-verification/>`__), on BIRD >= 2.16 and OpenBGPD >= 7.8;
+
+    - ASPAs can be retrieved from the same JSON files used for the ROAs or from a local validating cache, via version 2 of the RTR protocol;
+
   - Route Leak Prevention and Detection Using **BGP Roles** (`RFC9234`_).
 
 - **Blackhole filtering** support:

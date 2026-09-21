@@ -22,6 +22,8 @@ protocol static own_prefixes {
 	route {{ data.AS101_roa_invalid1 }} reject;
 	route {{ data.AS101_roa_badlen }} reject;
 	route {{ data.AS101_roa_blackhole }} reject;
+	route {{ data.AS101_aspa_valid1 }} reject;
+	route {{ data.AS101_aspa_invalid1 }} reject;
 	{% if data.AS101_no_ipv6_gl_uni %}
 	route {{ data.AS101_no_ipv6_gl_uni }} reject;
 	{% endif %}
@@ -82,6 +84,12 @@ function outgoing_common() {
 		bgp_path.delete(101);
 		bgp_path.prepend(105);
 		bgp_path.prepend(101);
+	}
+	if net = {{ data.AS101_aspa_invalid1 }} then {
+		# The origin is still AS101, but AS108 is inserted
+		# between AS101 and the upstream peer; AS108's ASPA
+		# does not authorize that hop.
+		bgp_path.prepend(108);
 	}
 	if net = {{ data.AS104_arin_1 }} then {
 		bgp_path.delete(101);

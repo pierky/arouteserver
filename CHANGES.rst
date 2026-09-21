@@ -3,6 +3,21 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New: add support for **ASPA verification** (`draft-ietf-sidrops-aspa-verification <https://datatracker.ietf.org/doc/draft-ietf-sidrops-aspa-verification/>`__) of the AS_PATH of the routes received from the clients, to detect and discard route leaks.
+
+  Available on BIRD >= 2.16 (the 3.0 alpha release is excluded, it predates the ASPA implementation) and on OpenBGPD >= 7.8.
+
+  The feature is opt-in: it's enabled via the new ``filtering.rpki_aspa_verification`` section of the ``general.yml`` file, which mirrors ``filtering.rpki_bgp_origin_validation`` (``enabled`` and ``reject_invalid``, the latter also overridable on a client-by-client basis). Since the route server and its clients are lateral peers, the stricter "Algorithm for Upstream Paths" is used.
+
+  Four new BGP communities are available to keep track of the verification state: ``rpki_aspa_verification_not_performed``, ``rpki_aspa_verification_valid``, ``rpki_aspa_verification_unknown`` and ``rpki_aspa_verification_invalid``. There is no ASPA equivalent of the RFC8097 extended communities, so these are the only way to signal the outcome. A new reject reason code (16, "ASPA INVALID AS_PATH") and a new BIRD hook (``announce_aspa_invalid_to_client``) are also available.
+
+  The new ``rpki_aspas`` section configures how ASPAs are gathered: from the ``aspas`` element of the same RIPE-RPKI-Validator-format JSON files used for the ROAs (``source: json``), or via the built-in RTR protocol implementation of BIRD and OpenBGPD (``source: rtr``). When the same URL is used for ROAs and ASPAs, the file is downloaded only once.
+
+  **Please note:** ASPA payloads only exist in version 2 of the RTR protocol, so RTR sessions must be configured to negotiate it (``min version 2;`` on BIRD, ``min-version 2`` on OpenBGPD). Also, on OpenBGPD, RFC9234 roles must be enabled, otherwise the daemon reports every route as ASPA unknown and no verification is actually performed; ARouteServer raises an error in that case.
+
 1.24
 ----
 

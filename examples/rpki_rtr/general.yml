@@ -13,5 +13,17 @@ cfg:
       enabled: True
       reject_invalid: True
 
+    rpki_aspa_verification:
+      enabled: True
+      reject_invalid: True
+
+    # ASPA verification on OpenBGPD is performed only on sessions
+    # for which a role is set, so RFC9234 roles must be enabled too.
+    roles:
+      enabled: True
+
   rpki_roas:
+    source: "rtr"
+
+  rpki_aspas:
     source: "rtr"

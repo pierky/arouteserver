@@ -31,6 +31,11 @@ ext-community delete $INTCOMM_PREF_OK_ROA
 	ext-community delete $INTCOMM_RPKI_INVALID
 	{% endif %}
 	ext-community delete $INTCOMM_RPKI_VALID
+	ext-community delete $INTCOMM_ASPA_UNKNOWN
+	{% if all %}
+	ext-community delete $INTCOMM_ASPA_INVALID
+	{% endif %}
+	ext-community delete $INTCOMM_ASPA_VALID
 	{% if all %}
 	ext-community delete $INTCOMM_NO_EXPORT
 	ext-community delete $INTCOMM_NO_ADVERTISE
@@ -407,13 +412,19 @@ prefix-set "{{ pref_list_name }}" {
 # Remove internal communities before accepting the route
 match from {{ client.ip }} community BLACKHOLE set {
 	ext-community delete $INTCOMM_RPKI_INVALID
+	ext-community delete $INTCOMM_ASPA_INVALID
 	{{ internal_communities_list() }}
 }
-{{ match_communities("allow from " ~ client.ip, cfg.communities.blackholing, "set {\n	ext-community delete $INTCOMM_RPKI_INVALID\n	" ~ internal_communities_list() ~ "\n}") }}
+{{ match_communities("allow from " ~ client.ip, cfg.communities.blackholing, "set {\n	ext-community delete $INTCOMM_RPKI_INVALID\n	ext-community delete $INTCOMM_ASPA_INVALID\n	" ~ internal_communities_list() ~ "\n}") }}
 {%    if cfg.communities.rpki_bgp_origin_validation_not_performed|community_is_set %}
 # Add the rpki_bgp_origin_validation_not_performed community
 {{ add_communities("match from " ~ client.ip ~ " community BLACKHOLE", cfg.communities.rpki_bgp_origin_validation_not_performed) }}
 {{ match_communities("match from " ~ client.ip, cfg.communities.blackholing, "set {" ~ ins_communities(cfg.communities.rpki_bgp_origin_validation_not_performed) ~ "}") }}
+{%    endif %}
+{%    if cfg.communities.rpki_aspa_verification_not_performed|community_is_set %}
+# Add the rpki_aspa_verification_not_performed community
+{{ add_communities("match from " ~ client.ip ~ " community BLACKHOLE", cfg.communities.rpki_aspa_verification_not_performed) }}
+{{ match_communities("match from " ~ client.ip, cfg.communities.blackholing, "set {" ~ ins_communities(cfg.communities.rpki_aspa_verification_not_performed) ~ "}") }}
 {%    endif %}
 allow quick from {{ client.ip }} community BLACKHOLE
 {{ match_communities("allow quick from " ~ client.ip, cfg.communities.blackholing, "") }}
@@ -425,6 +436,14 @@ allow quick from {{ client.ip }} community BLACKHOLE
 	client.cfg.filtering.rpki_bgp_origin_validation.reject_invalid %}
 # RPKI-based Origin Validation
 {{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " ext-community $INTCOMM_RPKI_INVALID", 14) }}
+{% endif %}
+
+{% if cfg.filtering.rpki_aspa_verification.enabled and
+	aspa_supported_by_target and
+	client.cfg.filtering.rpki_aspa_verification.enabled and
+	client.cfg.filtering.rpki_aspa_verification.reject_invalid %}
+# RPKI ASPA verification
+{{ deny_inbound_route(client_uses_tag_reject_policy, "from " ~ client.ip ~ " ext-community $INTCOMM_ASPA_INVALID", 16) }}
 {% endif %}
 
 # Prefix: length
@@ -509,6 +528,12 @@ deny quick to {{ client.ip }} community BLACKHOLE
 # RPKI-based Origin Validation
 # Do not announce INVALID to clients
 deny quick to {{ client.ip }} ext-community $INTCOMM_RPKI_INVALID
+{% endif %}
+
+{% if cfg.filtering.rpki_aspa_verification.enabled and aspa_supported_by_target %}
+# RPKI ASPA verification
+# Do not announce INVALID to clients
+deny quick to {{ client.ip }} ext-community $INTCOMM_ASPA_INVALID
 {% endif %}
 
 # NO_EXPORT and NO_ADVERTISE communities

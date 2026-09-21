@@ -2,8 +2,11 @@
 # ---------------------------------------------------------
 # RPKI
 
-{% if cfg.filtering.rpki_bgp_origin_validation.enabled or
+{% set roas_used = cfg.filtering.rpki_bgp_origin_validation.enabled or
 	cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled %}
+{% set aspas_used = cfg.filtering.rpki_aspa_verification.enabled and
+	aspa_supported_by_target %}
+{% if roas_used or aspas_used %}
 {%   if "2.0.0"|target_version_le -%}
 {%     if cfg.rpki_roas.source == "rtr" %}
 # ROAs can be loaded using an external tool: rtrllib
@@ -15,11 +18,26 @@ roa table RPKI {
 {%     endfor %}
 };
 {%   else -%}
+{%     if roas_used %}
 roa4 table RPKI4;
 roa6 table RPKI6;
-{%     if cfg.rpki_roas.source == "rtr" %}
+{%     endif %}
+{%     if aspas_used %}
+aspa table ASPA;
+{%     endif %}
+{#
+     The file containing the configuration of the RTR sessions is
+     included only once, even when it's used to gather both the ROAs
+     and the ASPAs.
+     Please note: ASPAs are carried only by version 2 of the RTR
+     protocol, so the 'protocol rpki' configured within that file must
+     be set to negotiate it ('min version 2;').
+#}
+{%     if (roas_used and cfg.rpki_roas.source == "rtr") or
+	(aspas_used and cfg.rpki_aspas.source == "rtr") %}
 {{ "rpki_rtr_config"|include_local_file -}}
-{%     else %}
+{%     endif %}
+{%     if roas_used and cfg.rpki_roas.source != "rtr" %}
 {%       for this_ip_ver in list_ip_vers %}
 protocol static {
     roa{{ this_ip_ver }} { table RPKI{{ this_ip_ver }}; };
@@ -28,6 +46,18 @@ protocol static {
 {%         endfor %}
 }
 {%       endfor %}
+{%     endif %}
+{%     if aspas_used and cfg.rpki_aspas.source != "rtr" %}
+protocol static {
+    aspa { table ASPA; };
+{%       for aspa in rpki_aspas %}
+{%         if aspa.providers %}
+    route aspa {{ aspa.customer_asn }} providers {{ aspa.providers|join(", ") }};
+{%         else %}
+    route aspa {{ aspa.customer_asn }} transit;
+{%         endif %}
+{%       endfor %}
+}
 {%     endif %}
 {%   endif -%}
 {% else %}

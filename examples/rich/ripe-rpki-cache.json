@@ -27,4 +27,9 @@
   {"asn":"AS25152","prefix":"2001:7fd::/32","maxLength":32,"ta":"RIPE NCC RPKI Root (RRDP prefetch)"},
   {"asn":"AS3333","prefix":"193.0.12.0/23","maxLength":23,"ta":"RIPE NCC RPKI Root (RRDP prefetch)"},
   {"asn":"AS3333","prefix":"2001:67c:2e8::/48","maxLength":48,"ta":"RIPE NCC RPKI Root (RRDP prefetch)"}
-]}
+],
+ "aspas":[
+  {"customer":"AS3333","providers":["AS1103","AS25152"],"ta":"RIPE NCC RPKI Root"},
+  {"customer":"AS10745","providers":["AS1103"],"ta":"RIPE NCC RPKI Root"},
+  {"customer":"AS197000","providers":["AS3333","AS10745"],"ta":"RIPE NCC RPKI Root"}
+ ]}

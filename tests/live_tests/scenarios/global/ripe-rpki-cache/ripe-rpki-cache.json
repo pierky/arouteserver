@@ -18,5 +18,12 @@
 
   {"prefix": "223.1.1.0/24", "maxLength": 24, "asn": "AS333", "ta": "test", "expires": 4102444799},
   {"prefix": "3223:0:1::/48", "maxLength": 48, "asn": "AS333", "ta": "test", "expires": 4102444799}
+],
+"aspas": [
+  {"customer": "AS101", "providers": ["AS1", "AS2", "AS108"], "ta": "test"},
+  {"customer": "AS108", "providers": ["AS200"], "ta": "test"},
+
+  {"customer": "AS109", "providers": ["AS1"], "ta": "not-allowed"},
+  {"customer": "AS110", "providers": ["AS1"]}
 ]}
 

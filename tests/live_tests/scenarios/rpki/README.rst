@@ -1,11 +1,12 @@
 RPKI INVALID routes tagging
 ***************************
 
-Mostly to test hooks and include files in a scenario where a custom configuration allows to propagate RPKI INVALID routes to some selected clients and to tag them with locally significant BGP communities.
+Mostly to test hooks and include files in a scenario where a custom configuration allows to propagate RPKI INVALID and ASPA INVALID routes to some selected clients and to tag them with locally significant BGP communities.
 
 Hooks used:
 
 - ``announce_rpki_invalid_to_client``, implemented in the ``header[4|6]`` include files and used to discriminate which clients should receive INVALIDs;
+- ``announce_aspa_invalid_to_client``, implemented in the same include files and used to discriminate which clients should receive ASPA INVALIDs;
 - ``post_announce_to_client``, implemented in the ``header`` include file and used to convert RFC8097 extended communities into locally significant ones.
 
 - RPKI ROAs:
@@ -31,6 +32,14 @@ Hooks used:
     5  3003:0:9::/48           102
     6  3003:0:8000::/33  34    103
     == ================  ====  ======
+
+- RPKI ASPAs:
+
+    == ========  ==========
+    ID Customer  Providers
+    == ========  ==========
+    1  108       200
+    == ========  ==========
 
 - Locally significant communities:
 
@@ -65,6 +74,9 @@ Hooks used:
                         3002:0:8000::/35
   AS2_unknown1          2.2.0.0/16         2          roa check unknown, 64512:3 on AS1 and AS4
                         3002:3002::/32
+  AS2_aspa_invalid1     2.3.0.0/16,        2 108      ASPA check fail (the 108 -> 2 hop is not authorized by ASPA n. 1),
+                        3002:2003::/32                accepted because 'rpki_aspa_verification.reject_invalid' is False
+                                                      for AS2, announced to AS1 only
   ====================  ================   ========== ==================================================================================
 
 - AS3:
@@ -86,6 +98,8 @@ Hooks used:
                         3003:0:8000::/35
   AS3_unknown1          3.2.0.0/16         2          roa check unknown, 64512:3 on AS1 and AS4
                         3003:3003::/32
+  AS3_aspa_invalid1     3.4.0.0/16,        3 108      ASPA check fail (the 108 -> 3 hop is not authorized by ASPA n. 1),
+                        3003:3004::/32                rejected, because 'rpki_aspa_verification.reject_invalid' is True for AS3
   ====================  ================   ========== ==================================================================================
 
 - AS4, receives only with no particular configuration.

@@ -469,6 +469,8 @@ class ConfigureCommand(ARouteServerCommand):
 
             # 15 == Never via route-servers ASN in AS_PATH == <missing>
 
+            # 16 == ASPA INVALID AS_PATH == <missing>
+
         add_comm("prefix_present_in_as_set",
                  "64512:11", "rs_as:64512:11")
         add_comm("prefix_not_present_in_as_set",
@@ -490,6 +492,19 @@ class ConfigureCommand(ARouteServerCommand):
                  "64512:52", "rs_as:1000:2")  # Euro-IX
         add_comm("rpki_bgp_origin_validation_invalid",
                  "64512:53", "rs_as:1000:4")  # Euro-IX
+
+        # No Euro-IX counterpart exists for the ASPA verification
+        # state. These communities are defined here so that an
+        # operator who enables 'filtering.rpki_aspa_verification'
+        # (which is off by default) gets the tagging for free.
+        add_comm("rpki_aspa_verification_not_performed",
+                 "64512:54", "rs_as:1001:3")
+        add_comm("rpki_aspa_verification_valid",
+                 "64512:55", "rs_as:1001:1")
+        add_comm("rpki_aspa_verification_unknown",
+                 "64512:56", "rs_as:1001:2")
+        add_comm("rpki_aspa_verification_invalid",
+                 "64512:57", "rs_as:1001:4")
 
         add_comm("do_not_announce_to_any",
                  "0:{rs_as}", "rs_as:0:0")  # Euro-IX

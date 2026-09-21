@@ -1,0 +1,11 @@
+{
+  "roas": [],
+  "aspas": [
+    { "customer": "AS43", "providers": [ "AS293" ], "ta": "ripe" },
+    { "providers": [ "AS293" ], "ta": "ripe" },
+    { "customer": "AS44" },
+    { "customer": "AS45", "providers": "AS293" },
+    { "customer": "not-an-asn", "providers": [ "AS293" ] },
+    { "customer": "AS46", "providers": [ "not-an-asn" ] }
+  ]
+}

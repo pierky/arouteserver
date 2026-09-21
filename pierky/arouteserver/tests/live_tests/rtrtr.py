@@ -16,11 +16,23 @@
 from .docker import DockerInstance
 
 
-class RoutinatorInstance(DockerInstance):
+class RTRTRInstance(DockerInstance):
+    """An RTR cache server fed by a static JSON file.
 
-    DOCKER_IMAGE = "nlnetlabs/routinator:v0.13.2"
+    RTRTR is used here (instead of a real RPKI validator) because its
+    'json' unit can read a local file containing both the 'roas' and
+    the 'aspas' elements, in the very same RIPE RPKI Validator format
+    that ARouteServer itself consumes. That makes the data served over
+    RTR completely predictable, and it doesn't need any access to the
+    real RPKI repositories.
 
-    TAG = "routinator"
+    Its 'rtr' target speaks version 2 of the RTR protocol, which is
+    the only one that carries ASPA payloads.
+    """
+
+    DOCKER_IMAGE = "nlnetlabs/rtrtr:v0.3.3"
+
+    TAG = "rtrtr"
 
     def restart(self):
         raise NotImplementedError()
@@ -29,4 +41,4 @@ class RoutinatorInstance(DockerInstance):
         raise NotImplementedError()
 
     def _get_start_cmd(self):
-        return "--exceptions /tmp/routinator_local_exceptions.json --disable-rsync --disable-rrdp server --rtr 192.0.2.10:3323"
+        return "-c /etc/rtrtr/rtrtr.conf --stderr"

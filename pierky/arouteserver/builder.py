@@ -36,6 +36,7 @@ from .enrichers.irrdb import IRRDBConfigEnricher_ASNs, \
 from .enrichers.pdb_as_set import PeeringDBConfigEnricher_ASSet
 from .enrichers.pdb_max_prefix import PeeringDBConfigEnricher_MaxPrefix
 from .enrichers.pdb_never_via_route_servers import NeverViaRouteServersEnricher
+from .enrichers.rpki_aspas import RPKIASPAsEnricher
 from .enrichers.rpki_roas import RPKIROAsEnricher
 from .enrichers.rtt import RTTGetterConfigEnricher
 from .errors import MissingDirError, MissingFileError, BuilderError, \
@@ -45,6 +46,7 @@ from .errors import MissingDirError, MissingFileError, BuilderError, \
 from .ipaddresses import IPNetwork, IPAddress
 from .irrdb import IRRDBInfo
 from .cached_objects import CachedObject, normalize_expiry_time
+from .ripe_rpki_cache import RIPE_RPKI_ROAs
 from .reject_reasons import REJECT_REASONS
 
 
@@ -59,7 +61,8 @@ class ConfigBuilder(object):
 
     DEFAULT_VERSION = None
 
-    IGNORABLE_ISSUES = ["ext-comms-32bit-asn", "roles_not_available"]
+    IGNORABLE_ISSUES = ["ext-comms-32bit-asn", "roles_not_available",
+                        "aspa_not_available"]
 
     def validate_bgpspeaker_specific_configuration(self):
         """Check compatibility between config and target BGP speaker
@@ -71,6 +74,46 @@ class ConfigBuilder(object):
         Raises exception in case of blocking errors.
         """
         return True
+
+    def target_supports_aspa(self):
+        """Return True if the target release supports ASPA verification."""
+        # Daemon-specific builders override this; the generic ones
+        # (html, md, template-context) have no target release at all.
+        return False
+
+    def validate_aspa_target_support(self, daemon_and_version):
+        """Check ASPA verification against the target release.
+
+        Returns False if a blocking compatibility issue was found.
+        """
+
+        if self.target_supports_aspa():
+            return True
+
+        res = True
+
+        if self.cfg_general["filtering"]["rpki_aspa_verification"]["enabled"]:
+            if not self.process_compatibility_issue(
+                "aspa_not_available",
+                "ASPA verification is not available in {}, but "
+                "it's enabled in the general.yml file.".format(
+                    daemon_and_version
+                )
+            ):
+                res = False
+
+        for client in self.cfg_clients.cfg["clients"]:
+            if client["cfg"]["filtering"]["rpki_aspa_verification"]["enabled"]:
+                if not self.process_compatibility_issue(
+                    "aspa_not_available",
+                    "ASPA verification is not available in {}, but "
+                    "it's enabled in the configuration of client {}".format(
+                        daemon_and_version, client["ip"]
+                    )
+                ):
+                    res = False
+
+        return res
 
     def process_compatibility_issue(self, issue_id, text):
         """Handle a compatibility issue which can be acknowledged by the user.
@@ -441,6 +484,15 @@ class ConfigBuilder(object):
         # { "<len>": [{"prefix": "<ip>/<len>", "max_len": x, "asn": "AS<n>"}]
         self.rpki_roas = {}
 
+        # [{"customer_asn": x, "providers": [y, z], "expires": t}]
+        self.rpki_aspas = []
+
+        # tuple(<urls>) -> RIPE_RPKI_ROAs, so that the same JSON file
+        # is fetched only once even when it's used to gather both the
+        # ROAs and the ASPAs.
+        self._rpki_json_caches = {}
+        self._rpki_json_caches_loaded = set()
+
         # [<asn (int)>]
         self.never_via_route_servers_asns = []
 
@@ -549,6 +601,69 @@ class ConfigBuilder(object):
                 res.append(client["ip"])
         return res
 
+    def _setup_rpki_json_caches(self):
+        """Build the RIPE_RPKI_ROAs objects needed by the enrichers.
+
+        RPKI ROAs and ASPAs are gathered from the very same JSON file
+        format, and quite often from the very same file. When that
+        happens, only one object is built, so that the file is
+        downloaded (and cached) only once.
+        """
+
+        plan = {}
+
+        rpki_roas_cfg = self.cfg_general["rpki_roas"]
+        if self.cfg_general.rpki_roas_needed and \
+            rpki_roas_cfg["source"] == "ripe-rpki-validator-cache":
+            plan[tuple(rpki_roas_cfg["ripe_rpki_validator_url"])] = {
+                "need_roas": True,
+                "need_aspas": False,
+                "ignore_cache_files_older_than":
+                    rpki_roas_cfg["ignore_cache_files_older_than"],
+                "object_filename": RIPE_RPKI_ROAs.DEFAULT_OBJECT_FILENAME
+            }
+
+        rpki_aspas_cfg = self.cfg_general["rpki_aspas"]
+        if self.cfg_general.rpki_aspas_needed and \
+            rpki_aspas_cfg["source"] == "json":
+            urls = tuple(rpki_aspas_cfg["json_url"])
+            if urls in plan:
+                # Same file used to gather the ROAs: fetch it only once.
+                plan[urls]["need_aspas"] = True
+                plan[urls]["ignore_cache_files_older_than"] = min(
+                    plan[urls]["ignore_cache_files_older_than"],
+                    rpki_aspas_cfg["ignore_cache_files_older_than"]
+                )
+            else:
+                plan[urls] = {
+                    "need_roas": False,
+                    "need_aspas": True,
+                    "ignore_cache_files_older_than":
+                        rpki_aspas_cfg["ignore_cache_files_older_than"],
+                    "object_filename": "rpki-aspas-cache.json"
+                }
+
+        for urls, kwargs in plan.items():
+            self._rpki_json_caches[urls] = RIPE_RPKI_ROAs(
+                cache_dir=self.cache_dir,
+                cache_expiry=self.cache_expiry,
+                urls=list(urls),
+                **kwargs
+            )
+
+    def get_rpki_json_cache(self, urls):
+        """Return the (lazily loaded) RIPE_RPKI_ROAs object for 'urls'."""
+
+        key = tuple(urls)
+
+        obj = self._rpki_json_caches[key]
+
+        if key not in self._rpki_json_caches_loaded:
+            obj.load_data()
+            self._rpki_json_caches_loaded.add(key)
+
+        return obj
+
     def enrich_config(self):
         # Unique ASNs from clients list.
         clients_asns = {}
@@ -586,6 +701,8 @@ class ConfigBuilder(object):
         irrdb_cfg = filtering["irrdb"]
         used_enricher_classes = []
 
+        self._setup_rpki_json_caches()
+
         if irrdb_cfg["peering_db"]:
             used_enricher_classes += [PeeringDBConfigEnricher_ASSet]
 
@@ -600,6 +717,10 @@ class ConfigBuilder(object):
             self.cfg_general["rpki_roas"]["source"] == \
                 "ripe-rpki-validator-cache":
             used_enricher_classes.append(RPKIROAsEnricher)
+
+        if self.cfg_general.rpki_aspas_needed and \
+            self.cfg_general["rpki_aspas"]["source"] == "json":
+            used_enricher_classes.append(RPKIASPAsEnricher)
 
         if irrdb_cfg["use_arin_bulk_whois_data"]["enabled"]:
             used_enricher_classes.append(ARINWhoisDBDumpEnricher)
@@ -710,6 +831,8 @@ class ConfigBuilder(object):
         self.data["asn3216_map"] = self.asn3216_map
         self.data["irrdb_info"] = self.irrdb_info
         self.data["rpki_roas"] = sorted_rpki_roas()
+        self.data["rpki_aspas"] = self.rpki_aspas
+        self.data["aspa_supported_by_target"] = self.target_supports_aspa()
         self.data["arin_whois_records"] = self.arin_whois_records
         self.data["registrobr_whois_records"] = self.registrobr_whois_records
         self.data["never_via_route_servers_asns"] = self.never_via_route_servers_asns
@@ -882,6 +1005,7 @@ class BIRDConfigBuilder(ConfigBuilder):
     HOOKS = ["pre_receive_from_client", "post_receive_from_client",
              "pre_announce_to_client", "post_announce_to_client",
              "route_can_be_announced_to", "announce_rpki_invalid_to_client",
+             "announce_aspa_invalid_to_client",
              "scrub_communities_in", "scrub_communities_out",
              "apply_blackhole_filtering_policy"]
 
@@ -893,6 +1017,14 @@ class BIRDConfigBuilder(ConfigBuilder):
                          "2.16", "2.19.2",
                          "3.0", "3.2.3", "3.3.2"]
     DEFAULT_VERSION = "2.19.2"
+
+    def target_supports_aspa(self):
+        # ASPA was implemented in BIRD 2.16; the 3.0 alpha release
+        # predates it, even though its version number is greater.
+        v = version.parse(self.target_version)
+        if version.parse("2.16") <= v < version.parse("3.0"):
+            return True
+        return v >= version.parse("3.2.3")
 
     def validate_bgpspeaker_specific_configuration(self):
         res = True
@@ -1011,6 +1143,11 @@ class BIRDConfigBuilder(ConfigBuilder):
                     for client in self.cfg_clients.cfg["clients"]:
                         client["cfg"]["filtering"]["max_prefix"]["count_rejected_routes"] = False
 
+        if not self.validate_aspa_target_support(
+            "BIRD {}".format(self.target_version)
+        ):
+            res = False
+
         if version.parse(self.target_version) < version.parse("2.0.11"):
             if self.cfg_general["filtering"]["roles"]["enabled"]:
                 if not self.process_compatibility_issue(
@@ -1081,6 +1218,10 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                          "7.8", "8.0", "8.3", "8.4", "8.7", "9.2"]
     DEFAULT_VERSION = AVAILABLE_VERSION[-1]
 
+    def target_supports_aspa(self):
+        # ASPA ('aspa-set', 'avs') was implemented in OpenBGPD 7.8.
+        return version.parse(self.target_version) >= version.parse("7.8")
+
     IGNORABLE_ISSUES = ConfigBuilder.IGNORABLE_ISSUES + \
                         ["transit_free_action",
                         "add_path", "max_prefix_action",
@@ -1117,6 +1258,42 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                 "For OpenBGP, 'reject_policy' can't be set to "
                 "'tag_and_reject'."
             )
+
+        if not self.validate_aspa_target_support(
+            "OpenBGPD {}".format(self.target_version)
+        ):
+            res = False
+
+        # On OpenBGPD, the ASPA Validation State is 'unknown' for every
+        # route received over a session whose role is 'none', so ASPA
+        # verification would silently do nothing if RFC9234 roles were
+        # not enabled. This is not a compatibility issue that can be
+        # acknowledged and ignored: it would produce a configuration
+        # that does not do what it's meant to do.
+        if self.target_supports_aspa():
+            roles_cfg = self.cfg_general["filtering"]["roles"]
+            aspa_cfg = self.cfg_general["filtering"]["rpki_aspa_verification"]
+
+            if aspa_cfg["enabled"] and not roles_cfg["enabled"]:
+                raise BuilderError(
+                    "ASPA verification is enabled in the general.yml file, "
+                    "but RFC9234 roles ('filtering.roles') are not. On "
+                    "OpenBGPD, ASPA verification is performed only on "
+                    "sessions for which a role is set, so roles must be "
+                    "enabled too."
+                )
+
+            for client in self.cfg_clients.cfg["clients"]:
+                client_filtering = client["cfg"]["filtering"]
+                if client_filtering["rpki_aspa_verification"]["enabled"] and \
+                    not client_filtering["roles"]["enabled"]:
+                    raise BuilderError(
+                        "ASPA verification is enabled for client {}, but "
+                        "RFC9234 roles ('filtering.roles') are not. On "
+                        "OpenBGPD, ASPA verification is performed only on "
+                        "sessions for which a role is set, so roles must be "
+                        "enabled too.".format(client["ip"])
+                    )
 
         add_path_clients = []
         max_prefix_action_clients = []

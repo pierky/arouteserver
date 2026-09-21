@@ -22,5 +22,15 @@ class RPKIRTRScenario_Data4(object):
         "AS3333_allowed_prefixes":          "193.0.0.0/21",
 
         "AS1_1_IPAddress":                  "192.0.2.111",
-        "AS1_1":                            "193.0.0.0/24"
+        "AS1_1":                            "193.0.0.0/24",
+
+        # The following prefixes are not covered by any ROA, so that
+        # the outcome of the ASPA verification can be observed
+        # independently of the RPKI BGP Origin Validation one.
+        # They are announced by AS1 with a two hops AS_PATH, because
+        # a route originated by the announcing client itself can
+        # never be ASPA INVALID.
+        "AS1_aspa_valid":                   "193.0.9.0/24",
+        "AS1_aspa_invalid":                 "193.0.8.0/24",
+        "AS1_aspa_unknown":                 "193.0.10.0/24"
     }

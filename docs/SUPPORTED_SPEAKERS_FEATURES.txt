@@ -42,6 +42,10 @@ RPKI-based filtering (BGP Prefix Origin Validation)           Yes          Yes  
 ------------------------------------------------------------- ------------ ------------- ------------- ------------ 
 RPKI ROAs retrieved via RTR protocol                          Yes          Yes           Yes           Yes          
 ------------------------------------------------------------- ------------ ------------- ------------- ------------ 
+ASPA-based route leak detection (ASPA verification)           Yes          Yes           Yes           Yes :sup:`3` 
+------------------------------------------------------------- ------------ ------------- ------------- ------------ 
+RPKI ASPAs retrieved via RTR protocol                         Yes          Yes           Yes           Yes          
+------------------------------------------------------------- ------------ ------------- ------------- ------------ 
 **Blackhole filtering support:**                              
 -------------------------------------------------------------------------------------------------------------------
 Optional NEXT_HOP rewriting                                   Yes          Yes           Yes           Yes          
@@ -88,5 +92,7 @@ IPv6 NEXT_HOP for IPv4 routes (RFC8950)                       Yes          Yes  
 :sup:`1`: For max-prefix filtering, only the shutdown and the restart actions are supported by OpenBGPD. Restart is configured with a 15 minutes timer.
 
 :sup:`2`: Multihop can be enabled only when path-hiding mitigation is turned off.
+
+:sup:`3`: On OpenBGPD, ASPA verification is performed only on sessions for which a RFC9234 role is set, so roles must be enabled too.
 
 
