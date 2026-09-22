@@ -3,9 +3,11 @@ platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
 plugins: requests-mock-1.12.1
-collecting ... collected 435 items
+collecting ... collected 455 items
 
-Live test, OpenBGPD 9.2, global scenario, IPv4: instances setup PASSED
+Live test, OpenBGPD 9.2, global scenario, IPv4: instances setup 
+Live test, OpenBGPD 9.2, global scenario, IPv4: setting instances up...
+PASSED
 Live test, OpenBGPD 9.2, global scenario, IPv4: sessions are up PASSED
 Live test, OpenBGPD 9.2, global scenario, IPv4: session configured via local include files PASSED
 Live test, OpenBGPD 9.2, global scenario, IPv4: good prefixes because of use_arin_bulk_whois_data PASSED
@@ -45,6 +47,10 @@ Live test, OpenBGPD 9.2, global scenario, IPv4: RPKI, invalid prefix (bad length
 Live test, OpenBGPD 9.2, global scenario, IPv4: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
 Live test, OpenBGPD 9.2, global scenario, IPv4: RPKI, valid prefix received by rs PASSED
 Live test, OpenBGPD 9.2, global scenario, IPv4: RPKI, valid prefix propagated to clients PASSED
+Live test, OpenBGPD 9.2, global scenario, IPv4: ASPA, invalid AS_PATH received by rs PASSED
+Live test, OpenBGPD 9.2, global scenario, IPv4: ASPA, invalid AS_PATH not propagated to clients PASSED
+Live test, OpenBGPD 9.2, global scenario, IPv4: ASPA, valid AS_PATH received by rs PASSED
+Live test, OpenBGPD 9.2, global scenario, IPv4: ASPA, valid AS_PATH propagated to clients PASSED
 Live test, OpenBGPD 9.2, global scenario, IPv4: prefixes from AS101 received by its upstreams PASSED
 Live test, OpenBGPD 9.2, global scenario, IPv4: prefixes from AS101 received by rs PASSED
 Live test, OpenBGPD 9.2, global scenario, IPv4: bad communities as seen by AS101 upstreams PASSED
@@ -92,7 +98,15 @@ Live test, OpenBGPD 9.2, global scenario, IPv4: prefixes received by clients: AS
 Live test, OpenBGPD 9.2, global scenario, IPv4: prefixes received by clients: AS3 (with ADD-PATH) PASSED
 Live test, OpenBGPD 9.2, global scenario, IPv4: reconfigure PASSED
 Live test, OpenBGPD 9.2, global scenario, IPv4: log contains errors PASSED
-Live test, OpenBGPD 9.2, global scenario, IPv6: instances setup PASSED
+Live test, OpenBGPD 9.2, global scenario, IPv4: dumping rs config...
+
+Live test, OpenBGPD 9.2, global scenario, IPv4: dumping routes...
+
+Live test, OpenBGPD 9.2, global scenario, IPv4: stopping instances...
+
+Live test, OpenBGPD 9.2, global scenario, IPv6: instances setup 
+Live test, OpenBGPD 9.2, global scenario, IPv6: setting instances up...
+PASSED
 Live test, OpenBGPD 9.2, global scenario, IPv6: sessions are up PASSED
 Live test, OpenBGPD 9.2, global scenario, IPv6: session configured via local include files PASSED
 Live test, OpenBGPD 9.2, global scenario, IPv6: good prefixes because of use_arin_bulk_whois_data PASSED
@@ -132,6 +146,10 @@ Live test, OpenBGPD 9.2, global scenario, IPv6: RPKI, invalid prefix (bad length
 Live test, OpenBGPD 9.2, global scenario, IPv6: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
 Live test, OpenBGPD 9.2, global scenario, IPv6: RPKI, valid prefix received by rs PASSED
 Live test, OpenBGPD 9.2, global scenario, IPv6: RPKI, valid prefix propagated to clients PASSED
+Live test, OpenBGPD 9.2, global scenario, IPv6: ASPA, invalid AS_PATH received by rs PASSED
+Live test, OpenBGPD 9.2, global scenario, IPv6: ASPA, invalid AS_PATH not propagated to clients PASSED
+Live test, OpenBGPD 9.2, global scenario, IPv6: ASPA, valid AS_PATH received by rs PASSED
+Live test, OpenBGPD 9.2, global scenario, IPv6: ASPA, valid AS_PATH propagated to clients PASSED
 Live test, OpenBGPD 9.2, global scenario, IPv6: prefixes from AS101 received by its upstreams PASSED
 Live test, OpenBGPD 9.2, global scenario, IPv6: prefixes from AS101 received by rs PASSED
 Live test, OpenBGPD 9.2, global scenario, IPv6: bad communities as seen by AS101 upstreams PASSED
@@ -179,7 +197,15 @@ Live test, OpenBGPD 9.2, global scenario, IPv6: prefixes received by clients: AS
 Live test, OpenBGPD 9.2, global scenario, IPv6: prefixes received by clients: AS3 (with ADD-PATH) PASSED
 Live test, OpenBGPD 9.2, global scenario, IPv6: reconfigure PASSED
 Live test, OpenBGPD 9.2, global scenario, IPv6: log contains errors PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: instances setup PASSED
+Live test, OpenBGPD 9.2, global scenario, IPv6: dumping rs config...
+
+Live test, OpenBGPD 9.2, global scenario, IPv6: dumping routes...
+
+Live test, OpenBGPD 9.2, global scenario, IPv6: stopping instances...
+
+Live test, OpenBGPD 8.7, global scenario, IPv4: instances setup 
+Live test, OpenBGPD 8.7, global scenario, IPv4: setting instances up...
+PASSED
 Live test, OpenBGPD 8.7, global scenario, IPv4: sessions are up PASSED
 Live test, OpenBGPD 8.7, global scenario, IPv4: session configured via local include files PASSED
 Live test, OpenBGPD 8.7, global scenario, IPv4: good prefixes because of use_arin_bulk_whois_data PASSED
@@ -219,6 +245,10 @@ Live test, OpenBGPD 8.7, global scenario, IPv4: RPKI, invalid prefix (bad length
 Live test, OpenBGPD 8.7, global scenario, IPv4: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
 Live test, OpenBGPD 8.7, global scenario, IPv4: RPKI, valid prefix received by rs PASSED
 Live test, OpenBGPD 8.7, global scenario, IPv4: RPKI, valid prefix propagated to clients PASSED
+Live test, OpenBGPD 8.7, global scenario, IPv4: ASPA, invalid AS_PATH received by rs PASSED
+Live test, OpenBGPD 8.7, global scenario, IPv4: ASPA, invalid AS_PATH not propagated to clients PASSED
+Live test, OpenBGPD 8.7, global scenario, IPv4: ASPA, valid AS_PATH received by rs PASSED
+Live test, OpenBGPD 8.7, global scenario, IPv4: ASPA, valid AS_PATH propagated to clients PASSED
 Live test, OpenBGPD 8.7, global scenario, IPv4: prefixes from AS101 received by its upstreams PASSED
 Live test, OpenBGPD 8.7, global scenario, IPv4: prefixes from AS101 received by rs PASSED
 Live test, OpenBGPD 8.7, global scenario, IPv4: bad communities as seen by AS101 upstreams PASSED
@@ -266,7 +296,15 @@ Live test, OpenBGPD 8.7, global scenario, IPv4: prefixes received by clients: AS
 Live test, OpenBGPD 8.7, global scenario, IPv4: prefixes received by clients: AS3 (with ADD-PATH) PASSED
 Live test, OpenBGPD 8.7, global scenario, IPv4: reconfigure PASSED
 Live test, OpenBGPD 8.7, global scenario, IPv4: log contains errors PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: instances setup PASSED
+Live test, OpenBGPD 8.7, global scenario, IPv4: dumping rs config...
+
+Live test, OpenBGPD 8.7, global scenario, IPv4: dumping routes...
+
+Live test, OpenBGPD 8.7, global scenario, IPv4: stopping instances...
+
+Live test, OpenBGPD 8.7, global scenario, IPv6: instances setup 
+Live test, OpenBGPD 8.7, global scenario, IPv6: setting instances up...
+PASSED
 Live test, OpenBGPD 8.7, global scenario, IPv6: sessions are up PASSED
 Live test, OpenBGPD 8.7, global scenario, IPv6: session configured via local include files PASSED
 Live test, OpenBGPD 8.7, global scenario, IPv6: good prefixes because of use_arin_bulk_whois_data PASSED
@@ -306,6 +344,10 @@ Live test, OpenBGPD 8.7, global scenario, IPv6: RPKI, invalid prefix (bad length
 Live test, OpenBGPD 8.7, global scenario, IPv6: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
 Live test, OpenBGPD 8.7, global scenario, IPv6: RPKI, valid prefix received by rs PASSED
 Live test, OpenBGPD 8.7, global scenario, IPv6: RPKI, valid prefix propagated to clients PASSED
+Live test, OpenBGPD 8.7, global scenario, IPv6: ASPA, invalid AS_PATH received by rs PASSED
+Live test, OpenBGPD 8.7, global scenario, IPv6: ASPA, invalid AS_PATH not propagated to clients PASSED
+Live test, OpenBGPD 8.7, global scenario, IPv6: ASPA, valid AS_PATH received by rs PASSED
+Live test, OpenBGPD 8.7, global scenario, IPv6: ASPA, valid AS_PATH propagated to clients PASSED
 Live test, OpenBGPD 8.7, global scenario, IPv6: prefixes from AS101 received by its upstreams PASSED
 Live test, OpenBGPD 8.7, global scenario, IPv6: prefixes from AS101 received by rs PASSED
 Live test, OpenBGPD 8.7, global scenario, IPv6: bad communities as seen by AS101 upstreams PASSED
@@ -353,7 +395,15 @@ Live test, OpenBGPD 8.7, global scenario, IPv6: prefixes received by clients: AS
 Live test, OpenBGPD 8.7, global scenario, IPv6: prefixes received by clients: AS3 (with ADD-PATH) PASSED
 Live test, OpenBGPD 8.7, global scenario, IPv6: reconfigure PASSED
 Live test, OpenBGPD 8.7, global scenario, IPv6: log contains errors PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: instances setup PASSED
+Live test, OpenBGPD 8.7, global scenario, IPv6: dumping rs config...
+
+Live test, OpenBGPD 8.7, global scenario, IPv6: dumping routes...
+
+Live test, OpenBGPD 8.7, global scenario, IPv6: stopping instances...
+
+Live test, OpenBGPD 9.2, global scenario, RFC8950: instances setup 
+Live test, OpenBGPD 9.2, global scenario, RFC8950: setting instances up...
+PASSED
 Live test, OpenBGPD 9.2, global scenario, RFC8950: sessions are up PASSED
 Live test, OpenBGPD 9.2, global scenario, RFC8950: session configured via local include files PASSED
 Live test, OpenBGPD 9.2, global scenario, RFC8950: good prefixes because of use_arin_bulk_whois_data PASSED
@@ -393,6 +443,10 @@ Live test, OpenBGPD 9.2, global scenario, RFC8950: RPKI, invalid prefix (bad len
 Live test, OpenBGPD 9.2, global scenario, RFC8950: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
 Live test, OpenBGPD 9.2, global scenario, RFC8950: RPKI, valid prefix received by rs PASSED
 Live test, OpenBGPD 9.2, global scenario, RFC8950: RPKI, valid prefix propagated to clients PASSED
+Live test, OpenBGPD 9.2, global scenario, RFC8950: ASPA, invalid AS_PATH received by rs PASSED
+Live test, OpenBGPD 9.2, global scenario, RFC8950: ASPA, invalid AS_PATH not propagated to clients PASSED
+Live test, OpenBGPD 9.2, global scenario, RFC8950: ASPA, valid AS_PATH received by rs PASSED
+Live test, OpenBGPD 9.2, global scenario, RFC8950: ASPA, valid AS_PATH propagated to clients PASSED
 Live test, OpenBGPD 9.2, global scenario, RFC8950: prefixes from AS101 received by its upstreams PASSED
 Live test, OpenBGPD 9.2, global scenario, RFC8950: prefixes from AS101 received by rs PASSED
 Live test, OpenBGPD 9.2, global scenario, RFC8950: bad communities as seen by AS101 upstreams PASSED
@@ -440,5 +494,11 @@ Live test, OpenBGPD 9.2, global scenario, RFC8950: prefixes received by clients:
 Live test, OpenBGPD 9.2, global scenario, RFC8950: prefixes received by clients: AS3 (with ADD-PATH) PASSED
 Live test, OpenBGPD 9.2, global scenario, RFC8950: reconfigure PASSED
 Live test, OpenBGPD 9.2, global scenario, RFC8950: log contains errors PASSED
+Live test, OpenBGPD 9.2, global scenario, RFC8950: dumping rs config...
 
-============================= 435 passed in 0.81s ==============================
+Live test, OpenBGPD 9.2, global scenario, RFC8950: dumping routes...
+
+Live test, OpenBGPD 9.2, global scenario, RFC8950: stopping instances...
+
+
+======================= 455 passed in 1270.74s (0:21:10) =======================

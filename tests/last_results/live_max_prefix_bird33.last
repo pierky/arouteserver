@@ -5,7 +5,9 @@ rootdir: /home/pierky/src/ars
 plugins: requests-mock-1.12.1
 collecting ... collected 26 items
 
-Live test, BIRD v3.3, max-prefix, IPv4: instances setup PASSED
+Live test, BIRD v3.3, max-prefix, IPv4: instances setup 
+Live test, BIRD v3.3, max-prefix, IPv4: setting instances up...
+PASSED
 Live test, BIRD v3.3, max-prefix, IPv4: sessions are up PASSED
 Live test, BIRD v3.3, max-prefix, IPv4: AS5 session is down (max-prefix hit, action == shutdown) PASSED
 Live test, BIRD v3.3, max-prefix, IPv4: log is populated: receive limit, routes blocked PASSED
@@ -18,7 +20,15 @@ Live test, BIRD v3.3, max-prefix, IPv4: number of prefixes received by rs from A
 Live test, BIRD v3.3, max-prefix, IPv4: number of prefixes received by rs from AS6 PASSED
 Live test, BIRD v3.3, max-prefix, IPv4: reconfigure PASSED
 Live test, BIRD v3.3, max-prefix, IPv4: log contains errors PASSED
-Live test, BIRD v3.3, max-prefix, IPv6: instances setup PASSED
+Live test, BIRD v3.3, max-prefix, IPv4: dumping rs config...
+
+Live test, BIRD v3.3, max-prefix, IPv4: dumping routes...
+
+Live test, BIRD v3.3, max-prefix, IPv4: stopping instances...
+
+Live test, BIRD v3.3, max-prefix, IPv6: instances setup 
+Live test, BIRD v3.3, max-prefix, IPv6: setting instances up...
+PASSED
 Live test, BIRD v3.3, max-prefix, IPv6: sessions are up PASSED
 Live test, BIRD v3.3, max-prefix, IPv6: AS5 session is down (max-prefix hit, action == shutdown) PASSED
 Live test, BIRD v3.3, max-prefix, IPv6: log is populated: receive limit, routes blocked PASSED
@@ -31,5 +41,11 @@ Live test, BIRD v3.3, max-prefix, IPv6: number of prefixes received by rs from A
 Live test, BIRD v3.3, max-prefix, IPv6: number of prefixes received by rs from AS6 PASSED
 Live test, BIRD v3.3, max-prefix, IPv6: reconfigure PASSED
 Live test, BIRD v3.3, max-prefix, IPv6: log contains errors PASSED
+Live test, BIRD v3.3, max-prefix, IPv6: dumping rs config...
 
-============================== 26 passed in 0.17s ==============================
+Live test, BIRD v3.3, max-prefix, IPv6: dumping routes...
+
+Live test, BIRD v3.3, max-prefix, IPv6: stopping instances...
+
+
+======================== 26 passed in 315.55s (0:05:15) ========================

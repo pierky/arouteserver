@@ -3,8 +3,21 @@ platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
 plugins: requests-mock-1.12.1
-collecting ... collected 265 items
+collecting ... collected 285 items
 
+ASPA builder: OpenBGPD, ASPA without roles raises an error PASSED
+ASPA builder: OpenBGPD, ASPA with roles is fine PASSED
+ASPA builder: OpenBGPD, ASPA without roles on a target with no ASPA support PASSED
+ASPA builder: BIRD, ASPA without roles is fine PASSED
+ASPA builder: BIRD, ASPA on targets that don't support it PASSED
+ASPA builder: BIRD, ASPA on targets that support it PASSED
+ASPA builder: OpenBGPD, ASPA on targets that don't support it PASSED
+ASPA builder: OpenBGPD, ASPA on targets that support it PASSED
+ASPA builder: ASPAs gathered from a JSON file PASSED
+ASPA builder: no ASPA available PASSED
+ASPA builder: ASPA with no providers PASSED
+ASPA builder: ROAs and ASPAs from the same URL are fetched once PASSED
+ASPA builder: ROAs and ASPAs from different URLs are fetched twice PASSED
 ASNs config parser: invalid AS PASSED
 ASNs config parser: invalid AS-SET PASSED
 ASNs config parser: valid AS-SET PASSED
@@ -257,6 +270,13 @@ RPKI ROAs: rpki-client expired ROAs PASSED
 RPKI ROAs: OctoRPKI expired file PASSED
 RPKI ROAs: OctoRPKI out of validity PASSED
 RPKI ROAs: OctoRPKI valid file PASSED
+RPKI ASPAs: RIPE Validator format PASSED
+RPKI ASPAs: NTT / rpki-client format PASSED
+RPKI ASPAs: invalid records are skipped PASSED
+RPKI ASPAs: too many invalid records PASSED
+RPKI ASPAs: missing 'aspas' root element PASSED
+RPKI ASPAs: ASPAs only, no ROAs needed PASSED
+RPKI ASPAs: cache built without ASPAs is refreshed PASSED
 RTT getter parser: 0 PASSED
 RTT getter parser: 0.1 PASSED
 RTT getter parser: 1 PASSED
@@ -272,6 +292,23 @@ RTT getter parser: new line only PASSED
 RTT getter parser: none PASSED
 
 =============================== warnings summary ===============================
+ASPA builder: ASPAs gathered from a JSON file: 1 warning
+ASPA builder: no ASPA available: 2 warnings
+ASPA builder: ASPA with no providers: 2 warnings
+ASPA builder: ROAs and ASPAs from the same URL are fetched once: 1 warning
+ASPA builder: ROAs and ASPAs from different URLs are fetched twice: 2 warnings
+RPKI ROAs: RIPE Validator TAs: 1 warning
+RPKI ROAs: NTT TAs: 1 warning
+RPKI ROAs: different formats: 1 warning
+RPKI ASPAs: RIPE Validator format: 1 warning
+RPKI ASPAs: NTT / rpki-client format: 1 warning
+RPKI ASPAs: invalid records are skipped: 1 warning
+RPKI ASPAs: too many invalid records: 1 warning
+RPKI ASPAs: ASPAs only, no ROAs needed: 1 warning
+RPKI ASPAs: cache built without ASPAs is refreshed: 1 warning
+  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:84: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    return datetime.datetime.utcnow()
+
 IX-F Member Export from clients command: simple: 1 warning
 IX-F Member Export from clients command: with description: 1 warning
 IX-F Member Export from clients command: with AS-SET: 1 warning
@@ -289,22 +326,16 @@ IX-F Member Export from clients command: swissix.yml: 1 warning
   /home/pierky/src/ars/pierky/arouteserver/commands/ixf_member_list_from_clients.py:192: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
     res["timestamp"] = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 
-RPKI ROAs: RIPE Validator TAs
-RPKI ROAs: NTT TAs
-RPKI ROAs: different formats
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:59: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    return datetime.datetime.utcnow()
-
 RPKI ROAs: OctoRPKI expired file
 RPKI ROAs: OctoRPKI out of validity
 RPKI ROAs: OctoRPKI valid file
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:137: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
+  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:171: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
     buildtime_dt_utc = datetime.datetime.utcfromtimestamp(int(generated))
 
 RPKI ROAs: OctoRPKI out of validity
 RPKI ROAs: OctoRPKI valid file
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:168: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
+  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:202: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
     valid_dt_utc = datetime.datetime.utcfromtimestamp(int(valid))
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-================= 265 passed, 22 warnings in 93.25s (0:01:33) ==================
+================= 285 passed, 36 warnings in 96.23s (0:01:36) ==================

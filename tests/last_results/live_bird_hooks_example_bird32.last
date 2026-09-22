@@ -5,9 +5,25 @@ rootdir: /home/pierky/src/ars
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
-Live test, BIRD v3.2, hooks example, IPv4: instances setup PASSED
+Live test, BIRD v3.2, hooks example, IPv4: instances setup 
+Live test, BIRD v3.2, hooks example, IPv4: setting instances up...
+PASSED
 Live test, BIRD v3.2, hooks example, IPv4: log contains errors PASSED
-Live test, BIRD v3.2, hooks example, IPv6: instances setup PASSED
-Live test, BIRD v3.2, hooks example, IPv6: log contains errors PASSED
+Live test, BIRD v3.2, hooks example, IPv4: dumping rs config...
 
-============================== 4 passed in 0.12s ===============================
+Live test, BIRD v3.2, hooks example, IPv4: dumping routes...
+
+Live test, BIRD v3.2, hooks example, IPv4: stopping instances...
+
+Live test, BIRD v3.2, hooks example, IPv6: instances setup 
+Live test, BIRD v3.2, hooks example, IPv6: setting instances up...
+PASSED
+Live test, BIRD v3.2, hooks example, IPv6: log contains errors PASSED
+Live test, BIRD v3.2, hooks example, IPv6: dumping rs config...
+
+Live test, BIRD v3.2, hooks example, IPv6: dumping routes...
+
+Live test, BIRD v3.2, hooks example, IPv6: stopping instances...
+
+
+============================== 4 passed in 29.45s ==============================
