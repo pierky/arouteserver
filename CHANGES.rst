@@ -18,6 +18,14 @@ next release
 
   **Please note:** ASPA payloads only exist in version 2 of the RTR protocol, so RTR sessions must be configured to negotiate it (``min version 2;`` on BIRD, ``min-version 2`` on OpenBGPD). Also, on OpenBGPD, RFC9234 roles must be enabled, otherwise the daemon reports every route as ASPA unknown and no verification is actually performed; ARouteServer raises an error in that case.
 
+- Improvement (cosmetic): put one prefix and one ASN per line on BIRD configurations.
+
+  See also `GitHub PR 141 <https://github.com/pierky/arouteserver/pull/141>`__.
+
+- Docs: clarify BIRD hook on ``route_can_be_announced_to``.
+
+  See also `GitHub PR 142 <https://github.com/pierky/arouteserver/pull/142>`__ and `146 <https://github.com/pierky/arouteserver/pull/146>`__.
+
 1.24
 ----
 
