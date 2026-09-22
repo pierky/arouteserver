@@ -11,4 +11,7 @@
   {"ta": "test", "prefix": "3003:0:8::/48", "asn": "AS103", "maxLength": 48},
   {"ta": "test", "prefix": "3003:0:9::/48", "asn": "AS102", "maxLength": 48},
   {"ta": "test", "prefix": "3003:0:8000::/33", "asn": "AS103", "maxLength": 34}
+],
+"aspas":[
+  {"ta": "test", "customer": "AS108", "providers": ["AS200"]}
 ]}

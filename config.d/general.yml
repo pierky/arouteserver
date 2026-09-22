@@ -443,6 +443,39 @@ cfg:
       # Default: True
       reject_invalid: True
 
+    rpki_aspa_verification:
+      # Enable ASPA verification of the AS_PATH of routes received
+      # from clients, to detect and discard route leaks.
+      # https://datatracker.ietf.org/doc/draft-ietf-sidrops-aspa-verification/
+      #
+      # Since the route server and its clients are lateral peers, the
+      # stricter "Algorithm for Upstream Paths" is used.
+      #
+      # When enabled, the 'rpki_aspas' section must be configured in
+      # order to set the method used to gather the ASPAs.
+      #
+      # Supported by BIRD >= 2.16 (but not by the 3.0 alpha release)
+      # and by OpenBGPD >= 7.8. On OpenBGPD, RFC9234 roles must also
+      # be enabled ('filtering.roles' below), otherwise the daemon
+      # returns 'unknown' for every route and no verification is
+      # actually performed: ARouteServer raises an error in that case.
+      #
+      # Default: False
+      enabled: False
+
+      # If 'reject_invalid' is True, when an INVALID route is received
+      # the route server rejects it.
+      # If it is False, INVALID routes are accepted and tagged with
+      # the 'rpki_aspa_verification_invalid' BGP communities below,
+      # for further internal processing or to be used by external
+      # custom functions implemented in .local files.
+      # In any case, INVALID routes are not announced to clients.
+      #
+      # Can be overwritten on a client-by-client basis.
+      #
+      # Default: True
+      reject_invalid: True
+
     max_prefix:
       # Dynamically adjust max-prefix limit of each client on the
       # basis of the following criteria, in priority order:
@@ -697,6 +730,114 @@ cfg:
     # Default: 6 hours (21600 seconds).
     ignore_cache_files_older_than: 21600
 
+  rpki_aspas:
+    # This section is used to configure how RPKI ASPAs are gathered
+    # when 'filtering.rpki_aspa_verification' is enabled.
+
+    # The source used to gather RPKI ASPAs.
+    #
+    # Can be one of the following options:
+    # - 'rtr': ASPAs are loaded via the RTR protocol, whose support is
+    #   built into BIRD v2/v3 and OpenBGPD. Only the built-in
+    #   implementations are supported here; there is no equivalent of
+    #   the external rtrlib-based method that can be used for ROAs on
+    #   BIRD 1.6.x.
+    #   The name of the table where the ASPAs are sent to is 'ASPA'
+    #   (BIRD only; OpenBGPD merges them into its own aspa-set).
+    #   As it already happens for RPKI ROAs, an external file
+    #   'rpki_rtr_config.local' must be found within the same directory
+    #   where the main configuration file is stored (/etc/bird or
+    #   /etc/bgpd usually) and must contain the configuration of the
+    #   RTR sessions specific for that daemon.
+    #   An example on how to setup that file can be found in the
+    #   examples/rpki_rtr directory.
+    #
+    #   *** IMPORTANT: ASPA payloads only exist in version 2 of the
+    #       RTR protocol (RFC6810/RFC8210 v0 and v1 carry ROAs only).
+    #       The RTR session must be configured to negotiate version 2,
+    #       otherwise no ASPA will ever be received:
+    #       - BIRD:     'min version 2;' inside 'protocol rpki'
+    #       - OpenBGPD: 'min-version 2' inside the 'rtr' block
+    #       Please also make sure that the RPKI validator in use is
+    #       configured to produce ASPAs (for example, Routinator needs
+    #       the 'enable-aspa' option). ***
+    #
+    # - 'json': ASPAs are loaded from the 'aspas' element of a JSON
+    #   file in RIPE NCC RPKI Validator cache format, that is the very
+    #   same file format used for the ROAs in 'rpki_roas' above.
+    #
+    #   Known compatible implementations at time of writing:
+    #   - Routinator: https://nlnetlabs.nl/projects/rpki/routinator/
+    #   - rpki-client: https://www.rpki-client.org/
+    #   - OctoRPKI: https://github.com/cloudflare/cfrpki
+    #
+    #   When the same URL is used here and in
+    #   'rpki_roas.ripe_rpki_validator_url', the file is downloaded
+    #   only once.
+    #
+    # Default: json
+    source: "json"
+
+    # URLs of files in RIPE NCC RPKI Validator cache format.
+    # Meaningful only when 'source' is 'json'.
+    # Multiple URLs can be provided here; they will be tried in
+    # the same order in which they are listed below.
+    # They can be 'http://' or 'https://' URLs or paths of
+    # local files.
+    #
+    # Default: rpki-client instance, NTT instance, RIPE NCC instance
+    json_url:
+      - "https://console.rpki-client.org/vrps.json"
+      - "https://rpki.gin.ntt.net/api/export.json"
+      - "https://rpki-validator.ripe.net/api/export.json"
+
+    # When using the 'json' source, only ASPAs from the following
+    # Trust Anchors will be taken into account.
+    #
+    # *** IMPORTANT: differently from what happens for the ROAs, only
+    #     the original RIPE NCC RPKI Validator format includes the
+    #     trust anchor ('ta') of each ASPA. The rpki-client, NTT and
+    #     OctoRPKI formats do not, so when one of those sources is
+    #     used this option can't be enforced and every ASPA is used.
+    #     A warning is logged when that happens. ***
+    #
+    # Values must be taken among those published in the RIPE RPKI
+    # Validator cache file configured above.
+    #
+    # Before enabling any ARIN TA, please consider the
+    # following URLs:
+    #
+    # http://lists.arin.net/pipermail/arin-ppml/2017-January/031231.html
+    #
+    # https://www.arin.net/resources/rpki/rpa.pdf
+    #
+    # Default: APNIC, AfriNIC, LACNIC and RIPE NCC.
+    allowed_trust_anchors:
+      - "APNIC RPKI Root"
+      - "AfriNIC RPKI Root"
+      - "LACNIC RPKI Root"
+      - "RIPE NCC RPKI Root"
+      #- "ARIN"
+      - "apnic"
+      - "afrinic"
+      - "lacnic"
+      - "ripe"
+      #- "arin"
+
+    # When using the 'json' source, ignore cache files that are older
+    # than this period of time (in seconds).
+    #
+    # When a file is ignored, the next source is used (from the
+    # 'json_url' list).
+    #
+    # Depending on the format of the cache file, the build time
+    # may be unavailable. At the moment, this information is known
+    # to be included in the rpki-client and OctoRPKI JSON formats,
+    # but not in the original RIPE NCC RPKI Validator format.
+    #
+    # Default: 6 hours (21600 seconds).
+    ignore_cache_files_older_than: 21600
+
   blackhole_filtering:
     # Destination-based blackholing policy: if a policy is given,
     # accept prefixes of any length if they are tagged with the
@@ -929,6 +1070,53 @@ cfg:
       #lrg:
       #ext:
     rpki_bgp_origin_validation_invalid:
+      #std:
+      #lrg:
+      #ext:
+
+    # RPKI ASPA verification not performed.
+    #
+    # When 'rpki_aspa_verification.enabled' is False (thus ASPA
+    # verification is not performed), if the next community
+    # is configured the routes are tagged with it.
+    # Similarly, this community is also used to tag routes that are
+    # processed according to the blackhole policy when the BLACKHOLE
+    # community (or the custom one defined in 'blackholing' below)
+    # is used, even though RPKI ASPA verification is globally
+    # enabled.
+    #
+    # The following communities are scrubbed from inbound routes.
+    #
+    # The 'rs_as' macro can be used here.
+    rpki_aspa_verification_not_performed:
+      #std:
+      #lrg:
+      #ext:
+
+    # RPKI ASPA verification state.
+    #
+    # When 'rpki_aspa_verification.enabled' is True and ASPA
+    # verification is performed, the following communities are used
+    # to tag routes depending on their state. There is no equivalent
+    # of the RFC8097 BGP communities for ASPA, so these are the only
+    # way to keep track of the verification outcome.
+    # These communities are not advertised to the clients, they are
+    # meant to be used only "internally" to the route server (for
+    # example for troubleshooting purposes or via looking glasses).
+    #
+    # The following communities are scrubbed from inbound and outbound
+    # routes.
+    #
+    # The 'rs_as' macro can be used here.
+    rpki_aspa_verification_valid:
+      #std:
+      #lrg:
+      #ext:
+    rpki_aspa_verification_unknown:
+      #std:
+      #lrg:
+      #ext:
+    rpki_aspa_verification_invalid:
       #std:
       #lrg:
       #ext:

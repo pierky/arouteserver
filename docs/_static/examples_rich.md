@@ -61,11 +61,24 @@ Also, the following ASNs are always included:
 * When an INVALID route is received by the route server, **it is rejected**.
 
 
+### RPKI ASPA verification
+
+
+* [ASPA verification](https://datatracker.ietf.org/doc/draft-ietf-sidrops-aspa-verification/) of the AS_PATH of routes received by the route server is **enabled**.
+* When an INVALID route is received by the route server, **it is rejected**.
+
+
 
 ### RPKI ROAs
 
 
 * RPKI ROAs are fetched from the RIPE RPKI Validator format cache files at examples/rich/ripe-rpki-cache.json. The following Trust Anchors are used: APNIC RPKI Root, AfriNIC RPKI Root, LACNIC RPKI Root, RIPE NCC RPKI Root, apnic, afrinic, lacnic, ripe
+
+
+### RPKI ASPAs
+
+
+* RPKI ASPAs are fetched from the RIPE RPKI Validator format cache files at examples/rich/ripe-rpki-cache.json. The following Trust Anchors are used, for those sources that provide that information: APNIC RPKI Root, AfriNIC RPKI Root, LACNIC RPKI Root, RIPE NCC RPKI Root, apnic, afrinic, lacnic, ripe
 
 ### Max-pref limit
 
@@ -244,6 +257,7 @@ Reject reasons
 | 13 | Invalid prefix length |
 | 14 | RPKI INVALID route |
 | 15 | Never via route-servers ASN in AS_PATH |
+| 16 | ASPA INVALID AS_PATH |
 | 65535 | Unknown |
 
 

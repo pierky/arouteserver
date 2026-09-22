@@ -246,6 +246,17 @@ Built to group as many tests as possible in a single scenario.
     6  101.3.0.0/16    24    105
     == ==============  ====  ======
 
+  RPKI ASPAs:
+
+    == ========  ==================  =============================================
+    ID Customer  Providers           Notes
+    == ========  ==================  =============================================
+    1  101       1, 2, 108
+    2  108       200
+    3  109       1                   not used, its trust anchor is not allowed
+    4  110       1                   used, even though it has no trust anchor
+    == ========  ==================  =============================================
+
   Originated prefixes:
 
   ====================  ==============   =========== ==================================================================================
@@ -267,6 +278,8 @@ Built to group as many tests as possible in a single scenario.
   AS101_roa_invalid1    101.0.9.0/24                 roa check fail (roa n. 2, bad origin ASN), rejected
   AS101_roa_badlen      101.0.128.0/24               roa check fail (roa n. 3, bad length), rejected
   AS101_roa_blackhole   101.0.128.1/32               65535:666, pass because blackhole filtering request
+  AS101_aspa_valid1     101.0.12.0/24                ASPA check ok, the 101 -> 1 and 101 -> 2 hops are authorized by ASPA n. 1
+  AS101_aspa_invalid1   101.0.13.0/24    [101 108]*  ASPA check fail, the 108 -> 1 and 108 -> 2 hops are not authorized by ASPA n. 2, rejected
   AS101_roa_routeobj_1  101.2.0.0/17                 accepted because roa_as_route_objects, add 65530:2
   AS101_roa_routeobj_2  101.2.1.0/24                 fail, roa_as_route_objects but prefix is more specific than ROA
   AS101_roa_routeobj_3  101.2.128.0/24               accepted because roa_as_route_objects, add 65530:2
@@ -287,3 +300,6 @@ Built to group as many tests as possible in a single scenario.
   AS104_nicbr_1         104.1.1.0/24     [101 104]   Accepted from AS1 via NIC.BR Whois DB dump; rejected by others
   ====================  ==============   =========== ==================================================================================
 
+*(\*) AS101_aspa_invalid1 keeps AS101 as its origin ASN; AS108 is
+inserted between AS101 and its upstream peer, so the AS_PATH seen by the
+route server is "1 108 101" (or "2 108 101").*

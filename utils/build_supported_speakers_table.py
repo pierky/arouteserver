@@ -17,6 +17,9 @@ notes = {
           "Restart is configured with a 15 minutes timer."),
     "2": ("Multihop can be enabled only when path-hiding "
           "mitigation is turned off."),
+    "3": ("On OpenBGPD, ASPA verification is performed only on "
+          "sessions for which a RFC9234 role is set, so roles "
+          "must be enabled too."),
 }
 
 output = ""
@@ -143,6 +146,21 @@ add_feature("RPKI-based filtering (BGP Prefix Origin Validation)", {
     "openbgpd_portable": True,
 })
 add_feature("RPKI ROAs retrieved via RTR protocol", {
+    "bird2": True,
+    "bird32": True,
+    "bird33": True,
+    "openbgpd_portable": True,
+})
+add_feature("ASPA-based route leak detection (ASPA verification)", {
+    "bird2": True,
+    "bird32": True,
+    "bird33": True,
+    "openbgpd_portable": {
+        "value": True,
+        "note": 3
+    },
+})
+add_feature("RPKI ASPAs retrieved via RTR protocol", {
     "bird2": True,
     "bird32": True,
     "bird33": True,

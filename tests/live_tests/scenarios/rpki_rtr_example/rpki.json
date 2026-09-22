@@ -1,0 +1,9 @@
+{
+  "roas": [
+    { "asn": "AS3333", "prefix": "193.0.0.0/21", "maxLength": 21 }
+  ],
+  "aspas": [
+    { "customer": "AS103", "providers": [ "AS1" ] },
+    { "customer": "AS104", "providers": [ "AS200" ] }
+  ]
+}

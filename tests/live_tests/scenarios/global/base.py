@@ -643,12 +643,16 @@ class BasicScenario(LiveScenario):
     def test_045_blackhole_with_roa(self):
         """{}: RPKI, blackhole request for a covered prefix"""
 
-        # BGP community 65530:4 (rpki_bgp_origin_validation_not_performed) is expected to be found here
-        # because it must signal that BOV was not performed for this route.
+        # BGP communities 65530:4 (rpki_bgp_origin_validation_not_performed)
+        # and 65530:5 (rpki_aspa_verification_not_performed) are expected to be
+        # found here because they must signal that neither BOV nor the ASPA
+        # verification were performed for this route.
         self.receive_route(self.rs, self.DATA["AS101_roa_blackhole"], self.AS1_1, as_path="1 101",
-                           std_comms=["65535:666", "65530:4"], lrg_comms=["999:65530:4"])
+                           std_comms=["65535:666", "65530:4", "65530:5"],
+                           lrg_comms=["999:65530:4", "999:65530:5"])
         self.receive_route(self.rs, self.DATA["AS101_roa_blackhole"], self.AS2, as_path="2 101",
-                           std_comms=["65535:666", "65530:4"], lrg_comms=["999:65530:4"])
+                           std_comms=["65535:666", "65530:4", "65530:5"],
+                           lrg_comms=["999:65530:4", "999:65530:5"])
 
         for inst in (self.AS1_1, self.AS2):
             self.log_contains(self.rs, "blackhole filtering request from {{inst}} - ACCEPTING {}".format(
@@ -656,11 +660,43 @@ class BasicScenario(LiveScenario):
 
         next_hop = self.DATA["blackhole_IP"]
 
-        # Also clients that are enabled to receive the blackhole route must receive the 65530:4
-        # rpki_bgp_origin_validation_not_performed community.
+        # Also clients that are enabled to receive the blackhole route must
+        # receive the 65530:4 rpki_bgp_origin_validation_not_performed and the
+        # 65530:5 rpki_aspa_verification_not_performed communities.
         self.receive_route(self.AS3, self.DATA["AS101_roa_blackhole"], self.rs,
                            next_hop=next_hop,
-                           std_comms=["65535:666", "65535:65281", "65530:4"], lrg_comms=["999:65530:4"])
+                           std_comms=["65535:666", "65535:65281", "65530:4", "65530:5"],
+                           lrg_comms=["999:65530:4", "999:65530:5"])
+
+    def test_046_aspa_valid_as_path(self):
+        """{}: ASPA, valid AS_PATH received by rs"""
+
+        # AS101's ASPA authorizes both AS1 and AS2 as its providers.
+        self.receive_route(self.rs, self.DATA["AS101_aspa_valid1"], self.AS1_1,
+                           as_path="1 101")
+        self.receive_route(self.rs, self.DATA["AS101_aspa_valid1"], self.AS2,
+                           as_path="2 101")
+
+    def test_046_aspa_invalid_as_path(self):
+        """{}: ASPA, invalid AS_PATH received by rs"""
+
+        # AS108's ASPA lists AS200 as its only provider, so neither the
+        # 108 -> 1 nor the 108 -> 2 hop is authorized.
+        self.receive_route(self.rs, self.DATA["AS101_aspa_invalid1"], self.AS1_1,
+                           as_path="1 108 101", filtered=True, reject_reason=16)
+        self.receive_route(self.rs, self.DATA["AS101_aspa_invalid1"], self.AS2,
+                           as_path="2 108 101", filtered=True, reject_reason=16)
+
+    def test_046_aspa_valid_as_path_propagated_to_clients(self):
+        """{}: ASPA, valid AS_PATH propagated to clients"""
+
+        self.receive_route(self.AS3, self.DATA["AS101_aspa_valid1"], self.rs)
+
+    def test_046_aspa_invalid_as_path_not_propagated_to_clients(self):
+        """{}: ASPA, invalid AS_PATH not propagated to clients"""
+
+        with self.assertRaisesRegex(AssertionError, "Routes not found."):
+            self.receive_route(self.AS3, self.DATA["AS101_aspa_invalid1"])
 
     def test_050_prefixes_from_AS101_received_by_its_upstreams(self):
         """{}: prefixes from AS101 received by its upstreams"""
@@ -720,10 +756,11 @@ class BasicScenario(LiveScenario):
     def test_070_blackhole_filtering_as_seen_by_rs_BLACKHOLE(self):
         """{}: blackhole filtering requests as seen by rs (BLACKHOLE)"""
 
-        # BGP community 65530:4 (rpki_bgp_origin_validation_not_performed) is expected to be found here
+        # BGP communities 65530:4 (rpki_bgp_origin_validation_not_performed)
+        # and 65530:5 (rpki_aspa_verification_not_performed) are expected to be found here
         # because it must signal that BOV was not performed for this route.
         self.receive_route(self.rs, self.DATA["AS2_blackhole1"], self.AS2, next_hop=self.AS2, as_path="2",
-                           std_comms=["65535:666", "65530:4"], lrg_comms=["999:65530:4"])
+                           std_comms=["65535:666", "65530:4", "65530:5"], lrg_comms=["999:65530:4", "999:65530:5"])
         self.log_contains(self.rs, "blackhole filtering request from {AS2_1} - ACCEPTING " + self.DATA["AS2_blackhole1"], {"AS2_1": self.AS2})
 
     def test_070_blackhole_filtering_as_seen_by_rs_std_cust(self):
@@ -736,47 +773,52 @@ class BasicScenario(LiveScenario):
         else:
             ext_comms = []
 
-        # BGP community 65530:4 (rpki_bgp_origin_validation_not_performed) is expected to be found here
+        # BGP communities 65530:4 (rpki_bgp_origin_validation_not_performed)
+        # and 65530:5 (rpki_aspa_verification_not_performed) are expected to be found here
         # because it must signal that BOV was not performed for this route.
         self.receive_route(self.rs, self.DATA["AS2_blackhole2"], self.AS2, next_hop=self.AS2, as_path="2",
-                           std_comms=["65534:0", "65530:4"], lrg_comms=["999:65530:4"], ext_comms=ext_comms)
+                           std_comms=["65534:0", "65530:4", "65530:5"], lrg_comms=["999:65530:4", "999:65530:5"], ext_comms=ext_comms)
         self.log_contains(self.rs, "blackhole filtering request from {AS2_1} - ACCEPTING " + self.DATA["AS2_blackhole2"], {"AS2_1": self.AS2})
 
     def test_070_blackhole_filtering_as_seen_by_rs_lrg_cust(self):
         """{}: blackhole filtering requests as seen by rs (lrg cust)"""
 
-        # BGP community 65530:4 (rpki_bgp_origin_validation_not_performed) is expected to be found here
+        # BGP communities 65530:4 (rpki_bgp_origin_validation_not_performed)
+        # and 65530:5 (rpki_aspa_verification_not_performed) are expected to be found here
         # because it must signal that BOV was not performed for this route.
         self.receive_route(self.rs, self.DATA["AS2_blackhole3"], self.AS2, next_hop=self.AS2, as_path="2",
-                           std_comms=["65530:4"], lrg_comms=["65534:0:0", "999:65530:4"])
+                           std_comms=["65530:4", "65530:5"], lrg_comms=["65534:0:0", "999:65530:4", "999:65530:5"])
         self.log_contains(self.rs, "blackhole filtering request from {AS2_1} - ACCEPTING " + self.DATA["AS2_blackhole3"], {"AS2_1": self.AS2})
 
     def test_071_blackholed_prefixes_as_seen_by_enabled_clients_BLACKHOLE(self):
         """{}: blackholed prefixes as seen by enabled clients (BLACKHOLE)"""
 
-        # BGP community 65530:4 (rpki_bgp_origin_validation_not_performed) is expected to be seen
+        # BGP communities 65530:4 (rpki_bgp_origin_validation_not_performed)
+        # and 65530:5 (rpki_aspa_verification_not_performed) are expected to be seen
         # by clients that are enabled to receive the blackhole route.
         for inst in (self.AS1_1, self.AS3, self.AS4):
             self.receive_route(inst, self.DATA["AS2_blackhole1"], self.rs, next_hop=self.DATA["blackhole_IP"],
-                               std_comms=["65535:666", "65535:65281", "65530:4"], lrg_comms=["999:65530:4"])
+                               std_comms=["65535:666", "65535:65281", "65530:4", "65530:5"], lrg_comms=["999:65530:4", "999:65530:5"])
 
     def test_071_blackholed_prefixes_as_seen_by_enabled_clients_std_cust(self):
         """{}: blackholed prefixes as seen by enabled clients (std_cust)"""
 
-        # BGP community 65530:4 (rpki_bgp_origin_validation_not_performed) is expected to be seen
+        # BGP communities 65530:4 (rpki_bgp_origin_validation_not_performed)
+        # and 65530:5 (rpki_aspa_verification_not_performed) are expected to be seen
         # by clients that are enabled to receive the blackhole route.
         for inst in (self.AS1_1, self.AS3, self.AS4):
             self.receive_route(inst, self.DATA["AS2_blackhole2"], self.rs, next_hop=self.DATA["blackhole_IP"],
-                               std_comms=["65535:666", "65535:65281", "65530:4"], lrg_comms=["999:65530:4"])
+                               std_comms=["65535:666", "65535:65281", "65530:4", "65530:5"], lrg_comms=["999:65530:4", "999:65530:5"])
 
     def test_071_blackholed_prefixes_as_seen_by_enabled_clients_lrg_cust(self):
         """{}: blackholed prefixes as seen by enabled clients (lrg_cust)"""
 
-        # BGP community 65530:4 (rpki_bgp_origin_validation_not_performed) is expected to be seen
+        # BGP communities 65530:4 (rpki_bgp_origin_validation_not_performed)
+        # and 65530:5 (rpki_aspa_verification_not_performed) are expected to be seen
         # by clients that are enabled to receive the blackhole route.
         for inst in (self.AS1_1, self.AS3, self.AS4):
             self.receive_route(inst, self.DATA["AS2_blackhole3"], self.rs, next_hop=self.DATA["blackhole_IP"],
-                               std_comms=["65535:666", "65535:65281", "65530:4"], lrg_comms=["999:65530:4"])
+                               std_comms=["65535:666", "65535:65281", "65530:4", "65530:5"], lrg_comms=["999:65530:4", "999:65530:5"])
 
     def test_071_blackholed_prefixes_not_seen_by_not_enabled_clients(self):
         """{}: blackholed prefixes not seen by not enabled clients"""
@@ -1043,17 +1085,18 @@ class BasicScenario(LiveScenario):
         """{}: control communities, RTT, blackhole, not peers > 20 ms"""
         expected_bh_next_hop = self.DATA["blackhole_IP"]
 
-        # BGP community 65530:4 (rpki_bgp_origin_validation_not_performed) is expected to be found here
+        # BGP communities 65530:4 (rpki_bgp_origin_validation_not_performed)
+        # and 65530:5 (rpki_aspa_verification_not_performed) are expected to be found here
         # because it must signal that BOV was not performed for this route.
 
         pref = self.DATA["AS4_rtt_7"]
         self.receive_route(self.rs, pref, self.AS4,
-                           std_comms=["65535:666", "64531:20", "65530:4"])
+                           std_comms=["65535:666", "64531:20", "65530:4", "65530:5"])
         for inst in [self.AS1_1, self.AS2]:
             self.receive_route(inst, pref, self.rs,
                                next_hop=expected_bh_next_hop,
-                               std_comms=["65535:666", "65535:65281", "65530:4"],
-                               lrg_comms=["999:65530:4"], ext_comms=[])
+                               std_comms=["65535:666", "65535:65281", "65530:4", "65530:5"],
+                               lrg_comms=["999:65530:4", "999:65530:5"], ext_comms=[])
         for inst in [self.AS1_2, self.AS3]:
             with self.assertRaisesRegex(AssertionError, "Routes not found."):
                 self.receive_route(inst, pref)

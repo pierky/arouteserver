@@ -99,8 +99,10 @@ class RPKICustomBOVCommunitiesScenario(LiveScenario):
         else:
             rpki_invalid_ext_comms = []
 
+        # The AS_PATH is one hop long, so there is no hop to be
+        # verified and the ASPA verification state is VALID.
         self.receive_route(self.rs, prefix, self.AS2, as_path="2",
-                           std_comms=["64512:2"],
+                           std_comms=["64512:2", "64512:4"],
                            ext_comms=["rfc8097-invalid"] + rpki_invalid_ext_comms,
                            lrg_comms=[])
 
@@ -112,8 +114,10 @@ class RPKICustomBOVCommunitiesScenario(LiveScenario):
         """{}: RPKI, AS2 valid prefix, exact match"""
         prefix = self.DATA["AS2_valid1"]
 
+        # No ASPA exists for AS101, so the 101 -> 2 hop can't be
+        # verified and the ASPA verification state is UNKNOWN.
         self.receive_route(self.rs, prefix, self.AS2, as_path="2 101",
-                           std_comms=["64512:1"],
+                           std_comms=["64512:1", "64512:6"],
                            ext_comms=["rfc8097-valid"],
                            lrg_comms=[])
 
@@ -122,6 +126,30 @@ class RPKICustomBOVCommunitiesScenario(LiveScenario):
                                std_comms=[],
                                lrg_comms=[],
                                ext_comms=[])
+
+    def test_050_aspa_AS2_invalid(self):
+        """{}: ASPA, AS2 invalid AS_PATH"""
+        prefix = self.DATA["AS2_aspa_invalid1"]
+
+        # Same as for the RPKI INVALID routes, OpenBGPD uses an
+        # internal ext community to keep track of ASPA INVALID routes
+        # when 'reject_invalid' is False.
+        if isinstance(self.rs, OpenBGPDInstance):
+            aspa_invalid_ext_comms = ["soo:65535:15"]
+        else:
+            aspa_invalid_ext_comms = []
+
+        # AS108's ASPA lists AS200 as its only provider, so the
+        # 108 -> 2 hop is not authorized.
+        self.receive_route(self.rs, prefix, self.AS2, as_path="2 108",
+                           std_comms=["64512:3", "64512:5"],
+                           ext_comms=["rfc8097-not-found"] + aspa_invalid_ext_comms,
+                           lrg_comms=[])
+
+        # ASPA INVALID routes are never announced to the clients.
+        for client in (self.AS1, ):
+            with self.assertRaisesRegex(AssertionError, "Routes not found."):
+                self.receive_route(client, prefix, self.rs)
 
     def test_900_reconfigure(self):
         """{}: reconfigure"""

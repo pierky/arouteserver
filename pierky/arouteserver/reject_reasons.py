@@ -28,4 +28,5 @@ REJECT_REASONS = {
 "13": "Invalid prefix length",
 "14": "RPKI INVALID route",
 "15": "Never via route-servers ASN in AS_PATH",
+"16": "ASPA INVALID AS_PATH",
 }

@@ -101,13 +101,10 @@ class RPKIROAsEnricher(BaseConfigEnricher):
         assert rpki_roas_cfg["source"] == "ripe-rpki-validator-cache", \
             "source is not ripe-rpki-validator-cache"
         urls = rpki_roas_cfg["ripe_rpki_validator_url"]
-        ignore_cache_files_older_than = rpki_roas_cfg["ignore_cache_files_older_than"]
 
-        ripe_cache = RIPE_RPKI_ROAs(cache_dir=self.builder.cache_dir,
-                                    cache_expiry=self.builder.cache_expiry,
-                                    ripe_rpki_validator_url=urls,
-                                    ignore_cache_files_older_than=ignore_cache_files_older_than)
-        ripe_cache.load_data()
+        # The very same file may also be used to gather the ASPAs;
+        # the builder takes care of fetching it only once.
+        ripe_cache = self.builder.get_rpki_json_cache(urls)
         roas = ripe_cache.roas
 
         allowed_tas = rpki_roas_cfg["allowed_trust_anchors"]

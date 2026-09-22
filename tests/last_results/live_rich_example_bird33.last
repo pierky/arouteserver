@@ -5,9 +5,32 @@ rootdir: /home/pierky/src/ars
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
-Live test, BIRD v3.3, examples, rich config, IPv4: instances setup PASSED
+Live test, BIRD v3.3, examples, rich config, IPv4: instances setup 
+Live test, BIRD v3.3, examples, rich config, IPv4: setting instances up...
+PASSED
 Live test, BIRD v3.3, examples, rich config, IPv4: log contains errors PASSED
-Live test, BIRD v3.3, examples, rich config, IPv6: instances setup PASSED
-Live test, BIRD v3.3, examples, rich config, IPv6: log contains errors PASSED
+Live test, BIRD v3.3, examples, rich config, IPv4: dumping rs config...
 
-============================== 4 passed in 0.16s ===============================
+Live test, BIRD v3.3, examples, rich config, IPv4: dumping routes...
+
+Live test, BIRD v3.3, examples, rich config, IPv4: stopping instances...
+
+Live test, BIRD v3.3, examples, rich config, IPv6: instances setup 
+Live test, BIRD v3.3, examples, rich config, IPv6: setting instances up...
+PASSED
+Live test, BIRD v3.3, examples, rich config, IPv6: log contains errors PASSED
+Live test, BIRD v3.3, examples, rich config, IPv6: dumping rs config...
+
+Live test, BIRD v3.3, examples, rich config, IPv6: dumping routes...
+
+Live test, BIRD v3.3, examples, rich config, IPv6: stopping instances...
+
+
+=============================== warnings summary ===============================
+Live test, BIRD v3.3, examples, rich config, IPv4: instances setup
+Live test, BIRD v3.3, examples, rich config, IPv6: instances setup
+  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:84: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    return datetime.datetime.utcnow()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 4 passed, 2 warnings in 31.26s ========================

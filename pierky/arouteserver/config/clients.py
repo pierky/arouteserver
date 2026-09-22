@@ -97,6 +97,10 @@ class ConfigParserClients(ConfigParserBase):
                         "enabled": ValidatorBool(mandatory=False),
                         "reject_invalid": ValidatorBool(mandatory=False),
                     },
+                    "rpki_aspa_verification": {
+                        "enabled": ValidatorBool(mandatory=False),
+                        "reject_invalid": ValidatorBool(mandatory=False),
+                    },
                     "black_list_pref": ValidatorListOf(
                         ValidatorPrefixListEntry, mandatory=False,
                     ),

@@ -1,4 +1,5 @@
 {% from 'macros.j2' import write_roa_set %}
+{% from 'macros.j2' import write_aspa_set %}
 {% from 'macros.j2' import write_roas_action %}
 {% from 'macros.j2' import add_communities %}
 {% from 'macros.j2' import ins_communities %}
@@ -19,17 +20,51 @@
       statically configured in the configuration file via
       the 'roa-set' statement.
 #}
-{%   if cfg.rpki_roas.source == "rtr" %}
-
-{{ "rpki_rtr_config"|include_local_file -}}
-
-{%   else %}
+{%   if cfg.rpki_roas.source != "rtr" %}
 
 roa-set {
 {{     write_roa_set(rpki_roas) }}
 }
 
 {%   endif %}
+
+{% endif %}
+{% set aspas_used = cfg.filtering.rpki_aspa_verification.enabled and
+	aspa_supported_by_target %}
+{#
+    Differently from 'roa-set', OpenBGPD does not accept an empty
+    'aspa-set', so the statement is emitted only when at least one
+    ASPA is actually available. When it's missing, the ASPA
+    Validation State of every route is simply 'unknown'.
+
+    ASPAs with no providers at all ("transit-free" customers, that
+    BIRD renders with 'route aspa <n> transit') are skipped too,
+    because OpenBGPD does not accept an empty 'provider-as { }'
+    either. RFC9286 requires at least one provider, so this is
+    expected to be an empty set in practice.
+#}
+{% set renderable_aspas = rpki_aspas|selectattr("providers")|list %}
+{% if aspas_used and cfg.rpki_aspas.source != "rtr" and renderable_aspas %}
+# ---------------------------------------------------------
+# ASPAs source
+
+aspa-set {
+{{   write_aspa_set(renderable_aspas) }}
+}
+
+{% endif %}
+{#
+    The file containing the configuration of the RTR sessions is
+    included only once, even when it's used to gather both the ROAs
+    and the ASPAs.
+    Please note: ASPAs are carried only by version 2 of the RTR
+    protocol, so the 'rtr' block configured within that file must be
+    set to negotiate it ('min-version 2').
+#}
+{% if (cfg.rpki_roas_needed and cfg.rpki_roas.source == "rtr") or
+	(aspas_used and cfg.rpki_aspas.source == "rtr") %}
+
+{{ "rpki_rtr_config"|include_local_file -}}
 
 {% endif %}
 
@@ -59,6 +94,40 @@ match from group clients ovs invalid set {
 {%    if cfg.communities.rpki_bgp_origin_validation_not_performed|community_is_set %}
 # RPKI-based Origin Validation not performed; adding rpki_bgp_origin_validation_not_performed BGP communities
 {{ add_communities("match from group clients", cfg.communities.rpki_bgp_origin_validation_not_performed, "") }}
+{%    endif %}
+{% endif %}
+{% if aspas_used %}
+
+# ---------------------------------------------------------
+# RPKI ASPA verification
+
+{#
+    OpenBGPD sets the ASPA Validation State (AVS) of each route on
+    the basis of the role of the session it was received from; for
+    a route server ('rs' role) the stricter "Algorithm for Upstream
+    Paths" is used.
+
+    The $INTCOMM_ASPA_* ext communities are used here (instead of
+    matching 'avs' directly where the route is denied) because the
+    blackhole filtering policy must be able to bypass the ASPA
+    verification, exactly like it does for the Origin Validation.
+#}
+match from group clients avs unknown set {
+    ext-community $INTCOMM_ASPA_UNKNOWN
+    {{ ins_communities(cfg.communities.rpki_aspa_verification_unknown).strip() }}
+}
+match from group clients avs valid set {
+    ext-community $INTCOMM_ASPA_VALID
+    {{ ins_communities(cfg.communities.rpki_aspa_verification_valid).strip() }}
+}
+match from group clients avs invalid set {
+    ext-community $INTCOMM_ASPA_INVALID
+    {{ ins_communities(cfg.communities.rpki_aspa_verification_invalid).strip() }}
+}
+{% else %}
+{%    if cfg.communities.rpki_aspa_verification_not_performed|community_is_set %}
+# RPKI ASPA verification not performed; adding rpki_aspa_verification_not_performed BGP communities
+{{ add_communities("match from group clients", cfg.communities.rpki_aspa_verification_not_performed, "") }}
 {%    endif %}
 {% endif %}
 

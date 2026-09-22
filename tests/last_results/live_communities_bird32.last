@@ -5,7 +5,9 @@ rootdir: /home/pierky/src/ars
 plugins: requests-mock-1.12.1
 collecting ... collected 26 items
 
-Live test, BIRD v3.2, BGP communities, IPv4: instances setup PASSED
+Live test, BIRD v3.2, BGP communities, IPv4: instances setup 
+Live test, BIRD v3.2, BGP communities, IPv4: setting instances up...
+PASSED
 Live test, BIRD v3.2, BGP communities, IPv4: sessions are up PASSED
 Live test, BIRD v3.2, BGP communities, IPv4: announce to AS1 only (ext) PASSED
 Live test, BIRD v3.2, BGP communities, IPv4: announce to AS1 only (lrg) PASSED
@@ -18,7 +20,15 @@ Live test, BIRD v3.2, BGP communities, IPv4: custom BGP community (std) PASSED
 Live test, BIRD v3.2, BGP communities, IPv4: custom BGP community scrubbed PASSED
 Live test, BIRD v3.2, BGP communities, IPv4: reconfigure PASSED
 Live test, BIRD v3.2, BGP communities, IPv4: log contains errors PASSED
-Live test, BIRD v3.2, BGP communities, IPv6: instances setup PASSED
+Live test, BIRD v3.2, BGP communities, IPv4: dumping rs config...
+
+Live test, BIRD v3.2, BGP communities, IPv4: dumping routes...
+
+Live test, BIRD v3.2, BGP communities, IPv4: stopping instances...
+
+Live test, BIRD v3.2, BGP communities, IPv6: instances setup 
+Live test, BIRD v3.2, BGP communities, IPv6: setting instances up...
+PASSED
 Live test, BIRD v3.2, BGP communities, IPv6: sessions are up PASSED
 Live test, BIRD v3.2, BGP communities, IPv6: announce to AS1 only (ext) PASSED
 Live test, BIRD v3.2, BGP communities, IPv6: announce to AS1 only (lrg) PASSED
@@ -31,5 +41,11 @@ Live test, BIRD v3.2, BGP communities, IPv6: custom BGP community (std) PASSED
 Live test, BIRD v3.2, BGP communities, IPv6: custom BGP community scrubbed PASSED
 Live test, BIRD v3.2, BGP communities, IPv6: reconfigure PASSED
 Live test, BIRD v3.2, BGP communities, IPv6: log contains errors PASSED
+Live test, BIRD v3.2, BGP communities, IPv6: dumping rs config...
 
-============================== 26 passed in 0.12s ==============================
+Live test, BIRD v3.2, BGP communities, IPv6: dumping routes...
+
+Live test, BIRD v3.2, BGP communities, IPv6: stopping instances...
+
+
+======================== 26 passed in 140.64s (0:02:20) ========================

@@ -250,6 +250,12 @@ cfg:
       peer_as: false
       std: null
       type: internal
+    reject_cause_map_16:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
     reject_cause_map_2:
       ext: null
       lrg: null
@@ -310,6 +316,30 @@ cfg:
       peer_as: false
       std: '65530:3'
       type: outbound
+    rpki_aspa_verification_invalid:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    rpki_aspa_verification_not_performed:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: outbound
+    rpki_aspa_verification_unknown:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
+    rpki_aspa_verification_valid:
+      ext: null
+      lrg: null
+      peer_as: false
+      std: null
+      type: internal
     rpki_bgp_origin_validation_invalid:
       ext: null
       lrg: null
@@ -405,6 +435,9 @@ cfg:
     roles:
       enabled: true
       strict_mode: false
+    rpki_aspa_verification:
+      enabled: true
+      reject_invalid: true
     rpki_bgp_origin_validation:
       enabled: true
       reject_invalid: true
@@ -437,6 +470,20 @@ cfg:
     policy: pass
   rfc8950: false
   router_id: 192.0.2.2
+  rpki_aspas:
+    allowed_trust_anchors:
+    - APNIC RPKI Root
+    - AfriNIC RPKI Root
+    - LACNIC RPKI Root
+    - RIPE NCC RPKI Root
+    - apnic
+    - afrinic
+    - lacnic
+    - ripe
+    ignore_cache_files_older_than: 21600
+    json_url:
+    - examples/rich/ripe-rpki-cache.json
+    source: json
   rpki_roas:
     allowed_trust_anchors:
     - APNIC RPKI Root
@@ -834,6 +881,9 @@ clients:
         enabled: true
         local_role: rs
         strict_mode: false
+      rpki_aspa_verification:
+        enabled: true
+        reject_invalid: true
       rpki_bgp_origin_validation:
         enabled: true
         reject_invalid: true
@@ -895,6 +945,9 @@ clients:
         enabled: true
         local_role: rs
         strict_mode: false
+      rpki_aspa_verification:
+        enabled: true
+        reject_invalid: true
       rpki_bgp_origin_validation:
         enabled: true
         reject_invalid: true
@@ -954,6 +1007,9 @@ clients:
         enabled: true
         local_role: rs
         strict_mode: false
+      rpki_aspa_verification:
+        enabled: true
+        reject_invalid: true
       rpki_bgp_origin_validation:
         enabled: true
         reject_invalid: true
@@ -1015,6 +1071,9 @@ clients:
         enabled: true
         local_role: rs
         strict_mode: false
+      rpki_aspa_verification:
+        enabled: true
+        reject_invalid: true
       rpki_bgp_origin_validation:
         enabled: true
         reject_invalid: true
@@ -1074,6 +1133,9 @@ clients:
         enabled: true
         local_role: rs
         strict_mode: false
+      rpki_aspa_verification:
+        enabled: true
+        reject_invalid: true
       rpki_bgp_origin_validation:
         enabled: true
         reject_invalid: true
@@ -1447,6 +1509,21 @@ rpki_roas
   prefix: 193.0.24.0/24
 
 
+rpki_aspas
+----------
+- customer_asn: 3333
+  providers:
+  - 1103
+  - 25152
+- customer_asn: 10745
+  providers:
+  - 1103
+- customer_asn: 197000
+  providers:
+  - 3333
+  - 10745
+
+
 arin_whois_db_records
 ---------------------
 {}
@@ -1725,7 +1802,6 @@ never_via_route_servers_asns
 - 267214
 - 263686
 - 267823
-- 211509
 - 142369
 - 146846
 - 398203

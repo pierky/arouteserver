@@ -25,6 +25,11 @@ DATA_4 = {
     "AS2_valid2":               "2.0.128.0/21",
     "AS2_unknown1":             "2.2.0.0/16",
 
+    # ASPA: AS108 has an ASPA whose only provider is AS200,
+    # so the 108 -> 2 and 108 -> 3 hops are not authorized.
+    "AS2_aspa_invalid1":        "2.3.0.0/16",
+    "AS3_aspa_invalid1":        "3.4.0.0/16",
+
     "AS3_invalid1":             "3.0.9.0/24",
     "AS3_badlen":               "3.0.128.0/24",
     "AS3_valid1":               "3.0.8.0/24",

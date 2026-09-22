@@ -34,6 +34,12 @@ cfg:
                                 enabled: True
                 rpki_bgp_origin_validation:
                         enabled: True
+                rpki_aspa_verification:
+                        enabled: True
+                # ASPA verification on OpenBGPD is performed only on
+                # sessions for which a role is set.
+                roles:
+                        enabled: True
         blackhole_filtering:
                 policy_ipv4: "rewrite-next-hop"
                 rewrite_next_hop_ipv4: "192.0.2.66"
@@ -45,6 +51,11 @@ cfg:
                 local_pref: 5
         rpki_roas:
                 source: "ripe-rpki-validator-cache"
+                allowed_trust_anchors:
+                - "test"
+        rpki_aspas:
+                # Same file used for the ROAs above: it's fetched only once.
+                source: "json"
                 allowed_trust_anchors:
                 - "test"
         rtt_thresholds: 5, 10, 15, 20, 30, 50, 100, 200, 500
@@ -67,6 +78,9 @@ cfg:
                 rpki_bgp_origin_validation_not_performed:
                         std: "65530:4"
                         lrg: "rs_as:65530:4"
+                rpki_aspa_verification_not_performed:
+                        std: "65530:5"
+                        lrg: "rs_as:65530:5"
                 do_not_announce_to_peer:
                         std: "0:peer_as"
                         ext: "rt:0:peer_as"

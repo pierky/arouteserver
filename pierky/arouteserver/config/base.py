@@ -314,6 +314,17 @@ def convert_ripe_rpki_validator_url(cfg):
     if not isinstance(cfg["rpki_roas"]["ripe_rpki_validator_url"], list):
         cfg["rpki_roas"]["ripe_rpki_validator_url"] = [cfg["rpki_roas"]["ripe_rpki_validator_url"]]
 
+def normalize_rpki_aspas_json_url(cfg):
+    """Allow rpki_aspas.json_url to be given as a plain string."""
+    if "rpki_aspas" not in cfg:
+        return
+    if not isinstance(cfg["rpki_aspas"], dict):
+        return
+    if "json_url" not in cfg["rpki_aspas"]:
+        return
+    if not isinstance(cfg["rpki_aspas"]["json_url"], list):
+        cfg["rpki_aspas"]["json_url"] = [cfg["rpki_aspas"]["json_url"]]
+
 def convert_rpki_roas_source_rtrlib_into_rtr(cfg):
     if "rpki_roas" not in cfg:
         return
@@ -351,3 +362,6 @@ def convert_deprecated(cfg):
 
     # Convert rpki_roas.source from rtrlib into rtr (<= v0.22.2)
     convert_rpki_roas_source_rtrlib_into_rtr(cfg)
+
+    # Allow rpki_aspas.json_url to be a plain string
+    normalize_rpki_aspas_json_url(cfg)

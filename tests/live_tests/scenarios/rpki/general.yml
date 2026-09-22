@@ -8,7 +8,14 @@ cfg:
       tag_as_set: False
     rpki_bgp_origin_validation:
       enabled: True
+    rpki_aspa_verification:
+      enabled: True
   rpki_roas:
     source: "ripe-rpki-validator-cache"
+    allowed_trust_anchors:
+      - "test"
+  rpki_aspas:
+    # Same file used for the ROAs above: it's fetched only once.
+    source: "json"
     allowed_trust_anchors:
       - "test"

@@ -60,6 +60,7 @@ class RPKIINVALIDScenario(LiveScenario):
                                          local_files=cls._get_local_files(),
                                          hooks=[
                                              "announce_rpki_invalid_to_client",
+                                             "announce_aspa_invalid_to_client",
                                              "post_announce_to_client"
                                          ]),
                         "/etc/bird/bird.conf"
@@ -168,6 +169,23 @@ class RPKIINVALIDScenario(LiveScenario):
             self.receive_route(inst, prefix, self.rs, as_path="2",
                                std_comms=["64512:3"], lrg_comms=[], ext_comms=[])
 
+    def test_045_aspa_AS2_invalid(self):
+        """{}: ASPA, AS2 invalid AS_PATH, not rejected"""
+
+        # AS2 sets 'rpki_aspa_verification.reject_invalid' to False, so
+        # the route is kept by the route server; it is announced only to
+        # those clients for which the 'announce_aspa_invalid_to_client'
+        # hook returns True (AS1).
+        prefix = self.DATA["AS2_aspa_invalid1"]
+
+        self.receive_route(self.rs, prefix, self.AS2, as_path="2 108")
+
+        self.receive_route(self.AS1, prefix, self.rs, as_path="2 108",
+                           std_comms=["64512:3"], lrg_comms=[], ext_comms=[])
+
+        with self.assertRaisesRegex(AssertionError, "Routes not found."):
+            self.receive_route(self.AS4, prefix, self.rs)
+
     def test_050_rpki_AS3_invalid_bad_asn(self):
         """{}: RPKI, AS3 invalid prefix, bad ASN"""
         prefix = self.DATA["AS3_invalid1"]
@@ -215,6 +233,22 @@ class RPKIINVALIDScenario(LiveScenario):
         for inst in (self.AS1, self.AS4):
             self.receive_route(inst, prefix, self.rs, as_path="3",
                                std_comms=["64512:3"], lrg_comms=[], ext_comms=[])
+
+    def test_065_aspa_AS3_invalid(self):
+        """{}: ASPA, AS3 invalid AS_PATH, rejected"""
+
+        # AS3 sets 'rpki_aspa_verification.reject_invalid' to True, so
+        # the route is rejected by the route server.
+        prefix = self.DATA["AS3_aspa_invalid1"]
+
+        with self.assertRaisesRegex(AssertionError, "Routes not found."):
+            self.receive_route(self.rs, prefix, self.AS3)
+        self.log_contains(self.rs,
+                          "ASPA, AS_PATH is INVALID - REJECTING {}".format(
+                              prefix))
+        for inst in (self.AS1, self.AS4):
+            with self.assertRaisesRegex(AssertionError, "Routes not found."):
+                self.receive_route(inst, prefix, self.rs)
 
     def test_900_reconfigure(self):
         """{}: reconfigure"""

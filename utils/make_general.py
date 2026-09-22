@@ -319,6 +319,10 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
                 CfgStatement("enabled", pre_comment=True),
                 CfgStatement("reject_invalid", pre_comment=True)
             ]),
+            CfgStatement("rpki_aspa_verification", t="RPKI ASPA verification", sub=[
+                CfgStatement("enabled", pre_comment=True),
+                CfgStatement("reject_invalid", pre_comment=True)
+            ]),
             CfgStatement("max_prefix", t="Max prefix", post_comment=True, sub=[
                 CfgStatement("action", pre_comment=True),
                 CfgStatement("restart_after", pre_comment=True),
@@ -344,6 +348,12 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
         CfgStatement("rpki_roas", t="RPKI ROAs", post_comment=True, sub=[
             CfgStatement("source", pre_comment=True),
             CfgStatement("ripe_rpki_validator_url", pre_comment=True),
+            CfgStatement("allowed_trust_anchors", pre_comment=True),
+            CfgStatement("ignore_cache_files_older_than", pre_comment=True)
+        ]),
+        CfgStatement("rpki_aspas", t="RPKI ASPAs", post_comment=True, sub=[
+            CfgStatement("source", pre_comment=True),
+            CfgStatement("json_url", pre_comment=True),
             CfgStatement("allowed_trust_anchors", pre_comment=True),
             CfgStatement("ignore_cache_files_older_than", pre_comment=True)
         ]),
@@ -378,6 +388,11 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
             CommCfgStatement("rpki_bgp_origin_validation_valid", pre_comment=True),
             CommCfgStatement("rpki_bgp_origin_validation_unknown", group_with_previous="rpki_bgp_origin_validation_valid"),
             CommCfgStatement("rpki_bgp_origin_validation_invalid", group_with_previous="rpki_bgp_origin_validation_valid"),
+
+            CommCfgStatement("rpki_aspa_verification_not_performed", g="RPKI ASPA verification communities", pre_comment=True),
+            CommCfgStatement("rpki_aspa_verification_valid", pre_comment=True),
+            CommCfgStatement("rpki_aspa_verification_unknown", group_with_previous="rpki_aspa_verification_valid"),
+            CommCfgStatement("rpki_aspa_verification_invalid", group_with_previous="rpki_aspa_verification_valid"),
 
             CommCfgStatement("blackholing", g="Blackhole filtering", pre_comment=True),
 

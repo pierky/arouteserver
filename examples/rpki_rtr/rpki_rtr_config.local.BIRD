@@ -1,6 +1,12 @@
 protocol rpki MyValidator1 {
        roa4 { table RPKI4; };
        roa6 { table RPKI6; };
+       aspa { table ASPA; };
+
+       # ASPA payloads are carried only by version 2 of the RTR
+       # protocol, so the session must negotiate it. Without this,
+       # no ASPA is ever received.
+       min version 2;
 
        # IP and port of the validator.
        remote 192.0.2.10;

@@ -105,6 +105,15 @@ class BasicScenario_Data6(object):
         "AS101_roa_valid1":         "3101:0:8::/48",
         "AS101_roa_invalid1":       "3101:0:9::/48",
         "AS101_roa_badlen":         "3101:0:8000::/48",
+        # ASPA: AS101 has an ASPA whose providers are AS1, AS2
+        # and AS108; AS108 has an ASPA whose only provider is
+        # AS200. The first prefix below is announced with a
+        # plain "<peer> 101" AS_PATH (ASPA VALID), the second
+        # one with "<peer> 108 101", whose 108 -> <peer> hop is
+        # not authorized (ASPA INVALID).
+        "AS101_aspa_valid1":        "3101:0:12::/48",
+        "AS101_aspa_invalid1":      "3101:0:13::/48",
+
         "AS101_roa_blackhole":      "3101:0:8000::1/128",
 
         "AS101_roa_routeobj_1":     "3101:2::/33",

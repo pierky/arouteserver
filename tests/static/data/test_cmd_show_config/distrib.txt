@@ -40,6 +40,9 @@ configured              source: ftp://ftp.registro.br/pub/numeracao/origin/nicbr
                     rpki_bgp_origin_validation:
 configured            enabled: False
 configured            reject_invalid: True
+                    rpki_aspa_verification:
+configured            enabled: False
+configured            reject_invalid: True
                     max_prefix:
                       peering_db:
 configured              enabled: True
@@ -59,6 +62,22 @@ configured            policy: reject
                   rpki_roas:
 configured          source: ripe-rpki-validator-cache
 configured          ripe_rpki_validator_url:
+configured            - https://console.rpki-client.org/vrps.json
+configured            - https://rpki.gin.ntt.net/api/export.json
+configured            - https://rpki-validator.ripe.net/api/export.json
+configured          allowed_trust_anchors:
+configured            - APNIC RPKI Root
+configured            - AfriNIC RPKI Root
+configured            - LACNIC RPKI Root
+configured            - RIPE NCC RPKI Root
+configured            - apnic
+configured            - afrinic
+configured            - lacnic
+configured            - ripe
+configured          ignore_cache_files_older_than: 21600
+                  rpki_aspas:
+configured          source: json
+configured          json_url:
 configured            - https://console.rpki-client.org/vrps.json
 configured            - https://rpki.gin.ntt.net/api/export.json
 configured            - https://rpki-validator.ripe.net/api/export.json

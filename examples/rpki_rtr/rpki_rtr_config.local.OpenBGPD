@@ -2,4 +2,9 @@ rtr 192.0.2.10 {
        descr MyValidator1
 
        port 3323
+
+       # ASPA payloads are carried only by version 2 of the RTR
+       # protocol, so the session must negotiate it. Without this,
+       # no ASPA is ever received.
+       min-version 2
 }

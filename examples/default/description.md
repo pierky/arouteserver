@@ -43,6 +43,13 @@ Default filtering policy
 * [RPKI BGP Origin Validation](https://tools.ietf.org/html/rfc6483) of routes received by the route server is **disabled**.
 
 
+### RPKI ASPA verification
+
+
+* [ASPA verification](https://datatracker.ietf.org/doc/draft-ietf-sidrops-aspa-verification/) of the AS_PATH of routes received by the route server is **disabled**.
+
+
+
 
 ### Min/max prefix length
 
@@ -102,6 +109,7 @@ Reject reasons
 | 13 | Invalid prefix length |
 | 14 | RPKI INVALID route |
 | 15 | Never via route-servers ASN in AS_PATH |
+| 16 | ASPA INVALID AS_PATH |
 | 65535 | Unknown |
 
 

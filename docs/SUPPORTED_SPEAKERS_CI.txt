@@ -5,10 +5,10 @@ Total test cases per BGP speaker
 
 =============== ========= ============ ============ ===========  
 **BGP speaker** **Total** **Passed ✔** **Failed ✖** **Skipped** 
-BIRD v2         933       933          0            0           
-BIRD v3.2       933       933          0            0           
-BIRD v3.3       933       933          0            0           
-OpenBGPD 9.2    559       559          0            0           
+BIRD v2         969       966          0            3           
+BIRD v3.2       969       966          0            3           
+BIRD v3.3       969       966          0            3           
+OpenBGPD 9.2    575       574          0            1           
 =============== ========= ============ ============ ===========  
 
 Scenarios
@@ -32,7 +32,7 @@ local black list                              ✔           ✔             ✔ 
 log contains errors                           ✔           ✔             ✔             ✔                
 origin not in as-macro                        ✔           ✔             ✔             ✔                
 prefix in client's blacklist                  ✔           ✔             ✔             ✔                
-prefix is not in IPv6 global unicast space    ✔           ✔             ✔             ✔                
+prefix is not in IPv6 global unicast space    skip        skip          skip          skip             
 prefix length                                 ✔           ✔             ✔             ✔                
 prefix not in as-macro                        ✔           ✔             ✔             ✔                
 prefixes received by clients: AS1_1           ✔           ✔             ✔             ✔                
@@ -111,6 +111,7 @@ BOV custom comms, IPv4
 
 =================================== =========== ============= ============= ================  
 **Test**                            **BIRD v2** **BIRD v3.2** **BIRD v3.3** **OpenBGPD 9.2** 
+ASPA, AS2 invalid AS_PATH           ✔           ✔             ✔             ✔                
 RPKI, AS2 invalid prefix, bad ASN   ✔           ✔             ✔             ✔                
 RPKI, AS2 valid prefix, exact match ✔           ✔             ✔             ✔                
 log contains errors                 ✔           ✔             ✔             ✔                
@@ -122,6 +123,7 @@ BOV custom comms, IPv6
 
 =================================== =========== ============= ============= ================  
 **Test**                            **BIRD v2** **BIRD v3.2** **BIRD v3.3** **OpenBGPD 9.2** 
+ASPA, AS2 invalid AS_PATH           ✔           ✔             ✔             ✔                
 RPKI, AS2 invalid prefix, bad ASN   ✔           ✔             ✔             ✔                
 RPKI, AS2 valid prefix, exact match ✔           ✔             ✔             ✔                
 log contains errors                 ✔           ✔             ✔             ✔                
@@ -148,52 +150,58 @@ next hop strict mode on AS1_1                                     ✔           
 RPKI INVALID tagging, IPv4
 ++++++++++++++++++++++++++
 
-==================================== =========== ============= ============= ================  
-**Test**                             **BIRD v2** **BIRD v3.2** **BIRD v3.3** **OpenBGPD 9.2** 
-RPKI, AS2 invalid prefix, bad ASN    ✔           ✔             ✔                              
-RPKI, AS2 invalid prefix, bad length ✔           ✔             ✔                              
-RPKI, AS2 unknown prefix             ✔           ✔             ✔                              
-RPKI, AS2 valid prefix, exact match  ✔           ✔             ✔                              
-RPKI, AS2 valid prefix, sub prefix   ✔           ✔             ✔                              
-RPKI, AS3 invalid prefix, bad ASN    ✔           ✔             ✔                              
-RPKI, AS3 invalid prefix, bad length ✔           ✔             ✔                              
-RPKI, AS3 unknown prefix             ✔           ✔             ✔                              
-RPKI, AS3 valid prefix, exact match  ✔           ✔             ✔                              
-RPKI, AS3 valid prefix, sub prefix   ✔           ✔             ✔                              
-log contains errors                  ✔           ✔             ✔                              
-reconfigure                          ✔           ✔             ✔                              
-==================================== =========== ============= ============= ================  
+======================================= =========== ============= ============= ================  
+**Test**                                **BIRD v2** **BIRD v3.2** **BIRD v3.3** **OpenBGPD 9.2** 
+ASPA, AS2 invalid AS_PATH, not rejected ✔           ✔             ✔                              
+ASPA, AS3 invalid AS_PATH, rejected     ✔           ✔             ✔                              
+RPKI, AS2 invalid prefix, bad ASN       ✔           ✔             ✔                              
+RPKI, AS2 invalid prefix, bad length    ✔           ✔             ✔                              
+RPKI, AS2 unknown prefix                ✔           ✔             ✔                              
+RPKI, AS2 valid prefix, exact match     ✔           ✔             ✔                              
+RPKI, AS2 valid prefix, sub prefix      ✔           ✔             ✔                              
+RPKI, AS3 invalid prefix, bad ASN       ✔           ✔             ✔                              
+RPKI, AS3 invalid prefix, bad length    ✔           ✔             ✔                              
+RPKI, AS3 unknown prefix                ✔           ✔             ✔                              
+RPKI, AS3 valid prefix, exact match     ✔           ✔             ✔                              
+RPKI, AS3 valid prefix, sub prefix      ✔           ✔             ✔                              
+log contains errors                     ✔           ✔             ✔                              
+reconfigure                             ✔           ✔             ✔                              
+======================================= =========== ============= ============= ================  
 
 RPKI INVALID tagging, IPv6
 ++++++++++++++++++++++++++
 
-==================================== =========== ============= ============= ================  
-**Test**                             **BIRD v2** **BIRD v3.2** **BIRD v3.3** **OpenBGPD 9.2** 
-RPKI, AS2 invalid prefix, bad ASN    ✔           ✔             ✔                              
-RPKI, AS2 invalid prefix, bad length ✔           ✔             ✔                              
-RPKI, AS2 unknown prefix             ✔           ✔             ✔                              
-RPKI, AS2 valid prefix, exact match  ✔           ✔             ✔                              
-RPKI, AS2 valid prefix, sub prefix   ✔           ✔             ✔                              
-RPKI, AS3 invalid prefix, bad ASN    ✔           ✔             ✔                              
-RPKI, AS3 invalid prefix, bad length ✔           ✔             ✔                              
-RPKI, AS3 unknown prefix             ✔           ✔             ✔                              
-RPKI, AS3 valid prefix, exact match  ✔           ✔             ✔                              
-RPKI, AS3 valid prefix, sub prefix   ✔           ✔             ✔                              
-log contains errors                  ✔           ✔             ✔                              
-reconfigure                          ✔           ✔             ✔                              
-==================================== =========== ============= ============= ================  
+======================================= =========== ============= ============= ================  
+**Test**                                **BIRD v2** **BIRD v3.2** **BIRD v3.3** **OpenBGPD 9.2** 
+ASPA, AS2 invalid AS_PATH, not rejected ✔           ✔             ✔                              
+ASPA, AS3 invalid AS_PATH, rejected     ✔           ✔             ✔                              
+RPKI, AS2 invalid prefix, bad ASN       ✔           ✔             ✔                              
+RPKI, AS2 invalid prefix, bad length    ✔           ✔             ✔                              
+RPKI, AS2 unknown prefix                ✔           ✔             ✔                              
+RPKI, AS2 valid prefix, exact match     ✔           ✔             ✔                              
+RPKI, AS2 valid prefix, sub prefix      ✔           ✔             ✔                              
+RPKI, AS3 invalid prefix, bad ASN       ✔           ✔             ✔                              
+RPKI, AS3 invalid prefix, bad length    ✔           ✔             ✔                              
+RPKI, AS3 unknown prefix                ✔           ✔             ✔                              
+RPKI, AS3 valid prefix, exact match     ✔           ✔             ✔                              
+RPKI, AS3 valid prefix, sub prefix      ✔           ✔             ✔                              
+log contains errors                     ✔           ✔             ✔                              
+reconfigure                             ✔           ✔             ✔                              
+======================================= =========== ============= ============= ================  
 
 RTR protocol
 ++++++++++++
 
 ================================================================== =========== ============= ============= ================  
 **Test**                                                           **BIRD v2** **BIRD v3.2** **BIRD v3.3** **OpenBGPD 9.2** 
-check the RTR session is up                                        ✔           ✔             ✔             ✔                
+ASPA INVALID route dropped after spinning the validator up         ✔           ✔             ✔             ✔                
+ASPA VALID and UNKNOWN routes still accepted                       ✔           ✔             ✔             ✔                
+RPKI INVALID route dropped after spinning the validator up         ✔           ✔             ✔             ✔                
+check the RTR session is up and ASPAs are received                 ✔           ✔             ✔             ✔                
 log contains errors                                                ✔           ✔             ✔             ✔                
 restart OpenBGPD to speed up RTR session establishment                                                     ✔                
 restart the RTR protocol on BIRD to speed up session establishment ✔           ✔             ✔                              
-route accepted because validator not running                       ✔           ✔             ✔             ✔                
-route dropped after spinning the validator up                      ✔           ✔             ✔             ✔                
+routes accepted because validator not running                      ✔           ✔             ✔             ✔                
 spin up the validator                                              ✔           ✔             ✔             ✔                
 ================================================================== =========== ============= ============= ================  
 
@@ -234,6 +242,10 @@ global scenario, IPv4
 
 =============================================================================== =========== ============= ============= ================  
 **Test**                                                                        **BIRD v2** **BIRD v3.2** **BIRD v3.3** **OpenBGPD 9.2** 
+ASPA, invalid AS_PATH not propagated to clients                                 ✔           ✔             ✔             ✔                
+ASPA, invalid AS_PATH received by rs                                            ✔           ✔             ✔             ✔                
+ASPA, valid AS_PATH propagated to clients                                       ✔           ✔             ✔             ✔                
+ASPA, valid AS_PATH received by rs                                              ✔           ✔             ✔             ✔                
 RPKI, blackhole request for a covered prefix                                    ✔           ✔             ✔             ✔                
 RPKI, invalid prefix (bad ASN) not propagated to clients                        ✔           ✔             ✔             ✔                
 RPKI, invalid prefix (bad ASN) received by rs                                   ✔           ✔             ✔             ✔                
@@ -326,6 +338,10 @@ global scenario, IPv4, tag
 
 =============================================================================== =========== ============= ============= ================  
 **Test**                                                                        **BIRD v2** **BIRD v3.2** **BIRD v3.3** **OpenBGPD 9.2** 
+ASPA, invalid AS_PATH not propagated to clients                                 ✔           ✔             ✔                              
+ASPA, invalid AS_PATH received by rs                                            ✔           ✔             ✔                              
+ASPA, valid AS_PATH propagated to clients                                       ✔           ✔             ✔                              
+ASPA, valid AS_PATH received by rs                                              ✔           ✔             ✔                              
 RPKI, blackhole request for a covered prefix                                    ✔           ✔             ✔                              
 RPKI, invalid prefix (bad ASN) not propagated to clients                        ✔           ✔             ✔                              
 RPKI, invalid prefix (bad ASN) received by rs                                   ✔           ✔             ✔                              
@@ -418,6 +434,10 @@ global scenario, IPv4, tag&reject
 
 =============================================================================== =========== ============= ============= ================  
 **Test**                                                                        **BIRD v2** **BIRD v3.2** **BIRD v3.3** **OpenBGPD 9.2** 
+ASPA, invalid AS_PATH not propagated to clients                                 ✔           ✔             ✔                              
+ASPA, invalid AS_PATH received by rs                                            ✔           ✔             ✔                              
+ASPA, valid AS_PATH propagated to clients                                       ✔           ✔             ✔                              
+ASPA, valid AS_PATH received by rs                                              ✔           ✔             ✔                              
 RPKI, blackhole request for a covered prefix                                    ✔           ✔             ✔                              
 RPKI, invalid prefix (bad ASN) not propagated to clients                        ✔           ✔             ✔                              
 RPKI, invalid prefix (bad ASN) received by rs                                   ✔           ✔             ✔                              
@@ -510,6 +530,10 @@ global scenario, IPv6
 
 =============================================================================== =========== ============= ============= ================  
 **Test**                                                                        **BIRD v2** **BIRD v3.2** **BIRD v3.3** **OpenBGPD 9.2** 
+ASPA, invalid AS_PATH not propagated to clients                                 ✔           ✔             ✔             ✔                
+ASPA, invalid AS_PATH received by rs                                            ✔           ✔             ✔             ✔                
+ASPA, valid AS_PATH propagated to clients                                       ✔           ✔             ✔             ✔                
+ASPA, valid AS_PATH received by rs                                              ✔           ✔             ✔             ✔                
 RPKI, blackhole request for a covered prefix                                    ✔           ✔             ✔             ✔                
 RPKI, invalid prefix (bad ASN) not propagated to clients                        ✔           ✔             ✔             ✔                
 RPKI, invalid prefix (bad ASN) received by rs                                   ✔           ✔             ✔             ✔                
@@ -602,6 +626,10 @@ global scenario, IPv6, tag
 
 =============================================================================== =========== ============= ============= ================  
 **Test**                                                                        **BIRD v2** **BIRD v3.2** **BIRD v3.3** **OpenBGPD 9.2** 
+ASPA, invalid AS_PATH not propagated to clients                                 ✔           ✔             ✔                              
+ASPA, invalid AS_PATH received by rs                                            ✔           ✔             ✔                              
+ASPA, valid AS_PATH propagated to clients                                       ✔           ✔             ✔                              
+ASPA, valid AS_PATH received by rs                                              ✔           ✔             ✔                              
 RPKI, blackhole request for a covered prefix                                    ✔           ✔             ✔                              
 RPKI, invalid prefix (bad ASN) not propagated to clients                        ✔           ✔             ✔                              
 RPKI, invalid prefix (bad ASN) received by rs                                   ✔           ✔             ✔                              
@@ -694,6 +722,10 @@ global scenario, IPv6, tag&reject
 
 =============================================================================== =========== ============= ============= ================  
 **Test**                                                                        **BIRD v2** **BIRD v3.2** **BIRD v3.3** **OpenBGPD 9.2** 
+ASPA, invalid AS_PATH not propagated to clients                                 ✔           ✔             ✔                              
+ASPA, invalid AS_PATH received by rs                                            ✔           ✔             ✔                              
+ASPA, valid AS_PATH propagated to clients                                       ✔           ✔             ✔                              
+ASPA, valid AS_PATH received by rs                                              ✔           ✔             ✔                              
 RPKI, blackhole request for a covered prefix                                    ✔           ✔             ✔                              
 RPKI, invalid prefix (bad ASN) not propagated to clients                        ✔           ✔             ✔                              
 RPKI, invalid prefix (bad ASN) received by rs                                   ✔           ✔             ✔                              
@@ -786,6 +818,10 @@ global scenario, RFC8950
 
 =============================================================================== =========== ============= ============= ================  
 **Test**                                                                        **BIRD v2** **BIRD v3.2** **BIRD v3.3** **OpenBGPD 9.2** 
+ASPA, invalid AS_PATH not propagated to clients                                 ✔           ✔             ✔             ✔                
+ASPA, invalid AS_PATH received by rs                                            ✔           ✔             ✔             ✔                
+ASPA, valid AS_PATH propagated to clients                                       ✔           ✔             ✔             ✔                
+ASPA, valid AS_PATH received by rs                                              ✔           ✔             ✔             ✔                
 RPKI, blackhole request for a covered prefix                                    ✔           ✔             ✔             ✔                
 RPKI, invalid prefix (bad ASN) not propagated to clients                        ✔           ✔             ✔             ✔                
 RPKI, invalid prefix (bad ASN) received by rs                                   ✔           ✔             ✔             ✔                
@@ -982,7 +1018,7 @@ path hiding, mitigation on, IPv4
 
 ======================================================== =========== ============= ============= ================  
 **Test**                                                 **BIRD v2** **BIRD v3.2** **BIRD v3.3** **OpenBGPD 9.2** 
-2nd best is withdrawn and AS3 should not see it anymore  ✔           ✔             ✔             ✔                
+2nd best is withdrawn and AS3 should not see it anymore  skip        skip          skip          ✔                
 AS1 wants rs to not announce to AS3 and AS4              ✔           ✔             ✔             ✔                
 AS3 and AS4 don't receive prefix via AS1                 ✔           ✔             ✔             ✔                
 AS3 and AS4 receive prefix with sub-optimal path via AS2 ✔           ✔             ✔             ✔                
@@ -997,7 +1033,7 @@ path hiding, mitigation on, IPv6
 
 ======================================================== =========== ============= ============= ================  
 **Test**                                                 **BIRD v2** **BIRD v3.2** **BIRD v3.3** **OpenBGPD 9.2** 
-2nd best is withdrawn and AS3 should not see it anymore  ✔           ✔             ✔             ✔                
+2nd best is withdrawn and AS3 should not see it anymore  skip        skip          skip          ✔                
 AS1 wants rs to not announce to AS3 and AS4              ✔           ✔             ✔             ✔                
 AS3 and AS4 don't receive prefix via AS1                 ✔           ✔             ✔             ✔                
 AS3 and AS4 receive prefix with sub-optimal path via AS2 ✔           ✔             ✔             ✔                
