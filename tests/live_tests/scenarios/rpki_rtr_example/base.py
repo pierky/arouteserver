@@ -19,7 +19,7 @@ from pierky.arouteserver.builder import BIRDConfigBuilder, OpenBGPDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
-from pierky.arouteserver.tests.live_tests.routinator import RoutinatorInstance
+from pierky.arouteserver.tests.live_tests.rtrtr import RTRTRInstance
 from pierky.arouteserver.tests.live_tests.instances import Route
 
 class RPKIRTRScenario(LiveScenario):
@@ -59,28 +59,40 @@ class RPKIRTRScenario(LiveScenario):
         """{}: sessions are up"""
         self.session_is_up(self.rs, self.AS1_1)
 
-    def test_030_routinator_not_running(self):
-        """{}: route accepted because validator not running"""
+    def test_030_validator_not_running(self):
+        """{}: routes accepted because validator not running"""
+
         self.receive_route(self.rs, self.DATA["AS1_1"], self.AS1_1,
                            next_hop=self.AS1_1, as_path="1",
                            std_comms=[], lrg_comms=[],
                            ext_comms=[Route.RFC8097_NOT_FOUND])
 
-    def test_040_spin_up_routinator(self):
+        # No ASPA is known yet, so the AS_PATH of these routes can't
+        # be ASPA INVALID and they are all accepted.
+        for prefix_id in ("AS1_aspa_valid", "AS1_aspa_invalid",
+                          "AS1_aspa_unknown"):
+            self.receive_route(self.rs, self.DATA[prefix_id], self.AS1_1,
+                               next_hop=self.AS1_1)
+
+    def test_040_spin_up_validator(self):
         """{}: spin up the validator"""
-        routinator = RoutinatorInstance(
-            "routinator",
+        rtrtr = RTRTRInstance(
+            "rtrtr",
             "192.0.2.10",
             mount=[
                 (
-                    self.use_static_file("routinator_local_exceptions.json"),
-                    "/tmp/routinator_local_exceptions.json"
+                    self.use_static_file("rtrtr.conf"),
+                    "/etc/rtrtr/rtrtr.conf"
+                ),
+                (
+                    self.use_static_file("rpki.json"),
+                    "/etc/rtrtr/rpki.json"
                 )
             ]
         )
-        routinator.set_var_dir(self._get_var_dir())
-        self.INSTANCES.append(routinator)
-        routinator.start()
+        rtrtr.set_var_dir(self._get_var_dir())
+        self.INSTANCES.append(rtrtr)
+        rtrtr.start()
 
         time.sleep(10)
 
@@ -89,11 +101,27 @@ class RPKIRTRScenario(LiveScenario):
         raise NotImplementedError()
 
     def test_051_route_dropped(self):
-        """{}: route dropped after spinning the validator up"""
+        """{}: RPKI INVALID route dropped after spinning the validator up"""
         self.rs.clear_cached_routes()
 
         with self.assertRaisesRegex(AssertionError, "Routes not found."):
             self.receive_route(self.rs, self.DATA["AS1_1"])
+
+    def test_052_aspa_invalid_route_dropped(self):
+        """{}: ASPA INVALID route dropped after spinning the validator up"""
+        self.rs.clear_cached_routes()
+
+        with self.assertRaisesRegex(AssertionError, "Routes not found."):
+            self.receive_route(self.rs, self.DATA["AS1_aspa_invalid"])
+
+    def test_053_aspa_valid_and_unknown_accepted(self):
+        """{}: ASPA VALID and UNKNOWN routes still accepted"""
+        self.rs.clear_cached_routes()
+
+        self.receive_route(self.rs, self.DATA["AS1_aspa_valid"], self.AS1_1,
+                           next_hop=self.AS1_1, as_path="1 103")
+        self.receive_route(self.rs, self.DATA["AS1_aspa_unknown"], self.AS1_1,
+                           next_hop=self.AS1_1, as_path="1 105")
 
 
 class RPKIRTRScenarioBIRD(RPKIRTRScenario):
@@ -132,13 +160,28 @@ class RPKIRTRScenarioBIRD(RPKIRTRScenario):
             self.fail("RTR restart not successful: {}".format(res))
 
     def test_050_check_rtr_up(self):
-        """{}: check the RTR session is up"""
+        """{}: check the RTR session is up and ASPAs are received"""
         time.sleep(10)
 
-        res = self.rs.run_cmd("birdc show protocol MyValidator1")
+        res = self.rs.run_cmd("birdc show protocols all MyValidator1")
 
         if "Established" not in res:
             self.fail("RTR protocol is not Established: {}".format(res))
+
+        # ASPAs are carried only by version 2 of the RTR protocol.
+        if "Protocol version: 2" not in res:
+            self.fail("RTR protocol version is not 2: {}".format(res))
+
+        res = self.rs.run_cmd("birdc show route table ASPA")
+
+        # Table ASPA:
+        # 103                   [MyValidator1 10:11:12.345] * (100)
+        # 104                   [MyValidator1 10:11:12.345] * (100)
+        for customer_asn in ("103", "104"):
+            if not any(line.split()[0:1] == [customer_asn]
+                       for line in res.splitlines()):
+                self.fail("No ASPA received via RTR for AS{}:\n{}".format(
+                    customer_asn, res))
 
 
 class RPKIRTRScenarioOpenBGPD(RPKIRTRScenario):
@@ -174,7 +217,7 @@ class RPKIRTRScenarioOpenBGPD(RPKIRTRScenario):
         self.rs.start()
 
     def test_050_check_rtr_up(self):
-        """{}: check the RTR session is up"""
+        """{}: check the RTR session is up and ASPAs are received"""
         time.sleep(10)
 
         res = self.rs.run_cmd("bgpctl show rtr")
@@ -209,3 +252,17 @@ class RPKIRTRScenarioOpenBGPD(RPKIRTRScenario):
                     break
         else:
             self.fail("No ROAs received via RTR:\n{}".format(res))
+
+        # ASPA   RPKI ASPA                                -       -      2    00:00:06
+        # The number of ASNs is reported in the '#ASnum' column.
+        for line in lines:
+            if line.startswith("ASPA "):
+                parts = line.split()
+                if (
+                    len(parts) >= 6 and
+                    parts[5].isdigit() and
+                    int(parts[5]) > 0
+                ):
+                    break
+        else:
+            self.fail("No ASPAs received via RTR:\n{}".format(res))

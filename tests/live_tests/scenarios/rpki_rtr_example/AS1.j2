@@ -8,9 +8,31 @@ protocol device { }
 
 protocol static own_prefixes {
     route {{ data.AS1_1 }} reject;
+    route {{ data.AS1_aspa_valid }} reject;
+    route {{ data.AS1_aspa_invalid }} reject;
+    route {{ data.AS1_aspa_unknown }} reject;
 }
 
 filter to_rs {
+    # AS103 has an ASPA that authorizes AS1 as one of its providers.
+    if net = {{ data.AS1_aspa_valid }} then {
+        bgp_path.delete(1);
+        bgp_path.prepend(103);
+        bgp_path.prepend(1);
+    }
+    # AS104 has an ASPA that does not include AS1, so the 104 -> 1
+    # hop is not authorized: the AS_PATH is ASPA INVALID.
+    if net = {{ data.AS1_aspa_invalid }} then {
+        bgp_path.delete(1);
+        bgp_path.prepend(104);
+        bgp_path.prepend(1);
+    }
+    # No ASPA exists for AS105.
+    if net = {{ data.AS1_aspa_unknown }} then {
+        bgp_path.delete(1);
+        bgp_path.prepend(105);
+        bgp_path.prepend(1);
+    }
     accept;
 }
 protocol bgp the_rs {

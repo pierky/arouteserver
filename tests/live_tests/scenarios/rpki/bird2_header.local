@@ -24,3 +24,14 @@ function hook_announce_rpki_invalid_to_client(int client_asn; ip client_ip; stri
     }
     return false;
 }
+
+function hook_announce_aspa_invalid_to_client(int client_asn; ip client_ip; string client_id) {
+	# AS1 wants to receive ASPA INVALID routes too.
+	if client_ip = 192.0.2.11 then {
+		return true;
+	}
+	if client_ip = 2001:db8:1:1::11 then {
+		return true;
+	}
+	return false;
+}

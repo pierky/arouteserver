@@ -51,6 +51,18 @@ The return value determines whether the route is announced (``true``) or not (``
 This function is called within the filter that handles routes leaving the route server toward its clients, more precisely when BGP control communities are processed to determine whether the route can be announced to a specific client.
 The return value determines whether the route is announced (``true``) or not (``false``) by the route server to the client identified by the arguments.
 
+.. warning::
+
+   Enabling this hook **replaces** ARouteServer's built-in processing of the
+   ``do_not_announce_to_peer``, ``announce_to_peer``,
+   ``do_not_announce_to_any`` and RTT-based control communities (see
+   ``templates/bird/common.j2``): once ``route_can_be_announced_to`` is
+   enabled, none of that default community-based filtering logic is
+   generated, and only the code returned by ``hook_route_can_be_announced_to``
+   decides whether a route is announced to a client. If any of that default
+   behaviour is still needed, it must be reimplemented within the hook
+   function itself.
+
 ``announce_rpki_invalid_to_client``
 +++++++++++++++++++++++++++++++++++
 

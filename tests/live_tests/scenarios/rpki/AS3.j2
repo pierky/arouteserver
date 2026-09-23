@@ -12,11 +12,18 @@ protocol static own_prefixes {
 	route {{ data.AS3_valid1 }} reject;
 	route {{ data.AS3_valid2 }} reject;
 	route {{ data.AS3_unknown1 }} reject;
+	route {{ data.AS3_aspa_invalid1 }} reject;
 }
 
 filter to_the_rs {
 	if net = {{ data.AS3_invalid1 }} then accept;
 	if net = {{ data.AS3_unknown1 }} then accept;
+	if net = {{ data.AS3_aspa_invalid1 }} then {
+		bgp_path.delete(3);
+		bgp_path.prepend(108);
+		bgp_path.prepend(3);
+		accept;
+	}
 	if net = {{ data.AS3_badlen }} then {
 		bgp_path.delete(3);
 		bgp_path.prepend(103);

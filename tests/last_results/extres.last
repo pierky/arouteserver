@@ -14,30 +14,62 @@ External resources: last version via PyPI PASSED
 External resources: PeeringDB, max-prefix and AS-SET PASSED
 External resources: PeeringDB, never via route-servers PASSED
 External resources: route servers excluded from clients-from-euroix PASSED
-External resources: RPKI ROAs, NTT PASSED
-External resources: RPKI ROAs, RIPE PASSED
-External resources: RPKI ROAs, rpki-client PASSED
-External resources: prefixes from AS-SET via bgpq3 PASSED
-External resources: prefixes from AS-SET via bgpq4 PASSED
+External resources: RPKI ROAs, NTT FAILED
 
+=================================== FAILURES ===================================
+___________________ TestExternalResources.test_rpki_roas_ntt ___________________
+
+self = <tests.external_resources.test_external_resources.TestExternalResources testMethod=test_rpki_roas_ntt>
+
+    def test_rpki_roas_ntt(self):
+        """External resources: RPKI ROAs, NTT"""
+>       self._test_rpki_roas_per_provider("ntt.net", use_expires_attr=True)
+
+tests/external_resources/test_external_resources.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/external_resources/test_external_resources.py:85: in _test_rpki_roas_per_provider
+    rpki_roas.load_data()
+pierky/arouteserver/ripe_rpki_cache.py:62: in load_data
+    CachedObject.load_data(self)
+pierky/arouteserver/cached_objects.py:159: in load_data
+    self.raw_data = self._get_data()
+                    ^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <pierky.arouteserver.ripe_rpki_cache.RIPE_RPKI_ROAs object at 0x78df876c8590>
+
+    def _get_data(self):
+        # List of (url, error)
+        errors = []
+        for url in self.urls:
+            try:
+                res = self._get_data_from_url(url)
+                logging.info(
+                    "RPKI data loaded successfully from {}".format(url)
+                )
+                return res
+            except RPKIValidatorCacheError as e:
+                logging.warning(str(e))
+                errors.append((url, str(e)))
+    
+        exc_msg = "Impossible to load the RPKI data:\n"
+        for url, err in errors:
+            exc_msg += " - while trying {}: {}\n".format(url, err)
+>       raise RPKIValidatorCacheError(exc_msg)
+E       pierky.arouteserver.errors.RPKIValidatorCacheError: Impossible to load the RPKI data:
+E        - while trying https://rpki.gin.ntt.net/api/export.json: Error while retrieving ROAs from RIPE RPKI Validator cache (https://rpki.gin.ntt.net/api/export.json): ('Connection broken: IncompleteRead(311001 bytes read, 104858124 more expected)', IncompleteRead(311001 bytes read, 104858124 more expected))
+
+pierky/arouteserver/ripe_rpki_cache.py:406: RPKIValidatorCacheError
+------------------------------ Captured log call -------------------------------
+WARNING  root:ripe_rpki_cache.py:400 Error while retrieving ROAs from RIPE RPKI Validator cache (https://rpki.gin.ntt.net/api/export.json): ('Connection broken: IncompleteRead(311001 bytes read, 104858124 more expected)', IncompleteRead(311001 bytes read, 104858124 more expected))
 =============================== warnings summary ===============================
 External resources: Euro-IX from clients build and validation
 External resources: Euro-IX from clients build and validation (using merge-file)
   /home/pierky/src/ars/pierky/arouteserver/commands/ixf_member_list_from_clients.py:192: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
     res["timestamp"] = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 
-External resources: RPKI ROAs, NTT
-External resources: RPKI ROAs, NTT
-External resources: RPKI ROAs, RIPE
-External resources: RPKI ROAs, RIPE
-External resources: RPKI ROAs, rpki-client
-External resources: RPKI ROAs, rpki-client
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:59: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    return datetime.datetime.utcnow()
-
-External resources: RPKI ROAs, RIPE
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:137: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
-    buildtime_dt_utc = datetime.datetime.utcfromtimestamp(int(generated))
-
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-================== 14 passed, 9 warnings in 91.48s (0:01:31) ===================
+=========================== short test summary info ============================
+FAILED External resources: RPKI ROAs, NTT - pierky.arouteserver.errors.RPKIVa...
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+============= 1 failed, 9 passed, 2 warnings in 222.78s (0:03:42) ==============

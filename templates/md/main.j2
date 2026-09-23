@@ -147,6 +147,41 @@ Also, the following ASNs are always included:
 {% endif %}
 
 
+### RPKI ASPA verification
+
+
+* [ASPA verification](https://datatracker.ietf.org/doc/draft-ietf-sidrops-aspa-verification/) of the AS_PATH of routes received by the route server is **{% if cfg.filtering.rpki_aspa_verification.enabled %}enabled{% else %}disabled{% endif %}**.
+{% if cfg.filtering.rpki_aspa_verification.enabled %}
+{% if cfg.filtering.rpki_aspa_verification.reject_invalid %}* When an INVALID route is received by the route server, **it is rejected**.
+{% else %}* INVALID routes are not announced to clients.
+{% endif %}
+{% endif %}
+{% if cfg.filtering.rpki_aspa_verification.enabled and
+ (
+ cfg.communities.rpki_aspa_verification_valid|community_is_set or
+ cfg.communities.rpki_aspa_verification_unknown|community_is_set or
+ cfg.communities.rpki_aspa_verification_invalid|community_is_set
+ ) %}
+* The following communities are used to keep track of the ASPA verification state of the routes (only internally to the route server, they are not propagated to the clients):
+
+
+| State | Standard | Extended | Large |
+| --- | --- | --- | --- |
+{{ write_communities_table_row(cfg.communities.rpki_aspa_verification_valid, "Valid") -}}
+{{ write_communities_table_row(cfg.communities.rpki_aspa_verification_unknown, "Unknown") -}}
+{{ write_communities_table_row(cfg.communities.rpki_aspa_verification_invalid, "Invalid") -}}
+{% endif %}
+{% if cfg.communities.rpki_aspa_verification_not_performed|community_is_set %}
+{% if cfg.filtering.rpki_aspa_verification.enabled %}* In circumstances (if any) where ASPA verification is not performed, the following BGP communities are attached to the route:
+{% else %}* To signal that ASPA verification is not performed, the following BGP communities are attached to the route:
+{% endif %}
+
+| Description | Standard | Extended | Large |
+| --- | --- | --- | --- |
+{{ write_communities_table_row(cfg.communities.rpki_aspa_verification_not_performed, "RPKI ASPA verification not performed") }}
+{% endif %}
+
+
 
 {% if cfg.filtering.irrdb.use_rpki_roas_as_route_objects.enabled or
  cfg.filtering.rpki_bgp_origin_validation.enabled %}
@@ -155,6 +190,16 @@ Also, the following ASNs are always included:
 
 {% if cfg.rpki_roas.source == "ripe-rpki-validator-cache" %}* RPKI ROAs are fetched from the RIPE RPKI Validator format cache files at {{ cfg.rpki_roas.ripe_rpki_validator_url|map("urlize")|join(", ") }}. The following Trust Anchors are used: {{ cfg.rpki_roas.allowed_trust_anchors|join(", ") }}
 {% else %}* RPKI ROAs are fetched via RTR protocol from an external validating cache.
+{% endif %}
+
+{% endif %}
+
+{% if cfg.filtering.rpki_aspa_verification.enabled %}
+### RPKI ASPAs
+
+
+{% if cfg.rpki_aspas.source == "json" %}* RPKI ASPAs are fetched from the RIPE RPKI Validator format cache files at {{ cfg.rpki_aspas.json_url|map("urlize")|join(", ") }}. The following Trust Anchors are used, for those sources that provide that information: {{ cfg.rpki_aspas.allowed_trust_anchors|join(", ") }}
+{% else %}* RPKI ASPAs are fetched via version 2 of the RTR protocol from an external validating cache.
 {% endif %}
 
 {% endif %}

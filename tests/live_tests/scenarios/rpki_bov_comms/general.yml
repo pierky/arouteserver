@@ -9,8 +9,20 @@ cfg:
     rpki_bgp_origin_validation:
       enabled: True
       reject_invalid: False
+    rpki_aspa_verification:
+      enabled: True
+      reject_invalid: False
+    # ASPA verification on OpenBGPD is performed only on sessions
+    # for which a role is set.
+    roles:
+      enabled: True
   rpki_roas:
     source: "ripe-rpki-validator-cache"
+    allowed_trust_anchors:
+      - "test"
+  rpki_aspas:
+    # Same file used for the ROAs above: it's fetched only once.
+    source: "json"
     allowed_trust_anchors:
       - "test"
   communities:
@@ -20,3 +32,9 @@ cfg:
       std: "64512:2"
     rpki_bgp_origin_validation_unknown:
       std: "64512:3"
+    rpki_aspa_verification_valid:
+      std: "64512:4"
+    rpki_aspa_verification_invalid:
+      std: "64512:5"
+    rpki_aspa_verification_unknown:
+      std: "64512:6"

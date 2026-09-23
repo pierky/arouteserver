@@ -116,6 +116,18 @@ cfg:
     rpki_bgp_origin_validation_invalid:
       std: '64512:53'
       lrg: rs_as:1000:4
+    rpki_aspa_verification_not_performed:
+      std: '64512:54'
+      lrg: rs_as:1001:3
+    rpki_aspa_verification_valid:
+      std: '64512:55'
+      lrg: rs_as:1001:1
+    rpki_aspa_verification_unknown:
+      std: '64512:56'
+      lrg: rs_as:1001:2
+    rpki_aspa_verification_invalid:
+      std: '64512:57'
+      lrg: rs_as:1001:4
     do_not_announce_to_any:
       std: 0:rs_as
       lrg: rs_as:0:0

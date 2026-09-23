@@ -77,11 +77,24 @@ are **rejected**.
 
 
 
+### RPKI ASPA verification
+
+
+* [ASPA verification](https://datatracker.ietf.org/doc/draft-ietf-sidrops-aspa-verification/) of the AS_PATH of routes received by the route server is **disabled**.
+* To signal that ASPA verification is not performed, the following BGP communities are attached to the route:
+
+| Description | Standard | Extended | Large |
+| --- | --- | --- | --- |
+| RPKI ASPA verification not performed | 64512:54 | None | 64496:1001:3 |
+
+
+
 
 ### RPKI ROAs
 
 
 * RPKI ROAs are fetched from the RIPE RPKI Validator format cache files at <a href="https://console.rpki-client.org/vrps.json" rel="noopener">https://console.rpki-client.org/vrps.json</a>, <a href="https://rpki.gin.ntt.net/api/export.json" rel="noopener">https://rpki.gin.ntt.net/api/export.json</a>, <a href="https://rpki-validator.ripe.net/api/export.json" rel="noopener">https://rpki-validator.ripe.net/api/export.json</a>. The following Trust Anchors are used: APNIC RPKI Root, AfriNIC RPKI Root, LACNIC RPKI Root, RIPE NCC RPKI Root, apnic, afrinic, lacnic, ripe
+
 
 ### Max-pref limit
 
@@ -237,6 +250,7 @@ Reject reasons
 | 13 | Invalid prefix length | 65520:13 | None | 64496:65520:13 |
 | 14 | RPKI INVALID route | 65520:14 | None | 64496:65520:14 |
 | 15 | Never via route-servers ASN in AS_PATH | 65520:15 | None | 64496:65520:15 |
+| 16 | ASPA INVALID AS_PATH | 65520:16 | None | 64496:65520:16 |
 | 65535 | Unknown | 65520:65535 | None | 64496:65520:65535 |
 
 

@@ -140,6 +140,16 @@ match from group clients source-as {{ roa.asn }} prefix {{ roa.prefix }}
 {%	endfor %}
 {% endmacro %}
 
+{% macro write_aspa_set(rpki_aspas) %}
+{%    for aspa in rpki_aspas %}
+    customer-as {{ aspa.customer_asn }}
+{%-        if "expires" in aspa %} expires {{ aspa.expires }}
+{%-        endif %} provider-as {
+{%-        for provider in aspa.providers %} {{ provider }}
+{%-        endfor %} }
+{%    endfor %}
+{% endmacro %}
+
 {% macro write_roa_set(rpki_roas) %}
 {%    for roa in rpki_roas %}
     {{ roa.prefix }}

@@ -1,0 +1,21 @@
+3002:0:8000::/34, AS_PATH: 2 101, NEXT_HOP: 2001:db8:1:1::22, via 2001:db8:1:1::2
+  std comms:
+  ext comms:
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+3002:0:8::/48, AS_PATH: 2 101, NEXT_HOP: 2001:db8:1:1::22, via 2001:db8:1:1::2
+  std comms:
+  ext comms:
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+
+3002:3002::/32, AS_PATH: 2, NEXT_HOP: 2001:db8:1:1::22, via 2001:db8:1:1::2
+  std comms:
+  ext comms:
+  lrg comms:
+  best: True, LOCAL_PREF: 100
+  filtered: False ()
+

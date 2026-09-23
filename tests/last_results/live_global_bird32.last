@@ -3,9 +3,11 @@ platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
 plugins: requests-mock-1.12.1
-collecting ... collected 603 items
+collecting ... collected 631 items
 
-Live test, BIRD v3.2, global scenario, IPv4: instances setup PASSED
+Live test, BIRD v3.2, global scenario, IPv4: instances setup 
+Live test, BIRD v3.2, global scenario, IPv4: setting instances up...
+PASSED
 Live test, BIRD v3.2, global scenario, IPv4: sessions are up PASSED
 Live test, BIRD v3.2, global scenario, IPv4: session configured via local include files PASSED
 Live test, BIRD v3.2, global scenario, IPv4: good prefixes because of use_arin_bulk_whois_data PASSED
@@ -43,6 +45,10 @@ Live test, BIRD v3.2, global scenario, IPv4: RPKI, invalid prefix (bad length) r
 Live test, BIRD v3.2, global scenario, IPv4: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
 Live test, BIRD v3.2, global scenario, IPv4: RPKI, valid prefix received by rs PASSED
 Live test, BIRD v3.2, global scenario, IPv4: RPKI, valid prefix propagated to clients PASSED
+Live test, BIRD v3.2, global scenario, IPv4: ASPA, invalid AS_PATH received by rs PASSED
+Live test, BIRD v3.2, global scenario, IPv4: ASPA, invalid AS_PATH not propagated to clients PASSED
+Live test, BIRD v3.2, global scenario, IPv4: ASPA, valid AS_PATH received by rs PASSED
+Live test, BIRD v3.2, global scenario, IPv4: ASPA, valid AS_PATH propagated to clients PASSED
 Live test, BIRD v3.2, global scenario, IPv4: prefixes from AS101 received by its upstreams PASSED
 Live test, BIRD v3.2, global scenario, IPv4: prefixes from AS101 received by rs PASSED
 Live test, BIRD v3.2, global scenario, IPv4: bad communities as seen by AS101 upstreams PASSED
@@ -90,7 +96,15 @@ Live test, BIRD v3.2, global scenario, IPv4: prefixes received by clients: AS3 P
 Live test, BIRD v3.2, global scenario, IPv4: prefixes received by clients: AS3 (with ADD-PATH) PASSED
 Live test, BIRD v3.2, global scenario, IPv4: reconfigure PASSED
 Live test, BIRD v3.2, global scenario, IPv4: log contains errors PASSED
-Live test, BIRD v3.2, global scenario, IPv4, tag: instances setup PASSED
+Live test, BIRD v3.2, global scenario, IPv4: dumping rs config...
+
+Live test, BIRD v3.2, global scenario, IPv4: dumping routes...
+
+Live test, BIRD v3.2, global scenario, IPv4: stopping instances...
+
+Live test, BIRD v3.2, global scenario, IPv4, tag: instances setup 
+Live test, BIRD v3.2, global scenario, IPv4, tag: setting instances up...
+PASSED
 Live test, BIRD v3.2, global scenario, IPv4, tag: sessions are up PASSED
 Live test, BIRD v3.2, global scenario, IPv4, tag: session configured via local include files PASSED
 Live test, BIRD v3.2, global scenario, IPv4, tag: good prefixes because of use_arin_bulk_whois_data PASSED
@@ -130,6 +144,10 @@ Live test, BIRD v3.2, global scenario, IPv4, tag: RPKI, invalid prefix (bad leng
 Live test, BIRD v3.2, global scenario, IPv4, tag: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
 Live test, BIRD v3.2, global scenario, IPv4, tag: RPKI, valid prefix received by rs PASSED
 Live test, BIRD v3.2, global scenario, IPv4, tag: RPKI, valid prefix propagated to clients PASSED
+Live test, BIRD v3.2, global scenario, IPv4, tag: ASPA, invalid AS_PATH received by rs PASSED
+Live test, BIRD v3.2, global scenario, IPv4, tag: ASPA, invalid AS_PATH not propagated to clients PASSED
+Live test, BIRD v3.2, global scenario, IPv4, tag: ASPA, valid AS_PATH received by rs PASSED
+Live test, BIRD v3.2, global scenario, IPv4, tag: ASPA, valid AS_PATH propagated to clients PASSED
 Live test, BIRD v3.2, global scenario, IPv4, tag: prefixes from AS101 received by its upstreams PASSED
 Live test, BIRD v3.2, global scenario, IPv4, tag: prefixes from AS101 received by rs PASSED
 Live test, BIRD v3.2, global scenario, IPv4, tag: bad communities as seen by AS101 upstreams PASSED
@@ -177,7 +195,15 @@ Live test, BIRD v3.2, global scenario, IPv4, tag: prefixes received by clients: 
 Live test, BIRD v3.2, global scenario, IPv4, tag: prefixes received by clients: AS3 (with ADD-PATH) PASSED
 Live test, BIRD v3.2, global scenario, IPv4, tag: reconfigure PASSED
 Live test, BIRD v3.2, global scenario, IPv4, tag: log contains errors PASSED
-Live test, BIRD v3.2, global scenario, IPv4, tag&reject: instances setup PASSED
+Live test, BIRD v3.2, global scenario, IPv4, tag: dumping rs config...
+
+Live test, BIRD v3.2, global scenario, IPv4, tag: dumping routes...
+
+Live test, BIRD v3.2, global scenario, IPv4, tag: stopping instances...
+
+Live test, BIRD v3.2, global scenario, IPv4, tag&reject: instances setup 
+Live test, BIRD v3.2, global scenario, IPv4, tag&reject: setting instances up...
+PASSED
 Live test, BIRD v3.2, global scenario, IPv4, tag&reject: sessions are up PASSED
 Live test, BIRD v3.2, global scenario, IPv4, tag&reject: session configured via local include files PASSED
 Live test, BIRD v3.2, global scenario, IPv4, tag&reject: good prefixes because of use_arin_bulk_whois_data PASSED
@@ -217,6 +243,10 @@ Live test, BIRD v3.2, global scenario, IPv4, tag&reject: RPKI, invalid prefix (b
 Live test, BIRD v3.2, global scenario, IPv4, tag&reject: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
 Live test, BIRD v3.2, global scenario, IPv4, tag&reject: RPKI, valid prefix received by rs PASSED
 Live test, BIRD v3.2, global scenario, IPv4, tag&reject: RPKI, valid prefix propagated to clients PASSED
+Live test, BIRD v3.2, global scenario, IPv4, tag&reject: ASPA, invalid AS_PATH received by rs PASSED
+Live test, BIRD v3.2, global scenario, IPv4, tag&reject: ASPA, invalid AS_PATH not propagated to clients PASSED
+Live test, BIRD v3.2, global scenario, IPv4, tag&reject: ASPA, valid AS_PATH received by rs PASSED
+Live test, BIRD v3.2, global scenario, IPv4, tag&reject: ASPA, valid AS_PATH propagated to clients PASSED
 Live test, BIRD v3.2, global scenario, IPv4, tag&reject: prefixes from AS101 received by its upstreams PASSED
 Live test, BIRD v3.2, global scenario, IPv4, tag&reject: prefixes from AS101 received by rs PASSED
 Live test, BIRD v3.2, global scenario, IPv4, tag&reject: bad communities as seen by AS101 upstreams PASSED
@@ -264,7 +294,15 @@ Live test, BIRD v3.2, global scenario, IPv4, tag&reject: prefixes received by cl
 Live test, BIRD v3.2, global scenario, IPv4, tag&reject: prefixes received by clients: AS3 (with ADD-PATH) PASSED
 Live test, BIRD v3.2, global scenario, IPv4, tag&reject: reconfigure PASSED
 Live test, BIRD v3.2, global scenario, IPv4, tag&reject: log contains errors PASSED
-Live test, BIRD v3.2, global scenario, IPv6: instances setup PASSED
+Live test, BIRD v3.2, global scenario, IPv4, tag&reject: dumping rs config...
+
+Live test, BIRD v3.2, global scenario, IPv4, tag&reject: dumping routes...
+
+Live test, BIRD v3.2, global scenario, IPv4, tag&reject: stopping instances...
+
+Live test, BIRD v3.2, global scenario, IPv6: instances setup 
+Live test, BIRD v3.2, global scenario, IPv6: setting instances up...
+PASSED
 Live test, BIRD v3.2, global scenario, IPv6: sessions are up PASSED
 Live test, BIRD v3.2, global scenario, IPv6: session configured via local include files PASSED
 Live test, BIRD v3.2, global scenario, IPv6: good prefixes because of use_arin_bulk_whois_data PASSED
@@ -302,6 +340,10 @@ Live test, BIRD v3.2, global scenario, IPv6: RPKI, invalid prefix (bad length) r
 Live test, BIRD v3.2, global scenario, IPv6: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
 Live test, BIRD v3.2, global scenario, IPv6: RPKI, valid prefix received by rs PASSED
 Live test, BIRD v3.2, global scenario, IPv6: RPKI, valid prefix propagated to clients PASSED
+Live test, BIRD v3.2, global scenario, IPv6: ASPA, invalid AS_PATH received by rs PASSED
+Live test, BIRD v3.2, global scenario, IPv6: ASPA, invalid AS_PATH not propagated to clients PASSED
+Live test, BIRD v3.2, global scenario, IPv6: ASPA, valid AS_PATH received by rs PASSED
+Live test, BIRD v3.2, global scenario, IPv6: ASPA, valid AS_PATH propagated to clients PASSED
 Live test, BIRD v3.2, global scenario, IPv6: prefixes from AS101 received by its upstreams PASSED
 Live test, BIRD v3.2, global scenario, IPv6: prefixes from AS101 received by rs PASSED
 Live test, BIRD v3.2, global scenario, IPv6: bad communities as seen by AS101 upstreams PASSED
@@ -349,7 +391,15 @@ Live test, BIRD v3.2, global scenario, IPv6: prefixes received by clients: AS3 P
 Live test, BIRD v3.2, global scenario, IPv6: prefixes received by clients: AS3 (with ADD-PATH) PASSED
 Live test, BIRD v3.2, global scenario, IPv6: reconfigure PASSED
 Live test, BIRD v3.2, global scenario, IPv6: log contains errors PASSED
-Live test, BIRD v3.2, global scenario, IPv6, tag: instances setup PASSED
+Live test, BIRD v3.2, global scenario, IPv6: dumping rs config...
+
+Live test, BIRD v3.2, global scenario, IPv6: dumping routes...
+
+Live test, BIRD v3.2, global scenario, IPv6: stopping instances...
+
+Live test, BIRD v3.2, global scenario, IPv6, tag: instances setup 
+Live test, BIRD v3.2, global scenario, IPv6, tag: setting instances up...
+PASSED
 Live test, BIRD v3.2, global scenario, IPv6, tag: sessions are up PASSED
 Live test, BIRD v3.2, global scenario, IPv6, tag: session configured via local include files PASSED
 Live test, BIRD v3.2, global scenario, IPv6, tag: good prefixes because of use_arin_bulk_whois_data PASSED
@@ -389,6 +439,10 @@ Live test, BIRD v3.2, global scenario, IPv6, tag: RPKI, invalid prefix (bad leng
 Live test, BIRD v3.2, global scenario, IPv6, tag: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
 Live test, BIRD v3.2, global scenario, IPv6, tag: RPKI, valid prefix received by rs PASSED
 Live test, BIRD v3.2, global scenario, IPv6, tag: RPKI, valid prefix propagated to clients PASSED
+Live test, BIRD v3.2, global scenario, IPv6, tag: ASPA, invalid AS_PATH received by rs PASSED
+Live test, BIRD v3.2, global scenario, IPv6, tag: ASPA, invalid AS_PATH not propagated to clients PASSED
+Live test, BIRD v3.2, global scenario, IPv6, tag: ASPA, valid AS_PATH received by rs PASSED
+Live test, BIRD v3.2, global scenario, IPv6, tag: ASPA, valid AS_PATH propagated to clients PASSED
 Live test, BIRD v3.2, global scenario, IPv6, tag: prefixes from AS101 received by its upstreams PASSED
 Live test, BIRD v3.2, global scenario, IPv6, tag: prefixes from AS101 received by rs PASSED
 Live test, BIRD v3.2, global scenario, IPv6, tag: bad communities as seen by AS101 upstreams PASSED
@@ -436,7 +490,15 @@ Live test, BIRD v3.2, global scenario, IPv6, tag: prefixes received by clients: 
 Live test, BIRD v3.2, global scenario, IPv6, tag: prefixes received by clients: AS3 (with ADD-PATH) PASSED
 Live test, BIRD v3.2, global scenario, IPv6, tag: reconfigure PASSED
 Live test, BIRD v3.2, global scenario, IPv6, tag: log contains errors PASSED
-Live test, BIRD v3.2, global scenario, IPv6, tag&reject: instances setup PASSED
+Live test, BIRD v3.2, global scenario, IPv6, tag: dumping rs config...
+
+Live test, BIRD v3.2, global scenario, IPv6, tag: dumping routes...
+
+Live test, BIRD v3.2, global scenario, IPv6, tag: stopping instances...
+
+Live test, BIRD v3.2, global scenario, IPv6, tag&reject: instances setup 
+Live test, BIRD v3.2, global scenario, IPv6, tag&reject: setting instances up...
+PASSED
 Live test, BIRD v3.2, global scenario, IPv6, tag&reject: sessions are up PASSED
 Live test, BIRD v3.2, global scenario, IPv6, tag&reject: session configured via local include files PASSED
 Live test, BIRD v3.2, global scenario, IPv6, tag&reject: good prefixes because of use_arin_bulk_whois_data PASSED
@@ -476,6 +538,10 @@ Live test, BIRD v3.2, global scenario, IPv6, tag&reject: RPKI, invalid prefix (b
 Live test, BIRD v3.2, global scenario, IPv6, tag&reject: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
 Live test, BIRD v3.2, global scenario, IPv6, tag&reject: RPKI, valid prefix received by rs PASSED
 Live test, BIRD v3.2, global scenario, IPv6, tag&reject: RPKI, valid prefix propagated to clients PASSED
+Live test, BIRD v3.2, global scenario, IPv6, tag&reject: ASPA, invalid AS_PATH received by rs PASSED
+Live test, BIRD v3.2, global scenario, IPv6, tag&reject: ASPA, invalid AS_PATH not propagated to clients PASSED
+Live test, BIRD v3.2, global scenario, IPv6, tag&reject: ASPA, valid AS_PATH received by rs PASSED
+Live test, BIRD v3.2, global scenario, IPv6, tag&reject: ASPA, valid AS_PATH propagated to clients PASSED
 Live test, BIRD v3.2, global scenario, IPv6, tag&reject: prefixes from AS101 received by its upstreams PASSED
 Live test, BIRD v3.2, global scenario, IPv6, tag&reject: prefixes from AS101 received by rs PASSED
 Live test, BIRD v3.2, global scenario, IPv6, tag&reject: bad communities as seen by AS101 upstreams PASSED
@@ -523,7 +589,15 @@ Live test, BIRD v3.2, global scenario, IPv6, tag&reject: prefixes received by cl
 Live test, BIRD v3.2, global scenario, IPv6, tag&reject: prefixes received by clients: AS3 (with ADD-PATH) PASSED
 Live test, BIRD v3.2, global scenario, IPv6, tag&reject: reconfigure PASSED
 Live test, BIRD v3.2, global scenario, IPv6, tag&reject: log contains errors PASSED
-Live test, BIRD v3.2, global scenario, RFC8950: instances setup PASSED
+Live test, BIRD v3.2, global scenario, IPv6, tag&reject: dumping rs config...
+
+Live test, BIRD v3.2, global scenario, IPv6, tag&reject: dumping routes...
+
+Live test, BIRD v3.2, global scenario, IPv6, tag&reject: stopping instances...
+
+Live test, BIRD v3.2, global scenario, RFC8950: instances setup 
+Live test, BIRD v3.2, global scenario, RFC8950: setting instances up...
+PASSED
 Live test, BIRD v3.2, global scenario, RFC8950: sessions are up PASSED
 Live test, BIRD v3.2, global scenario, RFC8950: session configured via local include files PASSED
 Live test, BIRD v3.2, global scenario, RFC8950: good prefixes because of use_arin_bulk_whois_data PASSED
@@ -561,6 +635,10 @@ Live test, BIRD v3.2, global scenario, RFC8950: RPKI, invalid prefix (bad length
 Live test, BIRD v3.2, global scenario, RFC8950: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
 Live test, BIRD v3.2, global scenario, RFC8950: RPKI, valid prefix received by rs PASSED
 Live test, BIRD v3.2, global scenario, RFC8950: RPKI, valid prefix propagated to clients PASSED
+Live test, BIRD v3.2, global scenario, RFC8950: ASPA, invalid AS_PATH received by rs PASSED
+Live test, BIRD v3.2, global scenario, RFC8950: ASPA, invalid AS_PATH not propagated to clients PASSED
+Live test, BIRD v3.2, global scenario, RFC8950: ASPA, valid AS_PATH received by rs PASSED
+Live test, BIRD v3.2, global scenario, RFC8950: ASPA, valid AS_PATH propagated to clients PASSED
 Live test, BIRD v3.2, global scenario, RFC8950: prefixes from AS101 received by its upstreams PASSED
 Live test, BIRD v3.2, global scenario, RFC8950: prefixes from AS101 received by rs PASSED
 Live test, BIRD v3.2, global scenario, RFC8950: bad communities as seen by AS101 upstreams PASSED
@@ -608,5 +686,11 @@ Live test, BIRD v3.2, global scenario, RFC8950: prefixes received by clients: AS
 Live test, BIRD v3.2, global scenario, RFC8950: prefixes received by clients: AS3 (with ADD-PATH) PASSED
 Live test, BIRD v3.2, global scenario, RFC8950: reconfigure PASSED
 Live test, BIRD v3.2, global scenario, RFC8950: log contains errors PASSED
+Live test, BIRD v3.2, global scenario, RFC8950: dumping rs config...
 
-============================= 603 passed in 0.96s ==============================
+Live test, BIRD v3.2, global scenario, RFC8950: dumping routes...
+
+Live test, BIRD v3.2, global scenario, RFC8950: stopping instances...
+
+
+======================= 631 passed in 1834.53s (0:30:34) =======================

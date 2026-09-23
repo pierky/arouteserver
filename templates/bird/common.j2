@@ -426,6 +426,66 @@ function announce_rpki_invalid_to_client(int client_asn; ip client_ip; string cl
 	{% endif %}
 }
 {% endif %}
+{% if cfg.filtering.rpki_aspa_verification.enabled and aspa_supported_by_target %}
+
+# This function adds the BGP communities used to
+# keep track of the ASPA verification state.
+# There is no equivalent of the RFC8097 extended communities
+# for ASPA, so only the communities configured by the operator
+# are used here.
+function add_aspa_community(string comm_name) {
+	{% if cfg.communities["rpki_aspa_verification_valid"]|community_is_set %}
+	# rpki_aspa_verification_valid communities
+	if comm_name = "valid" then {
+		{{ add_communities(cfg.communities["rpki_aspa_verification_valid"], tabs=2) }}
+	}
+	{% endif %}
+	{% if cfg.communities["rpki_aspa_verification_unknown"]|community_is_set %}
+	# rpki_aspa_verification_unknown communities
+	if comm_name = "unknown" then {
+		{{ add_communities(cfg.communities["rpki_aspa_verification_unknown"], tabs=2) }}
+	}
+	{% endif %}
+	{% if cfg.communities["rpki_aspa_verification_invalid"]|community_is_set %}
+	# rpki_aspa_verification_invalid communities
+	if comm_name = "invalid" then {
+		{{ add_communities(cfg.communities["rpki_aspa_verification_invalid"], tabs=2) }}
+	}
+	{% endif %}
+}
+
+# This function performs the ASPA verification of the current
+# route and adds the informative communities.
+# The route server and its clients are lateral peers, so the
+# stricter "Algorithm for Upstream Paths" is used.
+function perform_aspa_verification () {
+	case aspa_check_upstream(ASPA) {
+		ASPA_VALID: add_aspa_community("valid");
+		ASPA_UNKNOWN: add_aspa_community("unknown");
+		ASPA_INVALID: add_aspa_community("invalid");
+	}
+}
+
+# This function returns True if the AS_PATH of the route is
+# ASPA INVALID.
+# Differently from what happens for the RPKI BGP Origin
+# Validation state, there is no BGP community that can be used
+# to keep track of the outcome across filters, so the check is
+# performed again here.
+function route_is_aspa_invalid (){{ bird_fnc_type("bool") }} {
+	return aspa_check_upstream(ASPA) = ASPA_INVALID;
+}
+
+# This function returns True if ASPA INVALID routes
+# should be announced to clients.
+function announce_aspa_invalid_to_client(int client_asn; ip client_ip; string client_id){{ bird_fnc_type("bool") }} {
+	{% if "announce_aspa_invalid_to_client"|hook_is_set %}
+	return hook_announce_aspa_invalid_to_client(client_asn, client_ip, client_id);
+	{% else %}
+	return false;
+	{% endif %}
+}
+{% endif %}
 
 # This function adds NO_EXPORT and/or NO_ADVERTISE
 # well-known communities.

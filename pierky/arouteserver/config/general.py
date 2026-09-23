@@ -51,6 +51,10 @@ class ConfigParserGeneral(ConfigParserBase):
         "rpki_bgp_origin_validation_unknown": { "type": "internal" },
         "rpki_bgp_origin_validation_invalid": { "type": "internal" },
         "rpki_bgp_origin_validation_not_performed": { "type": "outbound" },
+        "rpki_aspa_verification_valid": { "type": "internal" },
+        "rpki_aspa_verification_unknown": { "type": "internal" },
+        "rpki_aspa_verification_invalid": { "type": "internal" },
+        "rpki_aspa_verification_not_performed": { "type": "outbound" },
 
         "blackholing": { "type": "inbound" },
 
@@ -187,6 +191,11 @@ class ConfigParserGeneral(ConfigParserBase):
         o["enabled"] = ValidatorBool(default=False)
         o["reject_invalid"] = ValidatorBool(mandatory=True, default=True)
 
+        f["rpki_aspa_verification"] = OrderedDict()
+        o = f["rpki_aspa_verification"]
+        o["enabled"] = ValidatorBool(default=False)
+        o["reject_invalid"] = ValidatorBool(mandatory=True, default=True)
+
         f["max_prefix"] = OrderedDict()
         m = f["max_prefix"]
 
@@ -224,6 +233,35 @@ class ConfigParserGeneral(ConfigParserBase):
             default="ripe-rpki-validator-cache"
         )
         r["ripe_rpki_validator_url"] = ValidatorListOf(
+            ValidatorText, mandatory=True,
+            default=[
+                "https://console.rpki-client.org/vrps.json",
+                "https://rpki.gin.ntt.net/api/export.json",
+                "https://rpki-validator.ripe.net/api/export.json"
+            ]
+        )
+        r["allowed_trust_anchors"] = ValidatorListOf(
+            ValidatorText, mandatory=True, default=[
+                "APNIC RPKI Root",
+                "AfriNIC RPKI Root",
+                "LACNIC RPKI Root",
+                "RIPE NCC RPKI Root",
+                "apnic",
+                "afrinic",
+                "lacnic",
+                "ripe"
+            ]
+        )
+        r["ignore_cache_files_older_than"] = ValidatorUInt(default=21600, mandatory=True)
+
+        c["rpki_aspas"] = OrderedDict()
+        r = c["rpki_aspas"]
+        r["source"] = ValidatorOption("source",
+            ("json", "rtr"),
+            mandatory=True,
+            default="json"
+        )
+        r["json_url"] = ValidatorListOf(
             ValidatorText, mandatory=True,
             default=[
                 "https://console.rpki-client.org/vrps.json",
@@ -540,6 +578,10 @@ class ConfigParserGeneral(ConfigParserBase):
         self.rpki_roas_needed = \
             filtering["irrdb"]["use_rpki_roas_as_route_objects"]["enabled"] or \
             filtering["rpki_bgp_origin_validation"]["enabled"]
+
+        # Are RPKI ASPAs needed?
+        self.rpki_aspas_needed = \
+            filtering["rpki_aspa_verification"]["enabled"]
 
         # Is the ARIN Origin AS feature used?
         if filtering["irrdb"]["use_arin_bulk_whois_data"]["enabled"]:

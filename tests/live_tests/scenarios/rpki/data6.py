@@ -25,6 +25,11 @@ DATA_6 = {
     "AS2_valid2":               "3002:0:8000::/34",
     "AS2_unknown1":             "3002:3002::/32",
 
+    # ASPA: AS108 has an ASPA whose only provider is AS200,
+    # so the 108 -> 2 and 108 -> 3 hops are not authorized.
+    "AS2_aspa_invalid1":        "3002:2003::/32",
+    "AS3_aspa_invalid1":        "3003:3004::/32",
+
     "AS3_invalid1":             "3003:0:9::/48",
     "AS3_badlen":               "3003:0:8000::/35",
     "AS3_valid1":               "3003:0:8::/48",

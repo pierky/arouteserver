@@ -345,11 +345,17 @@ filter receive_from_{{ client.id }} {
 	verify_{{ client.id }}_irrdb();
 	{% endif %}
 
+	{% set aspa_used = cfg.filtering.rpki_aspa_verification.enabled and
+		aspa_supported_by_target %}
 	# Blackhole request?
 	if is_blackhole_filtering_request() then {
 		{% if cfg.communities["rpki_bgp_origin_validation_not_performed"]|community_is_set %}
 		# rpki_bgp_origin_validation_not_performed communities
 		{{ add_communities(cfg.communities["rpki_bgp_origin_validation_not_performed"], tabs=2) }}
+		{% endif %}
+		{% if cfg.communities["rpki_aspa_verification_not_performed"]|community_is_set %}
+		# rpki_aspa_verification_not_performed communities
+		{{ add_communities(cfg.communities["rpki_aspa_verification_not_performed"], tabs=2) }}
 		{% endif %}
 		accept "blackhole filtering request from {{ client.id }} - ACCEPTING ", net;
 	} else {
@@ -364,6 +370,19 @@ filter receive_from_{{ client.id }} {
 			{% if cfg.communities["rpki_bgp_origin_validation_not_performed"]|community_is_set %}
 			# rpki_bgp_origin_validation_not_performed communities
 			{{ add_communities(cfg.communities["rpki_bgp_origin_validation_not_performed"], tabs=3) }}
+			{% endif %}
+		{% endif %}
+		{% if aspa_used %}
+		perform_aspa_verification();
+
+		{%	if client.cfg.filtering.rpki_aspa_verification.reject_invalid %}
+		if route_is_aspa_invalid() then
+			{{ reject(client, 16, '"ASPA, AS_PATH is INVALID - REJECTING ", net') }}
+		{%	endif %}
+		{% else %}
+			{% if cfg.communities["rpki_aspa_verification_not_performed"]|community_is_set %}
+			# rpki_aspa_verification_not_performed communities
+			{{ add_communities(cfg.communities["rpki_aspa_verification_not_performed"], tabs=3) }}
 			{% endif %}
 		{% endif %}
 
@@ -419,13 +438,24 @@ int mapped_16bit_asn;
 	{% else %}
 		apply_blackhole_filtering_policy();
 	{% endif %}
-	{% if cfg.filtering.rpki_bgp_origin_validation.enabled %}
+	{% set aspa_used = cfg.filtering.rpki_aspa_verification.enabled and
+		aspa_supported_by_target %}
+	{% if cfg.filtering.rpki_bgp_origin_validation.enabled or aspa_used %}
 	} else {
+		{% if cfg.filtering.rpki_bgp_origin_validation.enabled %}
 		# RPKI: do not announce INVALID to clients
 		if route_is_rpki_invalid() then {
 			if !announce_rpki_invalid_to_client({{ client.asn }}, {{ client.ip }}, "{{ client.id }}") then
 				reject "route is INVALID - NOT ANNOUNCING ", net, " TO {{ client.id}}";
 		}
+		{% endif %}
+		{% if aspa_used %}
+		# ASPA: do not announce INVALID to clients
+		if route_is_aspa_invalid() then {
+			if !announce_aspa_invalid_to_client({{ client.asn }}, {{ client.ip }}, "{{ client.id }}") then
+				reject "AS_PATH is ASPA INVALID - NOT ANNOUNCING ", net, " TO {{ client.id}}";
+		}
+		{% endif %}
 	}
 	{% else %}
 	}

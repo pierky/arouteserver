@@ -1,0 +1,11 @@
+{
+  "roas": [
+    { "asn": "AS3333", "prefix": "193.0.0.0/21", "maxLength": 21, "ta": "RIPE NCC RPKI Root" }
+  ],
+  "aspas": [
+    { "customer": "AS43", "providers": [ "AS293" ], "ta": "arin" },
+    { "customer": "AS3333", "providers": [ "AS1103", "AS25152" ], "ta": "ripe" },
+    { "customer": "3334", "providers": [ 1103 ], "ta": "ripe" },
+    { "customer": "AS3335", "providers": [], "ta": "ripe" }
+  ]
+}

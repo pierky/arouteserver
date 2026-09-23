@@ -1311,6 +1311,10 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "enabled": False,
                     "reject_invalid": True,
                 },
+                "rpki_aspa_verification": {
+                    "enabled": False,
+                    "reject_invalid": True,
+                },
                 "max_prefix": {
                     "action": None,
                     "restart_after": 15,
@@ -1334,6 +1338,25 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "rpki_roas": {
                 "source": "ripe-rpki-validator-cache",
                 "ripe_rpki_validator_url": [
+                    "https://console.rpki-client.org/vrps.json",
+                    "https://rpki.gin.ntt.net/api/export.json",
+                    "https://rpki-validator.ripe.net/api/export.json"
+                ],
+                "allowed_trust_anchors": [
+                    "APNIC RPKI Root",
+                    "AfriNIC RPKI Root",
+                    "LACNIC RPKI Root",
+                    "RIPE NCC RPKI Root",
+                    "apnic",
+                    "afrinic",
+                    "lacnic",
+                    "ripe"
+                ],
+                "ignore_cache_files_older_than": 21600
+            },
+            "rpki_aspas": {
+                "source": "json",
+                "json_url": [
                     "https://console.rpki-client.org/vrps.json",
                     "https://rpki.gin.ntt.net/api/export.json",
                     "https://rpki-validator.ripe.net/api/export.json"
@@ -1440,6 +1463,10 @@ class TestConfigParserGeneral(TestConfigParserBase):
                     "enabled": False,
                     "reject_invalid": True,
                 },
+                "rpki_aspa_verification": {
+                    "enabled": False,
+                    "reject_invalid": True,
+                },
                 "max_prefix": {
                     "action": None,
                     "restart_after": 15,
@@ -1463,6 +1490,25 @@ class TestConfigParserGeneral(TestConfigParserBase):
             "rpki_roas": {
                 "source": "ripe-rpki-validator-cache",
                 "ripe_rpki_validator_url": [
+                    "https://console.rpki-client.org/vrps.json",
+                    "https://rpki.gin.ntt.net/api/export.json",
+                    "https://rpki-validator.ripe.net/api/export.json"
+                ],
+                "allowed_trust_anchors": [
+                    "APNIC RPKI Root",
+                    "AfriNIC RPKI Root",
+                    "LACNIC RPKI Root",
+                    "RIPE NCC RPKI Root",
+                    "apnic",
+                    "afrinic",
+                    "lacnic",
+                    "ripe"
+                ],
+                "ignore_cache_files_older_than": 21600
+            },
+            "rpki_aspas": {
+                "source": "json",
+                "json_url": [
                     "https://console.rpki-client.org/vrps.json",
                     "https://rpki.gin.ntt.net/api/export.json",
                     "https://rpki-validator.ripe.net/api/export.json"
