@@ -226,7 +226,13 @@ class RIPE_RPKI_ROAs(CachedObject):
 
         max_invalid_roas = 10
         invalid = 0
-        timestamp_now_utc = int(datetime.datetime.timestamp(self._get_utc_now()))
+        # _get_utc_now() is naive: without an explicit tzinfo,
+        # timestamp() would treat it as local time.
+        timestamp_now_utc = int(
+            self._get_utc_now().replace(
+                tzinfo=datetime.timezone.utc
+            ).timestamp()
+        )
 
         result = {}
 

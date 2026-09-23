@@ -13,9 +13,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import json
 import os
 import shutil
 import tempfile
+import time
 try:
     import mock
 except ImportError:
@@ -205,6 +207,64 @@ class TestRPKICache(unittest.TestCase):
             open("tests/static/data/rpki_roas_octorpki.json").read()
         )
         self.assertEqual(len(roas), 39680)
+
+    @unittest.skipUnless(hasattr(time, "tzset"), "time.tzset() not available")
+    def test_250(self):
+        """RPKI ROAs/ASPAs: expiration is evaluated in UTC, whatever the local TZ"""
+
+        now = datetime.datetime(2021, 7, 21, 12, 0)
+        now_ts = int(now.replace(tzinfo=datetime.timezone.utc).timestamp())
+
+        raw = json.dumps({
+            "roas": [
+                {"asn": "AS1", "prefix": "192.0.2.0/24", "maxLength": 24,
+                 "ta": "test", "expires": now_ts - 3600},
+                {"asn": "AS2", "prefix": "198.51.100.0/24", "maxLength": 24,
+                 "ta": "test", "expires": now_ts + 3600},
+            ],
+            "aspas": [
+                {"customer_asid": 1, "providers": [10],
+                 "expires": now_ts - 3600},
+                {"customer_asid": 2, "providers": [20],
+                 "expires": now_ts + 3600},
+            ]
+        })
+
+        orig_tz = os.environ.get("TZ")
+
+        try:
+            # A local TZ ahead of UTC would make an expired entry look
+            # still valid, one behind UTC would make a valid entry look
+            # expired.
+            for tz in ("UTC", "Asia/Tokyo", "America/New_York"):
+                os.environ["TZ"] = tz
+                time.tzset()
+
+                with self.subTest(tz=tz):
+                    with mock.patch.object(RIPE_RPKI_ROAs,
+                                           "_get_utc_now",
+                                           return_value=now):
+                        obj = RIPE_RPKI_ROAs(
+                            cache_dir=tempfile.mkdtemp(dir=self.temp_dir),
+                            urls=[self._get_file_path(raw)],
+                            need_aspas=True
+                        )
+                        obj.load_data()
+
+                    self.assertEqual(
+                        [roa["asn"] for roa in obj.roas["roas"]],
+                        ["AS2"]
+                    )
+                    self.assertEqual(
+                        [aspa["customer"] for aspa in obj.aspas],
+                        ["AS2"]
+                    )
+        finally:
+            if orig_tz is None:
+                os.environ.pop("TZ", None)
+            else:
+                os.environ["TZ"] = orig_tz
+            time.tzset()
 
     def _setup_aspas_obj(self, raw_content, need_roas=True):
         self.obj = RIPE_RPKI_ROAs(

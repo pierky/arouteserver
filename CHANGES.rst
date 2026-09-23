@@ -3,6 +3,13 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- Fix: the expiration time of the ROAs and of the ASPAs gathered from the RPKI JSON files (``expires`` attribute) was compared against the current time as if it were expressed in the local timezone of the host, instead of UTC.
+
+  When ARouteServer ran on a host whose timezone was not UTC, an expired ROA/ASPA could still be accepted (timezones ahead of UTC) or a still valid one could be discarded too early (timezones behind UTC), by as many hours as the UTC offset of the host.
+
 1.25
 ----
 
