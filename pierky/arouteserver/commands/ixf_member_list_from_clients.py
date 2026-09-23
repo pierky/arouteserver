@@ -189,7 +189,7 @@ class IXFMemberListFromClientsCommand(ARouteServerCommand):
 
         res = OrderedDict()
         res["version"] = "1.0"
-        res["timestamp"] = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+        res["timestamp"] = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
 
         ixp_list_entry = OrderedDict()
         ixp_list_entry["ixp_id"] = ixp_id
