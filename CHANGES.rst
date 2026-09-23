@@ -3,8 +3,8 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
-next release
-------------
+1.25
+----
 
 - New: add support for **ASPA verification** (`draft-ietf-sidrops-aspa-verification <https://datatracker.ietf.org/doc/draft-ietf-sidrops-aspa-verification/>`__) of the AS_PATH of the routes received from the clients, to detect and discard route leaks.
 
