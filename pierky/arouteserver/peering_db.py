@@ -218,8 +218,36 @@ class PeeringDBNet(PeeringDBInfo):
         self.asn = asn
 
     @classmethod
-    def populate_bulk_query_cache(cls, asns):
-        logging.debug("Pre-populating PeeringDB 'net' cache for {} ASNs...".format(len(asns)))
+    def _is_cached(cls, asn, cache_dir, cache_expiry):
+        kwargs = {"cache_dir": cache_dir}
+        if cache_expiry is not None:
+            kwargs["cache_expiry"] = cache_expiry
+
+        try:
+            return cls(asn, **kwargs).load_data_from_cache()
+        except cls.MISSING_INFO_EXCEPTION:
+            # Fresh cached "no data for this network": still a cache hit.
+            return True
+
+    @classmethod
+    def populate_bulk_query_cache(cls, asns, cache_dir=None, cache_expiry=None):
+        # Query PeeringDB only for the ASNs that are neither already in the
+        # bulk query cache (several enrichers ask for the same ASNs within
+        # the same run) nor still valid in the on-disk cache (when cache_dir
+        # is given): both would be answered without any API call by
+        # load_data(), while the bulk query is sent unconditionally, which
+        # makes it hit PeeringDB's anonymous rate limit on repeated runs.
+        asns_to_query = []
+        for asn in asns:
+            asn = int(asn)
+            if asn in cls.BULK_QUERY_CACHE or asn in asns_to_query:
+                continue
+            if cache_dir and cls._is_cached(asn, cache_dir, cache_expiry):
+                continue
+            asns_to_query.append(asn)
+
+        logging.debug("Pre-populating PeeringDB 'net' cache for {} ASNs "
+                      "({} requested)...".format(len(asns_to_query), len(asns)))
 
         def chunks(lst, n):
             """Yield successive n-sized chunks from lst."""
@@ -228,7 +256,7 @@ class PeeringDBNet(PeeringDBInfo):
 
         chunk_size = int(os.getenv("PEERINGDB_BULK_QUERY_CHUNK_SIZE", 150))
 
-        for asns_group in chunks(asns, chunk_size):
+        for asns_group in chunks(asns_to_query, chunk_size):
 
             plain_text = cls._read_from_url(
                 cls.PEERINGDB_BULK_QUERY_URL.format(
