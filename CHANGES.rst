@@ -10,6 +10,12 @@ next release
 
   When ARouteServer ran on a host whose timezone was not UTC, an expired ROA/ASPA could still be accepted (timezones ahead of UTC) or a still valid one could be discarded too early (timezones behind UTC), by as many hours as the UTC offset of the host.
 
+- Fix: the PeeringDB AS-SET and max-prefix enrichers each sent their own bulk ``net`` query to PeeringDB, unconditionally, even when the requested ASNs were already fresh in the on-disk cache.
+
+  Since both enrichers query the same set of client ASNs, every run sent two identical bulk requests; on hosts running the tool repeatedly in a short time span (a dry-run followed by an apply, retries, and so on) this could hit PeeringDB's anonymous rate limit (2 identical requests per minute) and stall the run for about a minute in the client's retry backoff. ASNs already covered by another enricher's bulk query in the same run, or still valid in the on-disk cache, are no longer re-queried.
+
+  See also `GitHub PR 147 <https://github.com/pierky/arouteserver/pull/147>`__.
+
 1.25
 ----
 
