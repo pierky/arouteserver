@@ -1,0 +1,98 @@
+# Copyright (C) 2017-2026 Pier Carlo Chiodi
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+import argparse
+import logging
+import sys
+import traceback
+
+from .commands import all_commands
+from .errors import ARouteServerError
+from .version import __version__, COPYRIGHT_YEAR
+
+def run():
+
+    parser = argparse.ArgumentParser(
+        description="ARouterServer v{}: a tool to automatically "
+                    "build route servers configuration.".format(
+                        __version__
+                    ),
+        epilog="Copyright (c) {} - Pier Carlo Chiodi - "
+               "https://pierky.com".format(COPYRIGHT_YEAR)
+    )
+
+    sub_parsers = parser.add_subparsers(
+        title="commands",
+        help="Run 'arouteserver <command> -h' for more details.",
+        dest="command")
+    sub_parsers.required = True
+
+    commands = {}
+    for cmd_class in all_commands:
+        cmd_class.attach_to_parser(sub_parsers)
+        commands[cmd_class.COMMAND_NAME] = cmd_class
+
+    args = parser.parse_args()
+
+    if args.command in commands:
+        cmd = commands[args.command](args)
+        return cmd.run()
+    else:
+        raise NotImplementedError("Command unknown: {}".format(args.command))
+
+PLEASE_OPEN_ISSUE = (
+    "Please consider reporting this issue to the author using the URL below, "
+    "including the following traceback and some hints on how to reproduce it: "
+    "https://github.com/pierky/arouteserver/issues\n\n"
+)
+
+def main():
+    try:
+        if run():
+            return 0
+        else:
+            return 1
+    except ARouteServerError as e:
+        msg = "An error occurred: please refer to the log for details."
+        if str(e):
+            msg = str(e)
+        if e.extra_info:
+            msg += "\n\n{}".format(e.extra_info)
+        if e.please_open_issue:
+            msg += "\n\n{}".format(PLEASE_OPEN_ISSUE)
+        if e.traceback:
+            msg += "\n\n{}".format("\n".join(traceback.format_tb(e.traceback)))
+        logging.error(msg, exc_info=e.please_open_issue)
+        return 1
+    except Exception as e:
+        msg = "An unexpected error occurred: {}\n".format(str(e))
+        if isinstance(e, MemoryError):
+            msg += "\n"
+            msg += (
+                "The error seems to be related to a memory error or to lack "
+                "of resources. Please visit the following URL for details and "
+                "a possible solution: "
+                "https://arouteserver.readthedocs.io/en/latest/USAGE.html#"
+                "memoryerror\n"
+            )
+        msg += "\n"
+        msg += PLEASE_OPEN_ISSUE
+
+        logging.error(msg, exc_info=True)
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

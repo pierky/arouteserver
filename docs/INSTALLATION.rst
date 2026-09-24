@@ -70,7 +70,14 @@ If you plan to run built-in :doc:`Live tests <LIVETESTS>` on your own or to cont
    git clone https://github.com/USERNAME/arouteserver.git ./
 
    export PYTHONPATH="`pwd`"
-   pip install -r requirements.txt
+
+   # using uv (https://docs.astral.sh/uv/), which creates a virtualenv in
+   # .venv using the exact versions of the dependencies from uv.lock:
+   uv sync
+   source .venv/bin/activate
+
+   # or, using pip (inside a virtualenv):
+   pip install -e .
 
 Setup and initialization
 ------------------------

@@ -3,6 +3,17 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- Improvement (packaging): the project moved to ``pyproject.toml`` (PEP 621), and a wheel is now published on PyPI alongside the source distribution.
+
+  The ``pierky`` namespace is now a PEP 420 implicit namespace package, replacing the deprecated ``pkg_resources``-based mechanism, and the ``arouteserver`` command is installed as a console script entry point. No changes are needed to the way the program is installed or run.
+
+- Improvement (packaging): the upper bound on the version of the ``packaging`` dependency (``<25``) has been removed, to avoid conflicts with other packages installed in the same environment.
+
+- Improvement (Docker image): the Python dependencies are now installed using the exact versions pinned in the project's lock file, with hash verification.
+
 1.25.1
 ------
 

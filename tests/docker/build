@@ -2,7 +2,7 @@
 
 set -e
 
-if [ ! -e "setup.py" ]; then
+if [ ! -e "pyproject.toml" ]; then
 	echo "The script must be executed from within the repository's root directory."
 	exit 1
 fi
@@ -19,7 +19,7 @@ fi
 
 root="`pwd`"
 
-python setup.py sdist
+uv build --sdist
 
 ars_ver="`python -c 'from pierky.arouteserver.version import __version__; print(__version__)'`"
 ars_package="${root}/dist/arouteserver-${ars_ver}.tar.gz"

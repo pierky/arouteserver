@@ -12,7 +12,7 @@
 
 set -o pipefail
 
-if [ ! -e "setup.py" ]; then
+if [ ! -e "pyproject.toml" ]; then
 	echo "The script must be executed from within the repository's root directory."
 	exit 1
 fi
@@ -173,7 +173,7 @@ function run_matrix_entry() (
 			--rm \
 			-e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
 			"${ARS_IMAGE}" \
-				bash -c 'pip install -r requirements-dev.txt && pytest -vsx tests/static'
+				bash -c 'pip install --group dev && pytest -vsx tests/static'
 
 	step "Run CLI tests" \
 		docker run \

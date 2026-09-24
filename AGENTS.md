@@ -22,7 +22,12 @@ document the live-tests framework in detail.
   - `builder.py`, `config/`, `enrichers/` — config parsing and the
     IRRDB/PeeringDB/RPKI enrichment pipeline.
   - `templates/` — Jinja2 templates that render BIRD/OpenBGPD configs.
-  - `commands/` — CLI subcommands (entry point is `scripts/arouteserver`).
+  - `commands/` — CLI subcommands. The entry point is `cli.py`
+    (`main()`), installed as the `arouteserver` console script;
+    `scripts/arouteserver` is a thin wrapper around it, to run the program
+    from a checkout with `PYTHONPATH` set to the repo root.
+  - `pierky/` itself is a PEP 420 namespace package: it has no
+    `__init__.py`, don't add one.
   - `tests/` — **the actual test suites live inside the package**, not at
     the repo root (`tests/` at the repo root mostly symlinks/mirrors into
     here — see below).
@@ -53,9 +58,22 @@ document the live-tests framework in detail.
   a full virtual IXP.
 - `.github/workflows/cicd.yml` — canonical reference for how tests are run
   in CI, which Docker images are expected, and which Python versions are
-  officially supported.
+  officially supported. `test_latest_deps.yml` runs weekly against the
+  newest dependency releases allowed by `pyproject.toml`.
+- `pyproject.toml` — all the package metadata and build config (setuptools
+  backend; `setup.py` is only a compatibility stub), runtime dependencies,
+  and the `dev`/`docs` dependency groups. `uv.lock` pins the exact
+  versions used by CI, the Docker image and Read the Docs: after changing
+  dependencies in `pyproject.toml`, run `uv lock` and commit both files
+  (CI uses `uv sync --locked`, which fails if they're out of sync).
+- `RELEASING.rst` — the maintainer's release checklist.
 
 ## Running tests
+
+The dev environment is defined by `pyproject.toml` + `uv.lock`: `uv sync`
+creates (or updates) `.venv` with exactly the locked runtime and `dev`
+dependencies, plus the package itself in editable mode. Note that `uv sync`
+also removes from `.venv` whatever isn't in the lock file.
 
 ### Static tests (no containers, fast, always safe to run)
 
@@ -207,13 +225,10 @@ Requirements to actually run it:
   one with `arouteserver setup`).
 - It ends with two interactive `[yes/NO]` prompts (Euro-IX/IX-F export) —
   safe to answer "no" for a routine doc regen.
-- The very last step shells out to `rst2html.py` to validate the PyPI long
-  description; that binary may not be on `PATH` even with `docutils`
-  installed (its console-script name varies by version) — this failure
-  aborts the script (via `set -e`) *after* all the doc/example files are
-  already regenerated, so it's usually harmless to a doc-only run, but
-  verify with `python3 -c "from docutils.core import publish_string; ..."`
-  if in doubt rather than assuming success.
+- The very last step validates the PyPI long description by building the
+  package (`uv build`) and running `uvx twine check --strict` on it, so it
+  needs `uv` on `PATH`. A failure there aborts the script (via `set -e`)
+  *after* all the doc/example files are already regenerated.
 - `BIRDConfigBuilder.AVAILABLE_VERSION`'s newest `"2.*"` entry drives the
   example BIRD v2 config/CLI transcript automatically
   (`BIRD2_LATEST_VERSION` in the script); there is deliberately no BIRD v3

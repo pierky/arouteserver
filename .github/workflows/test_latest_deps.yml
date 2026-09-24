@@ -1,0 +1,66 @@
+name: Test with the latest dependencies
+
+# The tests are run against the newest releases of the dependencies (both
+# runtime and dev ones) allowed by pyproject.toml, ignoring the versions
+# pinned in uv.lock, to spot incompatibilities before users hit them.
+
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '37 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  test_latest_deps:
+    name: Run tests with the latest dependencies
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # The oldest and the newest supported releases, to be kept in sync
+        # with .github/workflows/cicd.yml.
+        python-version: ["3.10", "3.14"]
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Python ${{ matrix.python-version }}
+        id: setup-python
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v10.2.0
+
+      - name: Install bgpq3 / bgpq4
+        run: |
+          ./tests/external_resources/install_bgpq3.sh
+          ./tests/external_resources/install_bgpq4.sh
+
+      # The updated lock file only lives in this job: the changed packages
+      # are reported in the output of 'uv lock'.
+      - name: Resolve the latest dependencies
+        run: uv lock --upgrade --python "${{ steps.setup-python.outputs.python-path }}"
+
+      - name: Install dependencies
+        run: |
+          uv sync --group dev --python "${{ steps.setup-python.outputs.python-path }}"
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
+
+      - name: Show the installed packages
+        run: uv pip list
+
+      - name: Static tests
+        run: pytest -vs tests/static/
+        env:
+          TRAVIS: 1
+          SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
+
+      - name: Config build tests
+        run: BUILD_ONLY=1 pytest -vs -x tests/live_tests/
+        env:
+          TRAVIS: 1
+          SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
