@@ -31,6 +31,7 @@ LOCAL_FILES_DIR="${LOCAL_FILES_DIR}"
 TEMPLATES_DIR="${TEMPLATES_DIR}"
 EURO_IX_URL="${EURO_IX_URL}"
 EURO_IX_IXP_ID="${EURO_IX_IXP_ID}"
+HOOKS="${HOOKS}"
 
 CLIENTS_FILE_PATH="/root/clients.yml"
 OUTPUT_DIR="/root/arouteserver_configs"
@@ -209,6 +210,11 @@ if [[ -n "${LOCAL_FILES}" ]]; then
     fi
 fi
 
+HOOKS_ARG=""
+if [[ -n "${HOOKS}" ]]; then
+     HOOKS_ARG="--use-hooks ${HOOKS}"
+fi
+
 TEMPLATES_DIR_ARG=""
 
 if [[ -n "${TEMPLATES_DIR}" ]]; then
@@ -225,6 +231,7 @@ arouteserver \
     --clients "${CLIENTS_FILE_PATH}" \
     ${LOCAL_FILES_ARG} \
     ${LOCAL_FILES_DIR_ARG} \
+    ${HOOKS_ARG} \
     -o "${OUTPUT_PATH}"
 
 echo ""
