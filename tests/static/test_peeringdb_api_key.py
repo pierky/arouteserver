@@ -148,7 +148,10 @@ class TestPeeringDBAPIKey(unittest.TestCase):
         with self.assertRaises(PeeringDBError) as context:
             PeeringDBNet(1).load_data()
 
-            assert "Please consider using a PeeringDB API key to perform authentication, which could help mitigating the effects of anonymous API query rate-limit." in str(context)
+        self.assertIn(
+            "Please consider using a PeeringDB API key to perform authentication, which could help mitigating the effects of anonymous API query rate-limit.",
+            str(context.exception)
+        )
 
 
 class TestPeeringDB429ErrorHandling(unittest.TestCase):
@@ -166,10 +169,22 @@ class TestPeeringDB429ErrorHandling(unittest.TestCase):
     def tearDown(self):
         mock.patch.stopall()
 
+    # The retry strategy of the real session backs off for a total of 60 seconds
+    # before giving up: sleeping is patched out to keep the test fast.
+    @mock.patch("urllib3.util.retry.time.sleep")
     @mock.patch.dict(os.environ, {}, clear=True)
-    def test_peeringdb_429_handling(self):
+    def test_peeringdb_429_handling(self, mock_sleep):
         """PeeringDB API: 429 error handling"""
         with self.assertRaises(PeeringDBError) as context:
             PeeringDBNet(1).load_data()
 
-            assert "Please consider using a PeeringDB API key to perform authentication, which could help mitigating the effects of anonymous API query rate-limit." in str(context)
+        self.assertIn(
+            "Please consider using a PeeringDB API key to perform authentication, which could help mitigating the effects of anonymous API query rate-limit.",
+            str(context.exception)
+        )
+
+        # Retries 2 and 3 back off for 20s and 40s (the first one is immediate).
+        self.assertEqual(
+            [call.args[0] for call in mock_sleep.call_args_list if call.args[0] > 0],
+            [20, 40]
+        )

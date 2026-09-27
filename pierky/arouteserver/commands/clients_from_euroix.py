@@ -193,7 +193,9 @@ class ClientsFromEuroIXCommand(ARouteServerCommand):
             comments = []
             comments.append("# Data fetched from {} at {} UTC".format(
                 self.args.url or self.args.input_file.name,
-                datetime.datetime.utcnow().isoformat()
+                datetime.datetime.now(datetime.timezone.utc).replace(
+                    tzinfo=None
+                ).isoformat()
             ))
             comments.append("# IXP ID: {}".format(self.args.ixp_id))
             if self.args.vlan_id:

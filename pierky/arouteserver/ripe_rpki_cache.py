@@ -81,7 +81,14 @@ class RIPE_RPKI_ROAs(CachedObject):
 
     @staticmethod
     def _get_utc_now():
-        return datetime.datetime.utcnow()
+        # Naive UTC datetime, like the ones parsed from the cache files.
+        return datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)
+
+    @staticmethod
+    def _utc_from_timestamp(timestamp):
+        return datetime.datetime.fromtimestamp(
+            timestamp, datetime.timezone.utc
+        ).replace(tzinfo=None)
 
     def _get_data_from_url(self, url):
         if url.lower().startswith(("http://", "https://")):
@@ -168,7 +175,7 @@ class RIPE_RPKI_ROAs(CachedObject):
             generated = roas["metadata"]["generated"]
 
             try:
-                buildtime_dt_utc = datetime.datetime.utcfromtimestamp(int(generated))
+                buildtime_dt_utc = self._utc_from_timestamp(int(generated))
             except Exception as e:
                 raise RPKIValidatorCacheError(
                     "Error while parsing metadata.generated from "
@@ -199,7 +206,7 @@ class RIPE_RPKI_ROAs(CachedObject):
             valid = roas["metadata"]["valid"]
 
             try:
-                valid_dt_utc = datetime.datetime.utcfromtimestamp(int(valid))
+                valid_dt_utc = self._utc_from_timestamp(int(valid))
             except Exception as e:
                 raise RPKIValidatorCacheError(
                     "Error while parsing metadata.valid from "
@@ -219,7 +226,13 @@ class RIPE_RPKI_ROAs(CachedObject):
 
         max_invalid_roas = 10
         invalid = 0
-        timestamp_now_utc = int(datetime.datetime.timestamp(self._get_utc_now()))
+        # _get_utc_now() is naive: without an explicit tzinfo,
+        # timestamp() would treat it as local time.
+        timestamp_now_utc = int(
+            self._get_utc_now().replace(
+                tzinfo=datetime.timezone.utc
+            ).timestamp()
+        )
 
         result = {}
 

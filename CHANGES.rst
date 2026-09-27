@@ -3,6 +3,25 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+1.25.1
+------
+
+- Fix: the expiration time of the ROAs and of the ASPAs gathered from the RPKI JSON files (``expires`` attribute) was compared against the current time as if it were expressed in the local timezone of the host, instead of UTC.
+
+  When ARouteServer ran on a host whose timezone was not UTC, an expired ROA/ASPA could still be accepted (timezones ahead of UTC) or a still valid one could be discarded too early (timezones behind UTC), by as many hours as the UTC offset of the host.
+
+- Fix: the PeeringDB AS-SET and max-prefix enrichers each sent their own bulk ``net`` query to PeeringDB, unconditionally, even when the requested ASNs were already fresh in the on-disk cache.
+
+  Since both enrichers query the same set of client ASNs, every run sent two identical bulk requests; on hosts running the tool repeatedly in a short time span (a dry-run followed by an apply, retries, and so on) this could hit PeeringDB's anonymous rate limit (2 identical requests per minute) and stall the run for about a minute in the client's retry backoff. ASNs already covered by another enricher's bulk query in the same run, or still valid in the on-disk cache, are no longer re-queried.
+
+  See also `GitHub PR 147 <https://github.com/pierky/arouteserver/pull/147>`__.
+
+- Improvement (Docker image): add support for hooks via the ``HOOKS`` environment variable.
+
+  The ``HOOKS`` environment variable can be passed to the Docker container to set the ``--use-hooks`` option of the ``arouteserver`` command.
+
+  See also `GitHub PR 148 <https://github.com/pierky/arouteserver/pull/148>`__.
+
 1.25
 ----
 
