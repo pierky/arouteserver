@@ -16,6 +16,12 @@ Change log
 
   See also `GitHub PR 147 <https://github.com/pierky/arouteserver/pull/147>`__.
 
+- Improvement (Docker image): add support for hooks via the ``HOOKS`` environment variable.
+
+  The ``HOOKS`` environment variable can be passed to the Docker container to set the ``--use-hooks`` option of the ``arouteserver`` command.
+
+  See also `GitHub PR 148 <https://github.com/pierky/arouteserver/pull/148>`__.
+
 1.25
 ----
 
