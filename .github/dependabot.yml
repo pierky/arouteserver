@@ -1,0 +1,28 @@
+# Updates are proposed against the 'dev' branch, where development happens.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    target-branch: "dev"
+    schedule:
+      interval: "weekly"
+    groups:
+      github-actions:
+        patterns: ["*"]
+
+  # Keeps uv.lock up to date, within the ranges set in pyproject.toml.
+  - package-ecosystem: "uv"
+    directory: "/"
+    target-branch: "dev"
+    schedule:
+      interval: "weekly"
+    groups:
+      python-dependencies:
+        patterns: ["*"]
+
+  # Only the pinned images (the uv one): the base image is a build argument.
+  - package-ecosystem: "docker"
+    directory: "/docker"
+    target-branch: "dev"
+    schedule:
+      interval: "weekly"

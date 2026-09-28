@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -e "setup.py" ]; then
+if [ ! -e "pyproject.toml" ]; then
 	echo "The script must be executed from within the repository's root directory."
 	exit 1
 fi

@@ -14,25 +14,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-try:
-    from importlib.resources import files
-    USE = "files"
-except ImportError:
-    try:
-        from importlib_resources import files
-        USE = "files"
-    except ImportError:
-        import pkg_resources
-        USE = "pkg_resources"
+from importlib.resources import files
 
 from .errors import ResourceNotFoundError
 
 
 def get_local_dir(dirname):
-    if USE == "pkg_resources":
-        pkg_path = pkg_resources.resource_filename("pierky.arouteserver", dirname)
-    else:
-        pkg_path = files("pierky.arouteserver") / dirname
+    pkg_path = files("pierky.arouteserver") / dirname
 
     if os.path.isdir(pkg_path):
         return pkg_path

@@ -2,6 +2,12 @@ name: Tests and push to PyPi and DockerHub
 
 on: push
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  # A newer push supersedes the running jobs, but release tags are never
+  # cancelled.
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
 jobs:
   tests:
     name: Run tests
@@ -11,7 +17,7 @@ jobs:
     strategy:
       matrix:
         python-version:
-        # This list must be kept in sync with setup.py.
+        # This list must be kept in sync with pyproject.toml and the_latest_deps.yml.
         - "3.10"
         - "3.11"
         - "3.12"
@@ -24,23 +30,31 @@ jobs:
                       # sections of this file.
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        id: setup-python
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v10.2.0
+        with:
+          enable-cache: true
 
       - name: Install bgpq3 / bgpq4
         run: |
           ./tests/external_resources/install_bgpq3.sh
           ./tests/external_resources/install_bgpq4.sh
 
+      # The environment is created from uv.lock ('--locked' fails if it's
+      # not in sync with pyproject.toml); its bin directory is added to PATH
+      # so that the next steps run inside it.
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install -r requirements-dev.txt
+          uv sync --locked --group dev --python "${{ steps.setup-python.outputs.python-path }}"
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
 
       - name: Flake8
         run: flake8
@@ -109,7 +123,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
 
       - name: Build the image
         run: >
@@ -126,7 +140,7 @@ jobs:
             --rm \
             -e SECRET_PEERINGDB_API_KEY="${SECRET_PEERINGDB_API_KEY}" \
             pierky/arouteserver:${{ matrix.docker-image.target_image }} \
-              bash -c 'pip install -r requirements-dev.txt && pytest -vsx tests/static'
+              bash -c 'pip install --group dev && pytest -vsx tests/static'
         env:
           SECRET_PEERINGDB_API_KEY: ${{ secrets.SECRET_PEERINGDB_API_KEY }}
 
@@ -478,22 +492,19 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v10.2.0
         with:
-          python-version: 3.14
+          python-version: "3.14"
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install --upgrade setuptools
-          pip install --upgrade packaging
-
+      # sdist + wheel, in dist/
       - name: Build the release
-        run: python setup.py sdist
+        run: uv build
+
+      - name: Check the distribution files (metadata, long description)
+        run: uvx twine check --strict dist/*
 
       # All the tags go to PyPI test. Attestations are disabled here since
       # Test PyPI doesn't need them, and generating them here would leave a
@@ -521,27 +532,27 @@ jobs:
 
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
 
       - name: Get the release
-        run: echo "::set-output name=CURRENT_RELEASE::$(python -c 'from pierky.arouteserver.version import __version__; print(__version__)')"
+        run: echo "CURRENT_RELEASE=$(python -c 'from pierky.arouteserver.version import __version__; print(__version__)')" >> "$GITHUB_OUTPUT"
         id: get_the_release
 
       - name: Is it a stable?
-        run: echo "::set-output name=IS_STABLE_RELEASE::$(python -c 'from pierky.arouteserver.version import __version__; import re; import sys; re.match(r"^\d+\.\d+\.\d+$", __version__); sys.stdout.write(str(bool(re.match(r"^\d+\.\d+\.\d+$", __version__))))')"
+        run: echo "IS_STABLE_RELEASE=$(python -c 'from pierky.arouteserver.version import __version__; import re; import sys; re.match(r"^\d+\.\d+\.\d+$", __version__); sys.stdout.write(str(bool(re.match(r"^\d+\.\d+\.\d+$", __version__))))')" >> "$GITHUB_OUTPUT"
         id: is_stable_release
 
       - name: Show the arguments
         run: echo "Release ${{ steps.get_the_release.outputs.CURRENT_RELEASE }} - stable ${{ steps.is_stable_release.outputs.IS_STABLE_RELEASE }}"
 
       - name: Login to DockerHub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Push to Docker Hub (current release, CPython)
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           push: true
           file: ./docker/Dockerfile
@@ -550,7 +561,7 @@ jobs:
           tags: pierky/arouteserver:${{ steps.get_the_release.outputs.CURRENT_RELEASE }}
 
       - name: Push to Docker Hub (current release, PyPy)
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           push: true
           file: ./docker/Dockerfile
@@ -561,7 +572,7 @@ jobs:
       - name: Push to Docker Hub (latest, CPython)
         # Only stable releases
         if: steps.is_stable_release.outputs.IS_STABLE_RELEASE == 'True'
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           push: true
           file: ./docker/Dockerfile
@@ -572,7 +583,7 @@ jobs:
       - name: Push to Docker Hub (latest, PyPy)
         # Only stable releases
         if: steps.is_stable_release.outputs.IS_STABLE_RELEASE == 'True'
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           push: true
           file: ./docker/Dockerfile
@@ -581,7 +592,7 @@ jobs:
           tags: pierky/arouteserver:latest-pypy3
 
       - name: Update Docker Hub description
-        uses: peter-evans/dockerhub-description@v2
+        uses: peter-evans/dockerhub-description@v5
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           # This must be the DockerHub password, since AToW

@@ -4,7 +4,7 @@ function usage() {
 	echo "utils/test_config [bird4 | bird6 | openbgpd ] <config_file_path>"
 }
 
-if [ ! -e "setup.py" ]; then
+if [ ! -e "pyproject.toml" ]; then
 	echo "The script must be executed from within the repository's root directory."
 	exit
 fi

@@ -16,8 +16,12 @@ formats:
 sphinx:
   configuration: docs/conf.py
 
+# The project and its runtime dependencies are installed from uv.lock,
+# together with the 'docs' group and the default 'dev' one (the code
+# documentation imports the live tests modules, which need requests-mock).
 python:
   install:
-  - requirements: requirements.txt
-  - requirements: requirements-dev.txt
-  - requirements: requirements-docs.txt
+    - method: uv
+      command: sync
+      groups:
+        - docs

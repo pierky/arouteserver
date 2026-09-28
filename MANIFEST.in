@@ -2,8 +2,7 @@ include LICENSE
 include README.rst
 include CHANGES.rst
 include MANIFEST.in
-include requirements.txt
-include setup.cfg
+include scripts/arouteserver
 recursive-include pierky *.py
 recursive-include pierky/arouteserver/config.d *
 recursive-include pierky/arouteserver/templates *

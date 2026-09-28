@@ -1,0 +1,101 @@
+[build-system]
+# 77.0 is the first release supporting PEP 639 license expressions.
+requires = ["setuptools>=77.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "arouteserver"
+dynamic = ["version", "readme"]
+description = "A Python tool to automatically build (and test) configurations for BGP route servers."
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Pier Carlo Chiodi", email = "pierky@pierky.com" },
+]
+maintainers = [
+    { name = "Pier Carlo Chiodi", email = "pierky@pierky.com" },
+]
+# To be kept in sync with the classifiers below and with
+# .github/workflows/cicd.yml.
+requires-python = ">=3.10"
+keywords = ["BGP", "Route server", "BIRD", "IP Routing", "OpenBGPD", "IXP", "IX", "Internet Exchange"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+
+    "Environment :: Console",
+
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "Intended Audience :: Telecommunications Industry",
+
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+
+    # To be kept in sync with .github/workflows/cicd.yml
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: System :: Networking",
+]
+# Upper bounds are only set for libraries with a history of breaking
+# changes across major releases. The weekly workflow
+# .github/workflows/test_latest_deps.yml tests against the newest
+# releases allowed here.
+dependencies = [
+    "aggregate6~=1.0",
+    "Jinja2>=3.0.0,<4.0",
+    "PyYAML>=6.0,<7.0",
+    "requests>=2.18.4,<3.0",
+    "packaging>=24.0",
+    "urllib3>=1.26.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/pierky/arouteserver"
+Download = "https://github.com/pierky/arouteserver"
+Documentation = "https://arouteserver.readthedocs.io/"
+Changelog = "https://github.com/pierky/arouteserver/blob/master/CHANGES.rst"
+Issues = "https://github.com/pierky/arouteserver/issues"
+
+[project.scripts]
+arouteserver = "pierky.arouteserver.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "flake8>=7.3.0",
+    "requests-mock>=1.12.1",
+]
+docs = [
+    "sphinx",
+    "sphinx_rtd_theme",
+    # https://github.com/readthedocs/readthedocs.org/issues/8616
+    "docutils!=0.18",
+]
+
+[tool.setuptools.dynamic]
+version = { attr = "pierky.arouteserver.version.__version__" }
+readme = { file = ["README.rst", "CHANGES.rst"], content-type = "text/x-rst" }
+
+[tool.setuptools.packages.find]
+# 'pierky' is a PEP 420 implicit namespace package (no __init__.py), shared
+# with other projects. Non-Python files (templates, config.d, live tests
+# skeleton) are picked up via MANIFEST.in.
+include = ["pierky*"]
+exclude = ["*__pycache__*"]
+
+[tool.uv]
+# Only affects uv.lock, not the published metadata. The sdists of py-radix
+# (a dependency of aggregate6) 1.0.5 and 1.1.0 declare a version in their
+# metadata that doesn't match the release (e.g. '1.1.0+dev.v1.1.0'), so
+# pip refuses them: on CPython the wheels are used instead, but on PyPy,
+# which needs the sdist, pip ends up installing 0.10.0. The lock file pins
+# the same version there.
+constraint-dependencies = [
+    "py-radix<1.0; platform_python_implementation == 'PyPy'",
+]

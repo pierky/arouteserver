@@ -1,4 +1,0 @@
-pytest==9.1.1
-flake8==7.3.0
-coveralls
-requests-mock==1.12.1
