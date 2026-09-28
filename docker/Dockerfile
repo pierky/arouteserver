@@ -3,7 +3,7 @@ ARG base_image="python:3.14"
 # uv is only used at build time, to export the exact (hash-pinned) runtime
 # dependencies from uv.lock: it's mounted when needed and it doesn't end
 # up in the final image.
-FROM ghcr.io/astral-sh/uv:0.12.18 AS uv
+FROM ghcr.io/astral-sh/uv:0.12.19 AS uv
 
 FROM ${base_image}
 
