@@ -3,8 +3,8 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
-next release
-------------
+1.26.0
+------
 
 - Improvement (packaging): the project moved to ``pyproject.toml`` (PEP 621), and a wheel is now published on PyPI alongside the source distribution.
 
