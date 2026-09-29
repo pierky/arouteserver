@@ -36,6 +36,7 @@ from .enrichers.irrdb import IRRDBConfigEnricher_ASNs, \
 from .enrichers.pdb_as_set import PeeringDBConfigEnricher_ASSet
 from .enrichers.pdb_max_prefix import PeeringDBConfigEnricher_MaxPrefix
 from .enrichers.pdb_never_via_route_servers import NeverViaRouteServersEnricher
+from .enrichers.pdb_rtbh_community import PeeringDBConfigEnricher_RTBHCommunity
 from .enrichers.rpki_aspas import RPKIASPAsEnricher
 from .enrichers.rpki_roas import RPKIROAsEnricher
 from .enrichers.rtt import RTTGetterConfigEnricher
@@ -733,6 +734,14 @@ class ConfigBuilder(object):
         )
         if filtering["never_via_route_servers"]["peering_db"]:
             used_enricher_classes.append(NeverViaRouteServersEnricher)
+
+        # RTBH community of the clients from PeeringDB: only needed
+        # when blackhole filtering is enabled for at least one of the
+        # address families the configuration is built for.
+        bh_cfg = self.cfg_general["blackhole_filtering"]
+        ip_vers = [4, 6] if self.ip_ver is None else [self.ip_ver]
+        if any(bh_cfg["policy_ipv{}".format(ip_ver)] for ip_ver in ip_vers):
+            used_enricher_classes.append(PeeringDBConfigEnricher_RTBHCommunity)
 
         for enricher_class in used_enricher_classes:
             enricher = enricher_class(self, threads=self.threads)

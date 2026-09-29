@@ -481,6 +481,15 @@ The NO_EXPORT well-known community is also added.
 {%	endif %}
 </p></li>
 
+{%	set bh_ns = namespace(client_comm_used=False) %}
+{%	for client in clients if client.cfg.blackhole_filtering.announce_to_client and
+	   (client.cfg.blackhole_filtering.client_community.std or client.cfg.blackhole_filtering.client_community.lrg) %}
+{%		set bh_ns.client_comm_used = True %}
+{%	endfor %}
+{%	if bh_ns.client_comm_used %}
+<li><p>Routes announced to some clients are also tagged with the <strong>client-specific RTBH community</strong>, as configured on the route server or published by the client itself on PeeringDB (<code>rtbh_community</code> attribute). Depending on the configuration of the client, this community can replace the BLACKHOLE well-known community.</p></li>
+{%	endif %}
+
 <li><p>Blackhole filtering requests bypass any RPKI validation check and min/max length check.</p></li>
 {% endif %}
 </ul>

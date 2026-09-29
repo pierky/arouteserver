@@ -98,6 +98,9 @@ default             policy_ipv6: None
 default             rewrite_next_hop_ipv4: None
 default             rewrite_next_hop_ipv6: None
 default             add_noexport: True
+                    client_community:
+configured            peering_db: True
+configured            action: add
                   graceful_shutdown:
 configured          enabled: False
 configured          local_pref: 0

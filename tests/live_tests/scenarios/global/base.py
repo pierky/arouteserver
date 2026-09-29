@@ -663,9 +663,10 @@ class BasicScenario(LiveScenario):
         # Also clients that are enabled to receive the blackhole route must
         # receive the 65530:4 rpki_bgp_origin_validation_not_performed and the
         # 65530:5 rpki_aspa_verification_not_performed communities.
+        # 3:666 is AS3's RTBH community from PeeringDB.
         self.receive_route(self.AS3, self.DATA["AS101_roa_blackhole"], self.rs,
                            next_hop=next_hop,
-                           std_comms=["65535:666", "65535:65281", "65530:4", "65530:5"],
+                           std_comms=["65535:666", "65535:65281", "65530:4", "65530:5", "3:666"],
                            lrg_comms=["999:65530:4", "999:65530:5"])
 
     def test_046_aspa_valid_as_path(self):
@@ -790,35 +791,48 @@ class BasicScenario(LiveScenario):
                            std_comms=["65530:4", "65530:5"], lrg_comms=["65534:0:0", "999:65530:4", "999:65530:5"])
         self.log_contains(self.rs, "blackhole filtering request from {AS2_1} - ACCEPTING " + self.DATA["AS2_blackhole3"], {"AS2_1": self.AS2})
 
-    def test_071_blackholed_prefixes_as_seen_by_enabled_clients_BLACKHOLE(self):
-        """{}: blackholed prefixes as seen by enabled clients (BLACKHOLE)"""
-
+    def _get_blackholed_prefix_comms(self, inst):
         # BGP communities 65530:4 (rpki_bgp_origin_validation_not_performed)
         # and 65530:5 (rpki_aspa_verification_not_performed) are expected to be seen
         # by clients that are enabled to receive the blackhole route.
-        for inst in (self.AS1_1, self.AS3, self.AS4):
-            self.receive_route(inst, self.DATA["AS2_blackhole1"], self.rs, next_hop=self.DATA["blackhole_IP"],
-                               std_comms=["65535:666", "65535:65281", "65530:4", "65530:5"], lrg_comms=["999:65530:4", "999:65530:5"])
+        std_comms = ["65535:666", "65535:65281", "65530:4", "65530:5"]
+        lrg_comms = ["999:65530:4", "999:65530:5"]
+
+        # RTBH community of the client (blackhole_filtering.client_community).
+        if inst is self.AS3:
+            # From PeeringDB, 'add' inherited from general.yml.
+            std_comms.append("3:666")
+        elif inst is self.AS4:
+            # From PeeringDB, 'replace': BLACKHOLE is removed.
+            std_comms.remove("65535:666")
+            lrg_comms.append("4:666:0")
+        elif inst is self.AS151866:
+            # Configured in clients.yml, it takes precedence over the one
+            # from PeeringDB; it's the same value of the 'blackholing'
+            # community, that is scrubbed from outbound routes: it must
+            # be added anyway.
+            std_comms.append("65534:0")
+        # AS1_1: 65535:666 from PeeringDB, 'replace': no changes.
+
+        return std_comms, lrg_comms
+
+    def _test_blackholed_prefixes_as_seen_by_enabled_clients(self, prefix):
+        for inst in (self.AS1_1, self.AS3, self.AS4, self.AS151866):
+            std_comms, lrg_comms = self._get_blackholed_prefix_comms(inst)
+            self.receive_route(inst, self.DATA[prefix], self.rs, next_hop=self.DATA["blackhole_IP"],
+                               std_comms=std_comms, lrg_comms=lrg_comms)
+
+    def test_071_blackholed_prefixes_as_seen_by_enabled_clients_BLACKHOLE(self):
+        """{}: blackholed prefixes as seen by enabled clients (BLACKHOLE)"""
+        self._test_blackholed_prefixes_as_seen_by_enabled_clients("AS2_blackhole1")
 
     def test_071_blackholed_prefixes_as_seen_by_enabled_clients_std_cust(self):
         """{}: blackholed prefixes as seen by enabled clients (std_cust)"""
-
-        # BGP communities 65530:4 (rpki_bgp_origin_validation_not_performed)
-        # and 65530:5 (rpki_aspa_verification_not_performed) are expected to be seen
-        # by clients that are enabled to receive the blackhole route.
-        for inst in (self.AS1_1, self.AS3, self.AS4):
-            self.receive_route(inst, self.DATA["AS2_blackhole2"], self.rs, next_hop=self.DATA["blackhole_IP"],
-                               std_comms=["65535:666", "65535:65281", "65530:4", "65530:5"], lrg_comms=["999:65530:4", "999:65530:5"])
+        self._test_blackholed_prefixes_as_seen_by_enabled_clients("AS2_blackhole2")
 
     def test_071_blackholed_prefixes_as_seen_by_enabled_clients_lrg_cust(self):
         """{}: blackholed prefixes as seen by enabled clients (lrg_cust)"""
-
-        # BGP communities 65530:4 (rpki_bgp_origin_validation_not_performed)
-        # and 65530:5 (rpki_aspa_verification_not_performed) are expected to be seen
-        # by clients that are enabled to receive the blackhole route.
-        for inst in (self.AS1_1, self.AS3, self.AS4):
-            self.receive_route(inst, self.DATA["AS2_blackhole3"], self.rs, next_hop=self.DATA["blackhole_IP"],
-                               std_comms=["65535:666", "65535:65281", "65530:4", "65530:5"], lrg_comms=["999:65530:4", "999:65530:5"])
+        self._test_blackholed_prefixes_as_seen_by_enabled_clients("AS2_blackhole3")
 
     def test_071_blackholed_prefixes_not_seen_by_not_enabled_clients(self):
         """{}: blackholed prefixes not seen by not enabled clients"""

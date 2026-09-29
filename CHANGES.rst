@@ -3,6 +3,23 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
+next release
+------------
+
+- New: client-specific **RTBH community** for blackhole filtering.
+
+  Routes tagged for blackhole filtering that are announced to a client can now also carry the BGP community that the client uses to trigger remote blackholing on its own network. The community can be configured on a client-by-client basis in ``clients.yml`` (``blackhole_filtering.client_community.std`` / ``lrg``), or fetched from PeeringDB, using the recently introduced ``rtbh_community`` attribute of the network (``blackhole_filtering.client_community.peering_db``).
+
+  The ``blackhole_filtering.client_community.action`` option allows to choose whether the client-specific community is added to the BLACKHOLE well-known community (``add``, default) or replaces it (``replace``).
+
+  Fetching the RTBH community from PeeringDB is enabled by default (``client_community.peering_db: True``), so it's automatically in place as soon as blackhole filtering is configured (``policy_ipv4`` / ``policy_ipv6``).
+
+  **Upgrade notes**: on route servers where blackhole filtering is already configured, after the upgrade the RTBH community published on PeeringDB by the clients is added to the blackhole routes announced to them; the BLACKHOLE well-known community is still attached to those routes (``action: add``). To keep the previous behaviour, set ``blackhole_filtering.client_community.peering_db`` to False.
+
+  Data from PeeringDB is fetched using the same bulk queries and cache used for the other PeeringDB-based features, so networks that are already queried for them are not queried twice.
+
+  See also `PeeringDB issue 1978 <https://github.com/peeringdb/peeringdb/issues/1978>`__.
+
 1.26.0
 ------
 

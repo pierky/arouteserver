@@ -1,0 +1,1 @@
+{"meta": {}, "data": [{"id": 4, "name": "AS4 network name", "asn": 4, "irr_as_set": "AS-AS4", "info_prefixes4": 20, "info_prefixes6": 10, "status": "ok", "meta": {"rtbh_community": "065000:0666"}}]}

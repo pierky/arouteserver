@@ -102,3 +102,5 @@ These functions are called for route entering / leaving the route server; their 
 - return value: none
 
 This function is called when a blackhole filtering request is processed. It can be used to perform custom manipulation of the route before it is announced to clients.
+
+Please note: the client-specific RTBH community (``blackhole_filtering.client_community``) is added to the route later, after the outbound communities scrubbing, so it's not visible from within this function.

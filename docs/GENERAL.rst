@@ -1519,6 +1519,87 @@ authorized to advertise."
 
 
 
+- ``client_community``:
+  Client-specific RTBH community.
+
+
+  Tagged routes that are announced to a client can also be
+  tagged with the BGP community that the client itself uses
+  to trigger remote blackholing on its network (RTBH), so that
+  its routers can act upon them without the need of matching
+  the BLACKHOLE community.
+
+
+  The community can be configured on a client-by-client basis
+  in the **blackhole_filtering.client_community** section of the
+  clients.yml file, using the **std** (standard, x:x) and/or
+  **lrg** (large, x:x:x) options, or it can be fetched from
+  PeeringDB (**rtbh_community** attribute of the network).
+
+
+  The client-specific community is added after the scrubbing
+  of the route server's inbound communities (for example
+  **blackholing**), so it's announced to the client even when it
+  overlaps with one of them.
+
+
+- ``peering_db``:
+  When True, the RTBH community of the clients is fetched
+  from PeeringDB, unless a specific value is configured for
+  the client in clients.yml.
+  Only clients that are enabled to receive tagged routes
+  (**announce_to_client**) are taken into account.
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+  Default: **True**
+
+  Example:
+
+  .. code:: yaml
+
+     peering_db: True
+
+
+
+- ``action``:
+  How the client-specific community is used.
+
+
+  Options:
+
+
+  - **add**: the community is added to the tagged routes,
+    which keep the BLACKHOLE well-known community 65535:666.
+
+
+  - **replace**: the community is added to the tagged routes,
+    and the BLACKHOLE well-known community 65535:666 is
+    removed from them.
+
+
+  When no client-specific community is known for the client
+  (not configured in clients.yml nor fetched from PeeringDB)
+  the tagged routes are announced unchanged, with the
+  BLACKHOLE well-known community.
+
+
+  Can be overwritten on a client-by-client basis.
+
+
+  Default: **"add"**
+
+  Example:
+
+  .. code:: yaml
+
+     action: "add"
+
+
+
+
 
 Graceful shutdown: ``graceful_shutdown``
 +++++++++++++++++++++++++++++++++++++++++

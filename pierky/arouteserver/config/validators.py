@@ -485,6 +485,7 @@ class ValidatorCommunity(ConfigParserValidator):
         self.rs_as = rs_as
         self.peer_as_macro_needed = kwargs.get("peer_as_macro_needed", False)
         self.dyn_val_macro_needed = kwargs.get("dyn_val_macro_needed", False)
+        self.allow_reserved_range = kwargs.get("allow_reserved_range", False)
 
     def _expand_rs_as_macro(self, v):
         if "rs_as" in v:
@@ -548,7 +549,7 @@ class ValidatorCommunityStd(ValidatorCommunity):
                 if part_val < 0 or part_val > 65535:
                     raise ConfigError()
                 validated_parts.append(str(int(part_val)))
-            if parts[0] == "65535":
+            if parts[0] == "65535" and not self.allow_reserved_range:
                 raise ConfigError(
                     "range 65535:x is reserved"
                 )

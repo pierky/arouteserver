@@ -3,6 +3,39 @@ Global scenario
 
 Built to group as many tests as possible in a single scenario.
 
+- **Blackhole filtering**:
+
+  - Blackhole requests are accepted from clients (BLACKHOLE 65535:666, local
+    65534:0 and 65534:0:0 communities) and announced to the enabled clients
+    with next-hop 192.0.2.66 / 2001:db8:1:1::66 and NO_EXPORT.
+
+  - Client-specific RTBH communities (``blackhole_filtering.client_community``):
+    ``peering_db`` True (default) and ``action`` "add" (default) in the
+    general config; PeeringDB data from ``peeringdb_data/net_*.json``.
+
+    ========  ===========  ================  =========  =====================================
+    Client    RTBH comm.   Source            Action     Communities of blackholed routes
+                                                        as seen by the client
+    ========  ===========  ================  =========  =====================================
+    AS1_1     65535:666    PeeringDB         replace    65535:666: nothing changes, the RTBH
+                                                        community is the BLACKHOLE one
+    AS1_2     \-           \-                \-         not enabled to receive blackholed
+                                                        routes (announce_to_client False),
+                                                        PeeringDB not queried
+    AS2       \-           \- (peering_db    add        65535:666
+                           False)
+    AS3       3:666        PeeringDB         add        65535:666, 3:666
+    AS4       4:666:0      PeeringDB         replace    4:666:0 (65535:666 removed)
+    AS151866  65534:0      clients.yml       add        65535:666, 65534:0: the one from
+                           (precedence over             clients.yml wins; same value of the
+                           PeeringDB's                  'blackholing' community, scrubbed from
+                           151866:1:2)                  outbound routes but added anyway
+    AS222     \-           \- (PeeringDB     add        65535:666
+                           w/o RTBH comm.)
+    AS223     \-           \- (no PeeringDB  add        65535:666
+                           record)
+    ========  ===========  ================  =========  =====================================
+
 - **AS1**:
 
   AS-SETs:
@@ -90,9 +123,11 @@ Built to group as many tests as possible in a single scenario.
     AS2_good1                2.0.1.0/24
     AS2_good2                2.0.2.0/24
 
-    AS2_blackhole1           2.0.3.1/32         announced with BLACKHOLE 65535:666 comm   propagated with only 65535:666 to AS1_1 and AS3
-                                                                                          (AS1_2 has "announce_to_client" = False) and
-                                                                                          next-hop 192.0.2.66; NO_EXPORT also added
+    AS2_blackhole1           2.0.3.1/32         announced with BLACKHOLE 65535:666 comm   propagated to AS1_1, AS3, AS4 and AS151866
+                                                                                          (AS1_2 has "announce_to_client" = False) with
+                                                                                          next-hop 192.0.2.66 and NO_EXPORT; RTBH
+                                                                                          communities as per the client-specific
+                                                                                          settings (see "Blackhole filtering" above)
     AS2_blackhole2           2.0.3.2/32         announced with local 65534:0 comm         as above
     AS2_blackhole3           2.0.3.3/32         announced with local 65534:0:0 comm       as above
 
