@@ -2,6 +2,7 @@
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
@@ -36,4 +37,4 @@ Live test, OpenBGPD 9.2, roles, IPv6: dumping routes...
 Live test, OpenBGPD 9.2, roles, IPv6: stopping instances...
 
 
-======================== 14 passed in 134.13s (0:02:14) ========================
+======================== 14 passed in 122.98s (0:02:02) ========================

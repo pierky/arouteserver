@@ -2,6 +2,7 @@
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
@@ -36,4 +37,4 @@ Live test, BIRD v3.3, roles, IPv6: dumping routes...
 Live test, BIRD v3.3, roles, IPv6: stopping instances...
 
 
-======================== 14 passed in 135.34s (0:02:15) ========================
+======================== 14 passed in 134.95s (0:02:14) ========================

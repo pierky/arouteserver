@@ -2,8 +2,9 @@
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
-collecting ... collected 285 items
+collecting ... collected 299 items
 
 ASPA builder: OpenBGPD, ASPA without roles raises an error PASSED
 ASPA builder: OpenBGPD, ASPA with roles is fine PASSED
@@ -37,6 +38,8 @@ Clients config parser: 16bit_mapped_asn for a 16bit ASN PASSED
 Clients config parser: 16bit_mapped_asn re-used for another ASN PASSED
 Clients config parser: 16bit_mapped_asn same AS multiple clients PASSED
 Clients config parser: AS number PASSED
+Clients config parser: blackhole filtering client community, invalid values PASSED
+Clients config parser: inherit from general cfg - blackhole filtering client community PASSED
 Clients config parser: inherit from general cfg - blackhole filtering PASSED
 Clients config parser: custom BGP communities PASSED
 Clients config parser: custom_options - bad AF format PASSED
@@ -67,6 +70,7 @@ General config parser: add_path PASSED
 General config parser: allow_as_set PASSED
 General config parser: allow_longer_prefixes PASSED
 General config parser: blackhole_filtering, announce_to_client PASSED
+General config parser: blackhole_filtering, client_community PASSED
 General config parser: blackhole_filtering, rewrite_next_hop, ipv4 PASSED
 General config parser: blackhole_filtering, rewrite_next_hop, ipv6 PASSED
 General config parser: blackhole_filtering, policy_ipv4 PASSED
@@ -227,6 +231,7 @@ IRRDB enricher: autnum only PASSED
 IRRDB enricher: IPv4 white list for IPv6 configs PASSED
 IRRDB enricher: empty autnum + empty AS-SET PASSED
 Max-prefix from PeeringDB: increment PASSED
+PeeringDB RTBH community enricher PASSED
 IRR queries fail-over: single timeout PASSED
 IRR queries fail-over: single failure PASSED
 IRR queries fail-over: all timeout PASSED
@@ -252,6 +257,8 @@ IRRDB info: RSets, cache expired PASSED
 PeeringDB network: get data PASSED
 PeeringDB network: missing data PASSED
 PeeringDB: AS-SETs parsing PASSED
+PeeringDB: RTBH community parsing PASSED
+PeeringDB network: RTBH community PASSED
 PeeringDB API key: 429 error handling PASSED
 PeeringDB API key: empty PASSED
 PeeringDB API key: env var wins over file PASSED
@@ -261,6 +268,13 @@ PeeringDB API: 429 error handling PASSED
 PeeringDB bulk query cache: hit PASSED
 PeeringDB bulk query cache: hit missed PASSED
 PeeringDB bulk query cache: hit with no data PASSED
+PeeringDB bulk query cache: ASNs already loaded are not queried again PASSED
+PeeringDB bulk query cache: ASNs given as strings PASSED
+PeeringDB bulk query cache: ASNs valid in the on-disk cache are not queried PASSED
+PeeringDBNet._is_cached: expired entry PASSED
+PeeringDBNet._is_cached: fresh entry PASSED
+PeeringDBNet._is_cached: fresh 'no data for this network' entry PASSED
+PeeringDBNet._is_cached: no entry PASSED
 RPKI ROAs: RIPE Validator TAs PASSED
 RPKI ROAs: NTT TAs PASSED
 RPKI ROAs: rpki-client TAs PASSED
@@ -270,6 +284,10 @@ RPKI ROAs: rpki-client expired ROAs PASSED
 RPKI ROAs: OctoRPKI expired file PASSED
 RPKI ROAs: OctoRPKI out of validity PASSED
 RPKI ROAs: OctoRPKI valid file PASSED
+RPKI ROAs/ASPAs: expiration is evaluated in UTC, whatever the local TZ SUBPASSED(tz='UTC')
+RPKI ROAs/ASPAs: expiration is evaluated in UTC, whatever the local TZ SUBPASSED(tz='Asia/Tokyo')
+RPKI ROAs/ASPAs: expiration is evaluated in UTC, whatever the local TZ SUBPASSED(tz='America/New_York')
+RPKI ROAs/ASPAs: expiration is evaluated in UTC, whatever the local TZ PASSED
 RPKI ASPAs: RIPE Validator format PASSED
 RPKI ASPAs: NTT / rpki-client format PASSED
 RPKI ASPAs: invalid records are skipped PASSED
@@ -291,58 +309,12 @@ RTT getter parser: empty PASSED
 RTT getter parser: new line only PASSED
 RTT getter parser: none PASSED
 
-=============================== warnings summary ===============================
-ASPA builder: ASPAs gathered from a JSON file: 1 warning
-ASPA builder: no ASPA available: 2 warnings
-ASPA builder: ASPA with no providers: 2 warnings
-ASPA builder: ROAs and ASPAs from the same URL are fetched once: 1 warning
-ASPA builder: ROAs and ASPAs from different URLs are fetched twice: 2 warnings
-RPKI ROAs: RIPE Validator TAs: 1 warning
-RPKI ROAs: NTT TAs: 1 warning
-RPKI ROAs: different formats: 1 warning
-RPKI ASPAs: RIPE Validator format: 1 warning
-RPKI ASPAs: NTT / rpki-client format: 1 warning
-RPKI ASPAs: invalid records are skipped: 1 warning
-RPKI ASPAs: too many invalid records: 1 warning
-RPKI ASPAs: ASPAs only, no ROAs needed: 1 warning
-RPKI ASPAs: cache built without ASPAs is refreshed: 1 warning
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:84: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    return datetime.datetime.utcnow()
-
-IX-F Member Export from clients command: simple: 1 warning
-IX-F Member Export from clients command: with description: 1 warning
-IX-F Member Export from clients command: with AS-SET: 1 warning
-IX-F Member Export from clients command: with 2 AS-SETs: 1 warning
-IX-F Member Export from clients command: AS-SET from asns: 1 warning
-IX-F Member Export from clients command: more than one IP: 1 warning
-IX-F Member Export from clients command: ams-ix.yml: 1 warning
-IX-F Member Export from clients command: bcix.yml: 1 warning
-IX-F Member Export from clients command: gr_ix.yml: 1 warning
-IX-F Member Export from clients command: inex.yml: 1 warning
-IX-F Member Export from clients command: lonap.yml: 1 warning
-IX-F Member Export from clients command: six.yml: 1 warning
-IX-F Member Export from clients command: sthix.yml: 1 warning
-IX-F Member Export from clients command: swissix.yml: 1 warning
-  /home/pierky/src/ars/pierky/arouteserver/commands/ixf_member_list_from_clients.py:192: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    res["timestamp"] = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
-
-RPKI ROAs: OctoRPKI expired file
-RPKI ROAs: OctoRPKI out of validity
-RPKI ROAs: OctoRPKI valid file
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:171: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
-    buildtime_dt_utc = datetime.datetime.utcfromtimestamp(int(generated))
-
-RPKI ROAs: OctoRPKI out of validity
-RPKI ROAs: OctoRPKI valid file
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:202: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
-    valid_dt_utc = datetime.datetime.utcfromtimestamp(int(valid))
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-================= 285 passed, 36 warnings in 96.23s (0:01:36) ==================
+=================== 299 passed, 3 subtests passed in 37.21s ====================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
@@ -355,69 +327,18 @@ External resources: last version via PyPI PASSED
 External resources: PeeringDB, max-prefix and AS-SET PASSED
 External resources: PeeringDB, never via route-servers PASSED
 External resources: route servers excluded from clients-from-euroix PASSED
-External resources: RPKI ROAs, NTT FAILED
+External resources: RPKI ROAs, NTT PASSED
+External resources: RPKI ROAs, RIPE PASSED
+External resources: RPKI ROAs, rpki-client PASSED
+External resources: prefixes from AS-SET via bgpq3 PASSED
+External resources: prefixes from AS-SET via bgpq4 PASSED
 
-=================================== FAILURES ===================================
-___________________ TestExternalResources.test_rpki_roas_ntt ___________________
-
-self = <tests.external_resources.test_external_resources.TestExternalResources testMethod=test_rpki_roas_ntt>
-
-    def test_rpki_roas_ntt(self):
-        """External resources: RPKI ROAs, NTT"""
->       self._test_rpki_roas_per_provider("ntt.net", use_expires_attr=True)
-
-tests/external_resources/test_external_resources.py:119: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-tests/external_resources/test_external_resources.py:85: in _test_rpki_roas_per_provider
-    rpki_roas.load_data()
-pierky/arouteserver/ripe_rpki_cache.py:62: in load_data
-    CachedObject.load_data(self)
-pierky/arouteserver/cached_objects.py:159: in load_data
-    self.raw_data = self._get_data()
-                    ^^^^^^^^^^^^^^^^
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-self = <pierky.arouteserver.ripe_rpki_cache.RIPE_RPKI_ROAs object at 0x78df876c8590>
-
-    def _get_data(self):
-        # List of (url, error)
-        errors = []
-        for url in self.urls:
-            try:
-                res = self._get_data_from_url(url)
-                logging.info(
-                    "RPKI data loaded successfully from {}".format(url)
-                )
-                return res
-            except RPKIValidatorCacheError as e:
-                logging.warning(str(e))
-                errors.append((url, str(e)))
-    
-        exc_msg = "Impossible to load the RPKI data:\n"
-        for url, err in errors:
-            exc_msg += " - while trying {}: {}\n".format(url, err)
->       raise RPKIValidatorCacheError(exc_msg)
-E       pierky.arouteserver.errors.RPKIValidatorCacheError: Impossible to load the RPKI data:
-E        - while trying https://rpki.gin.ntt.net/api/export.json: Error while retrieving ROAs from RIPE RPKI Validator cache (https://rpki.gin.ntt.net/api/export.json): ('Connection broken: IncompleteRead(311001 bytes read, 104858124 more expected)', IncompleteRead(311001 bytes read, 104858124 more expected))
-
-pierky/arouteserver/ripe_rpki_cache.py:406: RPKIValidatorCacheError
------------------------------- Captured log call -------------------------------
-WARNING  root:ripe_rpki_cache.py:400 Error while retrieving ROAs from RIPE RPKI Validator cache (https://rpki.gin.ntt.net/api/export.json): ('Connection broken: IncompleteRead(311001 bytes read, 104858124 more expected)', IncompleteRead(311001 bytes read, 104858124 more expected))
-=============================== warnings summary ===============================
-External resources: Euro-IX from clients build and validation
-External resources: Euro-IX from clients build and validation (using merge-file)
-  /home/pierky/src/ars/pierky/arouteserver/commands/ixf_member_list_from_clients.py:192: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    res["timestamp"] = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-=========================== short test summary info ============================
-FAILED External resources: RPKI ROAs, NTT - pierky.arouteserver.errors.RPKIVa...
-!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
-============= 1 failed, 9 passed, 2 warnings in 222.78s (0:03:42) ==============
+======================== 14 passed in 84.15s (0:01:24) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
@@ -442,11 +363,12 @@ Live test, BIRD v2, hooks example, IPv6: dumping routes...
 Live test, BIRD v2, hooks example, IPv6: stopping instances...
 
 
-============================== 4 passed in 30.18s ==============================
+============================== 4 passed in 30.41s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 26 items
 
@@ -493,11 +415,12 @@ Live test, BIRD v2, BGP communities, IPv6: dumping routes...
 Live test, BIRD v2, BGP communities, IPv6: stopping instances...
 
 
-======================== 26 passed in 140.59s (0:02:20) ========================
+======================== 26 passed in 138.92s (0:02:18) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
@@ -522,11 +445,12 @@ Live test, BIRD v2, default config, IPv6: dumping routes...
 Live test, BIRD v2, default config, IPv6: stopping instances...
 
 
-============================== 4 passed in 29.79s ==============================
+============================== 4 passed in 30.72s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 631 items
 
@@ -1218,11 +1142,12 @@ Live test, BIRD v2, global scenario, RFC8950: dumping routes...
 Live test, BIRD v2, global scenario, RFC8950: stopping instances...
 
 
-======================= 631 passed in 1837.14s (0:30:37) =======================
+======================= 631 passed in 1832.72s (0:30:32) =======================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 10 items
 
@@ -1253,11 +1178,12 @@ Live test, BIRD v2, gshut, IPv6: dumping routes...
 Live test, BIRD v2, gshut, IPv6: stopping instances...
 
 
-======================== 10 passed in 96.75s (0:01:36) =========================
+======================== 10 passed in 97.52s (0:01:37) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 26 items
 
@@ -1304,11 +1230,12 @@ Live test, BIRD v2, max-prefix, IPv6: dumping routes...
 Live test, BIRD v2, max-prefix, IPv6: stopping instances...
 
 
-======================== 26 passed in 318.74s (0:05:18) ========================
+======================== 26 passed in 318.07s (0:05:18) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 38 items
 
@@ -1383,11 +1310,12 @@ Live test, BIRD v2, path hiding, mitigation off, IPv6: dumping routes...
 Live test, BIRD v2, path hiding, mitigation off, IPv6: stopping instances...
 
 
-================== 36 passed, 2 skipped in 375.12s (0:06:15) ===================
+================== 36 passed, 2 skipped in 375.54s (0:06:15) ===================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 12 items
 
@@ -1412,11 +1340,12 @@ Live test, BIRD v2, RFC8950: dumping routes...
 Live test, BIRD v2, RFC8950: stopping instances...
 
 
-============================= 12 passed in 56.74s ==============================
+============================= 12 passed in 56.23s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
@@ -1441,18 +1370,12 @@ Live test, BIRD v2, examples, rich config, IPv6: dumping routes...
 Live test, BIRD v2, examples, rich config, IPv6: stopping instances...
 
 
-=============================== warnings summary ===============================
-Live test, BIRD v2, examples, rich config, IPv4: instances setup
-Live test, BIRD v2, examples, rich config, IPv6: instances setup
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:84: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    return datetime.datetime.utcnow()
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-======================== 4 passed, 2 warnings in 29.79s ========================
+============================== 4 passed in 29.55s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
@@ -1487,11 +1410,12 @@ Live test, BIRD v2, roles, IPv6: dumping routes...
 Live test, BIRD v2, roles, IPv6: stopping instances...
 
 
-======================== 14 passed in 135.87s (0:02:15) ========================
+======================== 14 passed in 136.20s (0:02:16) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 32 items
 
@@ -1544,11 +1468,12 @@ Live test, BIRD v2, RPKI INVALID tagging, IPv6: dumping routes...
 Live test, BIRD v2, RPKI INVALID tagging, IPv6: stopping instances...
 
 
-======================== 32 passed in 187.20s (0:03:07) ========================
+======================== 32 passed in 187.28s (0:03:07) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
@@ -1583,11 +1508,12 @@ Live test, BIRD v2, BOV custom comms, IPv6: dumping routes...
 Live test, BIRD v2, BOV custom comms, IPv6: stopping instances...
 
 
-======================== 14 passed in 101.05s (0:01:41) ========================
+======================== 14 passed in 102.62s (0:01:42) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 10 items
 
@@ -1610,11 +1536,12 @@ Live test, BIRD v2, RTR protocol: dumping routes...
 Live test, BIRD v2, RTR protocol: stopping instances...
 
 
-======================== 10 passed in 76.38s (0:01:16) =========================
+======================== 10 passed in 76.64s (0:01:16) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 166 items
 
@@ -1817,11 +1744,12 @@ Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: dumping routes...
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 
-======================= 166 passed in 351.54s (0:05:51) ========================
+======================= 166 passed in 350.80s (0:05:50) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 46 items
 
@@ -1888,11 +1816,12 @@ Live test, BIRD v2, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, BIRD v2, 'tag' reject policy scenario, IPv6: stopping instances...
 
 
-================== 45 passed, 1 skipped in 288.12s (0:04:48) ===================
+================== 45 passed, 1 skipped in 299.81s (0:04:59) ===================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
@@ -1917,11 +1846,12 @@ Live test, BIRD v3.2, hooks example, IPv6: dumping routes...
 Live test, BIRD v3.2, hooks example, IPv6: stopping instances...
 
 
-============================== 4 passed in 29.45s ==============================
+============================== 4 passed in 29.60s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 26 items
 
@@ -1968,11 +1898,12 @@ Live test, BIRD v3.2, BGP communities, IPv6: dumping routes...
 Live test, BIRD v3.2, BGP communities, IPv6: stopping instances...
 
 
-======================== 26 passed in 140.64s (0:02:20) ========================
+======================== 26 passed in 140.15s (0:02:20) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
@@ -1997,11 +1928,12 @@ Live test, BIRD v3.2, default config, IPv6: dumping routes...
 Live test, BIRD v3.2, default config, IPv6: stopping instances...
 
 
-============================== 4 passed in 29.15s ==============================
+============================== 4 passed in 29.88s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 631 items
 
@@ -2693,11 +2625,12 @@ Live test, BIRD v3.2, global scenario, RFC8950: dumping routes...
 Live test, BIRD v3.2, global scenario, RFC8950: stopping instances...
 
 
-======================= 631 passed in 1834.53s (0:30:34) =======================
+======================= 631 passed in 1819.15s (0:30:19) =======================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 10 items
 
@@ -2728,11 +2661,12 @@ Live test, BIRD v3.2, gshut, IPv6: dumping routes...
 Live test, BIRD v3.2, gshut, IPv6: stopping instances...
 
 
-======================== 10 passed in 95.06s (0:01:35) =========================
+======================== 10 passed in 94.98s (0:01:34) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 26 items
 
@@ -2779,11 +2713,12 @@ Live test, BIRD v3.2, max-prefix, IPv6: dumping routes...
 Live test, BIRD v3.2, max-prefix, IPv6: stopping instances...
 
 
-======================== 26 passed in 317.83s (0:05:17) ========================
+======================== 26 passed in 316.71s (0:05:16) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 38 items
 
@@ -2858,11 +2793,12 @@ Live test, BIRD v3.2, path hiding, mitigation off, IPv6: dumping routes...
 Live test, BIRD v3.2, path hiding, mitigation off, IPv6: stopping instances...
 
 
-================== 36 passed, 2 skipped in 370.70s (0:06:10) ===================
+================== 36 passed, 2 skipped in 371.17s (0:06:11) ===================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 12 items
 
@@ -2887,11 +2823,12 @@ Live test, BIRD v3.2, RFC8950: dumping routes...
 Live test, BIRD v3.2, RFC8950: stopping instances...
 
 
-============================= 12 passed in 55.86s ==============================
+============================= 12 passed in 55.85s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
@@ -2916,18 +2853,12 @@ Live test, BIRD v3.2, examples, rich config, IPv6: dumping routes...
 Live test, BIRD v3.2, examples, rich config, IPv6: stopping instances...
 
 
-=============================== warnings summary ===============================
-Live test, BIRD v3.2, examples, rich config, IPv4: instances setup
-Live test, BIRD v3.2, examples, rich config, IPv6: instances setup
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:84: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    return datetime.datetime.utcnow()
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-======================== 4 passed, 2 warnings in 31.18s ========================
+============================== 4 passed in 31.09s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
@@ -2962,11 +2893,12 @@ Live test, BIRD v3.2, roles, IPv6: dumping routes...
 Live test, BIRD v3.2, roles, IPv6: stopping instances...
 
 
-======================== 14 passed in 134.99s (0:02:14) ========================
+======================== 14 passed in 135.37s (0:02:15) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 32 items
 
@@ -3019,11 +2951,12 @@ Live test, BIRD v3.2, RPKI INVALID tagging, IPv6: dumping routes...
 Live test, BIRD v3.2, RPKI INVALID tagging, IPv6: stopping instances...
 
 
-======================== 32 passed in 184.52s (0:03:04) ========================
+======================== 32 passed in 187.48s (0:03:07) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
@@ -3058,11 +2991,12 @@ Live test, BIRD v3.2, BOV custom comms, IPv6: dumping routes...
 Live test, BIRD v3.2, BOV custom comms, IPv6: stopping instances...
 
 
-======================== 14 passed in 100.99s (0:01:40) ========================
+======================== 14 passed in 102.49s (0:01:42) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 10 items
 
@@ -3085,11 +3019,12 @@ Live test, BIRD v3.2, RTR protocol: dumping routes...
 Live test, BIRD v3.2, RTR protocol: stopping instances...
 
 
-======================== 10 passed in 76.38s (0:01:16) =========================
+======================== 10 passed in 75.50s (0:01:15) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 166 items
 
@@ -3292,11 +3227,12 @@ Live test, BIRD v3.2, tag prefix/origin empty AS-SET, IPv6: dumping routes...
 Live test, BIRD v3.2, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 
-======================= 166 passed in 350.00s (0:05:49) ========================
+======================= 166 passed in 350.93s (0:05:50) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 46 items
 
@@ -3363,11 +3299,12 @@ Live test, BIRD v3.2, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, BIRD v3.2, 'tag' reject policy scenario, IPv6: stopping instances...
 
 
-================== 45 passed, 1 skipped in 301.96s (0:05:01) ===================
+================== 45 passed, 1 skipped in 286.68s (0:04:46) ===================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
@@ -3392,11 +3329,12 @@ Live test, BIRD v3.3, hooks example, IPv6: dumping routes...
 Live test, BIRD v3.3, hooks example, IPv6: stopping instances...
 
 
-============================== 4 passed in 36.11s ==============================
+============================== 4 passed in 29.58s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 26 items
 
@@ -3443,11 +3381,12 @@ Live test, BIRD v3.3, BGP communities, IPv6: dumping routes...
 Live test, BIRD v3.3, BGP communities, IPv6: stopping instances...
 
 
-======================== 26 passed in 144.26s (0:02:24) ========================
+======================== 26 passed in 140.14s (0:02:20) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
@@ -3472,11 +3411,12 @@ Live test, BIRD v3.3, default config, IPv6: dumping routes...
 Live test, BIRD v3.3, default config, IPv6: stopping instances...
 
 
-============================== 4 passed in 31.13s ==============================
+============================== 4 passed in 29.63s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 631 items
 
@@ -4168,11 +4108,12 @@ Live test, BIRD v3.3, global scenario, RFC8950: dumping routes...
 Live test, BIRD v3.3, global scenario, RFC8950: stopping instances...
 
 
-======================= 631 passed in 1815.18s (0:30:15) =======================
+======================= 631 passed in 1805.86s (0:30:05) =======================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 10 items
 
@@ -4203,11 +4144,12 @@ Live test, BIRD v3.3, gshut, IPv6: dumping routes...
 Live test, BIRD v3.3, gshut, IPv6: stopping instances...
 
 
-======================== 10 passed in 95.67s (0:01:35) =========================
+======================== 10 passed in 96.39s (0:01:36) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 26 items
 
@@ -4254,11 +4196,12 @@ Live test, BIRD v3.3, max-prefix, IPv6: dumping routes...
 Live test, BIRD v3.3, max-prefix, IPv6: stopping instances...
 
 
-======================== 26 passed in 315.55s (0:05:15) ========================
+======================== 26 passed in 314.98s (0:05:14) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 38 items
 
@@ -4333,11 +4276,12 @@ Live test, BIRD v3.3, path hiding, mitigation off, IPv6: dumping routes...
 Live test, BIRD v3.3, path hiding, mitigation off, IPv6: stopping instances...
 
 
-================== 36 passed, 2 skipped in 374.94s (0:06:14) ===================
+================== 36 passed, 2 skipped in 374.78s (0:06:14) ===================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 12 items
 
@@ -4362,11 +4306,12 @@ Live test, BIRD v3.3, RFC8950: dumping routes...
 Live test, BIRD v3.3, RFC8950: stopping instances...
 
 
-============================= 12 passed in 55.90s ==============================
+============================= 12 passed in 56.13s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
@@ -4391,18 +4336,12 @@ Live test, BIRD v3.3, examples, rich config, IPv6: dumping routes...
 Live test, BIRD v3.3, examples, rich config, IPv6: stopping instances...
 
 
-=============================== warnings summary ===============================
-Live test, BIRD v3.3, examples, rich config, IPv4: instances setup
-Live test, BIRD v3.3, examples, rich config, IPv6: instances setup
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:84: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    return datetime.datetime.utcnow()
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-======================== 4 passed, 2 warnings in 31.26s ========================
+============================== 4 passed in 29.94s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
@@ -4437,11 +4376,12 @@ Live test, BIRD v3.3, roles, IPv6: dumping routes...
 Live test, BIRD v3.3, roles, IPv6: stopping instances...
 
 
-======================== 14 passed in 135.34s (0:02:15) ========================
+======================== 14 passed in 134.95s (0:02:14) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 32 items
 
@@ -4494,11 +4434,12 @@ Live test, BIRD v3.3, RPKI INVALID tagging, IPv6: dumping routes...
 Live test, BIRD v3.3, RPKI INVALID tagging, IPv6: stopping instances...
 
 
-======================== 32 passed in 187.56s (0:03:07) ========================
+======================== 32 passed in 187.69s (0:03:07) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
@@ -4533,11 +4474,12 @@ Live test, BIRD v3.3, BOV custom comms, IPv6: dumping routes...
 Live test, BIRD v3.3, BOV custom comms, IPv6: stopping instances...
 
 
-======================== 14 passed in 100.87s (0:01:40) ========================
+======================== 14 passed in 100.61s (0:01:40) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 10 items
 
@@ -4560,11 +4502,12 @@ Live test, BIRD v3.3, RTR protocol: dumping routes...
 Live test, BIRD v3.3, RTR protocol: stopping instances...
 
 
-======================== 10 passed in 76.37s (0:01:16) =========================
+======================== 10 passed in 76.59s (0:01:16) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 166 items
 
@@ -4767,11 +4710,12 @@ Live test, BIRD v3.3, tag prefix/origin empty AS-SET, IPv6: dumping routes...
 Live test, BIRD v3.3, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 
-======================= 166 passed in 349.56s (0:05:49) ========================
+======================= 166 passed in 351.94s (0:05:51) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 46 items
 
@@ -4838,11 +4782,12 @@ Live test, BIRD v3.3, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, BIRD v3.3, 'tag' reject policy scenario, IPv6: stopping instances...
 
 
-================== 45 passed, 1 skipped in 285.75s (0:04:45) ===================
+================== 45 passed, 1 skipped in 287.01s (0:04:47) ===================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 26 items
 
@@ -4889,11 +4834,12 @@ Live test, OpenBGPD 9.2, BGP communities, IPv6: dumping routes...
 Live test, OpenBGPD 9.2, BGP communities, IPv6: stopping instances...
 
 
-======================== 26 passed in 133.99s (0:02:13) ========================
+======================== 26 passed in 135.49s (0:02:15) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
@@ -4918,11 +4864,12 @@ Live test, OpenBGPD 9.2, default config, IPv6: dumping routes...
 Live test, OpenBGPD 9.2, default config, IPv6: stopping instances...
 
 
-============================== 4 passed in 24.78s ==============================
+============================== 4 passed in 24.25s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 455 items
 
@@ -5422,11 +5369,12 @@ Live test, OpenBGPD 9.2, global scenario, RFC8950: dumping routes...
 Live test, OpenBGPD 9.2, global scenario, RFC8950: stopping instances...
 
 
-======================= 455 passed in 1270.74s (0:21:10) =======================
+======================= 455 passed in 1213.65s (0:20:13) =======================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 10 items
 
@@ -5457,11 +5405,12 @@ Live test, OpenBGPD 9.2, gshut, IPv6: dumping routes...
 Live test, OpenBGPD 9.2, gshut, IPv6: stopping instances...
 
 
-======================== 10 passed in 109.11s (0:01:49) ========================
+======================== 10 passed in 94.30s (0:01:34) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 10 items
 
@@ -5492,11 +5441,12 @@ Live test, OpenBGPD 9.2, max-prefix, IPv6: dumping routes...
 Live test, OpenBGPD 9.2, max-prefix, IPv6: stopping instances...
 
 
-======================== 10 passed in 654.13s (0:10:54) ========================
+======================== 10 passed in 596.80s (0:09:56) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 38 items
 
@@ -5571,11 +5521,12 @@ Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv6: dumping routes...
 Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv6: stopping instances...
 
 
-======================== 38 passed in 443.81s (0:07:23) ========================
+======================== 38 passed in 395.13s (0:06:35) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 12 items
 
@@ -5600,11 +5551,12 @@ Live test, OpenBGPD 9.2, RFC8950: dumping routes...
 Live test, OpenBGPD 9.2, RFC8950: stopping instances...
 
 
-============================= 12 passed in 56.21s ==============================
+============================= 12 passed in 52.67s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
@@ -5629,18 +5581,12 @@ Live test, OpenBGPD 9.2, examples, rich config, IPv6: dumping routes...
 Live test, OpenBGPD 9.2, examples, rich config, IPv6: stopping instances...
 
 
-=============================== warnings summary ===============================
-Live test, OpenBGPD 9.2, examples, rich config, IPv4: instances setup
-Live test, OpenBGPD 9.2, examples, rich config, IPv6: instances setup
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:84: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    return datetime.datetime.utcnow()
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-======================== 4 passed, 2 warnings in 27.61s ========================
+============================== 4 passed in 24.85s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
@@ -5675,11 +5621,12 @@ Live test, OpenBGPD 9.2, roles, IPv6: dumping routes...
 Live test, OpenBGPD 9.2, roles, IPv6: stopping instances...
 
 
-======================== 14 passed in 134.13s (0:02:14) ========================
+======================== 14 passed in 122.98s (0:02:02) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
@@ -5714,11 +5661,12 @@ Live test, OpenBGPD 9.2, BOV custom comms, IPv6: dumping routes...
 Live test, OpenBGPD 9.2, BOV custom comms, IPv6: stopping instances...
 
 
-======================== 14 passed in 109.91s (0:01:49) ========================
+======================== 14 passed in 99.14s (0:01:39) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 10 items
 
@@ -5741,11 +5689,12 @@ Live test, OpenBGPD 9.2, RTR protocol: dumping routes...
 Live test, OpenBGPD 9.2, RTR protocol: stopping instances...
 
 
-======================== 10 passed in 81.81s (0:01:21) =========================
+======================== 10 passed in 77.48s (0:01:17) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 166 items
 
@@ -5948,11 +5897,12 @@ Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: dumping routes...
 Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 
-======================= 166 passed in 386.03s (0:06:26) ========================
+======================= 166 passed in 350.24s (0:05:50) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 46 items
 
@@ -6019,4 +5969,4 @@ Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: stopping instances...
 
 
-================== 45 passed, 1 skipped in 298.02s (0:04:58) ===================
+================== 45 passed, 1 skipped in 285.34s (0:04:45) ===================

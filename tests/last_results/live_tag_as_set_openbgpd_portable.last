@@ -2,6 +2,7 @@
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 166 items
 
@@ -204,4 +205,4 @@ Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: dumping routes...
 Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 
-======================= 166 passed in 386.03s (0:06:26) ========================
+======================= 166 passed in 350.24s (0:05:50) ========================

@@ -2,6 +2,7 @@
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 631 items
 
@@ -693,4 +694,4 @@ Live test, BIRD v3.3, global scenario, RFC8950: dumping routes...
 Live test, BIRD v3.3, global scenario, RFC8950: stopping instances...
 
 
-======================= 631 passed in 1815.18s (0:30:15) =======================
+======================= 631 passed in 1805.86s (0:30:05) =======================
