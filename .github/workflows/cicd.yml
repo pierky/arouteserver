@@ -11,6 +11,7 @@ concurrency:
 jobs:
   tests:
     name: Run tests
+    timeout-minutes: 90
 
     runs-on: ubuntu-latest
 
@@ -110,6 +111,7 @@ jobs:
 
   docker-image-tests:
     name: Docker image tests
+    timeout-minutes: 20
 
     runs-on: ubuntu-latest
 
@@ -481,6 +483,7 @@ jobs:
 
   push_to_pypi:
     name: Push to PyPi
+    timeout-minutes: 5
 
     needs: [tests, docker-image-tests]
 
