@@ -258,10 +258,10 @@ function run_matrix_entry() (
 			-e ROUTER_ID=192.0.2.124 \
 			-e LOCAL_PREFIXES=192.0.2.0/24,2001:db8::/32 \
 			-e DAEMON=openbgpd \
-			-e VERSION=9.2
+			-e VERSION=9.3
 
 	step "Validate OpenBGPD configuration" \
-		validate_openbgpd 9.2 "${CONFIGS_DIR}/openbgpd.cfg"
+		validate_openbgpd 9.3 "${CONFIGS_DIR}/openbgpd.cfg"
 
 	step "Validate HTML representation" \
 		grep -q 'Configuration of route server 192.0.2.124 at AS65500' "${HTML_DIR}/openbgpd.html"

@@ -43,7 +43,7 @@ elif [ "$1" == "openbgpd" ]; then
 		--ip=192.0.2.2 \
 		--name=ars_rs \
 		-v$abs_path:/etc/bgpd.conf \
-		pierky/openbgpd:9.2 \
+		pierky/openbgpd:9.3 \
 		bgpd -f /etc/bgpd.conf -d
 
 else

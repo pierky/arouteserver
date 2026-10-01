@@ -20,6 +20,8 @@ Change log
 
   See also `PeeringDB issue 1978 <https://github.com/peeringdb/peeringdb/issues/1978>`__.
 
+- New: add support for `OpenBGPD 9.3 <https://cdn.openbsd.org/pub/OpenBSD/OpenBGPD/openbgpd-9.3-relnotes.txt>`__, which also becomes the new default version for OpenBGPD-based configurations, also added to the integration testing suite.
+
 1.26.0
 ------
 
