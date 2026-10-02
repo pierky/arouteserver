@@ -6,25 +6,25 @@ configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 12 items
 
-Live test, OpenBGPD 9.2, RFC8950: instances setup 
-Live test, OpenBGPD 9.2, RFC8950: setting instances up...
+Live test, OpenBGPD 9.3, RFC8950: instances setup 
+Live test, OpenBGPD 9.3, RFC8950: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, RFC8950: sessions are up PASSED
-Live test, OpenBGPD 9.2, RFC8950: accepted routes PASSED
-Live test, OpenBGPD 9.2, RFC8950: IPv4 prefix length within ipv6_pref_len but outside ipv4_pref_len PASSED
-Live test, OpenBGPD 9.2, RFC8950: next hop authorized address AS2_1 PASSED
-Live test, OpenBGPD 9.2, RFC8950: next hop same-as AS1_2 PASSED
-Live test, OpenBGPD 9.2, RFC8950: next hop strict mode on AS1_1 PASSED
-Live test, OpenBGPD 9.2, RFC8950: dropped routes, not in r_set PASSED
-Live test, OpenBGPD 9.2, RFC8950: RPKI rejected routes, AS0 PASSED
-Live test, OpenBGPD 9.2, RFC8950: RPKI rejected routes, INVALID PASSED
-Live test, OpenBGPD 9.2, RFC8950: RPKI VALID routes PASSED
-Live test, OpenBGPD 9.2, RFC8950: log contains errors PASSED
-Live test, OpenBGPD 9.2, RFC8950: dumping rs config...
+Live test, OpenBGPD 9.3, RFC8950: sessions are up PASSED
+Live test, OpenBGPD 9.3, RFC8950: accepted routes PASSED
+Live test, OpenBGPD 9.3, RFC8950: IPv4 prefix length within ipv6_pref_len but outside ipv4_pref_len PASSED
+Live test, OpenBGPD 9.3, RFC8950: next hop authorized address AS2_1 PASSED
+Live test, OpenBGPD 9.3, RFC8950: next hop same-as AS1_2 PASSED
+Live test, OpenBGPD 9.3, RFC8950: next hop strict mode on AS1_1 PASSED
+Live test, OpenBGPD 9.3, RFC8950: dropped routes, not in r_set PASSED
+Live test, OpenBGPD 9.3, RFC8950: RPKI rejected routes, AS0 PASSED
+Live test, OpenBGPD 9.3, RFC8950: RPKI rejected routes, INVALID PASSED
+Live test, OpenBGPD 9.3, RFC8950: RPKI VALID routes PASSED
+Live test, OpenBGPD 9.3, RFC8950: log contains errors PASSED
+Live test, OpenBGPD 9.3, RFC8950: dumping rs config...
 
-Live test, OpenBGPD 9.2, RFC8950: dumping routes...
+Live test, OpenBGPD 9.3, RFC8950: dumping routes...
 
-Live test, OpenBGPD 9.2, RFC8950: stopping instances...
+Live test, OpenBGPD 9.3, RFC8950: stopping instances...
 
 
-============================= 12 passed in 52.67s ==============================
+============================= 12 passed in 43.62s ==============================

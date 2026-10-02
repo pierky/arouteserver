@@ -1,0 +1,7 @@
+2.2.1.0/24, AS_PATH: 2, NEXT_HOP: 2001:db8:1:1::22, via 2001:db8:1:1::2
+  std comms:
+  ext comms:
+  lrg comms:
+  best: False, LOCAL_PREF: 100
+  filtered: True ()
+

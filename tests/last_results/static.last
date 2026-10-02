@@ -309,4 +309,4 @@ RTT getter parser: empty PASSED
 RTT getter parser: new line only PASSED
 RTT getter parser: none PASSED
 
-=================== 299 passed, 3 subtests passed in 37.21s ====================
+============== 299 passed, 3 subtests passed in 63.60s (0:01:03) ===============
