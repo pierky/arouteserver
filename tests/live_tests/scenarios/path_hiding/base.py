@@ -249,11 +249,11 @@ class PathHidingScenario_MitigationOn(object):
 
         self.AS101._birdcl("disable AS2")
 
-        self.rs.clear_cached_routes()
+        self.rs.clear_cache()
         self.receive_route(self.rs, self.DATA["AS101_pref_ok1"], self.AS1,
                            as_path="1 101")
 
-        self.AS3.clear_cached_routes()
+        self.AS3.clear_cache()
         with self.assertRaisesRegex(AssertionError, "Routes not found."):
             self.receive_route(self.AS3, self.DATA["AS101_pref_ok1"])
 

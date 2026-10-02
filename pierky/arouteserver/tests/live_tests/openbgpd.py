@@ -271,7 +271,7 @@ class OpenBGPDInstance(object):
                 return True
         return False
 
-    def clear_cached_routes(self):
+    def clear_cache(self):
         self.routes = {}
 
     def get_routes(self, prefix, include_filtered=False, only_best=False):

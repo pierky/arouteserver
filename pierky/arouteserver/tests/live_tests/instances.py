@@ -133,7 +133,7 @@ class BGPSpeakerInstance(BaseInstance):
             )
         )
 
-    def clear_cached_routes(self):
+    def clear_cache(self):
         """Clear any internal cache where routes may be stored."""
         raise NotImplementedError()
 

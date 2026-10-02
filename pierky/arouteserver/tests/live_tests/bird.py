@@ -258,8 +258,9 @@ class BIRDInstance(DockerInstance, BGPSpeakerInstance):
             add_route(route)
             route = {}
 
-    def clear_cached_routes(self):
+    def clear_cache(self):
         self.routes = {}
+        self.log = None
 
     def get_routes(self, prefix, include_filtered=False, only_best=False):
         if include_filtered and only_best:
@@ -288,17 +289,19 @@ class BIRDInstance(DockerInstance, BGPSpeakerInstance):
             "{}: can't find protocol name from ip {}".format(self.name, ip)
         )
 
-    def log_contains(self, s):
+    def _get_logs(self):
         if not self.log:
             self.log = self.run_cmd("cat /var/log/bird.log")
+        return self.log
 
-        if s in self.log:
+    def log_contains(self, s):
+        if s in self._get_logs():
             return True
         else:
             return False
 
     def log_contains_errors(self, allowed_errors=[], list_errors=False):
-        out = self.run_cmd("cat /var/log/bird.log")
+        out = self._get_logs()
 
         errors_found = False
         errors = []
