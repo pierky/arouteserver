@@ -300,6 +300,14 @@ class ConfigParserGeneral(ConfigParserBase):
         b["rewrite_next_hop_ipv4"] = ValidatorIPv4Addr(mandatory=False)
         b["rewrite_next_hop_ipv6"] = ValidatorIPv6Addr(mandatory=False)
         b["add_noexport"] = ValidatorBool(default=True)
+        b["client_community"] = OrderedDict()
+        b["client_community"]["peering_db"] = ValidatorBool(default=True)
+        b["client_community"]["action"] = ValidatorOption(
+            "action",
+            ("add", "replace"),
+            mandatory=True,
+            default="add"
+        )
 
         c["graceful_shutdown"] = OrderedDict()
         c["graceful_shutdown"]["enabled"] = ValidatorBool(

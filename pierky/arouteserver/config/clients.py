@@ -135,6 +135,20 @@ class ConfigParserClients(ConfigParserBase):
                 },
                 "blackhole_filtering" : {
                    "announce_to_client": ValidatorBool(mandatory=False),
+                   "client_community": {
+                       "peering_db": ValidatorBool(mandatory=False),
+                       "action": ValidatorOption(
+                           "action",
+                           ("add", "replace"),
+                           mandatory=False
+                       ),
+                       "std": ValidatorCommunityStd(
+                           None, mandatory=False, allow_reserved_range=True
+                       ),
+                       "lrg": ValidatorCommunityLrg(
+                           None, mandatory=False
+                       ),
+                   },
                 },
                 "graceful_shutdown": {
                     "enabled": ValidatorBool(mandatory=False)

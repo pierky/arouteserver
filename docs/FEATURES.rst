@@ -88,7 +88,8 @@ Features
 
   - optional **NEXT_HOP rewriting**;
   - signalling via BGP Communities (`BLACKHOLE <https://tools.ietf.org/html/rfc7999#section-5>`__ and custom communities);
-  - client-by-client control over propagation.
+  - client-by-client control over propagation;
+  - client-specific **RTBH community**, configured locally or fetched from **PeeringDB**, added to the routes announced to the client itself.
 
 - **Graceful shutdown** support:
 

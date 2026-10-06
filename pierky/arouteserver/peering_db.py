@@ -26,7 +26,8 @@ from requests.exceptions import HTTPError, RetryError
 from urllib3.util.retry import Retry
 
 from .cached_objects import CachedObject
-from .config.validators import ValidatorASSet
+from .config.validators import ValidatorASSet, ValidatorCommunityStd, \
+                               ValidatorCommunityLrg
 from .errors import PeeringDBError, PeeringDBNoInfoError, ConfigError
 from .irrdb import IRRDBInfo
 from .version import __version__
@@ -300,6 +301,47 @@ class PeeringDBNet(PeeringDBInfo):
         self.irr_as_sets = self.parse_as_sets(
             self.raw_data[0].get("irr_as_set", None)
         )
+        # The RTBH community is exposed inside the 'meta' object of the
+        # network, not as a top-level attribute.
+        meta = self.raw_data[0].get("meta", None)
+        self.rtbh_community = self.parse_rtbh_community(
+            meta.get("rtbh_community", None) if isinstance(meta, dict)
+            else None
+        )
+
+    def parse_rtbh_community(self, in_value):
+        # The attribute is omitted by PeeringDB when not set.
+        if not in_value or not isinstance(in_value, str) or \
+            not in_value.strip():
+            return None
+
+        v = in_value.strip()
+
+        if v.count(":") == 1:
+            comm_type, validator = "std", ValidatorCommunityStd(
+                None, allow_reserved_range=True
+            )
+        elif v.count(":") == 2:
+            comm_type, validator = "lrg", ValidatorCommunityLrg(None)
+        else:
+            comm_type, validator = None, None
+
+        try:
+            if not validator:
+                raise ConfigError(
+                    "it's neither a standard nor a large BGP community"
+                )
+            v = validator.validate(v)
+        except ConfigError as e:
+            logging.warning("RTBH community from PeeringDB for AS{}: "
+                            "ignoring {}, {}".format(
+                                self.asn, in_value, str(e) or "invalid"))
+            return None
+
+        return {
+            "std": v if comm_type == "std" else None,
+            "lrg": v if comm_type == "lrg" else None
+        }
 
     def parse_as_sets(self, raw_irr_as_sets):
         res = []

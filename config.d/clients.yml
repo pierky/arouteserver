@@ -277,6 +277,17 @@ clients:
       blackhole_filtering:
         #announce_to_client: True
 
+        client_community:
+          #peering_db: True
+          #action: "add"
+
+          # The RTBH community of the client: when set, it takes
+          # precedence over the one fetched from PeeringDB.
+          # A standard (x:x) and/or a large (x:x:x) BGP community
+          # can be configured.
+          #std: "65501:666"
+          #lrg: "65501:666:0"
+
       # The list of custom BGP communities that will be added to
       # routes received from this client.
       # These custom BGP communities must be declared in the general

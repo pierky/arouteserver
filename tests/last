@@ -2,8 +2,9 @@
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
-collecting ... collected 285 items
+collecting ... collected 299 items
 
 ASPA builder: OpenBGPD, ASPA without roles raises an error PASSED
 ASPA builder: OpenBGPD, ASPA with roles is fine PASSED
@@ -37,6 +38,8 @@ Clients config parser: 16bit_mapped_asn for a 16bit ASN PASSED
 Clients config parser: 16bit_mapped_asn re-used for another ASN PASSED
 Clients config parser: 16bit_mapped_asn same AS multiple clients PASSED
 Clients config parser: AS number PASSED
+Clients config parser: blackhole filtering client community, invalid values PASSED
+Clients config parser: inherit from general cfg - blackhole filtering client community PASSED
 Clients config parser: inherit from general cfg - blackhole filtering PASSED
 Clients config parser: custom BGP communities PASSED
 Clients config parser: custom_options - bad AF format PASSED
@@ -67,6 +70,7 @@ General config parser: add_path PASSED
 General config parser: allow_as_set PASSED
 General config parser: allow_longer_prefixes PASSED
 General config parser: blackhole_filtering, announce_to_client PASSED
+General config parser: blackhole_filtering, client_community PASSED
 General config parser: blackhole_filtering, rewrite_next_hop, ipv4 PASSED
 General config parser: blackhole_filtering, rewrite_next_hop, ipv6 PASSED
 General config parser: blackhole_filtering, policy_ipv4 PASSED
@@ -227,6 +231,7 @@ IRRDB enricher: autnum only PASSED
 IRRDB enricher: IPv4 white list for IPv6 configs PASSED
 IRRDB enricher: empty autnum + empty AS-SET PASSED
 Max-prefix from PeeringDB: increment PASSED
+PeeringDB RTBH community enricher PASSED
 IRR queries fail-over: single timeout PASSED
 IRR queries fail-over: single failure PASSED
 IRR queries fail-over: all timeout PASSED
@@ -252,6 +257,8 @@ IRRDB info: RSets, cache expired PASSED
 PeeringDB network: get data PASSED
 PeeringDB network: missing data PASSED
 PeeringDB: AS-SETs parsing PASSED
+PeeringDB: RTBH community parsing PASSED
+PeeringDB network: RTBH community PASSED
 PeeringDB API key: 429 error handling PASSED
 PeeringDB API key: empty PASSED
 PeeringDB API key: env var wins over file PASSED
@@ -261,6 +268,13 @@ PeeringDB API: 429 error handling PASSED
 PeeringDB bulk query cache: hit PASSED
 PeeringDB bulk query cache: hit missed PASSED
 PeeringDB bulk query cache: hit with no data PASSED
+PeeringDB bulk query cache: ASNs already loaded are not queried again PASSED
+PeeringDB bulk query cache: ASNs given as strings PASSED
+PeeringDB bulk query cache: ASNs valid in the on-disk cache are not queried PASSED
+PeeringDBNet._is_cached: expired entry PASSED
+PeeringDBNet._is_cached: fresh entry PASSED
+PeeringDBNet._is_cached: fresh 'no data for this network' entry PASSED
+PeeringDBNet._is_cached: no entry PASSED
 RPKI ROAs: RIPE Validator TAs PASSED
 RPKI ROAs: NTT TAs PASSED
 RPKI ROAs: rpki-client TAs PASSED
@@ -270,6 +284,10 @@ RPKI ROAs: rpki-client expired ROAs PASSED
 RPKI ROAs: OctoRPKI expired file PASSED
 RPKI ROAs: OctoRPKI out of validity PASSED
 RPKI ROAs: OctoRPKI valid file PASSED
+RPKI ROAs/ASPAs: expiration is evaluated in UTC, whatever the local TZ SUBPASSED(tz='UTC')
+RPKI ROAs/ASPAs: expiration is evaluated in UTC, whatever the local TZ SUBPASSED(tz='Asia/Tokyo')
+RPKI ROAs/ASPAs: expiration is evaluated in UTC, whatever the local TZ SUBPASSED(tz='America/New_York')
+RPKI ROAs/ASPAs: expiration is evaluated in UTC, whatever the local TZ PASSED
 RPKI ASPAs: RIPE Validator format PASSED
 RPKI ASPAs: NTT / rpki-client format PASSED
 RPKI ASPAs: invalid records are skipped PASSED
@@ -291,58 +309,12 @@ RTT getter parser: empty PASSED
 RTT getter parser: new line only PASSED
 RTT getter parser: none PASSED
 
-=============================== warnings summary ===============================
-ASPA builder: ASPAs gathered from a JSON file: 1 warning
-ASPA builder: no ASPA available: 2 warnings
-ASPA builder: ASPA with no providers: 2 warnings
-ASPA builder: ROAs and ASPAs from the same URL are fetched once: 1 warning
-ASPA builder: ROAs and ASPAs from different URLs are fetched twice: 2 warnings
-RPKI ROAs: RIPE Validator TAs: 1 warning
-RPKI ROAs: NTT TAs: 1 warning
-RPKI ROAs: different formats: 1 warning
-RPKI ASPAs: RIPE Validator format: 1 warning
-RPKI ASPAs: NTT / rpki-client format: 1 warning
-RPKI ASPAs: invalid records are skipped: 1 warning
-RPKI ASPAs: too many invalid records: 1 warning
-RPKI ASPAs: ASPAs only, no ROAs needed: 1 warning
-RPKI ASPAs: cache built without ASPAs is refreshed: 1 warning
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:84: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    return datetime.datetime.utcnow()
-
-IX-F Member Export from clients command: simple: 1 warning
-IX-F Member Export from clients command: with description: 1 warning
-IX-F Member Export from clients command: with AS-SET: 1 warning
-IX-F Member Export from clients command: with 2 AS-SETs: 1 warning
-IX-F Member Export from clients command: AS-SET from asns: 1 warning
-IX-F Member Export from clients command: more than one IP: 1 warning
-IX-F Member Export from clients command: ams-ix.yml: 1 warning
-IX-F Member Export from clients command: bcix.yml: 1 warning
-IX-F Member Export from clients command: gr_ix.yml: 1 warning
-IX-F Member Export from clients command: inex.yml: 1 warning
-IX-F Member Export from clients command: lonap.yml: 1 warning
-IX-F Member Export from clients command: six.yml: 1 warning
-IX-F Member Export from clients command: sthix.yml: 1 warning
-IX-F Member Export from clients command: swissix.yml: 1 warning
-  /home/pierky/src/ars/pierky/arouteserver/commands/ixf_member_list_from_clients.py:192: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    res["timestamp"] = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
-
-RPKI ROAs: OctoRPKI expired file
-RPKI ROAs: OctoRPKI out of validity
-RPKI ROAs: OctoRPKI valid file
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:171: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
-    buildtime_dt_utc = datetime.datetime.utcfromtimestamp(int(generated))
-
-RPKI ROAs: OctoRPKI out of validity
-RPKI ROAs: OctoRPKI valid file
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:202: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
-    valid_dt_utc = datetime.datetime.utcfromtimestamp(int(valid))
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-================= 285 passed, 36 warnings in 96.23s (0:01:36) ==================
+============== 299 passed, 3 subtests passed in 63.60s (0:01:03) ===============
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
@@ -355,69 +327,18 @@ External resources: last version via PyPI PASSED
 External resources: PeeringDB, max-prefix and AS-SET PASSED
 External resources: PeeringDB, never via route-servers PASSED
 External resources: route servers excluded from clients-from-euroix PASSED
-External resources: RPKI ROAs, NTT FAILED
+External resources: RPKI ROAs, NTT PASSED
+External resources: RPKI ROAs, RIPE PASSED
+External resources: RPKI ROAs, rpki-client PASSED
+External resources: prefixes from AS-SET via bgpq3 PASSED
+External resources: prefixes from AS-SET via bgpq4 PASSED
 
-=================================== FAILURES ===================================
-___________________ TestExternalResources.test_rpki_roas_ntt ___________________
-
-self = <tests.external_resources.test_external_resources.TestExternalResources testMethod=test_rpki_roas_ntt>
-
-    def test_rpki_roas_ntt(self):
-        """External resources: RPKI ROAs, NTT"""
->       self._test_rpki_roas_per_provider("ntt.net", use_expires_attr=True)
-
-tests/external_resources/test_external_resources.py:119: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-tests/external_resources/test_external_resources.py:85: in _test_rpki_roas_per_provider
-    rpki_roas.load_data()
-pierky/arouteserver/ripe_rpki_cache.py:62: in load_data
-    CachedObject.load_data(self)
-pierky/arouteserver/cached_objects.py:159: in load_data
-    self.raw_data = self._get_data()
-                    ^^^^^^^^^^^^^^^^
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-self = <pierky.arouteserver.ripe_rpki_cache.RIPE_RPKI_ROAs object at 0x78df876c8590>
-
-    def _get_data(self):
-        # List of (url, error)
-        errors = []
-        for url in self.urls:
-            try:
-                res = self._get_data_from_url(url)
-                logging.info(
-                    "RPKI data loaded successfully from {}".format(url)
-                )
-                return res
-            except RPKIValidatorCacheError as e:
-                logging.warning(str(e))
-                errors.append((url, str(e)))
-    
-        exc_msg = "Impossible to load the RPKI data:\n"
-        for url, err in errors:
-            exc_msg += " - while trying {}: {}\n".format(url, err)
->       raise RPKIValidatorCacheError(exc_msg)
-E       pierky.arouteserver.errors.RPKIValidatorCacheError: Impossible to load the RPKI data:
-E        - while trying https://rpki.gin.ntt.net/api/export.json: Error while retrieving ROAs from RIPE RPKI Validator cache (https://rpki.gin.ntt.net/api/export.json): ('Connection broken: IncompleteRead(311001 bytes read, 104858124 more expected)', IncompleteRead(311001 bytes read, 104858124 more expected))
-
-pierky/arouteserver/ripe_rpki_cache.py:406: RPKIValidatorCacheError
------------------------------- Captured log call -------------------------------
-WARNING  root:ripe_rpki_cache.py:400 Error while retrieving ROAs from RIPE RPKI Validator cache (https://rpki.gin.ntt.net/api/export.json): ('Connection broken: IncompleteRead(311001 bytes read, 104858124 more expected)', IncompleteRead(311001 bytes read, 104858124 more expected))
-=============================== warnings summary ===============================
-External resources: Euro-IX from clients build and validation
-External resources: Euro-IX from clients build and validation (using merge-file)
-  /home/pierky/src/ars/pierky/arouteserver/commands/ixf_member_list_from_clients.py:192: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    res["timestamp"] = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-=========================== short test summary info ============================
-FAILED External resources: RPKI ROAs, NTT - pierky.arouteserver.errors.RPKIVa...
-!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
-============= 1 failed, 9 passed, 2 warnings in 222.78s (0:03:42) ==============
+======================== 14 passed in 129.34s (0:02:09) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
@@ -442,11 +363,12 @@ Live test, BIRD v2, hooks example, IPv6: dumping routes...
 Live test, BIRD v2, hooks example, IPv6: stopping instances...
 
 
-============================== 4 passed in 30.18s ==============================
+============================== 4 passed in 24.29s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 26 items
 
@@ -493,11 +415,12 @@ Live test, BIRD v2, BGP communities, IPv6: dumping routes...
 Live test, BIRD v2, BGP communities, IPv6: stopping instances...
 
 
-======================== 26 passed in 140.59s (0:02:20) ========================
+======================== 26 passed in 102.53s (0:01:42) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
@@ -522,11 +445,12 @@ Live test, BIRD v2, default config, IPv6: dumping routes...
 Live test, BIRD v2, default config, IPv6: stopping instances...
 
 
-============================== 4 passed in 29.79s ==============================
+============================== 4 passed in 24.15s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 631 items
 
@@ -1218,11 +1142,12 @@ Live test, BIRD v2, global scenario, RFC8950: dumping routes...
 Live test, BIRD v2, global scenario, RFC8950: stopping instances...
 
 
-======================= 631 passed in 1837.14s (0:30:37) =======================
+======================= 631 passed in 852.90s (0:14:12) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 10 items
 
@@ -1253,11 +1178,12 @@ Live test, BIRD v2, gshut, IPv6: dumping routes...
 Live test, BIRD v2, gshut, IPv6: stopping instances...
 
 
-======================== 10 passed in 96.75s (0:01:36) =========================
+======================== 10 passed in 76.57s (0:01:16) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 26 items
 
@@ -1304,11 +1230,12 @@ Live test, BIRD v2, max-prefix, IPv6: dumping routes...
 Live test, BIRD v2, max-prefix, IPv6: stopping instances...
 
 
-======================== 26 passed in 318.74s (0:05:18) ========================
+======================== 26 passed in 254.54s (0:04:14) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 38 items
 
@@ -1383,11 +1310,12 @@ Live test, BIRD v2, path hiding, mitigation off, IPv6: dumping routes...
 Live test, BIRD v2, path hiding, mitigation off, IPv6: stopping instances...
 
 
-================== 36 passed, 2 skipped in 375.12s (0:06:15) ===================
+================== 36 passed, 2 skipped in 299.75s (0:04:59) ===================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 12 items
 
@@ -1412,11 +1340,12 @@ Live test, BIRD v2, RFC8950: dumping routes...
 Live test, BIRD v2, RFC8950: stopping instances...
 
 
-============================= 12 passed in 56.74s ==============================
+============================= 12 passed in 45.80s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
@@ -1441,18 +1370,12 @@ Live test, BIRD v2, examples, rich config, IPv6: dumping routes...
 Live test, BIRD v2, examples, rich config, IPv6: stopping instances...
 
 
-=============================== warnings summary ===============================
-Live test, BIRD v2, examples, rich config, IPv4: instances setup
-Live test, BIRD v2, examples, rich config, IPv6: instances setup
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:84: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    return datetime.datetime.utcnow()
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-======================== 4 passed, 2 warnings in 29.79s ========================
+============================== 4 passed in 24.65s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
@@ -1487,11 +1410,12 @@ Live test, BIRD v2, roles, IPv6: dumping routes...
 Live test, BIRD v2, roles, IPv6: stopping instances...
 
 
-======================== 14 passed in 135.87s (0:02:15) ========================
+======================== 14 passed in 91.74s (0:01:31) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 32 items
 
@@ -1544,11 +1468,12 @@ Live test, BIRD v2, RPKI INVALID tagging, IPv6: dumping routes...
 Live test, BIRD v2, RPKI INVALID tagging, IPv6: stopping instances...
 
 
-======================== 32 passed in 187.20s (0:03:07) ========================
+======================== 32 passed in 125.06s (0:02:05) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
@@ -1583,11 +1508,12 @@ Live test, BIRD v2, BOV custom comms, IPv6: dumping routes...
 Live test, BIRD v2, BOV custom comms, IPv6: stopping instances...
 
 
-======================== 14 passed in 101.05s (0:01:41) ========================
+======================== 14 passed in 78.48s (0:01:18) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 10 items
 
@@ -1610,11 +1536,12 @@ Live test, BIRD v2, RTR protocol: dumping routes...
 Live test, BIRD v2, RTR protocol: stopping instances...
 
 
-======================== 10 passed in 76.38s (0:01:16) =========================
+======================== 10 passed in 62.44s (0:01:02) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 166 items
 
@@ -1817,11 +1744,12 @@ Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: dumping routes...
 Live test, BIRD v2, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 
-======================= 166 passed in 351.54s (0:05:51) ========================
+======================= 166 passed in 277.63s (0:04:37) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 46 items
 
@@ -1888,11 +1816,12 @@ Live test, BIRD v2, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, BIRD v2, 'tag' reject policy scenario, IPv6: stopping instances...
 
 
-================== 45 passed, 1 skipped in 288.12s (0:04:48) ===================
+================== 45 passed, 1 skipped in 189.90s (0:03:09) ===================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
@@ -1917,11 +1846,12 @@ Live test, BIRD v3.2, hooks example, IPv6: dumping routes...
 Live test, BIRD v3.2, hooks example, IPv6: stopping instances...
 
 
-============================== 4 passed in 29.45s ==============================
+============================== 4 passed in 25.18s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 26 items
 
@@ -1968,11 +1898,12 @@ Live test, BIRD v3.2, BGP communities, IPv6: dumping routes...
 Live test, BIRD v3.2, BGP communities, IPv6: stopping instances...
 
 
-======================== 26 passed in 140.64s (0:02:20) ========================
+======================== 26 passed in 102.62s (0:01:42) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
@@ -1997,11 +1928,12 @@ Live test, BIRD v3.2, default config, IPv6: dumping routes...
 Live test, BIRD v3.2, default config, IPv6: stopping instances...
 
 
-============================== 4 passed in 29.15s ==============================
+============================== 4 passed in 24.87s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 631 items
 
@@ -2693,11 +2625,12 @@ Live test, BIRD v3.2, global scenario, RFC8950: dumping routes...
 Live test, BIRD v3.2, global scenario, RFC8950: stopping instances...
 
 
-======================= 631 passed in 1834.53s (0:30:34) =======================
+======================= 631 passed in 818.94s (0:13:38) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 10 items
 
@@ -2728,11 +2661,12 @@ Live test, BIRD v3.2, gshut, IPv6: dumping routes...
 Live test, BIRD v3.2, gshut, IPv6: stopping instances...
 
 
-======================== 10 passed in 95.06s (0:01:35) =========================
+======================== 10 passed in 74.38s (0:01:14) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 26 items
 
@@ -2779,11 +2713,12 @@ Live test, BIRD v3.2, max-prefix, IPv6: dumping routes...
 Live test, BIRD v3.2, max-prefix, IPv6: stopping instances...
 
 
-======================== 26 passed in 317.83s (0:05:17) ========================
+======================== 26 passed in 242.62s (0:04:02) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 38 items
 
@@ -2858,11 +2793,12 @@ Live test, BIRD v3.2, path hiding, mitigation off, IPv6: dumping routes...
 Live test, BIRD v3.2, path hiding, mitigation off, IPv6: stopping instances...
 
 
-================== 36 passed, 2 skipped in 370.70s (0:06:10) ===================
+================== 36 passed, 2 skipped in 287.51s (0:04:47) ===================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 12 items
 
@@ -2887,11 +2823,12 @@ Live test, BIRD v3.2, RFC8950: dumping routes...
 Live test, BIRD v3.2, RFC8950: stopping instances...
 
 
-============================= 12 passed in 55.86s ==============================
+============================= 12 passed in 44.10s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
@@ -2916,18 +2853,12 @@ Live test, BIRD v3.2, examples, rich config, IPv6: dumping routes...
 Live test, BIRD v3.2, examples, rich config, IPv6: stopping instances...
 
 
-=============================== warnings summary ===============================
-Live test, BIRD v3.2, examples, rich config, IPv4: instances setup
-Live test, BIRD v3.2, examples, rich config, IPv6: instances setup
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:84: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    return datetime.datetime.utcnow()
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-======================== 4 passed, 2 warnings in 31.18s ========================
+============================== 4 passed in 23.75s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
@@ -2962,11 +2893,12 @@ Live test, BIRD v3.2, roles, IPv6: dumping routes...
 Live test, BIRD v3.2, roles, IPv6: stopping instances...
 
 
-======================== 14 passed in 134.99s (0:02:14) ========================
+======================== 14 passed in 89.54s (0:01:29) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 32 items
 
@@ -3019,11 +2951,12 @@ Live test, BIRD v3.2, RPKI INVALID tagging, IPv6: dumping routes...
 Live test, BIRD v3.2, RPKI INVALID tagging, IPv6: stopping instances...
 
 
-======================== 32 passed in 184.52s (0:03:04) ========================
+======================== 32 passed in 119.88s (0:01:59) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
@@ -3058,11 +2991,12 @@ Live test, BIRD v3.2, BOV custom comms, IPv6: dumping routes...
 Live test, BIRD v3.2, BOV custom comms, IPv6: stopping instances...
 
 
-======================== 14 passed in 100.99s (0:01:40) ========================
+======================== 14 passed in 75.22s (0:01:15) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 10 items
 
@@ -3085,11 +3019,12 @@ Live test, BIRD v3.2, RTR protocol: dumping routes...
 Live test, BIRD v3.2, RTR protocol: stopping instances...
 
 
-======================== 10 passed in 76.38s (0:01:16) =========================
+======================== 10 passed in 61.66s (0:01:01) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 166 items
 
@@ -3292,11 +3227,12 @@ Live test, BIRD v3.2, tag prefix/origin empty AS-SET, IPv6: dumping routes...
 Live test, BIRD v3.2, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 
-======================= 166 passed in 350.00s (0:05:49) ========================
+======================= 166 passed in 278.86s (0:04:38) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 46 items
 
@@ -3363,11 +3299,12 @@ Live test, BIRD v3.2, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, BIRD v3.2, 'tag' reject policy scenario, IPv6: stopping instances...
 
 
-================== 45 passed, 1 skipped in 301.96s (0:05:01) ===================
+================== 45 passed, 1 skipped in 185.02s (0:03:05) ===================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
@@ -3392,11 +3329,12 @@ Live test, BIRD v3.3, hooks example, IPv6: dumping routes...
 Live test, BIRD v3.3, hooks example, IPv6: stopping instances...
 
 
-============================== 4 passed in 36.11s ==============================
+============================== 4 passed in 23.72s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 26 items
 
@@ -3443,11 +3381,12 @@ Live test, BIRD v3.3, BGP communities, IPv6: dumping routes...
 Live test, BIRD v3.3, BGP communities, IPv6: stopping instances...
 
 
-======================== 26 passed in 144.26s (0:02:24) ========================
+======================== 26 passed in 98.40s (0:01:38) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
@@ -3472,11 +3411,12 @@ Live test, BIRD v3.3, default config, IPv6: dumping routes...
 Live test, BIRD v3.3, default config, IPv6: stopping instances...
 
 
-============================== 4 passed in 31.13s ==============================
+============================== 4 passed in 23.55s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 631 items
 
@@ -4168,11 +4108,12 @@ Live test, BIRD v3.3, global scenario, RFC8950: dumping routes...
 Live test, BIRD v3.3, global scenario, RFC8950: stopping instances...
 
 
-======================= 631 passed in 1815.18s (0:30:15) =======================
+======================= 631 passed in 798.45s (0:13:18) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 10 items
 
@@ -4203,11 +4144,12 @@ Live test, BIRD v3.3, gshut, IPv6: dumping routes...
 Live test, BIRD v3.3, gshut, IPv6: stopping instances...
 
 
-======================== 10 passed in 95.67s (0:01:35) =========================
+======================== 10 passed in 73.95s (0:01:13) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 26 items
 
@@ -4254,11 +4196,12 @@ Live test, BIRD v3.3, max-prefix, IPv6: dumping routes...
 Live test, BIRD v3.3, max-prefix, IPv6: stopping instances...
 
 
-======================== 26 passed in 315.55s (0:05:15) ========================
+======================== 26 passed in 258.36s (0:04:18) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 38 items
 
@@ -4333,11 +4276,12 @@ Live test, BIRD v3.3, path hiding, mitigation off, IPv6: dumping routes...
 Live test, BIRD v3.3, path hiding, mitigation off, IPv6: stopping instances...
 
 
-================== 36 passed, 2 skipped in 374.94s (0:06:14) ===================
+================== 36 passed, 2 skipped in 284.72s (0:04:44) ===================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 12 items
 
@@ -4362,11 +4306,12 @@ Live test, BIRD v3.3, RFC8950: dumping routes...
 Live test, BIRD v3.3, RFC8950: stopping instances...
 
 
-============================= 12 passed in 55.90s ==============================
+============================= 12 passed in 44.79s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
@@ -4391,18 +4336,12 @@ Live test, BIRD v3.3, examples, rich config, IPv6: dumping routes...
 Live test, BIRD v3.3, examples, rich config, IPv6: stopping instances...
 
 
-=============================== warnings summary ===============================
-Live test, BIRD v3.3, examples, rich config, IPv4: instances setup
-Live test, BIRD v3.3, examples, rich config, IPv6: instances setup
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:84: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    return datetime.datetime.utcnow()
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-======================== 4 passed, 2 warnings in 31.26s ========================
+============================== 4 passed in 23.52s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
@@ -4437,11 +4376,12 @@ Live test, BIRD v3.3, roles, IPv6: dumping routes...
 Live test, BIRD v3.3, roles, IPv6: stopping instances...
 
 
-======================== 14 passed in 135.34s (0:02:15) ========================
+======================== 14 passed in 89.21s (0:01:29) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 32 items
 
@@ -4494,11 +4434,12 @@ Live test, BIRD v3.3, RPKI INVALID tagging, IPv6: dumping routes...
 Live test, BIRD v3.3, RPKI INVALID tagging, IPv6: stopping instances...
 
 
-======================== 32 passed in 187.56s (0:03:07) ========================
+======================== 32 passed in 120.06s (0:02:00) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
@@ -4533,11 +4474,12 @@ Live test, BIRD v3.3, BOV custom comms, IPv6: dumping routes...
 Live test, BIRD v3.3, BOV custom comms, IPv6: stopping instances...
 
 
-======================== 14 passed in 100.87s (0:01:40) ========================
+======================== 14 passed in 74.67s (0:01:14) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 10 items
 
@@ -4560,11 +4502,12 @@ Live test, BIRD v3.3, RTR protocol: dumping routes...
 Live test, BIRD v3.3, RTR protocol: stopping instances...
 
 
-======================== 10 passed in 76.37s (0:01:16) =========================
+======================== 10 passed in 61.33s (0:01:01) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 166 items
 
@@ -4767,11 +4710,12 @@ Live test, BIRD v3.3, tag prefix/origin empty AS-SET, IPv6: dumping routes...
 Live test, BIRD v3.3, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 
-======================= 166 passed in 349.56s (0:05:49) ========================
+======================= 166 passed in 275.21s (0:04:35) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 46 items
 
@@ -4838,93 +4782,294 @@ Live test, BIRD v3.3, 'tag' reject policy scenario, IPv6: dumping routes...
 Live test, BIRD v3.3, 'tag' reject policy scenario, IPv6: stopping instances...
 
 
-================== 45 passed, 1 skipped in 285.75s (0:04:45) ===================
+================== 45 passed, 1 skipped in 183.16s (0:03:03) ===================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 26 items
 
-Live test, OpenBGPD 9.2, BGP communities, IPv4: instances setup 
-Live test, OpenBGPD 9.2, BGP communities, IPv4: setting instances up...
+Live test, OpenBGPD 9.3, BGP communities, IPv4: instances setup 
+Live test, OpenBGPD 9.3, BGP communities, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv4: sessions are up PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv4: announce to AS1 only (ext) PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv4: announce to AS1 only (lrg) PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv4: announce to AS1 only (std) PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv4: announce to AS131073 only (ext) PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv4: announce to AS131073 only (lrg) PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv4: custom BGP community (ext) PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv4: custom BGP community (lrg) PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv4: custom BGP community (std) PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv4: custom BGP community scrubbed PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv4: reconfigure PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv4: log contains errors PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv4: dumping rs config...
+Live test, OpenBGPD 9.3, BGP communities, IPv4: sessions are up PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv4: announce to AS1 only (ext) PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv4: announce to AS1 only (lrg) PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv4: announce to AS1 only (std) PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv4: announce to AS131073 only (ext) PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv4: announce to AS131073 only (lrg) PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv4: custom BGP community (ext) PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv4: custom BGP community (lrg) PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv4: custom BGP community (std) PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv4: custom BGP community scrubbed PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv4: reconfigure PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv4: log contains errors PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv4: dumping rs config...
 
-Live test, OpenBGPD 9.2, BGP communities, IPv4: dumping routes...
+Live test, OpenBGPD 9.3, BGP communities, IPv4: dumping routes...
 
-Live test, OpenBGPD 9.2, BGP communities, IPv4: stopping instances...
+Live test, OpenBGPD 9.3, BGP communities, IPv4: stopping instances...
 
-Live test, OpenBGPD 9.2, BGP communities, IPv6: instances setup 
-Live test, OpenBGPD 9.2, BGP communities, IPv6: setting instances up...
+Live test, OpenBGPD 9.3, BGP communities, IPv6: instances setup 
+Live test, OpenBGPD 9.3, BGP communities, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv6: sessions are up PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv6: announce to AS1 only (ext) PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv6: announce to AS1 only (lrg) PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv6: announce to AS1 only (std) PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv6: announce to AS131073 only (ext) PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv6: announce to AS131073 only (lrg) PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv6: custom BGP community (ext) PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv6: custom BGP community (lrg) PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv6: custom BGP community (std) PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv6: custom BGP community scrubbed PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv6: reconfigure PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv6: log contains errors PASSED
-Live test, OpenBGPD 9.2, BGP communities, IPv6: dumping rs config...
+Live test, OpenBGPD 9.3, BGP communities, IPv6: sessions are up PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv6: announce to AS1 only (ext) PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv6: announce to AS1 only (lrg) PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv6: announce to AS1 only (std) PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv6: announce to AS131073 only (ext) PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv6: announce to AS131073 only (lrg) PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv6: custom BGP community (ext) PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv6: custom BGP community (lrg) PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv6: custom BGP community (std) PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv6: custom BGP community scrubbed PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv6: reconfigure PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv6: log contains errors PASSED
+Live test, OpenBGPD 9.3, BGP communities, IPv6: dumping rs config...
 
-Live test, OpenBGPD 9.2, BGP communities, IPv6: dumping routes...
+Live test, OpenBGPD 9.3, BGP communities, IPv6: dumping routes...
 
-Live test, OpenBGPD 9.2, BGP communities, IPv6: stopping instances...
+Live test, OpenBGPD 9.3, BGP communities, IPv6: stopping instances...
 
 
-======================== 26 passed in 133.99s (0:02:13) ========================
+======================== 26 passed in 102.40s (0:01:42) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
-Live test, OpenBGPD 9.2, default config, IPv4: instances setup 
-Live test, OpenBGPD 9.2, default config, IPv4: setting instances up...
+Live test, OpenBGPD 9.3, default config, IPv4: instances setup 
+Live test, OpenBGPD 9.3, default config, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, default config, IPv4: log contains errors PASSED
-Live test, OpenBGPD 9.2, default config, IPv4: dumping rs config...
+Live test, OpenBGPD 9.3, default config, IPv4: log contains errors PASSED
+Live test, OpenBGPD 9.3, default config, IPv4: dumping rs config...
 
-Live test, OpenBGPD 9.2, default config, IPv4: dumping routes...
+Live test, OpenBGPD 9.3, default config, IPv4: dumping routes...
 
-Live test, OpenBGPD 9.2, default config, IPv4: stopping instances...
+Live test, OpenBGPD 9.3, default config, IPv4: stopping instances...
 
-Live test, OpenBGPD 9.2, default config, IPv6: instances setup 
-Live test, OpenBGPD 9.2, default config, IPv6: setting instances up...
+Live test, OpenBGPD 9.3, default config, IPv6: instances setup 
+Live test, OpenBGPD 9.3, default config, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, default config, IPv6: log contains errors PASSED
-Live test, OpenBGPD 9.2, default config, IPv6: dumping rs config...
+Live test, OpenBGPD 9.3, default config, IPv6: log contains errors PASSED
+Live test, OpenBGPD 9.3, default config, IPv6: dumping rs config...
 
-Live test, OpenBGPD 9.2, default config, IPv6: dumping routes...
+Live test, OpenBGPD 9.3, default config, IPv6: dumping routes...
 
-Live test, OpenBGPD 9.2, default config, IPv6: stopping instances...
+Live test, OpenBGPD 9.3, default config, IPv6: stopping instances...
 
 
-============================== 4 passed in 24.78s ==============================
+============================== 4 passed in 21.08s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 455 items
+
+Live test, OpenBGPD 9.3, global scenario, IPv4: instances setup 
+Live test, OpenBGPD 9.3, global scenario, IPv4: setting instances up...
+PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: sessions are up PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: session configured via local include files PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: good prefixes because of use_arin_bulk_whois_data PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: good prefixes received by rs: IRRdb white-list PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: good prefixes because of use_registrobr_bulk_whois_data PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: exact PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: covering PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: good prefixes received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: good prefixes received by rs: non-client NEXT_HOP PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: not IPv6 global unicast space PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: IRRdb white-list PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: AS_SET in AS_PATH, default (not accepted) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: AS_SET in AS_PATH, 'allow_as_set' override PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: AS_PATH len PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: bogon PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: client blacklist PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: global blacklist PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: invalid ASN in AS-PATH PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: invalid NEXT_HOP PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: left-most ASN PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: origin not in AS-SET PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: prefix not in AS-SET PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: invalid prefix-len PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: unknown NEXT_HOP PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: RPKI ROAs as route objects failed PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: default route PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes not received by clients PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: bogon (wrong tag) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad prefixes received by rs: global blacklist (wrong tag) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: RPKI, blackhole request for a covered prefix PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: RPKI, invalid prefix (bad ASN) received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: RPKI, invalid prefix (bad length) received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: RPKI, valid prefix received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: RPKI, valid prefix propagated to clients PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: ASPA, invalid AS_PATH received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: ASPA, invalid AS_PATH not propagated to clients PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: ASPA, valid AS_PATH received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: ASPA, valid AS_PATH propagated to clients PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: prefixes from AS101 received by its upstreams PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: prefixes from AS101 received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad communities as seen by AS101 upstreams PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad communities scrubbed by rs (lrg) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: bad communities scrubbed by rs (std) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: other communities not scrubbed by rs (lrg) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: other communities not scrubbed by rs (std) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: blackhole filtering requests as seen by rs (BLACKHOLE) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: blackhole filtering requests as seen by rs (lrg cust) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: blackhole filtering requests as seen by rs (std cust) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: blackholed prefixes as seen by enabled clients (BLACKHOLE) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: blackholed prefixes as seen by enabled clients (lrg_cust) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: blackholed prefixes as seen by enabled clients (std_cust) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: blackholed prefixes not seen by not enabled clients PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: gshut by an enabled client PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: gshut by a not enabled client PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, announce to AS1 only PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, don't announce to any PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, announce to all except AS1 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, prepend once to any PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, prepend twice to any PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, prepend thrice to any PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, prepend once to AS1 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, prepend twice to AS151866 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, prepend twice to AS2 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, prepend thrice to AS1, once to others PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, NO_EXPORT to AS1 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, NO_EXPORT to AS151866 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, NO_EXPORT to any PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, RFC1997 NO_EXPORT PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, RTT, blackhole, not peers > 20 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, RTT, not peers > 15 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, RTT, not peers > 5 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, RTT, not peers > 5 ms + AS3 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, RTT, not peers <= 5 and > 100 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, RTT, only peers <= 15 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, RTT, only peers <= 5 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: prefixes received by clients: AS1_1 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: prefixes received by clients: AS1_2 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: prefixes received by clients: AS2 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: prefixes received by clients: AS3 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: prefixes received by clients: AS3 (with ADD-PATH) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: reconfigure PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: log contains errors PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv4: dumping rs config...
+
+Live test, OpenBGPD 9.3, global scenario, IPv4: dumping routes...
+
+Live test, OpenBGPD 9.3, global scenario, IPv4: stopping instances...
+
+Live test, OpenBGPD 9.3, global scenario, IPv6: instances setup 
+Live test, OpenBGPD 9.3, global scenario, IPv6: setting instances up...
+PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: sessions are up PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: session configured via local include files PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: good prefixes because of use_arin_bulk_whois_data PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: good prefixes received by rs: IRRdb white-list PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: good prefixes because of use_registrobr_bulk_whois_data PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: exact PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: covering PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: good prefixes received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: good prefixes received by rs: non-client NEXT_HOP PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: not IPv6 global unicast space PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: IRRdb white-list PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: AS_SET in AS_PATH, default (not accepted) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: AS_SET in AS_PATH, 'allow_as_set' override PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: AS_PATH len PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: bogon PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: client blacklist PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: global blacklist PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: invalid ASN in AS-PATH PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: invalid NEXT_HOP PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: left-most ASN PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: origin not in AS-SET PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: prefix not in AS-SET PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: invalid prefix-len PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: unknown NEXT_HOP PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: RPKI ROAs as route objects failed PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: default route PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes not received by clients PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: bogon (wrong tag) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad prefixes received by rs: global blacklist (wrong tag) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: RPKI, blackhole request for a covered prefix PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: RPKI, invalid prefix (bad ASN) received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: RPKI, invalid prefix (bad length) received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: RPKI, valid prefix received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: RPKI, valid prefix propagated to clients PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: ASPA, invalid AS_PATH received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: ASPA, invalid AS_PATH not propagated to clients PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: ASPA, valid AS_PATH received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: ASPA, valid AS_PATH propagated to clients PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: prefixes from AS101 received by its upstreams PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: prefixes from AS101 received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad communities as seen by AS101 upstreams PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad communities scrubbed by rs (lrg) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: bad communities scrubbed by rs (std) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: other communities not scrubbed by rs (lrg) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: other communities not scrubbed by rs (std) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: blackhole filtering requests as seen by rs (BLACKHOLE) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: blackhole filtering requests as seen by rs (lrg cust) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: blackhole filtering requests as seen by rs (std cust) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: blackholed prefixes as seen by enabled clients (BLACKHOLE) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: blackholed prefixes as seen by enabled clients (lrg_cust) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: blackholed prefixes as seen by enabled clients (std_cust) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: blackholed prefixes not seen by not enabled clients PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: gshut by an enabled client PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: gshut by a not enabled client PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, announce to AS1 only PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, don't announce to any PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, announce to all except AS1 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, prepend once to any PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, prepend twice to any PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, prepend thrice to any PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, prepend once to AS1 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, prepend twice to AS151866 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, prepend twice to AS2 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, prepend thrice to AS1, once to others PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, NO_EXPORT to AS1 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, NO_EXPORT to AS151866 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, NO_EXPORT to any PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, RFC1997 NO_EXPORT PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, RTT, blackhole, not peers > 20 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, RTT, not peers > 15 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, RTT, not peers > 5 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, RTT, not peers > 5 ms + AS3 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, RTT, not peers <= 5 and > 100 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, RTT, only peers <= 15 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, RTT, only peers <= 5 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: prefixes received by clients: AS1_1 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: prefixes received by clients: AS1_2 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: prefixes received by clients: AS2 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: prefixes received by clients: AS3 PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: prefixes received by clients: AS3 (with ADD-PATH) PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: reconfigure PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: log contains errors PASSED
+Live test, OpenBGPD 9.3, global scenario, IPv6: dumping rs config...
+
+Live test, OpenBGPD 9.3, global scenario, IPv6: dumping routes...
+
+Live test, OpenBGPD 9.3, global scenario, IPv6: stopping instances...
 
 Live test, OpenBGPD 9.2, global scenario, IPv4: instances setup 
 Live test, OpenBGPD 9.2, global scenario, IPv4: setting instances up...
@@ -5124,899 +5269,704 @@ Live test, OpenBGPD 9.2, global scenario, IPv6: dumping routes...
 
 Live test, OpenBGPD 9.2, global scenario, IPv6: stopping instances...
 
-Live test, OpenBGPD 8.7, global scenario, IPv4: instances setup 
-Live test, OpenBGPD 8.7, global scenario, IPv4: setting instances up...
+Live test, OpenBGPD 9.3, global scenario, RFC8950: instances setup 
+Live test, OpenBGPD 9.3, global scenario, RFC8950: setting instances up...
 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: sessions are up PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: session configured via local include files PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: good prefixes because of use_arin_bulk_whois_data PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: good prefixes received by rs: IRRdb white-list PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: good prefixes because of use_registrobr_bulk_whois_data PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: exact PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: good prefixes because of use_rpki_roas_as_route_objects: covering PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: good prefixes received by rs PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: good prefixes received by rs: non-client NEXT_HOP PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: not IPv6 global unicast space PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: IRRdb white-list PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: AS_SET in AS_PATH, default (not accepted) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: AS_SET in AS_PATH, 'allow_as_set' override PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: AS_PATH len PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: bogon PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: client blacklist PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: global blacklist PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: invalid ASN in AS-PATH PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: invalid NEXT_HOP PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: left-most ASN PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: origin not in AS-SET PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: prefix not in AS-SET PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: invalid prefix-len PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: unknown NEXT_HOP PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: RPKI ROAs as route objects failed PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: default route PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes not received by clients PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: bogon (wrong tag) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad prefixes received by rs: global blacklist (wrong tag) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: RPKI, blackhole request for a covered prefix PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: RPKI, invalid prefix (bad ASN) received by rs PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: RPKI, invalid prefix (bad length) received by rs PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: RPKI, valid prefix received by rs PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: RPKI, valid prefix propagated to clients PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: ASPA, invalid AS_PATH received by rs PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: ASPA, invalid AS_PATH not propagated to clients PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: ASPA, valid AS_PATH received by rs PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: ASPA, valid AS_PATH propagated to clients PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: prefixes from AS101 received by its upstreams PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: prefixes from AS101 received by rs PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad communities as seen by AS101 upstreams PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad communities scrubbed by rs (lrg) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: bad communities scrubbed by rs (std) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: other communities not scrubbed by rs (lrg) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: other communities not scrubbed by rs (std) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: blackhole filtering requests as seen by rs (BLACKHOLE) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: blackhole filtering requests as seen by rs (lrg cust) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: blackhole filtering requests as seen by rs (std cust) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: blackholed prefixes as seen by enabled clients (BLACKHOLE) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: blackholed prefixes as seen by enabled clients (lrg_cust) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: blackholed prefixes as seen by enabled clients (std_cust) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: blackholed prefixes not seen by not enabled clients PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: gshut by an enabled client PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: gshut by a not enabled client PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, announce to AS1 only PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, don't announce to any PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, announce to all except AS1 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, prepend once to any PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, prepend twice to any PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, prepend thrice to any PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, prepend once to AS1 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, prepend twice to AS151866 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, prepend twice to AS2 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, prepend thrice to AS1, once to others PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, NO_EXPORT to AS1 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, NO_EXPORT to AS151866 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, NO_EXPORT to any PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, RFC1997 NO_EXPORT PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, RTT, blackhole, not peers > 20 ms PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, RTT, not peers > 15 ms PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, RTT, not peers > 5 ms PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, RTT, not peers > 5 ms + AS3 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, RTT, not peers <= 5 and > 100 ms PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, RTT, only peers <= 15 ms PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, RTT, only peers <= 5 ms PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: prefixes received by clients: AS1_1 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: prefixes received by clients: AS1_2 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: prefixes received by clients: AS2 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: prefixes received by clients: AS3 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: prefixes received by clients: AS3 (with ADD-PATH) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: reconfigure PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: log contains errors PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv4: dumping rs config...
+Live test, OpenBGPD 9.3, global scenario, RFC8950: sessions are up PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: session configured via local include files PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: good prefixes because of use_arin_bulk_whois_data PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: good prefixes received by rs: IRRdb white-list PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: good prefixes because of use_registrobr_bulk_whois_data PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: good prefixes because of use_rpki_roas_as_route_objects: exact PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: good prefixes because of use_rpki_roas_as_route_objects: covering PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: good prefixes received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: good prefixes received by rs: non-client NEXT_HOP PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: not IPv6 global unicast space PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: IRRdb white-list PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: AS_SET in AS_PATH, default (not accepted) PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: AS_SET in AS_PATH, 'allow_as_set' override PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: AS_PATH len PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: bogon PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: client blacklist PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: global blacklist PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: invalid ASN in AS-PATH PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: invalid NEXT_HOP PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: left-most ASN PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: origin not in AS-SET PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: prefix not in AS-SET PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: invalid prefix-len PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: transit-free ASN in AS-PATH PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: unknown NEXT_HOP PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: RPKI ROAs as route objects failed PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: default route PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes not received by clients PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: bogon (wrong tag) PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad prefixes received by rs: global blacklist (wrong tag) PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: RPKI, blackhole request for a covered prefix PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: RPKI, invalid prefix (bad ASN) received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: RPKI, invalid prefix (bad length) received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: RPKI, valid prefix received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: RPKI, valid prefix propagated to clients PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: ASPA, invalid AS_PATH received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: ASPA, invalid AS_PATH not propagated to clients PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: ASPA, valid AS_PATH received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: ASPA, valid AS_PATH propagated to clients PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: prefixes from AS101 received by its upstreams PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: prefixes from AS101 received by rs PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad communities as seen by AS101 upstreams PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad communities scrubbed by rs (lrg) PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: bad communities scrubbed by rs (std) PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: other communities not scrubbed by rs (lrg) PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: other communities not scrubbed by rs (std) PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: blackhole filtering requests as seen by rs (BLACKHOLE) PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: blackhole filtering requests as seen by rs (lrg cust) PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: blackhole filtering requests as seen by rs (std cust) PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: blackholed prefixes as seen by enabled clients (BLACKHOLE) PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: blackholed prefixes as seen by enabled clients (lrg_cust) PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: blackholed prefixes as seen by enabled clients (std_cust) PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: blackholed prefixes not seen by not enabled clients PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: gshut by an enabled client PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: gshut by a not enabled client PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, announce to AS1 only PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, don't announce to any PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, announce to all except AS1 PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, prepend once to any PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, prepend twice to any PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, prepend thrice to any PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, prepend once to AS1 PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, prepend twice to AS151866 PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, prepend twice to AS2 PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, prepend thrice to AS1, once to others PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, NO_EXPORT to AS1 PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, NO_EXPORT to AS151866 PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, NO_EXPORT to any PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, RFC1997 NO_EXPORT PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, RTT, blackhole, not peers > 20 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, RTT, not peers > 15 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, RTT, not peers > 5 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, RTT, not peers > 5 ms + AS3 PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, RTT, not peers <= 5 and > 100 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, RTT, only peers <= 15 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, RTT, only peers <= 5 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: prefixes received by clients: AS1_1 PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: prefixes received by clients: AS1_2 PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: prefixes received by clients: AS2 PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: prefixes received by clients: AS3 PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: prefixes received by clients: AS3 (with ADD-PATH) PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: reconfigure PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: log contains errors PASSED
+Live test, OpenBGPD 9.3, global scenario, RFC8950: dumping rs config...
 
-Live test, OpenBGPD 8.7, global scenario, IPv4: dumping routes...
+Live test, OpenBGPD 9.3, global scenario, RFC8950: dumping routes...
 
-Live test, OpenBGPD 8.7, global scenario, IPv4: stopping instances...
-
-Live test, OpenBGPD 8.7, global scenario, IPv6: instances setup 
-Live test, OpenBGPD 8.7, global scenario, IPv6: setting instances up...
-PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: sessions are up PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: session configured via local include files PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: good prefixes because of use_arin_bulk_whois_data PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: good prefixes received by rs: IRRdb white-list PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: good prefixes because of use_registrobr_bulk_whois_data PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: exact PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: good prefixes because of use_rpki_roas_as_route_objects: covering PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: good prefixes received by rs PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: good prefixes received by rs: non-client NEXT_HOP PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: not IPv6 global unicast space PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: IRRdb white-list PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: AS_SET in AS_PATH, default (not accepted) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: AS_SET in AS_PATH, 'allow_as_set' override PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: AS_PATH len PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: bogon PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: client blacklist PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: global blacklist PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: invalid ASN in AS-PATH PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: invalid NEXT_HOP PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: left-most ASN PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: origin not in AS-SET PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: prefix not in AS-SET PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: invalid prefix-len PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: unknown NEXT_HOP PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: RPKI ROAs as route objects failed PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: default route PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes not received by clients PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: bogon (wrong tag) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad prefixes received by rs: global blacklist (wrong tag) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: RPKI, blackhole request for a covered prefix PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: RPKI, invalid prefix (bad ASN) received by rs PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: RPKI, invalid prefix (bad length) received by rs PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: RPKI, valid prefix received by rs PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: RPKI, valid prefix propagated to clients PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: ASPA, invalid AS_PATH received by rs PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: ASPA, invalid AS_PATH not propagated to clients PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: ASPA, valid AS_PATH received by rs PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: ASPA, valid AS_PATH propagated to clients PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: prefixes from AS101 received by its upstreams PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: prefixes from AS101 received by rs PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad communities as seen by AS101 upstreams PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad communities scrubbed by rs (lrg) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: bad communities scrubbed by rs (std) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: other communities not scrubbed by rs (lrg) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: other communities not scrubbed by rs (std) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: blackhole filtering requests as seen by rs (BLACKHOLE) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: blackhole filtering requests as seen by rs (lrg cust) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: blackhole filtering requests as seen by rs (std cust) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: blackholed prefixes as seen by enabled clients (BLACKHOLE) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: blackholed prefixes as seen by enabled clients (lrg_cust) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: blackholed prefixes as seen by enabled clients (std_cust) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: blackholed prefixes not seen by not enabled clients PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: gshut by an enabled client PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: gshut by a not enabled client PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, announce to AS1 only PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, don't announce to any PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, announce to all except AS1 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, prepend once to any PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, prepend twice to any PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, prepend thrice to any PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, prepend once to AS1 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, prepend twice to AS151866 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, prepend twice to AS2 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, prepend thrice to AS1, once to others PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, NO_EXPORT to AS1 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, NO_EXPORT to AS151866 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, NO_EXPORT to any PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, RFC1997 NO_EXPORT PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, RTT, blackhole, not peers > 20 ms PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, RTT, not peers > 15 ms PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, RTT, not peers > 5 ms PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, RTT, not peers > 5 ms + AS3 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, RTT, not peers <= 5 and > 100 ms PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, RTT, only peers <= 15 ms PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, RTT, only peers <= 5 ms PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: prefixes received by clients: AS1_1 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: prefixes received by clients: AS1_2 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: prefixes received by clients: AS2 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: prefixes received by clients: AS3 PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: prefixes received by clients: AS3 (with ADD-PATH) PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: reconfigure PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: log contains errors PASSED
-Live test, OpenBGPD 8.7, global scenario, IPv6: dumping rs config...
-
-Live test, OpenBGPD 8.7, global scenario, IPv6: dumping routes...
-
-Live test, OpenBGPD 8.7, global scenario, IPv6: stopping instances...
-
-Live test, OpenBGPD 9.2, global scenario, RFC8950: instances setup 
-Live test, OpenBGPD 9.2, global scenario, RFC8950: setting instances up...
-PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: sessions are up PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: session configured via local include files PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: good prefixes because of use_arin_bulk_whois_data PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: good prefixes received by rs: IRRdb white-list PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: good prefixes because of use_registrobr_bulk_whois_data PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: good prefixes because of use_rpki_roas_as_route_objects: exact PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: good prefixes because of use_rpki_roas_as_route_objects: covering PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: good prefixes received by rs PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: good prefixes received by rs: non-client NEXT_HOP PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: not IPv6 global unicast space PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: IRRdb white-list PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: AS_SET in AS_PATH, default (not accepted) PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: AS_SET in AS_PATH, 'allow_as_set' override PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: AS_PATH len PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: bogon PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: client blacklist PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: global blacklist PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: invalid ASN in AS-PATH PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: invalid NEXT_HOP PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: left-most ASN PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list) PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB) PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: origin not in AS-SET PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: prefix not in AS-SET PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: invalid prefix-len PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: transit-free ASN in AS-PATH PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: transit-free ASN in AS-PATH from a transit peer PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: unknown NEXT_HOP PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: RPKI ROAs as route objects failed PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: default route PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes not received by clients PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: bogon (wrong tag) PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad prefixes received by rs: global blacklist (wrong tag) PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: RPKI, blackhole request for a covered prefix PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: RPKI, invalid prefix (bad ASN) received by rs PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: RPKI, invalid prefix (bad length) received by rs PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: RPKI, invalid prefix (bad ASN) not propagated to clients PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: RPKI, valid prefix received by rs PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: RPKI, valid prefix propagated to clients PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: ASPA, invalid AS_PATH received by rs PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: ASPA, invalid AS_PATH not propagated to clients PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: ASPA, valid AS_PATH received by rs PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: ASPA, valid AS_PATH propagated to clients PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: prefixes from AS101 received by its upstreams PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: prefixes from AS101 received by rs PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad communities as seen by AS101 upstreams PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad communities scrubbed by rs (lrg) PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: bad communities scrubbed by rs (std) PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: other communities not scrubbed by rs (lrg) PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: other communities not scrubbed by rs (std) PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: blackhole filtering requests as seen by rs (BLACKHOLE) PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: blackhole filtering requests as seen by rs (lrg cust) PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: blackhole filtering requests as seen by rs (std cust) PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: blackholed prefixes as seen by enabled clients (BLACKHOLE) PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: blackholed prefixes as seen by enabled clients (lrg_cust) PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: blackholed prefixes as seen by enabled clients (std_cust) PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: blackholed prefixes not seen by not enabled clients PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: gshut by an enabled client PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: gshut by a not enabled client PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, announce to AS1 only PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, don't announce to any PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, announce to all except AS1 PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, prepend once to any PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, prepend twice to any PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, prepend thrice to any PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, prepend once to AS1 PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, prepend twice to AS151866 PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, prepend twice to AS2 PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, prepend thrice to AS1, once to others PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, NO_EXPORT to AS1 PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, NO_EXPORT to AS151866 PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, NO_EXPORT to any PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, RFC1997 NO_EXPORT PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, RTT, blackhole, not peers > 20 ms PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, RTT, not peers > 15 ms PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, RTT, not peers > 5 ms PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, RTT, not peers > 5 ms + AS3 PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, RTT, not peers <= 5 and > 100 ms PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, RTT, only peers <= 15 ms PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, RTT, only peers <= 5 ms PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, RTT, ext comms, prepend 1x > 10 ms, 2x > 20 ms PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, RTT, prepend 3x > 100 ms, 2x > 10 ms PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: control communities, RTT, prepend 3x <= 5 ms, 2x <= 20 ms, 1x any PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: prefixes received by clients: AS1_1 PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: prefixes received by clients: AS1_2 PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: prefixes received by clients: AS2 PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: prefixes received by clients: AS3 PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: prefixes received by clients: AS3 (with ADD-PATH) PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: reconfigure PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: log contains errors PASSED
-Live test, OpenBGPD 9.2, global scenario, RFC8950: dumping rs config...
-
-Live test, OpenBGPD 9.2, global scenario, RFC8950: dumping routes...
-
-Live test, OpenBGPD 9.2, global scenario, RFC8950: stopping instances...
+Live test, OpenBGPD 9.3, global scenario, RFC8950: stopping instances...
 
 
-======================= 455 passed in 1270.74s (0:21:10) =======================
+======================= 455 passed in 573.22s (0:09:33) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 10 items
 
-Live test, OpenBGPD 9.2, gshut, IPv4: instances setup 
-Live test, OpenBGPD 9.2, gshut, IPv4: setting instances up...
+Live test, OpenBGPD 9.3, gshut, IPv4: instances setup 
+Live test, OpenBGPD 9.3, gshut, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, gshut, IPv4: sessions are up PASSED
-Live test, OpenBGPD 9.2, gshut, IPv4: clients receive routes tagged with GRACEFUL_SHUTDOWN PASSED
-Live test, OpenBGPD 9.2, gshut, IPv4: reconfigure PASSED
-Live test, OpenBGPD 9.2, gshut, IPv4: log contains errors PASSED
-Live test, OpenBGPD 9.2, gshut, IPv4: dumping rs config...
+Live test, OpenBGPD 9.3, gshut, IPv4: sessions are up PASSED
+Live test, OpenBGPD 9.3, gshut, IPv4: clients receive routes tagged with GRACEFUL_SHUTDOWN PASSED
+Live test, OpenBGPD 9.3, gshut, IPv4: reconfigure PASSED
+Live test, OpenBGPD 9.3, gshut, IPv4: log contains errors PASSED
+Live test, OpenBGPD 9.3, gshut, IPv4: dumping rs config...
 
-Live test, OpenBGPD 9.2, gshut, IPv4: dumping routes...
+Live test, OpenBGPD 9.3, gshut, IPv4: dumping routes...
 
-Live test, OpenBGPD 9.2, gshut, IPv4: stopping instances...
+Live test, OpenBGPD 9.3, gshut, IPv4: stopping instances...
 
-Live test, OpenBGPD 9.2, gshut, IPv6: instances setup 
-Live test, OpenBGPD 9.2, gshut, IPv6: setting instances up...
+Live test, OpenBGPD 9.3, gshut, IPv6: instances setup 
+Live test, OpenBGPD 9.3, gshut, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, gshut, IPv6: sessions are up PASSED
-Live test, OpenBGPD 9.2, gshut, IPv6: clients receive routes tagged with GRACEFUL_SHUTDOWN PASSED
-Live test, OpenBGPD 9.2, gshut, IPv6: reconfigure PASSED
-Live test, OpenBGPD 9.2, gshut, IPv6: log contains errors PASSED
-Live test, OpenBGPD 9.2, gshut, IPv6: dumping rs config...
+Live test, OpenBGPD 9.3, gshut, IPv6: sessions are up PASSED
+Live test, OpenBGPD 9.3, gshut, IPv6: clients receive routes tagged with GRACEFUL_SHUTDOWN PASSED
+Live test, OpenBGPD 9.3, gshut, IPv6: reconfigure PASSED
+Live test, OpenBGPD 9.3, gshut, IPv6: log contains errors PASSED
+Live test, OpenBGPD 9.3, gshut, IPv6: dumping rs config...
 
-Live test, OpenBGPD 9.2, gshut, IPv6: dumping routes...
+Live test, OpenBGPD 9.3, gshut, IPv6: dumping routes...
 
-Live test, OpenBGPD 9.2, gshut, IPv6: stopping instances...
+Live test, OpenBGPD 9.3, gshut, IPv6: stopping instances...
 
 
-======================== 10 passed in 109.11s (0:01:49) ========================
+======================== 10 passed in 77.10s (0:01:17) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 10 items
 
-Live test, OpenBGPD 9.2, max-prefix, IPv4: instances setup 
-Live test, OpenBGPD 9.2, max-prefix, IPv4: setting instances up...
+Live test, OpenBGPD 9.3, max-prefix, IPv4: instances setup 
+Live test, OpenBGPD 9.3, max-prefix, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, max-prefix, IPv4: sessions are down PASSED
-Live test, OpenBGPD 9.2, max-prefix, IPv4: clients log max-prefix notification PASSED
-Live test, OpenBGPD 9.2, max-prefix, IPv4: reconfigure PASSED
-Live test, OpenBGPD 9.2, max-prefix, IPv4: log contains errors PASSED
-Live test, OpenBGPD 9.2, max-prefix, IPv4: dumping rs config...
+Live test, OpenBGPD 9.3, max-prefix, IPv4: sessions are down PASSED
+Live test, OpenBGPD 9.3, max-prefix, IPv4: clients log max-prefix notification PASSED
+Live test, OpenBGPD 9.3, max-prefix, IPv4: reconfigure PASSED
+Live test, OpenBGPD 9.3, max-prefix, IPv4: log contains errors PASSED
+Live test, OpenBGPD 9.3, max-prefix, IPv4: dumping rs config...
 
-Live test, OpenBGPD 9.2, max-prefix, IPv4: dumping routes...
+Live test, OpenBGPD 9.3, max-prefix, IPv4: dumping routes...
 
-Live test, OpenBGPD 9.2, max-prefix, IPv4: stopping instances...
+Live test, OpenBGPD 9.3, max-prefix, IPv4: stopping instances...
 
-Live test, OpenBGPD 9.2, max-prefix, IPv6: instances setup 
-Live test, OpenBGPD 9.2, max-prefix, IPv6: setting instances up...
+Live test, OpenBGPD 9.3, max-prefix, IPv6: instances setup 
+Live test, OpenBGPD 9.3, max-prefix, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, max-prefix, IPv6: sessions are down PASSED
-Live test, OpenBGPD 9.2, max-prefix, IPv6: clients log max-prefix notification PASSED
-Live test, OpenBGPD 9.2, max-prefix, IPv6: reconfigure PASSED
-Live test, OpenBGPD 9.2, max-prefix, IPv6: log contains errors PASSED
-Live test, OpenBGPD 9.2, max-prefix, IPv6: dumping rs config...
+Live test, OpenBGPD 9.3, max-prefix, IPv6: sessions are down PASSED
+Live test, OpenBGPD 9.3, max-prefix, IPv6: clients log max-prefix notification PASSED
+Live test, OpenBGPD 9.3, max-prefix, IPv6: reconfigure PASSED
+Live test, OpenBGPD 9.3, max-prefix, IPv6: log contains errors PASSED
+Live test, OpenBGPD 9.3, max-prefix, IPv6: dumping rs config...
 
-Live test, OpenBGPD 9.2, max-prefix, IPv6: dumping routes...
+Live test, OpenBGPD 9.3, max-prefix, IPv6: dumping routes...
 
-Live test, OpenBGPD 9.2, max-prefix, IPv6: stopping instances...
+Live test, OpenBGPD 9.3, max-prefix, IPv6: stopping instances...
 
 
-======================== 10 passed in 654.13s (0:10:54) ========================
+======================== 10 passed in 454.21s (0:07:34) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 38 items
 
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv4: instances setup 
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv4: setting instances up...
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv4: instances setup 
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv4: sessions are up PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv4: rs should receive prefix from both AS1 and AS2 PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv4: rs should have best toward AS1 PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv4: AS1 wants rs to not announce to AS3 and AS4 PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv4: AS3 and AS4 receive prefix with sub-optimal path via AS2 PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv4: AS3 and AS4 don't receive prefix via AS1 PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv4: 2nd best is withdrawn and AS3 should not see it anymore PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv4: reconfigure PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv4: log contains errors PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv4: dumping rs config...
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv4: sessions are up PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv4: rs should receive prefix from both AS1 and AS2 PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv4: rs should have best toward AS1 PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv4: AS1 wants rs to not announce to AS3 and AS4 PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv4: AS3 and AS4 receive prefix with sub-optimal path via AS2 PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv4: AS3 and AS4 don't receive prefix via AS1 PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv4: 2nd best is withdrawn and AS3 should not see it anymore PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv4: reconfigure PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv4: log contains errors PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv4: dumping rs config...
 
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv4: dumping routes...
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv4: dumping routes...
 
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv4: stopping instances...
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv4: stopping instances...
 
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv4: instances setup 
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv4: setting instances up...
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv4: instances setup 
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv4: sessions are up PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv4: rs should receive prefix from both AS1 and AS2 PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv4: rs should have best toward AS1 PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv4: AS1 wants rs to not announce to AS3 and AS4 PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv4: AS3 does not receive prefix at all PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv4: AS4 receives the prefix via AS2 because of ADD-PATH PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv4: reconfigure PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv4: log contains errors PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv4: dumping rs config...
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv4: sessions are up PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv4: rs should receive prefix from both AS1 and AS2 PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv4: rs should have best toward AS1 PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv4: AS1 wants rs to not announce to AS3 and AS4 PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv4: AS3 does not receive prefix at all PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv4: AS4 receives the prefix via AS2 because of ADD-PATH PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv4: reconfigure PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv4: log contains errors PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv4: dumping rs config...
 
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv4: dumping routes...
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv4: dumping routes...
 
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv4: stopping instances...
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv4: stopping instances...
 
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv6: instances setup 
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv6: setting instances up...
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv6: instances setup 
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv6: sessions are up PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv6: rs should receive prefix from both AS1 and AS2 PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv6: rs should have best toward AS1 PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv6: AS1 wants rs to not announce to AS3 and AS4 PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv6: AS3 and AS4 receive prefix with sub-optimal path via AS2 PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv6: AS3 and AS4 don't receive prefix via AS1 PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv6: 2nd best is withdrawn and AS3 should not see it anymore PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv6: reconfigure PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv6: log contains errors PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv6: dumping rs config...
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv6: sessions are up PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv6: rs should receive prefix from both AS1 and AS2 PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv6: rs should have best toward AS1 PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv6: AS1 wants rs to not announce to AS3 and AS4 PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv6: AS3 and AS4 receive prefix with sub-optimal path via AS2 PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv6: AS3 and AS4 don't receive prefix via AS1 PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv6: 2nd best is withdrawn and AS3 should not see it anymore PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv6: reconfigure PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv6: log contains errors PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv6: dumping rs config...
 
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv6: dumping routes...
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv6: dumping routes...
 
-Live test, OpenBGPD 9.2, path hiding, mitigation on, IPv6: stopping instances...
+Live test, OpenBGPD 9.3, path hiding, mitigation on, IPv6: stopping instances...
 
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv6: instances setup 
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv6: setting instances up...
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv6: instances setup 
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv6: sessions are up PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv6: rs should receive prefix from both AS1 and AS2 PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv6: rs should have best toward AS1 PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv6: AS1 wants rs to not announce to AS3 and AS4 PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv6: AS3 does not receive prefix at all PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv6: AS4 receives the prefix via AS2 because of ADD-PATH PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv6: reconfigure PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv6: log contains errors PASSED
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv6: dumping rs config...
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv6: sessions are up PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv6: rs should receive prefix from both AS1 and AS2 PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv6: rs should have best toward AS1 PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv6: AS1 wants rs to not announce to AS3 and AS4 PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv6: AS3 does not receive prefix at all PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv6: AS4 receives the prefix via AS2 because of ADD-PATH PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv6: reconfigure PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv6: log contains errors PASSED
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv6: dumping rs config...
 
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv6: dumping routes...
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv6: dumping routes...
 
-Live test, OpenBGPD 9.2, path hiding, mitigation off, IPv6: stopping instances...
+Live test, OpenBGPD 9.3, path hiding, mitigation off, IPv6: stopping instances...
 
 
-======================== 38 passed in 443.81s (0:07:23) ========================
+======================== 38 passed in 309.28s (0:05:09) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 12 items
 
-Live test, OpenBGPD 9.2, RFC8950: instances setup 
-Live test, OpenBGPD 9.2, RFC8950: setting instances up...
+Live test, OpenBGPD 9.3, RFC8950: instances setup 
+Live test, OpenBGPD 9.3, RFC8950: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, RFC8950: sessions are up PASSED
-Live test, OpenBGPD 9.2, RFC8950: accepted routes PASSED
-Live test, OpenBGPD 9.2, RFC8950: IPv4 prefix length within ipv6_pref_len but outside ipv4_pref_len PASSED
-Live test, OpenBGPD 9.2, RFC8950: next hop authorized address AS2_1 PASSED
-Live test, OpenBGPD 9.2, RFC8950: next hop same-as AS1_2 PASSED
-Live test, OpenBGPD 9.2, RFC8950: next hop strict mode on AS1_1 PASSED
-Live test, OpenBGPD 9.2, RFC8950: dropped routes, not in r_set PASSED
-Live test, OpenBGPD 9.2, RFC8950: RPKI rejected routes, AS0 PASSED
-Live test, OpenBGPD 9.2, RFC8950: RPKI rejected routes, INVALID PASSED
-Live test, OpenBGPD 9.2, RFC8950: RPKI VALID routes PASSED
-Live test, OpenBGPD 9.2, RFC8950: log contains errors PASSED
-Live test, OpenBGPD 9.2, RFC8950: dumping rs config...
+Live test, OpenBGPD 9.3, RFC8950: sessions are up PASSED
+Live test, OpenBGPD 9.3, RFC8950: accepted routes PASSED
+Live test, OpenBGPD 9.3, RFC8950: IPv4 prefix length within ipv6_pref_len but outside ipv4_pref_len PASSED
+Live test, OpenBGPD 9.3, RFC8950: next hop authorized address AS2_1 PASSED
+Live test, OpenBGPD 9.3, RFC8950: next hop same-as AS1_2 PASSED
+Live test, OpenBGPD 9.3, RFC8950: next hop strict mode on AS1_1 PASSED
+Live test, OpenBGPD 9.3, RFC8950: dropped routes, not in r_set PASSED
+Live test, OpenBGPD 9.3, RFC8950: RPKI rejected routes, AS0 PASSED
+Live test, OpenBGPD 9.3, RFC8950: RPKI rejected routes, INVALID PASSED
+Live test, OpenBGPD 9.3, RFC8950: RPKI VALID routes PASSED
+Live test, OpenBGPD 9.3, RFC8950: log contains errors PASSED
+Live test, OpenBGPD 9.3, RFC8950: dumping rs config...
 
-Live test, OpenBGPD 9.2, RFC8950: dumping routes...
+Live test, OpenBGPD 9.3, RFC8950: dumping routes...
 
-Live test, OpenBGPD 9.2, RFC8950: stopping instances...
+Live test, OpenBGPD 9.3, RFC8950: stopping instances...
 
 
-============================= 12 passed in 56.21s ==============================
+============================= 12 passed in 43.62s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 4 items
 
-Live test, OpenBGPD 9.2, examples, rich config, IPv4: instances setup 
-Live test, OpenBGPD 9.2, examples, rich config, IPv4: setting instances up...
+Live test, OpenBGPD 9.3, examples, rich config, IPv4: instances setup 
+Live test, OpenBGPD 9.3, examples, rich config, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, examples, rich config, IPv4: log contains errors PASSED
-Live test, OpenBGPD 9.2, examples, rich config, IPv4: dumping rs config...
+Live test, OpenBGPD 9.3, examples, rich config, IPv4: log contains errors PASSED
+Live test, OpenBGPD 9.3, examples, rich config, IPv4: dumping rs config...
 
-Live test, OpenBGPD 9.2, examples, rich config, IPv4: dumping routes...
+Live test, OpenBGPD 9.3, examples, rich config, IPv4: dumping routes...
 
-Live test, OpenBGPD 9.2, examples, rich config, IPv4: stopping instances...
+Live test, OpenBGPD 9.3, examples, rich config, IPv4: stopping instances...
 
-Live test, OpenBGPD 9.2, examples, rich config, IPv6: instances setup 
-Live test, OpenBGPD 9.2, examples, rich config, IPv6: setting instances up...
+Live test, OpenBGPD 9.3, examples, rich config, IPv6: instances setup 
+Live test, OpenBGPD 9.3, examples, rich config, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, examples, rich config, IPv6: log contains errors PASSED
-Live test, OpenBGPD 9.2, examples, rich config, IPv6: dumping rs config...
+Live test, OpenBGPD 9.3, examples, rich config, IPv6: log contains errors PASSED
+Live test, OpenBGPD 9.3, examples, rich config, IPv6: dumping rs config...
 
-Live test, OpenBGPD 9.2, examples, rich config, IPv6: dumping routes...
+Live test, OpenBGPD 9.3, examples, rich config, IPv6: dumping routes...
 
-Live test, OpenBGPD 9.2, examples, rich config, IPv6: stopping instances...
+Live test, OpenBGPD 9.3, examples, rich config, IPv6: stopping instances...
 
 
-=============================== warnings summary ===============================
-Live test, OpenBGPD 9.2, examples, rich config, IPv4: instances setup
-Live test, OpenBGPD 9.2, examples, rich config, IPv6: instances setup
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:84: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    return datetime.datetime.utcnow()
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-======================== 4 passed, 2 warnings in 27.61s ========================
+============================== 4 passed in 20.99s ==============================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
-Live test, OpenBGPD 9.2, roles, IPv4: instances setup 
-Live test, OpenBGPD 9.2, roles, IPv4: setting instances up...
+Live test, OpenBGPD 9.3, roles, IPv4: instances setup 
+Live test, OpenBGPD 9.3, roles, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, roles, IPv4: sessions are up PASSED
-Live test, OpenBGPD 9.2, roles, IPv4: OTC is attached to routes without it PASSED
-Live test, OpenBGPD 9.2, roles, IPv4: routes with OTC from AS1 PASSED
-Live test, OpenBGPD 9.2, roles, IPv4: routes with OTC from AS2 are dropped PASSED
-Live test, OpenBGPD 9.2, roles, IPv4: routes expected on AS2 PASSED
-Live test, OpenBGPD 9.2, roles, IPv4: log contains errors PASSED
-Live test, OpenBGPD 9.2, roles, IPv4: dumping rs config...
+Live test, OpenBGPD 9.3, roles, IPv4: sessions are up PASSED
+Live test, OpenBGPD 9.3, roles, IPv4: OTC is attached to routes without it PASSED
+Live test, OpenBGPD 9.3, roles, IPv4: routes with OTC from AS1 PASSED
+Live test, OpenBGPD 9.3, roles, IPv4: routes with OTC from AS2 are dropped PASSED
+Live test, OpenBGPD 9.3, roles, IPv4: routes expected on AS2 PASSED
+Live test, OpenBGPD 9.3, roles, IPv4: log contains errors PASSED
+Live test, OpenBGPD 9.3, roles, IPv4: dumping rs config...
 
-Live test, OpenBGPD 9.2, roles, IPv4: dumping routes...
+Live test, OpenBGPD 9.3, roles, IPv4: dumping routes...
 
-Live test, OpenBGPD 9.2, roles, IPv4: stopping instances...
+Live test, OpenBGPD 9.3, roles, IPv4: stopping instances...
 
-Live test, OpenBGPD 9.2, roles, IPv6: instances setup 
-Live test, OpenBGPD 9.2, roles, IPv6: setting instances up...
+Live test, OpenBGPD 9.3, roles, IPv6: instances setup 
+Live test, OpenBGPD 9.3, roles, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, roles, IPv6: sessions are up PASSED
-Live test, OpenBGPD 9.2, roles, IPv6: OTC is attached to routes without it PASSED
-Live test, OpenBGPD 9.2, roles, IPv6: routes with OTC from AS1 PASSED
-Live test, OpenBGPD 9.2, roles, IPv6: routes with OTC from AS2 are dropped PASSED
-Live test, OpenBGPD 9.2, roles, IPv6: routes expected on AS2 PASSED
-Live test, OpenBGPD 9.2, roles, IPv6: log contains errors PASSED
-Live test, OpenBGPD 9.2, roles, IPv6: dumping rs config...
+Live test, OpenBGPD 9.3, roles, IPv6: sessions are up PASSED
+Live test, OpenBGPD 9.3, roles, IPv6: OTC is attached to routes without it PASSED
+Live test, OpenBGPD 9.3, roles, IPv6: routes with OTC from AS1 PASSED
+Live test, OpenBGPD 9.3, roles, IPv6: routes with OTC from AS2 are dropped PASSED
+Live test, OpenBGPD 9.3, roles, IPv6: routes expected on AS2 PASSED
+Live test, OpenBGPD 9.3, roles, IPv6: log contains errors PASSED
+Live test, OpenBGPD 9.3, roles, IPv6: dumping rs config...
 
-Live test, OpenBGPD 9.2, roles, IPv6: dumping routes...
+Live test, OpenBGPD 9.3, roles, IPv6: dumping routes...
 
-Live test, OpenBGPD 9.2, roles, IPv6: stopping instances...
+Live test, OpenBGPD 9.3, roles, IPv6: stopping instances...
 
 
-======================== 14 passed in 134.13s (0:02:14) ========================
+======================== 14 passed in 87.47s (0:01:27) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 14 items
 
-Live test, OpenBGPD 9.2, BOV custom comms, IPv4: instances setup 
-Live test, OpenBGPD 9.2, BOV custom comms, IPv4: setting instances up...
+Live test, OpenBGPD 9.3, BOV custom comms, IPv4: instances setup 
+Live test, OpenBGPD 9.3, BOV custom comms, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, BOV custom comms, IPv4: sessions are up PASSED
-Live test, OpenBGPD 9.2, BOV custom comms, IPv4: RPKI, AS2 invalid prefix, bad ASN PASSED
-Live test, OpenBGPD 9.2, BOV custom comms, IPv4: RPKI, AS2 valid prefix, exact match PASSED
-Live test, OpenBGPD 9.2, BOV custom comms, IPv4: ASPA, AS2 invalid AS_PATH PASSED
-Live test, OpenBGPD 9.2, BOV custom comms, IPv4: reconfigure PASSED
-Live test, OpenBGPD 9.2, BOV custom comms, IPv4: log contains errors PASSED
-Live test, OpenBGPD 9.2, BOV custom comms, IPv4: dumping rs config...
+Live test, OpenBGPD 9.3, BOV custom comms, IPv4: sessions are up PASSED
+Live test, OpenBGPD 9.3, BOV custom comms, IPv4: RPKI, AS2 invalid prefix, bad ASN PASSED
+Live test, OpenBGPD 9.3, BOV custom comms, IPv4: RPKI, AS2 valid prefix, exact match PASSED
+Live test, OpenBGPD 9.3, BOV custom comms, IPv4: ASPA, AS2 invalid AS_PATH PASSED
+Live test, OpenBGPD 9.3, BOV custom comms, IPv4: reconfigure PASSED
+Live test, OpenBGPD 9.3, BOV custom comms, IPv4: log contains errors PASSED
+Live test, OpenBGPD 9.3, BOV custom comms, IPv4: dumping rs config...
 
-Live test, OpenBGPD 9.2, BOV custom comms, IPv4: dumping routes...
+Live test, OpenBGPD 9.3, BOV custom comms, IPv4: dumping routes...
 
-Live test, OpenBGPD 9.2, BOV custom comms, IPv4: stopping instances...
+Live test, OpenBGPD 9.3, BOV custom comms, IPv4: stopping instances...
 
-Live test, OpenBGPD 9.2, BOV custom comms, IPv6: instances setup 
-Live test, OpenBGPD 9.2, BOV custom comms, IPv6: setting instances up...
+Live test, OpenBGPD 9.3, BOV custom comms, IPv6: instances setup 
+Live test, OpenBGPD 9.3, BOV custom comms, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, BOV custom comms, IPv6: sessions are up PASSED
-Live test, OpenBGPD 9.2, BOV custom comms, IPv6: RPKI, AS2 invalid prefix, bad ASN PASSED
-Live test, OpenBGPD 9.2, BOV custom comms, IPv6: RPKI, AS2 valid prefix, exact match PASSED
-Live test, OpenBGPD 9.2, BOV custom comms, IPv6: ASPA, AS2 invalid AS_PATH PASSED
-Live test, OpenBGPD 9.2, BOV custom comms, IPv6: reconfigure PASSED
-Live test, OpenBGPD 9.2, BOV custom comms, IPv6: log contains errors PASSED
-Live test, OpenBGPD 9.2, BOV custom comms, IPv6: dumping rs config...
+Live test, OpenBGPD 9.3, BOV custom comms, IPv6: sessions are up PASSED
+Live test, OpenBGPD 9.3, BOV custom comms, IPv6: RPKI, AS2 invalid prefix, bad ASN PASSED
+Live test, OpenBGPD 9.3, BOV custom comms, IPv6: RPKI, AS2 valid prefix, exact match PASSED
+Live test, OpenBGPD 9.3, BOV custom comms, IPv6: ASPA, AS2 invalid AS_PATH PASSED
+Live test, OpenBGPD 9.3, BOV custom comms, IPv6: reconfigure PASSED
+Live test, OpenBGPD 9.3, BOV custom comms, IPv6: log contains errors PASSED
+Live test, OpenBGPD 9.3, BOV custom comms, IPv6: dumping rs config...
 
-Live test, OpenBGPD 9.2, BOV custom comms, IPv6: dumping routes...
+Live test, OpenBGPD 9.3, BOV custom comms, IPv6: dumping routes...
 
-Live test, OpenBGPD 9.2, BOV custom comms, IPv6: stopping instances...
+Live test, OpenBGPD 9.3, BOV custom comms, IPv6: stopping instances...
 
 
-======================== 14 passed in 109.91s (0:01:49) ========================
+======================== 14 passed in 79.39s (0:01:19) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 10 items
 
-Live test, OpenBGPD 9.2, RTR protocol: instances setup 
-Live test, OpenBGPD 9.2, RTR protocol: setting instances up...
+Live test, OpenBGPD 9.3, RTR protocol: instances setup 
+Live test, OpenBGPD 9.3, RTR protocol: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, RTR protocol: sessions are up PASSED
-Live test, OpenBGPD 9.2, RTR protocol: routes accepted because validator not running PASSED
-Live test, OpenBGPD 9.2, RTR protocol: spin up the validator PASSED
-Live test, OpenBGPD 9.2, RTR protocol: restart OpenBGPD to speed up RTR session establishment PASSED
-Live test, OpenBGPD 9.2, RTR protocol: check the RTR session is up and ASPAs are received PASSED
-Live test, OpenBGPD 9.2, RTR protocol: RPKI INVALID route dropped after spinning the validator up PASSED
-Live test, OpenBGPD 9.2, RTR protocol: ASPA INVALID route dropped after spinning the validator up PASSED
-Live test, OpenBGPD 9.2, RTR protocol: ASPA VALID and UNKNOWN routes still accepted PASSED
-Live test, OpenBGPD 9.2, RTR protocol: log contains errors PASSED
-Live test, OpenBGPD 9.2, RTR protocol: dumping rs config...
+Live test, OpenBGPD 9.3, RTR protocol: sessions are up PASSED
+Live test, OpenBGPD 9.3, RTR protocol: routes accepted because validator not running PASSED
+Live test, OpenBGPD 9.3, RTR protocol: spin up the validator PASSED
+Live test, OpenBGPD 9.3, RTR protocol: restart OpenBGPD to speed up RTR session establishment PASSED
+Live test, OpenBGPD 9.3, RTR protocol: check the RTR session is up and ASPAs are received PASSED
+Live test, OpenBGPD 9.3, RTR protocol: RPKI INVALID route dropped after spinning the validator up PASSED
+Live test, OpenBGPD 9.3, RTR protocol: ASPA INVALID route dropped after spinning the validator up PASSED
+Live test, OpenBGPD 9.3, RTR protocol: ASPA VALID and UNKNOWN routes still accepted PASSED
+Live test, OpenBGPD 9.3, RTR protocol: log contains errors PASSED
+Live test, OpenBGPD 9.3, RTR protocol: dumping rs config...
 
-Live test, OpenBGPD 9.2, RTR protocol: dumping routes...
+Live test, OpenBGPD 9.3, RTR protocol: dumping routes...
 
-Live test, OpenBGPD 9.2, RTR protocol: stopping instances...
+Live test, OpenBGPD 9.3, RTR protocol: stopping instances...
 
 
-======================== 10 passed in 81.81s (0:01:21) =========================
+======================== 10 passed in 66.04s (0:01:06) =========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 166 items
 
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: instances setup 
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: setting instances up...
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: instances setup 
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: sessions are up PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS2 prefix ko origin ko PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS2 prefix ko origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok origin ko PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS4 route filtered (origin ko) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS4 prefix ko origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS4 prefix ok origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS4 route filtered (prefix ko, origin ko) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS5 route filtered (prefix ko, origin ko) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS5 route filtered (prefix ko) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS5 prefix ok origin ko PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS5 prefix ok origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (exact) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS4 route white list, reject (more spec) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (more spec) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS4 route white list, reject (origin KO) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (origin any) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS6 ARIN Whois DB: ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: reconfigure PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: log contains errors PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: dumping rs config...
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: sessions are up PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS2 prefix ko origin ko PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS2 prefix ko origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok origin ko PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS4 route filtered (origin ko) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS4 prefix ko origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS4 prefix ok origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS4 route filtered (prefix ko, origin ko) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS5 route filtered (prefix ko, origin ko) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS5 route filtered (prefix ko) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS5 prefix ok origin ko PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS5 prefix ok origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS2 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (exact) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS4 route white list, reject (more spec) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (more spec) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS4 route white list, reject (origin KO) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS4 route white list, ok (origin any) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS4 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS5 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS6 RPKI ROAs as route objects: ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS6 ARIN Whois DB: ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: reconfigure PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: log contains errors PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: dumping rs config...
 
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: dumping routes...
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: dumping routes...
 
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv4: stopping instances...
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv4: stopping instances...
 
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: instances setup 
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: setting instances up...
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: instances setup 
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: sessions are up PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS2 no enforcement, prefix and origin not in AS-SET PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS4 origin enforcement PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS4 prefix enforcement PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (exact) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (more spec) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (more spec) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (origin KO) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (origin any) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: ko PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS6 ARIN Whois DB: ok (solely because of route white list) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas]) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS6 prefix ok, origin ok, ROA + ARIN: rejected PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforced (rejected) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: reconfigure PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: log contains errors PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: dumping rs config...
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: sessions are up PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS2 no enforcement, prefix and origin not in AS-SET PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS4 origin enforcement PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS4 prefix enforcement PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS2 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (exact) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (more spec) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (more spec) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, reject (origin KO) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS4 route white list, ok (origin any) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS4 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS5 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: invalid origin ASN PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS6 RPKI ROAs as route objects: ko PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS6 ARIN Whois DB: ok (solely because of route white list) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas]) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS6 prefix ok, origin ok, ROA + ARIN: rejected PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: AS6 ROA + ARIN Whois DB: enforced (rejected) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: reconfigure PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: log contains errors PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: dumping rs config...
 
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: dumping routes...
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: dumping routes...
 
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv4: stopping instances...
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv4: stopping instances...
 
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: instances setup 
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: setting instances up...
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: instances setup 
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: sessions are up PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS2 prefix ko origin ko PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS2 prefix ko origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok origin ko PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS4 route filtered (origin ko) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS4 prefix ko origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS4 prefix ok origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS4 route filtered (prefix ko, origin ko) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (prefix ko, origin ko) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (prefix ko) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ko PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (exact) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS4 route white list, reject (more spec) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (more spec) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS4 route white list, reject (origin KO) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (origin any) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS6 ARIN Whois DB: ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: reconfigure PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: log contains errors PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: dumping rs config...
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: sessions are up PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS2 prefix ko origin ko PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS2 prefix ko origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok origin ko PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS4 route filtered (origin ko) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS4 prefix ko origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS4 prefix ok origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS4 route filtered (prefix ko, origin ko) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (prefix ko, origin ko) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS5 route filtered (prefix ko) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ko PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS5 prefix ok origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS2 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (exact) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS4 route white list, reject (more spec) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (more spec) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS4 route white list, reject (origin KO) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS4 route white list, ok (origin any) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS4 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS5 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS2 RPKI ROAs as route objects: tag only (w/ prefix_validated_via_rpki_roas) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS6 RPKI ROAs as route objects: ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS2 ARIN Whois DB: tag only (w/ prefix_validated_via_arin_whois_db_dump) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS6 ARIN Whois DB: ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok, origin ok, ARIN: tag only (w/ prefix_validated_via_arin_whois_db_dump) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS2 prefix ok, origin ok, ROA: tag only (w/ prefix_validated_via_rpki_roas) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS2 ROA + ARIN Whois DB: tag only (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS6 prefix ok, origin ok, ROA + ARIN: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforce (w/ comms [arin_whois_db_dump, rpki_roas]) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: reconfigure PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: log contains errors PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: dumping rs config...
 
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: dumping routes...
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: dumping routes...
 
-Live test, OpenBGPD 9.2, tag prefix/origin in AS-SET, IPv6: stopping instances...
+Live test, OpenBGPD 9.3, tag prefix/origin in AS-SET, IPv6: stopping instances...
 
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: instances setup 
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: setting instances up...
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: instances setup 
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: sessions are up PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS2 no enforcement, prefix and origin not in AS-SET PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS4 origin enforcement PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS4 prefix enforcement PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (exact) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (more spec) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (more spec) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (origin KO) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (origin any) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ko, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ok, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ko PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ok PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin WL PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: ko PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS6 ARIN Whois DB: ok (solely because of route white list) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas]) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS6 prefix ok, origin ok, ROA + ARIN: rejected PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforced (rejected) PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: reconfigure PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: log contains errors PASSED
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: dumping rs config...
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: sessions are up PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS2 no enforcement, prefix and origin not in AS-SET PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS4 origin enforcement PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS4 prefix enforcement PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS2 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (exact) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (more spec) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (more spec) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, reject (origin KO) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS4 route white list, ok (origin any) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS4 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ko, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix ok, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ko PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin ok PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS5 white list, prefix WL, origin WL PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS2 RPKI ROAs as route objects: tag only (w/o prefix_validated_via_rpki_roas) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: invalid origin ASN PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS6 RPKI ROAs as route objects: ko PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS2 ARIN Whois DB: tag only (w/o prefix_validated_via_arin_whois_db_dump) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS6 ARIN Whois DB: ok (solely because of route white list) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS2 prefix ok, origin ok, ARIN: tag only (w/o prefix_validated_via_arin_whois_db_dump) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS2 prefix ok, origin ok, ROA: tag only (w/o prefix_validated_via_rpki_roas) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS2 ROA + ARIN Whois DB: tag only (w/o comms [arin_whois_db_dump, rpki_roas]) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS6 prefix ok, origin ok, ROA + ARIN: rejected PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: AS6 ROA + ARIN Whois DB: enforced (rejected) PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: reconfigure PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: log contains errors PASSED
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: dumping rs config...
 
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: dumping routes...
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: dumping routes...
 
-Live test, OpenBGPD 9.2, tag prefix/origin empty AS-SET, IPv6: stopping instances...
+Live test, OpenBGPD 9.3, tag prefix/origin empty AS-SET, IPv6: stopping instances...
 
 
-======================= 166 passed in 386.03s (0:06:26) ========================
+======================= 166 passed in 281.65s (0:04:41) ========================
 ============================= test session starts ==============================
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
 collecting ... collected 46 items
 
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: instances setup 
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: setting instances up...
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: instances setup 
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: sessions are up PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: announced by ASN derived via 16bit_mapped_asn PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: AS_PATH too long PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: bogon prefix PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: bogon prefix, wrong announcing ASN PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: prefix in client's blacklist PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: invalid ASN in AS_PATH PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: invalid NEXT_HOP PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: local black list PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: prefix is not in IPv6 global unicast space SKIPPED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: origin not in as-macro PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: invalid left-most ASN PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: prefix length PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: prefix not in as-macro PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: RPKI INVALID route PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: transit-free ASN in AS_PATH PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: good routes not received PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS1_1 PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS1_2 PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS2 PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: reconfigure PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: log contains errors PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: dumping rs config...
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: sessions are up PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: announced by ASN derived via 16bit_mapped_asn PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: AS_PATH too long PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: bogon prefix PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: bogon prefix, wrong announcing ASN PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: prefix in client's blacklist PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: invalid ASN in AS_PATH PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: invalid NEXT_HOP PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: local black list PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: prefix is not in IPv6 global unicast space SKIPPED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: origin not in as-macro PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: invalid left-most ASN PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: prefix length PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: prefix not in as-macro PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: RPKI INVALID route PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: transit-free ASN in AS_PATH PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: good routes not received PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS1_1 PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS1_2 PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: prefixes received by clients: AS2 PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: reconfigure PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: log contains errors PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: dumping rs config...
 
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: dumping routes...
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: dumping routes...
 
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv4: stopping instances...
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv4: stopping instances...
 
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: instances setup 
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: setting instances up...
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: instances setup 
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: setting instances up...
 PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: sessions are up PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: announced by ASN derived via 16bit_mapped_asn PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: AS_PATH too long PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: bogon prefix PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: bogon prefix, wrong announcing ASN PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: prefix in client's blacklist PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: invalid ASN in AS_PATH PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: invalid NEXT_HOP PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: local black list PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: prefix is not in IPv6 global unicast space PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: origin not in as-macro PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: invalid left-most ASN PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: prefix length PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: prefix not in as-macro PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: RPKI INVALID route PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: transit-free ASN in AS_PATH PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: good routes not received PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS1_1 PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS1_2 PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS2 PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: reconfigure PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: log contains errors PASSED
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: dumping rs config...
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: sessions are up PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: announced by ASN derived via 16bit_mapped_asn PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: AS_PATH too long PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: bogon prefix PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: bogon prefix, wrong announcing ASN PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: prefix in client's blacklist PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: invalid ASN in AS_PATH PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: invalid NEXT_HOP PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: local black list PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: prefix is not in IPv6 global unicast space PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: origin not in as-macro PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: invalid left-most ASN PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: prefix length PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: prefix not in as-macro PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: RPKI INVALID route PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: transit-free ASN in AS_PATH PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: good routes not received PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS1_1 PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS1_2 PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: prefixes received by clients: AS2 PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: reconfigure PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: log contains errors PASSED
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: dumping rs config...
 
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: dumping routes...
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: dumping routes...
 
-Live test, OpenBGPD 9.2, 'tag' reject policy scenario, IPv6: stopping instances...
+Live test, OpenBGPD 9.3, 'tag' reject policy scenario, IPv6: stopping instances...
 
 
-================== 45 passed, 1 skipped in 298.02s (0:04:58) ===================
+================== 45 passed, 1 skipped in 188.11s (0:03:08) ===================

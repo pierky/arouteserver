@@ -363,7 +363,11 @@ CFG = CfgStatement("cfg", t="General options", statement_pattern="^()(cfg):()", 
             CfgStatement("rewrite_next_hop_ipv4", pre_comment=True),
             CfgStatement("rewrite_next_hop_ipv6", group_with_previous="rewrite_next_hop_ipv4"),
             CfgStatement("announce_to_client", pre_comment=True),
-            CfgStatement("add_noexport", pre_comment=True)
+            CfgStatement("add_noexport", pre_comment=True),
+            CfgStatement("client_community", pre_comment=True, sub=[
+                CfgStatement("peering_db", pre_comment=True),
+                CfgStatement("action", pre_comment=True)
+            ])
         ]),
         CfgStatement("graceful_shutdown", t="Graceful shutdown", post_comment=True, sub=[
             CfgStatement("enabled", pre_comment=True),

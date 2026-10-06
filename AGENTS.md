@@ -102,7 +102,7 @@ they're missing, they may already be in place):
    which BIRD version the route server itself targets — see the "BGP
    speaker versions" section below), `pierky/bird:2.19.2`,
    `pierky/bird:3.2.3`, `pierky/bird:3.3.2` for the route-server side, plus
-   `pierky/openbgpd:8.4`/`8.7` etc. for the other speaker versions — see
+   `pierky/openbgpd:9.2`/`9.3` for the OpenBGPD route-server side — see
    `.github/workflows/cicd.yml` for the full list CI pulls. Check with
    `docker images`; pull from Docker Hub or build from
    `github.com/pierky/dockerfiles` (see `docs/LIVETESTS.rst`) if missing.
@@ -206,6 +206,85 @@ live-tests framework: render with the CLI
 X.Y.Z ... -o /path/to/bird.conf`) then
 `docker run --rm -v /path/to/bird.conf:/etc/bird/bird.conf pierky/bird:X.Y.Z bird -c /etc/bird/bird.conf -d -p`
 (`-p` = parse-only, no daemon start). 
+
+### Procedure: adding a new release of a supported BGP speaker
+
+Reference commits: 613c94ec (BIRD 2.16 + OpenBGPD 8.7, the minimal
+case), 4ff763c6 (OpenBGPD 9.2), 222efd6d (BIRD 2.19.2/3.2.3/3.3.2, with
+template changes and a new BIRD 3.x line). Steps, in order:
+
+1. **Docker image.** `pierky/bird:<ver>` / `pierky/openbgpd:<ver>` must be
+   published on Docker Hub (built from `github.com/pierky/dockerfiles`):
+   CI pulls it from there, it is never built by this repo.
+2. **Read the upstream release notes** for config-syntax changes, removed
+   keywords, or changed defaults. If something affects the rendered
+   config, gate it with `"X.Y"|target_version_ge` (or `_le`/`_lt`) in
+   `templates/<daemon>/*.j2`, and/or add a compatibility check in the
+   builder's `validate_bgpspeaker_specific_configuration()`, keeping the
+   output for older targets byte-identical. After *any* template edit run
+   `python utils/update_fingerprints.py` (from the repo root) and commit
+   `templates/fingerprints.yml` (`tests/static/test_cfg_program.py` fails
+   otherwise). Often nothing needs changing here.
+3. **Target support** (`pierky/arouteserver/builder.py`): append the
+   version to `AVAILABLE_VERSION`, keeping the list ordered oldest → newest.
+   - OpenBGPD: `DEFAULT_VERSION = AVAILABLE_VERSION[-1]`, so the newest
+     entry automatically becomes the default (also for `configure`).
+   - BIRD: `DEFAULT_VERSION` is explicit; change it only if the new
+     release should become the default. Several tools derive "latest"
+     from the list: the newest `2.*`/`3.*` entries (`tests/cli`,
+     `utils/build_doc`) and `AVAILABLE_VERSION[-1]` (the "latest BIRD"
+     step of the docker-image tests).
+4. **Live-test instance classes**
+   (`pierky/arouteserver/tests/live_tests/{bird,openbgpd}.py`):
+   - OpenBGPD: add `OpenBGPD<XY>PortableInstance` (`DOCKER_IMAGE`, unique
+     `TAG = "openbgpd<XY>p"`, `BGP_SPEAKER_VERSION`, `TARGET_VERSION`), then
+     shift the aliases: `OpenBGPDPortablePreviousInstance` becomes the old
+     latest, `OpenBGPDPortableLatestInstance` the new class. Scenario files
+     only reference the aliases (`Previous` is used by the `global`
+     scenario only), so no scenario edits are needed. Old classes are
+     kept.
+   - BIRD, newer release of an already-tested line: bump `DOCKER_IMAGE`/
+     `TARGET_VERSION` of the existing class (e.g. `BIRD2Instance`) and keep
+     its `TAG`.
+   - BIRD, new release line: add a new class with a new `TAG`, add
+     `test_bird3<minor>_*.py` files to each scenario directory, and add the
+     speaker id to `ALL_BGPSPEAKERS` in `utils/update_tests`.
+   - Never touch the `pierky/bird:1.6.8`-based client classes (see the
+     gotcha above).
+5. **Images pulled for the tests**: add the new image and drop any image
+   no longer used by a tested class, in all three places, kept in sync:
+   the "Fetch Docker images used by tests" step of
+   `.github/workflows/cicd.yml`, `utils/update_tests`, and the setup
+   section of `docs/LIVETESTS.rst`.
+6. **Hard-coded versions elsewhere**: the docker-image-tests job of
+   `.github/workflows/cicd.yml` (OpenBGPD `VERSION=` and validation image;
+   the per-line BIRD 3.x steps and the custom-`general.yml` BIRD step) and
+   its local mirror `utils/test_docker_images`, plus `utils/test_config`.
+   `git grep` for the old version string to catch them all.
+7. **Docs**: add a `CHANGES.rst` entry to the topmost (unreleased)
+   section, e.g. "New: add support for `<Daemon> <ver> <release-notes
+   URL>`__, which also becomes the new default version for
+   <Daemon>-based configurations, also added to the integration testing
+   suite." Update `docs/FEATURES.rst` only if the supported-versions
+   sentence changes (e.g. a new major line), and the image versions
+   mentioned in this file.
+8. **Verify**: static tests; `bash tests/cli` (it renders and validates
+   with the real daemon for the latest OpenBGPD and BIRD v2 targets); a
+   render + parse-only check for the new target (see above; for OpenBGPD
+   use `bgpd -f /etc/bgpd/bgpd.conf -d -n`); a `BUILD_ONLY=1` pass over
+   the speaker's scenario files; then the full live tests for that speaker
+   (e.g. `tests/live_tests/scenarios/*/test_openbgpd_portable*.py`), one
+   scenario directory at a time. The live tests dump the rendered config
+   and the routes into `configs/<ScenarioClass>/<TAG>.conf` and
+   `routes/<ScenarioClass>/<TAG>/*.txt` inside each scenario directory:
+   the new `<TAG>` dumps are committed together with the change; dumps
+   for older tags are left in place.
+9. **Follow-up (separate "Update tests and docs" commit)**:
+   `utils/update_tests` regenerates `tests/last` and
+   `docs/SUPPORTED_SPEAKERS_CI.txt`; `utils/build_doc` regenerates
+   `README.rst`, `docs/EXAMPLES.rst` and `examples/*` (see the next
+   section). Both need `SECRET_PEERINGDB_API_KEY`; never hand-edit
+   their outputs.
 
 ## Doc/example regeneration (`utils/build_doc`)
 

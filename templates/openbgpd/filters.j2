@@ -674,6 +674,33 @@ match to group clients ext-community $INTCOMM_NO_EXPORT set community NO_EXPORT
 match to group clients ext-community $INTCOMM_NO_ADVERTISE set community NO_ADVERTISE
 {% endif %}
 
+{% for client in clients|sort(attribute="id") if client.ip is current_ipver and
+	client.cfg.blackhole_filtering.announce_to_client and
+	( client.cfg.blackhole_filtering.client_community.std or
+	  client.cfg.blackhole_filtering.client_community.lrg ) and
+	( ( client.ip|ipaddr_ver == 4 and cfg.blackhole_filtering.policy_ipv4 ) or
+	  ( client.ip|ipaddr_ver == 6 and cfg.blackhole_filtering.policy_ipv6 ) ) %}
+{%	if loop.first %}
+# RTBH community of the clients: added after the outbound communities
+# scrubbing, so that it's not removed even when it overlaps with one of them.
+{%	endif %}
+{%	set bh_client_comm = client.cfg.blackhole_filtering.client_community %}
+# {{ client.id }} ({{ bh_client_comm.action }})
+match to {{ client.ip }} community BLACKHOLE set {
+{%	if bh_client_comm.std %}
+	community {{ bh_client_comm.std }}
+{%	endif %}
+{%	if bh_client_comm.lrg %}
+	large-community {{ bh_client_comm.lrg }}
+{%	endif %}
+{%	if bh_client_comm.action == "replace" and bh_client_comm.std != "65535:666" %}
+	community delete BLACKHOLE
+{%	endif %}
+}
+{%	if loop.last %}
+
+{%	endif %}
+{% endfor %}
 # Remove internal communities before announcing the route
 match to group clients set {
 	{{ internal_communities_list(all=True) }}

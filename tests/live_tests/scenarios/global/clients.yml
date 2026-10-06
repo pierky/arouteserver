@@ -32,6 +32,10 @@ clients:
                                   length: 16
                                 - prefix: "2a11:4::"
                                   length: 32
+                blackhole_filtering:
+                        client_community:
+                                # 65535:666 from PeeringDB: nothing changes.
+                                action: "replace"
         - asn: 1
           ip:
           - "192.0.2.12"
@@ -66,6 +70,9 @@ clients:
                                 - "AS-AS2_CUSTOMERS"
                 graceful_shutdown:
                         enabled: False
+                blackhole_filtering:
+                        client_community:
+                                peering_db: False
         - asn: 3
           ip:
           - "192.0.2.31"
@@ -96,12 +103,22 @@ clients:
                         irrdb:
                                 enforce_origin_in_as_set: False
                                 enforce_prefix_in_as_set: False
+                blackhole_filtering:
+                        client_community:
+                                action: "replace"
         - asn: 151866
           ip:
           - "192.0.2.51"
           - "2001:db8:1:1::51"
           description: "151866 client"
           16bit_mapped_asn: 64512
+          cfg:
+                blackhole_filtering:
+                        client_community:
+                                # Same value of the 'blackholing' community,
+                                # which is scrubbed from outbound routes.
+                                # It takes precedence over the one from PeeringDB.
+                                std: "65534:0"
         - asn: 222
           ip:
           - "192.0.2.222"

@@ -34,7 +34,7 @@ Setting up the environment to run live tests
 
      docker network create --ipv6 --subnet=192.0.2.0/24 --subnet=2001:db8:1:1::/64 arouteserver
 
-3. Route server client instances used in live tests are based on BIRD 1.6.8, regardless of which version is used for the BIRD-based route server itself; the ``pierky/bird:1.6.8`` image is expected to be found on the local Docker repository. The BIRD-based route server is tested against ``pierky/bird:2.19.2``, ``pierky/bird:3.2.3`` and ``pierky/bird:3.3.2``, which must also be present locally. The OpenBGPD-based route server is tested against the Portable edition only, using the ``pierky/openbgpd:8.7`` and ``pierky/openbgpd:9.2`` images, which must also be present locally.
+3. Route server client instances used in live tests are based on BIRD 1.6.8, regardless of which version is used for the BIRD-based route server itself; the ``pierky/bird:1.6.8`` image is expected to be found on the local Docker repository. The BIRD-based route server is tested against ``pierky/bird:2.19.2``, ``pierky/bird:3.2.3`` and ``pierky/bird:3.3.2``, which must also be present locally. The OpenBGPD-based route server is tested against the Portable edition only, using the ``pierky/openbgpd:9.2`` and ``pierky/openbgpd:9.3`` images, which must also be present locally.
    Build the Docker image (or pull it from `Dockerhub <https://hub.docker.com/r/pierky/bird/>`_):
 
    .. code:: bash
@@ -48,8 +48,8 @@ Setting up the environment to run live tests
 
       # or pull it from Dockerhub
       docker pull pierky/bird:1.6.8
-      docker pull pierky/openbgpd:8.7
       docker pull pierky/openbgpd:9.2
+      docker pull pierky/openbgpd:9.3
 
 How to run built-in live tests
 ------------------------------

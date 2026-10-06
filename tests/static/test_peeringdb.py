@@ -45,6 +45,38 @@ class TestPeeringDBInfo(unittest.TestCase):
         with self.assertRaises(PeeringDBNoInfoError):
             net.load_data()
 
+    def test_rtbh_community(self):
+        """PeeringDB network: RTBH community"""
+        # Attribute not set: PeeringDB omits it.
+        net = PeeringDBNet(1)
+        net.load_data()
+        self.assertIsNone(net.rtbh_community)
+
+        net = PeeringDBNet(4)
+        net.load_data()
+        self.assertEqual(net.rtbh_community, {"std": "65000:666", "lrg": None})
+
+        net = PeeringDBNet(5)
+        net.load_data()
+        self.assertEqual(net.rtbh_community, {"std": None, "lrg": "5:666:0"})
+
+        # Lists are not accepted.
+        net = PeeringDBNet(6)
+        net.load_data()
+        self.assertIsNone(net.rtbh_community)
+
+    def test_parse_rtbh_community(self):
+        """PeeringDB: RTBH community parsing"""
+        net = PeeringDBNet(1)
+        self.assertEqual(net.parse_rtbh_community("65535:666"), {"std": "65535:666", "lrg": None})
+        self.assertEqual(net.parse_rtbh_community(" 0:0 "), {"std": "0:0", "lrg": None})
+        self.assertEqual(net.parse_rtbh_community("4294967295:0:4294967295"), {"std": None, "lrg": "4294967295:0:4294967295"})
+        self.assertEqual(net.parse_rtbh_community("0065000:00:0666"), {"std": None, "lrg": "65000:0:666"})
+        for v in (None, "", "   ", 666, "666", "65536:666", "1:-1", "a:b",
+                  "4294967296:0:0", "1:2:3:4", "rt:1:666", "1:666,2:666",
+                  "1:666 2:666", "rs_as:666", "peer_as:666", "1:dyn_val"):
+            self.assertIsNone(net.parse_rtbh_community(v), v)
+
     def test_parse_as_sets(self):
         """PeeringDB: AS-SETs parsing"""
         net = PeeringDBNet(1)

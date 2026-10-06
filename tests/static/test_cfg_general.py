@@ -309,6 +309,22 @@ class TestConfigParserGeneral(TestConfigParserBase):
         self.assertEqual(self.cfg["blackhole_filtering"]["announce_to_client"], True)
         self._test_bool_val(self.cfg["blackhole_filtering"], "announce_to_client")
 
+    def test_blackhole_client_community(self):
+        """{}: blackhole_filtering, client_community"""
+        client_community = self.cfg["blackhole_filtering"]["client_community"]
+        self.assertEqual(client_community["peering_db"], True)
+        self.assertEqual(client_community["action"], "add")
+
+        self._test_bool_val(client_community, "peering_db")
+        self._test_mandatory(client_community, "peering_db", has_default=True)
+        self._test_option(client_community, "action", ("add", "replace"))
+        self._test_mandatory(client_community, "action", has_default=True)
+
+        # Explicit client-specific communities are allowed only at
+        # client-level.
+        client_community["std"] = "65501:666"
+        self._contains_err("Unknown statement at 'cfg.blackhole_filtering.client_community' level: 'std'.")
+
     def test_blackhole_filtering_policy_ipv4(self):
         """{}: blackhole_filtering, policy_ipv4"""
         self.load_config(file_name="{}/test_cfg_general_blackhole_filtering.yml".format(os.path.dirname(__file__)))
@@ -1380,6 +1396,10 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 "rewrite_next_hop_ipv6": None,
                 "announce_to_client": True,
                 "add_noexport": True,
+                "client_community": {
+                    "peering_db": True,
+                    "action": "add",
+                },
             },
             "graceful_shutdown": {
                 "enabled": False,
@@ -1532,6 +1552,10 @@ class TestConfigParserGeneral(TestConfigParserBase):
                 "rewrite_next_hop_ipv6": None,
                 "announce_to_client": True,
                 "add_noexport": True,
+                "client_community": {
+                    "peering_db": True,
+                    "action": "add",
+                },
             },
             "graceful_shutdown": {
                 "enabled": False,

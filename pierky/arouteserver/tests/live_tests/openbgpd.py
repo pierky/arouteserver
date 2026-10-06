@@ -271,7 +271,7 @@ class OpenBGPDInstance(object):
                 return True
         return False
 
-    def clear_cached_routes(self):
+    def clear_cache(self):
         self.routes = {}
 
     def get_routes(self, prefix, include_filtered=False, only_best=False):
@@ -535,5 +535,15 @@ class OpenBGPD92PortableInstance(OpenBGPDPortableInstance):
     TARGET_VERSION = "9.2"
 
 
-OpenBGPDPortablePreviousInstance = OpenBGPD87PortableInstance
-OpenBGPDPortableLatestInstance = OpenBGPD92PortableInstance
+class OpenBGPD93PortableInstance(OpenBGPDPortableInstance):
+
+    DOCKER_IMAGE = "pierky/openbgpd:9.3"
+
+    TAG = "openbgpd93p"
+
+    BGP_SPEAKER_VERSION = "9.3"
+    TARGET_VERSION = "9.3"
+
+
+OpenBGPDPortablePreviousInstance = OpenBGPD92PortableInstance
+OpenBGPDPortableLatestInstance = OpenBGPD93PortableInstance

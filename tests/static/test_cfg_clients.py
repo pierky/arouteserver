@@ -20,6 +20,7 @@ import yaml
 from .cfg_base import TestConfigParserBase
 from pierky.arouteserver.config.clients import ConfigParserClients
 from pierky.arouteserver.config.general import ConfigParserGeneral
+from pierky.arouteserver.errors import ConfigError
 
 
 class TestConfigParserClients(TestConfigParserBase):
@@ -358,6 +359,103 @@ class TestConfigParserClients(TestConfigParserBase):
         self.assertIs(client["cfg"]["blackhole_filtering"]["announce_to_client"], True)
         client = self.cfg[2]
         self.assertIs(client["cfg"]["blackhole_filtering"]["announce_to_client"], False)
+
+    def test_blackhole_filtering_client_community_propagation(self):
+        """{}: inherit from general cfg - blackhole filtering client community"""
+        clients_config = [
+            "clients:",
+            "  - asn: 111",
+            "    ip: 192.0.2.11",
+            "  - asn: 222",
+            "    ip: 192.0.2.21",
+            "    cfg:",
+            "      blackhole_filtering:",
+            "        client_community:",
+            "          peering_db: False",
+            "          action: replace",
+            "  - asn: 333",
+            "    ip: 192.0.2.31",
+            "    cfg:",
+            "      blackhole_filtering:",
+            "        client_community:",
+            "          std: '0333:0666'",
+            "          lrg: '333:666:0'",
+            "  - asn: 444",
+            "    ip: 192.0.2.41",
+            "    cfg:",
+            "      blackhole_filtering:",
+            "        client_community:",
+            "          std: '65535:666'",
+        ]
+
+        general = ConfigParserGeneral()
+        general._load_from_yaml("\n".join([
+            "cfg:",
+            "  rs_as: 999",
+            "  router_id: 192.0.2.2",
+            "  blackhole_filtering:",
+            "    client_community:",
+            "      peering_db: True",
+        ]))
+        general.parse()
+
+        self.cfg = ConfigParserClients(general_cfg=general)
+        self.cfg._load_from_yaml("\n".join(clients_config))
+        self.cfg.parse()
+        self._contains_err()
+
+        client_community = self.cfg[0]["cfg"]["blackhole_filtering"]["client_community"]
+        self.assertIs(client_community["peering_db"], True)
+        self.assertEqual(client_community["action"], "add")
+        self.assertIsNone(client_community["std"])
+        self.assertIsNone(client_community["lrg"])
+
+        client_community = self.cfg[1]["cfg"]["blackhole_filtering"]["client_community"]
+        self.assertIs(client_community["peering_db"], False)
+        self.assertEqual(client_community["action"], "replace")
+
+        client_community = self.cfg[2]["cfg"]["blackhole_filtering"]["client_community"]
+        self.assertIs(client_community["peering_db"], True)
+        self.assertEqual(client_community["std"], "333:666")
+        self.assertEqual(client_community["lrg"], "333:666:0")
+
+        # The reserved range 65535:x is allowed here.
+        client_community = self.cfg[3]["cfg"]["blackhole_filtering"]["client_community"]
+        self.assertEqual(client_community["std"], "65535:666")
+
+    def test_blackhole_filtering_client_community_invalid(self):
+        """{}: blackhole filtering client community, invalid values"""
+        for comm_type, value in (("std", "65536:666"),
+                                 ("std", "rs_as:666"),
+                                 ("std", "peer_as:666"),
+                                 ("std", "1:2:3"),
+                                 ("lrg", "1:2"),
+                                 ("lrg", "4294967296:1:1"),
+                                 ("ext", "rt:1:666")):
+            self.cfg = ConfigParserClients()
+            self.cfg._load_from_yaml("\n".join([
+                "clients:",
+                "  - asn: 111",
+                "    ip: 192.0.2.11",
+                "    cfg:",
+                "      blackhole_filtering:",
+                "        client_community:",
+                "          {}: '{}'".format(comm_type, value),
+            ]))
+            with self.assertRaises(ConfigError):
+                self.cfg.parse()
+
+        self.cfg = ConfigParserClients()
+        self.cfg._load_from_yaml("\n".join([
+            "clients:",
+            "  - asn: 111",
+            "    ip: 192.0.2.11",
+            "    cfg:",
+            "      blackhole_filtering:",
+            "        client_community:",
+            "          action: 'drop'",
+        ]))
+        self._contains_err("Invalid option for 'action': 'drop';")
 
     def test_custom_bgp_communities_ok(self):
         """{}: custom BGP communities"""

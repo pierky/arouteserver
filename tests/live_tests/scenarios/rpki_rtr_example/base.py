@@ -102,21 +102,21 @@ class RPKIRTRScenario(LiveScenario):
 
     def test_051_route_dropped(self):
         """{}: RPKI INVALID route dropped after spinning the validator up"""
-        self.rs.clear_cached_routes()
+        self.rs.clear_cache()
 
         with self.assertRaisesRegex(AssertionError, "Routes not found."):
             self.receive_route(self.rs, self.DATA["AS1_1"])
 
     def test_052_aspa_invalid_route_dropped(self):
         """{}: ASPA INVALID route dropped after spinning the validator up"""
-        self.rs.clear_cached_routes()
+        self.rs.clear_cache()
 
         with self.assertRaisesRegex(AssertionError, "Routes not found."):
             self.receive_route(self.rs, self.DATA["AS1_aspa_invalid"])
 
     def test_053_aspa_valid_and_unknown_accepted(self):
         """{}: ASPA VALID and UNKNOWN routes still accepted"""
-        self.rs.clear_cached_routes()
+        self.rs.clear_cache()
 
         self.receive_route(self.rs, self.DATA["AS1_aspa_valid"], self.AS1_1,
                            next_hop=self.AS1_1, as_path="1 103")

@@ -2,8 +2,9 @@
 platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/pierky/src/ars/.venv/bin/python3.14
 cachedir: .pytest_cache
 rootdir: /home/pierky/src/ars
+configfile: pyproject.toml
 plugins: requests-mock-1.12.1
-collecting ... collected 285 items
+collecting ... collected 299 items
 
 ASPA builder: OpenBGPD, ASPA without roles raises an error PASSED
 ASPA builder: OpenBGPD, ASPA with roles is fine PASSED
@@ -37,6 +38,8 @@ Clients config parser: 16bit_mapped_asn for a 16bit ASN PASSED
 Clients config parser: 16bit_mapped_asn re-used for another ASN PASSED
 Clients config parser: 16bit_mapped_asn same AS multiple clients PASSED
 Clients config parser: AS number PASSED
+Clients config parser: blackhole filtering client community, invalid values PASSED
+Clients config parser: inherit from general cfg - blackhole filtering client community PASSED
 Clients config parser: inherit from general cfg - blackhole filtering PASSED
 Clients config parser: custom BGP communities PASSED
 Clients config parser: custom_options - bad AF format PASSED
@@ -67,6 +70,7 @@ General config parser: add_path PASSED
 General config parser: allow_as_set PASSED
 General config parser: allow_longer_prefixes PASSED
 General config parser: blackhole_filtering, announce_to_client PASSED
+General config parser: blackhole_filtering, client_community PASSED
 General config parser: blackhole_filtering, rewrite_next_hop, ipv4 PASSED
 General config parser: blackhole_filtering, rewrite_next_hop, ipv6 PASSED
 General config parser: blackhole_filtering, policy_ipv4 PASSED
@@ -227,6 +231,7 @@ IRRDB enricher: autnum only PASSED
 IRRDB enricher: IPv4 white list for IPv6 configs PASSED
 IRRDB enricher: empty autnum + empty AS-SET PASSED
 Max-prefix from PeeringDB: increment PASSED
+PeeringDB RTBH community enricher PASSED
 IRR queries fail-over: single timeout PASSED
 IRR queries fail-over: single failure PASSED
 IRR queries fail-over: all timeout PASSED
@@ -252,6 +257,8 @@ IRRDB info: RSets, cache expired PASSED
 PeeringDB network: get data PASSED
 PeeringDB network: missing data PASSED
 PeeringDB: AS-SETs parsing PASSED
+PeeringDB: RTBH community parsing PASSED
+PeeringDB network: RTBH community PASSED
 PeeringDB API key: 429 error handling PASSED
 PeeringDB API key: empty PASSED
 PeeringDB API key: env var wins over file PASSED
@@ -261,6 +268,13 @@ PeeringDB API: 429 error handling PASSED
 PeeringDB bulk query cache: hit PASSED
 PeeringDB bulk query cache: hit missed PASSED
 PeeringDB bulk query cache: hit with no data PASSED
+PeeringDB bulk query cache: ASNs already loaded are not queried again PASSED
+PeeringDB bulk query cache: ASNs given as strings PASSED
+PeeringDB bulk query cache: ASNs valid in the on-disk cache are not queried PASSED
+PeeringDBNet._is_cached: expired entry PASSED
+PeeringDBNet._is_cached: fresh entry PASSED
+PeeringDBNet._is_cached: fresh 'no data for this network' entry PASSED
+PeeringDBNet._is_cached: no entry PASSED
 RPKI ROAs: RIPE Validator TAs PASSED
 RPKI ROAs: NTT TAs PASSED
 RPKI ROAs: rpki-client TAs PASSED
@@ -270,6 +284,10 @@ RPKI ROAs: rpki-client expired ROAs PASSED
 RPKI ROAs: OctoRPKI expired file PASSED
 RPKI ROAs: OctoRPKI out of validity PASSED
 RPKI ROAs: OctoRPKI valid file PASSED
+RPKI ROAs/ASPAs: expiration is evaluated in UTC, whatever the local TZ SUBPASSED(tz='UTC')
+RPKI ROAs/ASPAs: expiration is evaluated in UTC, whatever the local TZ SUBPASSED(tz='Asia/Tokyo')
+RPKI ROAs/ASPAs: expiration is evaluated in UTC, whatever the local TZ SUBPASSED(tz='America/New_York')
+RPKI ROAs/ASPAs: expiration is evaluated in UTC, whatever the local TZ PASSED
 RPKI ASPAs: RIPE Validator format PASSED
 RPKI ASPAs: NTT / rpki-client format PASSED
 RPKI ASPAs: invalid records are skipped PASSED
@@ -291,51 +309,4 @@ RTT getter parser: empty PASSED
 RTT getter parser: new line only PASSED
 RTT getter parser: none PASSED
 
-=============================== warnings summary ===============================
-ASPA builder: ASPAs gathered from a JSON file: 1 warning
-ASPA builder: no ASPA available: 2 warnings
-ASPA builder: ASPA with no providers: 2 warnings
-ASPA builder: ROAs and ASPAs from the same URL are fetched once: 1 warning
-ASPA builder: ROAs and ASPAs from different URLs are fetched twice: 2 warnings
-RPKI ROAs: RIPE Validator TAs: 1 warning
-RPKI ROAs: NTT TAs: 1 warning
-RPKI ROAs: different formats: 1 warning
-RPKI ASPAs: RIPE Validator format: 1 warning
-RPKI ASPAs: NTT / rpki-client format: 1 warning
-RPKI ASPAs: invalid records are skipped: 1 warning
-RPKI ASPAs: too many invalid records: 1 warning
-RPKI ASPAs: ASPAs only, no ROAs needed: 1 warning
-RPKI ASPAs: cache built without ASPAs is refreshed: 1 warning
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:84: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    return datetime.datetime.utcnow()
-
-IX-F Member Export from clients command: simple: 1 warning
-IX-F Member Export from clients command: with description: 1 warning
-IX-F Member Export from clients command: with AS-SET: 1 warning
-IX-F Member Export from clients command: with 2 AS-SETs: 1 warning
-IX-F Member Export from clients command: AS-SET from asns: 1 warning
-IX-F Member Export from clients command: more than one IP: 1 warning
-IX-F Member Export from clients command: ams-ix.yml: 1 warning
-IX-F Member Export from clients command: bcix.yml: 1 warning
-IX-F Member Export from clients command: gr_ix.yml: 1 warning
-IX-F Member Export from clients command: inex.yml: 1 warning
-IX-F Member Export from clients command: lonap.yml: 1 warning
-IX-F Member Export from clients command: six.yml: 1 warning
-IX-F Member Export from clients command: sthix.yml: 1 warning
-IX-F Member Export from clients command: swissix.yml: 1 warning
-  /home/pierky/src/ars/pierky/arouteserver/commands/ixf_member_list_from_clients.py:192: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-    res["timestamp"] = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
-
-RPKI ROAs: OctoRPKI expired file
-RPKI ROAs: OctoRPKI out of validity
-RPKI ROAs: OctoRPKI valid file
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:171: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
-    buildtime_dt_utc = datetime.datetime.utcfromtimestamp(int(generated))
-
-RPKI ROAs: OctoRPKI out of validity
-RPKI ROAs: OctoRPKI valid file
-  /home/pierky/src/ars/pierky/arouteserver/ripe_rpki_cache.py:202: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
-    valid_dt_utc = datetime.datetime.utcfromtimestamp(int(valid))
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-================= 285 passed, 36 warnings in 96.23s (0:01:36) ==================
+============== 299 passed, 3 subtests passed in 63.60s (0:01:03) ===============

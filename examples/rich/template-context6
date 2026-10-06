@@ -11,6 +11,9 @@ cfg:
   blackhole_filtering:
     add_noexport: true
     announce_to_client: true
+    client_community:
+      action: add
+      peering_db: true
     policy_ipv4: rewrite-next-hop
     policy_ipv6: rewrite-next-hop
     rewrite_next_hop_ipv4: 192.0.2.66
@@ -837,6 +840,11 @@ clients:
     - from_europe
     blackhole_filtering:
       announce_to_client: true
+      client_community:
+        action: add
+        lrg: null
+        peering_db: true
+        std: null
     custom_options: null
     filtering:
       allow_as_set: false
@@ -903,6 +911,11 @@ clients:
     - from_usa
     blackhole_filtering:
       announce_to_client: true
+      client_community:
+        action: add
+        lrg: null
+        peering_db: true
+        std: null
     custom_options: null
     filtering:
       allow_as_set: false
@@ -965,6 +978,11 @@ clients:
     - from_usa
     blackhole_filtering:
       announce_to_client: true
+      client_community:
+        action: add
+        lrg: null
+        peering_db: true
+        std: null
     custom_options: null
     filtering:
       allow_as_set: false
@@ -1029,6 +1047,11 @@ clients:
     - from_europe
     blackhole_filtering:
       announce_to_client: true
+      client_community:
+        action: add
+        lrg: null
+        peering_db: true
+        std: null
     custom_options: null
     filtering:
       allow_as_set: false
@@ -1091,6 +1114,11 @@ clients:
     - from_europe
     blackhole_filtering:
       announce_to_client: true
+      client_community:
+        action: add
+        lrg: null
+        peering_db: true
+        std: null
     custom_options: null
     filtering:
       allow_as_set: false
@@ -1260,7 +1288,6 @@ never_via_route_servers_asns
 - 7843
 - 1299
 - 3257
-- 3265
 - 852
 - 8607
 - 6805
@@ -1458,7 +1485,6 @@ never_via_route_servers_asns
 - 214875
 - 47630
 - 154281
-- 329538
 - 151691
 - 210560
 - 199133
@@ -1474,6 +1500,9 @@ never_via_route_servers_asns
 - 61576
 - 219175
 - 153889
+- 401989
+- 274593
+- 63125
 - 1273
 - 2119
 - 1257
@@ -1561,7 +1590,6 @@ never_via_route_servers_asns
 - 152424
 - 207155
 - 153485
-- 401854
 - 204069
 - 138235
 - 215990
