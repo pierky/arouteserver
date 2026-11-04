@@ -51,7 +51,7 @@ class TestExternalResources(unittest.TestCase):
         net.load_data()
         self.assertTrue(net.info_prefixes4 > 0)
         self.assertTrue(net.info_prefixes6 > 0)
-        self.assertEqual(net.irr_as_sets, ["AS-RIPENCC"])
+        self.assertEqual(net.irr_as_sets, ["RIPE::AS-RIPENCC"])
 
     def test_peeringdb_never_via_route_servers(self):
         """External resources: PeeringDB, never via route-servers"""
